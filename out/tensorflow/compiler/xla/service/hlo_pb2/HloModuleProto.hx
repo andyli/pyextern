@@ -5,7 +5,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var COMPUTATIONS_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -27,8 +26,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ENTRY_COMPUTATION_ID_FIELD_NUMBER : Dynamic;
-	static public var ENTRY_COMPUTATION_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
@@ -49,7 +46,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ID_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -66,8 +62,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NAME_FIELD_NUMBER : Dynamic;
-	static public var PROGRAM_SHAPE_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -76,7 +70,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SCHEDULE_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -89,6 +82,10 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -254,4 +251,40 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.HloModuleProto.computations
+	**/
+	public var computations : Dynamic;
+	/**
+		Field xla.HloModuleProto.dynamic_parameter_binding
+	**/
+	public var dynamic_parameter_binding : Dynamic;
+	/**
+		Field xla.HloModuleProto.entry_computation_id
+	**/
+	public var entry_computation_id : Dynamic;
+	/**
+		Field xla.HloModuleProto.entry_computation_name
+	**/
+	public var entry_computation_name : Dynamic;
+	/**
+		Field xla.HloModuleProto.host_program_shape
+	**/
+	public var host_program_shape : Dynamic;
+	/**
+		Field xla.HloModuleProto.id
+	**/
+	public var id : Dynamic;
+	/**
+		Field xla.HloModuleProto.input_output_alias
+	**/
+	public var input_output_alias : Dynamic;
+	/**
+		Field xla.HloModuleProto.name
+	**/
+	public var name : Dynamic;
+	/**
+		Field xla.HloModuleProto.schedule
+	**/
+	public var schedule : Dynamic;
 }

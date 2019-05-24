@@ -2,9 +2,10 @@
 package tensorflow.python.ops.summary_ops_v2;
 @:pythonImport("tensorflow.python.ops.summary_ops_v2") extern class Summary_ops_v2_Module {
 	static public var _EXPERIMENT_NAME_PATTERNS : Dynamic;
+	static public var _INVALID_SCOPE_CHARACTERS : Dynamic;
 	static public var _RUN_NAME_PATTERNS : Dynamic;
-	static public var _SHOULD_RECORD_SUMMARIES_NAME : Dynamic;
-	static public var _SUMMARY_WRITER_INIT_COLLECTION_NAME : Dynamic;
+	static public var _SHOULD_RECORD_SUMMARIES : Dynamic;
+	static public var _SUMMARY_WRITER_INIT_OP : Dynamic;
 	static public var _USER_NAME_PATTERNS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -22,7 +23,7 @@ package tensorflow.python.ops.summary_ops_v2;
 		This operation blocks until that finishes.
 		
 		Args:
-		  writer: The `tf.contrib.summary.SummaryWriter` resource to flush.
+		  writer: The `tf.summary.SummaryWriter` resource to flush.
 		    The thread default will be used if this parameter is None.
 		    Otherwise a `tf.no_op` is returned.
 		  name: A name for the operation (optional).
@@ -35,7 +36,7 @@ package tensorflow.python.ops.summary_ops_v2;
 		Writes a TensorFlow graph to the summary interface.
 		
 		The graph summary is, strictly speaking, not a summary. Conditions
-		like `tf.contrib.summary.never_record_summaries` do not apply. Only
+		like `tf.summary.should_record_summaries` do not apply. Only
 		a single graph can be associated with a particular run. If multiple
 		graphs are written, then only the last one will be considered by
 		TensorBoard.
@@ -67,12 +68,41 @@ package tensorflow.python.ops.summary_ops_v2;
 		Convenient else branch for when summaries do not record.
 	**/
 	static public function _nothing():Dynamic;
+	/**
+		Sets summary recording on or off per the provided boolean value.
+		
+		The provided value can be a python boolean, a scalar boolean Tensor, or
+		or a callable providing such a value; if a callable is passed it will be
+		invoked each time should_record_summaries() is called to determine whether
+		summary writing should be enabled.
+		
+		Args:
+		  boolean: can be True, False, a bool Tensor, or a callable providing such.
+		    Defaults to True.
+		
+		Yields:
+		  Returns a context manager that sets this value on enter and restores the
+		  previous value on exit.
+	**/
+	static public function _record_summaries(?boolean:Dynamic):Dynamic;
 	static public function _serialize_graph(arbitrary_graph:Dynamic):Dynamic;
+	/**
+		Returns boolean Tensor if summaries should/shouldn't be recorded, or None.
+		  
+	**/
+	static public function _should_record_summaries_internal():Dynamic;
+	/**
+		Returns boolean Tensor which is true if summaries should be recorded.
+		
+		If no recording status has been set, this defaults to True, unlike the public
+		should_record_summaries().
+	**/
+	static public function _should_record_summaries_v2():Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Graph-mode only. Returns all summary ops.
 		
-		Please note this excludes `tf.contrib.summary.graph` ops.
+		Please note this excludes `tf.summary.graph` ops.
 		
 		Returns:
 		  The summary ops.
@@ -111,7 +141,7 @@ package tensorflow.python.ops.summary_ops_v2;
 		    `tf.Graph`.
 		
 		Returns:
-		  A `tf.contrib.summary.SummaryWriter` instance.
+		  A `tf.summary.SummaryWriter` instance.
 	**/
 	static public function create_db_writer(db_uri:Dynamic, ?experiment_name:Dynamic, ?run_name:Dynamic, ?user_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -137,7 +167,11 @@ package tensorflow.python.ops.summary_ops_v2;
 	**/
 	static public function create_file_writer(logdir:Dynamic, ?max_queue:Dynamic, ?flush_millis:Dynamic, ?filename_suffix:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Please use `tf.contrib.summary.create_file_writer`.
+		Please use `tf.contrib.summary.create_file_writer`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Renamed to create_file_writer().
 	**/
 	static public function create_summary_file_writer(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
@@ -151,7 +185,7 @@ package tensorflow.python.ops.summary_ops_v2;
 		This operation blocks until that finishes.
 		
 		Args:
-		  writer: The `tf.contrib.summary.SummaryWriter` resource to flush.
+		  writer: The `tf.summary.SummaryWriter` resource to flush.
 		    The thread default will be used if this parameter is None.
 		    Otherwise a `tf.no_op` is returned.
 		  name: A name for the operation (optional).
@@ -168,7 +202,7 @@ package tensorflow.python.ops.summary_ops_v2;
 		Writes a TensorFlow graph to the summary interface.
 		
 		The graph summary is, strictly speaking, not a summary. Conditions
-		like `tf.contrib.summary.never_record_summaries` do not apply. Only
+		like `tf.summary.should_record_summaries` do not apply. Only
 		a single graph can be associated with a particular run. If multiple
 		graphs are written, then only the last one will be considered by
 		TensorBoard.
@@ -206,11 +240,9 @@ package tensorflow.python.ops.summary_ops_v2;
 	/**
 		Writes a `tf.Event` binary proto.
 		
-		When using create_db_writer(), this can be used alongside
-		`tf.TFRecordReader` to load event logs into the database. Please
-		note that this is lower level than the other summary functions and
-		will ignore any conditions set by methods like
-		`tf.contrib.summary.should_record_summaries`.
+		This can be used to import existing event logs into a new summary writer sink.
+		Please note that this is lower level than the other summary functions and
+		will ignore the `tf.summary.should_record_summaries` setting.
 		
 		Args:
 		  tensor: A `tf.Tensor` of type `string` containing a serialized
@@ -278,6 +310,36 @@ package tensorflow.python.ops.summary_ops_v2;
 	**/
 	static public function should_record_summaries():Dynamic;
 	/**
+		A context manager for use when defining a custom summary op.
+		
+		This behaves similarly to `tf.name_scope`, except that it returns a generated
+		summary tag in addition to the scope name. The tag is structurally similar to
+		the scope name - derived from the user-provided name, prefixed with enclosing
+		name scopes if any - but we relax the constraint that it be uniquified, as
+		well as the character set limitation (so the user-provided name can contain
+		characters not legal for scope names; in the scope name these are removed).
+		
+		This makes the summary tag more predictable and consistent for the user.
+		
+		For example, to define a new summary op called `my_op`:
+		
+		```python
+		def my_op(name, my_value, step):
+		  with tf.summary.summary_scope(name, "MyOp", [my_value]) as (tag, scope):
+		    my_value = tf.convert_to_tensor(my_value)
+		    return tf.summary.write(tag, my_value, step=step)
+		```
+		
+		Args:
+		  name: string name for the summary.
+		  default_name: Optional; if provided, used as default name of the summary.
+		  values: Optional; passed as `values` parameter to name_scope.
+		
+		Yields:
+		  A tuple `(tag, scope)` as described above.
+	**/
+	static public function summary_scope(name:Dynamic, ?default_name:Dynamic, ?values:Dynamic):Dynamic;
+	/**
 		Helper function to write summaries.
 		
 		Args:
@@ -300,4 +362,25 @@ package tensorflow.python.ops.summary_ops_v2;
 		  RuntimeError: If in Eager mode.
 	**/
 	static public function summary_writer_initializer_op():Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Writes a generic summary to the default SummaryWriter if one exists.
+		
+		This exists primarily to support the definition of type-specific summary ops
+		like scalar() and image(), and is not intended for direct use unless defining
+		a new type-specific summary op.
+		
+		Args:
+		  tag: string tag used to identify the summary (e.g. in TensorBoard), usually
+		    generated with `tf.summary.summary_scope`
+		  tensor: the Tensor holding the summary data to write
+		  step: `int64`-castable monotic step value for this summary
+		  metadata: Optional SummaryMetadata, as a proto or serialized bytes
+		  name: Optional string name for this op.
+		
+		Returns:
+		  True on success, or false if no summary was written because no default
+		  summary writer was available.
+	**/
+	static public function write(tag:Dynamic, tensor:Dynamic, step:Dynamic, ?metadata:Dynamic, ?name:Dynamic):Dynamic;
 }

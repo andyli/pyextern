@@ -2,6 +2,7 @@
 package tensorflow.python.estimator.canned.dnn_linear_combined;
 @:pythonImport("tensorflow.python.estimator.canned.dnn_linear_combined") extern class Dnn_linear_combined_Module {
 	static public var _DNN_LEARNING_RATE : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var _LINEAR_LEARNING_RATE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -54,6 +55,10 @@ package tensorflow.python.estimator.canned.dnn_linear_combined;
 	**/
 	static public function _dnn_linear_combined_model_fn(features:Dynamic, labels:Dynamic, mode:Dynamic, head:Dynamic, ?linear_feature_columns:Dynamic, ?linear_optimizer:Dynamic, ?dnn_feature_columns:Dynamic, ?dnn_optimizer:Dynamic, ?dnn_hidden_units:Dynamic, ?dnn_activation_fn:Dynamic, ?dnn_dropout:Dynamic, ?input_layer_partitioner:Dynamic, ?config:Dynamic, ?batch_norm:Dynamic, ?linear_sparse_combiner:Dynamic):Dynamic;
 	/**
+		Helper function for the initialization of DNNLinearCombinedEstimator.
+	**/
+	static public function _init_dnn_linear_combined_estimator(head:Dynamic, linear_feature_columns:Dynamic, linear_optimizer:Dynamic, dnn_feature_columns:Dynamic, dnn_optimizer:Dynamic, dnn_hidden_units:Dynamic, dnn_activation_fn:Dynamic, dnn_dropout:Dynamic, input_layer_partitioner:Dynamic, linear_sparse_combiner:Dynamic):Dynamic;
+	/**
 		Returns the default learning rate of the linear model.
 		
 		The calculation is a historical artifact of this initial implementation, but
@@ -67,6 +72,10 @@ package tensorflow.python.estimator.canned.dnn_linear_combined;
 		  A float.
 	**/
 	static public function _linear_learning_rate(num_linear_feature_columns:Dynamic):Dynamic;
+	/**
+		Validates feature columns DNNLinearCombinedRegressor.
+	**/
+	static public function _validate_feature_columns(linear_feature_columns:Dynamic, dnn_feature_columns:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public function estimator_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;

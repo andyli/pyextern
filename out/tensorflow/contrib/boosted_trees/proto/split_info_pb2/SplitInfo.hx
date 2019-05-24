@@ -50,7 +50,6 @@ package tensorflow.contrib.boosted_trees.proto.split_info_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LEFT_CHILD_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -67,12 +66,10 @@ package tensorflow.contrib.boosted_trees.proto.split_info_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var RIGHT_CHILD_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SPLIT_NODE_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -85,6 +82,10 @@ package tensorflow.contrib.boosted_trees.proto.split_info_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -250,4 +251,16 @@ package tensorflow.contrib.boosted_trees.proto.split_info_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.SplitInfo.left_child
+	**/
+	public var left_child : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.SplitInfo.right_child
+	**/
+	public var right_child : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.SplitInfo.split_node
+	**/
+	public var split_node : Dynamic;
 }

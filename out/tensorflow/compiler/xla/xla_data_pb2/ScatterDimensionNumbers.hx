@@ -46,8 +46,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INDEX_VECTOR_DIM_FIELD_NUMBER : Dynamic;
-	static public var INSERTED_WINDOW_DIMS_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -72,7 +70,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SCATTER_DIMS_TO_OPERAND_DIMS_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -85,7 +82,10 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var UPDATE_WINDOW_DIMS_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.compiler.xla.xla_data_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.ScatterDimensionNumbers.index_vector_dim
+	**/
+	public var index_vector_dim : Dynamic;
+	/**
+		Field xla.ScatterDimensionNumbers.inserted_window_dims
+	**/
+	public var inserted_window_dims : Dynamic;
+	/**
+		Field xla.ScatterDimensionNumbers.scatter_dims_to_operand_dims
+	**/
+	public var scatter_dims_to_operand_dims : Dynamic;
+	/**
+		Field xla.ScatterDimensionNumbers.update_window_dims
+	**/
+	public var update_window_dims : Dynamic;
 }

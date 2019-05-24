@@ -44,5 +44,6 @@ package tensorflow.contrib.input_pipeline.ops.gen_input_pipeline_ops;
 		  A `Tensor` of type `string`.
 	**/
 	static public function obtain_next(list:Dynamic, counter:Dynamic, ?name:Dynamic):Dynamic;
+	static public function obtain_next_eager_fallback(list:Dynamic, counter:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -15,11 +15,11 @@ package tensorflow.contrib.data.python.ops.sliding;
 	/**
 		A sliding window over a dataset. (deprecated) (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(stride)`. They will be removed in a future version.
 		Instructions for updating:
 		stride is deprecated, use window_shift instead
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.Dataset.window(size=window_size, shift=window_shift, stride=window_stride).flat_map(lambda x: x.batch(window.size))` instead.
 		

@@ -1,6 +1,10 @@
 /* This file is generated, do not edit! */
 package matplotlib.mathtext;
 @:pythonImport("matplotlib.mathtext", "MathtextBackendPs") extern class MathtextBackendPs {
+	/**
+		_PSResult(width, height, depth, pswriter, used_characters)
+	**/
+	static public function _PSResult(width:Dynamic, height:Dynamic, depth:Dynamic, pswriter:Dynamic, used_characters:Dynamic):Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).

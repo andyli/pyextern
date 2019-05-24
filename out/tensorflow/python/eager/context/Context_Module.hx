@@ -25,6 +25,10 @@ package tensorflow.python.eager.context;
 	static public function _tmp_in_graph_mode():Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
+		Add a function definition to the context.
+	**/
+	static public function add_function(fdef:Dynamic):Dynamic;
+	/**
 		Clears errors raised during ASYNC execution mode.
 	**/
 	static public function async_clear_error():Dynamic;
@@ -100,6 +104,33 @@ package tensorflow.python.eager.context;
 		  A RunMetadata protocol buffer.
 	**/
 	static public function export_run_metadata():Dynamic;
+	/**
+		Context manager for setting the grappler rewrite config.
+		
+		This config is used by Grappler when optimizing the function graph.
+		
+		Args:
+		  config_proto: a `config_pb2.ConfigProto` proto or
+		    a serialized string of that proto or None. If None, the default instance
+		    of `config_pb2.ConfigProto` will be used.
+		
+		Returns:
+		  A context manager.
+	**/
+	static public function function_config_proto(config_proto:Dynamic):Dynamic;
+	/**
+		Context manager for setting the executor of eagar defined functions.
+		
+		Eager defined functions are functions decorated by tf.contrib.eager.defun.
+		
+		Args:
+		  executor_type: a string for the name of the executor to be used
+		  to execute functions defined by tf.contrib.eager.defun.
+		
+		Returns:
+		  Context manager for setting the executor of eager defined functions.
+	**/
+	static public function function_executor_type(executor_type:Dynamic):Dynamic;
 	/**
 		Returns the eager mode seed.
 	**/

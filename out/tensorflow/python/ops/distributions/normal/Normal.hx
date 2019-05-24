@@ -52,7 +52,11 @@ package tensorflow.python.ops.distributions.normal;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct Normal distributions with mean and stddev `loc` and `scale`.
+		Construct Normal distributions with mean and stddev `loc` and `scale`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		The parameters `loc` and `scale` must be shaped in a way that supports
 		broadcasting (e.g. `loc + scale` is a valid operation).
@@ -77,7 +81,11 @@ package tensorflow.python.ops.distributions.normal;
 	@:native("__init__")
 	public function ___init__(loc:Dynamic, scale:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Construct Normal distributions with mean and stddev `loc` and `scale`.
+		Construct Normal distributions with mean and stddev `loc` and `scale`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		The parameters `loc` and `scale` must be shaped in a way that supports
 		broadcasting (e.g. `loc + scale` is a valid operation).

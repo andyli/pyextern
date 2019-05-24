@@ -3,6 +3,7 @@ package tensorflow.python.estimator.canned.head;
 @:pythonImport("tensorflow.python.estimator.canned.head") extern class Head_Module {
 	static public var _CLASSIFY_SERVING_KEY : Dynamic;
 	static public var _DEFAULT_SERVING_KEY : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var _PREDICT_SERVING_KEY : Dynamic;
 	static public var _REGRESS_SERVING_KEY : Dynamic;
 	static public var __builtins__ : Dynamic;

@@ -5,7 +5,6 @@ package tensorflow.core.example.example_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CONTEXT_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -31,7 +30,6 @@ package tensorflow.core.example.example_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FEATURE_LISTS_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -84,6 +82,10 @@ package tensorflow.core.example.example_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +253,12 @@ package tensorflow.core.example.example_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.SequenceExample.context
+	**/
+	public var context : Dynamic;
+	/**
+		Field tensorflow.SequenceExample.feature_lists
+	**/
+	public var feature_lists : Dynamic;
 }

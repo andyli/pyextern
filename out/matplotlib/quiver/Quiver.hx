@@ -44,26 +44,21 @@ package matplotlib.quiver;
 		        instance, followed by the args and kwargs described
 		        by the following pyplot interface documentation:
 		        
-		Plot a 2-D field of arrows.
+		Plot a 2D field of arrows.
 		
-		Call signatures::
+		Call signature::
 		
-		  quiver(U, V, **kw)
-		  quiver(U, V, C, **kw)
-		  quiver(X, Y, U, V, **kw)
-		  quiver(X, Y, U, V, C, **kw)
+		  quiver([X, Y], U, V, [C], **kw)
 		
-		*U* and *V* are the arrow data, *X* and *Y* set the location of the
-		arrows, and *C* sets the color of the arrows. These arguments may be 1-D or
-		2-D arrays or sequences.
+		Where *X*, *Y* define the arrow locations, *U*, *V* define the arrow
+		directions, and *C* optionally sets the color.
 		
-		If *X* and *Y* are absent, they will be generated as a uniform grid.
-		If *U* and *V* are 2-D arrays and *X* and *Y* are 1-D, and if ``len(X)`` and
-		``len(Y)`` match the column and row dimensions of *U*, then *X* and *Y* will be
-		expanded with :func:`numpy.meshgrid`.
+		**Arrow size**
 		
 		The default settings auto-scales the length of the arrows to a reasonable size.
-		To change this behavior see the *scale* and *scale_units* kwargs.
+		To change this behavior see the *scale* and *scale_units* parameters.
+		
+		**Arrow shape**
 		
 		The defaults give a slightly swept-back arrow; to make the head a
 		triangle, make *headaxislength* the same as *headlength*. To make the
@@ -72,31 +67,42 @@ package matplotlib.quiver;
 		scale down all the head parameters. You will probably do best to leave
 		minshaft alone.
 		
+		**Arrow outline**
+		
 		*linewidths* and *edgecolors* can be used to customize the arrow
 		outlines.
 		
 		Parameters
 		----------
-		X : 1D or 2D array, sequence, optional
-		    The x coordinates of the arrow locations
-		Y : 1D or 2D array, sequence, optional
-		    The y coordinates of the arrow locations
-		U : 1D or 2D array or masked array, sequence
-		    The x components of the arrow vectors
-		V : 1D or 2D array or masked array, sequence
-		    The y components of the arrow vectors
-		C : 1D or 2D array, sequence, optional
-		    The arrow colors
-		units : [ 'width' | 'height' | 'dots' | 'inches' | 'x' | 'y' | 'xy' ]
+		X, Y : 1D or 2D array-like, optional
+		    The x and y coordinates of the arrow locations.
+		
+		    If not given, they will be generated as a uniform integer meshgrid based
+		    on the dimensions of *U* and *V*.
+		
+		    If *X* and *Y* are 1D but *U*, *V* are 2D, *X*, *Y* are expanded to 2D
+		    using ``X, Y = np.meshgrid(X, Y)``. In this case ``len(X)`` and ``len(Y)``
+		    must match the column and row dimensions of *U* and *V*.
+		
+		U, V : 1D or 2D array-like
+		    The x and y direction components of the arrow vectors.
+		
+		C : 1D or 2D array-like, optional
+		    Numeric data that defines the arrow colors by colormapping via *norm* and
+		    *cmap*.
+		
+		    This does not support explicit colors. If you want to set colors directly,
+		    use *color* instead.
+		
+		units : {'width', 'height', 'dots', 'inches', 'x', 'y' 'xy'}, default: 'width'
 		    The arrow dimensions (except for *length*) are measured in multiples of
 		    this unit.
 		
-		    'width' or 'height': the width or height of the axis
+		    The following values are supported:
 		
-		    'dots' or 'inches': pixels or inches, based on the figure dpi
-		
-		    'x', 'y', or 'xy': respectively *X*, *Y*, or :math:`\sqrt{X^2 + Y^2}`
-		    in data units
+		    - 'width', 'height': The width or height of the axis.
+		    - 'dots', 'inches': Pixels or inches based on the figure dpi.
+		    - 'x', 'y', 'xy': *X*, *Y* or :math:`\sqrt{X^2 + Y^2}` in data units.
 		
 		    The arrows scale differently depending on the units.  For
 		    'x' or 'y', the arrows get larger as one zooms in; for other
@@ -104,95 +110,113 @@ package matplotlib.quiver;
 		    'width or 'height', the arrow size increases with the width and
 		    height of the axes, respectively, when the window is resized;
 		    for 'dots' or 'inches', resizing does not change the arrows.
-		angles : [ 'uv' | 'xy' ], array, optional
-		    Method for determining the angle of the arrows. Default is 'uv'.
 		
-		    'uv': the arrow axis aspect ratio is 1 so that
-		    if *U*==*V* the orientation of the arrow on the plot is 45 degrees
-		    counter-clockwise from the horizontal axis (positive to the right).
+		angles : {'uv', 'xy'} or array-like, optional, default: 'uv'
+		    Method for determining the angle of the arrows.
 		
-		    'xy': arrows point from (x,y) to (x+u, y+v).
-		    Use this for plotting a gradient field, for example.
+		    - 'uv': The arrow axis aspect ratio is 1 so that
+		      if *U* == *V* the orientation of the arrow on the plot is 45 degrees
+		      counter-clockwise from the horizontal axis (positive to the right).
 		
-		    Alternatively, arbitrary angles may be specified as an array
-		    of values in degrees, counter-clockwise from the horizontal axis.
+		      Use this if the arrows symbolize a quantity that is not based on
+		      *X*, *Y* data coordinates.
+		
+		    - 'xy': Arrows point from (x,y) to (x+u, y+v).
+		      Use this for plotting a gradient field, for example.
+		
+		    - Alternatively, arbitrary angles may be specified explicitly as an array
+		      of values in degrees, counter-clockwise from the horizontal axis.
+		
+		      In this case *U*, *V* is only used to determine the length of the
+		      arrows.
 		
 		    Note: inverting a data axis will correspondingly invert the
 		    arrows only with ``angles='xy'``.
-		scale : None, float, optional
+		
+		scale : float, optional
 		    Number of data units per arrow length unit, e.g., m/s per plot width; a
 		    smaller scale parameter makes the arrow longer. Default is *None*.
 		
 		    If *None*, a simple autoscaling algorithm is used, based on the average
 		    vector length and the number of vectors. The arrow length unit is given by
-		    the *scale_units* parameter
-		scale_units : [ 'width' | 'height' | 'dots' | 'inches' | 'x' | 'y' | 'xy' ], None, optional
+		    the *scale_units* parameter.
+		
+		scale_units : {'width', 'height', 'dots', 'inches', 'x', 'y', 'xy'}, optional
 		    If the *scale* kwarg is *None*, the arrow length unit. Default is *None*.
 		
 		    e.g. *scale_units* is 'inches', *scale* is 2.0, and
 		    ``(u,v) = (1,0)``, then the vector will be 0.5 inches long.
 		
-		    If *scale_units* is 'width'/'height', then the vector will be half the
+		    If *scale_units* is 'width' or 'height', then the vector will be half the
 		    width/height of the axes.
 		
 		    If *scale_units* is 'x' then the vector will be 0.5 x-axis
 		    units. To plot vectors in the x-y plane, with u and v having
 		    the same units as x and y, use
 		    ``angles='xy', scale_units='xy', scale=1``.
-		width : scalar, optional
+		
+		width : float, optional
 		    Shaft width in arrow units; default depends on choice of units,
 		    above, and number of vectors; a typical starting value is about
 		    0.005 times the width of the plot.
-		headwidth : scalar, optional
-		    Head width as multiple of shaft width, default is 3
-		headlength : scalar, optional
-		    Head length as multiple of shaft width, default is 5
-		headaxislength : scalar, optional
-		    Head length at shaft intersection, default is 4.5
-		minshaft : scalar, optional
+		
+		headwidth : float, optional, default: 3
+		    Head width as multiple of shaft width.
+		
+		headlength : float, optional, default: 5
+		    Head length as multiple of shaft width.
+		
+		headaxislength : float, optional, default: 4.5
+		    Head length at shaft intersection.
+		
+		minshaft : float, optional, default: 1
 		    Length below which arrow scales, in units of head length. Do not
 		    set this to less than 1, or small arrows will look terrible!
-		    Default is 1
-		minlength : scalar, optional
+		
+		minlength : float, optional, default: 1
 		    Minimum length as a multiple of shaft width; if an arrow length
 		    is less than this, plot a dot (hexagon) of this diameter instead.
-		    Default is 1.
-		pivot : [ 'tail' | 'mid' | 'middle' | 'tip' ], optional
-		    The part of the arrow that is at the grid point; the arrow rotates
-		    about this point, hence the name *pivot*.
-		color : [ color | color sequence ], optional
-		    This is a synonym for the
-		    :class:`~matplotlib.collections.PolyCollection` facecolor kwarg.
-		    If *C* has been set, *color* has no effect.
 		
-		Notes
-		-----
-		Additional :class:`~matplotlib.collections.PolyCollection`
-		keyword arguments:
+		pivot : {'tail', 'mid', 'middle', 'tip'}, optional, default: 'tail'
+		    The part of the arrow that is anchored to the *X*, *Y* grid. The arrow
+		    rotates about this point.
 		
-		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		    'mid' is a synonym for 'middle'.
+		
+		color : color or color sequence, optional
+		    Explicit color(s) for the arrows. If *C* has been set, *color* has no
+		    effect.
+		
+		    This is a synonym for the `~.PolyCollection` *facecolor* parameter.
+		
+		Other Parameters
+		----------------
+		**kwargs : `~matplotlib.collections.PolyCollection` properties, optional
+		    All other keyword arguments are passed on to `.PolyCollection`:
+		
+		      agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array
 		  alpha: float or None
 		  animated: bool
-		  antialiased: bool or sequence of bools
+		  antialiased or aa or antialiaseds: bool or sequence of bools
 		  array: ndarray
 		  capstyle: {'butt', 'round', 'projecting'}
-		  clim: a length 2 sequence of floats; may be overridden in methods that have ``vmin`` and ``vmax`` kwargs. 
+		  clim: a length 2 sequence of floats; may be overridden in methods that have ``vmin`` and ``vmax`` kwargs.
 		  clip_box: `.Bbox`
 		  clip_on: bool
-		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 		  cmap: colormap or registered colormap name
-		  color: matplotlib color arg or sequence of rgba tuples
+		  color: color or sequence of rgba tuples
 		  contains: callable
-		  edgecolor: color or sequence of colors
-		  facecolor: color or sequence of colors
+		  edgecolor or ec or edgecolors: color or sequence of colors or 'face'
+		  facecolor or facecolors or fc: color or sequence of colors
 		  figure: `.Figure`
 		  gid: str
 		  hatch: {'/', '\\', '|', '-', '+', 'x', 'o', 'O', '.', '*'}
 		  in_layout: bool
 		  joinstyle: {'miter', 'round', 'bevel'}
 		  label: object
-		  linestyle: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
-		  linewidth: float or sequence of floats
+		  linestyle or dashes or linestyles or ls: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
+		  linewidth or linewidths or lw: float or sequence of floats
 		  norm: `.Normalize`
 		  offset_position: {'screen', 'data'}
 		  offsets: float or sequence of floats
@@ -200,7 +224,7 @@ package matplotlib.quiver;
 		  picker: None or bool or float or callable
 		  pickradius: unknown
 		  rasterized: bool or None
-		  sketch_params: (scale: float, length: float, randomness: float) 
+		  sketch_params: (scale: float, length: float, randomness: float)
 		  snap: bool or None
 		  transform: `.Transform`
 		  url: str
@@ -210,7 +234,7 @@ package matplotlib.quiver;
 		
 		See Also
 		--------
-		quiverkey : Add a key to a quiver plot
+		quiverkey : Add a key to a quiver plot.
 		
 		        
 	**/
@@ -221,26 +245,21 @@ package matplotlib.quiver;
 		        instance, followed by the args and kwargs described
 		        by the following pyplot interface documentation:
 		        
-		Plot a 2-D field of arrows.
+		Plot a 2D field of arrows.
 		
-		Call signatures::
+		Call signature::
 		
-		  quiver(U, V, **kw)
-		  quiver(U, V, C, **kw)
-		  quiver(X, Y, U, V, **kw)
-		  quiver(X, Y, U, V, C, **kw)
+		  quiver([X, Y], U, V, [C], **kw)
 		
-		*U* and *V* are the arrow data, *X* and *Y* set the location of the
-		arrows, and *C* sets the color of the arrows. These arguments may be 1-D or
-		2-D arrays or sequences.
+		Where *X*, *Y* define the arrow locations, *U*, *V* define the arrow
+		directions, and *C* optionally sets the color.
 		
-		If *X* and *Y* are absent, they will be generated as a uniform grid.
-		If *U* and *V* are 2-D arrays and *X* and *Y* are 1-D, and if ``len(X)`` and
-		``len(Y)`` match the column and row dimensions of *U*, then *X* and *Y* will be
-		expanded with :func:`numpy.meshgrid`.
+		**Arrow size**
 		
 		The default settings auto-scales the length of the arrows to a reasonable size.
-		To change this behavior see the *scale* and *scale_units* kwargs.
+		To change this behavior see the *scale* and *scale_units* parameters.
+		
+		**Arrow shape**
 		
 		The defaults give a slightly swept-back arrow; to make the head a
 		triangle, make *headaxislength* the same as *headlength*. To make the
@@ -249,31 +268,42 @@ package matplotlib.quiver;
 		scale down all the head parameters. You will probably do best to leave
 		minshaft alone.
 		
+		**Arrow outline**
+		
 		*linewidths* and *edgecolors* can be used to customize the arrow
 		outlines.
 		
 		Parameters
 		----------
-		X : 1D or 2D array, sequence, optional
-		    The x coordinates of the arrow locations
-		Y : 1D or 2D array, sequence, optional
-		    The y coordinates of the arrow locations
-		U : 1D or 2D array or masked array, sequence
-		    The x components of the arrow vectors
-		V : 1D or 2D array or masked array, sequence
-		    The y components of the arrow vectors
-		C : 1D or 2D array, sequence, optional
-		    The arrow colors
-		units : [ 'width' | 'height' | 'dots' | 'inches' | 'x' | 'y' | 'xy' ]
+		X, Y : 1D or 2D array-like, optional
+		    The x and y coordinates of the arrow locations.
+		
+		    If not given, they will be generated as a uniform integer meshgrid based
+		    on the dimensions of *U* and *V*.
+		
+		    If *X* and *Y* are 1D but *U*, *V* are 2D, *X*, *Y* are expanded to 2D
+		    using ``X, Y = np.meshgrid(X, Y)``. In this case ``len(X)`` and ``len(Y)``
+		    must match the column and row dimensions of *U* and *V*.
+		
+		U, V : 1D or 2D array-like
+		    The x and y direction components of the arrow vectors.
+		
+		C : 1D or 2D array-like, optional
+		    Numeric data that defines the arrow colors by colormapping via *norm* and
+		    *cmap*.
+		
+		    This does not support explicit colors. If you want to set colors directly,
+		    use *color* instead.
+		
+		units : {'width', 'height', 'dots', 'inches', 'x', 'y' 'xy'}, default: 'width'
 		    The arrow dimensions (except for *length*) are measured in multiples of
 		    this unit.
 		
-		    'width' or 'height': the width or height of the axis
+		    The following values are supported:
 		
-		    'dots' or 'inches': pixels or inches, based on the figure dpi
-		
-		    'x', 'y', or 'xy': respectively *X*, *Y*, or :math:`\sqrt{X^2 + Y^2}`
-		    in data units
+		    - 'width', 'height': The width or height of the axis.
+		    - 'dots', 'inches': Pixels or inches based on the figure dpi.
+		    - 'x', 'y', 'xy': *X*, *Y* or :math:`\sqrt{X^2 + Y^2}` in data units.
 		
 		    The arrows scale differently depending on the units.  For
 		    'x' or 'y', the arrows get larger as one zooms in; for other
@@ -281,95 +311,113 @@ package matplotlib.quiver;
 		    'width or 'height', the arrow size increases with the width and
 		    height of the axes, respectively, when the window is resized;
 		    for 'dots' or 'inches', resizing does not change the arrows.
-		angles : [ 'uv' | 'xy' ], array, optional
-		    Method for determining the angle of the arrows. Default is 'uv'.
 		
-		    'uv': the arrow axis aspect ratio is 1 so that
-		    if *U*==*V* the orientation of the arrow on the plot is 45 degrees
-		    counter-clockwise from the horizontal axis (positive to the right).
+		angles : {'uv', 'xy'} or array-like, optional, default: 'uv'
+		    Method for determining the angle of the arrows.
 		
-		    'xy': arrows point from (x,y) to (x+u, y+v).
-		    Use this for plotting a gradient field, for example.
+		    - 'uv': The arrow axis aspect ratio is 1 so that
+		      if *U* == *V* the orientation of the arrow on the plot is 45 degrees
+		      counter-clockwise from the horizontal axis (positive to the right).
 		
-		    Alternatively, arbitrary angles may be specified as an array
-		    of values in degrees, counter-clockwise from the horizontal axis.
+		      Use this if the arrows symbolize a quantity that is not based on
+		      *X*, *Y* data coordinates.
+		
+		    - 'xy': Arrows point from (x,y) to (x+u, y+v).
+		      Use this for plotting a gradient field, for example.
+		
+		    - Alternatively, arbitrary angles may be specified explicitly as an array
+		      of values in degrees, counter-clockwise from the horizontal axis.
+		
+		      In this case *U*, *V* is only used to determine the length of the
+		      arrows.
 		
 		    Note: inverting a data axis will correspondingly invert the
 		    arrows only with ``angles='xy'``.
-		scale : None, float, optional
+		
+		scale : float, optional
 		    Number of data units per arrow length unit, e.g., m/s per plot width; a
 		    smaller scale parameter makes the arrow longer. Default is *None*.
 		
 		    If *None*, a simple autoscaling algorithm is used, based on the average
 		    vector length and the number of vectors. The arrow length unit is given by
-		    the *scale_units* parameter
-		scale_units : [ 'width' | 'height' | 'dots' | 'inches' | 'x' | 'y' | 'xy' ], None, optional
+		    the *scale_units* parameter.
+		
+		scale_units : {'width', 'height', 'dots', 'inches', 'x', 'y', 'xy'}, optional
 		    If the *scale* kwarg is *None*, the arrow length unit. Default is *None*.
 		
 		    e.g. *scale_units* is 'inches', *scale* is 2.0, and
 		    ``(u,v) = (1,0)``, then the vector will be 0.5 inches long.
 		
-		    If *scale_units* is 'width'/'height', then the vector will be half the
+		    If *scale_units* is 'width' or 'height', then the vector will be half the
 		    width/height of the axes.
 		
 		    If *scale_units* is 'x' then the vector will be 0.5 x-axis
 		    units. To plot vectors in the x-y plane, with u and v having
 		    the same units as x and y, use
 		    ``angles='xy', scale_units='xy', scale=1``.
-		width : scalar, optional
+		
+		width : float, optional
 		    Shaft width in arrow units; default depends on choice of units,
 		    above, and number of vectors; a typical starting value is about
 		    0.005 times the width of the plot.
-		headwidth : scalar, optional
-		    Head width as multiple of shaft width, default is 3
-		headlength : scalar, optional
-		    Head length as multiple of shaft width, default is 5
-		headaxislength : scalar, optional
-		    Head length at shaft intersection, default is 4.5
-		minshaft : scalar, optional
+		
+		headwidth : float, optional, default: 3
+		    Head width as multiple of shaft width.
+		
+		headlength : float, optional, default: 5
+		    Head length as multiple of shaft width.
+		
+		headaxislength : float, optional, default: 4.5
+		    Head length at shaft intersection.
+		
+		minshaft : float, optional, default: 1
 		    Length below which arrow scales, in units of head length. Do not
 		    set this to less than 1, or small arrows will look terrible!
-		    Default is 1
-		minlength : scalar, optional
+		
+		minlength : float, optional, default: 1
 		    Minimum length as a multiple of shaft width; if an arrow length
 		    is less than this, plot a dot (hexagon) of this diameter instead.
-		    Default is 1.
-		pivot : [ 'tail' | 'mid' | 'middle' | 'tip' ], optional
-		    The part of the arrow that is at the grid point; the arrow rotates
-		    about this point, hence the name *pivot*.
-		color : [ color | color sequence ], optional
-		    This is a synonym for the
-		    :class:`~matplotlib.collections.PolyCollection` facecolor kwarg.
-		    If *C* has been set, *color* has no effect.
 		
-		Notes
-		-----
-		Additional :class:`~matplotlib.collections.PolyCollection`
-		keyword arguments:
+		pivot : {'tail', 'mid', 'middle', 'tip'}, optional, default: 'tail'
+		    The part of the arrow that is anchored to the *X*, *Y* grid. The arrow
+		    rotates about this point.
 		
-		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		    'mid' is a synonym for 'middle'.
+		
+		color : color or color sequence, optional
+		    Explicit color(s) for the arrows. If *C* has been set, *color* has no
+		    effect.
+		
+		    This is a synonym for the `~.PolyCollection` *facecolor* parameter.
+		
+		Other Parameters
+		----------------
+		**kwargs : `~matplotlib.collections.PolyCollection` properties, optional
+		    All other keyword arguments are passed on to `.PolyCollection`:
+		
+		      agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array
 		  alpha: float or None
 		  animated: bool
-		  antialiased: bool or sequence of bools
+		  antialiased or aa or antialiaseds: bool or sequence of bools
 		  array: ndarray
 		  capstyle: {'butt', 'round', 'projecting'}
-		  clim: a length 2 sequence of floats; may be overridden in methods that have ``vmin`` and ``vmax`` kwargs. 
+		  clim: a length 2 sequence of floats; may be overridden in methods that have ``vmin`` and ``vmax`` kwargs.
 		  clip_box: `.Bbox`
 		  clip_on: bool
-		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 		  cmap: colormap or registered colormap name
-		  color: matplotlib color arg or sequence of rgba tuples
+		  color: color or sequence of rgba tuples
 		  contains: callable
-		  edgecolor: color or sequence of colors
-		  facecolor: color or sequence of colors
+		  edgecolor or ec or edgecolors: color or sequence of colors or 'face'
+		  facecolor or facecolors or fc: color or sequence of colors
 		  figure: `.Figure`
 		  gid: str
 		  hatch: {'/', '\\', '|', '-', '+', 'x', 'o', 'O', '.', '*'}
 		  in_layout: bool
 		  joinstyle: {'miter', 'round', 'bevel'}
 		  label: object
-		  linestyle: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
-		  linewidth: float or sequence of floats
+		  linestyle or dashes or linestyles or ls: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
+		  linewidth or linewidths or lw: float or sequence of floats
 		  norm: `.Normalize`
 		  offset_position: {'screen', 'data'}
 		  offsets: float or sequence of floats
@@ -377,7 +425,7 @@ package matplotlib.quiver;
 		  picker: None or bool or float or callable
 		  pickradius: unknown
 		  rasterized: bool or None
-		  sketch_params: (scale: float, length: float, randomness: float) 
+		  sketch_params: (scale: float, length: float, randomness: float)
 		  snap: bool or None
 		  transform: `.Transform`
 		  url: str
@@ -387,7 +435,7 @@ package matplotlib.quiver;
 		
 		See Also
 		--------
-		quiverkey : Add a key to a quiver plot
+		quiverkey : Add a key to a quiver plot.
 		
 		        
 	**/
@@ -459,17 +507,15 @@ package matplotlib.quiver;
 	/**
 		Internal helper function to broadcast + scale ls/lw
 		
-		In the collection drawing code the linewidth and linestyle are
-		cycled through as circular buffers (via v[i % len(v)]).  Thus,
-		if we are going to scale the dash pattern at set time (not
-		draw time) we need to do the broadcasting now and expand both
-		lists to be the same length.
+		In the collection drawing code, the linewidth and linestyle are cycled
+		through as circular buffers (via ``v[i % len(v)]``).  Thus, if we are
+		going to scale the dash pattern at set time (not draw time) we need to
+		do the broadcasting now and expand both lists to be the same length.
 		
 		Parameters
 		----------
 		linewidths : list
 		    line widths of collection
-		
 		dashes : list
 		    dash specification (offset, (dash pattern tuple))
 		
@@ -496,9 +542,6 @@ package matplotlib.quiver;
 	public function _init():Dynamic;
 	public function _make_verts(U:Dynamic, V:Dynamic, angles:Dynamic):Dynamic;
 	static public var _offsets : Dynamic;
-	/**
-		Point prep for drawing and hit testing
-	**/
 	public function _prepare_points():Dynamic;
 	static public var _prop_order : Dynamic;
 	public function _set_edgecolor(c:Dynamic):Dynamic;
@@ -515,19 +558,36 @@ package matplotlib.quiver;
 	static public var _transOffset : Dynamic;
 	static public var _transforms : Dynamic;
 	/**
-		Adds a callback function that will be called whenever one of
-		the :class:`Artist`'s properties changes.
+		Add a callback function that will be called whenever one of the
+		`.Artist`'s properties changes.
 		
-		Returns an *id* that is useful for removing the callback with
-		:meth:`remove_callback` later.
+		Parameters
+		----------
+		func : callable
+		    The callback function. It must have the signature::
+		
+		        def func(artist: Artist) -> Any
+		
+		    where *artist* is the calling `.Artist`. Return values may exist
+		    but are ignored.
+		
+		Returns
+		-------
+		oid : int
+		    The observer id associated with the callback. This id can be
+		    used for removing the callback with `.remove_callback` later.
+		
+		See Also
+		--------
+		remove_callback
 	**/
-	public function add_callback(func:Dynamic):Dynamic;
+	public function add_callback(func:Dynamic):Int;
 	/**
 		Add an entry to a dictionary of boolean flags
 		that are set to True when the mappable is changed.
 	**/
 	public function add_checker(checker:Dynamic):Dynamic;
-	static public var aname : Dynamic;
+	public var aname : Dynamic;
 	/**
 		Autoscale the scalar limits on the norm instance using the
 		current array
@@ -539,8 +599,7 @@ package matplotlib.quiver;
 	**/
 	public function autoscale_None():Dynamic;
 	/**
-		The :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*.
+		The `~.axes.Axes` instance the artist resides in, or *None*.
 	**/
 	public var axes : Dynamic;
 	/**
@@ -553,48 +612,79 @@ package matplotlib.quiver;
 		return True; else return False
 	**/
 	public function check_update(checker:Dynamic):Dynamic;
+	public var color : Dynamic;
 	/**
 		Test whether the mouse event occurred in the collection.
 		
-		Returns True | False, ``dict(ind=itemlist)``, where every
-		item in itemlist contains the event.
+		Returns ``bool, dict(ind=itemlist)``, where every item in itemlist
+		contains the event.
 	**/
 	public function contains(mouseevent:Dynamic):Dynamic;
 	/**
-		For artists in an axes, if the xaxis has units support,
-		convert *x* using xaxis unit type
+		Convert *x* using the unit type of the xaxis.
+		
+		If the artist is not in contained in an Axes or if the xaxis does not
+		have units, *x* itself is returned.
 	**/
 	public function convert_xunits(x:Dynamic):Dynamic;
 	/**
-		For artists in an axes, if the yaxis has units support,
-		convert *y* using yaxis unit type
+		Convert *y* using the unit type of the yaxis.
+		
+		If the artist is not in contained in an Axes or if the yaxis does not
+		have units, *y* itself is returned.
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
 	/**
-		Derived classes drawing method
+		Draw the Artist using the given renderer.
+		
+		This method will be overridden in the Artist subclasses. Typically,
+		it is implemented to not have any effect if the Artist is not visible
+		(`.Artist.get_visible` is *False*).
+		
+		Parameters
+		----------
+		renderer : `.RendererBase` subclass.
 	**/
 	public function draw(renderer:Dynamic):Dynamic;
 	/**
 		Find artist objects.
 		
-		Recursively find all :class:`~matplotlib.artist.Artist` instances
-		contained in self.
+		Recursively find all `.Artist` instances contained in the artist.
 		
-		*match* can be
+		Parameters
+		----------
+		match
+		    A filter criterion for the matches. This can be
 		
-		  - None: return all objects contained in artist.
+		    - *None*: Return all objects contained in artist.
+		    - A function with signature ``def match(artist: Artist) -> bool``.
+		      The result will only contain artists for which the function
+		      returns *True*.
+		    - A class instance: e.g., `.Line2D`. The result will only contain
+		      artists of this class or its subclasses (``isinstance`` check).
 		
-		  - function with signature ``boolean = match(artist)``
-		    used to filter matches
+		include_self : bool
+		    Include *self* in the list to be checked for a match.
 		
-		  - class instance: e.g., Line2D.  Only return artists of class type.
-		
-		If *include_self* is True (default), include self in the list to be
-		checked for a match.
+		Returns
+		-------
+		artists : list of `.Artist`
 	**/
 	public function findobj(?match:Dynamic, ?include_self:Dynamic):Dynamic;
 	/**
-		Return *cursor data* string formatted.
+		Return a string representation of *data*.
+		
+		.. note::
+		    This method is intended to be overridden by artist subclasses.
+		    As an end-user of Matplotlib you will most likely not call this
+		    method yourself.
+		
+		The default implementation converts ints and floats and arrays of ints
+		and floats into a comma-separated string enclosed in square brackets.
+		
+		See Also
+		--------
+		get_cursor_data
 	**/
 	public function format_cursor_data(data:Dynamic):Dynamic;
 	/**
@@ -607,7 +697,7 @@ package matplotlib.quiver;
 	**/
 	public function get_alpha():Dynamic;
 	/**
-		Return the artist's animated state
+		Return the animated state.
 	**/
 	public function get_animated():Dynamic;
 	/**
@@ -616,8 +706,7 @@ package matplotlib.quiver;
 	public function get_array():Dynamic;
 	public function get_capstyle():Dynamic;
 	/**
-		Return a list of the child :class:`Artist`s this
-		:class:`Artist` contains.
+		Return a list of the child `.Artist`\s of this `.Artist`.
 	**/
 	public function get_children():Dynamic;
 	/**
@@ -625,15 +714,15 @@ package matplotlib.quiver;
 	**/
 	public function get_clim():Dynamic;
 	/**
-		Return artist clipbox
+		Return the clipbox.
 	**/
 	public function get_clip_box():Dynamic;
 	/**
-		Return whether artist uses clipping
+		Return whether the artist uses clipping.
 	**/
 	public function get_clip_on():Dynamic;
 	/**
-		Return artist clip path
+		Return the clip path.
 	**/
 	public function get_clip_path():Dynamic;
 	/**
@@ -641,28 +730,64 @@ package matplotlib.quiver;
 	**/
 	public function get_cmap():Dynamic;
 	/**
-		Return the _contains test used by the artist, or *None* for default.
+		Return the custom contains function of the artist if set, or *None*.
+		
+		See Also
+		--------
+		set_contains
 	**/
 	public function get_contains():Dynamic;
 	/**
-		Get the cursor data for a given event.
+		Return the cursor data for a given event.
+		
+		.. note::
+		    This method is intended to be overridden by artist subclasses.
+		    As an end-user of Matplotlib you will most likely not call this
+		    method yourself.
+		
+		Cursor data can be used by Artists to provide additional context
+		information for a given event. The default implementation just returns
+		*None*.
+		
+		Subclasses can override the method and return arbitrary data. However,
+		when doing so, they must ensure that `.format_cursor_data` can convert
+		the data to a string representation.
+		
+		The only current use case is displaying the z-value of an `.AxesImage`
+		in the status bar of a plot window, while moving the mouse.
+		
+		Parameters
+		----------
+		event : `matplotlib.backend_bases.MouseEvent`
+		
+		See Also
+		--------
+		format_cursor_data
 	**/
 	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
-		alias for `get_linestyle`
+		Alias for `get_linestyle`.
 	**/
-	public function get_dashes(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_dashes():Dynamic;
 	public function get_datalim(transData:Dynamic):Dynamic;
+	/**
+		Alias for `get_edgecolor`.
+	**/
+	public function get_ec():Dynamic;
 	public function get_edgecolor():Dynamic;
 	/**
-		alias for `get_edgecolor`
+		Alias for `get_edgecolor`.
 	**/
-	public function get_edgecolors(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_edgecolors():Dynamic;
 	public function get_facecolor():Dynamic;
 	/**
-		alias for `get_facecolor`
+		Alias for `get_facecolor`.
 	**/
-	public function get_facecolors(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_facecolors():Dynamic;
+	/**
+		Alias for `get_facecolor`.
+	**/
+	public function get_fc():Dynamic;
 	/**
 		Return the `.Figure` instance the artist belongs to.
 	**/
@@ -672,7 +797,7 @@ package matplotlib.quiver;
 	**/
 	public function get_fill():Dynamic;
 	/**
-		Returns the group id.
+		Return the group id.
 	**/
 	public function get_gid():Dynamic;
 	/**
@@ -690,23 +815,27 @@ package matplotlib.quiver;
 	public function get_in_layout():Dynamic;
 	public function get_joinstyle():Dynamic;
 	/**
-		Get the label used for this artist in the legend.
+		Return the label used for this artist in the legend.
 	**/
 	public function get_label():Dynamic;
 	public function get_linestyle():Dynamic;
 	/**
-		alias for `get_linestyle`
+		Alias for `get_linestyle`.
 	**/
-	public function get_linestyles(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_linestyles():Dynamic;
 	public function get_linewidth():Dynamic;
 	/**
-		alias for `get_linewidth`
+		Alias for `get_linewidth`.
 	**/
-	public function get_linewidths(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_linewidths():Dynamic;
 	/**
-		alias for `get_linewidth`
+		Alias for `get_linestyle`.
 	**/
-	public function get_lw(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_ls():Dynamic;
+	/**
+		Alias for `get_linewidth`.
+	**/
+	public function get_lw():Dynamic;
 	/**
 		Returns how offsets are applied for the collection.  If
 		*offset_position* is 'screen', the offset is applied after the
@@ -724,7 +853,13 @@ package matplotlib.quiver;
 	public function get_path_effects():Dynamic;
 	public function get_paths():Dynamic;
 	/**
-		Return the picker object used by this artist.
+		Return the picking behavior of the artist.
+		
+		The possible values are described in `.set_picker`.
+		
+		See Also
+		--------
+		set_picker, pickable, pick
 	**/
 	public function get_picker():Dynamic;
 	public function get_pickradius():Dynamic;
@@ -747,32 +882,23 @@ package matplotlib.quiver;
 		
 		Returns
 		-------
-		sketch_params : tuple or `None`
+		sketch_params : tuple or None
 		
 		    A 3-tuple with the following elements:
 		
-		      * `scale`: The amplitude of the wiggle perpendicular to the
-		        source line.
+		    - *scale*: The amplitude of the wiggle perpendicular to the
+		      source line.
+		    - *length*: The length of the wiggle along the line.
+		    - *randomness*: The scale factor by which the length is
+		      shrunken or expanded.
 		
-		      * `length`: The length of the wiggle along the line.
-		
-		      * `randomness`: The scale factor by which the length is
-		        shrunken or expanded.
-		
-		    May return `None` if no sketch parameters were set.
+		    Returns *None* if no sketch parameters were set.
 	**/
 	public function get_sketch_params():Dynamic;
 	/**
-		Returns the snap setting which may be:
+		Returns the snap setting.
 		
-		  * True: snap vertices to the nearest pixel center
-		
-		  * False: leave vertices as-is
-		
-		  * None: (auto) If the path contains only rectilinear line
-		    segments, round to the nearest pixel center
-		
-		Only supported by the Agg and MacOSX backends.
+		See `.set_snap` for details.
 	**/
 	public function get_snap():Dynamic;
 	/**
@@ -786,13 +912,12 @@ package matplotlib.quiver;
 		
 		Returns
 		-------
-		bbox : `.BboxBase`
-		    containing the bounding box (in figure pixel co-ordinates).
+		bbox : `.BBox`
+		    The enclosing bounding box (in figure pixel co-ordinates).
 	**/
 	public function get_tightbbox(renderer:Dynamic):Dynamic;
 	/**
-		Return the :class:`~matplotlib.transforms.Transform`
-		instance used by this artist.
+		Return the `.Transform` instance used by this artist.
 	**/
 	public function get_transform():Dynamic;
 	/**
@@ -803,16 +928,19 @@ package matplotlib.quiver;
 	public function get_transformed_clip_path_and_affine():Dynamic;
 	public function get_transforms():Dynamic;
 	/**
-		Returns the url.
+		Return the url.
 	**/
 	public function get_url():Dynamic;
 	public function get_urls():Dynamic;
 	/**
-		Return the artist's visiblity
+		Return the visibility.
 	**/
 	public function get_visible():Dynamic;
 	/**
 		Get the axes bounding box in display space.
+		
+		The bounding box' width and height are nonnegative.
+		
 		Subclasses should override for inclusion in the bounding box
 		"tight" calculation. Default is to return an empty bounding
 		box at 0, 0.
@@ -831,47 +959,50 @@ package matplotlib.quiver;
 	**/
 	public function get_zorder():Dynamic;
 	/**
-		Return *True* if units are set on the *x* or *y* axes
+		Return *True* if units are set on the *x* or *y* axes.
 	**/
 	public function have_units():Dynamic;
 	/**
-		.. deprecated:: 2.2
-		    The hitlist function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		Return whether the Artist has an explicitly set transform.
 		
-		List the children of the artist which contain the mouse event *event*.
-	**/
-	public function hitlist(event:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 2.2
-		    artist.figure is not None
-		
-		Returns whether the artist is assigned to a `.Figure`.
-	**/
-	public function is_figure_set():Dynamic;
-	/**
-		Returns *True* if :class:`Artist` has a transform explicitly
-		set.
+		This is *True* after `.set_transform` has been called.
 	**/
 	public function is_transform_set():Dynamic;
+	public var keytext : Dynamic;
+	public var keyvec : Dynamic;
 	public var mouseover : Dynamic;
 	/**
-		Fire an event when property changed, calling all of the
-		registered callbacks.
+		Call all of the registered callbacks.
+		
+		This function is triggered internally when a property is changed.
+		
+		See Also
+		--------
+		add_callback
+		remove_callback
 	**/
 	public function pchanged():Dynamic;
 	/**
-		Process pick event
+		Process a pick event.
 		
-		each child artist will fire a pick event if *mouseevent* is over
-		the artist and the artist has picker set
+		Each child artist will fire a pick event if *mouseevent* is over
+		the artist and the artist has picker set.
+		
+		See Also
+		--------
+		set_picker, get_picker, pickable
 	**/
 	public function pick(mouseevent:Dynamic):Dynamic;
 	/**
-		Return *True* if :class:`Artist` is pickable.
+		Return whether the artist is pickable.
+		
+		See Also
+		--------
+		set_picker, get_picker, pick
 	**/
 	public function pickable():Dynamic;
 	/**
-		return a dictionary mapping property name -> value for all Artist props
+		Return a dictionary of all the properties of the artist.
 	**/
 	public function properties():Dynamic;
 	static public var quiver_doc : Dynamic;
@@ -880,20 +1011,22 @@ package matplotlib.quiver;
 	**/
 	public function remove():Dynamic;
 	/**
-		Remove a callback based on its *id*.
+		Remove a callback based on its observer id.
 		
-		.. seealso::
-		
-		    :meth:`add_callback`
-		       For adding callbacks
+		See Also
+		--------
+		add_callback
 	**/
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
-		A property batch setter. Pass *kwargs* to set properties.
-		        
+		A property batch setter.  Pass *kwargs* to set properties.
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function set_UVC(U:Dynamic, V:Dynamic, ?C:Dynamic):Dynamic;
+	/**
+		Alias for `set_antialiased`.
+	**/
+	public function set_aa(aa:Dynamic):Dynamic;
 	/**
 		Set the agg filter.
 		
@@ -908,8 +1041,7 @@ package matplotlib.quiver;
 	**/
 	public function set_agg_filter(filter_func:Dynamic):Dynamic;
 	/**
-		Set the alpha tranparencies of the collection.  *alpha* must be
-		a float or *None*.
+		Set the alpha transparencies of the collection.
 		
 		Parameters
 		----------
@@ -933,9 +1065,9 @@ package matplotlib.quiver;
 	**/
 	public function set_antialiased(aa:Dynamic):Dynamic;
 	/**
-		alias for `set_antialiased`
+		Alias for `set_antialiased`.
 	**/
-	public function set_antialiaseds(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_antialiaseds(aa:Dynamic):Dynamic;
 	/**
 		Set the image array from numpy array *A*.
 		
@@ -945,8 +1077,7 @@ package matplotlib.quiver;
 	**/
 	public function set_array(A:Dynamic):Dynamic;
 	/**
-		Set the capstyle for the collection. The capstyle can
-		only be set globally for all elements in the collection
+		Set the capstyle for the collection (for all its elements).
 		
 		Parameters
 		----------
@@ -972,7 +1103,7 @@ package matplotlib.quiver;
 	**/
 	public function set_clip_box(clipbox:Dynamic):Dynamic;
 	/**
-		Set whether artist uses clipping.
+		Set whether the artist uses clipping.
 		
 		When False artists will be visible out side of the axes which
 		can lead to unexpected results.
@@ -1010,55 +1141,61 @@ package matplotlib.quiver;
 	/**
 		Set both the edgecolor and the facecolor.
 		
-		.. seealso::
-		
-		    :meth:`set_facecolor`, :meth:`set_edgecolor`
-		       For setting the edge or face color individually.
-		
 		Parameters
 		----------
-		c : matplotlib color arg or sequence of rgba tuples
+		c : color or sequence of rgba tuples
+		
+		See Also
+		--------
+		Collection.set_facecolor, Collection.set_edgecolor
+		    For setting the edge or face color individually.
 	**/
 	public function set_color(c:Dynamic):Dynamic;
 	/**
-		Replace the contains test used by this artist. The new picker
-		should be a callable function which determines whether the
-		artist is hit by the mouse event::
+		Define a custom contains test for the artist.
 		
-		    hit, props = picker(artist, mouseevent)
-		
-		If the mouse event is over the artist, return *hit* = *True*
-		and *props* is a dictionary of properties you want returned
-		with the contains test.
+		The provided callable replaces the default `.contains` method
+		of the artist.
 		
 		Parameters
 		----------
 		picker : callable
+		    A custom picker function to evaluate if an event is within the
+		    artist. The function must have the signature::
+		
+		        def contains(artist: Artist, event: MouseEvent) -> bool, dict
+		
+		    that returns:
+		
+		    - a bool indicating if the event is within the artist
+		    - a dict of additional information. The dict should at least
+		      return the same information as the default ``contains()``
+		      implementation of the respective artist, but may provide
+		      additional information.
 	**/
 	public function set_contains(picker:Dynamic):Dynamic;
 	/**
-		alias for `set_linestyle`
+		Alias for `set_linestyle`.
 	**/
-	public function set_dashes(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_dashes(ls:Dynamic):Dynamic;
 	/**
-		Set the edgecolor(s) of the collection. *c* can be a
-		matplotlib color spec (all patches have same color), or a
-		sequence of specs; if it is a sequence the patches will
-		cycle through the sequence.
-		
-		If *c* is 'face', the edge color will always be the same as
-		the face color.  If it is 'none', the patch boundary will not
-		be drawn.
+		Alias for `set_edgecolor`.
+	**/
+	public function set_ec(c:Dynamic):Dynamic;
+	/**
+		Set the edgecolor(s) of the collection.
 		
 		Parameters
 		----------
-		c : color or sequence of colors
+		c : color or sequence of colors or 'face'
+		    The collection edgecolor(s).  If a sequence, the patches cycle
+		    through it.  If 'face', match the facecolor.
 	**/
 	public function set_edgecolor(c:Dynamic):Dynamic;
 	/**
-		alias for `set_edgecolor`
+		Alias for `set_edgecolor`.
 	**/
-	public function set_edgecolors(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_edgecolors(c:Dynamic):Dynamic;
 	/**
 		Set the facecolor(s) of the collection.  *c* can be a
 		matplotlib color spec (all patches have same color), or a
@@ -1073,9 +1210,13 @@ package matplotlib.quiver;
 	**/
 	public function set_facecolor(c:Dynamic):Dynamic;
 	/**
-		alias for `set_facecolor`
+		Alias for `set_facecolor`.
 	**/
-	public function set_facecolors(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_facecolors(c:Dynamic):Dynamic;
+	/**
+		Alias for `set_facecolor`.
+	**/
+	public function set_fc(c:Dynamic):Dynamic;
 	/**
 		Set the `.Figure` instance the artist belongs to.
 		
@@ -1085,7 +1226,7 @@ package matplotlib.quiver;
 	**/
 	public function set_figure(fig:Dynamic):Dynamic;
 	/**
-		Sets the (group) id for the artist.
+		Set the (group) id for the artist.
 		
 		Parameters
 		----------
@@ -1136,8 +1277,7 @@ package matplotlib.quiver;
 	**/
 	public function set_in_layout(in_layout:Dynamic):Dynamic;
 	/**
-		Set the joinstyle for the collection. The joinstyle can only be
-		set globally for all elements in the collection.
+		Set the joinstyle for the collection (for all its elements).
 		
 		Parameters
 		----------
@@ -1146,7 +1286,7 @@ package matplotlib.quiver;
 	**/
 	public function set_joinstyle(js:Dynamic):Dynamic;
 	/**
-		Set the label to *s* for auto legend.
+		Set a label that will be displayed in the legend.
 		
 		Parameters
 		----------
@@ -1179,9 +1319,9 @@ package matplotlib.quiver;
 	**/
 	public function set_linestyle(ls:Dynamic):Dynamic;
 	/**
-		alias for `set_linestyle`
+		Alias for `set_linestyle`.
 	**/
-	public function set_linestyles(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_linestyles(ls:Dynamic):Dynamic;
 	/**
 		Set the linewidth(s) for the collection.  *lw* can be a scalar
 		or a sequence; if it is a sequence the patches will cycle
@@ -1193,19 +1333,29 @@ package matplotlib.quiver;
 	**/
 	public function set_linewidth(lw:Dynamic):Dynamic;
 	/**
-		alias for `set_linewidth`
+		Alias for `set_linewidth`.
 	**/
-	public function set_linewidths(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_linewidths(lw:Dynamic):Dynamic;
 	/**
-		alias for `set_linewidth`
+		Alias for `set_linestyle`.
 	**/
-	public function set_lw(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_ls(ls:Dynamic):Dynamic;
+	/**
+		Alias for `set_linewidth`.
+	**/
+	public function set_lw(lw:Dynamic):Dynamic;
 	/**
 		Set the normalization instance.
 		
 		Parameters
 		----------
 		norm : `.Normalize`
+		
+		Notes
+		-----
+		If there are any colorbars using the mappable for this norm, setting
+		the norm of the mappable will reset the norm, locator, and formatters
+		on the colorbar to default.
 	**/
 	public function set_norm(norm:Dynamic):Dynamic;
 	/**
@@ -1221,8 +1371,7 @@ package matplotlib.quiver;
 	**/
 	public function set_offset_position(offset_position:Dynamic):Dynamic;
 	/**
-		Set the offsets for the collection.  *offsets* can be a scalar
-		or a sequence.
+		Set the offsets for the collection.
 		
 		Parameters
 		----------
@@ -1242,37 +1391,36 @@ package matplotlib.quiver;
 	**/
 	public function set_paths(verts:Dynamic, ?closed:Dynamic):Dynamic;
 	/**
-		Set the epsilon for picking used by this artist
-		
-		*picker* can be one of the following:
-		
-		  * *None*: picking is disabled for this artist (default)
-		
-		  * A boolean: if *True* then picking will be enabled and the
-		    artist will fire a pick event if the mouse event is over
-		    the artist
-		
-		  * A float: if picker is a number it is interpreted as an
-		    epsilon tolerance in points and the artist will fire
-		    off an event if it's data is within epsilon of the mouse
-		    event.  For some artists like lines and patch collections,
-		    the artist may provide additional data to the pick event
-		    that is generated, e.g., the indices of the data within
-		    epsilon of the pick event
-		
-		  * A function: if picker is callable, it is a user supplied
-		    function which determines whether the artist is hit by the
-		    mouse event::
-		
-		      hit, props = picker(artist, mouseevent)
-		
-		    to determine the hit test.  if the mouse event is over the
-		    artist, return *hit=True* and props is a dictionary of
-		    properties you want added to the PickEvent attributes.
+		Define the picking behavior of the artist.
 		
 		Parameters
 		----------
 		picker : None or bool or float or callable
+		    This can be one of the following:
+		
+		    - *None*: Picking is disabled for this artist (default).
+		
+		    - A boolean: If *True* then picking will be enabled and the
+		      artist will fire a pick event if the mouse event is over
+		      the artist.
+		
+		    - A float: If picker is a number it is interpreted as an
+		      epsilon tolerance in points and the artist will fire
+		      off an event if it's data is within epsilon of the mouse
+		      event.  For some artists like lines and patch collections,
+		      the artist may provide additional data to the pick event
+		      that is generated, e.g., the indices of the data within
+		      epsilon of the pick event
+		
+		    - A function: If picker is callable, it is a user supplied
+		      function which determines whether the artist is hit by the
+		      mouse event::
+		
+		        hit, props = picker(artist, mouseevent)
+		
+		      to determine the hit test.  if the mouse event is over the
+		      artist, return *hit=True* and props is a dictionary of
+		      properties you want added to the PickEvent attributes.
 	**/
 	public function set_picker(picker:Dynamic):Dynamic;
 	/**
@@ -1302,7 +1450,6 @@ package matplotlib.quiver;
 		sizes : ndarray or None
 		    The size to set for each element of the collection.  The
 		    value is the 'area' of the element.
-		
 		dpi : float
 		    The dpi of the canvas. Defaults to 72.0.
 	**/
@@ -1330,20 +1477,28 @@ package matplotlib.quiver;
 	**/
 	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
 	/**
-		Sets the snap setting which may be:
+		Set the snapping behavior.
 		
-		  * True: snap vertices to the nearest pixel center
+		Snapping aligns positions with the pixel grid, which results in
+		clearer images. For example, if a black line of 1px width was
+		defined at a position in between two pixels, the resulting image
+		would contain the interpolated value of that line in the pixel grid,
+		which would be a grey value on both adjacent pixel positions. In
+		contrast, snapping will move the line to the nearest integer pixel
+		value, so that the resulting image will really contain a 1px wide
+		black line.
 		
-		  * False: leave vertices as-is
-		
-		  * None: (auto) If the path contains only rectilinear line
-		    segments, round to the nearest pixel center
-		
-		Only supported by the Agg and MacOSX backends.
+		Snapping is currently only supported by the Agg and MacOSX backends.
 		
 		Parameters
 		----------
 		snap : bool or None
+		    Possible values:
+		
+		    - *True*: Snap vertices to the nearest pixel center.
+		    - *False*: Do not modify vertex positions.
+		    - *None*: (auto) If the path contains only rectilinear line
+		      segments, round to the nearest pixel center.
 	**/
 	public function set_snap(snap:Dynamic):Dynamic;
 	/**
@@ -1355,7 +1510,7 @@ package matplotlib.quiver;
 	**/
 	public function set_transform(t:Dynamic):Dynamic;
 	/**
-		Sets the url for the artist.
+		Set the url for the artist.
 		
 		Parameters
 		----------
@@ -1394,21 +1549,21 @@ package matplotlib.quiver;
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
 	/**
-		If the artist is 'stale' and needs to be re-drawn for the output to
-		match the internal state of the artist.
+		Whether the artist is 'stale' and needs to be re-drawn for the output
+		to match the internal state of the artist.
 	**/
 	public var stale : Dynamic;
 	/**
-		`x` and `y` sticky edge lists.
+		``x`` and ``y`` sticky edge lists for autoscaling.
 		
 		When performing autoscaling, if a data limit coincides with a value in
 		the corresponding sticky_edges list, then no margin will be added--the
-		view limit "sticks" to the edge. A typical usecase is histograms,
+		view limit "sticks" to the edge. A typical use case is histograms,
 		where one usually expects no margin on the bottom edge (0) of the
 		histogram.
 		
-		This attribute cannot be assigned to; however, the `x` and `y` lists
-		can be modified in place as needed.
+		This attribute cannot be assigned to; however, the ``x`` and ``y``
+		lists can be modified in place as needed.
 		
 		Examples
 		--------
@@ -1447,7 +1602,7 @@ package matplotlib.quiver;
 	**/
 	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
-		Update this artist's properties from the dictionary *prop*.
+		Update this artist's properties from the dictionary *props*.
 	**/
 	public function update(props:Dynamic):Dynamic;
 	/**
@@ -1455,8 +1610,7 @@ package matplotlib.quiver;
 	**/
 	public function update_from(other:Dynamic):Dynamic;
 	/**
-		If the scalar mappable array is not none, update colors
-		from scalar data
+		Update colors from the scalar mappable array, if it is not None.
 	**/
 	public function update_scalarmappable():Dynamic;
 	static public var zorder : Dynamic;

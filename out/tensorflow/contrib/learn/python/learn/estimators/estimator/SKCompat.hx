@@ -40,7 +40,7 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to the Estimator interface.
 	**/
@@ -49,7 +49,7 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to the Estimator interface.
 	**/

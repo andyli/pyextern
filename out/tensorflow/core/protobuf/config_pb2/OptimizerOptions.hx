@@ -23,9 +23,6 @@ package tensorflow.core.protobuf.config_pb2;
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DEFAULT : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DO_COMMON_SUBEXPRESSION_ELIMINATION_FIELD_NUMBER : Dynamic;
-	static public var DO_CONSTANT_FOLDING_FIELD_NUMBER : Dynamic;
-	static public var DO_FUNCTION_INLINING_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -42,7 +39,6 @@ package tensorflow.core.protobuf.config_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GLOBAL_JIT_LEVEL_FIELD_NUMBER : Dynamic;
 	static public var GlobalJitLevel : Dynamic;
 	/**
 		Checks if a message field is set.
@@ -63,7 +59,6 @@ package tensorflow.core.protobuf.config_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAX_FOLDED_CONSTANT_IN_BYTES_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -75,7 +70,6 @@ package tensorflow.core.protobuf.config_pb2;
 	static public var OFF : Dynamic;
 	static public var ON_1 : Dynamic;
 	static public var ON_2 : Dynamic;
-	static public var OPT_LEVEL_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -96,6 +90,10 @@ package tensorflow.core.protobuf.config_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -263,4 +261,28 @@ package tensorflow.core.protobuf.config_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.OptimizerOptions.do_common_subexpression_elimination
+	**/
+	public var do_common_subexpression_elimination : Dynamic;
+	/**
+		Field tensorflow.OptimizerOptions.do_constant_folding
+	**/
+	public var do_constant_folding : Dynamic;
+	/**
+		Field tensorflow.OptimizerOptions.do_function_inlining
+	**/
+	public var do_function_inlining : Dynamic;
+	/**
+		Field tensorflow.OptimizerOptions.global_jit_level
+	**/
+	public var global_jit_level : Dynamic;
+	/**
+		Field tensorflow.OptimizerOptions.max_folded_constant_in_bytes
+	**/
+	public var max_folded_constant_in_bytes : Dynamic;
+	/**
+		Field tensorflow.OptimizerOptions.opt_level
+	**/
+	public var opt_level : Dynamic;
 }

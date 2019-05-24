@@ -50,7 +50,6 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LOWER_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -83,7 +82,10 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var UPPER_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -249,4 +251,12 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tpu.ClippingLimits.lower
+	**/
+	public var lower : Dynamic;
+	/**
+		Field tensorflow.tpu.ClippingLimits.upper
+	**/
+	public var upper : Dynamic;
 }

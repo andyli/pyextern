@@ -3,12 +3,15 @@ package pandas._libs.tslibs.offsets;
 @:pythonImport("pandas._libs.tslibs.offsets") extern class Offsets_Module {
 	static public var DAYS : Dynamic;
 	static public var MONTHS : Dynamic;
+	static public var PY2 : Dynamic;
+	static public var UTC : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __prefix : Dynamic;
+	static public var __pyx_capi__ : Dynamic;
 	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
@@ -33,9 +36,13 @@ package pandas._libs.tslibs.offsets;
 		Parameters
 		----------
 		other : datetime or Timestamp
-		day_opt : 'start', 'end'
+		day_opt : 'start', 'end', 'business_start', 'business_end', or int
 		    'start': returns 1
 		    'end': returns last day of the month
+		    'business_start': returns the first business day of the month
+		    'business_end': returns the last business day of the month
+		    int: returns the day in the month indicated by `other`, or the last of
+		        day the month if the value exceeds in that month's number of days.
 		
 		Returns
 		-------
@@ -104,7 +111,7 @@ package pandas._libs.tslibs.offsets;
 		other : datetime or Timestamp
 		n : number of periods to increment, before adjusting for rolling
 		month : int reference month giving the first month of the year
-		day_opt : 'start', 'end', 'business_start', 'business_end'
+		day_opt : 'start', 'end', 'business_start', 'business_end', or int
 		    The convention to use in finding the day in a given month against
 		    which to compare for rollforward/rollbackward decisions.
 		modby : int 3 for quarters, 12 for years
@@ -112,6 +119,10 @@ package pandas._libs.tslibs.offsets;
 		Returns
 		-------
 		n : int number of periods to increment
+		
+		See Also
+		--------
+		get_day_of_month : Find the day in a month provided an offset.
 	**/
 	static public function roll_qtrday(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -123,9 +134,16 @@ package pandas._libs.tslibs.offsets;
 		other : datetime or Timestamp
 		n : number of periods to increment, before adjusting for rolling
 		month : reference month giving the first month of the year
-		day_opt : 'start', 'end'
-		    'start': returns 1
-		    'end': returns last day of the month
+		day_opt : 'start', 'end', 'business_start', 'business_end', or int
+		    The day of the month to compare against that of `other` when
+		    incrementing or decrementing the number of periods:
+		
+		    'start': 1
+		    'end': last day of the month
+		    'business_start': first business day of the month
+		    'business_end': last business day of the month
+		    int: day in the month indicated by `other`, or the last of day
+		        the month if the value exceeds in that month's number of days.
 		
 		Returns
 		-------
@@ -167,6 +185,22 @@ package pandas._libs.tslibs.offsets;
 	**/
 	static public function roll_yearday(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Increment the datetime `other` by the given number of days, retaining
+		the time-portion of the datetime.  For tz-naive datetimes this is
+		equivalent to adding a timedelta.  For tz-aware datetimes it is similar to
+		dateutil's relativedelta.__add__, but handles pytz tzinfo objects.
+		
+		Parameters
+		----------
+		other : datetime or Timestamp
+		days : int
+		
+		Returns
+		-------
+		shifted: datetime or Timestamp
+	**/
+	static public function shift_day(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Given a datetime (or Timestamp) `stamp`, an integer `months` and an
 		option `day_opt`, return a new datetimelike that many months later,
 		with day determined by `day_opt` using relativedelta semantics.
@@ -177,11 +211,15 @@ package pandas._libs.tslibs.offsets;
 		----------
 		stamp : datetime or Timestamp
 		months : int
-		day_opt : None, 'start', 'end', or an integer
+		day_opt : None, 'start', 'end', 'business_start', 'business_end', or int
 		    None: returned datetimelike has the same day as the input, or the
 		          last day of the month if the new month is too short
 		    'start': returned datetimelike has day=1
 		    'end': returned datetimelike has day on the last day of the month
+		    'business_start': returned datetimelike has day on the first
+		        business day of the month
+		    'business_end': returned datetimelike has day on the last
+		        business day of the month
 		    int: returned datetimelike has day equal to day_opt
 		
 		Returns

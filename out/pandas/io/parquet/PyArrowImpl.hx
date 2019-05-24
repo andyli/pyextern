@@ -108,9 +108,8 @@ package pandas.io.parquet;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _validate_write_lt_070(df:Dynamic):Dynamic;
 	static public var api : Dynamic;
 	public function read(path:Dynamic, ?columns:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function validate_dataframe(df:Dynamic):Dynamic;
-	public function write(df:Dynamic, path:Dynamic, ?compression:Dynamic, ?coerce_timestamps:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function write(df:Dynamic, path:Dynamic, ?compression:Dynamic, ?coerce_timestamps:Dynamic, ?index:Dynamic, ?partition_cols:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

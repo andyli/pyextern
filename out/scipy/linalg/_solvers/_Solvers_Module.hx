@@ -430,7 +430,7 @@ package scipy.linalg._solvers;
 		
 		Notes
 		-----
-		This is a LU factorization routine written for Scipy.
+		This is a LU factorization routine written for SciPy.
 		
 		Examples
 		--------
@@ -491,8 +491,6 @@ package scipy.linalg._solvers;
 		    ``T`` above, the scaling and the permutation vectors are given
 		    separately as a tuple without allocating the full array ``T``.
 		
-		.. versionadded:: 0.19.0
-		
 		Notes
 		-----
 		
@@ -508,6 +506,8 @@ package scipy.linalg._solvers;
 		
 		The code is a wrapper around LAPACK's xGEBAL routine family for matrix
 		balancing.
+		
+		.. versionadded:: 0.19.0
 		
 		Examples
 		--------
@@ -534,7 +534,7 @@ package scipy.linalg._solvers;
 		
 		.. [2] : R. James, J. Langou, B.R. Lowery, "On matrix balancing and
 		   eigenvector computation", 2014, Available online:
-		   http://arxiv.org/abs/1401.5766
+		   https://arxiv.org/abs/1401.5766
 		
 		.. [3] :  D.S. Watkins. A case where balancing is harmful.
 		   Electron. Trans. Numer. Anal, Vol.23, 2006.
@@ -787,7 +787,7 @@ package scipy.linalg._solvers;
 		    Determines what information is to be returned: either both Q and R
 		    ('full', default), only R ('r') or both Q and R but computed in
 		    economy-size ('economic', see Notes). The final option 'raw'
-		    (added in Scipy 0.11) makes the function return two matrices
+		    (added in SciPy 0.11) makes the function return two matrices
 		    (Q, TAU) in the internal format used by LAPACK.
 		pivoting : bool, optional
 		    Whether or not factorization should include pivoting for rank-revealing

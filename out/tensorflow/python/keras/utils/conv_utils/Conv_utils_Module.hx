@@ -154,15 +154,18 @@ package tensorflow.python.keras.utils.conv_utils;
 		Determines output length of a transposed convolution given input length.
 		
 		Arguments:
-		    input_length: integer.
-		    filter_size: integer.
-		    padding: one of "same", "valid", "full".
-		    stride: integer.
+		    input_length: Integer.
+		    filter_size: Integer.
+		    padding: one of `"same"`, `"valid"`, `"full"`.
+		    output_padding: Integer, amount of padding along the output dimension.
+		        Can be set to `None` in which case the output length is inferred.
+		    stride: Integer.
+		    dilation: Integer.
 		
 		Returns:
 		    The output length (integer).
 	**/
-	static public function deconv_output_length(input_length:Dynamic, filter_size:Dynamic, padding:Dynamic, stride:Dynamic):Dynamic;
+	static public function deconv_output_length(input_length:Dynamic, filter_size:Dynamic, padding:Dynamic, ?output_padding:Dynamic, ?stride:Dynamic, ?dilation:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public function normalize_data_format(value:Dynamic):Dynamic;
 	static public function normalize_padding(value:Dynamic):Dynamic;

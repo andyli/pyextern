@@ -16,7 +16,7 @@ package scipy.interpolate.fitpack2;
 		    If `grid` is True: evaluate spline at the grid points
 		    defined by the coordinate arrays x, y. The arrays must be
 		    sorted to increasing order.
-		    
+		
 		    Note that the axis ordering is inverted relative to
 		    the output of meshgrid.
 		dx : int

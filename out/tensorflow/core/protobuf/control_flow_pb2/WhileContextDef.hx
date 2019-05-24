@@ -1,12 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.protobuf.control_flow_pb2;
 @:pythonImport("tensorflow.core.protobuf.control_flow_pb2", "WhileContextDef") extern class WhileContextDef {
-	static public var BACK_PROP_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CONTEXT_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -52,13 +50,10 @@ package tensorflow.core.protobuf.control_flow_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LOOP_ENTER_NAMES_FIELD_NUMBER : Dynamic;
-	static public var LOOP_EXIT_NAMES_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAXIMUM_ITERATIONS_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -67,11 +62,6 @@ package tensorflow.core.protobuf.control_flow_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NESTED_CONTEXTS_FIELD_NUMBER : Dynamic;
-	static public var PARALLEL_ITERATIONS_FIELD_NUMBER : Dynamic;
-	static public var PIVOT_FOR_BODY_NAME_FIELD_NUMBER : Dynamic;
-	static public var PIVOT_FOR_PRED_NAME_FIELD_NUMBER : Dynamic;
-	static public var PIVOT_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -80,7 +70,6 @@ package tensorflow.core.protobuf.control_flow_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SWAP_MEMORY_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -93,7 +82,10 @@ package tensorflow.core.protobuf.control_flow_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var VALUES_DEF_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -259,4 +251,52 @@ package tensorflow.core.protobuf.control_flow_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.WhileContextDef.back_prop
+	**/
+	public var back_prop : Dynamic;
+	/**
+		Field tensorflow.WhileContextDef.context_name
+	**/
+	public var context_name : Dynamic;
+	/**
+		Field tensorflow.WhileContextDef.loop_enter_names
+	**/
+	public var loop_enter_names : Dynamic;
+	/**
+		Field tensorflow.WhileContextDef.loop_exit_names
+	**/
+	public var loop_exit_names : Dynamic;
+	/**
+		Field tensorflow.WhileContextDef.maximum_iterations_name
+	**/
+	public var maximum_iterations_name : Dynamic;
+	/**
+		Field tensorflow.WhileContextDef.nested_contexts
+	**/
+	public var nested_contexts : Dynamic;
+	/**
+		Field tensorflow.WhileContextDef.parallel_iterations
+	**/
+	public var parallel_iterations : Dynamic;
+	/**
+		Field tensorflow.WhileContextDef.pivot_for_body_name
+	**/
+	public var pivot_for_body_name : Dynamic;
+	/**
+		Field tensorflow.WhileContextDef.pivot_for_pred_name
+	**/
+	public var pivot_for_pred_name : Dynamic;
+	/**
+		Field tensorflow.WhileContextDef.pivot_name
+	**/
+	public var pivot_name : Dynamic;
+	/**
+		Field tensorflow.WhileContextDef.swap_memory
+	**/
+	public var swap_memory : Dynamic;
+	/**
+		Field tensorflow.WhileContextDef.values_def
+	**/
+	public var values_def : Dynamic;
 }

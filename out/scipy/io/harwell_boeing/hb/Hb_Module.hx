@@ -72,5 +72,4 @@ package scipy.io.harwell_boeing.hb;
 	**/
 	static public function hb_write(path_or_open_file:Dynamic, m:Dynamic, ?hb_info:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	static public var string_types : Dynamic;
 }

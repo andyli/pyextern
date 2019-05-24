@@ -313,6 +313,7 @@ package scipy.optimize.slsqp;
 		hstack : Stack arrays in sequence horizontally (column wise)
 		vstack : Stack arrays in sequence vertically (row wise)
 		dstack : Stack arrays in sequence depth wise (along third dimension)
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -342,19 +343,19 @@ package scipy.optimize.slsqp;
 		>>> a[1] = np.ma.masked
 		>>> b = np.arange(2, 5)
 		>>> a
-		masked_array(data = [0 -- 2],
-		             mask = [False  True False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2],
+		             mask=[False,  True, False],
+		       fill_value=999999)
 		>>> b
 		array([2, 3, 4])
 		>>> np.concatenate([a, b])
-		masked_array(data = [0 1 2 2 3 4],
-		             mask = False,
-		       fill_value = 999999)
+		masked_array(data=[0, 1, 2, 2, 3, 4],
+		             mask=False,
+		       fill_value=999999)
 		>>> np.ma.concatenate([a, b])
-		masked_array(data = [0 -- 2 2 3 4],
-		             mask = [False  True False False False False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2, 2, 3, 4],
+		             mask=[False,  True, False, False, False, False],
+		       fill_value=999999)
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
@@ -406,7 +407,7 @@ package scipy.optimize.slsqp;
 		References
 		----------
 		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
+		       https://en.wikipedia.org/wiki/Exponential_function
 		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
 		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
 		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
@@ -612,7 +613,7 @@ package scipy.optimize.slsqp;
 	static public function isfinite(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		slsqp(m,meq,x,xl,xu,f,c,g,a,acc,iter,mode,w,jw,[la,n,l_w,l_jw])
+		slsqp(m,meq,x,xl,xu,f,c,g,a,acc,iter,mode,w,jw,alpha,f0,gs,h1,h2,h3,h4,t,t0,tol,iexact,incons,ireset,itermx,line,n1,n2,n3,[la,n,l_w,l_jw])
 		
 		Wrapper for ``slsqp``.
 		
@@ -632,6 +633,24 @@ package scipy.optimize.slsqp;
 		mode : in/output rank-0 array(int,'i')
 		w : input rank-1 array('d') with bounds (l_w)
 		jw : input rank-1 array('i') with bounds (l_jw)
+		alpha : in/output rank-0 array(float,'d')
+		f0 : in/output rank-0 array(float,'d')
+		gs : in/output rank-0 array(float,'d')
+		h1 : in/output rank-0 array(float,'d')
+		h2 : in/output rank-0 array(float,'d')
+		h3 : in/output rank-0 array(float,'d')
+		h4 : in/output rank-0 array(float,'d')
+		t : in/output rank-0 array(float,'d')
+		t0 : in/output rank-0 array(float,'d')
+		tol : in/output rank-0 array(float,'d')
+		iexact : in/output rank-0 array(int,'i')
+		incons : in/output rank-0 array(int,'i')
+		ireset : in/output rank-0 array(int,'i')
+		itermx : in/output rank-0 array(int,'i')
+		line : in/output rank-0 array(int,'i')
+		n1 : in/output rank-0 array(int,'i')
+		n2 : in/output rank-0 array(int,'i')
+		n3 : in/output rank-0 array(int,'i')
 		
 		Other Parameters
 		----------------

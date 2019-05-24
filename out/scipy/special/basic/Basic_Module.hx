@@ -56,6 +56,19 @@ package scipy.special.basic;
 		    Values of Ai(x) evaluated at first `nt` zeros of Ai'(x)
 		aip : ndarray
 		    Values of Ai'(x) evaluated at first `nt` zeros of Ai(x)
+		    
+		Examples
+		--------
+		>>> from scipy import special
+		>>> a, ap, ai, aip = special.ai_zeros(3)
+		>>> a
+		array([-2.33810741, -4.08794944, -5.52055983])
+		>>> ap
+		array([-1.01879297, -3.24819758, -4.82009921])
+		>>> ai
+		array([ 0.53565666, -0.41901548,  0.38040647])
+		>>> aip
+		array([ 0.70121082, -0.80311137,  0.86520403])
 		
 		References
 		----------
@@ -223,6 +236,19 @@ package scipy.special.basic;
 		bip : ndarray
 		    Values of Bi'(x) evaluated at first `nt` zeros of Bi(x)
 		
+		Examples
+		--------
+		>>> from scipy import special
+		>>> b, bp, bi, bip = special.bi_zeros(3)
+		>>> b
+		array([-1.17371322, -3.2710933 , -4.83073784])
+		>>> bp
+		array([-2.29443968, -4.07315509, -5.51239573])
+		>>> bi
+		array([-0.45494438,  0.39652284, -0.36796916])
+		>>> bip
+		array([ 0.60195789, -0.76031014,  0.83699101])
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
@@ -294,7 +320,7 @@ package scipy.special.basic;
 		       Functions", John Wiley and Sons, 1996.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions
-		       http://dlmf.nist.gov/14.21
+		       https://dlmf.nist.gov/14.21
 	**/
 	static public function clpmn(m:Dynamic, n:Dynamic, z:Dynamic, ?type:Dynamic):Dynamic;
 	/**
@@ -382,7 +408,7 @@ package scipy.special.basic;
 		References
 		----------
 		.. [1] NIST Digital Library of Mathematical Functions
-		       http://dlmf.nist.gov/5
+		       https://dlmf.nist.gov/5
 		.. [2] Fredrik Johansson and others.
 		       "mpmath: a Python library for arbitrary-precision floating-point arithmetic"
 		       (Version 0.19) http://mpmath.org/
@@ -546,11 +572,36 @@ package scipy.special.basic;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function ellipkm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt complex zeros of error function erf(z).
+		Compute the first nt zero in the first quadrant, ordered by absolute value.
+		
+		Zeros in the other quadrants can be obtained by using the symmetries erf(-z) = erf(z) and
+		erf(conj(z)) = conj(erf(z)).
+		
+		
+		Parameters
+		----------
+		nt : int
+		    The number of zeros to compute
+		
+		Returns
+		-------
+		The locations of the zeros of erf : ndarray (complex)
+		    Complex values at which zeros of erf(z)
+		
+		Examples
+		--------
+		>>> from scipy import special
+		>>> special.erf_zeros(1)
+		array([1.45061616+1.880943j])
+		
+		Check that erf is (close to) zero for the value returned by erf_zeros
+		
+		>>> special.erf(special.erf_zeros(1))
+		array([4.95159469e-14-1.16407394e-16j])
 		
 		References
 		----------
@@ -560,13 +611,78 @@ package scipy.special.basic;
 	**/
 	static public function erf_zeros(nt:Dynamic):Dynamic;
 	/**
-		Inverse function for erfc.
-		    
+		Inverse of the complementary error function erfc.
+		
+		Computes the inverse of the complementary error function erfc.
+		
+		In complex domain, there is no unique complex number w satisfying erfc(w)=z.
+		This indicates a true inverse function would have multi-value. When the domain restricts to the real, 0 < x < 2,
+		there is a unique real number satisfying erfc(erfcinv(x)) = erfcinv(erfc(x)).
+		
+		It is related to inverse of the error function by erfcinv(1-x) = erfinv(x)
+		
+		Parameters
+		----------
+		y : ndarray
+		    Argument at which to evaluate. Domain: [0, 2]
+		
+		Returns
+		-------
+		erfcinv : ndarray
+		    The inverse of erfc of y, element-wise
+		
+		Examples
+		--------
+		1) evaluating a float number
+		
+		>>> from scipy import special
+		>>> special.erfcinv(0.5)
+		0.4769362762044698
+		
+		2) evaluating a ndarray
+		
+		>>> from scipy import special
+		>>> y = np.linspace(0.0, 2.0, num=11)
+		>>> special.erfcinv(y)
+		array([        inf,  0.9061938 ,  0.59511608,  0.37080716,  0.17914345,
+		        -0.        , -0.17914345, -0.37080716, -0.59511608, -0.9061938 ,
+		              -inf])
 	**/
 	static public function erfcinv(y:Dynamic):Dynamic;
 	/**
-		Inverse function for erf.
-		    
+		Inverse of the error function erf.
+		
+		Computes the inverse of the error function.
+		
+		In complex domain, there is no unique complex number w satisfying erf(w)=z.
+		This indicates a true inverse function would have multi-value. When the domain restricts to the real, -1 < x < 1,
+		there is a unique real number satisfying erf(erfinv(x)) = x.
+		
+		Parameters
+		----------
+		y : ndarray
+		    Argument at which to evaluate. Domain: [-1, 1]
+		
+		Returns
+		-------
+		erfinv : ndarray
+		    The inverse of erf of y, element-wise
+		
+		Examples
+		--------
+		1) evaluating a float number
+		
+		>>> from scipy import special
+		>>> special.erfinv(0.5)
+		0.4769362762044698
+		
+		2) evaluating a ndarray
+		
+		>>> from scipy import special
+		>>> y = np.linspace(-1.0, 1.0, num=10)
+		>>> special.erfinv(y)
+		array([       -inf, -0.86312307, -0.5407314 , -0.30457019, -0.0987901 ,
+		        0.0987901 ,  0.30457019,  0.5407314 ,  0.86312307,         inf])
 	**/
 	static public function erfinv(y:Dynamic):Dynamic;
 	/**
@@ -937,7 +1053,7 @@ package scipy.special.basic;
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.6.E7
+		       https://dlmf.nist.gov/10.6.E7
 	**/
 	static public function h1vp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -962,7 +1078,7 @@ package scipy.special.basic;
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.6.E7
+		       https://dlmf.nist.gov/10.6.E7
 	**/
 	static public function h2vp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -1150,10 +1266,46 @@ package scipy.special.basic;
 		val : bool
 		    True if `num` is a scalar type, False if it is not.
 		
+		See Also
+		--------
+		ndim : Get the number of dimensions of an array
+		
+		Notes
+		-----
+		In almost all cases ``np.ndim(x) == 0`` should be used instead of this
+		function, as that will also return true for 0d arrays. This is how
+		numpy overloads functions in the style of the ``dx`` arguments to `gradient`
+		and the ``bins`` argument to `histogram`. Some key differences:
+		
+		+--------------------------------------+---------------+-------------------+
+		| x                                    |``isscalar(x)``|``np.ndim(x) == 0``|
+		+======================================+===============+===================+
+		| PEP 3141 numeric objects (including  | ``True``      | ``True``          |
+		| builtins)                            |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| builtin string and buffer objects    | ``True``      | ``True``          |
+		+--------------------------------------+---------------+-------------------+
+		| other builtin objects, like          | ``False``     | ``True``          |
+		| `pathlib.Path`, `Exception`,         |               |                   |
+		| the result of `re.compile`           |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| third-party objects like             | ``False``     | ``True``          |
+		| `matplotlib.figure.Figure`           |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| zero-dimensional numpy arrays        | ``False``     | ``True``          |
+		+--------------------------------------+---------------+-------------------+
+		| other numpy arrays                   | ``False``     | ``False``         |
+		+--------------------------------------+---------------+-------------------+
+		| `list`, `tuple`, and other sequence  | ``False``     | ``False``         |
+		| objects                              |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		
 		Examples
 		--------
 		>>> np.isscalar(3.1)
 		True
+		>>> np.isscalar(np.array(3.1))
+		False
 		>>> np.isscalar([3.1])
 		False
 		>>> np.isscalar(False)
@@ -1278,7 +1430,7 @@ package scipy.special.basic;
 		       Functions", John Wiley and Sons, 1996, chapter 6.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.29.E5
+		       https://dlmf.nist.gov/10.29.E5
 	**/
 	static public function ivp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -1446,7 +1598,7 @@ package scipy.special.basic;
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.6.E7
+		       https://dlmf.nist.gov/10.6.E7
 	**/
 	static public function jvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -1548,7 +1700,7 @@ package scipy.special.basic;
 		       functions of a complex argument and nonnegative order", ACM
 		       TOMS Vol. 12 Issue 3, Sept. 1986, p. 265
 		.. [3] NIST Digital Library of Mathematical Functions,
-		       Eq. 10.25.E3. http://dlmf.nist.gov/10.25.E3
+		       Eq. 10.25.E3. https://dlmf.nist.gov/10.25.E3
 		
 		Examples
 		--------
@@ -1615,49 +1767,9 @@ package scipy.special.basic;
 		       Functions", John Wiley and Sons, 1996, chapter 6.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.29.E5
+		       https://dlmf.nist.gov/10.29.E5
 	**/
 	static public function kvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
-	/**
-		less(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
-		
-		Return the truth value of (x1 < x2) element-wise.
-		
-		Parameters
-		----------
-		x1, x2 : array_like
-		    Input arrays.  If ``x1.shape != x2.shape``, they must be
-		    broadcastable to a common shape (which may be the shape of one or
-		    the other).
-		out : ndarray, None, or tuple of ndarray and None, optional
-		    A location into which the result is stored. If provided, it must have
-		    a shape that the inputs broadcast to. If not provided or `None`,
-		    a freshly-allocated array is returned. A tuple (possible only as a
-		    keyword argument) must have length equal to the number of outputs.
-		where : array_like, optional
-		    Values of True indicate to calculate the ufunc at that position, values
-		    of False indicate to leave the value in the output alone.
-		**kwargs
-		    For other keyword-only arguments, see the
-		    :ref:`ufunc docs <ufuncs.kwargs>`.
-		
-		Returns
-		-------
-		out : ndarray or scalar
-		    Output array, element-wise comparison of `x1` and `x2`.
-		    Typically of type bool, unless ``dtype=object`` is passed.
-		    This is a scalar if both `x1` and `x2` are scalars.
-		
-		See Also
-		--------
-		greater, less_equal, greater_equal, equal, not_equal
-		
-		Examples
-		--------
-		>>> np.less([1, 2], [2, 2])
-		array([ True, False])
-	**/
-	static public function less(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Jahnke-Emden Lambda function, Lambdav(x).
 		
@@ -1736,7 +1848,7 @@ package scipy.special.basic;
 		       Functions", John Wiley and Sons, 1996.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions
-		       http://dlmf.nist.gov/14.3
+		       https://dlmf.nist.gov/14.3
 	**/
 	static public function lpmn(m:Dynamic, n:Dynamic, z:Dynamic):Dynamic;
 	/**
@@ -1854,7 +1966,7 @@ package scipy.special.basic;
 		       Functions", John Wiley and Sons, 1996.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions
-		       http://dlmf.nist.gov/28.4#i
+		       https://dlmf.nist.gov/28.4#i
 	**/
 	static public function mathieu_even_coef(m:Dynamic, q:Dynamic):Dynamic;
 	/**
@@ -1890,46 +2002,6 @@ package scipy.special.basic;
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function mathieu_odd_coef(m:Dynamic, q:Dynamic):Dynamic;
-	/**
-		`nd_grid` instance which returns a dense multi-dimensional "meshgrid".
-		
-		An instance of `numpy.lib.index_tricks.nd_grid` which returns an dense
-		(or fleshed out) mesh-grid when indexed, so that each returned argument
-		has the same shape.  The dimensions and number of the output arrays are
-		equal to the number of indexing dimensions.  If the step length is not a
-		complex number, then the stop is not inclusive.
-		
-		However, if the step length is a **complex number** (e.g. 5j), then
-		the integer part of its magnitude is interpreted as specifying the
-		number of points to create between the start and stop values, where
-		the stop value **is inclusive**.
-		
-		Returns
-		----------
-		mesh-grid `ndarrays` all of the same dimensions
-		
-		See Also
-		--------
-		numpy.lib.index_tricks.nd_grid : class of `ogrid` and `mgrid` objects
-		ogrid : like mgrid but returns open (not fleshed out) mesh grids
-		r_ : array concatenator
-		
-		Examples
-		--------
-		>>> np.mgrid[0:5,0:5]
-		array([[[0, 0, 0, 0, 0],
-		        [1, 1, 1, 1, 1],
-		        [2, 2, 2, 2, 2],
-		        [3, 3, 3, 3, 3],
-		        [4, 4, 4, 4, 4]],
-		       [[0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4]]])
-		>>> np.mgrid[-1:1:5j]
-		array([-1. , -0.5,  0. ,  0.5,  1. ])
-	**/
 	static public var mgrid : Dynamic;
 	static public var nan : Dynamic;
 	/**
@@ -2216,7 +2288,7 @@ package scipy.special.basic;
 		References
 		----------
 		.. [1] NIST Digital Library of Mathematical Functions
-		       http://dlmf.nist.gov/5
+		       https://dlmf.nist.gov/5
 		.. [2] Fredrik Johansson and others.
 		       "mpmath: a Python library for arbitrary-precision floating-point arithmetic"
 		       (Version 0.19) http://mpmath.org/
@@ -2294,7 +2366,7 @@ package scipy.special.basic;
 		       Functions", John Wiley and Sons, 1996.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.51.E1
+		       https://dlmf.nist.gov/10.51.E1
 	**/
 	static public function riccati_jn(n:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -2335,7 +2407,7 @@ package scipy.special.basic;
 		       Functions", John Wiley and Sons, 1996.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.51.E1
+		       https://dlmf.nist.gov/10.51.E1
 	**/
 	static public function riccati_yn(n:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -2440,10 +2512,11 @@ package scipy.special.basic;
 		.. [1] Weisstein, Eric W. "Sinc Function." From MathWorld--A Wolfram Web
 		       Resource. http://mathworld.wolfram.com/SincFunction.html
 		.. [2] Wikipedia, "Sinc function",
-		       http://en.wikipedia.org/wiki/Sinc_function
+		       https://en.wikipedia.org/wiki/Sinc_function
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> x = np.linspace(-4, 4, 41)
 		>>> np.sinc(x)
 		array([ -3.89804309e-17,  -4.92362781e-02,  -8.40918587e-02,
@@ -2538,70 +2611,72 @@ package scipy.special.basic;
 	/**
 		where(condition, [x, y])
 		
-		Return elements, either from `x` or `y`, depending on `condition`.
+		Return elements chosen from `x` or `y` depending on `condition`.
 		
-		If only `condition` is given, return ``condition.nonzero()``.
+		.. note::
+		    When only `condition` is provided, this function is a shorthand for
+		    ``np.asarray(condition).nonzero()``. Using `nonzero` directly should be
+		    preferred, as it behaves correctly for subclasses. The rest of this
+		    documentation covers only the case where all three arguments are
+		    provided.
 		
 		Parameters
 		----------
 		condition : array_like, bool
-		    When True, yield `x`, otherwise yield `y`.
-		x, y : array_like, optional
+		    Where True, yield `x`, otherwise yield `y`.
+		x, y : array_like
 		    Values from which to choose. `x`, `y` and `condition` need to be
 		    broadcastable to some shape.
 		
 		Returns
 		-------
-		out : ndarray or tuple of ndarrays
-		    If both `x` and `y` are specified, the output array contains
-		    elements of `x` where `condition` is True, and elements from
-		    `y` elsewhere.
-		
-		    If only `condition` is given, return the tuple
-		    ``condition.nonzero()``, the indices where `condition` is True.
+		out : ndarray
+		    An array with elements from `x` where `condition` is True, and elements
+		    from `y` elsewhere.
 		
 		See Also
 		--------
-		nonzero, choose
+		choose
+		nonzero : The function that is called when x and y are omitted
 		
 		Notes
 		-----
-		If `x` and `y` are given and input arrays are 1-D, `where` is
-		equivalent to::
+		If all the arrays are 1-D, `where` is equivalent to::
 		
-		    [xv if c else yv for (c,xv,yv) in zip(condition,x,y)]
+		    [xv if c else yv
+		     for c, xv, yv in zip(condition, x, y)]
 		
 		Examples
 		--------
+		>>> a = np.arange(10)
+		>>> a
+		array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+		>>> np.where(a < 5, a, 10*a)
+		array([ 0,  1,  2,  3,  4, 50, 60, 70, 80, 90])
+		
+		This can be used on multidimensional arrays too:
+		
 		>>> np.where([[True, False], [True, True]],
 		...          [[1, 2], [3, 4]],
 		...          [[9, 8], [7, 6]])
 		array([[1, 8],
 		       [3, 4]])
 		
-		>>> np.where([[0, 1], [1, 0]])
-		(array([0, 1]), array([1, 0]))
+		The shapes of x, y, and the condition are broadcast together:
 		
-		>>> x = np.arange(9.).reshape(3, 3)
-		>>> np.where( x > 5 )
-		(array([2, 2, 2]), array([0, 1, 2]))
-		>>> x[np.where( x > 3.0 )]               # Note: result is 1D.
-		array([ 4.,  5.,  6.,  7.,  8.])
-		>>> np.where(x < 5, x, -1)               # Note: broadcasting.
-		array([[ 0.,  1.,  2.],
-		       [ 3.,  4., -1.],
-		       [-1., -1., -1.]])
+		>>> x, y = np.ogrid[:3, :4]
+		>>> np.where(x < y, x, 10 + y)  # both x and 10+y are broadcast
+		array([[10,  0,  0,  0],
+		       [10, 11,  1,  1],
+		       [10, 11, 12,  2]])
 		
-		Find the indices of elements of `x` that are in `goodvalues`.
-		
-		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.isin(x, goodvalues)
-		>>> ix
-		array([[False, False, False],
-		       [ True,  True, False],
-		       [False,  True, False]])
-		>>> np.where(ix)
-		(array([1, 1, 2]), array([0, 1, 1]))
+		>>> a = np.array([[0, 1, 2],
+		...               [0, 2, 4],
+		...               [0, 3, 6]])
+		>>> np.where(a < 4, a, -1)  # -1 is broadcast
+		array([[ 0,  1,  2],
+		       [ 0,  2, -1],
+		       [ 0,  3, -1]])
 	**/
 	static public function where(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2794,7 +2869,7 @@ package scipy.special.basic;
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.6.E7
+		       https://dlmf.nist.gov/10.6.E7
 	**/
 	static public function yvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**

@@ -17,7 +17,6 @@ package numpy.__config__;
 	static public function get_info(name:Dynamic):Dynamic;
 	static public var lapack_mkl_info : Dynamic;
 	static public var lapack_opt_info : Dynamic;
-	static public var openblas_info : Dynamic;
 	static public var openblas_lapack_info : Dynamic;
 	static public function show():Dynamic;
 }

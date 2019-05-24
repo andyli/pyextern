@@ -101,15 +101,14 @@ package matplotlib.colors;
 		
 		Hence y0 in the first row and y1 in the last row are never used.
 		
+		See Also
+		--------
+		LinearSegmentedColormap.from_list
+		    Static method; factory function for generating a smoothly-varying
+		    LinearSegmentedColormap.
 		
-		.. seealso::
-		
-		       :meth:`LinearSegmentedColormap.from_list`
-		       Static method; factory function for generating a
-		       smoothly-varying LinearSegmentedColormap.
-		
-		       :func:`makeMappingArray`
-		       For information about making a mapping array.
+		makeMappingArray
+		    For information about making a mapping array.
 	**/
 	@:native("__init__")
 	public function ___init__(name:Dynamic, segmentdata:Dynamic, ?N:Dynamic, ?gamma:Dynamic):Dynamic;
@@ -150,15 +149,14 @@ package matplotlib.colors;
 		
 		Hence y0 in the first row and y1 in the last row are never used.
 		
+		See Also
+		--------
+		LinearSegmentedColormap.from_list
+		    Static method; factory function for generating a smoothly-varying
+		    LinearSegmentedColormap.
 		
-		.. seealso::
-		
-		       :meth:`LinearSegmentedColormap.from_list`
-		       Static method; factory function for generating a
-		       smoothly-varying LinearSegmentedColormap.
-		
-		       :func:`makeMappingArray`
-		       For information about making a mapping array.
+		makeMappingArray
+		    For information about making a mapping array.
 	**/
 	public function new(name:Dynamic, segmentdata:Dynamic, ?N:Dynamic, ?gamma:Dynamic):Void;
 	/**

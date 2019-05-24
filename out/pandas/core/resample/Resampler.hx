@@ -63,12 +63,16 @@ package pandas.core.resample;
 	**/
 	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Groupby iterator
+		Resampler iterator.
 		
 		Returns
 		-------
 		Generator yielding sequence of (name, subsetted object)
 		for each group
+		
+		See Also
+		--------
+		GroupBy.__iter__
 	**/
 	public function __iter__():Dynamic;
 	/**
@@ -129,7 +133,7 @@ package pandas.core.resample;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		provide a nice str repr of our rolling object 
+		Provide a nice str repr of our rolling object.
 	**/
 	public function __unicode__():Dynamic;
 	/**
@@ -137,7 +141,8 @@ package pandas.core.resample;
 	**/
 	public var __weakref__ : Dynamic;
 	static public var _accessors : Dynamic;
-	static public var _agg_doc : Dynamic;
+	static public var _agg_examples_doc : Dynamic;
+	static public var _agg_see_also_doc : Dynamic;
 	/**
 		provide an implementation for the aggregators
 		
@@ -160,7 +165,7 @@ package pandas.core.resample;
 	public function _aggregate_multiple_funcs(arg:Dynamic, _level:Dynamic, _axis:Dynamic):Dynamic;
 	public function _apply_filter(indices:Dynamic, dropna:Dynamic):Dynamic;
 	/**
-		if loffset is set, offset the result index
+		If loffset is set, offset the result index.
 		
 		This is NOT an idempotent routine, it will be applied
 		exactly once to the result.
@@ -173,7 +178,7 @@ package pandas.core.resample;
 	public function _apply_loffset(result:Dynamic):Dynamic;
 	static public var _apply_whitelist : Dynamic;
 	/**
-		make sure that we are creating our binner & grouper 
+		Make sure that we are creating our binner & grouper.
 	**/
 	public function _assure_grouper():Dynamic;
 	static public var _attributes : Dynamic;
@@ -184,7 +189,7 @@ package pandas.core.resample;
 	**/
 	public var _constructor : Dynamic;
 	/**
-		provide any conversions for the object in order to correctly handle
+		Provide any conversions for the object in order to correctly handle.
 		
 		Parameters
 		----------
@@ -221,31 +226,30 @@ package pandas.core.resample;
 	public function _dir_deletions():Dynamic;
 	public function _downsample(f:Dynamic):Dynamic;
 	/**
-		is the resampling from a DataFrame column or MultiIndex level 
+		Is the resampling from a DataFrame column or MultiIndex level.
 	**/
 	public var _from_selection : Dynamic;
 	/**
-		create the BinGrouper, assume that self.set_grouper(obj)
-		has already been called
+		Create the BinGrouper, assume that self.set_grouper(obj)
+		has already been called.
 	**/
 	public function _get_binner():Dynamic;
 	public function _get_binner_for_time():Dynamic;
 	/**
-		safe get index, translate keys for datelike to underlying repr 
+		Safe get index, translate keys for datelike to underlying repr.
 	**/
 	public function _get_index(name:Dynamic):Dynamic;
 	/**
-		safe get multiple indices, translate keys for
-		datelike to underlying repr
+		Safe get multiple indices, translate keys for
+		datelike to underlying repr.
 	**/
 	public function _get_indices(names:Dynamic):Dynamic;
 	/**
-		return the correct class for resampling with groupby 
+		Return the correct class for resampling with groupby.
 	**/
 	public function _get_resampler_for_grouping(groupby:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		sub-classes to define
-		return a sliced object
+		Sub-classes to define. Return a sliced object.
 		
 		Parameters
 		----------
@@ -258,7 +262,7 @@ package pandas.core.resample;
 	public function _gotitem(key:Dynamic, ndim:Dynamic, ?subset:Dynamic):Dynamic;
 	static public var _group_selection : Dynamic;
 	/**
-		re-evaluate the obj with a groupby aggregation 
+		Re-evaluate the obj with a groupby aggregation.
 	**/
 	public function _groupby_and_aggregate(how:Dynamic, ?grouper:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _internal_names : Dynamic;
@@ -269,7 +273,7 @@ package pandas.core.resample;
 	**/
 	public function _is_builtin_func(arg:Dynamic):Dynamic;
 	/**
-		if we define an internal function for this argument, return it 
+		if we define an internal function for this argument, return it
 	**/
 	public function _is_cython_func(arg:Dynamic):Dynamic;
 	public function _iterate_slices():Dynamic;
@@ -282,8 +286,10 @@ package pandas.core.resample;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	/**
-		Clear group based selection. Used for methods needing to return info on
-		each group regardless of whether a group selection was previously set.
+		Clear group based selection.
+		
+		Used for methods needing to return info on each group regardless of
+		whether a group selection was previously set.
 	**/
 	public function _reset_group_selection():Dynamic;
 	public var _selected_obj : Dynamic;
@@ -296,20 +302,22 @@ package pandas.core.resample;
 	**/
 	public var _selection_name : Dynamic;
 	/**
-		setup our binners
-		cache these as we are an immutable object
+		Setup our binners.
+		
+		Cache these as we are an immutable object
 	**/
 	public function _set_binner():Dynamic;
 	/**
-		Create group based selection. Used when selection is not passed
-		directly but instead via a grouper.
+		Create group based selection.
+		
+		Used when selection is not passed directly but instead via a grouper.
 		
 		NOTE: this should be paired with a call to _reset_group_selection
 	**/
 	public function _set_group_selection():Dynamic;
 	public function _set_result_index_ordered(result:Dynamic):Dynamic;
 	/**
-		return a new object with the replacement attributes 
+		return a new object with the replacement attributes
 	**/
 	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -332,21 +340,21 @@ package pandas.core.resample;
 	**/
 	public function _try_aggregate_string_function(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		try to cast the result to our obj original type,
-		we may have roundtripped thru object in the mean-time
+		Try to cast the result to our obj original type,
+		we may have roundtripped through object in the mean-time.
 		
-		if numeric_only is True, then only try to cast numerics
-		and not datetimelikes
+		If numeric_only is True, then only try to cast numerics
+		and not datetimelikes.
 	**/
 	public function _try_cast(result:Dynamic, obj:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	/**
-		masquerade for compat as a Series or a DataFrame 
+		Masquerade for compat as a Series or a DataFrame.
 	**/
 	public var _typ : Dynamic;
 	public function _upsample(f:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic):Dynamic;
 	public function _wrap_applied_output(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		potentially wrap any results 
+		Potentially wrap any results.
 	**/
 	public function _wrap_result(result:Dynamic):Dynamic;
 	/**
@@ -356,18 +364,16 @@ package pandas.core.resample;
 		
 		Parameters
 		----------
-		func : function, string, dictionary, or list of string/functions
+		func : function, str, list or dict
 		    Function to use for aggregating the data. If a function, must either
-		    work when passed a DataFrame or when passed to DataFrame.apply. For
-		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
+		    work when passed a DataFrame or when passed to DataFrame.apply.
 		
 		    Accepted combinations are:
 		
-		    - string function name.
-		    - function.
-		    - list of functions.
-		    - dict of column names -> functions (or list of functions).
-		
+		    - function
+		    - string function name
+		    - list of functions and/or function names, e.g. ``[np.sum, 'mean']``
+		    - dict of axis labels -> functions, function names or list of such.
 		
 		*args
 		    Positional arguments to pass to `func`.
@@ -376,7 +382,19 @@ package pandas.core.resample;
 		
 		Returns
 		-------
-		aggregated : DataFrame
+		DataFrame, Series or scalar
+		    if DataFrame.agg is called with a single function, returns a Series
+		    if DataFrame.agg is called with several functions, returns a DataFrame
+		    if Series.agg is called with single function, returns a scalar
+		    if Series.agg is called with several functions, returns a Series
+		
+		
+		See Also
+		--------
+		pandas.DataFrame.groupby.aggregate
+		pandas.DataFrame.resample.transform
+		pandas.DataFrame.aggregate
+		
 		
 		Notes
 		-----
@@ -387,9 +405,8 @@ package pandas.core.resample;
 		
 		Examples
 		--------
-		>>> s = Series([1,2,3,4,5],
-		                index=pd.date_range('20130101',
-		                                    periods=5,freq='s'))
+		>>> s = pd.Series([1,2,3,4,5],
+		                  index=pd.date_range('20130101', periods=5,freq='s'))
 		2013-01-01 00:00:00    1
 		2013-01-01 00:00:01    2
 		2013-01-01 00:00:02    3
@@ -419,14 +436,8 @@ package pandas.core.resample;
 		2013-01-01 00:00:00      3  2.121320
 		2013-01-01 00:00:02      7  4.949747
 		2013-01-01 00:00:04      5       NaN
-		
-		See also
-		--------
-		pandas.DataFrame.groupby.aggregate
-		pandas.DataFrame.resample.transform
-		pandas.DataFrame.aggregate
 	**/
-	public function agg(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
+	public function agg(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Aggregate using one or more operations over the specified axis.
 		
@@ -434,18 +445,16 @@ package pandas.core.resample;
 		
 		Parameters
 		----------
-		func : function, string, dictionary, or list of string/functions
+		func : function, str, list or dict
 		    Function to use for aggregating the data. If a function, must either
-		    work when passed a DataFrame or when passed to DataFrame.apply. For
-		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
+		    work when passed a DataFrame or when passed to DataFrame.apply.
 		
 		    Accepted combinations are:
 		
-		    - string function name.
-		    - function.
-		    - list of functions.
-		    - dict of column names -> functions (or list of functions).
-		
+		    - function
+		    - string function name
+		    - list of functions and/or function names, e.g. ``[np.sum, 'mean']``
+		    - dict of axis labels -> functions, function names or list of such.
 		
 		*args
 		    Positional arguments to pass to `func`.
@@ -454,7 +463,19 @@ package pandas.core.resample;
 		
 		Returns
 		-------
-		aggregated : DataFrame
+		DataFrame, Series or scalar
+		    if DataFrame.agg is called with a single function, returns a Series
+		    if DataFrame.agg is called with several functions, returns a DataFrame
+		    if Series.agg is called with single function, returns a scalar
+		    if Series.agg is called with several functions, returns a Series
+		
+		
+		See Also
+		--------
+		pandas.DataFrame.groupby.aggregate
+		pandas.DataFrame.resample.transform
+		pandas.DataFrame.aggregate
+		
 		
 		Notes
 		-----
@@ -465,9 +486,8 @@ package pandas.core.resample;
 		
 		Examples
 		--------
-		>>> s = Series([1,2,3,4,5],
-		                index=pd.date_range('20130101',
-		                                    periods=5,freq='s'))
+		>>> s = pd.Series([1,2,3,4,5],
+		                  index=pd.date_range('20130101', periods=5,freq='s'))
 		2013-01-01 00:00:00    1
 		2013-01-01 00:00:01    2
 		2013-01-01 00:00:02    3
@@ -497,14 +517,8 @@ package pandas.core.resample;
 		2013-01-01 00:00:00      3  2.121320
 		2013-01-01 00:00:02      7  4.949747
 		2013-01-01 00:00:04      5       NaN
-		
-		See also
-		--------
-		pandas.DataFrame.groupby.aggregate
-		pandas.DataFrame.resample.transform
-		pandas.DataFrame.aggregate
 	**/
-	public function aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
+	public function aggregate(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Aggregate using one or more operations over the specified axis.
 		
@@ -512,18 +526,16 @@ package pandas.core.resample;
 		
 		Parameters
 		----------
-		func : function, string, dictionary, or list of string/functions
+		func : function, str, list or dict
 		    Function to use for aggregating the data. If a function, must either
-		    work when passed a DataFrame or when passed to DataFrame.apply. For
-		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
+		    work when passed a DataFrame or when passed to DataFrame.apply.
 		
 		    Accepted combinations are:
 		
-		    - string function name.
-		    - function.
-		    - list of functions.
-		    - dict of column names -> functions (or list of functions).
-		
+		    - function
+		    - string function name
+		    - list of functions and/or function names, e.g. ``[np.sum, 'mean']``
+		    - dict of axis labels -> functions, function names or list of such.
 		
 		*args
 		    Positional arguments to pass to `func`.
@@ -532,7 +544,19 @@ package pandas.core.resample;
 		
 		Returns
 		-------
-		aggregated : DataFrame
+		DataFrame, Series or scalar
+		    if DataFrame.agg is called with a single function, returns a Series
+		    if DataFrame.agg is called with several functions, returns a DataFrame
+		    if Series.agg is called with single function, returns a scalar
+		    if Series.agg is called with several functions, returns a Series
+		
+		
+		See Also
+		--------
+		pandas.DataFrame.groupby.aggregate
+		pandas.DataFrame.resample.transform
+		pandas.DataFrame.aggregate
+		
 		
 		Notes
 		-----
@@ -543,9 +567,8 @@ package pandas.core.resample;
 		
 		Examples
 		--------
-		>>> s = Series([1,2,3,4,5],
-		                index=pd.date_range('20130101',
-		                                    periods=5,freq='s'))
+		>>> s = pd.Series([1,2,3,4,5],
+		                  index=pd.date_range('20130101', periods=5,freq='s'))
 		2013-01-01 00:00:00    1
 		2013-01-01 00:00:01    2
 		2013-01-01 00:00:02    3
@@ -575,21 +598,14 @@ package pandas.core.resample;
 		2013-01-01 00:00:00      3  2.121320
 		2013-01-01 00:00:02      7  4.949747
 		2013-01-01 00:00:04      5       NaN
-		
-		See also
-		--------
-		pandas.DataFrame.groupby.aggregate
-		pandas.DataFrame.resample.transform
-		pandas.DataFrame.aggregate
 	**/
-	public function apply(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
+	public function apply(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return the values at the new freq,
-		essentially a reindex
+		Return the values at the new freq, essentially a reindex.
 		
 		Parameters
 		----------
-		fill_value: scalar, optional
+		fill_value : scalar, optional
 		    Value to use for missing values, applied during upsampling (note
 		    this does not fill NaNs that already were present).
 		
@@ -610,7 +626,7 @@ package pandas.core.resample;
 		appear (e.g., when the resampling frequency is higher than the original
 		frequency). The backward fill will replace NaN values that appeared in
 		the resampled data with the next value in the original sequence.
-		Missing values that existed in the orginal data will not be modified.
+		Missing values that existed in the original data will not be modified.
 		
 		Parameters
 		----------
@@ -711,7 +727,7 @@ package pandas.core.resample;
 		appear (e.g., when the resampling frequency is higher than the original
 		frequency). The backward fill will replace NaN values that appeared in
 		the resampled data with the next value in the original sequence.
-		Missing values that existed in the orginal data will not be modified.
+		Missing values that existed in the original data will not be modified.
 		
 		Parameters
 		----------
@@ -805,9 +821,9 @@ package pandas.core.resample;
 	**/
 	public function bfill(?limit:Dynamic):Dynamic;
 	/**
-		Compute count of group, excluding missing values
+		Compute count of group, excluding missing values.
 		
-		See also
+		See Also
 		--------
 		pandas.Series.groupby
 		pandas.DataFrame.groupby
@@ -815,7 +831,7 @@ package pandas.core.resample;
 	**/
 	public function count(?_method:Dynamic):Dynamic;
 	/**
-		Forward fill the values
+		Forward fill the values.
 		
 		Parameters
 		----------
@@ -840,7 +856,7 @@ package pandas.core.resample;
 		appear (e.g., when the resampling frequency is higher than the original
 		frequency).
 		
-		Missing values that existed in the orginal data will
+		Missing values that existed in the original data will
 		not be modified.
 		
 		Parameters
@@ -872,6 +888,10 @@ package pandas.core.resample;
 		    specified method, which can be 'bfill' and 'ffill'.
 		pandas.DataFrame.fillna : Fill NaN values in the DataFrame using the
 		    specified method, which can be 'bfill' and 'ffill'.
+		
+		References
+		----------
+		.. [1] https://en.wikipedia.org/wiki/Imputation_(statistics)
 		
 		Examples
 		--------
@@ -984,16 +1004,11 @@ package pandas.core.resample;
 		2018-01-01 01:00:00  NaN  3
 		2018-01-01 01:30:00  6.0  5
 		2018-01-01 02:00:00  6.0  5
-		
-		References
-		----------
-		.. [1] https://en.wikipedia.org/wiki/Imputation_(statistics)
 	**/
 	public function fillna(method:Dynamic, ?limit:Dynamic):Dynamic;
 	/**
 		Compute first of group values
-		
-		See also
+		See Also
 		--------
 		pandas.Series.groupby
 		pandas.DataFrame.groupby
@@ -1001,7 +1016,7 @@ package pandas.core.resample;
 	**/
 	public function first(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Constructs NDFrame from group with provided name
+		Constructs NDFrame from group with provided name.
 		
 		Parameters
 		----------
@@ -1014,15 +1029,15 @@ package pandas.core.resample;
 		
 		Returns
 		-------
-		group : type of obj
+		group : same type as obj
 	**/
 	public function get_group(name:Dynamic, ?obj:Dynamic):Dynamic;
 	/**
-		dict {group name -> group labels} 
+		Dict {group name -> group labels}.
 	**/
 	public var groups : Dynamic;
 	/**
-		dict {group name -> group indices} 
+		Dict {group name -> group indices}.
 	**/
 	public var indices : Dynamic;
 	/**
@@ -1031,93 +1046,196 @@ package pandas.core.resample;
 		.. versionadded:: 0.18.1
 		
 		Please note that only ``method='linear'`` is supported for
-		DataFrames/Series with a MultiIndex.
+		DataFrame/Series with a MultiIndex.
 		
 		Parameters
 		----------
-		method : {'linear', 'time', 'index', 'values', 'nearest', 'zero',
-		          'slinear', 'quadratic', 'cubic', 'barycentric', 'krogh',
-		          'polynomial', 'spline', 'piecewise_polynomial',
-		          'from_derivatives', 'pchip', 'akima'}
+		method : str, default 'linear'
+		    Interpolation technique to use. One of:
 		
-		    * 'linear': ignore the index and treat the values as equally
+		    * 'linear': Ignore the index and treat the values as equally
 		      spaced. This is the only method supported on MultiIndexes.
-		      default
-		    * 'time': interpolation works on daily and higher resolution
-		      data to interpolate given length of interval
-		    * 'index', 'values': use the actual numerical values of the index
-		    * 'nearest', 'zero', 'slinear', 'quadratic', 'cubic',
-		      'barycentric', 'polynomial' is passed to
-		      ``scipy.interpolate.interp1d``. Both 'polynomial' and 'spline'
+		    * 'time': Works on daily and higher resolution data to interpolate
+		      given length of interval.
+		    * 'index', 'values': use the actual numerical values of the index.
+		    * 'pad': Fill in NaNs using existing values.
+		    * 'nearest', 'zero', 'slinear', 'quadratic', 'cubic', 'spline',
+		      'barycentric', 'polynomial': Passed to
+		      `scipy.interpolate.interp1d`. Both 'polynomial' and 'spline'
 		      require that you also specify an `order` (int),
-		      e.g. df.interpolate(method='polynomial', order=4).
-		      These use the actual numerical values of the index.
-		    * 'krogh', 'piecewise_polynomial', 'spline', 'pchip' and 'akima'
-		      are all wrappers around the scipy interpolation methods of
-		      similar names. These use the actual numerical values of the
-		      index. For more information on their behavior, see the
-		      `scipy documentation
-		      <http://docs.scipy.org/doc/scipy/reference/interpolate.html#univariate-interpolation>`__
-		      and `tutorial documentation
-		      <http://docs.scipy.org/doc/scipy/reference/tutorial/interpolate.html>`__
-		    * 'from_derivatives' refers to BPoly.from_derivatives which
+		      e.g. ``df.interpolate(method='polynomial', order=4)``.
+		      These use the numerical values of the index.
+		    * 'krogh', 'piecewise_polynomial', 'spline', 'pchip', 'akima':
+		      Wrappers around the SciPy interpolation methods of similar
+		      names. See `Notes`.
+		    * 'from_derivatives': Refers to
+		      `scipy.interpolate.BPoly.from_derivatives` which
 		      replaces 'piecewise_polynomial' interpolation method in
-		      scipy 0.18
+		      scipy 0.18.
 		
 		    .. versionadded:: 0.18.1
 		
-		       Added support for the 'akima' method
+		       Added support for the 'akima' method.
 		       Added interpolate method 'from_derivatives' which replaces
-		       'piecewise_polynomial' in scipy 0.18; backwards-compatible with
-		       scipy < 0.18
+		       'piecewise_polynomial' in SciPy 0.18; backwards-compatible with
+		       SciPy < 0.18
 		
-		axis : {0, 1}, default 0
-		    * 0: fill column-by-column
-		    * 1: fill row-by-row
-		limit : int, default None.
-		    Maximum number of consecutive NaNs to fill. Must be greater than 0.
+		axis : {0 or 'index', 1 or 'columns', None}, default None
+		    Axis to interpolate along.
+		limit : int, optional
+		    Maximum number of consecutive NaNs to fill. Must be greater than
+		    0.
+		inplace : bool, default False
+		    Update the data in place if possible.
 		limit_direction : {'forward', 'backward', 'both'}, default 'forward'
-		limit_area : {'inside', 'outside'}, default None
-		    * None: (default) no fill restriction
-		    * 'inside' Only fill NaNs surrounded by valid values (interpolate).
-		    * 'outside' Only fill NaNs outside valid values (extrapolate).
-		
 		    If limit is specified, consecutive NaNs will be filled in this
 		    direction.
+		limit_area : {`None`, 'inside', 'outside'}, default None
+		    If limit is specified, consecutive NaNs will be filled with this
+		    restriction.
+		
+		    * ``None``: No fill restriction.
+		    * 'inside': Only fill NaNs surrounded by valid values
+		      (interpolate).
+		    * 'outside': Only fill NaNs outside valid values (extrapolate).
 		
 		    .. versionadded:: 0.21.0
-		inplace : bool, default False
-		    Update the NDFrame in place if possible.
+		
 		downcast : optional, 'infer' or None, defaults to None
 		    Downcast dtypes if possible.
-		kwargs : keyword arguments to pass on to the interpolating function.
+		**kwargs
+		    Keyword arguments to pass on to the interpolating function.
 		
 		Returns
 		-------
-		Series or DataFrame of same shape interpolated at the NaNs
+		Series or DataFrame
+		    Returns the same object type as the caller, interpolated at
+		    some or all ``NaN`` values
 		
 		See Also
 		--------
-		reindex, replace, fillna
+		fillna : Fill missing values using different methods.
+		scipy.interpolate.Akima1DInterpolator : Piecewise cubic polynomials
+		    (Akima interpolator).
+		scipy.interpolate.BPoly.from_derivatives : Piecewise polynomial in the
+		    Bernstein basis.
+		scipy.interpolate.interp1d : Interpolate a 1-D function.
+		scipy.interpolate.KroghInterpolator : Interpolate polynomial (Krogh
+		    interpolator).
+		scipy.interpolate.PchipInterpolator : PCHIP 1-d monotonic cubic
+		    interpolation.
+		scipy.interpolate.CubicSpline : Cubic spline data interpolator.
+		
+		Notes
+		-----
+		The 'krogh', 'piecewise_polynomial', 'spline', 'pchip' and 'akima'
+		methods are wrappers around the respective SciPy implementations of
+		similar names. These use the actual numerical values of the index.
+		For more information on their behavior, see the
+		`SciPy documentation
+		<http://docs.scipy.org/doc/scipy/reference/interpolate.html#univariate-interpolation>`__
+		and `SciPy tutorial
+		<http://docs.scipy.org/doc/scipy/reference/tutorial/interpolate.html>`__.
 		
 		Examples
 		--------
-		
-		Filling in NaNs
+		Filling in ``NaN`` in a :class:`~pandas.Series` via linear
+		interpolation.
 		
 		>>> s = pd.Series([0, 1, np.nan, 3])
-		>>> s.interpolate()
-		0    0
-		1    1
-		2    2
-		3    3
+		>>> s
+		0    0.0
+		1    1.0
+		2    NaN
+		3    3.0
 		dtype: float64
+		>>> s.interpolate()
+		0    0.0
+		1    1.0
+		2    2.0
+		3    3.0
+		dtype: float64
+		
+		Filling in ``NaN`` in a Series by padding, but filling at most two
+		consecutive ``NaN`` at a time.
+		
+		>>> s = pd.Series([np.nan, "single_one", np.nan,
+		...                "fill_two_more", np.nan, np.nan, np.nan,
+		...                4.71, np.nan])
+		>>> s
+		0              NaN
+		1       single_one
+		2              NaN
+		3    fill_two_more
+		4              NaN
+		5              NaN
+		6              NaN
+		7             4.71
+		8              NaN
+		dtype: object
+		>>> s.interpolate(method='pad', limit=2)
+		0              NaN
+		1       single_one
+		2       single_one
+		3    fill_two_more
+		4    fill_two_more
+		5    fill_two_more
+		6              NaN
+		7             4.71
+		8             4.71
+		dtype: object
+		
+		Filling in ``NaN`` in a Series via polynomial interpolation or splines:
+		Both 'polynomial' and 'spline' methods require that you also specify
+		an ``order`` (int).
+		
+		>>> s = pd.Series([0, 2, np.nan, 8])
+		>>> s.interpolate(method='polynomial', order=2)
+		0    0.000000
+		1    2.000000
+		2    4.666667
+		3    8.000000
+		dtype: float64
+		
+		Fill the DataFrame forward (that is, going down) along each column
+		using linear interpolation.
+		
+		Note how the last entry in column 'a' is interpolated differently,
+		because there is no entry after it to use for interpolation.
+		Note how the first entry in column 'b' remains ``NaN``, because there
+		is no entry befofe it to use for interpolation.
+		
+		>>> df = pd.DataFrame([(0.0,  np.nan, -1.0, 1.0),
+		...                    (np.nan, 2.0, np.nan, np.nan),
+		...                    (2.0, 3.0, np.nan, 9.0),
+		...                    (np.nan, 4.0, -4.0, 16.0)],
+		...                   columns=list('abcd'))
+		>>> df
+		     a    b    c     d
+		0  0.0  NaN -1.0   1.0
+		1  NaN  2.0  NaN   NaN
+		2  2.0  3.0  NaN   9.0
+		3  NaN  4.0 -4.0  16.0
+		>>> df.interpolate(method='linear', limit_direction='forward', axis=0)
+		     a    b    c     d
+		0  0.0  NaN -1.0   1.0
+		1  1.0  2.0 -2.0   5.0
+		2  2.0  3.0 -3.0   9.0
+		3  2.0  4.0 -4.0  16.0
+		
+		Using polynomial interpolation.
+		
+		>>> df['d'].interpolate(method='polynomial', order=2)
+		0     1.0
+		1     4.0
+		2     9.0
+		3    16.0
+		Name: d, dtype: float64
 	**/
 	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?limit_direction:Dynamic, ?limit_area:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute last of group values
-		
-		See also
+		See Also
 		--------
 		pandas.Series.groupby
 		pandas.DataFrame.groupby
@@ -1126,8 +1244,7 @@ package pandas.core.resample;
 	public function last(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute max of group values
-		
-		See also
+		See Also
 		--------
 		pandas.Series.groupby
 		pandas.DataFrame.groupby
@@ -1135,25 +1252,64 @@ package pandas.core.resample;
 	**/
 	public function max(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Compute mean of groups, excluding missing values
+		Compute mean of groups, excluding missing values.
 		
-		For multiple groupings, the result index will be a MultiIndex
+		Returns
+		-------
+		pandas.Series or pandas.DataFrame
 		
 		
-		See also
+		See Also
 		--------
-		pandas.Series.groupby
-		pandas.DataFrame.groupby
-		pandas.Panel.groupby
+		pandas.Series.%(name)s
+		pandas.DataFrame.%(name)s
+		pandas.Panel.%(name)s
+		
+		
+		Examples
+		--------
+		>>> df = pd.DataFrame({'A': [1, 1, 2, 1, 2],
+		...                    'B': [np.nan, 2, 3, 4, 5],
+		...                    'C': [1, 2, 1, 1, 2]}, columns=['A', 'B', 'C'])
+		
+		Groupby one column and return the mean of the remaining columns in
+		each group.
+		
+		>>> df.groupby('A').mean()
+		>>>
+		     B         C
+		A
+		1  3.0  1.333333
+		2  4.0  1.500000
+		
+		Groupby two columns and return the mean of the remaining column.
+		
+		>>> df.groupby(['A', 'B']).mean()
+		>>>
+		       C
+		A B
+		1 2.0  2
+		  4.0  1
+		2 3.0  1
+		  5.0  2
+		
+		Groupby one column and return the mean of only particular column in
+		the group.
+		
+		>>> df.groupby('A')['B'].mean()
+		>>>
+		A
+		1    3.0
+		2    4.0
+		Name: B, dtype: float64
 	**/
 	public function mean(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Compute median of groups, excluding missing values
+		Compute median of groups, excluding missing values.
 		
 		For multiple groupings, the result index will be a MultiIndex
 		
-		
-		See also
+		See Also
 		--------
 		pandas.Series.groupby
 		pandas.DataFrame.groupby
@@ -1162,8 +1318,7 @@ package pandas.core.resample;
 	public function median(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute min of group values
-		
-		See also
+		See Also
 		--------
 		pandas.Series.groupby
 		pandas.DataFrame.groupby
@@ -1172,23 +1327,63 @@ package pandas.core.resample;
 	public function min(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var ndim : Dynamic;
 	/**
-		Fill values with nearest neighbor starting from center
+		Resample by using the nearest value.
+		
+		When resampling data, missing values may appear (e.g., when the
+		resampling frequency is higher than the original frequency).
+		The `nearest` method will replace ``NaN`` values that appeared in
+		the resampled data with the value from the nearest member of the
+		sequence, based on the index value.
+		Missing values that existed in the original data will not be modified.
+		If `limit` is given, fill only this many values in each direction for
+		each of the original values.
 		
 		Parameters
 		----------
-		limit : integer, optional
-		    limit of how many values to fill
+		limit : int, optional
+		    Limit of how many values to fill.
 		
 		    .. versionadded:: 0.21.0
 		
 		Returns
 		-------
-		an upsampled Series
+		Series or DataFrame
+		    An upsampled Series or DataFrame with ``NaN`` values filled with
+		    their nearest value.
 		
 		See Also
 		--------
-		Series.fillna
-		DataFrame.fillna
+		backfill : Backward fill the new missing values in the resampled data.
+		pad : Forward fill ``NaN`` values.
+		
+		Examples
+		--------
+		>>> s = pd.Series([1, 2],
+		...               index=pd.date_range('20180101',
+		...                                   periods=2,
+		...                                   freq='1h'))
+		>>> s
+		2018-01-01 00:00:00    1
+		2018-01-01 01:00:00    2
+		Freq: H, dtype: int64
+		
+		>>> s.resample('15min').nearest()
+		2018-01-01 00:00:00    1
+		2018-01-01 00:15:00    1
+		2018-01-01 00:30:00    2
+		2018-01-01 00:45:00    2
+		2018-01-01 01:00:00    2
+		Freq: 15T, dtype: int64
+		
+		Limit the number of upsampled values imputed by the nearest:
+		
+		>>> s.resample('15min').nearest(limit=1)
+		2018-01-01 00:00:00    1.0
+		2018-01-01 00:15:00    1.0
+		2018-01-01 00:30:00    NaN
+		2018-01-01 00:45:00    2.0
+		2018-01-01 01:00:00    2.0
+		Freq: 15T, dtype: float64
 	**/
 	public function nearest(?limit:Dynamic):Dynamic;
 	public var ngroups : Dynamic;
@@ -1198,11 +1393,11 @@ package pandas.core.resample;
 	public function nunique(?_method:Dynamic):Dynamic;
 	public var obj : Dynamic;
 	/**
-		Compute sum of values, excluding missing values
+		Compute sum of values, excluding missing values.
+		
 		For multiple groupings, the result index will be a MultiIndex
 		
-		
-		See also
+		See Also
 		--------
 		pandas.Series.groupby
 		pandas.DataFrame.groupby
@@ -1210,7 +1405,7 @@ package pandas.core.resample;
 	**/
 	public function ohlc(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Forward fill the values
+		Forward fill the values.
 		
 		Parameters
 		----------
@@ -1228,12 +1423,12 @@ package pandas.core.resample;
 	**/
 	public function pad(?limit:Dynamic):Dynamic;
 	/**
-		Apply a function ``func`` with arguments to this Resampler object and return
+		Apply a function `func` with arguments to this Resampler object and return
 		the function's result.
 		
 		.. versionadded:: 0.23.0
 		
-		Use ``.pipe`` when you want to improve readability by chaining together
+		Use `.pipe` when you want to improve readability by chaining together
 		functions that expect Series, DataFrames, GroupBy or Resampler objects.
 		Instead of writing
 		
@@ -1252,17 +1447,24 @@ package pandas.core.resample;
 		----------
 		func : callable or tuple of (callable, string)
 		    Function to apply to this Resampler object or, alternatively,
-		    a ``(callable, data_keyword)`` tuple where ``data_keyword`` is a
-		    string indicating the keyword of ``callable`` that expects the
+		    a `(callable, data_keyword)` tuple where `data_keyword` is a
+		    string indicating the keyword of `callable` that expects the
 		    Resampler object.
 		args : iterable, optional
-		       positional arguments passed into ``func``.
+		       positional arguments passed into `func`.
 		kwargs : dict, optional
-		         a dictionary of keyword arguments passed into ``func``.
+		         a dictionary of keyword arguments passed into `func`.
 		
 		Returns
 		-------
-		object : the return type of ``func``.
+		object : the return type of `func`.
+		
+		See Also
+		--------
+		pandas.Series.pipe : Apply a function with arguments to a series.
+		pandas.DataFrame.pipe: Apply a function with arguments to a dataframe.
+		apply : Apply function to each group instead of to the
+		    full Resampler object.
 		
 		Notes
 		-----
@@ -1272,39 +1474,32 @@ package pandas.core.resample;
 		Examples
 		--------
 		
-		>>> df = pd.DataFrame({'A': [1, 2, 3, 4]},
-		...                   index=pd.date_range('2012-08-02', periods=4))
-		>>> df
-		            A
-		2012-08-02  1
-		2012-08-03  2
-		2012-08-04  3
-		2012-08-05  4
+		    >>> df = pd.DataFrame({'A': [1, 2, 3, 4]},
+		    ...                   index=pd.date_range('2012-08-02', periods=4))
+		    >>> df
+		                A
+		    2012-08-02  1
+		    2012-08-03  2
+		    2012-08-04  3
+		    2012-08-05  4
 		
-		To get the difference between each 2-day period's maximum and minimum value in
-		one pass, you can do
+		    To get the difference between each 2-day period's maximum and minimum
+		    value in one pass, you can do
 		
-		>>> df.resample('2D').pipe(lambda x: x.max() - x.min())
-		            A
-		2012-08-02  1
-		2012-08-04  1
-		
-		See Also
-		--------
-		pandas.Series.pipe : Apply a function with arguments to a series
-		pandas.DataFrame.pipe: Apply a function with arguments to a dataframe
-		apply : Apply function to each group instead of to the
-		    full Resampler object.
+		    >>> df.resample('2D').pipe(lambda x: x.max() - x.min())
+		                A
+		    2012-08-02  1
+		    2012-08-04  1
+		    
 	**/
 	public function pipe(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Class implementing the .plot attribute for groupby objects
+		Class implementing the .plot attribute for groupby objects.
 	**/
 	public var plot : Dynamic;
 	/**
 		Compute prod of group values
-		
-		See also
+		See Also
 		--------
 		pandas.Series.groupby
 		pandas.DataFrame.groupby
@@ -1312,17 +1507,32 @@ package pandas.core.resample;
 	**/
 	public function prod(?_method:Dynamic, ?min_count:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Compute standard error of the mean of groups, excluding missing values
+		Return value at the given quantile.
 		
-		For multiple groupings, the result index will be a MultiIndex
+		.. versionadded:: 0.24.0
+		
+		Parameters
+		----------
+		q : float or array-like, default 0.5 (50% quantile)
+		
+		See Also
+		--------
+		Series.quantile
+		DataFrame.quantile
+		DataFrameGroupBy.quantile
+	**/
+	public function quantile(?q:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Compute standard error of the mean of groups, excluding missing values.
+		
+		For multiple groupings, the result index will be a MultiIndex.
 		
 		Parameters
 		----------
 		ddof : integer, default 1
 		    degrees of freedom
 		
-		
-		See also
+		See Also
 		--------
 		pandas.Series.groupby
 		pandas.DataFrame.groupby
@@ -1330,9 +1540,9 @@ package pandas.core.resample;
 	**/
 	public function sem(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Compute group sizes
+		Compute group sizes.
 		
-		See also
+		See Also
 		--------
 		pandas.Series.groupby
 		pandas.DataFrame.groupby
@@ -1340,7 +1550,7 @@ package pandas.core.resample;
 	**/
 	public function size():Dynamic;
 	/**
-		Compute standard deviation of groups, excluding missing values
+		Compute standard deviation of groups, excluding missing values.
 		
 		Parameters
 		----------
@@ -1350,8 +1560,7 @@ package pandas.core.resample;
 	public function std(?ddof:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute sum of group values
-		
-		See also
+		See Also
 		--------
 		pandas.Series.groupby
 		pandas.DataFrame.groupby
@@ -1360,29 +1569,29 @@ package pandas.core.resample;
 	public function sum(?_method:Dynamic, ?min_count:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call function producing a like-indexed Series on each group and return
-		a Series with the transformed values
+		a Series with the transformed values.
 		
 		Parameters
 		----------
 		func : function
 		    To apply to each group. Should return a Series with the same index
 		
-		Examples
-		--------
-		>>> resampled.transform(lambda x: (x - x.mean()) / x.std())
-		
 		Returns
 		-------
 		transformed : Series
+		
+		Examples
+		--------
+		>>> resampled.transform(lambda x: (x - x.mean()) / x.std())
 	**/
 	public function transform(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
-		Compute variance of groups, excluding missing values
+		Compute variance of groups, excluding missing values.
 		
 		Parameters
 		----------
 		ddof : integer, default 1
-		degrees of freedom
+		    degrees of freedom
 	**/
 	@:native("var")
 	public function _var(?ddof:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;

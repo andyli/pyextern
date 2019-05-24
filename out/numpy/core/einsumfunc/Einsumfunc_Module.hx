@@ -73,6 +73,8 @@ package numpy.core.einsumfunc;
 		90
 	**/
 	static public function _compute_size_by_dict(indices:Dynamic, idx_dict:Dynamic):Int;
+	static public function _einsum_dispatcher(?operands:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _einsum_path_dispatcher(?operands:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Finds the contraction for a given set of input and output sets.
 		
@@ -172,7 +174,7 @@ package numpy.core.einsumfunc;
 		Examples
 		--------
 		>>> isets = [set('abd'), set('ac'), set('bdc')]
-		>>> oset = set('')
+		>>> oset = set()
 		>>> idx_sizes = {'a': 1, 'b':2, 'c':3, 'd':4}
 		>>> _path__greedy_path(isets, oset, idx_sizes, 5000)
 		[(0, 2), (0, 1)]
@@ -202,7 +204,7 @@ package numpy.core.einsumfunc;
 		Examples
 		--------
 		>>> isets = [set('abd'), set('ac'), set('bdc')]
-		>>> oset = set('')
+		>>> oset = set()
 		>>> idx_sizes = {'a': 1, 'b':2, 'c':3, 'd':4}
 		>>> _path__optimal_path(isets, oset, idx_sizes, 5000)
 		[(0, 2), (0, 1)]
@@ -284,6 +286,38 @@ package numpy.core.einsumfunc;
 	static public function _update_other_results(results:Dynamic, best:Dynamic):Array<Dynamic>;
 	static public var absolute_import : Dynamic;
 	/**
+		Decorator for adding dispatch with the __array_function__ protocol.
+		
+		See NEP-18 for example usage.
+		
+		Parameters
+		----------
+		dispatcher : callable
+		    Function that when called like ``dispatcher(*args, **kwargs)`` with
+		    arguments from the NumPy function call returns an iterable of
+		    array-like arguments to check for ``__array_function__``.
+		module : str, optional
+		    __module__ attribute to set on new function, e.g., ``module='numpy'``.
+		    By default, module is copied from the decorated function.
+		verify : bool, optional
+		    If True, verify the that the signature of the dispatcher and decorated
+		    function signatures match exactly: all required and optional arguments
+		    should appear in order with the same names, but the default values for
+		    all optional arguments should be ``None``. Only disable verification
+		    if the dispatcher's signature needs to deviate for some particular
+		    reason, e.g., because the function has a signature like
+		    ``func(*args, **kwargs)``.
+		docs_from_dispatcher : bool, optional
+		    If True, copy docs from the dispatcher function onto the dispatched
+		    function, rather than from the implementation. This is useful for
+		    functions defined in C, which otherwise don't have docstrings.
+		
+		Returns
+		-------
+		Function suitable for decorating the implementation of a NumPy function.
+	**/
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
+	/**
 		Convert the input to an ndarray, but pass ndarray subclasses through.
 		
 		Parameters
@@ -333,177 +367,35 @@ package numpy.core.einsumfunc;
 	**/
 	static public function asanyarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	/**
-		Convert the input to an array.
+		c_einsum(subscripts, *operands, out=None, dtype=None, order='K',
+		       casting='safe')
 		
-		Parameters
-		----------
-		a : array_like
-		    Input data, in any form that can be converted to an array.  This
-		    includes lists, lists of tuples, tuples, tuples of tuples, tuples
-		    of lists and ndarrays.
-		dtype : data-type, optional
-		    By default, the data-type is inferred from the input data.
-		order : {'C', 'F'}, optional
-		    Whether to use row-major (C-style) or
-		    column-major (Fortran-style) memory representation.
-		    Defaults to 'C'.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray with matching dtype and order.  If `a` is a
-		    subclass of ndarray, a base class ndarray is returned.
-		
-		See Also
-		--------
-		asanyarray : Similar function which passes through subclasses.
-		ascontiguousarray : Convert input to a contiguous array.
-		asfarray : Convert input to a floating point ndarray.
-		asfortranarray : Convert input to an ndarray with column-major
-		                 memory order.
-		asarray_chkfinite : Similar function which checks input for NaNs and Infs.
-		fromiter : Create an array from an iterator.
-		fromfunction : Construct an array by executing a function on grid
-		               positions.
-		
-		Examples
-		--------
-		Convert a list into an array:
-		
-		>>> a = [1, 2]
-		>>> np.asarray(a)
-		array([1, 2])
-		
-		Existing arrays are not copied:
-		
-		>>> a = np.array([1, 2])
-		>>> np.asarray(a) is a
-		True
-		
-		If `dtype` is set, array is copied only if dtype does not match:
-		
-		>>> a = np.array([1, 2], dtype=np.float32)
-		>>> np.asarray(a, dtype=np.float32) is a
-		True
-		>>> np.asarray(a, dtype=np.float64) is a
-		False
-		
-		Contrary to `asanyarray`, ndarray subclasses are not passed through:
-		
-		>>> issubclass(np.recarray, np.ndarray)
-		True
-		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
-		>>> np.asarray(a) is a
-		False
-		>>> np.asanyarray(a) is a
-		True
-	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
-	static public function c_einsum(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var division : Dynamic;
-	/**
-		dot(a, b, out=None)
-		
-		Dot product of two arrays. Specifically,
-		
-		- If both `a` and `b` are 1-D arrays, it is inner product of vectors
-		  (without complex conjugation).
-		
-		- If both `a` and `b` are 2-D arrays, it is matrix multiplication,
-		  but using :func:`matmul` or ``a @ b`` is preferred.
-		
-		- If either `a` or `b` is 0-D (scalar), it is equivalent to :func:`multiply`
-		  and using ``numpy.multiply(a, b)`` or ``a * b`` is preferred.
-		
-		- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over
-		  the last axis of `a` and `b`.
-		
-		- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a
-		  sum product over the last axis of `a` and the second-to-last axis of `b`::
-		
-		    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])
-		
-		Parameters
-		----------
-		a : array_like
-		    First argument.
-		b : array_like
-		    Second argument.
-		out : ndarray, optional
-		    Output argument. This must have the exact kind that would be returned
-		    if it was not used. In particular, it must have the right type, must be
-		    C-contiguous, and its dtype must be the dtype that would be returned
-		    for `dot(a,b)`. This is a performance feature. Therefore, if these
-		    conditions are not met, an exception is raised, instead of attempting
-		    to be flexible.
-		
-		Returns
-		-------
-		output : ndarray
-		    Returns the dot product of `a` and `b`.  If `a` and `b` are both
-		    scalars or both 1-D arrays then a scalar is returned; otherwise
-		    an array is returned.
-		    If `out` is given, then it is returned.
-		
-		Raises
-		------
-		ValueError
-		    If the last dimension of `a` is not the same size as
-		    the second-to-last dimension of `b`.
-		
-		See Also
-		--------
-		vdot : Complex-conjugating dot product.
-		tensordot : Sum products over arbitrary axes.
-		einsum : Einstein summation convention.
-		matmul : '@' operator as method with out parameter.
-		
-		Examples
-		--------
-		>>> np.dot(3, 4)
-		12
-		
-		Neither argument is complex-conjugated:
-		
-		>>> np.dot([2j, 3j], [2j, 3j])
-		(-13+0j)
-		
-		For 2-D arrays it is the matrix product:
-		
-		>>> a = [[1, 0], [0, 1]]
-		>>> b = [[4, 1], [2, 2]]
-		>>> np.dot(a, b)
-		array([[4, 1],
-		       [2, 2]])
-		
-		>>> a = np.arange(3*4*5*6).reshape((3,4,5,6))
-		>>> b = np.arange(3*4*5*6)[::-1].reshape((5,4,6,3))
-		>>> np.dot(a, b)[2,3,2,1,2,2]
-		499128
-		>>> sum(a[2,3,2,:] * b[1,2,:,2])
-		499128
-	**/
-	static public function dot(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		einsum(subscripts, *operands, out=None, dtype=None, order='K',
-		       casting='safe', optimize=False)
+		*This documentation shadows that of the native python implementation of the `einsum` function,
+		except all references and examples related to the `optimize` argument (v 0.12.0) have been removed.*
 		
 		Evaluates the Einstein summation convention on the operands.
 		
-		Using the Einstein summation convention, many common multi-dimensional
-		array operations can be represented in a simple fashion.  This function
-		provides a way to compute such summations. The best way to understand this
-		function is to try the examples below, which show how many common NumPy
-		functions can be implemented as calls to `einsum`.
+		Using the Einstein summation convention, many common multi-dimensional,
+		linear algebraic array operations can be represented in a simple fashion.
+		In *implicit* mode `einsum` computes these values.
+		
+		In *explicit* mode, `einsum` provides further flexibility to compute
+		other array operations that might not be considered classical Einstein
+		summation operations, by disabling, or forcing summation over specified
+		subscript labels.
+		
+		See the notes and examples for clarification.
 		
 		Parameters
 		----------
 		subscripts : str
-		    Specifies the subscripts for summation.
+		    Specifies the subscripts for summation as comma separated list of
+		    subscript labels. An implicit (classical Einstein summation)
+		    calculation is performed unless the explicit indicator '->' is
+		    included as well as subscript labels of the precise output form.
 		operands : list of array_like
 		    These are the arrays for the operation.
-		out : {ndarray, None}, optional
+		out : ndarray, optional
 		    If provided, the calculation is done into this array.
 		dtype : {data-type, None}, optional
 		    If provided, forces the calculation to use the data type specified.
@@ -547,66 +439,89 @@ package numpy.core.einsumfunc;
 		-----
 		.. versionadded:: 1.6.0
 		
+		The Einstein summation convention can be used to compute
+		many multi-dimensional, linear algebraic array operations. `einsum`
+		provides a succinct way of representing these.
+		
+		A non-exhaustive list of these operations,
+		which can be computed by `einsum`, is shown below along with examples:
+		
+		* Trace of an array, :py:func:`numpy.trace`.
+		* Return a diagonal, :py:func:`numpy.diag`.
+		* Array axis summations, :py:func:`numpy.sum`.
+		* Transpositions and permutations, :py:func:`numpy.transpose`.
+		* Matrix multiplication and dot product, :py:func:`numpy.matmul` :py:func:`numpy.dot`.
+		* Vector inner and outer products, :py:func:`numpy.inner` :py:func:`numpy.outer`.
+		* Broadcasting, element-wise and scalar multiplication, :py:func:`numpy.multiply`.
+		* Tensor contractions, :py:func:`numpy.tensordot`.
+		* Chained array operations, in efficient calculation order, :py:func:`numpy.einsum_path`.
+		
 		The subscripts string is a comma-separated list of subscript labels,
 		where each label refers to a dimension of the corresponding operand.
-		Repeated subscripts labels in one operand take the diagonal.  For example,
-		``np.einsum('ii', a)`` is equivalent to ``np.trace(a)``.
+		Whenever a label is repeated it is summed, so ``np.einsum('i,i', a, b)``
+		is equivalent to :py:func:`np.inner(a,b) <numpy.inner>`. If a label
+		appears only once, it is not summed, so ``np.einsum('i', a)`` produces a
+		view of ``a`` with no changes. A further example ``np.einsum('ij,jk', a, b)``
+		describes traditional matrix multiplication and is equivalent to
+		:py:func:`np.matmul(a,b) <numpy.matmul>`. Repeated subscript labels in one
+		operand take the diagonal. For example, ``np.einsum('ii', a)`` is equivalent
+		to :py:func:`np.trace(a) <numpy.trace>`.
 		
-		Whenever a label is repeated, it is summed, so ``np.einsum('i,i', a, b)``
-		is equivalent to ``np.inner(a,b)``.  If a label appears only once,
-		it is not summed, so ``np.einsum('i', a)`` produces a view of ``a``
-		with no changes.
-		
-		The order of labels in the output is by default alphabetical.  This
+		In *implicit mode*, the chosen subscripts are important
+		since the axes of the output are reordered alphabetically.  This
 		means that ``np.einsum('ij', a)`` doesn't affect a 2D array, while
-		``np.einsum('ji', a)`` takes its transpose.
+		``np.einsum('ji', a)`` takes its transpose. Additionally,
+		``np.einsum('ij,jk', a, b)`` returns a matrix multiplication, while,
+		``np.einsum('ij,jh', a, b)`` returns the transpose of the
+		multiplication since subscript 'h' precedes subscript 'i'.
 		
-		The output can be controlled by specifying output subscript labels
-		as well.  This specifies the label order, and allows summing to
-		be disallowed or forced when desired.  The call ``np.einsum('i->', a)``
-		is like ``np.sum(a, axis=-1)``, and ``np.einsum('ii->i', a)``
-		is like ``np.diag(a)``.  The difference is that `einsum` does not
-		allow broadcasting by default.
+		In *explicit mode* the output can be directly controlled by
+		specifying output subscript labels.  This requires the
+		identifier '->' as well as the list of output subscript labels.
+		This feature increases the flexibility of the function since
+		summing can be disabled or forced when required. The call
+		``np.einsum('i->', a)`` is like :py:func:`np.sum(a, axis=-1) <numpy.sum>`,
+		and ``np.einsum('ii->i', a)`` is like :py:func:`np.diag(a) <numpy.diag>`.
+		The difference is that `einsum` does not allow broadcasting by default.
+		Additionally ``np.einsum('ij,jh->ih', a, b)`` directly specifies the
+		order of the output subscript labels and therefore returns matrix
+		multiplication, unlike the example above in implicit mode.
 		
 		To enable and control broadcasting, use an ellipsis.  Default
 		NumPy-style broadcasting is done by adding an ellipsis
 		to the left of each term, like ``np.einsum('...ii->...i', a)``.
 		To take the trace along the first and last axes,
 		you can do ``np.einsum('i...i', a)``, or to do a matrix-matrix
-		product with the left-most indices instead of rightmost, you can do
+		product with the left-most indices instead of rightmost, one can do
 		``np.einsum('ij...,jk...->ik...', a, b)``.
 		
 		When there is only one operand, no axes are summed, and no output
 		parameter is provided, a view into the operand is returned instead
 		of a new array.  Thus, taking the diagonal as ``np.einsum('ii->i', a)``
-		produces a view.
+		produces a view (changed in version 1.10.0).
 		
-		An alternative way to provide the subscripts and operands is as
-		``einsum(op0, sublist0, op1, sublist1, ..., [sublistout])``. The examples
-		below have corresponding `einsum` calls with the two parameter methods.
+		`einsum` also provides an alternative way to provide the subscripts
+		and operands as ``einsum(op0, sublist0, op1, sublist1, ..., [sublistout])``.
+		If the output shape is not provided in this format `einsum` will be
+		calculated in implicit mode, otherwise it will be performed explicitly.
+		The examples below have corresponding `einsum` calls with the two
+		parameter methods.
 		
 		.. versionadded:: 1.10.0
 		
 		Views returned from einsum are now writeable whenever the input array
 		is writeable. For example, ``np.einsum('ijk...->kji...', a)`` will now
-		have the same effect as ``np.swapaxes(a, 0, 2)`` and
-		``np.einsum('ii->i', a)`` will return a writeable view of the diagonal
+		have the same effect as :py:func:`np.swapaxes(a, 0, 2) <numpy.swapaxes>`
+		and ``np.einsum('ii->i', a)`` will return a writeable view of the diagonal
 		of a 2D array.
-		
-		.. versionadded:: 1.12.0
-		
-		Added the ``optimize`` argument which will optimize the contraction order
-		of an einsum expression. For a contraction with three or more operands this
-		can greatly increase the computational efficiency at the cost of a larger
-		memory footprint during computation.
-		
-		See ``np.einsum_path`` for more details.
 		
 		Examples
 		--------
 		>>> a = np.arange(25).reshape(5,5)
 		>>> b = np.arange(5)
 		>>> c = np.arange(6).reshape(2,3)
+		
+		Trace of a matrix:
 		
 		>>> np.einsum('ii', a)
 		60
@@ -615,12 +530,60 @@ package numpy.core.einsumfunc;
 		>>> np.trace(a)
 		60
 		
+		Extract the diagonal (requires explicit form):
+		
 		>>> np.einsum('ii->i', a)
 		array([ 0,  6, 12, 18, 24])
 		>>> np.einsum(a, [0,0], [0])
 		array([ 0,  6, 12, 18, 24])
 		>>> np.diag(a)
 		array([ 0,  6, 12, 18, 24])
+		
+		Sum over an axis (requires explicit form):
+		
+		>>> np.einsum('ij->i', a)
+		array([ 10,  35,  60,  85, 110])
+		>>> np.einsum(a, [0,1], [0])
+		array([ 10,  35,  60,  85, 110])
+		>>> np.sum(a, axis=1)
+		array([ 10,  35,  60,  85, 110])
+		
+		For higher dimensional arrays summing a single axis can be done with ellipsis:
+		
+		>>> np.einsum('...j->...', a)
+		array([ 10,  35,  60,  85, 110])
+		>>> np.einsum(a, [Ellipsis,1], [Ellipsis])
+		array([ 10,  35,  60,  85, 110])
+		
+		Compute a matrix transpose, or reorder any number of axes:
+		
+		>>> np.einsum('ji', c)
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		>>> np.einsum('ij->ji', c)
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		>>> np.einsum(c, [1,0])
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		>>> np.transpose(c)
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		
+		Vector inner products:
+		
+		>>> np.einsum('i,i', b, b)
+		30
+		>>> np.einsum(b, [0], b, [0])
+		30
+		>>> np.inner(b,b)
+		30
+		
+		Matrix vector multiplication:
 		
 		>>> np.einsum('ij,j', a, b)
 		array([ 30,  80, 130, 180, 230])
@@ -631,23 +594,12 @@ package numpy.core.einsumfunc;
 		>>> np.einsum('...j,j', a, b)
 		array([ 30,  80, 130, 180, 230])
 		
-		>>> np.einsum('ji', c)
-		array([[0, 3],
-		       [1, 4],
-		       [2, 5]])
-		>>> np.einsum(c, [1,0])
-		array([[0, 3],
-		       [1, 4],
-		       [2, 5]])
-		>>> c.T
-		array([[0, 3],
-		       [1, 4],
-		       [2, 5]])
+		Broadcasting and scalar multiplication:
 		
 		>>> np.einsum('..., ...', 3, c)
 		array([[ 0,  3,  6],
 		       [ 9, 12, 15]])
-		>>> np.einsum(',ij', 3, C)
+		>>> np.einsum(',ij', 3, c)
 		array([[ 0,  3,  6],
 		       [ 9, 12, 15]])
 		>>> np.einsum(3, [Ellipsis], c, [Ellipsis])
@@ -657,12 +609,7 @@ package numpy.core.einsumfunc;
 		array([[ 0,  3,  6],
 		       [ 9, 12, 15]])
 		
-		>>> np.einsum('i,i', b, b)
-		30
-		>>> np.einsum(b, [0], b, [0])
-		30
-		>>> np.inner(b,b)
-		30
+		Vector outer product:
 		
 		>>> np.einsum('i,j', np.arange(2)+1, b)
 		array([[0, 1, 2, 3, 4],
@@ -674,12 +621,7 @@ package numpy.core.einsumfunc;
 		array([[0, 1, 2, 3, 4],
 		       [0, 2, 4, 6, 8]])
 		
-		>>> np.einsum('i...->...', a)
-		array([50, 55, 60, 65, 70])
-		>>> np.einsum(a, [0,Ellipsis], [Ellipsis])
-		array([50, 55, 60, 65, 70])
-		>>> np.sum(a, axis=0)
-		array([50, 55, 60, 65, 70])
+		Tensor contraction:
 		
 		>>> a = np.arange(60.).reshape(3,4,5)
 		>>> b = np.arange(24.).reshape(4,3,2)
@@ -702,6 +644,333 @@ package numpy.core.einsumfunc;
 		       [ 4796.,  5162.],
 		       [ 4928.,  5306.]])
 		
+		Writeable returned arrays (since version 1.10.0):
+		
+		>>> a = np.zeros((3, 3))
+		>>> np.einsum('ii->i', a)[:] = 1
+		>>> a
+		array([[ 1.,  0.,  0.],
+		       [ 0.,  1.,  0.],
+		       [ 0.,  0.,  1.]])
+		
+		Example of ellipsis use:
+		
+		>>> a = np.arange(6).reshape((3,2))
+		>>> b = np.arange(12).reshape((4,3))
+		>>> np.einsum('ki,jk->ij', a, b)
+		array([[10, 28, 46, 64],
+		       [13, 40, 67, 94]])
+		>>> np.einsum('ki,...k->i...', a, b)
+		array([[10, 28, 46, 64],
+		       [13, 40, 67, 94]])
+		>>> np.einsum('k...,jk', a, b)
+		array([[10, 28, 46, 64],
+		       [13, 40, 67, 94]])
+	**/
+	static public function c_einsum(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var division : Dynamic;
+	/**
+		einsum(subscripts, *operands, out=None, dtype=None, order='K',
+		       casting='safe', optimize=False)
+		
+		Evaluates the Einstein summation convention on the operands.
+		
+		Using the Einstein summation convention, many common multi-dimensional,
+		linear algebraic array operations can be represented in a simple fashion.
+		In *implicit* mode `einsum` computes these values.
+		
+		In *explicit* mode, `einsum` provides further flexibility to compute
+		other array operations that might not be considered classical Einstein
+		summation operations, by disabling, or forcing summation over specified
+		subscript labels.
+		
+		See the notes and examples for clarification.
+		
+		Parameters
+		----------
+		subscripts : str
+		    Specifies the subscripts for summation as comma separated list of
+		    subscript labels. An implicit (classical Einstein summation)
+		    calculation is performed unless the explicit indicator '->' is
+		    included as well as subscript labels of the precise output form.
+		operands : list of array_like
+		    These are the arrays for the operation.
+		out : ndarray, optional
+		    If provided, the calculation is done into this array.
+		dtype : {data-type, None}, optional
+		    If provided, forces the calculation to use the data type specified.
+		    Note that you may have to also give a more liberal `casting`
+		    parameter to allow the conversions. Default is None.
+		order : {'C', 'F', 'A', 'K'}, optional
+		    Controls the memory layout of the output. 'C' means it should
+		    be C contiguous. 'F' means it should be Fortran contiguous,
+		    'A' means it should be 'F' if the inputs are all 'F', 'C' otherwise.
+		    'K' means it should be as close to the layout as the inputs as
+		    is possible, including arbitrarily permuted axes.
+		    Default is 'K'.
+		casting : {'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional
+		    Controls what kind of data casting may occur.  Setting this to
+		    'unsafe' is not recommended, as it can adversely affect accumulations.
+		
+		      * 'no' means the data types should not be cast at all.
+		      * 'equiv' means only byte-order changes are allowed.
+		      * 'safe' means only casts which can preserve values are allowed.
+		      * 'same_kind' means only safe casts or casts within a kind,
+		        like float64 to float32, are allowed.
+		      * 'unsafe' means any data conversions may be done.
+		
+		    Default is 'safe'.
+		optimize : {False, True, 'greedy', 'optimal'}, optional
+		    Controls if intermediate optimization should occur. No optimization
+		    will occur if False and True will default to the 'greedy' algorithm.
+		    Also accepts an explicit contraction list from the ``np.einsum_path``
+		    function. See ``np.einsum_path`` for more details. Defaults to False.
+		
+		Returns
+		-------
+		output : ndarray
+		    The calculation based on the Einstein summation convention.
+		
+		See Also
+		--------
+		einsum_path, dot, inner, outer, tensordot, linalg.multi_dot
+		
+		Notes
+		-----
+		.. versionadded:: 1.6.0
+		
+		The Einstein summation convention can be used to compute
+		many multi-dimensional, linear algebraic array operations. `einsum`
+		provides a succinct way of representing these.
+		
+		A non-exhaustive list of these operations,
+		which can be computed by `einsum`, is shown below along with examples:
+		
+		* Trace of an array, :py:func:`numpy.trace`.
+		* Return a diagonal, :py:func:`numpy.diag`.
+		* Array axis summations, :py:func:`numpy.sum`.
+		* Transpositions and permutations, :py:func:`numpy.transpose`.
+		* Matrix multiplication and dot product, :py:func:`numpy.matmul` :py:func:`numpy.dot`.
+		* Vector inner and outer products, :py:func:`numpy.inner` :py:func:`numpy.outer`.
+		* Broadcasting, element-wise and scalar multiplication, :py:func:`numpy.multiply`.
+		* Tensor contractions, :py:func:`numpy.tensordot`.
+		* Chained array operations, in efficient calculation order, :py:func:`numpy.einsum_path`.
+		
+		The subscripts string is a comma-separated list of subscript labels,
+		where each label refers to a dimension of the corresponding operand.
+		Whenever a label is repeated it is summed, so ``np.einsum('i,i', a, b)``
+		is equivalent to :py:func:`np.inner(a,b) <numpy.inner>`. If a label
+		appears only once, it is not summed, so ``np.einsum('i', a)`` produces a
+		view of ``a`` with no changes. A further example ``np.einsum('ij,jk', a, b)``
+		describes traditional matrix multiplication and is equivalent to
+		:py:func:`np.matmul(a,b) <numpy.matmul>`. Repeated subscript labels in one
+		operand take the diagonal. For example, ``np.einsum('ii', a)`` is equivalent
+		to :py:func:`np.trace(a) <numpy.trace>`.
+		
+		In *implicit mode*, the chosen subscripts are important
+		since the axes of the output are reordered alphabetically.  This
+		means that ``np.einsum('ij', a)`` doesn't affect a 2D array, while
+		``np.einsum('ji', a)`` takes its transpose. Additionally,
+		``np.einsum('ij,jk', a, b)`` returns a matrix multiplication, while,
+		``np.einsum('ij,jh', a, b)`` returns the transpose of the
+		multiplication since subscript 'h' precedes subscript 'i'.
+		
+		In *explicit mode* the output can be directly controlled by
+		specifying output subscript labels.  This requires the
+		identifier '->' as well as the list of output subscript labels.
+		This feature increases the flexibility of the function since
+		summing can be disabled or forced when required. The call
+		``np.einsum('i->', a)`` is like :py:func:`np.sum(a, axis=-1) <numpy.sum>`,
+		and ``np.einsum('ii->i', a)`` is like :py:func:`np.diag(a) <numpy.diag>`.
+		The difference is that `einsum` does not allow broadcasting by default.
+		Additionally ``np.einsum('ij,jh->ih', a, b)`` directly specifies the
+		order of the output subscript labels and therefore returns matrix
+		multiplication, unlike the example above in implicit mode.
+		
+		To enable and control broadcasting, use an ellipsis.  Default
+		NumPy-style broadcasting is done by adding an ellipsis
+		to the left of each term, like ``np.einsum('...ii->...i', a)``.
+		To take the trace along the first and last axes,
+		you can do ``np.einsum('i...i', a)``, or to do a matrix-matrix
+		product with the left-most indices instead of rightmost, one can do
+		``np.einsum('ij...,jk...->ik...', a, b)``.
+		
+		When there is only one operand, no axes are summed, and no output
+		parameter is provided, a view into the operand is returned instead
+		of a new array.  Thus, taking the diagonal as ``np.einsum('ii->i', a)``
+		produces a view (changed in version 1.10.0).
+		
+		`einsum` also provides an alternative way to provide the subscripts
+		and operands as ``einsum(op0, sublist0, op1, sublist1, ..., [sublistout])``.
+		If the output shape is not provided in this format `einsum` will be
+		calculated in implicit mode, otherwise it will be performed explicitly.
+		The examples below have corresponding `einsum` calls with the two
+		parameter methods.
+		
+		.. versionadded:: 1.10.0
+		
+		Views returned from einsum are now writeable whenever the input array
+		is writeable. For example, ``np.einsum('ijk...->kji...', a)`` will now
+		have the same effect as :py:func:`np.swapaxes(a, 0, 2) <numpy.swapaxes>`
+		and ``np.einsum('ii->i', a)`` will return a writeable view of the diagonal
+		of a 2D array.
+		
+		.. versionadded:: 1.12.0
+		
+		Added the ``optimize`` argument which will optimize the contraction order
+		of an einsum expression. For a contraction with three or more operands this
+		can greatly increase the computational efficiency at the cost of a larger
+		memory footprint during computation.
+		
+		Typically a 'greedy' algorithm is applied which empirical tests have shown
+		returns the optimal path in the majority of cases. In some cases 'optimal'
+		will return the superlative path through a more expensive, exhaustive search.
+		For iterative calculations it may be advisable to calculate the optimal path
+		once and reuse that path by supplying it as an argument. An example is given
+		below.
+		
+		See :py:func:`numpy.einsum_path` for more details.
+		
+		Examples
+		--------
+		>>> a = np.arange(25).reshape(5,5)
+		>>> b = np.arange(5)
+		>>> c = np.arange(6).reshape(2,3)
+		
+		Trace of a matrix:
+		
+		>>> np.einsum('ii', a)
+		60
+		>>> np.einsum(a, [0,0])
+		60
+		>>> np.trace(a)
+		60
+		
+		Extract the diagonal (requires explicit form):
+		
+		>>> np.einsum('ii->i', a)
+		array([ 0,  6, 12, 18, 24])
+		>>> np.einsum(a, [0,0], [0])
+		array([ 0,  6, 12, 18, 24])
+		>>> np.diag(a)
+		array([ 0,  6, 12, 18, 24])
+		
+		Sum over an axis (requires explicit form):
+		
+		>>> np.einsum('ij->i', a)
+		array([ 10,  35,  60,  85, 110])
+		>>> np.einsum(a, [0,1], [0])
+		array([ 10,  35,  60,  85, 110])
+		>>> np.sum(a, axis=1)
+		array([ 10,  35,  60,  85, 110])
+		
+		For higher dimensional arrays summing a single axis can be done with ellipsis:
+		
+		>>> np.einsum('...j->...', a)
+		array([ 10,  35,  60,  85, 110])
+		>>> np.einsum(a, [Ellipsis,1], [Ellipsis])
+		array([ 10,  35,  60,  85, 110])
+		
+		Compute a matrix transpose, or reorder any number of axes:
+		
+		>>> np.einsum('ji', c)
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		>>> np.einsum('ij->ji', c)
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		>>> np.einsum(c, [1,0])
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		>>> np.transpose(c)
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		
+		Vector inner products:
+		
+		>>> np.einsum('i,i', b, b)
+		30
+		>>> np.einsum(b, [0], b, [0])
+		30
+		>>> np.inner(b,b)
+		30
+		
+		Matrix vector multiplication:
+		
+		>>> np.einsum('ij,j', a, b)
+		array([ 30,  80, 130, 180, 230])
+		>>> np.einsum(a, [0,1], b, [1])
+		array([ 30,  80, 130, 180, 230])
+		>>> np.dot(a, b)
+		array([ 30,  80, 130, 180, 230])
+		>>> np.einsum('...j,j', a, b)
+		array([ 30,  80, 130, 180, 230])
+		
+		Broadcasting and scalar multiplication:
+		
+		>>> np.einsum('..., ...', 3, c)
+		array([[ 0,  3,  6],
+		       [ 9, 12, 15]])
+		>>> np.einsum(',ij', 3, c)
+		array([[ 0,  3,  6],
+		       [ 9, 12, 15]])
+		>>> np.einsum(3, [Ellipsis], c, [Ellipsis])
+		array([[ 0,  3,  6],
+		       [ 9, 12, 15]])
+		>>> np.multiply(3, c)
+		array([[ 0,  3,  6],
+		       [ 9, 12, 15]])
+		
+		Vector outer product:
+		
+		>>> np.einsum('i,j', np.arange(2)+1, b)
+		array([[0, 1, 2, 3, 4],
+		       [0, 2, 4, 6, 8]])
+		>>> np.einsum(np.arange(2)+1, [0], b, [1])
+		array([[0, 1, 2, 3, 4],
+		       [0, 2, 4, 6, 8]])
+		>>> np.outer(np.arange(2)+1, b)
+		array([[0, 1, 2, 3, 4],
+		       [0, 2, 4, 6, 8]])
+		
+		Tensor contraction:
+		
+		>>> a = np.arange(60.).reshape(3,4,5)
+		>>> b = np.arange(24.).reshape(4,3,2)
+		>>> np.einsum('ijk,jil->kl', a, b)
+		array([[ 4400.,  4730.],
+		       [ 4532.,  4874.],
+		       [ 4664.,  5018.],
+		       [ 4796.,  5162.],
+		       [ 4928.,  5306.]])
+		>>> np.einsum(a, [0,1,2], b, [1,0,3], [2,3])
+		array([[ 4400.,  4730.],
+		       [ 4532.,  4874.],
+		       [ 4664.,  5018.],
+		       [ 4796.,  5162.],
+		       [ 4928.,  5306.]])
+		>>> np.tensordot(a,b, axes=([1,0],[0,1]))
+		array([[ 4400.,  4730.],
+		       [ 4532.,  4874.],
+		       [ 4664.,  5018.],
+		       [ 4796.,  5162.],
+		       [ 4928.,  5306.]])
+		
+		Writeable returned arrays (since version 1.10.0):
+		
+		>>> a = np.zeros((3, 3))
+		>>> np.einsum('ii->i', a)[:] = 1
+		>>> a
+		array([[ 1.,  0.,  0.],
+		       [ 0.,  1.,  0.],
+		       [ 0.,  0.,  1.]])
+		
+		Example of ellipsis use:
+		
 		>>> a = np.arange(6).reshape((3,2))
 		>>> b = np.arange(12).reshape((4,3))
 		>>> np.einsum('ki,jk->ij', a, b)
@@ -714,13 +983,26 @@ package numpy.core.einsumfunc;
 		array([[10, 28, 46, 64],
 		       [13, 40, 67, 94]])
 		
-		>>> # since version 1.10.0
-		>>> a = np.zeros((3, 3))
-		>>> np.einsum('ii->i', a)[:] = 1
-		>>> a
-		array([[ 1.,  0.,  0.],
-		       [ 0.,  1.,  0.],
-		       [ 0.,  0.,  1.]])
+		Chained array operations. For more complicated contractions, speed ups
+		might be achieved by repeatedly computing a 'greedy' path or pre-computing the
+		'optimal' path and repeatedly applying it, using an
+		`einsum_path` insertion (since version 1.12.0). Performance improvements can be
+		particularly significant with larger arrays:
+		
+		>>> a = np.ones(64).reshape(2,4,8)
+		# Basic `einsum`: ~1520ms  (benchmarked on 3.1GHz Intel i5.)
+		>>> for iteration in range(500):
+		...     np.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a)
+		# Sub-optimal `einsum` (due to repeated path calculation time): ~330ms
+		>>> for iteration in range(500):
+		...     np.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a, optimize='optimal')
+		# Greedy `einsum` (faster optimal path approximation): ~160ms
+		>>> for iteration in range(500):
+		...     np.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a, optimize='greedy')
+		# Optimal `einsum` (best usage pattern in some use cases): ~110ms
+		>>> path = np.einsum_path('ijk,ilm,njm,nlk,abc->',a,a,a,a,a, optimize='optimal')[0]
+		>>> for iteration in range(500):
+		...     np.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a, optimize=path)
 	**/
 	static public function einsum(?operands:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
@@ -834,73 +1116,6 @@ package numpy.core.einsumfunc;
 	static public var einsum_symbols : Dynamic;
 	static public var einsum_symbols_set : Dynamic;
 	static public var print_function : Dynamic;
-	/**
-		result_type(*arrays_and_dtypes)
-		
-		Returns the type that results from applying the NumPy
-		type promotion rules to the arguments.
-		
-		Type promotion in NumPy works similarly to the rules in languages
-		like C++, with some slight differences.  When both scalars and
-		arrays are used, the array's type takes precedence and the actual value
-		of the scalar is taken into account.
-		
-		For example, calculating 3*a, where a is an array of 32-bit floats,
-		intuitively should result in a 32-bit float output.  If the 3 is a
-		32-bit integer, the NumPy rules indicate it can't convert losslessly
-		into a 32-bit float, so a 64-bit float should be the result type.
-		By examining the value of the constant, '3', we see that it fits in
-		an 8-bit integer, which can be cast losslessly into the 32-bit float.
-		
-		Parameters
-		----------
-		arrays_and_dtypes : list of arrays and dtypes
-		    The operands of some operation whose result type is needed.
-		
-		Returns
-		-------
-		out : dtype
-		    The result type.
-		
-		See also
-		--------
-		dtype, promote_types, min_scalar_type, can_cast
-		
-		Notes
-		-----
-		.. versionadded:: 1.6.0
-		
-		The specific algorithm used is as follows.
-		
-		Categories are determined by first checking which of boolean,
-		integer (int/uint), or floating point (float/complex) the maximum
-		kind of all the arrays and the scalars are.
-		
-		If there are only scalars or the maximum category of the scalars
-		is higher than the maximum category of the arrays,
-		the data types are combined with :func:`promote_types`
-		to produce the return value.
-		
-		Otherwise, `min_scalar_type` is called on each array, and
-		the resulting data types are all combined with :func:`promote_types`
-		to produce the return value.
-		
-		The set of int values is not a subset of the uint values for types
-		with the same number of bits, something not reflected in
-		:func:`min_scalar_type`, but handled as a special case in `result_type`.
-		
-		Examples
-		--------
-		>>> np.result_type(3, np.arange(7, dtype='i1'))
-		dtype('int8')
-		
-		>>> np.result_type('i4', 'c8')
-		dtype('complex128')
-		
-		>>> np.result_type(3.0, -2)
-		dtype('float64')
-	**/
-	static public function result_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Compute tensor dot product along specified axes for arrays >= 1-D.
 		

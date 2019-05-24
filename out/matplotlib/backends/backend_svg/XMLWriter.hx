@@ -109,11 +109,72 @@ package matplotlib.backends.backend_svg;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Closes open elements, up to (and including) the element identified
+		by the given identifier.
+		
+		Parameters
+		----------
+		id
+		    Element identifier, as returned by the :meth:`start` method.
+	**/
 	public function close(id:Dynamic):Dynamic;
+	/**
+		Adds a comment to the output stream.
+		
+		Parameters
+		----------
+		comment : str
+		    Comment text.
+	**/
 	public function comment(comment:Dynamic):Dynamic;
+	/**
+		Adds character data to the output stream.
+		
+		Parameters
+		----------
+		text : str
+		    Character data.
+	**/
 	public function data(text:Dynamic):Dynamic;
+	/**
+		Adds an entire element.  This is the same as calling :meth:`start`,
+		:meth:`data`, and :meth:`end` in sequence. The *text* argument can be
+		omitted.
+	**/
 	public function element(tag:Dynamic, ?text:Dynamic, ?attrib:Dynamic, ?extra:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Closes the current element (opened by the most recent call to
+		:meth:`start`).
+		
+		Parameters
+		----------
+		tag
+		    Element tag.  If given, the tag must match the start tag.  If
+		    omitted, the current element is closed.
+	**/
 	public function end(?tag:Dynamic, ?indent:Dynamic):Dynamic;
+	/**
+		Flushes the output stream.
+	**/
 	public function flush():Dynamic;
+	/**
+		Opens a new element.  Attributes can be given as keyword
+		arguments, or as a string/string dictionary. The method returns
+		an opaque identifier that can be passed to the :meth:`close`
+		method, to close all open elements up to and including this one.
+		
+		Parameters
+		----------
+		tag
+		    Element tag.
+		attrib
+		    Attribute dictionary.  Alternatively, attributes can be given as
+		    keyword arguments.
+		
+		Returns
+		-------
+		An element identifier.
+	**/
 	public function start(tag:Dynamic, ?attrib:Dynamic, ?extra:python.KwArgs<Dynamic>):Dynamic;
 }

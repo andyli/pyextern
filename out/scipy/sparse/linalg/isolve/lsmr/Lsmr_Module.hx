@@ -107,6 +107,9 @@ package scipy.sparse.linalg.isolve.lsmr;
 		----------
 		A : {matrix, sparse matrix, ndarray, LinearOperator}
 		    Matrix A in the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` and ``A^T x`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : array_like, shape (m,)
 		    Vector b in the linear system.
 		damp : float
@@ -199,8 +202,8 @@ package scipy.sparse.linalg.isolve.lsmr;
 		.. [1] D. C.-L. Fong and M. A. Saunders,
 		       "LSMR: An iterative algorithm for sparse least-squares problems",
 		       SIAM J. Sci. Comput., vol. 33, pp. 2950-2971, 2011.
-		       http://arxiv.org/abs/1006.0758
-		.. [2] LSMR Software, http://web.stanford.edu/group/SOL/software/lsmr/
+		       https://arxiv.org/abs/1006.0758
+		.. [2] LSMR Software, https://web.stanford.edu/group/SOL/software/lsmr/
 		
 		Examples
 		--------

@@ -38,7 +38,11 @@ package tensorflow.contrib.linear_optimizer.python.ops.sparse_feature_column;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Creates a `SparseFeatureColumn` representation.
+		Creates a `SparseFeatureColumn` representation. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This class is deprecated. To UPDATE or USE linear optimizers, please check its latest version in core: tensorflow_estimator/python/estimator/canned/linear_optimizer/.
 		
 		Args:
 		  example_indices: A 1-D int64 tensor of shape `[N]`. Also, accepts
@@ -54,7 +58,11 @@ package tensorflow.contrib.linear_optimizer.python.ops.sparse_feature_column;
 	@:native("__init__")
 	public function ___init__(example_indices:Dynamic, feature_indices:Dynamic, feature_values:Dynamic):Dynamic;
 	/**
-		Creates a `SparseFeatureColumn` representation.
+		Creates a `SparseFeatureColumn` representation. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This class is deprecated. To UPDATE or USE linear optimizers, please check its latest version in core: tensorflow_estimator/python/estimator/canned/linear_optimizer/.
 		
 		Args:
 		  example_indices: A 1-D int64 tensor of shape `[N]`. Also, accepts

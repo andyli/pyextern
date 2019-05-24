@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.saver;
 @:pythonImport("tensorflow.python.training.saver") extern class Saver_Module {
-	static public var _VARIABLE_OPS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -31,22 +30,14 @@ package tensorflow.python.training.saver;
 		Import MetaGraph, and return both a saver and returned elements.
 	**/
 	static public function _import_meta_graph_with_return_elements(meta_graph_or_file:Dynamic, ?clear_devices:Dynamic, ?import_scope:Dynamic, ?return_elements:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Creates a new device string based on `device_string` but using /CPU:0.
-		
-		If the device is already on /CPU:0, this is a no-op.
-		
-		Args:
-		  device_string: A device string.
-		
-		Returns:
-		  A device string.
-	**/
-	static public function _set_cpu0(device_string:Dynamic):Dynamic;
 	static public function _wrap_restore_error_with_msg(err:Dynamic, extra_verbiage:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Checks whether a V1 or V2 checkpoint exists with the specified prefix.
+		Checks whether a V1 or V2 checkpoint exists with the specified prefix. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use standard file APIs to check for files with this prefix.
 		
 		This is the recommended way to check if a checkpoint exists, since it takes
 		into account the naming difference between V1 and V2 formats.
@@ -132,7 +123,11 @@ package tensorflow.python.training.saver;
 	**/
 	static public function generate_checkpoint_state_proto(save_dir:Dynamic, model_checkpoint_path:Dynamic, ?all_model_checkpoint_paths:Dynamic, ?all_model_checkpoint_timestamps:Dynamic, ?last_preserved_timestamp:Dynamic):Dynamic;
 	/**
-		Returns the mtimes (modification timestamps) of the checkpoints.
+		Returns the mtimes (modification timestamps) of the checkpoints. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use standard file utilities to get mtimes.
 		
 		Globs for the checkpoints pointed to by `checkpoint_prefixes`.  If the files
 		exist, collect their mtime.  Both V2 and V1 checkpoints are considered, in
@@ -219,6 +214,37 @@ package tensorflow.python.training.saver;
 		NOTE: Restarting training from saved `meta_graph` only works if the
 		device assignments have not changed.
 		
+		Example 2:
+		Variables, placeholders, and independent operations can also be stored, as
+		shown in the following example.
+		
+		```Python
+		# Saving contents and operations.
+		v1 = tf.placeholder(tf.float32, name="v1")
+		v2 = tf.placeholder(tf.float32, name="v2")
+		v3 = tf.mul(v1, v2)
+		vx = tf.Variable(10.0, name="vx")
+		v4 = tf.add(v3, vx, name="v4")
+		saver = tf.train.Saver([vx])
+		sess = tf.Session()
+		sess.run(tf.initialize_all_variables())
+		sess.run(vx.assign(tf.add(vx, vx)))
+		result = sess.run(v4, feed_dict={v1:12.0, v2:3.3})
+		print(result)
+		saver.save(sess, "./model_ex1")
+		```
+		
+		Later this model can be restored and contents loaded.
+		
+		```Python
+		# Restoring variables and running operations.
+		saver = tf.train.import_meta_graph("./model_ex1.meta")
+		sess = tf.Session()
+		saver.restore(sess, "./model_ex1")
+		result = sess.run("v4:0", feed_dict={"v1:0": 12.0, "v2:0": 3.3})
+		print(result)
+		```
+		
 		Args:
 		  meta_graph_or_file: `MetaGraphDef` protocol buffer or filename (including
 		    the path) containing a `MetaGraphDef`.
@@ -268,7 +294,11 @@ package tensorflow.python.training.saver;
 	static public function object_graph_key_mapping(checkpoint_path:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Removes a checkpoint given by `checkpoint_prefix`.
+		Removes a checkpoint given by `checkpoint_prefix`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use standard file APIs to delete files with this prefix.
 		
 		Args:
 		  checkpoint_prefix: The prefix of a V1 or V2 checkpoint. Typically the result
@@ -320,7 +350,11 @@ package tensorflow.python.training.saver;
 	static public function saver_from_object_based_checkpoint(checkpoint_path:Dynamic, ?var_list:Dynamic, ?builder:Dynamic, ?names_to_keys:Dynamic, ?cached_saver:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Updates the content of the 'checkpoint' file.
+		Updates the content of the 'checkpoint' file. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.train.CheckpointManager to manage checkpoints rather than manually editing the Checkpoint proto.
 		
 		This updates the checkpoint file containing a CheckpointState
 		proto.

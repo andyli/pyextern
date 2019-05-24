@@ -9,4 +9,7 @@ package torch.nn.modules.batchnorm;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var division : Dynamic;
+	static public function weak_module(cls:Dynamic):Dynamic;
+	static public function weak_script_method(fn:Dynamic):Dynamic;
 }

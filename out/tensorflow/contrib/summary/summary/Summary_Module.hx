@@ -13,7 +13,7 @@ package tensorflow.contrib.summary.summary;
 	/**
 		Graph-mode only. Returns all summary ops.
 		
-		Please note this excludes `tf.contrib.summary.graph` ops.
+		Please note this excludes `tf.summary.graph` ops.
 		
 		Returns:
 		  The summary ops.
@@ -52,7 +52,7 @@ package tensorflow.contrib.summary.summary;
 		    `tf.Graph`.
 		
 		Returns:
-		  A `tf.contrib.summary.SummaryWriter` instance.
+		  A `tf.summary.SummaryWriter` instance.
 	**/
 	static public function create_db_writer(db_uri:Dynamic, ?experiment_name:Dynamic, ?run_name:Dynamic, ?user_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -78,7 +78,11 @@ package tensorflow.contrib.summary.summary;
 	**/
 	static public function create_file_writer(logdir:Dynamic, ?max_queue:Dynamic, ?flush_millis:Dynamic, ?filename_suffix:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Please use `tf.contrib.summary.create_file_writer`.
+		Please use `tf.contrib.summary.create_file_writer`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Renamed to create_file_writer().
 	**/
 	static public function create_summary_file_writer(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
@@ -92,7 +96,7 @@ package tensorflow.contrib.summary.summary;
 		This operation blocks until that finishes.
 		
 		Args:
-		  writer: The `tf.contrib.summary.SummaryWriter` resource to flush.
+		  writer: The `tf.summary.SummaryWriter` resource to flush.
 		    The thread default will be used if this parameter is None.
 		    Otherwise a `tf.no_op` is returned.
 		  name: A name for the operation (optional).
@@ -109,7 +113,7 @@ package tensorflow.contrib.summary.summary;
 		Writes a TensorFlow graph to the summary interface.
 		
 		The graph summary is, strictly speaking, not a summary. Conditions
-		like `tf.contrib.summary.never_record_summaries` do not apply. Only
+		like `tf.summary.should_record_summaries` do not apply. Only
 		a single graph can be associated with a particular run. If multiple
 		graphs are written, then only the last one will be considered by
 		TensorBoard.
@@ -147,11 +151,9 @@ package tensorflow.contrib.summary.summary;
 	/**
 		Writes a `tf.Event` binary proto.
 		
-		When using create_db_writer(), this can be used alongside
-		`tf.TFRecordReader` to load event logs into the database. Please
-		note that this is lower level than the other summary functions and
-		will ignore any conditions set by methods like
-		`tf.contrib.summary.should_record_summaries`.
+		This can be used to import existing event logs into a new summary writer sink.
+		Please note that this is lower level than the other summary functions and
+		will ignore the `tf.summary.should_record_summaries` setting.
 		
 		Args:
 		  tensor: A `tf.Tensor` of type `string` containing a serialized

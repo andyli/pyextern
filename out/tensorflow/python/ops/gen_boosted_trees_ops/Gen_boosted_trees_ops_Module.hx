@@ -23,7 +23,7 @@ package tensorflow.python.ops.gen_boosted_trees_ops;
 		
 		Args:
 		  float_values: A list of `Tensor` objects with type `float32`.
-		    float; List of Rank 2 Tensor each containing float values for a single feature.
+		    float; List of Rank 1 Tensor each containing float values for a single feature.
 		  bucket_boundaries: A list with the same length as `float_values` of `Tensor` objects with type `float32`.
 		    float; List of Rank 1 Tensors each containing the bucket boundaries for a single
 		    feature.
@@ -243,11 +243,12 @@ package tensorflow.python.ops.gen_boosted_trees_ops;
 	/**
 		Makes the summary of quantiles for the batch.
 		
-		An op that takes a list of tensors and outputs the quantile summaries for each tensor.
+		An op that takes a list of tensors (one tensor per feature) and outputs the
+		quantile summaries for each tensor.
 		
 		Args:
 		  float_values: A list of `Tensor` objects with type `float32`.
-		    float; List of Rank 2 Tensors each containing values for a single feature.
+		    float; List of Rank 1 Tensors each containing values for a single feature.
 		  example_weights: A `Tensor` of type `float32`.
 		    float; Rank 1 Tensor with weights per instance.
 		  epsilon: A `Tensor` of type `float32`.
@@ -340,6 +341,27 @@ package tensorflow.python.ops.gen_boosted_trees_ops;
 		This is for function boosted_trees_quantile_stream_resource_add_summaries
 	**/
 	static public function boosted_trees_quantile_stream_resource_add_summaries_eager_fallback(quantile_stream_resource_handle:Dynamic, summaries:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Deserialize bucket boundaries and ready flag into current QuantileAccumulator.
+		
+		An op that deserializes bucket boundaries and are boundaries ready flag into current QuantileAccumulator.
+		
+		Args:
+		  quantile_stream_resource_handle: A `Tensor` of type `resource`.
+		    resource handle referring to a QuantileStreamResource.
+		  bucket_boundaries: A list of at least 1 `Tensor` objects with type `float32`.
+		    float; List of Rank 1 Tensors each containing the bucket boundaries for a feature.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The created Operation.
+	**/
+	static public function boosted_trees_quantile_stream_resource_deserialize(quantile_stream_resource_handle:Dynamic, bucket_boundaries:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function boosted_trees_quantile_stream_resource_deserialize
+	**/
+	static public function boosted_trees_quantile_stream_resource_deserialize_eager_fallback(quantile_stream_resource_handle:Dynamic, bucket_boundaries:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Flush the summaries for a quantile stream resource.
 		

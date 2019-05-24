@@ -12,6 +12,7 @@ package scipy.sparse.linalg.isolve.minres;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
+	static public var inf : Dynamic;
 	/**
 		inner(a, b)
 		
@@ -127,6 +128,9 @@ package scipy.sparse.linalg.isolve.minres;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real symmetric N-by-N matrix of the linear system
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		

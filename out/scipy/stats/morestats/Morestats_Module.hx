@@ -125,6 +125,12 @@ package scipy.stats.morestats;
 	static public function _circfuncs_common(samples:Dynamic, high:Dynamic, low:Dynamic):Dynamic;
 	static public function _contains_nan(a:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
+		Compute parameters for a Box-Cox or Yeo-Johnson normality plot,
+		optionally show it. See `boxcox_normplot` or `yeojohnson_normplot` for
+		details.
+	**/
+	static public function _normplot(method:Dynamic, x:Dynamic, la:Dynamic, lb:Dynamic, ?plot:Dynamic, ?N:Dynamic):Dynamic;
+	/**
 		Parse `dist` keyword.
 		
 		Parameters
@@ -140,6 +146,11 @@ package scipy.stats.morestats;
 		    (for example, they have a ``ppf`` method).
 	**/
 	static public function _parse_dist_kw(dist:Dynamic, ?enforce_subclass:Dynamic):Dynamic;
+	/**
+		Return x transformed by the Yeo-Johnson power transform with given
+		parameter lmbda.
+	**/
+	static public function _yeojohnson_transform(x:Dynamic, lmbda:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Return the maximum of an array or maximum along an axis.
@@ -404,7 +415,7 @@ package scipy.stats.morestats;
 		
 		References
 		----------
-		.. [1] http://www.itl.nist.gov/div898/handbook/prc/section2/prc213.htm
+		.. [1] https://www.itl.nist.gov/div898/handbook/prc/section2/prc213.htm
 		.. [2] Stephens, M. A. (1974). EDF Statistics for Goodness of Fit and
 		       Some Comparisons, Journal of the American Statistical Association,
 		       Vol. 69, pp. 730-737.
@@ -448,7 +459,8 @@ package scipy.stats.morestats;
 		    The critical values for significance levels 25%, 10%, 5%, 2.5%, 1%.
 		significance_level : float
 		    An approximate significance level at which the null hypothesis for the
-		    provided samples can be rejected.
+		    provided samples can be rejected. The value is floored / capped at
+		    1% / 25%.
 		
 		Raises
 		------
@@ -463,7 +475,7 @@ package scipy.stats.morestats;
 		
 		Notes
 		-----
-		[1]_ Defines three versions of the k-sample Anderson-Darling test:
+		[1]_ defines three versions of the k-sample Anderson-Darling test:
 		one for continuous distributions and two for discrete
 		distributions, in which ties between samples may occur. The
 		default of this routine is to compute the version based on the
@@ -473,6 +485,12 @@ package scipy.stats.morestats;
 		data. According to [1]_, the two discrete test statistics differ
 		only slightly if a few collisions due to round-off errors occur in
 		the test not adjusted for ties between samples.
+		
+		The critical values corresponding to the significance levels from 0.01
+		to 0.25 are taken from [1]_. p-values are floored / capped
+		at 0.1% / 25%. Since the range of critical values might be extended in
+		future releases, it is recommended not to test ``p == 0.25``, but rather
+		``p >= 0.25`` (analogously for the lower bound).
 		
 		.. versionadded:: 0.14.0
 		
@@ -491,24 +509,26 @@ package scipy.stats.morestats;
 		distribution can be rejected at the 5% level because the returned
 		test value is greater than the critical value for 5% (1.961) but
 		not at the 2.5% level. The interpolation gives an approximate
-		significance level of 3.1%:
+		significance level of 3.2%:
 		
 		>>> stats.anderson_ksamp([np.random.normal(size=50),
 		... np.random.normal(loc=0.5, size=30)])
 		(2.4615796189876105,
-		  array([ 0.325,  1.226,  1.961,  2.718,  3.752]),
-		  0.03134990135800783)
+		  array([ 0.325,  1.226,  1.961,  2.718,  3.752, 4.592, 6.546]),
+		  0.03176687568842282)
 		
 		
 		The null hypothesis cannot be rejected for three samples from an
-		identical distribution. The approximate p-value (87%) has to be
-		computed by extrapolation and may not be very accurate:
+		identical distribution. The reported p-value (25%) has been capped and
+		may not be very accurate (since it corresponds to the value 0.449
+		whereas the statistic is -0.731):
 		
 		>>> stats.anderson_ksamp([np.random.normal(size=50),
 		... np.random.normal(size=30), np.random.normal(size=20)])
 		(-0.73091722665244196,
-		  array([ 0.44925884,  1.3052767 ,  1.9434184 ,  2.57696569,  3.41634856]),
-		  0.8789283903979661)
+		  array([ 0.44925884,  1.3052767 ,  1.9434184 ,  2.57696569,  3.41634856,
+		  4.07210043, 5.56419101]),
+		  0.25)
 	**/
 	static public function anderson_ksamp(samples:Dynamic, ?midrank:Dynamic):Float;
 	/**
@@ -634,11 +654,10 @@ package scipy.stats.morestats;
 		Values are generated within the half-open interval ``[start, stop)``
 		(in other words, the interval including `start` but excluding `stop`).
 		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
+		`range` function, but returns an ndarray rather than a list.
 		
 		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
+		be consistent.  It is better to use `numpy.linspace` for these cases.
 		
 		Parameters
 		----------
@@ -820,11 +839,11 @@ package scipy.stats.morestats;
 		
 		References
 		----------
-		.. [1] "Lecture Notes on the Status of  IEEE 754", William Kahan,
-		       http://www.cs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF
+		.. [1] "Lecture Notes on the Status of IEEE 754", William Kahan,
+		       https://people.eecs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF
 		.. [2] "How Futile are Mindless Assessments of
 		       Roundoff in Floating-Point Computation?", William Kahan,
-		       http://www.cs.berkeley.edu/~wkahan/Mindless.pdf
+		       https://people.eecs.berkeley.edu/~wkahan/Mindless.pdf
 		
 		Examples
 		--------
@@ -1069,7 +1088,8 @@ package scipy.stats.morestats;
 		Parameters
 		----------
 		sample1, sample2,... : array_like
-		    arrays of sample data.  May be different lengths.
+		    arrays of sample data.  Only 1d arrays are accepted, they may have
+		    different lengths.
 		
 		Returns
 		-------
@@ -1088,11 +1108,12 @@ package scipy.stats.morestats;
 		Conover et al. (1981) examine many of the existing parametric and
 		nonparametric tests by extensive simulations and they conclude that the
 		tests proposed by Fligner and Killeen (1976) and Levene (1960) appear to be
-		superior in terms of robustness of departures from normality and power [3]_.
+		superior in terms of robustness of departures from normality and power
+		([3]_).
 		
 		References
 		----------
-		.. [1]  http://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm
+		.. [1]  https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm
 		
 		.. [2]  Snedecor, George W. and Cochran, William G. (1989), Statistical
 		          Methods, Eighth Edition, Iowa State University Press.
@@ -1151,7 +1172,7 @@ package scipy.stats.morestats;
 		References
 		----------
 		T.E. Oliphant, "A Bayesian perspective on estimating mean, variance, and
-		standard-deviation from data", http://scholarsarchive.byu.edu/facpub/278,
+		standard-deviation from data", https://scholarsarchive.byu.edu/facpub/278,
 		2006.
 		
 		Examples
@@ -1222,7 +1243,21 @@ package scipy.stats.morestats;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Binomial_test
+		.. [1] https://en.wikipedia.org/wiki/Binomial_test
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		
+		A car manufacturer claims that no more than 10% of their cars are unsafe.
+		15 cars are inspected for safety, 3 were found to be unsafe. Test the
+		manufacturer's claim:
+		
+		>>> stats.binom_test(3, n=15, p=0.1, alternative='greater')
+		0.18406106910639114
+		
+		The null hypothesis cannot be rejected at the 5% level of significance
+		because the returned p-value is greater than the critical value of 5%.
 	**/
 	static public function binom_test(x:Dynamic, ?n:Dynamic, ?p:Dynamic, ?alternative:Dynamic):Float;
 	/**
@@ -1384,7 +1419,7 @@ package scipy.stats.morestats;
 		...     ax_inset.plot(osm, osr, 'c.', osm, slope*osm + intercept, 'k-')
 		...     ax_inset.set_xticklabels([])
 		...     ax_inset.set_yticklabels([])
-		...     ax_inset.set_title('$\lambda=%1.2f$' % lmbda)
+		...     ax_inset.set_title(r'$\lambda=%1.2f$' % lmbda)
 		
 		>>> plt.show()
 	**/
@@ -1640,9 +1675,10 @@ package scipy.stats.morestats;
 		
 		References
 		----------
-		.. [1] "Contingency table", http://en.wikipedia.org/wiki/Contingency_table
+		.. [1] "Contingency table",
+		       https://en.wikipedia.org/wiki/Contingency_table
 		.. [2] "Pearson's chi-squared test",
-		       http://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test
+		       https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test
 		.. [3] Cressie, N. and Read, T. R. C., "Multinomial Goodness-of-Fit
 		       Tests", J. Royal Stat. Soc. Series B, Vol. 46, No. 3 (1984),
 		       pp. 440-464.
@@ -1899,7 +1935,7 @@ package scipy.stats.morestats;
 		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1998,7 +2034,7 @@ package scipy.stats.morestats;
 		References
 		----------
 		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
+		       https://en.wikipedia.org/wiki/Exponential_function
 		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
 		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
 		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
@@ -2104,7 +2140,7 @@ package scipy.stats.morestats;
 		       Hypothesis Testing based on Quadratic Inference Function. Technical
 		       Report #99-03, Center for Likelihood Studies, Pennsylvania State
 		       University.
-		       http://cecas.clemson.edu/~cspark/cv/paper/qif/draftqif2.pdf
+		       https://cecas.clemson.edu/~cspark/cv/paper/qif/draftqif2.pdf
 		
 		.. [2] Fligner, M.A. and Killeen, T.J. (1976). Distribution-free two-sample
 		       tests for scale. 'Journal of the American Statistical Association.'
@@ -2228,10 +2264,46 @@ package scipy.stats.morestats;
 		val : bool
 		    True if `num` is a scalar type, False if it is not.
 		
+		See Also
+		--------
+		ndim : Get the number of dimensions of an array
+		
+		Notes
+		-----
+		In almost all cases ``np.ndim(x) == 0`` should be used instead of this
+		function, as that will also return true for 0d arrays. This is how
+		numpy overloads functions in the style of the ``dx`` arguments to `gradient`
+		and the ``bins`` argument to `histogram`. Some key differences:
+		
+		+--------------------------------------+---------------+-------------------+
+		| x                                    |``isscalar(x)``|``np.ndim(x) == 0``|
+		+======================================+===============+===================+
+		| PEP 3141 numeric objects (including  | ``True``      | ``True``          |
+		| builtins)                            |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| builtin string and buffer objects    | ``True``      | ``True``          |
+		+--------------------------------------+---------------+-------------------+
+		| other builtin objects, like          | ``False``     | ``True``          |
+		| `pathlib.Path`, `Exception`,         |               |                   |
+		| the result of `re.compile`           |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| third-party objects like             | ``False``     | ``True``          |
+		| `matplotlib.figure.Figure`           |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| zero-dimensional numpy arrays        | ``False``     | ``True``          |
+		+--------------------------------------+---------------+-------------------+
+		| other numpy arrays                   | ``False``     | ``False``         |
+		+--------------------------------------+---------------+-------------------+
+		| `list`, `tuple`, and other sequence  | ``False``     | ``False``         |
+		| objects                              |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		
 		Examples
 		--------
 		>>> np.isscalar(3.1)
 		True
+		>>> np.isscalar(np.array(3.1))
+		False
 		>>> np.isscalar([3.1])
 		False
 		>>> np.isscalar(False)
@@ -2364,7 +2436,8 @@ package scipy.stats.morestats;
 		Parameters
 		----------
 		sample1, sample2, ... : array_like
-		    The sample data, possibly with different lengths
+		    The sample data, possibly with different lengths. Only one-dimensional
+		    samples are accepted.
 		center : {'mean', 'median', 'trimmed'}, optional
 		    Which function of the data to use in the test.  The default
 		    is 'median'.
@@ -2389,9 +2462,14 @@ package scipy.stats.morestats;
 		  * 'mean' : Recommended for symmetric, moderate-tailed distributions.
 		  * 'trimmed' : Recommended for heavy-tailed distributions.
 		
+		The test version using the mean was proposed in the original article
+		of Levene ([2]_) while the median and trimmed mean have been studied by
+		Brown and Forsythe ([3]_), sometimes also referred to as Brown-Forsythe
+		test.
+		
 		References
 		----------
-		.. [1]  http://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm
+		.. [1]  https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm
 		.. [2]   Levene, H. (1960). In Contributions to Probability and Statistics:
 		           Essays in Honor of Harold Hotelling, I. Olkin et al. eds.,
 		           Stanford University Press, pp. 278-292.
@@ -2453,7 +2531,7 @@ package scipy.stats.morestats;
 		----------
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+		.. [2] Wikipedia, "Logarithm". https://en.wikipedia.org/wiki/Logarithm
 		
 		Examples
 		--------
@@ -2699,7 +2777,7 @@ package scipy.stats.morestats;
 		References
 		----------
 		T.E. Oliphant, "A Bayesian perspective on estimating mean, variance, and
-		standard-deviation from data", http://scholarsarchive.byu.edu/facpub/278,
+		standard-deviation from data", https://scholarsarchive.byu.edu/facpub/278,
 		2006.
 		
 		Examples
@@ -2786,7 +2864,7 @@ package scipy.stats.morestats;
 		.. [1] J.J. Filliben, "The Probability Plot Correlation Coefficient Test for
 		       Normality", Technometrics, Vol. 17, pp. 111-117, 1975.
 		
-		.. [2] http://www.itl.nist.gov/div898/handbook/eda/section3/ppccplot.htm
+		.. [2] https://www.itl.nist.gov/div898/handbook/eda/section3/ppccplot.htm
 		
 		Examples
 		--------
@@ -3138,7 +3216,7 @@ package scipy.stats.morestats;
 		
 		References
 		----------
-		.. [1] http://www.itl.nist.gov/div898/handbook/prc/section2/prc213.htm
+		.. [1] https://www.itl.nist.gov/div898/handbook/prc/section2/prc213.htm
 		.. [2] Shapiro, S. S. & Wilk, M.B (1965). An analysis of variance test for
 		       normality (complete samples), Biometrika, Vol. 52, pp. 591-611.
 		.. [3] Razali, N. M. & Wah, Y. B. (2011) Power comparisons of Shapiro-Wilk,
@@ -3510,44 +3588,373 @@ package scipy.stats.morestats;
 		Parameters
 		----------
 		x : array_like
-		    The first set of measurements.
+		    Either the first set of measurements (in which case `y` is the second
+		    set of measurements), or the differences between two sets of
+		    measurements (in which case `y` is not to be specified.)  Must be
+		    one-dimensional.
 		y : array_like, optional
-		    The second set of measurements.  If `y` is not given, then the `x`
-		    array is considered to be the differences between the two sets of
-		    measurements.
-		zero_method : string, {"pratt", "wilcox", "zsplit"}, optional
+		    Either the second set of measurements (if `x` is the first set of
+		    measurements), or not specified (if `x` is the differences between
+		    two sets of measurements.)  Must be one-dimensional.
+		zero_method : {"pratt", "wilcox", "zsplit"}, optional. Default is "wilcox".
 		    "pratt":
-		        Pratt treatment: includes zero-differences in the ranking process
-		        (more conservative)
+		        includes zero-differences in the ranking process,
+		        but drops the ranks of the zeros, see [4]_, (more conservative)
 		    "wilcox":
-		        Wilcox treatment: discards all zero-differences
+		        discards all zero-differences, the default
 		    "zsplit":
-		        Zero rank split: just like Pratt, but spliting the zero rank
-		        between positive and negative ones
+		        includes zero-differences in the ranking process and split the
+		        zero rank between positive and negative ones
 		correction : bool, optional
 		    If True, apply continuity correction by adjusting the Wilcoxon rank
 		    statistic by 0.5 towards the mean value when computing the
 		    z-statistic.  Default is False.
+		alternative : {"two-sided", "greater", "less"}, optional
+		    The alternative hypothesis to be tested, see Notes. Default is
+		    "two-sided".
 		
 		Returns
 		-------
 		statistic : float
-		    The sum of the ranks of the differences above or below zero, whichever
-		    is smaller.
+		    If `alternative` is "two-sided", the sum of the ranks of the
+		    differences above or below zero, whichever is smaller.
+		    Otherwise the sum of the ranks of the differences above zero.
 		pvalue : float
-		    The two-sided p-value for the test.
+		    The p-value for the test depending on `alternative`.
+		
+		See Also
+		--------
+		kruskal, mannwhitneyu
 		
 		Notes
 		-----
-		Because the normal approximation is used for the calculations, the
-		samples used should be large.  A typical rule is to require that
-		n > 20.
+		The test has been introduced in [4]_. Given n independent samples
+		(xi, yi) from a bivariate distribution (i.e. paired samples),
+		it computes the differences di = xi - yi. One assumption of the test
+		is that the differences are symmetric, see [2]_.
+		The two-sided test has the null hypothesis that the median of the
+		differences is zero against the alternative that it is different from
+		zero. The one-sided test has the null that the median is positive against
+		the alternative that the it is negative (``alternative == 'less'``),
+		or vice versa (``alternative == 'greater.'``).
+		
+		The test uses a normal approximation to derive the p-value (if
+		``zero_method == 'pratt'``, the approximation is adjusted as in [5]_).
+		A typical rule is to require that n > 20 ([2]_, p. 383). For smaller n,
+		exact tables can be used to find critical values.
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test
+		.. [1] https://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test
+		.. [2] Conover, W.J., Practical Nonparametric Statistics, 1971.
+		.. [3] Pratt, J.W., Remarks on Zeros and Ties in the Wilcoxon Signed
+		   Rank Procedures, Journal of the American Statistical Association,
+		   Vol. 54, 1959, pp. 655-667. :doi:`10.1080/01621459.1959.10501526`
+		.. [4] Wilcoxon, F., Individual Comparisons by Ranking Methods,
+		   Biometrics Bulletin, Vol. 1, 1945, pp. 80-83. :doi:`10.2307/3001968`
+		.. [5] Cureton, E.E., The Normal Approximation to the Signed-Rank
+		   Sampling Distribution When Zero Differences are Present,
+		   Journal of the American Statistical Association, Vol. 62, 1967,
+		   pp. 1068-1069. :doi:`10.1080/01621459.1967.10500917`
+		
+		Examples
+		--------
+		In [4]_, the differences in height between cross- and self-fertilized
+		corn plants is given as follows:
+		
+		>>> d = [6, 8, 14, 16, 23, 24, 28, 29, 41, -48, 49, 56, 60, -67, 75]
+		
+		Cross-fertilized plants appear to be be higher. To test the null
+		hypothesis that there is no height difference, we can apply the
+		two-sided test:
+		
+		>>> from scipy.stats import wilcoxon
+		>>> w, p = wilcoxon(d)
+		>>> w, p
+		(24.0, 0.04088813291185591)
+		
+		Hence, we would reject the null hypothesis at a confidence level of 5%,
+		concluding that there is a difference in height between the groups.
+		To confirm that the median of the differences can be assumed to be
+		positive, we use:
+		
+		>>> w, p = wilcoxon(d, alternative='greater')
+		>>> w, p
+		(96.0, 0.020444066455927955)
+		
+		This shows that the null hypothesis that the median is negative can be
+		rejected at a confidence level of 5% in favor of the alternative that
+		the median is greater than zero. The p-value based on the approximation
+		is within the range of 0.019 and 0.054 given in [2]_.
+		Note that the statistic changed to 96 in the one-sided case (the sum
+		of ranks of positive differences) whereas it is 24 in the two-sided
+		case (the minimum of sum of ranks above and below zero).
 	**/
-	static public function wilcoxon(x:Dynamic, ?y:Dynamic, ?zero_method:Dynamic, ?correction:Dynamic):Float;
+	static public function wilcoxon(x:Dynamic, ?y:Dynamic, ?zero_method:Dynamic, ?correction:Dynamic, ?alternative:Dynamic):Float;
+	/**
+		Return a dataset transformed by a Yeo-Johnson power transformation.
+		
+		Parameters
+		----------
+		x : ndarray
+		    Input array.  Should be 1-dimensional.
+		lmbda : float, optional
+		    If ``lmbda`` is ``None``, find the lambda that maximizes the
+		    log-likelihood function and return it as the second output argument.
+		    Otherwise the transformation is done for the given value.
+		
+		Returns
+		-------
+		yeojohnson: ndarray
+		    Yeo-Johnson power transformed array.
+		maxlog : float, optional
+		    If the `lmbda` parameter is None, the second returned argument is
+		    the lambda that maximizes the log-likelihood function.
+		
+		See Also
+		--------
+		probplot, yeojohnson_normplot, yeojohnson_normmax, yeojohnson_llf, boxcox
+		
+		Notes
+		-----
+		The Yeo-Johnson transform is given by::
+		
+		    y = ((x + 1)**lmbda - 1) / lmbda,                for x >= 0, lmbda != 0
+		        log(x + 1),                                  for x >= 0, lmbda = 0
+		        -((-x + 1)**(2 - lmbda) - 1) / (2 - lmbda),  for x < 0, lmbda != 2
+		        -log(-x + 1),                                for x < 0, lmbda = 2
+		
+		Unlike `boxcox`, `yeojohnson` does not require the input data to be
+		positive.
+		
+		.. versionadded:: 1.2.0
+		
+		
+		References
+		----------
+		I. Yeo and R.A. Johnson, "A New Family of Power Transformations to
+		Improve Normality or Symmetry", Biometrika 87.4 (2000):
+		
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> import matplotlib.pyplot as plt
+		
+		We generate some random variates from a non-normal distribution and make a
+		probability plot for it, to show it is non-normal in the tails:
+		
+		>>> fig = plt.figure()
+		>>> ax1 = fig.add_subplot(211)
+		>>> x = stats.loggamma.rvs(5, size=500) + 5
+		>>> prob = stats.probplot(x, dist=stats.norm, plot=ax1)
+		>>> ax1.set_xlabel('')
+		>>> ax1.set_title('Probplot against normal distribution')
+		
+		We now use `yeojohnson` to transform the data so it's closest to normal:
+		
+		>>> ax2 = fig.add_subplot(212)
+		>>> xt, lmbda = stats.yeojohnson(x)
+		>>> prob = stats.probplot(xt, dist=stats.norm, plot=ax2)
+		>>> ax2.set_title('Probplot after Yeo-Johnson transformation')
+		
+		>>> plt.show()
+	**/
+	static public function yeojohnson(x:Dynamic, ?lmbda:Dynamic):Dynamic;
+	/**
+		The yeojohnson log-likelihood function.
+		
+		Parameters
+		----------
+		lmb : scalar
+		    Parameter for Yeo-Johnson transformation. See `yeojohnson` for
+		    details.
+		data : array_like
+		    Data to calculate Yeo-Johnson log-likelihood for. If `data` is
+		    multi-dimensional, the log-likelihood is calculated along the first
+		    axis.
+		
+		Returns
+		-------
+		llf : float
+		    Yeo-Johnson log-likelihood of `data` given `lmb`.
+		
+		See Also
+		--------
+		yeojohnson, probplot, yeojohnson_normplot, yeojohnson_normmax
+		
+		Notes
+		-----
+		The Yeo-Johnson log-likelihood function is defined here as
+		
+		.. math::
+		
+		    llf = N/2 \log(\hat{\sigma}^2) + (\lambda - 1)
+		          \sum_i \text{ sign }(x_i)\log(|x_i| + 1)
+		
+		where :math:`\hat{\sigma}^2` is estimated variance of the the Yeo-Johnson
+		transformed input data ``x``.
+		
+		.. versionadded:: 1.2.0
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> import matplotlib.pyplot as plt
+		>>> from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+		>>> np.random.seed(1245)
+		
+		Generate some random variates and calculate Yeo-Johnson log-likelihood
+		values for them for a range of ``lmbda`` values:
+		
+		>>> x = stats.loggamma.rvs(5, loc=10, size=1000)
+		>>> lmbdas = np.linspace(-2, 10)
+		>>> llf = np.zeros(lmbdas.shape, dtype=float)
+		>>> for ii, lmbda in enumerate(lmbdas):
+		...     llf[ii] = stats.yeojohnson_llf(lmbda, x)
+		
+		Also find the optimal lmbda value with `yeojohnson`:
+		
+		>>> x_most_normal, lmbda_optimal = stats.yeojohnson(x)
+		
+		Plot the log-likelihood as function of lmbda.  Add the optimal lmbda as a
+		horizontal line to check that that's really the optimum:
+		
+		>>> fig = plt.figure()
+		>>> ax = fig.add_subplot(111)
+		>>> ax.plot(lmbdas, llf, 'b.-')
+		>>> ax.axhline(stats.yeojohnson_llf(lmbda_optimal, x), color='r')
+		>>> ax.set_xlabel('lmbda parameter')
+		>>> ax.set_ylabel('Yeo-Johnson log-likelihood')
+		
+		Now add some probability plots to show that where the log-likelihood is
+		maximized the data transformed with `yeojohnson` looks closest to normal:
+		
+		>>> locs = [3, 10, 4]  # 'lower left', 'center', 'lower right'
+		>>> for lmbda, loc in zip([-1, lmbda_optimal, 9], locs):
+		...     xt = stats.yeojohnson(x, lmbda=lmbda)
+		...     (osm, osr), (slope, intercept, r_sq) = stats.probplot(xt)
+		...     ax_inset = inset_axes(ax, width="20%", height="20%", loc=loc)
+		...     ax_inset.plot(osm, osr, 'c.', osm, slope*osm + intercept, 'k-')
+		...     ax_inset.set_xticklabels([])
+		...     ax_inset.set_yticklabels([])
+		...     ax_inset.set_title(r'$\lambda=%1.2f$' % lmbda)
+		
+		>>> plt.show()
+	**/
+	static public function yeojohnson_llf(lmb:Dynamic, data:Dynamic):Float;
+	/**
+		Compute optimal Yeo-Johnson transform parameter for input data, using
+		maximum likelihood estimation.
+		
+		Parameters
+		----------
+		x : array_like
+		    Input array.
+		brack : 2-tuple, optional
+		    The starting interval for a downhill bracket search with
+		    `optimize.brent`. Note that this is in most cases not critical; the
+		    final result is allowed to be outside this bracket.
+		
+		Returns
+		-------
+		maxlog : float
+		    The optimal transform parameter found.
+		
+		Notes
+		-----
+		.. versionadded:: 1.2.0
+		
+		See Also
+		--------
+		yeojohnson, yeojohnson_llf, yeojohnson_normplot
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> import matplotlib.pyplot as plt
+		>>> np.random.seed(1234)  # make this example reproducible
+		
+		Generate some data and determine optimal ``lmbda``
+		
+		>>> x = stats.loggamma.rvs(5, size=30) + 5
+		>>> lmax = stats.yeojohnson_normmax(x)
+		
+		>>> fig = plt.figure()
+		>>> ax = fig.add_subplot(111)
+		>>> prob = stats.yeojohnson_normplot(x, -10, 10, plot=ax)
+		>>> ax.axvline(lmax, color='r')
+		
+		>>> plt.show()
+	**/
+	static public function yeojohnson_normmax(x:Dynamic, ?brack:Dynamic):Float;
+	/**
+		Compute parameters for a Yeo-Johnson normality plot, optionally show it.
+		
+		A Yeo-Johnson normality plot shows graphically what the best
+		transformation parameter is to use in `yeojohnson` to obtain a
+		distribution that is close to normal.
+		
+		Parameters
+		----------
+		x : array_like
+		    Input array.
+		la, lb : scalar
+		    The lower and upper bounds for the ``lmbda`` values to pass to
+		    `yeojohnson` for Yeo-Johnson transformations. These are also the
+		    limits of the horizontal axis of the plot if that is generated.
+		plot : object, optional
+		    If given, plots the quantiles and least squares fit.
+		    `plot` is an object that has to have methods "plot" and "text".
+		    The `matplotlib.pyplot` module or a Matplotlib Axes object can be used,
+		    or a custom object with the same methods.
+		    Default is None, which means that no plot is created.
+		N : int, optional
+		    Number of points on the horizontal axis (equally distributed from
+		    `la` to `lb`).
+		
+		Returns
+		-------
+		lmbdas : ndarray
+		    The ``lmbda`` values for which a Yeo-Johnson transform was done.
+		ppcc : ndarray
+		    Probability Plot Correlelation Coefficient, as obtained from `probplot`
+		    when fitting the Box-Cox transformed input `x` against a normal
+		    distribution.
+		
+		See Also
+		--------
+		probplot, yeojohnson, yeojohnson_normmax, yeojohnson_llf, ppcc_max
+		
+		Notes
+		-----
+		Even if `plot` is given, the figure is not shown or saved by
+		`boxcox_normplot`; ``plt.show()`` or ``plt.savefig('figname.png')``
+		should be used after calling `probplot`.
+		
+		.. versionadded:: 1.2.0
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> import matplotlib.pyplot as plt
+		
+		Generate some non-normally distributed data, and create a Yeo-Johnson plot:
+		
+		>>> x = stats.loggamma.rvs(5, size=500) + 5
+		>>> fig = plt.figure()
+		>>> ax = fig.add_subplot(111)
+		>>> prob = stats.yeojohnson_normplot(x, -20, 20, plot=ax)
+		
+		Determine and plot the optimal ``lmbda`` to transform ``x`` and plot it in
+		the same plot:
+		
+		>>> _, maxlog = stats.yeojohnson(x)
+		>>> ax.axvline(maxlog, color='r')
+		
+		>>> plt.show()
+	**/
+	static public function yeojohnson_normplot(x:Dynamic, la:Dynamic, lb:Dynamic, ?plot:Dynamic, ?N:Dynamic):Dynamic;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

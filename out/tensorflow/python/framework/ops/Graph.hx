@@ -386,10 +386,6 @@ package tensorflow.python.framework.ops;
 	public function _kernel_label_map(op_to_kernel_label_map:Dynamic):Dynamic;
 	public var _last_id : Dynamic;
 	/**
-		Return detailed error message about device conflict due to colocation.
-	**/
-	public function _make_colocation_conflict_message(op:Dynamic, colocation_op:Dynamic):Dynamic;
-	/**
 		Returns a lock to guard code that creates & mutates ops.
 		
 		See the comment for self._group_lock for more info.
@@ -782,7 +778,7 @@ package tensorflow.python.framework.ops;
 	/**
 		Creates an `Operation` in this graph. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(compute_shapes)`. They will be removed in a future version.
 		Instructions for updating:
 		Shapes are always computed; don't use the compute_shapes as it has no effect.
 		

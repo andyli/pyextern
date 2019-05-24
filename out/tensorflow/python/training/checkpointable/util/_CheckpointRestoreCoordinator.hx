@@ -141,4 +141,17 @@ package tensorflow.python.training.checkpointable.util;
 	**/
 	public var __weakref__ : Dynamic;
 	public function new_restore_ops(new_ops:Dynamic):Dynamic;
+	/**
+		Run or build restore operations for SaveableObjects.
+		
+		Args:
+		  tensor_saveables: `SaveableObject`s which correspond to Tensors.
+		  python_saveables: `PythonStateSaveable`s which correspond to Python
+		    values.
+		
+		Returns:
+		  When graph building, a list of restore operations, either cached or newly
+		  created, to restore `tensor_saveables`.
+	**/
+	public function restore_saveables(tensor_saveables:Dynamic, python_saveables:Dynamic):Dynamic;
 }

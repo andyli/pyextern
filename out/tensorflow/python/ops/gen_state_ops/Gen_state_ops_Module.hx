@@ -55,6 +55,8 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor`. Has the same type as `ref`.
 	**/
 	static public function assign_add(ref:Dynamic, value:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function assign_add_eager_fallback(ref:Dynamic, value:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function assign_eager_fallback(ref:Dynamic, value:Dynamic, ?validate_shape:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update 'ref' by subtracting 'value' from it.
 		
@@ -75,6 +77,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor`. Has the same type as `ref`.
 	**/
 	static public function assign_sub(ref:Dynamic, value:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function assign_sub_eager_fallback(ref:Dynamic, value:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Increments 'ref' until it reaches 'limit'.
 		
@@ -90,6 +93,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A `Tensor`. Has the same type as `ref`.
 	**/
 	static public function count_up_to(ref:Dynamic, limit:Dynamic, ?name:Dynamic):Dynamic;
+	static public function count_up_to_eager_fallback(ref:Dynamic, limit:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Decorator for marking endpoints deprecated.
 		
@@ -129,6 +133,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A `Tensor`. Has the same type as `ref`.
 	**/
 	static public function destroy_temporary_variable(ref:Dynamic, var_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function destroy_temporary_variable_eager_fallback(ref:Dynamic, var_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Checks whether a tensor has been initialized.
 		
@@ -143,6 +148,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A `Tensor` of type `bool`.
 	**/
 	static public function is_variable_initialized(ref:Dynamic, ?name:Dynamic):Dynamic;
+	static public function is_variable_initialized_eager_fallback(ref:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Increments variable pointed to by 'resource' until it reaches 'limit'.
 		
@@ -331,6 +337,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor`. Has the same type as `ref`.
 	**/
 	static public function scatter_add(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function scatter_add_eager_fallback(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Divides a variable reference by sparse updates.
 		
@@ -371,6 +378,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor`. Has the same type as `ref`.
 	**/
 	static public function scatter_div(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function scatter_div_eager_fallback(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Reduces sparse updates into a variable reference using the `max` operation.
 		
@@ -413,6 +421,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor`. Has the same type as `ref`.
 	**/
 	static public function scatter_max(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function scatter_max_eager_fallback(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Reduces sparse updates into a variable reference using the `min` operation.
 		
@@ -455,6 +464,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor`. Has the same type as `ref`.
 	**/
 	static public function scatter_min(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function scatter_min_eager_fallback(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Multiplies sparse updates into a variable reference.
 		
@@ -495,6 +505,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor`. Has the same type as `ref`.
 	**/
 	static public function scatter_mul(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function scatter_mul_eager_fallback(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Applies sparse addition between `updates` and individual values or slices
 		
@@ -549,6 +560,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor`. Has the same type as `ref`.
 	**/
 	static public function scatter_nd_add(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function scatter_nd_add_eager_fallback(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Applies sparse subtraction between `updates` and individual values or slices
 		
@@ -603,6 +615,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor`. Has the same type as `ref`.
 	**/
 	static public function scatter_nd_sub(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function scatter_nd_sub_eager_fallback(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Applies sparse `updates` to individual values or slices within a given
 		
@@ -660,6 +673,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor`. Has the same type as `ref`.
 	**/
 	static public function scatter_nd_update(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function scatter_nd_update_eager_fallback(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Subtracts sparse updates to a variable reference.
 		
@@ -702,6 +716,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor`. Has the same type as `ref`.
 	**/
 	static public function scatter_sub(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function scatter_sub_eager_fallback(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Applies sparse updates to a variable reference.
 		
@@ -748,6 +763,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor`. Has the same type as `ref`.
 	**/
 	static public function scatter_update(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function scatter_update_eager_fallback(ref:Dynamic, indices:Dynamic, updates:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Returns a tensor that may be mutated, but only persists within a single step.
 		
@@ -779,6 +795,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor` of type `dtype`.
 	**/
 	static public function temporary_variable(shape:Dynamic, dtype:Dynamic, ?var_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function temporary_variable_eager_fallback(shape:Dynamic, dtype:Dynamic, ?var_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Use VariableV2 instead.
@@ -794,6 +811,7 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor` of type `dtype`.
 	**/
 	static public function variable(shape:Dynamic, dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function variable_eager_fallback(shape:Dynamic, dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Holds state in the form of a tensor that persists across steps.
 		
@@ -817,4 +835,5 @@ package tensorflow.python.ops.gen_state_ops;
 		  A mutable `Tensor` of type `dtype`.
 	**/
 	static public function variable_v2(shape:Dynamic, dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function variable_v2_eager_fallback(shape:Dynamic, dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 }

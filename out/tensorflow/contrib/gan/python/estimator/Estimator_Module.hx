@@ -14,7 +14,7 @@ package tensorflow.contrib.gan.python.estimator;
 	/**
 		Creates a `GANHead`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.contrib.gan.GANEstimator without explicitly making a GANHead.
 		

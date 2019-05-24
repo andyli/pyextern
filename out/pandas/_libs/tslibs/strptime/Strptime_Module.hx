@@ -8,6 +8,7 @@ package pandas._libs.tslibs.strptime;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	static public var _cache_lock : Dynamic;
@@ -32,7 +33,7 @@ package pandas._libs.tslibs.strptime;
 		values : ndarray of string-like objects
 		fmt : string-like regex
 		exact : matches must be exact if True, search if False
-		coerce : if invalid values found, coerce to NaT
+		errors : string specifying error handling, {'raise', 'ignore', 'coerce'}
 	**/
 	static public function array_strptime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var nat_strings : Dynamic;

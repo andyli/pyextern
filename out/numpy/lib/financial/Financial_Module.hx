@@ -11,7 +11,17 @@ package numpy.lib.financial;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _convert_when(when:Dynamic):Dynamic;
+	static public function _fv_dispatcher(rate:Dynamic, nper:Dynamic, pmt:Dynamic, pv:Dynamic, ?when:Dynamic):Dynamic;
 	static public function _g_div_gp(r:Dynamic, n:Dynamic, p:Dynamic, x:Dynamic, y:Dynamic, w:Dynamic):Dynamic;
+	static public function _ipmt_dispatcher(rate:Dynamic, per:Dynamic, nper:Dynamic, pv:Dynamic, ?fv:Dynamic, ?when:Dynamic):Dynamic;
+	static public function _irr_dispatcher(values:Dynamic):Dynamic;
+	static public function _mirr_dispatcher(values:Dynamic, finance_rate:Dynamic, reinvest_rate:Dynamic):Dynamic;
+	static public function _nper_dispatcher(rate:Dynamic, pmt:Dynamic, pv:Dynamic, ?fv:Dynamic, ?when:Dynamic):Dynamic;
+	static public function _npv_dispatcher(rate:Dynamic, values:Dynamic):Dynamic;
+	static public function _pmt_dispatcher(rate:Dynamic, nper:Dynamic, pv:Dynamic, ?fv:Dynamic, ?when:Dynamic):Dynamic;
+	static public function _ppmt_dispatcher(rate:Dynamic, per:Dynamic, nper:Dynamic, pv:Dynamic, ?fv:Dynamic, ?when:Dynamic):Dynamic;
+	static public function _pv_dispatcher(rate:Dynamic, nper:Dynamic, pmt:Dynamic, ?fv:Dynamic, ?when:Dynamic):Dynamic;
+	static public function _rate_dispatcher(nper:Dynamic, pmt:Dynamic, pv:Dynamic, fv:Dynamic, ?when:Dynamic, ?guess:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic):Dynamic;
 	/**
 		This function is here to simply have a different name for the 'fv'
 		function to not interfere with the 'fv' keyword argument within the 'ipmt'
@@ -21,6 +31,7 @@ package numpy.lib.financial;
 	static public function _rbl(rate:Dynamic, per:Dynamic, pmt:Dynamic, pv:Dynamic, when:Dynamic):Dynamic;
 	static public var _when_to_num : Dynamic;
 	static public var absolute_import : Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Compute the future value.

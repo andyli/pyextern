@@ -48,7 +48,7 @@ package tensorflow.python.training.summary_io;
 	/**
 		Creates a `SummaryWriter` and an event file. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		Please switch to tf.summary.FileWriter. The interface and behavior is the same; this is just a rename.
 		
@@ -95,7 +95,7 @@ package tensorflow.python.training.summary_io;
 	/**
 		Creates a `SummaryWriter` and an event file. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		Please switch to tf.summary.FileWriter. The interface and behavior is the same; this is just a rename.
 		
@@ -204,6 +204,7 @@ package tensorflow.python.training.summary_io;
 	public function _add_graph_def(graph_def:Dynamic, ?global_step:Dynamic):Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	public function _warn_if_event_writer_is_closed():Dynamic;
 	public function _write_plugin_assets(graph:Dynamic):Dynamic;
 	/**
 		Adds an event to the event file.

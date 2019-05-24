@@ -46,7 +46,6 @@ package tensorflow.core.kernels.boosted_trees.boosted_trees_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var IS_FINALIZED_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -63,8 +62,6 @@ package tensorflow.core.kernels.boosted_trees.boosted_trees_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NUM_LAYERS_GROWN_FIELD_NUMBER : Dynamic;
-	static public var POST_PRUNED_NODES_META_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -89,6 +86,10 @@ package tensorflow.core.kernels.boosted_trees.boosted_trees_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -254,4 +255,16 @@ package tensorflow.core.kernels.boosted_trees.boosted_trees_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.TreeMetadata.is_finalized
+	**/
+	public var is_finalized : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.TreeMetadata.num_layers_grown
+	**/
+	public var num_layers_grown : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.TreeMetadata.post_pruned_nodes_meta
+	**/
+	public var post_pruned_nodes_meta : Dynamic;
 }

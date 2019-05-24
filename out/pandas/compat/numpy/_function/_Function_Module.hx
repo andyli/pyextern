@@ -9,7 +9,9 @@ package pandas.compat.numpy._function;
 	static public var COMPRESS_DEFAULTS : Dynamic;
 	static public var CUM_FUNC_DEFAULTS : Dynamic;
 	static public var LOGICAL_FUNC_DEFAULTS : Dynamic;
+	static public var MEDIAN_DEFAULTS : Dynamic;
 	static public var MINMAX_DEFAULTS : Dynamic;
+	static public var PROD_DEFAULTS : Dynamic;
 	static public var REPEAT_DEFAULTS : Dynamic;
 	static public var RESAMPLER_NUMPY_OPS : Dynamic;
 	static public var RESHAPE_DEFAULTS : Dynamic;
@@ -17,6 +19,7 @@ package pandas.compat.numpy._function;
 	static public var SORT_DEFAULTS : Dynamic;
 	static public var STAT_DDOF_FUNC_DEFAULTS : Dynamic;
 	static public var STAT_FUNC_DEFAULTS : Dynamic;
+	static public var SUM_DEFAULTS : Dynamic;
 	static public var TAKE_DEFAULTS : Dynamic;
 	static public var TRANSPOSE_DEFAULTS : Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -118,8 +121,8 @@ package pandas.compat.numpy._function;
 		
 		See Also
 		--------
-		validate_args : purely args validation
-		validate_kwargs : purely kwargs validation
+		validate_args : Purely args validation.
+		validate_kwargs : Purely kwargs validation.
 	**/
 	static public function validate_args_and_kwargs(fname:Dynamic, args:Dynamic, kwargs:Dynamic, max_fname_arg_count:Dynamic, compat_args:Dynamic):Dynamic;
 	static public function validate_argsort(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
@@ -185,7 +188,22 @@ package pandas.compat.numpy._function;
 	static public function validate_logical_func(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_max(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_mean(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
+	static public function validate_median(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_min(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
+	/**
+		Ensure that the axis argument passed to min, max, argmin, or argmax is
+		zero or None, as otherwise it will be incorrectly ignored.
+		
+		Parameters
+		----------
+		axis : int or None
+		
+		Raises
+		------
+		ValueError
+	**/
+	static public function validate_minmax_axis(axis:Dynamic):Dynamic;
+	static public function validate_prod(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_repeat(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	/**
 		'args' and 'kwargs' should be empty because all of

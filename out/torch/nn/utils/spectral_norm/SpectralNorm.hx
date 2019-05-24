@@ -112,7 +112,10 @@ package torch.nn.utils.spectral_norm;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _solve_v_and_rescale(weight_mat:Dynamic, u:Dynamic, target_sigma:Dynamic):Dynamic;
+	static public var _version : Dynamic;
 	static public function apply(module:Dynamic, name:Dynamic, n_power_iterations:Dynamic, dim:Dynamic, eps:Dynamic):Dynamic;
-	public function compute_weight(module:Dynamic):Dynamic;
+	public function compute_weight(module:Dynamic, do_power_iteration:Dynamic):Dynamic;
 	public function remove(module:Dynamic):Dynamic;
+	public function reshape_weight_to_matrix(weight:Dynamic):Dynamic;
 }

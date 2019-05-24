@@ -13,7 +13,7 @@ package tensorflow.contrib.gan.python.estimator.python.gan_estimator_impl;
 	/**
 		Get the EstimatorSpec for the current mode.
 	**/
-	static public function _get_estimator_spec(mode:Dynamic, gan_model:Dynamic, generator_loss_fn:Dynamic, discriminator_loss_fn:Dynamic, get_eval_metric_ops_fn:Dynamic, generator_optimizer:Dynamic, discriminator_optimizer:Dynamic, ?get_hooks_fn:Dynamic, ?use_loss_summaries:Dynamic):Dynamic;
+	static public function _get_estimator_spec(mode:Dynamic, gan_model:Dynamic, generator_loss_fn:Dynamic, discriminator_loss_fn:Dynamic, get_eval_metric_ops_fn:Dynamic, generator_optimizer:Dynamic, discriminator_optimizer:Dynamic, ?get_hooks_fn:Dynamic, ?use_loss_summaries:Dynamic, ?is_chief:Dynamic):Dynamic;
 	/**
 		Return an EstimatorSpec for the eval case.
 	**/
@@ -25,7 +25,7 @@ package tensorflow.contrib.gan.python.estimator.python.gan_estimator_impl;
 	/**
 		Return an EstimatorSpec for the train case.
 	**/
-	static public function _get_train_estimator_spec(gan_model:Dynamic, gan_loss:Dynamic, generator_optimizer:Dynamic, discriminator_optimizer:Dynamic, get_hooks_fn:Dynamic, ?train_op_fn:Dynamic):Dynamic;
+	static public function _get_train_estimator_spec(gan_model:Dynamic, gan_loss:Dynamic, generator_optimizer:Dynamic, discriminator_optimizer:Dynamic, get_hooks_fn:Dynamic, ?train_op_fn:Dynamic, ?is_chief:Dynamic):Dynamic;
 	/**
 		Construct a `GANModel`, and optionally pass in `mode`.
 	**/

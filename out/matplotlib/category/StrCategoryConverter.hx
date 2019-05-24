@@ -112,38 +112,38 @@ package matplotlib.category;
 		Sets the default axis ticks and labels
 		
 		Parameters
-		---------
-		unit : :class:`.UnitData`
+		----------
+		unit : `.UnitData`
 		    object string unit information for value
-		axis : :class:`~matplotlib.Axis.axis`
+		axis : `~matplotlib.Axis.axis`
 		    axis for which information is being set
 		
 		Returns
 		-------
-		:class:~matplotlib.units.AxisInfo~
+		axisinfo : `~matplotlib.units.AxisInfo`
 		    Information to support default tick labeling
 		
 		.. note: axis is not used
 	**/
 	static public function axisinfo(unit:Dynamic, axis:Dynamic):Dynamic;
 	/**
-		Converts strings in value to floats using
+		Convert strings in value to floats using
 		mapping information store in the unit object.
 		
 		Parameters
 		----------
 		value : string or iterable
-		    value or list of values to be converted
-		unit : :class:`.UnitData`
-		   object string unit information for value
-		axis : :class:`~matplotlib.Axis.axis`
-		    axis on which the converted value is plotted
+		    Value or list of values to be converted.
+		unit : `.UnitData`
+		    An object mapping strings to integers.
+		axis : `~matplotlib.axis.Axis`
+		    axis on which the converted value is plotted.
+		
+		    .. note:: *axis* is unused.
 		
 		Returns
 		-------
-		mapped_ value : float or ndarray[float]
-		
-		.. note:: axis is not used in this function
+		mapped_value : float or ndarray[float]
 	**/
 	static public function convert(value:Dynamic, unit:Dynamic, axis:Dynamic):Dynamic;
 	/**
@@ -152,20 +152,20 @@ package matplotlib.category;
 		Parameters
 		----------
 		data : string or iterable of strings
-		axis : :class:`~matplotlib.Axis.axis`
+		axis : `~matplotlib.Axis.axis`
 		    axis on which the data is plotted
 		
 		Returns
 		-------
-		class:~.UnitData~
+		class : `.UnitData`
 		    object storing string to integer mapping
 	**/
 	static public function default_units(data:Dynamic, axis:Dynamic):Dynamic;
 	/**
-		The Matplotlib datalim, autoscaling, locators etc work with
-		scalars which are the units converted to floats given the
-		current unit.  The converter may be passed these floats, or
-		arrays of them, even when units are set.
+		The Matplotlib datalim, autoscaling, locators etc work with scalars
+		which are the units converted to floats given the current unit.  The
+		converter may be passed these floats, or arrays of them, even when
+		units are set.
 	**/
 	static public function is_numlike(x:Dynamic):Dynamic;
 }

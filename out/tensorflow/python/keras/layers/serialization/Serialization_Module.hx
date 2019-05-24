@@ -46,10 +46,21 @@ package tensorflow.python.keras.layers.serialization;
 		    model = Model(x, y)
 		    ```
 		
+		    Note that even if eager execution is enabled,
+		    `Input` produces a symbolic tensor (i.e. a placeholder).
+		    This symbolic tensor can be used with other
+		    TensorFlow ops, as such:
+		
+		    ```python
+		    x = Input(shape=(32,))
+		    y = tf.square(x)
+		    ```
+		
 		Raises:
 		  ValueError: in case of invalid arguments.
 	**/
 	static public function Input(?shape:Dynamic, ?batch_size:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?sparse:Dynamic, ?tensor:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var _V2_CONVERSION_TABLE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -108,6 +119,10 @@ package tensorflow.python.keras.layers.serialization;
 		    A tensor, the concatenation of the inputs alongside axis `axis`.
 	**/
 	static public function concatenate(inputs:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		LSTM with CuDNN implementation which is only available for GPU.
+	**/
+	static public function cudnn_lstm(inputs:Dynamic, input_h:Dynamic, input_c:Dynamic, kernel:Dynamic, recurrent_kernel:Dynamic, bias:Dynamic, time_major:Dynamic):Dynamic;
 	/**
 		Instantiates a layer from a config dictionary.
 		
@@ -275,6 +290,45 @@ package tensorflow.python.keras.layers.serialization;
 	static public function multiply(inputs:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	static public function serialize(layer:Dynamic):Dynamic;
+	/**
+		LSTM with standard kernel implementation.
+		
+		This implementation can be run on all types for hardware.
+		
+		This implementation lifts out all the layer weights and make them function
+		parameters. It has same number of tensor input params as the CuDNN
+		counterpart. The RNN step logic has been simplified, eg dropout and mask is
+		removed since CuDNN implementation does not support that.
+		
+		Note that the first half of the bias tensor should be ignored by this impl.
+		The CuDNN impl need an extra set of input gate bias. In order to make the both
+		function take same shape of parameter, that extra set of bias is also feed
+		here.
+		
+		Args:
+		  inputs: input tensor of LSTM layer.
+		  init_h: initial state tensor for the cell output.
+		  init_c: initial state tensor for the cell hidden state.
+		  kernel: weights for cell kernel.
+		  recurrent_kernel: weights for cell recurrent kernel.
+		  bias: weights for cell kernel bias and recurrent bias. Only recurrent bias
+		    is used in this case.
+		  activation: Activation function to use for output.
+		  recurrent_activation: Activation function to use for hidden recurrent state.
+		  time_major: boolean, whether the inputs are in the format of
+		    [time, batch, feature] or [batch, time, feature].
+		
+		Returns:
+		  last_output: output tensor for the last timestep, which has shape
+		    [batch, units].
+		  outputs: output tensor for all timesteps, which has shape
+		    [batch, time, units].
+		  state_0: the cell output, which has same shape as init_h.
+		  state_1: the cell hidden state, which has same shape as init_c.
+		  runtime: constant string tensor which indicate real runtime hardware. This
+		    value is for testing purpose and should be used by user.
+	**/
+	static public function standard_lstm(inputs:Dynamic, init_h:Dynamic, init_c:Dynamic, kernel:Dynamic, recurrent_kernel:Dynamic, bias:Dynamic, activation:Dynamic, recurrent_activation:Dynamic, time_major:Dynamic):Dynamic;
 	/**
 		Functional interface to the `Subtract` layer.
 		

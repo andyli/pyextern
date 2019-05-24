@@ -9,8 +9,11 @@ package pandas.core.sparse.frame;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _shared_doc_kwargs : Dynamic;
+	static public function create_block_manager_from_arrays(arrays:Dynamic, names:Dynamic, axes:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	/**
-		Ensure that we have an index from some index-like object
+		Ensure that we have an index from some index-like object.
 		
 		Parameters
 		----------
@@ -24,26 +27,22 @@ package pandas.core.sparse.frame;
 		
 		Examples
 		--------
-		>>> _ensure_index(['a', 'b'])
+		>>> ensure_index(['a', 'b'])
 		Index(['a', 'b'], dtype='object')
 		
-		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
+		>>> ensure_index([('a', 'a'),  ('b', 'c')])
 		Index([('a', 'a'), ('b', 'c')], dtype='object')
 		
-		>>> _ensure_index([['a', 'a'], ['b', 'c']])
+		>>> ensure_index([['a', 'a'], ['b', 'c']])
 		MultiIndex(levels=[['a'], ['b', 'c']],
-		           labels=[[0, 0], [0, 1]])
+		           codes=[[0, 0], [0, 1]])
 		
 		See Also
 		--------
-		_ensure_index_from_sequences
+		ensure_index_from_sequences
 	**/
-	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
-	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _prep_ndarray(values:Dynamic, ?copy:Dynamic):Dynamic;
-	static public var _shared_doc_kwargs : Dynamic;
-	static public function create_block_manager_from_arrays(arrays:Dynamic, names:Dynamic, axes:Dynamic):Dynamic;
-	static public var division : Dynamic;
+	static public function ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function extract_index(data:Dynamic):Dynamic;
 	/**
 		Find a common data type among the given dtypes.
@@ -111,7 +110,7 @@ package pandas.core.sparse.frame;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -129,8 +128,8 @@ package pandas.core.sparse.frame;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -197,7 +196,7 @@ package pandas.core.sparse.frame;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -215,8 +214,8 @@ package pandas.core.sparse.frame;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -268,6 +267,7 @@ package pandas.core.sparse.frame;
 		Name: 1, dtype: bool
 	**/
 	static public function notna(obj:Dynamic):Dynamic;
+	static public function prep_ndarray(values:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Only makes sense when fill_value is NaN
 	**/

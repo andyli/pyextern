@@ -38,11 +38,6 @@ package pandas.core.algorithms;
 		(ndarray, pandas_dtype, algo dtype as a string)
 	**/
 	static public function _ensure_data(values:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public function _ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ensure_uint64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Factorize an array-like to labels and uniques.
 		
@@ -82,7 +77,6 @@ package pandas.core.algorithms;
 	static public function _get_hashtable_algo(values:Dynamic):Dynamic;
 	static public function _get_take_nd_function(ndim:Dynamic, arr_dtype:Dynamic, out_dtype:Dynamic, ?axis:Dynamic, ?mask_info:Dynamic):Dynamic;
 	static public var _hashtables : Dynamic;
-	static public var _np_version_under1p10 : Dynamic;
 	static public var _rank1d_functions : Dynamic;
 	static public var _rank2d_functions : Dynamic;
 	/**
@@ -221,7 +215,6 @@ package pandas.core.algorithms;
 		  warnings.warn(msg, FutureWarning)
 		yes!
 		
-		
 		To raise a warning that a keyword will be removed entirely in the future
 		
 		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
@@ -280,6 +273,11 @@ package pandas.core.algorithms;
 		duplicated : ndarray
 	**/
 	static public function duplicated(values:Dynamic, ?keep:Dynamic):numpy.Ndarray;
+	static public function ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_uint64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Encode the object as an enumerated type or categorical variable.
 		
@@ -291,8 +289,8 @@ package pandas.core.algorithms;
 		Parameters
 		----------
 		values : sequence
-		    A 1-D seqeunce. Sequences that aren't pandas objects are
-		    coereced to ndarrays before factorization.
+		    A 1-D sequence. Sequences that aren't pandas objects are
+		    coerced to ndarrays before factorization.
 		sort : bool, default False
 		    Sort `uniques` and shuffle `labels` to maintain the
 		    relationship.
@@ -323,8 +321,8 @@ package pandas.core.algorithms;
 		
 		See Also
 		--------
-		pandas.cut : Discretize continuous-valued array.
-		pandas.unique : Find the unique valuse in an array.
+		cut : Discretize continuous-valued array.
+		unique : Find the unique value in an array.
 		
 		Examples
 		--------
@@ -369,7 +367,7 @@ package pandas.core.algorithms;
 		[a, c]
 		Categories (3, object): [a, b, c]
 		
-		Notice that ``'b'`` is in ``uniques.categories``, desipite not being
+		Notice that ``'b'`` is in ``uniques.categories``, despite not being
 		present in ``cat.values``.
 		
 		For all other pandas objects, an Index of the appropriate type is
@@ -392,7 +390,7 @@ package pandas.core.algorithms;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -425,6 +423,11 @@ package pandas.core.algorithms;
 		-------
 		boolean : Whether or not the array or dtype is of a boolean dtype.
 		
+		Notes
+		-----
+		An ExtensionArray is considered boolean when the ``_is_boolean``
+		attribute is set to True.
+		
 		Examples
 		--------
 		>>> is_bool_dtype(str)
@@ -440,6 +443,10 @@ package pandas.core.algorithms;
 		>>> is_bool_dtype(pd.Series([1, 2]))
 		False
 		>>> is_bool_dtype(np.array([True, False]))
+		True
+		>>> is_bool_dtype(pd.Categorical([True, False]))
+		True
+		>>> is_bool_dtype(pd.SparseArray([True, False]))
 		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -564,8 +571,10 @@ package pandas.core.algorithms;
 	**/
 	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Check whether an array-like is a datetime array-like with a timezone
-		component in its dtype.
+		Check whether an array-like is a datetime-like array-like.
+		
+		Acceptable datetime-like objects are (but not limited to) datetime
+		indices, periodic indices, and timedelta indices.
 		
 		Parameters
 		----------
@@ -574,42 +583,46 @@ package pandas.core.algorithms;
 		
 		Returns
 		-------
-		boolean : Whether or not the array-like is a datetime array-like with
-		          a timezone component in its dtype.
+		boolean : Whether or not the array-like is a datetime-like array-like.
 		
 		Examples
 		--------
-		>>> is_datetimetz([1, 2, 3])
+		>>> is_datetimelike([1, 2, 3])
 		False
-		
-		Although the following examples are both DatetimeIndex objects,
-		the first one returns False because it has no timezone component
-		unlike the second one, which returns True.
-		
-		>>> is_datetimetz(pd.DatetimeIndex([1, 2, 3]))
+		>>> is_datetimelike(pd.Index([1, 2, 3]))
 		False
-		>>> is_datetimetz(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		>>> is_datetimelike(pd.DatetimeIndex([1, 2, 3]))
 		True
-		
-		The object need not be a DatetimeIndex object. It just needs to have
-		a dtype which has a timezone component.
-		
+		>>> is_datetimelike(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+		>>> is_datetimelike(pd.PeriodIndex([], freq="A"))
+		True
+		>>> is_datetimelike(np.array([], dtype=np.datetime64))
+		True
+		>>> is_datetimelike(pd.Series([], dtype="timedelta64[ns]"))
+		True
+		>>>
 		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
 		>>> s = pd.Series([], dtype=dtype)
-		>>> is_datetimetz(s)
+		>>> is_datetimelike(s)
 		True
 	**/
-	static public function is_datetimetz(arr:Dynamic):Dynamic;
+	static public function is_datetimelike(arr:Dynamic):Dynamic;
 	/**
 		Check if an object is a pandas extension array type.
+		
+		See the :ref:`Use Guide <extending.extension-types>` for more.
 		
 		Parameters
 		----------
 		arr_or_dtype : object
+		    For array-like input, the ``.dtype`` attribute will
+		    be extracted.
 		
 		Returns
 		-------
 		bool
+		    Whether the `arr_or_dtype` is an extension array type.
 		
 		Notes
 		-----
@@ -617,13 +630,33 @@ package pandas.core.algorithms;
 		array interface. In pandas, this includes:
 		
 		* Categorical
+		* Sparse
+		* Interval
+		* Period
+		* DatetimeArray
+		* TimedeltaArray
 		
 		Third-party libraries may implement arrays or types satisfying
 		this interface as well.
+		
+		Examples
+		--------
+		>>> from pandas.api.types import is_extension_array_dtype
+		>>> arr = pd.Categorical(['a', 'b'])
+		>>> is_extension_array_dtype(arr)
+		True
+		>>> is_extension_array_dtype(arr.dtype)
+		True
+		
+		>>> arr = np.array(['a', 'b'])
+		>>> is_extension_array_dtype(arr.dtype)
+		False
 	**/
 	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a float dtype.
+		
+		This function is internal and should not be exposed in the public API.
 		
 		Parameters
 		----------
@@ -655,6 +688,11 @@ package pandas.core.algorithms;
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
 		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -674,6 +712,12 @@ package pandas.core.algorithms;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -728,7 +772,11 @@ package pandas.core.algorithms;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -747,8 +795,12 @@ package pandas.core.algorithms;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Check whether the provided array or dtype is of a numeric dtype.
 		
@@ -840,23 +892,60 @@ package pandas.core.algorithms;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a signed integer dtype.
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
 		
 		Parameters
 		----------
@@ -878,6 +967,12 @@ package pandas.core.algorithms;
 		False
 		>>> is_signed_integer_dtype(np.uint64)  # unsigned
 		False
+		>>> is_signed_integer_dtype('int8')
+		True
+		>>> is_signed_integer_dtype('Int8')
+		True
+		>>> is_signed_dtype(pd.Int8Dtype)
+		True
 		>>> is_signed_integer_dtype(np.datetime64)
 		False
 		>>> is_signed_integer_dtype(np.timedelta64)
@@ -895,32 +990,59 @@ package pandas.core.algorithms;
 	**/
 	static public function is_signed_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Check whether an array-like is a pandas sparse array.
+		Check whether an array-like is a 1-D pandas sparse array.
+		
+		Check that the one-dimensional array-like is a pandas sparse array.
+		Returns True if it is a pandas sparse array, not another type of
+		sparse array.
 		
 		Parameters
 		----------
 		arr : array-like
-		    The array-like to check.
+		    Array-like to check.
 		
 		Returns
 		-------
-		boolean : Whether or not the array-like is a pandas sparse array.
+		bool
+		    Whether or not the array-like is a pandas sparse array.
+		
+		See Also
+		--------
+		DataFrame.to_sparse : Convert DataFrame to a SparseDataFrame.
+		Series.to_sparse : Convert Series to SparseSeries.
+		Series.to_dense : Return dense representation of a Series.
 		
 		Examples
 		--------
-		>>> is_sparse(np.array([1, 2, 3]))
-		False
-		>>> is_sparse(pd.SparseArray([1, 2, 3]))
+		Returns `True` if the parameter is a 1-D pandas sparse array.
+		
+		>>> is_sparse(pd.SparseArray([0, 0, 1, 0]))
 		True
-		>>> is_sparse(pd.SparseSeries([1, 2, 3]))
+		>>> is_sparse(pd.SparseSeries([0, 0, 1, 0]))
 		True
 		
-		This function checks only for pandas sparse array instances, so
-		sparse arrays from other libraries will return False.
+		Returns `False` if the parameter is not sparse.
+		
+		>>> is_sparse(np.array([0, 0, 1, 0]))
+		False
+		>>> is_sparse(pd.Series([0, 1, 0, 0]))
+		False
+		
+		Returns `False` if the parameter is not a pandas sparse array.
 		
 		>>> from scipy.sparse import bsr_matrix
-		>>> is_sparse(bsr_matrix([1, 2, 3]))
+		>>> is_sparse(bsr_matrix([0, 1, 0, 0]))
 		False
+		
+		Returns `False` if the parameter has more than one dimension.
+		
+		>>> df = pd.SparseDataFrame([389., 24., 80.5, np.nan],
+		                            columns=['max_speed'],
+		                            index=['falcon', 'parrot', 'lion', 'monkey'])
+		>>> is_sparse(df)
+		False
+		>>> is_sparse(df.max_speed)
+		True
 	**/
 	static public function is_sparse(arr:Dynamic):Dynamic;
 	/**
@@ -953,6 +1075,11 @@ package pandas.core.algorithms;
 	/**
 		Check whether the provided array or dtype is of an unsigned integer dtype.
 		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.UInt64Dtype) are also
+		   considered as integer by this function.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -973,6 +1100,12 @@ package pandas.core.algorithms;
 		False
 		>>> is_unsigned_integer_dtype(np.uint64)
 		True
+		>>> is_unsigned_integer_dtype('uint8')
+		True
+		>>> is_unsigned_integer_dtype('UInt8')
+		True
+		>>> is_unsigned_integer_dtype(pd.UInt8Dtype)
+		True
 		>>> is_unsigned_integer_dtype(np.array(['a', 'b']))
 		False
 		>>> is_unsigned_integer_dtype(pd.Series([1, 2]))  # signed
@@ -988,8 +1121,8 @@ package pandas.core.algorithms;
 		
 		Parameters
 		----------
-		comps: array-like
-		values: array-like
+		comps : array-like
+		values : array-like
 		
 		Returns
 		-------
@@ -999,7 +1132,7 @@ package pandas.core.algorithms;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -1017,8 +1150,8 @@ package pandas.core.algorithms;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -1098,12 +1231,16 @@ package pandas.core.algorithms;
 		----------
 		values : array-like
 		    Array over which to check for duplicate values.
+		dropna : boolean, default True
+		    Don't consider counts of NaN/NaT.
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
 		mode : Series
 	**/
-	static public function mode(values:Dynamic):pandas.Series;
+	static public function mode(values:Dynamic, ?dropna:Dynamic):pandas.Series;
 	/**
 		Return a dtype compat na value
 		
@@ -1115,6 +1252,19 @@ package pandas.core.algorithms;
 		Returns
 		-------
 		np.dtype or a pandas dtype
+		
+		Examples
+		--------
+		>>> na_value_for_dtype(np.dtype('int64'))
+		0
+		>>> na_value_for_dtype(np.dtype('int64'), compat=False)
+		nan
+		>>> na_value_for_dtype(np.dtype('float64'))
+		nan
+		>>> na_value_for_dtype(np.dtype('bool'))
+		False
+		>>> na_value_for_dtype(np.dtype('datetime64[ns]'))
+		NaT
 	**/
 	static public function na_value_for_dtype(dtype:Dynamic, ?compat:Dynamic):Dynamic;
 	/**
@@ -1213,6 +1363,17 @@ package pandas.core.algorithms;
 	**/
 	static public function rank(values:Dynamic, ?axis:Dynamic, ?method:Dynamic, ?na_option:Dynamic, ?ascending:Dynamic, ?pct:Dynamic):Dynamic;
 	/**
+		Insert a simple entry into the list of warnings filters (at the front).
+		
+		A simple filter matches all modules and messages.
+		'action' -- one of "error", "ignore", "always", "default", "module",
+		            or "once"
+		'category' -- a class that the warning must be a subclass of
+		'lineno' -- an integer line number, 0 matches all warnings
+		'append' -- if true, append to the list of filters
+	**/
+	static public function simplefilter(action:Dynamic, ?category:Dynamic, ?lineno:Dynamic, ?append:Dynamic):Dynamic;
+	/**
 		Take elements from an array.
 		
 		.. versionadded:: 0.23.0
@@ -1220,7 +1381,7 @@ package pandas.core.algorithms;
 		Parameters
 		----------
 		arr : sequence
-		    Non array-likes (sequences without a dtype) are coereced
+		    Non array-likes (sequences without a dtype) are coerced
 		    to an ndarray.
 		indices : sequence of integers
 		    Indices to be taken.
@@ -1381,6 +1542,11 @@ package pandas.core.algorithms;
 		  - If the input is a Categorical dtype, the return is a Categorical
 		  - If the input is a Series/ndarray, the return will be an ndarray
 		
+		See Also
+		--------
+		pandas.Index.unique
+		pandas.Series.unique
+		
 		Examples
 		--------
 		>>> pd.unique(pd.Series([2, 1, 3, 3]))
@@ -1389,8 +1555,8 @@ package pandas.core.algorithms;
 		>>> pd.unique(pd.Series([2] + [1] * 5))
 		array([2, 1])
 		
-		>>> pd.unique(Series([pd.Timestamp('20160101'),
-		...                   pd.Timestamp('20160101')]))
+		>>> pd.unique(pd.Series([pd.Timestamp('20160101'),
+		...                     pd.Timestamp('20160101')]))
 		array(['2016-01-01T00:00:00.000000000'], dtype='datetime64[ns]')
 		
 		>>> pd.unique(pd.Series([pd.Timestamp('20160101', tz='US/Eastern'),
@@ -1409,20 +1575,20 @@ package pandas.core.algorithms;
 		An unordered Categorical will return categories in the
 		order of appearance.
 		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'))))
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'))))
 		[b, a, c]
 		Categories (3, object): [b, a, c]
 		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'),
-		...                                 categories=list('abc'))))
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'),
+		...                                    categories=list('abc'))))
 		[b, a, c]
 		Categories (3, object): [b, a, c]
 		
 		An ordered Categorical preserves the category ordering.
 		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'),
-		...                                 categories=list('abc'),
-		...                                 ordered=True)))
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'),
+		...                                    categories=list('abc'),
+		...                                    ordered=True)))
 		[b, a, c]
 		Categories (3, object): [a < b < c]
 		
@@ -1430,11 +1596,6 @@ package pandas.core.algorithms;
 		
 		>>> pd.unique([('a', 'b'), ('b', 'a'), ('a', 'c'), ('b', 'a')])
 		array([('a', 'b'), ('b', 'a'), ('a', 'c')], dtype=object)
-		
-		See Also
-		--------
-		pandas.Index.unique
-		pandas.Series.unique
 	**/
 	static public function unique(values:Dynamic):Dynamic;
 	/**
@@ -1454,6 +1615,11 @@ package pandas.core.algorithms;
 		  - If the input is a Categorical dtype, the return is a Categorical
 		  - If the input is a Series/ndarray, the return will be an ndarray
 		
+		See Also
+		--------
+		pandas.Index.unique
+		pandas.Series.unique
+		
 		Examples
 		--------
 		>>> pd.unique(pd.Series([2, 1, 3, 3]))
@@ -1462,8 +1628,8 @@ package pandas.core.algorithms;
 		>>> pd.unique(pd.Series([2] + [1] * 5))
 		array([2, 1])
 		
-		>>> pd.unique(Series([pd.Timestamp('20160101'),
-		...                   pd.Timestamp('20160101')]))
+		>>> pd.unique(pd.Series([pd.Timestamp('20160101'),
+		...                     pd.Timestamp('20160101')]))
 		array(['2016-01-01T00:00:00.000000000'], dtype='datetime64[ns]')
 		
 		>>> pd.unique(pd.Series([pd.Timestamp('20160101', tz='US/Eastern'),
@@ -1482,20 +1648,20 @@ package pandas.core.algorithms;
 		An unordered Categorical will return categories in the
 		order of appearance.
 		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'))))
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'))))
 		[b, a, c]
 		Categories (3, object): [b, a, c]
 		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'),
-		...                                 categories=list('abc'))))
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'),
+		...                                    categories=list('abc'))))
 		[b, a, c]
 		Categories (3, object): [b, a, c]
 		
 		An ordered Categorical preserves the category ordering.
 		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'),
-		...                                 categories=list('abc'),
-		...                                 ordered=True)))
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'),
+		...                                    categories=list('abc'),
+		...                                    ordered=True)))
 		[b, a, c]
 		Categories (3, object): [a < b < c]
 		
@@ -1503,11 +1669,6 @@ package pandas.core.algorithms;
 		
 		>>> pd.unique([('a', 'b'), ('b', 'a'), ('a', 'c'), ('b', 'a')])
 		array([('a', 'b'), ('b', 'a'), ('a', 'c')], dtype=object)
-		
-		See Also
-		--------
-		pandas.Index.unique
-		pandas.Series.unique
 	**/
 	static public function unique1d(values:Dynamic):Dynamic;
 	/**

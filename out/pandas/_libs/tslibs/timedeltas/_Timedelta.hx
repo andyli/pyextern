@@ -201,7 +201,35 @@ package pandas._libs.tslibs.timedeltas;
 	public var _s : Dynamic;
 	public var _us : Dynamic;
 	/**
-		return a numpy timedelta64 array view of myself 
+		Return a numpy timedelta64 array scalar view.
+		
+		Provides access to the array scalar view (i.e. a combination of the
+		value and the units) associated with the numpy.timedelta64().view(),
+		including a 64-bit integer representation of the timedelta in
+		nanoseconds (Python int compatible).
+		
+		Returns
+		-------
+		numpy timedelta64 array scalar view
+		    Array scalar view of the timedelta in nanoseconds.
+		
+		Examples
+		--------
+		>>> td = pd.Timedelta('1 days 2 min 3 us 42 ns')
+		>>> td.asm8
+		numpy.timedelta64(86520000003042,'ns')
+		
+		>>> td = pd.Timedelta('2 min 3 s')
+		>>> td.asm8
+		numpy.timedelta64(123000000000,'ns')
+		
+		>>> td = pd.Timedelta('3 ms 5 us')
+		>>> td.asm8
+		numpy.timedelta64(3005000,'ns')
+		
+		>>> td = pd.Timedelta(42, unit='ns')
+		>>> td.asm8
+		numpy.timedelta64(42,'ns')
 	**/
 	public var asm8 : Dynamic;
 	/**
@@ -252,6 +280,10 @@ package pandas._libs.tslibs.timedeltas;
 		-------
 		formatted : str
 		
+		See Also
+		--------
+		Timestamp.isoformat
+		
 		Notes
 		-----
 		The longest component is days, whose value may be larger than
@@ -274,10 +306,6 @@ package pandas._libs.tslibs.timedeltas;
 		'P0DT0H0M10S'
 		>>> pd.Timedelta(days=500.5).isoformat()
 		'P500DT12H0MS'
-		
-		See Also
-		--------
-		Timestamp.isoformat
 	**/
 	public function isoformat(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var max : Dynamic;
@@ -316,7 +344,44 @@ package pandas._libs.tslibs.timedeltas;
 	**/
 	public var nanoseconds : Dynamic;
 	/**
-		return a string representing the lowest resolution that we have 
+		Return a string representing the lowest timedelta resolution.
+		
+		Each timedelta has a defined resolution that represents the lowest OR
+		most granular level of precision. Each level of resolution is
+		represented by a short string as defined below:
+		
+		Resolution:     Return value
+		
+		* Days:         'D'
+		* Hours:        'H'
+		* Minutes:      'T'
+		* Seconds:      'S'
+		* Milliseconds: 'L'
+		* Microseconds: 'U'
+		* Nanoseconds:  'N'
+		
+		Returns
+		-------
+		str
+		    Timedelta resolution.
+		
+		Examples
+		--------
+		>>> td = pd.Timedelta('1 days 2 min 3 us 42 ns')
+		>>> td.resolution
+		'N'
+		
+		>>> td = pd.Timedelta('1 days 2 min 3 us')
+		>>> td.resolution
+		'U'
+		
+		>>> td = pd.Timedelta('2 min 3 s')
+		>>> td.resolution
+		'S'
+		
+		>>> td = pd.Timedelta(36, unit='us')
+		>>> td.resolution
+		'U'
 	**/
 	public var resolution : Dynamic;
 	/**

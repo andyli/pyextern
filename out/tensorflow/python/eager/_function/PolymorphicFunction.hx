@@ -55,14 +55,17 @@ package tensorflow.python.eager._function;
 		    specifying the input signature of this function. If `None`, a separate
 		    function is instantiated for each inferred input signature.
 		  attributes: dict, extra keyword arguments that will be added as attribute
-		     of the function.
+		    of the function.
+		  autograph: whether to use autograph to compile
+		    `python_function`. See https://www.tensorflow.org/guide/autograph for
+		    more information.
 		
 		Raises:
 		  ValueError: if `input_signature` is not None and the `python_function`'s
 		    argspec has keyword arguments.
 	**/
 	@:native("__init__")
-	public function ___init__(python_function:Dynamic, name:Dynamic, ?input_signature:Dynamic, ?attributes:Dynamic):Dynamic;
+	public function ___init__(python_function:Dynamic, name:Dynamic, ?input_signature:Dynamic, ?attributes:Dynamic, ?autograph:Dynamic):Dynamic;
 	/**
 		Initializes a polymorphic function.
 		
@@ -73,13 +76,16 @@ package tensorflow.python.eager._function;
 		    specifying the input signature of this function. If `None`, a separate
 		    function is instantiated for each inferred input signature.
 		  attributes: dict, extra keyword arguments that will be added as attribute
-		     of the function.
+		    of the function.
+		  autograph: whether to use autograph to compile
+		    `python_function`. See https://www.tensorflow.org/guide/autograph for
+		    more information.
 		
 		Raises:
 		  ValueError: if `input_signature` is not None and the `python_function`'s
 		    argspec has keyword arguments.
 	**/
-	public function new(python_function:Dynamic, name:Dynamic, ?input_signature:Dynamic, ?attributes:Dynamic):Void;
+	public function new(python_function:Dynamic, name:Dynamic, ?input_signature:Dynamic, ?attributes:Dynamic, ?autograph:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -169,6 +175,10 @@ package tensorflow.python.eager._function;
 	**/
 	public function _canonicalize_function_inputs(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Bypasses error checking when getting a graph function.
+	**/
+	public function _get_concrete_function_internal(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Gets a function for these inputs, defining it if necessary.
 		
 		`args` and `kwargs` can be None if this `PolymorphicFunction` was created
@@ -189,9 +199,6 @@ package tensorflow.python.eager._function;
 	public function _maybe_define_function(args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Returns a `Function` object specialized to inputs and execution context.
-		
-		`args` and `kwargs` are ignored if this `PolymorphicFunction` was created
-		with an `input_signature`.
 		
 		Args:
 		  *args: inputs to specialize on.

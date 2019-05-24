@@ -54,7 +54,6 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAX_LEARNING_RATE_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -63,7 +62,6 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NUM_STEPS_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -84,6 +82,10 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -249,4 +251,12 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearningRateLineSearchConfig.max_learning_rate
+	**/
+	public var max_learning_rate : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearningRateLineSearchConfig.num_steps
+	**/
+	public var num_steps : Dynamic;
 }

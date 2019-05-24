@@ -33,23 +33,6 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	**/
 	static public function _num_present(losses:Dynamic, weights:Dynamic, ?per_batch:Dynamic):Dynamic;
 	/**
-		Computes a safe divide which returns 0 if the denominator is zero.
-		
-		Note that the function contains an additional conditional check that is
-		necessary for avoiding situations where the loss is zero causing NaNs to
-		creep into the gradient computation.
-		
-		Args:
-		  numerator: An arbitrary `Tensor`.
-		  denominator: A `Tensor` whose shape matches `numerator` and whose values are
-		    assumed to be non-negative.
-		  name: An optional name for the returned op.
-		
-		Returns:
-		  The element-wise value of the numerator divided by the denominator.
-	**/
-	static public function _safe_div(numerator:Dynamic, denominator:Dynamic, ?name:Dynamic):Dynamic;
-	/**
 		Computes a safe mean of the losses.
 		
 		Args:
@@ -82,7 +65,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	/**
 		Adds an Absolute Difference loss to the training procedure. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.absolute_difference instead.
 		
@@ -123,7 +106,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	/**
 		Adds a externally defined loss to the collection of losses. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.add_loss instead.
 		
@@ -135,7 +118,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	/**
 		Computes the weighted loss. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.compute_weighted_loss instead.
 		
@@ -156,11 +139,11 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	/**
 		Adds a cosine-distance loss to the training procedure. (deprecated arguments) (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.cosine_distance instead.
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(dim)`. They will be removed in a future version.
 		Instructions for updating:
 		dim is deprecated, use axis instead
 		
@@ -276,7 +259,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	/**
 		Gets the list of losses from the loss_collection. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.get_losses instead.
 		
@@ -291,7 +274,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	/**
 		Gets the regularization losses. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.get_regularization_losses instead.
 		
@@ -305,7 +288,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	/**
 		Returns a tensor whose value represents the total loss. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.get_total_loss instead.
 		
@@ -326,7 +309,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	/**
 		Method that returns the loss tensor for hinge loss. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.hinge_loss instead. Note that the order of the logits and labels arguments has been changed, and to stay unweighted, reduction=Reduction.NONE
 		
@@ -351,7 +334,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	/**
 		Adds a Log Loss term to the training procedure. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.log_loss instead. Note that the order of the predictions and labels arguments has been changed.
 		
@@ -382,7 +365,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	/**
 		Adds a pairwise-errors-squared loss to the training procedure. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.mean_pairwise_squared_error instead. Note that the order of the predictions and labels arguments has been changed.
 		
@@ -426,7 +409,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	/**
 		Adds a Sum-of-Squares loss to the training procedure. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.mean_squared_error instead.
 		
@@ -457,7 +440,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	/**
 		Creates a cross-entropy loss using tf.nn.sigmoid_cross_entropy_with_logits. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.sigmoid_cross_entropy instead. Note that the order of the predictions and labels arguments has been changed.
 		
@@ -491,7 +474,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	/**
 		Creates a cross-entropy loss using tf.nn.softmax_cross_entropy_with_logits. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.softmax_cross_entropy instead. Note that the order of the logits and labels arguments has been changed.
 		
@@ -523,7 +506,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	/**
 		Cross-entropy loss using `tf.nn.sparse_softmax_cross_entropy_with_logits`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.sparse_softmax_cross_entropy instead. Note that the order of the logits and labels arguments has been changed.
 		

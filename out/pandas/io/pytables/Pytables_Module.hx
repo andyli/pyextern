@@ -47,39 +47,6 @@ package pandas.io.pytables;
 	static public function _ensure_decoded(s:Dynamic):Dynamic;
 	static public function _ensure_encoding(encoding:Dynamic):Dynamic;
 	/**
-		Ensure that we have an index from some index-like object
-		
-		Parameters
-		----------
-		index : sequence
-		    An Index or other sequence
-		copy : bool
-		
-		Returns
-		-------
-		index : Index or MultiIndex
-		
-		Examples
-		--------
-		>>> _ensure_index(['a', 'b'])
-		Index(['a', 'b'], dtype='object')
-		
-		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
-		Index([('a', 'a'), ('b', 'c')], dtype='object')
-		
-		>>> _ensure_index([['a', 'a'], ['b', 'c']])
-		MultiIndex(levels=[['a'], ['b', 'c']],
-		           labels=[[0, 0], [0, 1]])
-		
-		See Also
-		--------
-		_ensure_index_from_sequences
-	**/
-	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
-	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		Ensure that an index / column name is a str (python 3) or
 		unicode (python 2); otherwise they may be np.string dtype.
 		Non-string dtypes are passed through unchanged.
@@ -301,6 +268,13 @@ package pandas.io.pytables;
 		    ``DataFrame``, a ``DataFrame`` is returned. When concatenating along
 		    the columns (axis=1), a ``DataFrame`` is returned.
 		
+		See Also
+		--------
+		Series.append
+		DataFrame.append
+		DataFrame.join
+		DataFrame.merge
+		
 		Notes
 		-----
 		The keys, levels, and names arguments are all optional.
@@ -308,13 +282,6 @@ package pandas.io.pytables;
 		A walkthrough of how this method fits in with other tools for combining
 		pandas objects can be found `here
 		<http://pandas.pydata.org/pandas-docs/stable/merging.html>`__.
-		
-		See Also
-		--------
-		Series.append
-		DataFrame.append
-		DataFrame.join
-		DataFrame.merge
 		
 		Examples
 		--------
@@ -391,12 +358,12 @@ package pandas.io.pytables;
 		  letter  number animal
 		0      c       3    cat
 		1      d       4    dog
-		>>> pd.concat([df1, df3])
-		  animal letter  number
-		0    NaN      a       1
-		1    NaN      b       2
-		0    cat      c       3
-		1    dog      d       4
+		>>> pd.concat([df1, df3], sort=False)
+		  letter  number animal
+		0      a       1    NaN
+		1      b       2    NaN
+		0      c       3    cat
+		1      d       4    dog
 		
 		Combine ``DataFrame`` objects with overlapping columns
 		and return only those that are shared by passing ``inner`` to
@@ -438,6 +405,39 @@ package pandas.io.pytables;
 	static public function concat(objs:Dynamic, ?axis:Dynamic, ?join:Dynamic, ?join_axes:Dynamic, ?ignore_index:Dynamic, ?keys:Dynamic, ?levels:Dynamic, ?names:Dynamic, ?verify_integrity:Dynamic, ?sort:Dynamic, ?copy:Dynamic):Dynamic;
 	static public var dropna_doc : Dynamic;
 	static public var duplicate_doc : Dynamic;
+	/**
+		Ensure that we have an index from some index-like object.
+		
+		Parameters
+		----------
+		index : sequence
+		    An Index or other sequence
+		copy : bool
+		
+		Returns
+		-------
+		index : Index or MultiIndex
+		
+		Examples
+		--------
+		>>> ensure_index(['a', 'b'])
+		Index(['a', 'b'], dtype='object')
+		
+		>>> ensure_index([('a', 'a'),  ('b', 'c')])
+		Index([('a', 'a'), ('b', 'c')], dtype='object')
+		
+		>>> ensure_index([['a', 'a'], ['b', 'c']])
+		MultiIndex(levels=[['a'], ['b', 'c']],
+		           codes=[[0, 0], [0, 1]])
+		
+		See Also
+		--------
+		ensure_index_from_sequences
+	**/
+	static public function ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var format_deprecate_doc : Dynamic;
 	static public var format_doc : Dynamic;
 	/**
@@ -524,7 +524,7 @@ package pandas.io.pytables;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
+		    [default: ANSI_X3.4-1968] [currently: ANSI_X3.4-1968]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -768,11 +768,6 @@ package pandas.io.pytables;
 		    [default: True] [currently: True]
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Backwards compatible alias for ``HDFStore``
-		    
-	**/
-	static public function get_store(path:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var incompatibility_doc : Dynamic;
 	/**
 		Check whether an array-like or dtype is of the Categorical dtype.
@@ -870,7 +865,11 @@ package pandas.io.pytables;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -889,8 +888,12 @@ package pandas.io.pytables;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Check whether an array-like or dtype is of the timedelta64 dtype.
 		
@@ -921,7 +924,7 @@ package pandas.io.pytables;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -939,8 +942,8 @@ package pandas.io.pytables;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -1060,7 +1063,7 @@ package pandas.io.pytables;
 		    objects.
 		
 		    .. versionadded:: 0.19.0 support for pathlib, py.path.
-		    .. versionadded:: 0.21.0 support for __fspath__ proptocol.
+		    .. versionadded:: 0.21.0 support for __fspath__ protocol.
 		
 		key : object, optional
 		    The group identifier in the store. Can be omitted if the HDF file
@@ -1094,8 +1097,8 @@ package pandas.io.pytables;
 		
 		See Also
 		--------
-		pandas.DataFrame.to_hdf : write a HDF file from a DataFrame
-		pandas.HDFStore : low-level access to HDF files
+		pandas.DataFrame.to_hdf : Write a HDF file from a DataFrame.
+		pandas.HDFStore : Low-level access to HDF files.
 		
 		Examples
 		--------
@@ -1137,7 +1140,7 @@ package pandas.io.pytables;
 		      as dateutil).
 		
 		    Warning: yearfirst=True is not strict, but will prefer to parse
-		    with year first (this is a known bug, based on dateutil beahavior).
+		    with year first (this is a known bug, based on dateutil behavior).
 		
 		    .. versionadded:: 0.16.1
 		
@@ -1146,7 +1149,7 @@ package pandas.io.pytables;
 		    datetime.datetime objects as well).
 		box : boolean, default True
 		
-		    - If True returns a DatetimeIndex
+		    - If True returns a DatetimeIndex or Index-like object
 		    - If False returns ndarray of values.
 		format : string, default None
 		    strftime to parse time, eg "%d/%m/%Y", note that "%f" will parse
@@ -1180,8 +1183,8 @@ package pandas.io.pytables;
 		    .. versionadded:: 0.20.0
 		cache : boolean, default False
 		    If True, use a cache of unique, converted dates to apply the datetime
-		    conversion. May produce sigificant speed-up when parsing duplicate date
-		    strings, especially ones with timezone offsets.
+		    conversion. May produce significant speed-up when parsing duplicate
+		    date strings, especially ones with timezone offsets.
 		
 		    .. versionadded:: 0.23.0
 		
@@ -1198,6 +1201,11 @@ package pandas.io.pytables;
 		    any element of input is before Timestamp.min or after Timestamp.max)
 		    return will have datetime.datetime type (or corresponding
 		    array/Series).
+		
+		See Also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
 		
 		Examples
 		--------
@@ -1262,18 +1270,12 @@ package pandas.io.pytables;
 		0    1960-01-02
 		1    1960-01-03
 		2    1960-01-04
-		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_timedelta : Convert argument to timedelta.
 	**/
 	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 	/**
 		store this object, close it if we opened it 
 	**/
 	static public function to_hdf(path_or_buf:Dynamic, key:Dynamic, value:Dynamic, ?mode:Dynamic, ?complevel:Dynamic, ?complib:Dynamic, ?append:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function u(s:Dynamic):Dynamic;
 	/**
 		Hash table-based unique. Uniques are returned in order
 		of appearance. This does NOT sort.
@@ -1291,6 +1293,11 @@ package pandas.io.pytables;
 		  - If the input is a Categorical dtype, the return is a Categorical
 		  - If the input is a Series/ndarray, the return will be an ndarray
 		
+		See Also
+		--------
+		pandas.Index.unique
+		pandas.Series.unique
+		
 		Examples
 		--------
 		>>> pd.unique(pd.Series([2, 1, 3, 3]))
@@ -1299,8 +1306,8 @@ package pandas.io.pytables;
 		>>> pd.unique(pd.Series([2] + [1] * 5))
 		array([2, 1])
 		
-		>>> pd.unique(Series([pd.Timestamp('20160101'),
-		...                   pd.Timestamp('20160101')]))
+		>>> pd.unique(pd.Series([pd.Timestamp('20160101'),
+		...                     pd.Timestamp('20160101')]))
 		array(['2016-01-01T00:00:00.000000000'], dtype='datetime64[ns]')
 		
 		>>> pd.unique(pd.Series([pd.Timestamp('20160101', tz='US/Eastern'),
@@ -1319,20 +1326,20 @@ package pandas.io.pytables;
 		An unordered Categorical will return categories in the
 		order of appearance.
 		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'))))
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'))))
 		[b, a, c]
 		Categories (3, object): [b, a, c]
 		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'),
-		...                                 categories=list('abc'))))
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'),
+		...                                    categories=list('abc'))))
 		[b, a, c]
 		Categories (3, object): [b, a, c]
 		
 		An ordered Categorical preserves the category ordering.
 		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'),
-		...                                 categories=list('abc'),
-		...                                 ordered=True)))
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'),
+		...                                    categories=list('abc'),
+		...                                    ordered=True)))
 		[b, a, c]
 		Categories (3, object): [a < b < c]
 		
@@ -1340,11 +1347,6 @@ package pandas.io.pytables;
 		
 		>>> pd.unique([('a', 'b'), ('b', 'a'), ('a', 'c'), ('b', 'a')])
 		array([('a', 'b'), ('b', 'a'), ('a', 'c')], dtype=object)
-		
-		See Also
-		--------
-		pandas.Index.unique
-		pandas.Series.unique
 	**/
 	static public function unique(values:Dynamic):Dynamic;
 }

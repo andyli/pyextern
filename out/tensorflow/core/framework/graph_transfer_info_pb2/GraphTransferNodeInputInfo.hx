@@ -62,8 +62,6 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NODE_ID_FIELD_NUMBER : Dynamic;
-	static public var NODE_INPUT_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -84,6 +82,10 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -249,4 +251,12 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.GraphTransferNodeInputInfo.node_id
+	**/
+	public var node_id : Dynamic;
+	/**
+		Field tensorflow.GraphTransferNodeInputInfo.node_input
+	**/
+	public var node_input : Dynamic;
 }

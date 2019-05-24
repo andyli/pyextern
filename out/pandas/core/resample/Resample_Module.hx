@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.resample;
 @:pythonImport("pandas.core.resample") extern class Resample_Module {
+	static public var NaT : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,10 +11,56 @@ package pandas.core.resample;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _adjust_dates_anchored(first:Dynamic, last:Dynamic, offset:Dynamic, ?closed:Dynamic, ?base:Dynamic):Dynamic;
-	static public function _get_range_edges(first:Dynamic, last:Dynamic, offset:Dynamic, ?closed:Dynamic, ?base:Dynamic):Dynamic;
 	/**
-		potentially we might have a deprecation warning, show it
-		but call the appropriate methods anyhow 
+		Adjust the provided `first` and `last` Periods to the respective Period of
+		the given offset that encompasses them.
+		
+		Parameters
+		----------
+		first : pd.Period
+		    The beginning Period of the range to be adjusted.
+		last : pd.Period
+		    The ending Period of the range to be adjusted.
+		offset : pd.DateOffset
+		    The dateoffset to which the Periods will be adjusted.
+		closed : {'right', 'left'}, default None
+		    Which side of bin interval is closed.
+		base : int, default 0
+		    The "origin" of the adjusted Periods.
+		
+		Returns
+		-------
+		A tuple of length 2, containing the adjusted pd.Period objects.
+	**/
+	static public function _get_period_range_edges(first:Dynamic, last:Dynamic, offset:Dynamic, ?closed:Dynamic, ?base:Dynamic):Dynamic;
+	/**
+		Adjust the `first` Timestamp to the preceeding Timestamp that resides on
+		the provided offset. Adjust the `last` Timestamp to the following
+		Timestamp that resides on the provided offset. Input Timestamps that
+		already reside on the offset will be adjusted depending on the type of
+		offset and the `closed` parameter.
+		
+		Parameters
+		----------
+		first : pd.Timestamp
+		    The beginning Timestamp of the range to be adjusted.
+		last : pd.Timestamp
+		    The ending Timestamp of the range to be adjusted.
+		offset : pd.DateOffset
+		    The dateoffset to which the Timestamps will be adjusted.
+		closed : {'right', 'left'}, default None
+		    Which side of bin interval is closed.
+		base : int, default 0
+		    The "origin" of the adjusted Timestamps.
+		
+		Returns
+		-------
+		A tuple of length 2, containing the adjusted pd.Timestamp objects.
+	**/
+	static public function _get_timestamp_range_edges(first:Dynamic, last:Dynamic, offset:Dynamic, ?closed:Dynamic, ?base:Dynamic):Dynamic;
+	/**
+		Potentially we might have a deprecation warning, show it
+		but call the appropriate methods anyhow.
 	**/
 	static public function _maybe_process_deprecations(r:Dynamic, ?how:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic):Dynamic;
 	static public var _pipe_template : Dynamic;
@@ -21,7 +68,7 @@ package pandas.core.resample;
 	static public var _shared_docs_kwargs : Dynamic;
 	static public function _take_new_index(obj:Dynamic, indexer:Dynamic, new_index:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
-		Utility frequency conversion method for Series/DataFrame
+		Utility frequency conversion method for Series/DataFrame.
 	**/
 	static public function asfreq(obj:Dynamic, freq:Dynamic, ?method:Dynamic, ?how:Dynamic, ?normalize:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
@@ -35,7 +82,7 @@ package pandas.core.resample;
 		    Right bound for generating dates.
 		periods : integer, optional
 		    Number of periods to generate.
-		freq : str or DateOffset, default 'D' (calendar daily)
+		freq : str or DateOffset, default 'D'
 		    Frequency strings can have multiples, e.g. '5H'. See
 		    :ref:`here <timeseries.offset_aliases>` for a list of
 		    frequency aliases.
@@ -107,7 +154,8 @@ package pandas.core.resample;
 		
 		>>> pd.date_range(start='2018-04-24', end='2018-04-27', periods=3)
 		DatetimeIndex(['2018-04-24 00:00:00', '2018-04-25 12:00:00',
-		               '2018-04-27 00:00:00'], freq=None)
+		               '2018-04-27 00:00:00'],
+		              dtype='datetime64[ns]', freq=None)
 		
 		**Other Parameters**
 		
@@ -174,18 +222,18 @@ package pandas.core.resample;
 		expanded tabs before searching for common leading whitespace.)
 	**/
 	static public function dedent(text:Dynamic):Dynamic;
-	static public function delta_to_nanoseconds(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns number of unique elements in the group 
 	**/
 	static public function f(self:Dynamic, ?_method:Dynamic):Dynamic;
 	/**
-		return our appropriate resampler when grouping as well 
+		Return our appropriate resampler when grouping as well.
 	**/
 	static public function get_resampler_for_grouping(groupby:Dynamic, rule:Dynamic, ?how:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?kind:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Class for grouping and aggregating relational data. See aggregate,
-		transform, and apply functions on this object.
+		Class for grouping and aggregating relational data.
+		
+		See aggregate, transform, and apply functions on this object.
 		
 		It's easiest to use obj.groupby(...) to use GroupBy, but you can also do:
 		
@@ -205,6 +253,14 @@ package pandas.core.resample;
 		    List of columns to exclude
 		name : string
 		    Most users should ignore this
+		
+		Returns
+		-------
+		**Attributes**
+		groups : dict
+		    {group name -> group labels}
+		len(grouped) : int
+		    Number of groups
 		
 		Notes
 		-----
@@ -239,14 +295,6 @@ package pandas.core.resample;
 		
 		See the online documentation for full exposition on these topics and much
 		more
-		
-		Returns
-		-------
-		**Attributes**
-		groups : dict
-		    {group name -> group labels}
-		len(grouped) : int
-		    Number of groups
 	**/
 	static public function groupby(obj:Dynamic, by:Dynamic, ?kwds:python.KwArgs<Dynamic>):Int;
 	/**
@@ -296,15 +344,81 @@ package pandas.core.resample;
 		kind : str or None
 		    'period', 'timestamp' to override default index treatement
 		
-		Notes
-		-----
-		After resampling, see aggregate, apply, and transform functions.
-		
 		Returns
 		-------
 		a Resampler of the appropriate type
+		
+		Notes
+		-----
+		After resampling, see aggregate, apply, and transform functions.
 	**/
 	static public function resample(obj:Dynamic, ?kind:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Return a fixed frequency TimedeltaIndex, with day as the default
+		frequency
+		
+		Parameters
+		----------
+		start : string or timedelta-like, default None
+		    Left bound for generating timedeltas
+		end : string or timedelta-like, default None
+		    Right bound for generating timedeltas
+		periods : integer, default None
+		    Number of periods to generate
+		freq : string or DateOffset, default 'D'
+		    Frequency strings can have multiples, e.g. '5H'
+		name : string, default None
+		    Name of the resulting TimedeltaIndex
+		closed : string, default None
+		    Make the interval closed with respect to the given frequency to
+		    the 'left', 'right', or both sides (None)
+		
+		Returns
+		-------
+		rng : TimedeltaIndex
+		
+		Notes
+		-----
+		Of the four parameters ``start``, ``end``, ``periods``, and ``freq``,
+		exactly three must be specified. If ``freq`` is omitted, the resulting
+		``TimedeltaIndex`` will have ``periods`` linearly spaced elements between
+		``start`` and ``end`` (closed on both sides).
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
+		
+		Examples
+		--------
+		
+		>>> pd.timedelta_range(start='1 day', periods=4)
+		TimedeltaIndex(['1 days', '2 days', '3 days', '4 days'],
+		               dtype='timedelta64[ns]', freq='D')
+		
+		The ``closed`` parameter specifies which endpoint is included.  The default
+		behavior is to include both endpoints.
+		
+		>>> pd.timedelta_range(start='1 day', periods=4, closed='right')
+		TimedeltaIndex(['2 days', '3 days', '4 days'],
+		               dtype='timedelta64[ns]', freq='D')
+		
+		The ``freq`` parameter specifies the frequency of the TimedeltaIndex.
+		Only fixed frequencies can be passed, non-fixed frequencies such as
+		'M' (month end) will raise.
+		
+		>>> pd.timedelta_range(start='1 day', end='2 days', freq='6H')
+		TimedeltaIndex(['1 days 00:00:00', '1 days 06:00:00', '1 days 12:00:00',
+		                '1 days 18:00:00', '2 days 00:00:00'],
+		               dtype='timedelta64[ns]', freq='6H')
+		
+		Specify ``start``, ``end``, and ``periods``; the frequency is generated
+		automatically (linearly spaced).
+		
+		>>> pd.timedelta_range(start='1 day', end='5 days', periods=4)
+		TimedeltaIndex(['1 days 00:00:00', '2 days 08:00:00', '3 days 16:00:00',
+		            '5 days 00:00:00'],
+		           dtype='timedelta64[ns]', freq=None)
+	**/
+	static public function timedelta_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.TimedeltaIndex;
 	/**
 		Return DateOffset object from string or tuple representation
 		or datetime.timedelta object

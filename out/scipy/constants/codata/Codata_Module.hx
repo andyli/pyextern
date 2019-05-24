@@ -41,11 +41,6 @@ package scipy.constants.codata;
 		    If `disp` is False, the list of keys is returned.
 		    Otherwise, None is returned.
 		
-		See Also
-		--------
-		codata : Contains the description of `physical_constants`, which, as a
-		    dictionary literal object, does not itself possess a docstring.
-		
 		Examples
 		--------
 		>>> from scipy.constants import find, physical_constants
@@ -94,11 +89,6 @@ package scipy.constants.codata;
 		prec : float
 		    Relative precision in `physical_constants` corresponding to `key`
 		
-		See Also
-		--------
-		codata : Contains the description of `physical_constants`, which, as a
-		    dictionary literal object, does not itself possess a docstring.
-		
 		Examples
 		--------
 		>>> from scipy import constants
@@ -130,11 +120,6 @@ package scipy.constants.codata;
 		unit : Python string
 		    Unit in `physical_constants` corresponding to `key`
 		
-		See Also
-		--------
-		codata : Contains the description of `physical_constants`, which, as a
-		    dictionary literal object, does not itself possess a docstring.
-		
 		Examples
 		--------
 		>>> from scipy import constants
@@ -156,11 +141,6 @@ package scipy.constants.codata;
 		-------
 		value : float
 		    Value in `physical_constants` corresponding to `key`
-		
-		See Also
-		--------
-		codata : Contains the description of `physical_constants`, which, as a
-		    dictionary literal object, does not itself possess a docstring.
 		
 		Examples
 		--------

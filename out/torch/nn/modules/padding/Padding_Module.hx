@@ -12,4 +12,6 @@ package torch.nn.modules.padding;
 	static public function _ntuple(n:Dynamic):Dynamic;
 	static public function _pair(x:Dynamic):Dynamic;
 	static public function _quadruple(x:Dynamic):Dynamic;
+	static public function weak_module(cls:Dynamic):Dynamic;
+	static public function weak_script_method(fn:Dynamic):Dynamic;
 }

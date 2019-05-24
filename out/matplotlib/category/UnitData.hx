@@ -42,8 +42,8 @@ package matplotlib.category;
 		
 		Parameters
 		----------
-		data: iterable
-		      sequence of string values
+		data : iterable
+		    sequence of string values
 	**/
 	@:native("__init__")
 	public function ___init__(?data:Dynamic):Dynamic;
@@ -52,8 +52,8 @@ package matplotlib.category;
 		
 		Parameters
 		----------
-		data: iterable
-		      sequence of string values
+		data : iterable
+		    sequence of string values
 	**/
 	public function new(?data:Dynamic):Void;
 	/**
@@ -119,12 +119,17 @@ package matplotlib.category;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		Helper method to see if a string can be cast to float or
+		parsed as date.
+	**/
+	static public function _str_is_convertible(val:Dynamic):Dynamic;
+	/**
 		Maps new values to integer identifiers.
 		
 		Parameters
 		----------
-		data: iterable
-		      sequence of string values
+		data : iterable
+		    sequence of string values
 		
 		Raises
 		------

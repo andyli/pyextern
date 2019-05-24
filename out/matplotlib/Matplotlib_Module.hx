@@ -3,6 +3,7 @@ package matplotlib;
 @:pythonImport("matplotlib") extern class Matplotlib_Module {
 	static public var URL_REGEX : Dynamic;
 	static public var _DATA_DOC_APPENDIX : Dynamic;
+	static public var _DATA_DOC_TITLE : Dynamic;
 	static public var __bibtex__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -14,8 +15,6 @@ package matplotlib;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
-	static public var __version__numpy__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
 	/**
 		Add documentation for a *data* field to the given docstring.
 		
@@ -23,27 +22,32 @@ package matplotlib;
 		----------
 		docstring : str
 		    The input docstring.
-		replace_names : list of strings or None
+		replace_names : list of str or None
 		    The list of parameter names which arguments should be replaced by
-		    `data[name]`. If None, all arguments are replaced if they are
-		    included in `data`.
-		replace_all_args : bool
-		    If True, all arguments in *args get replaced, even if they are not
-		    in replace_names.
+		    ``data[name]`` (if ``data[name]`` does not throw an exception).  If
+		    None, replacement is attempted for all arguments.
 		
 		Returns
 		-------
 		    The augmented docstring.
 	**/
-	static public function _add_data_doc(docstring:Dynamic, replace_names:Dynamic, replace_all_args:Dynamic):Dynamic;
+	static public function _add_data_doc(docstring:Dynamic, replace_names:Dynamic):Dynamic;
 	static public var _all_deprecated : Dynamic;
+	static public function _check_versions():Dynamic;
 	/**
-		If the config directory can not be created, create a temporary directory.
+		If the config or cache directory cannot be created, create a temporary one.
 	**/
-	static public function _create_tmp_config_dir():Dynamic;
+	static public function _create_tmp_config_or_cache_dir():Dynamic;
 	static public var _deprecated_ignore_map : Dynamic;
 	static public var _deprecated_map : Dynamic;
 	static public var _deprecated_remain_as_none : Dynamic;
+	/**
+		The first time this function is called, attach a `StreamHandler` using the
+		same format as `logging.basicConfig` to the Matplotlib root logger.
+		
+		Return this handler every time this function is called.
+	**/
+	static public function _ensure_handler():Dynamic;
 	static public var _error_details_fmt : Dynamic;
 	static public function _get_config_or_cache_dir(xdg_base:Dynamic):Dynamic;
 	/**
@@ -51,18 +55,48 @@ package matplotlib;
 	**/
 	static public function _get_data_path():Dynamic;
 	/**
-		Returns the XDG cache directory, according to the `XDG
+		Get the version of some executable that Matplotlib optionally depends on.
+		
+		.. warning:
+		   The list of executables that this function supports is set according to
+		   Matplotlib's internal needs, and may change without notice.
+		
+		Parameters
+		----------
+		name : str
+		    The executable to query.  The following values are currently supported:
+		    "dvipng", "gs", "inkscape", "magick", "pdftops".  This list is subject
+		    to change without notice.
+		
+		Returns
+		-------
+		If the executable is found, a namedtuple with fields ``executable`` (`str`)
+		and ``version`` (`distutils.version.LooseVersion`, or ``None`` if the
+		version cannot be determined).
+		
+		Raises
+		------
+		FileNotFoundError
+		    If the executable is not found or older than the oldest version
+		    supported by Matplotlib.
+		ValueError
+		    If the executable is not one that we know how to query.
+	**/
+	static public function _get_executable_info(name:Dynamic):Dynamic;
+	/**
+		Return the XDG cache directory, according to the `XDG
 		base directory spec
 		<http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html>`_.
 	**/
 	static public function _get_xdg_cache_dir():Dynamic;
 	/**
-		Returns the XDG configuration directory, according to the `XDG
+		Return the XDG configuration directory, according to the `XDG
 		base directory spec
 		<http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html>`_.
 	**/
 	static public function _get_xdg_config_dir():Dynamic;
 	static public function _init_tests():Dynamic;
+	static public function _label_from_arg(y:Dynamic, default_name:Dynamic):Dynamic;
 	static public var _log : Dynamic;
 	/**
 		Decorator that logs a function's return value, and memoizes that value.
@@ -79,46 +113,42 @@ package matplotlib;
 	static public function _logged_cached(fmt:Dynamic, ?func:Dynamic):Dynamic;
 	static public function _open_file_or_url(fname:Dynamic):Dynamic;
 	/**
-		Check for --verbose-LEVEL type command line arguments and
-		set logging level appropriately.
-	**/
-	static public function _parse_commandline():Dynamic;
-	/**
-		A decorator to add a 'data' kwarg to any a function.  The signature
-		of the input function must include the ax argument at the first position ::
+		A decorator to add a 'data' kwarg to a function.
 		
-		   def foo(ax, *args, **kwargs)
+		::
+		    @_preprocess_data()
+		    def func(ax, *args, **kwargs): ...
 		
-		so this is suitable for use with Axes methods.
+		is a function with signature ``decorated(ax, *args, data=None, **kwargs)``
+		with the following behavior:
+		
+		- if called with ``data=None``, forward the other arguments to ``func``;
+		- otherwise, *data* must be a mapping; for any argument passed in as a
+		  string ``name``, replace the argument by ``data[name]`` (if this does not
+		  throw an exception), then forward the arguments to ``func``.
+		
+		In either case, any argument that is a `MappingView` is also converted to a
+		list.
 		
 		Parameters
 		----------
-		replace_names : list of strings, optional, default: None
-		    The list of parameter names which arguments should be replaced by
-		    `data[name]`. If None, all arguments are replaced if they are
-		    included in `data`.
-		replace_all_args : bool, default: False
-		    If True, all arguments in *args get replaced, even if they are not
-		    in replace_names.
+		replace_names : list of str or None, optional, default: None
+		    The list of parameter names for which lookup into *data* should be
+		    attempted. If None, replacement is attempted for all arguments.
 		label_namer : string, optional, default: None
-		    The name of the parameter which argument should be used as label, if
-		    label is not set. If None, the label keyword argument is not set.
-		positional_parameter_names : list of strings or callable, optional
-		    The full list of positional parameter names (excluding an explicit
-		    `ax`/'self' argument at the first place and including all possible
-		    positional parameter in `*args`), in the right order. Can also include
-		    all other keyword parameter. Only needed if the wrapped function does
-		    contain `*args` and (replace_names is not None or replace_all_args is
-		    False). If it is a callable, it will be called with the actual
-		    tuple of *args and the data and should return a list like
-		    above.
-		    NOTE: callables should only be used when the names and order of *args
-		    can only be determined at runtime. Please use list of names
-		    when the order and names of *args is clear before runtime!
+		    If set e.g. to "namer" (which must be a kwarg in the function's
+		    signature -- not as ``**kwargs``), if the *namer* argument passed in is
+		    a (string) key of *data* and no *label* kwarg is passed, then use the
+		    (string) value of the *namer* as *label*. ::
 		
-		.. note:: decorator also converts MappingView input data to list.
+		        @_preprocess_data(label_namer="foo")
+		        def func(foo, label=None): ...
+		
+		        func("key", data={"key": value})
+		        # is equivalent to
+		        func.__wrapped__(value, label="key")
 	**/
-	static public function _preprocess_data(?replace_names:Dynamic, ?replace_all_args:Dynamic, ?label_namer:Dynamic, ?positional_parameter_names:Dynamic):Dynamic;
+	static public function _preprocess_data(?func:Dynamic, ?replace_names:Dynamic, ?label_namer:Dynamic):Dynamic;
 	/**
 		Return :class:`matplotlib.RcParams` from the contents of the given file.
 		
@@ -127,23 +157,50 @@ package matplotlib;
 	**/
 	static public function _rc_params_in_file(fname:Dynamic, ?fail_on_error:Dynamic):Dynamic;
 	/**
-		Either returns data[key] or passes data back. Also
-		converts input data to a sequence as needed.
+		Either returns ``data[value]`` or passes ``data`` back, converts either to
+		a sequence.
 	**/
-	static public function _replacer(data:Dynamic, key:Dynamic):Dynamic;
+	static public function _replacer(data:Dynamic, value:Dynamic):Dynamic;
 	/**
-		Use a --verbose-LEVEL level to set the logging level:
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
 	**/
-	static public function _set_logger_verbose_level(?level_str:Dynamic, ?file_str:Dynamic):Dynamic;
-	static public var _verbose_msg : Dynamic;
 	static public function checkdep_dvipng():Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	static public function checkdep_ghostscript():Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	static public function checkdep_inkscape():Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	static public function checkdep_pdftops():Dynamic;
 	static public function checkdep_ps_distiller(s:Dynamic):Dynamic;
 	static public function checkdep_usetex(s:Dynamic):Dynamic;
 	/**
-		return True if a is greater than or equal to b
+		Return whether version *a* is greater than or equal to version *b*.
 	**/
 	static public function compare_versions(a:Dynamic, b:Dynamic):Dynamic;
 	/**
@@ -199,7 +256,7 @@ package matplotlib;
 	**/
 	static public function cycler(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Remove excess indentation from docstring *s*.
+		[*Deprecated*] Remove excess indentation from docstring *s*.
 		
 		Discards any leading blank lines, then removes up to n whitespace
 		characters from each line, where n is the number of leading
@@ -208,6 +265,11 @@ package matplotlib;
 		of the first non-blank line to determine the indentation.
 		
 		It is also faster in most cases.
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function dedent(s:Dynamic):Dynamic;
 	static public var defaultParams : Dynamic;
@@ -250,7 +312,23 @@ package matplotlib;
 		If the user's home directory cannot be found, return None.
 	**/
 	static public function get_home():Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	static public function get_label(y:Dynamic, default_name:Dynamic):Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	static public function get_py2exe_datafiles():Dynamic;
 	/**
 		Set interactive mode to boolean b.
@@ -271,31 +349,44 @@ package matplotlib;
 		
 		The file location is determined in the following order
 		
-		- `$PWD/matplotlibrc`
-		
-		- `$MATPLOTLIBRC` if it is a file (or a named pipe, which can be created
-		  e.g. by process substitution)
-		
-		- `$MATPLOTLIBRC/matplotlibrc`
-		
-		- `$MPLCONFIGDIR/matplotlibrc`
-		
+		- ``$PWD/matplotlibrc``
+		- ``$MATPLOTLIBRC`` if it is not a directory
+		- ``$MATPLOTLIBRC/matplotlibrc``
+		- ``$MPLCONFIGDIR/matplotlibrc``
 		- On Linux,
-		
-		      - `$XDG_CONFIG_HOME/matplotlib/matplotlibrc` (if
-		        $XDG_CONFIG_HOME is defined)
-		
-		      - or `$HOME/.config/matplotlib/matplotlibrc` (if
-		        $XDG_CONFIG_HOME is not defined)
-		
+		    - ``$XDG_CONFIG_HOME/matplotlib/matplotlibrc`` (if ``$XDG_CONFIG_HOME``
+		      is defined)
+		    - or ``$HOME/.config/matplotlib/matplotlibrc`` (if ``$XDG_CONFIG_HOME``
+		      is not defined)
 		- On other platforms,
-		
-		     - `$HOME/.matplotlib/matplotlibrc` if `$HOME` is defined.
-		
-		- Lastly, it looks in `$MATPLOTLIBDATA/matplotlibrc` for a
-		  system-defined copy.
+		    - ``$HOME/.matplotlib/matplotlibrc`` if ``$HOME`` is defined
+		- Lastly, it looks in ``$MATPLOTLIBDATA/matplotlibrc``, which should always
+		  exist.
 	**/
 	static public function matplotlib_fname():Dynamic;
+	/**
+		Returns a new subclass of tuple with named fields.
+		
+		>>> Point = namedtuple('Point', ['x', 'y'])
+		>>> Point.__doc__                   # docstring for the new class
+		'Point(x, y)'
+		>>> p = Point(11, y=22)             # instantiate with positional args or keywords
+		>>> p[0] + p[1]                     # indexable like a plain tuple
+		33
+		>>> x, y = p                        # unpack like a regular tuple
+		>>> x, y
+		(11, 22)
+		>>> p.x + p.y                       # fields also accessible by name
+		33
+		>>> d = p._asdict()                 # convert to a dictionary
+		>>> d['x']
+		11
+		>>> Point(**d)                      # convert from a dictionary
+		Point(x=11, y=22)
+		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
+		Point(x=100, y=22)
+	**/
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	/**
 		Set the current rc params.  *group* is the grouping for the rc, e.g.,
 		for ``lines.linewidth`` the group is ``lines``, for
@@ -353,8 +444,18 @@ package matplotlib;
 		
 		Style-blacklisted rc params (defined in
 		`matplotlib.style.core.STYLE_BLACKLIST`) are not updated.
+		
+		Parameters
+		----------
+		fname : str
+		    Name of file parsed for matplotlib settings.
+		
+		use_default_template : bool
+		    If True, initialize with default parameters before updating with those
+		    in the given file. If False, the current configuration persists
+		    and only the parameters specified in the file are updated.
 	**/
-	static public function rc_file(fname:Dynamic):Dynamic;
+	static public function rc_file(fname:Dynamic, ?use_default_template:Dynamic):Dynamic;
 	/**
 		Restore the rc params from the original rc file loaded by Matplotlib.
 		
@@ -390,7 +491,7 @@ package matplotlib;
 		
 		See Also
 		--------
-		rc_file_defaults :
+		rc_file_defaults
 		    Restore the rc params from the rc file originally loaded by Matplotlib.
 		matplotlib.style.use :
 		    Use a specific style file.  Call ``style.use('default')`` to restore
@@ -402,23 +503,47 @@ package matplotlib;
 	**/
 	static public function sanitize_sequence(data:Dynamic):Dynamic;
 	/**
-		run the matplotlib test suite
-	**/
-	static public function test(?verbosity:Dynamic, ?coverage:Dynamic, ?switch_backend_warn:Dynamic, ?recursionlimit:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Return true if focus maintenance under TkAgg on win32 is on.
-		This currently works only for python.exe and IPython.exe.
-		Both IDLE and Pythonwin.exe fail badly when tk_window_focus is on.
-	**/
-	static public function tk_window_focus():Dynamic;
-	/**
-		Set the matplotlib backend to one of the known backends.
+		Sets the Matplotlib's root logger and root logger handler level, creating
+		the handler if it does not exist yet.
+		
+		Typically, one should call ``set_loglevel("info")`` or
+		``set_loglevel("debug")`` to get additional debugging information.
 		
 		Parameters
 		----------
-		arg : str
-		    The backend to switch to.  This can either be one of the
-		    'standard' backend names:
+		level : {"notset", "debug", "info", "warning", "error", "critical"}
+		    The log level of the handler.
+		
+		Notes
+		-----
+		The first time this function is called, an additional handler is attached
+		to Matplotlib's root handler; this handler is reused every time and this
+		function simply manipulates the logger and handler's level.
+	**/
+	static public function set_loglevel(level:Dynamic):Dynamic;
+	/**
+		Run the matplotlib test suite.
+	**/
+	static public function test(?verbosity:Dynamic, ?coverage:Dynamic, ?switch_backend_warn:Dynamic, ?recursionlimit:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		[*Deprecated*] Return true if focus maintenance under TkAgg on win32 is on.
+		This currently works only for python.exe and IPython.exe.
+		Both IDLE and Pythonwin.exe fail badly when tk_window_focus is on.
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
+	**/
+	static public function tk_window_focus():Dynamic;
+	/**
+		Select the backend used for rendering and GUI integration.
+		
+		Parameters
+		----------
+		backend : str
+		    The backend to switch to.  This can either be one of the standard
+		    backend names, which are case-insensitive:
 		
 		    - interactive backends:
 		      GTK3Agg, GTK3Cairo, MacOSX, nbAgg,
@@ -430,25 +555,21 @@ package matplotlib;
 		
 		    or a string of the form: ``module://my.module.name``.
 		
-		    Note: Standard backend names are case-insensitive here.
+		warn : bool, optional, default: False
+		    If True and not *force*, warn that the call will have no effect if
+		    this is called after pyplot has been imported and a backend is set up.
 		
-		warn : bool, optional
-		    If True, warn if this is called after pyplot has been imported
-		    and a backend is set up.
 		
-		    defaults to False.
-		
-		force : bool, optional
+		force : bool, optional, default: True
 		    If True, attempt to switch the backend.   An ImportError is raised if
 		    an interactive backend is selected, but another interactive
-		    backend has already started.  This defaults to True.
+		    backend has already started.
 		
 		See Also
 		--------
 		:ref:`backends`
 		matplotlib.get_backend
 	**/
-	static public function use(arg:Dynamic, ?warn:Dynamic, ?force:Dynamic):Dynamic;
+	static public function use(backend:Dynamic, ?warn:Dynamic, ?force:Dynamic):Dynamic;
 	static public function validate_backend(s:Dynamic):Dynamic;
-	static public var verbose : Dynamic;
 }

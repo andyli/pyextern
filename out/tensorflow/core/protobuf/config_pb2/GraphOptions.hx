@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.protobuf.config_pb2;
 @:pythonImport("tensorflow.core.protobuf.config_pb2", "GraphOptions") extern class GraphOptions {
-	static public var BUILD_COST_MODEL_AFTER_FIELD_NUMBER : Dynamic;
-	static public var BUILD_COST_MODEL_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -28,8 +26,6 @@ package tensorflow.core.protobuf.config_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ENABLE_BFLOAT16_SENDRECV_FIELD_NUMBER : Dynamic;
-	static public var ENABLE_RECV_SCHEDULING_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
@@ -50,7 +46,6 @@ package tensorflow.core.protobuf.config_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INFER_SHAPES_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -67,13 +62,10 @@ package tensorflow.core.protobuf.config_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var OPTIMIZER_OPTIONS_FIELD_NUMBER : Dynamic;
-	static public var PLACE_PRUNED_GRAPH_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var REWRITE_OPTIONS_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -90,7 +82,10 @@ package tensorflow.core.protobuf.config_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TIMELINE_STEP_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -258,4 +253,40 @@ package tensorflow.core.protobuf.config_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.GraphOptions.build_cost_model
+	**/
+	public var build_cost_model : Dynamic;
+	/**
+		Field tensorflow.GraphOptions.build_cost_model_after
+	**/
+	public var build_cost_model_after : Dynamic;
+	/**
+		Field tensorflow.GraphOptions.enable_bfloat16_sendrecv
+	**/
+	public var enable_bfloat16_sendrecv : Dynamic;
+	/**
+		Field tensorflow.GraphOptions.enable_recv_scheduling
+	**/
+	public var enable_recv_scheduling : Dynamic;
+	/**
+		Field tensorflow.GraphOptions.infer_shapes
+	**/
+	public var infer_shapes : Dynamic;
+	/**
+		Field tensorflow.GraphOptions.optimizer_options
+	**/
+	public var optimizer_options : Dynamic;
+	/**
+		Field tensorflow.GraphOptions.place_pruned_graph
+	**/
+	public var place_pruned_graph : Dynamic;
+	/**
+		Field tensorflow.GraphOptions.rewrite_options
+	**/
+	public var rewrite_options : Dynamic;
+	/**
+		Field tensorflow.GraphOptions.timeline_step
+	**/
+	public var timeline_step : Dynamic;
 }

@@ -78,7 +78,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.pandas_io;
 	/**
 		Extract data from pandas.DataFrame for predictors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please access pandas data directly.
 		
@@ -98,7 +98,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.pandas_io;
 	/**
 		Extract data from pandas.DataFrame for labels. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please access pandas data directly.
 		
@@ -117,7 +117,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.pandas_io;
 	/**
 		Extracts numpy matrix from pandas DataFrame. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please access pandas data directly.
 		
@@ -131,9 +131,9 @@ package tensorflow.contrib.learn.python.learn.learn_io.pandas_io;
 	/**
 		This input_fn diffs from the core version with default `shuffle`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
-		Please use tf.estimator.inputs.pandas_input_fn
+		Please use tf.compat.v1.estimator.inputs.pandas_input_fn
 	**/
 	static public function pandas_input_fn(x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic, ?target_column:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

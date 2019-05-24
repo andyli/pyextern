@@ -5,7 +5,6 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CHECK_EVERY_STEPS_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -83,7 +82,10 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TYPE_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -249,4 +251,12 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tensorforest.SplitFinishConfig.check_every_steps
+	**/
+	public var check_every_steps : Dynamic;
+	/**
+		Field tensorflow.tensorforest.SplitFinishConfig.type
+	**/
+	public var type : Dynamic;
 }

@@ -5,7 +5,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CODE_DEF_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -31,7 +30,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FLOAT_OPS_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -64,7 +62,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -85,7 +82,10 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TYPES_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tfprof.OpLogEntry.code_def
+	**/
+	public var code_def : Dynamic;
+	/**
+		Field tensorflow.tfprof.OpLogEntry.float_ops
+	**/
+	public var float_ops : Dynamic;
+	/**
+		Field tensorflow.tfprof.OpLogEntry.name
+	**/
+	public var name : Dynamic;
+	/**
+		Field tensorflow.tfprof.OpLogEntry.types
+	**/
+	public var types : Dynamic;
 }

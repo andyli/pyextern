@@ -9,8 +9,16 @@ package tensorflow.python.autograph.lang.special_functions;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Validates the inputs of tensor_list.
+	**/
+	static public function _validate_list_constructor(elements:Dynamic, element_dtype:Dynamic, element_shape:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
+	/**
+		Casts a value to be staged at the same level as another.
+	**/
+	static public function match_staging_level(value:Dynamic, like_value:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Stacks the input, if it admits the notion of stacking.

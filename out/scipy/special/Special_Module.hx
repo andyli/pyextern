@@ -91,6 +91,19 @@ package scipy.special;
 		    Values of Ai(x) evaluated at first `nt` zeros of Ai'(x)
 		aip : ndarray
 		    Values of Ai'(x) evaluated at first `nt` zeros of Ai(x)
+		    
+		Examples
+		--------
+		>>> from scipy import special
+		>>> a, ap, ai, aip = special.ai_zeros(3)
+		>>> a
+		array([-2.33810741, -4.08794944, -5.52055983])
+		>>> ap
+		array([-1.01879297, -3.24819758, -4.82009921])
+		>>> ai
+		array([ 0.53565666, -0.41901548,  0.38040647])
+		>>> aip
+		array([ 0.70121082, -0.80311137,  0.86520403])
 		
 		References
 		----------
@@ -148,7 +161,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 		.. [2] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
 		       of a Complex Argument and Nonnegative Order",
 		       http://netlib.org/amos/
@@ -263,7 +276,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function bdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -311,7 +324,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function bdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -357,7 +370,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function bdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -638,6 +651,19 @@ package scipy.special;
 		bip : ndarray
 		    Values of Bi'(x) evaluated at first `nt` zeros of Bi(x)
 		
+		Examples
+		--------
+		>>> from scipy import special
+		>>> b, bp, bi, bip = special.bi_zeros(3)
+		>>> b
+		array([-1.17371322, -3.2710933 , -4.83073784])
+		>>> bp
+		array([-2.29443968, -4.07315509, -5.51239573])
+		>>> bi
+		array([-0.45494438,  0.39652284, -0.36796916])
+		>>> bip
+		array([ 0.60195789, -0.76031014,  0.83699101])
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
@@ -744,7 +770,7 @@ package scipy.special;
 		
 		btdtr(a, b, x)
 		
-		Cumulative density function of the beta distribution.
+		Cumulative distribution function of the beta distribution.
 		
 		Returns the integral from zero to `x` of the beta probability density
 		function,
@@ -766,8 +792,8 @@ package scipy.special;
 		Returns
 		-------
 		I : ndarray
-		    Cumulative density function of the beta distribution with parameters
-		    `a` and `b` at `x`.
+		    Cumulative distribution function of the beta distribution with
+		    parameters `a` and `b` at `x`.
 		
 		See Also
 		--------
@@ -783,7 +809,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function btdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -828,7 +854,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function btdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -861,7 +887,7 @@ package scipy.special;
 		
 		See Also
 		--------
-		btdtr : Cumulative density function of the beta distribution.
+		btdtr : Cumulative distribution function of the beta distribution.
 		btdtri : Inverse with respect to `x`.
 		btdtrib : Inverse with respect to `b`.
 		
@@ -914,7 +940,7 @@ package scipy.special;
 		
 		See Also
 		--------
-		btdtr : Cumulative density function of the beta distribution.
+		btdtr : Cumulative distribution function of the beta distribution.
 		btdtri : Inverse with respect to `x`.
 		btdtria : Inverse with respect to `a`.
 		
@@ -1295,7 +1321,7 @@ package scipy.special;
 		       Functions", John Wiley and Sons, 1996.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions
-		       http://dlmf.nist.gov/14.21
+		       https://dlmf.nist.gov/14.21
 	**/
 	static public function clpmn(m:Dynamic, n:Dynamic, z:Dynamic, ?type:Dynamic):Dynamic;
 	/**
@@ -1438,7 +1464,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] NIST Digital Library of Mathematical Functions
-		       http://dlmf.nist.gov/5
+		       https://dlmf.nist.gov/5
 		.. [2] Fredrik Johansson and others.
 		       "mpmath: a Python library for arbitrary-precision floating-point arithmetic"
 		       (Version 0.19) http://mpmath.org/
@@ -1563,7 +1589,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Digital Library of Mathematical Functions 29.12
-		   http://dlmf.nist.gov/29.12
+		   https://dlmf.nist.gov/29.12
 		.. [2] Bardhan and Knepley, "Computational science and
 		   re-discovery: open-source implementations of
 		   ellipsoidal harmonics for problems in potential theory",
@@ -1741,10 +1767,35 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 		.. [2] Milton Abramowitz and Irene A. Stegun, eds.
 		       Handbook of Mathematical Functions with Formulas,
 		       Graphs, and Mathematical Tables. New York: Dover, 1972.
+		
+		Examples
+		--------
+		This function is used in finding the circumference of an
+		ellipse with semi-major axis `a` and semi-minor axis `b`.
+		
+		>>> from scipy import special
+		
+		>>> a = 3.5
+		>>> b = 2.1
+		>>> e_sq = 1.0 - b**2/a**2  # eccentricity squared
+		
+		Then the circumference is found using the following:
+		
+		>>> C = 4*a*special.ellipe(e_sq)  # circumference formula
+		>>> C
+		17.868899204378693
+		
+		When `a` and `b` are the same (meaning eccentricity is 0),
+		this reduces to the circumference of a circle.
+		
+		>>> 4*a*special.ellipe(0.0)  # formula for ellipse with a = b
+		21.991148575128552
+		>>> 2*np.pi*a  # formula for circle of radius a
+		21.991148575128552
 	**/
 	static public function ellipe(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1793,7 +1844,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 		.. [2] Milton Abramowitz and Irene A. Stegun, eds.
 		       Handbook of Mathematical Functions with Formulas,
 		       Graphs, and Mathematical Tables. New York: Dover, 1972.
@@ -1823,7 +1874,7 @@ package scipy.special;
 		
 		        sn(u|m), cn(u|m), dn(u|m)
 		
-		    The value `ph` is such that if `u = ellipk(ph, m)`,
+		    The value `ph` is such that if `u = ellipkinc(ph, m)`,
 		    then `sn(u|m) = sin(ph)` and `cn(u|m) = cos(ph)`.
 		
 		Notes
@@ -1833,7 +1884,7 @@ package scipy.special;
 		These functions are periodic, with quarter-period on the real axis
 		equal to the complete elliptic integral `ellipk(m)`.
 		
-		Relation to incomplete elliptic integral: If `u = ellipk(phi,m)`, then
+		Relation to incomplete elliptic integral: If `u = ellipkinc(phi,m)`, then
 		`sn(u|m) = sin(phi)`, and `cn(u|m) = cos(phi)`.  The `phi` is called
 		the amplitude of `u`.
 		
@@ -1843,12 +1894,13 @@ package scipy.special;
 		
 		See also
 		--------
-		ellipk : Complete elliptic integral of the first kind.
+		ellipk : Complete elliptic integral of the first kind
+		ellipkinc : Incomplete elliptic integral of the first kind
 		
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function ellipj(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1940,7 +1992,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 		.. [2] Milton Abramowitz and Irene A. Stegun, eds.
 		       Handbook of Mathematical Functions with Formulas,
 		       Graphs, and Mathematical Tables. New York: Dover, 1972.
@@ -1996,7 +2048,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function ellipkm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2059,7 +2111,7 @@ package scipy.special;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Error_function
+		.. [1] https://en.wikipedia.org/wiki/Error_function
 		.. [2] Milton Abramowitz and Irene A. Stegun, eds.
 		    Handbook of Mathematical Functions with Formulas,
 		    Graphs, and Mathematical Tables. New York: Dover,
@@ -2079,7 +2131,32 @@ package scipy.special;
 	**/
 	static public function erf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt complex zeros of error function erf(z).
+		Compute the first nt zero in the first quadrant, ordered by absolute value.
+		
+		Zeros in the other quadrants can be obtained by using the symmetries erf(-z) = erf(z) and
+		erf(conj(z)) = conj(erf(z)).
+		
+		
+		Parameters
+		----------
+		nt : int
+		    The number of zeros to compute
+		
+		Returns
+		-------
+		The locations of the zeros of erf : ndarray (complex)
+		    Complex values at which zeros of erf(z)
+		
+		Examples
+		--------
+		>>> from scipy import special
+		>>> special.erf_zeros(1)
+		array([1.45061616+1.880943j])
+		
+		Check that erf is (close to) zero for the value returned by erf_zeros
+		
+		>>> special.erf(special.erf_zeros(1))
+		array([4.95159469e-14-1.16407394e-16j])
 		
 		References
 		----------
@@ -2116,8 +2193,42 @@ package scipy.special;
 	**/
 	static public function erfc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Inverse function for erfc.
-		    
+		Inverse of the complementary error function erfc.
+		
+		Computes the inverse of the complementary error function erfc.
+		
+		In complex domain, there is no unique complex number w satisfying erfc(w)=z.
+		This indicates a true inverse function would have multi-value. When the domain restricts to the real, 0 < x < 2,
+		there is a unique real number satisfying erfc(erfcinv(x)) = erfcinv(erfc(x)).
+		
+		It is related to inverse of the error function by erfcinv(1-x) = erfinv(x)
+		
+		Parameters
+		----------
+		y : ndarray
+		    Argument at which to evaluate. Domain: [0, 2]
+		
+		Returns
+		-------
+		erfcinv : ndarray
+		    The inverse of erfc of y, element-wise
+		
+		Examples
+		--------
+		1) evaluating a float number
+		
+		>>> from scipy import special
+		>>> special.erfcinv(0.5)
+		0.4769362762044698
+		
+		2) evaluating a ndarray
+		
+		>>> from scipy import special
+		>>> y = np.linspace(0.0, 2.0, num=11)
+		>>> special.erfcinv(y)
+		array([        inf,  0.9061938 ,  0.59511608,  0.37080716,  0.17914345,
+		        -0.        , -0.17914345, -0.37080716, -0.59511608, -0.9061938 ,
+		              -inf])
 	**/
 	static public function erfcinv(y:Dynamic):Dynamic;
 	/**
@@ -2185,53 +2296,41 @@ package scipy.special;
 	**/
 	static public function erfi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Inverse function for erf.
-		    
+		Inverse of the error function erf.
+		
+		Computes the inverse of the error function.
+		
+		In complex domain, there is no unique complex number w satisfying erf(w)=z.
+		This indicates a true inverse function would have multi-value. When the domain restricts to the real, -1 < x < 1,
+		there is a unique real number satisfying erf(erfinv(x)) = x.
+		
+		Parameters
+		----------
+		y : ndarray
+		    Argument at which to evaluate. Domain: [-1, 1]
+		
+		Returns
+		-------
+		erfinv : ndarray
+		    The inverse of erf of y, element-wise
+		
+		Examples
+		--------
+		1) evaluating a float number
+		
+		>>> from scipy import special
+		>>> special.erfinv(0.5)
+		0.4769362762044698
+		
+		2) evaluating a ndarray
+		
+		>>> from scipy import special
+		>>> y = np.linspace(-1.0, 1.0, num=10)
+		>>> special.erfinv(y)
+		array([       -inf, -0.86312307, -0.5407314 , -0.30457019, -0.0987901 ,
+		        0.0987901 ,  0.30457019,  0.5407314 ,  0.86312307,         inf])
 	**/
 	static public function erfinv(y:Dynamic):Dynamic;
-	/**
-		`errprint` is deprecated!
-		`errprint` is deprecated in SciPy 0.19. Use `errstate` instead.
-		
-		
-		    errprint(inflag=None)
-		
-		    Set or return the error printing flag for special functions.
-		
-		    Parameters
-		    ----------
-		    inflag : bool, optional
-		        Whether warnings concerning evaluation of special functions in
-		        ``scipy.special`` are shown. If omitted, no change is made to
-		        the current setting.
-		
-		    Returns
-		    -------
-		    old_flag : bool
-		        Previous value of the error flag
-		
-		    Examples
-		    --------
-		    Turn on error printing.
-		
-		    >>> import warnings
-		    >>> import scipy.special as sc
-		    >>> sc.bdtr(-1, 10, 0.3)
-		    nan
-		    >>> sc.errprint(True)
-		    False
-		    >>> with warnings.catch_warnings(record=True) as w:
-		    ...     sc.bdtr(-1, 10, 0.3)
-		    ...
-		    nan
-		    >>> len(w)
-		    1
-		    >>> w[0].message
-		    SpecialFunctionWarning('scipy.special/bdtr: domain error',)
-		
-		    
-	**/
-	static public function errprint(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Euler numbers E(0), E(1), ..., E(n).
 		
@@ -2958,10 +3057,11 @@ package scipy.special;
 		
 		expit(x)
 		
-		Expit ufunc for ndarrays.
+		Expit (a.k.a. logistic sigmoid) ufunc for ndarrays.
 		
-		The expit function, also known as the logistic function, is defined as
-		expit(x) = 1/(1+exp(-x)). It is the inverse of the logit function.
+		The expit function, also known as the logistic sigmoid function, is
+		defined as ``expit(x) = 1/(1+exp(-x))``.  It is the inverse of the
+		logit function.
 		
 		Parameters
 		----------
@@ -2972,7 +3072,7 @@ package scipy.special;
 		-------
 		out : ndarray
 		    An ndarray of the same shape as x. Its entries
-		    are expit of the corresponding entry of x.
+		    are `expit` of the corresponding entry of x.
 		
 		See Also
 		--------
@@ -3249,7 +3349,7 @@ package scipy.special;
 		
 		F cumulative distribution function.
 		
-		Returns the value of the cumulative density function of the
+		Returns the value of the cumulative distribution function of the
 		F-distribution, also known as Snedecor's F-distribution or the
 		Fisher-Snedecor distribution.
 		
@@ -3290,7 +3390,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function fdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3335,7 +3435,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function fdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3383,7 +3483,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function fdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3538,7 +3638,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Maddock et. al., "Incomplete Gamma Functions",
-		   http://www.boost.org/doc/libs/1_61_0/libs/math/doc/html/math_toolkit/sf_gamma/igamma.html
+		   https://www.boost.org/doc/libs/1_61_0/libs/math/doc/html/math_toolkit/sf_gamma/igamma.html
 	**/
 	static public function gammainc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3571,7 +3671,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Maddock et. al., "Incomplete Gamma Functions",
-		   http://www.boost.org/doc/libs/1_61_0/libs/math/doc/html/math_toolkit/sf_gamma/igamma.html
+		   https://www.boost.org/doc/libs/1_61_0/libs/math/doc/html/math_toolkit/sf_gamma/igamma.html
 	**/
 	static public function gammaincc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3641,7 +3741,7 @@ package scipy.special;
 		
 		gdtr(a, b, x)
 		
-		Gamma distribution cumulative density function.
+		Gamma distribution cumulative distribution function.
 		
 		Returns the integral from zero to `x` of the gamma probability density
 		function,
@@ -3684,7 +3784,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function gdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3722,7 +3822,7 @@ package scipy.special;
 		
 		See Also
 		--------
-		gdtr, gdtri
+		gdtr, gdtrix
 		
 		Notes
 		-----
@@ -3734,7 +3834,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function gdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4087,7 +4187,7 @@ package scipy.special;
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.6.E7
+		       https://dlmf.nist.gov/10.6.E7
 	**/
 	static public function h1vp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -4112,7 +4212,7 @@ package scipy.special;
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.6.E7
+		       https://dlmf.nist.gov/10.6.E7
 	**/
 	static public function h2vp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -4519,6 +4619,12 @@ package scipy.special;
 		
 		hyp1f2(a, b, c, x)
 		
+		
+		`hyp1f2` is deprecated!
+		hyp1f2 is deprecated in SciPy 1.2
+		
+		
+		
 		Hypergeometric function 1F2 and error estimate
 		
 		Returns
@@ -4528,11 +4634,17 @@ package scipy.special;
 		err
 		    Error estimate
 	**/
-	static public function hyp1f2(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function hyp1f2(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		hyp2f0(x1, x2, x3, x4[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hyp2f0(a, b, x, type)
+		
+		
+		`hyp2f0` is deprecated!
+		hyp2f0 is deprecated in SciPy 1.2
+		
+		
 		
 		Hypergeometric function 2F0 in y and an error estimate
 		
@@ -4546,7 +4658,7 @@ package scipy.special;
 		err
 		    Error estimate
 	**/
-	static public function hyp2f0(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function hyp2f0(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		hyp2f1(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -4590,15 +4702,21 @@ package scipy.special;
 		----------
 		.. [1] S. Zhang and J.M. Jin, "Computation of Special Functions", Wiley 1996
 		.. [2] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 		.. [3] NIST Digital Library of Mathematical Functions
-		       http://dlmf.nist.gov/
+		       https://dlmf.nist.gov/
 	**/
 	static public function hyp2f1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		hyp3f0(x1, x2, x3, x4[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		hyp3f0(a, b, c, x)
+		
+		
+		`hyp3f0` is deprecated!
+		hyp3f0 is deprecated in SciPy 1.2
+		
+		
 		
 		Hypergeometric function 3F0 in y and an error estimate
 		
@@ -4609,7 +4727,7 @@ package scipy.special;
 		err
 		    Error estimate
 	**/
-	static public function hyp3f0(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function hyp3f0(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		hyperu(x1, x2, x3, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -4657,7 +4775,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function i0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4699,7 +4817,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function i0e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4742,7 +4860,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function i1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4784,7 +4902,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function i1e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4873,7 +4991,7 @@ package scipy.special;
 		ii0
 		    ``integral((i0(t)-1)/t, t=0..x)``
 		ik0
-		    ``int(k0(t)/t, t=x..inf)``
+		    ``integral(k0(t)/t, t=x..inf)``
 	**/
 	static public function it2i0k0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5204,7 +5322,7 @@ package scipy.special;
 		       Functions", John Wiley and Sons, 1996, chapter 6.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.29.E5
+		       https://dlmf.nist.gov/10.29.E5
 	**/
 	static public function ivp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -5252,7 +5370,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function j0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5291,7 +5409,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function j1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5672,7 +5790,7 @@ package scipy.special;
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.6.E7
+		       https://dlmf.nist.gov/10.6.E7
 	**/
 	static public function jvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -5710,7 +5828,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function k0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5750,7 +5868,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function k0e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5785,7 +5903,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function k1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5825,7 +5943,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function k1e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -6026,9 +6144,41 @@ package scipy.special;
 		
 		kolmogi(p)
 		
-		Inverse function to kolmogorov
+		Inverse Survival Function of Kolmogorov distribution
 		
+		It is the inverse function to `kolmogorov`.
 		Returns y such that ``kolmogorov(y) == p``.
+		
+		Parameters
+		----------
+		p : float array_like
+		    Probability
+		
+		Returns
+		-------
+		float
+		    The value(s) of kolmogi(p)
+		
+		Notes
+		-----
+		`kolmogorov` is used by `stats.kstest` in the application of the
+		Kolmogorov-Smirnov Goodness of Fit test. For historial reasons this
+		function is exposed in `scpy.special`, but the recommended way to achieve
+		the most accurate CDF/SF/PDF/PPF/ISF computations is to use the
+		`stats.kstwobign` distribution.
+		
+		See Also
+		--------
+		kolmogorov : The Survival Function for the distribution
+		scipy.stats.kstwobign : Provides the functionality as a continuous distribution
+		smirnov, smirnovi : Functions for the one-sided distribution
+		
+		Examples
+		--------
+		>>> from scipy.special import kolmogi
+		>>> kolmogi([0, 0.1, 0.25, 0.5, 0.75, 0.9, 1.0])
+		array([        inf,  1.22384787,  1.01918472,  0.82757356,  0.67644769,
+		        0.57117327,  0.        ])
 	**/
 	static public function kolmogi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -6036,13 +6186,89 @@ package scipy.special;
 		
 		kolmogorov(y)
 		
-		Complementary cumulative distribution function of Kolmogorov distribution
+		Complementary cumulative distribution (Survival Function) function of
+		Kolmogorov distribution.
 		
 		Returns the complementary cumulative distribution function of
-		Kolmogorov's limiting distribution (Kn* for large n) of a
-		two-sided test for equality between an empirical and a theoretical
+		Kolmogorov's limiting distribution (``D_n*\sqrt(n)`` as n goes to infinity)
+		of a two-sided test for equality between an empirical and a theoretical
 		distribution. It is equal to the (limit as n->infinity of the)
-		probability that sqrt(n) * max absolute deviation > y.
+		probability that ``sqrt(n) * max absolute deviation > y``.
+		
+		Parameters
+		----------
+		y : float array_like
+		  Absolute deviation between the Empirical CDF (ECDF) and the target CDF,
+		  multiplied by sqrt(n).
+		
+		Returns
+		-------
+		float
+		    The value(s) of kolmogorov(y)
+		
+		Notes
+		-----
+		`kolmogorov` is used by `stats.kstest` in the application of the
+		Kolmogorov-Smirnov Goodness of Fit test. For historial reasons this
+		function is exposed in `scpy.special`, but the recommended way to achieve
+		the most accurate CDF/SF/PDF/PPF/ISF computations is to use the
+		`stats.kstwobign` distrubution.
+		
+		See Also
+		--------
+		kolmogi : The Inverse Survival Function for the distribution
+		scipy.stats.kstwobign : Provides the functionality as a continuous distribution
+		smirnov, smirnovi : Functions for the one-sided distribution
+		
+		Examples
+		--------
+		Show the probability of a gap at least as big as 0, 0.5 and 1.0.
+		
+		>>> from scipy.special import kolmogorov
+		>>> from scipy.stats import kstwobign
+		>>> kolmogorov([0, 0.5, 1.0])
+		array([ 1.        ,  0.96394524,  0.26999967])
+		
+		Compare a sample of size 1000 drawn from a Laplace(0, 1) distribution against
+		the target distribution, a Normal(0, 1) distribution.
+		
+		>>> from scipy.stats import norm, laplace
+		>>> n = 1000
+		>>> np.random.seed(seed=233423)
+		>>> lap01 = laplace(0, 1)
+		>>> x = np.sort(lap01.rvs(n))
+		>>> np.mean(x), np.std(x)
+		(-0.083073685397609842, 1.3676426568399822)
+		
+		Construct the Empirical CDF and the K-S statistic Dn.
+		
+		>>> target = norm(0,1)  # Normal mean 0, stddev 1
+		>>> cdfs = target.cdf(x)
+		>>> ecdfs = np.arange(n+1, dtype=float)/n
+		>>> gaps = np.column_stack([cdfs - ecdfs[:n], ecdfs[1:] - cdfs])
+		>>> Dn = np.max(gaps)
+		>>> Kn = np.sqrt(n) * Dn
+		>>> print('Dn=%f, sqrt(n)*Dn=%f' % (Dn, Kn))
+		Dn=0.058286, sqrt(n)*Dn=1.843153
+		>>> print(chr(10).join(['For a sample of size n drawn from a N(0, 1) distribution:',
+		...   ' the approximate Kolmogorov probability that sqrt(n)*Dn>=%f is %f' %  (Kn, kolmogorov(Kn)),
+		...   ' the approximate Kolmogorov probability that sqrt(n)*Dn<=%f is %f' %  (Kn, kstwobign.cdf(Kn))]))
+		For a sample of size n drawn from a N(0, 1) distribution:
+		 the approximate Kolmogorov probability that sqrt(n)*Dn>=1.843153 is 0.002240
+		 the approximate Kolmogorov probability that sqrt(n)*Dn<=1.843153 is 0.997760
+		
+		Plot the Empirical CDF against the target N(0, 1) CDF.
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.step(np.concatenate([[-3], x]), ecdfs, where='post', label='Empirical CDF')
+		>>> x3 = np.linspace(-3, 3, 100)
+		>>> plt.plot(x3, target.cdf(x3), label='CDF for N(0, 1)')
+		>>> plt.ylim([0, 1]); plt.grid(True); plt.legend();
+		>>> # Add vertical lines marking Dn+ and Dn-
+		>>> iminus, iplus = np.argmax(gaps, axis=0)
+		>>> plt.vlines([x[iminus]], ecdfs[iminus], cdfs[iminus], color='r', linestyle='dashed', lw=4)
+		>>> plt.vlines([x[iplus]], cdfs[iplus], ecdfs[iplus+1], color='r', linestyle='dashed', lw=4)
+		>>> plt.show()
 	**/
 	static public function kolmogorov(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -6096,7 +6322,7 @@ package scipy.special;
 		       functions of a complex argument and nonnegative order", ACM
 		       TOMS Vol. 12 Issue 3, Sept. 1986, p. 265
 		.. [3] NIST Digital Library of Mathematical Functions,
-		       Eq. 10.25.E3. http://dlmf.nist.gov/10.25.E3
+		       Eq. 10.25.E3. https://dlmf.nist.gov/10.25.E3
 		
 		Examples
 		--------
@@ -6203,7 +6429,7 @@ package scipy.special;
 		       Functions", John Wiley and Sons, 1996, chapter 6.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.29.E5
+		       https://dlmf.nist.gov/10.29.E5
 	**/
 	static public function kvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -6361,7 +6587,7 @@ package scipy.special;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Lambert_W_function
+		.. [1] https://en.wikipedia.org/wiki/Lambert_W_function
 		.. [2] Corless et al, "On the Lambert W function", Adv. Comp. Math. 5
 		   (1996) 329-359.
 		   http://www.apmaths.uwo.ca/~djeffrey/Offprints/W-adv-cm.pdf
@@ -6540,9 +6766,9 @@ package scipy.special;
 		-----
 		It is not generally true that :math:`\log\Gamma(z) =
 		\log(\Gamma(z))`, though the real parts of the functions do
-		agree. The benefit of not defining ``loggamma`` as
+		agree. The benefit of not defining `loggamma` as
 		:math:`\log(\Gamma(z))` is that the latter function has a
-		complicated branch cut structure whereas ``loggamma`` is analytic
+		complicated branch cut structure whereas `loggamma` is analytic
 		except for on the negative real axis.
 		
 		The identities
@@ -6551,13 +6777,11 @@ package scipy.special;
 		  \exp(\log\Gamma(z)) &= \Gamma(z) \\
 		  \log\Gamma(z + 1) &= \log(z) + \log\Gamma(z)
 		
-		make ``loggama`` useful for working in complex logspace. However,
-		``loggamma`` necessarily returns complex outputs for real inputs,
-		so if you want to work only with real numbers use `gammaln`. On
-		the real line the two functions are related by ``exp(loggamma(x))
-		= gammasgn(x)*exp(gammaln(x))``, though in practice rounding
-		errors will introduce small spurious imaginary components in
-		``exp(loggamma(x))``.
+		make `loggamma` useful for working in complex logspace.
+		
+		On the real line `loggamma` is related to `gammaln` via
+		``exp(loggamma(x + 0j)) = gammasgn(x)*exp(gammaln(x))``, up to
+		rounding error.
 		
 		The implementation here is based on [hare1997]_.
 		
@@ -6680,7 +6904,7 @@ package scipy.special;
 		
 		Notes
 		-----
-		Numpy has a logaddexp function which is very similar to `logsumexp`, but
+		NumPy has a logaddexp function which is very similar to `logsumexp`, but
 		only handles two arguments. `logaddexp.reduce` is similar to this
 		function, but may be less stable.
 		
@@ -6762,7 +6986,7 @@ package scipy.special;
 		       Functions", John Wiley and Sons, 1996.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions
-		       http://dlmf.nist.gov/14.3
+		       https://dlmf.nist.gov/14.3
 	**/
 	static public function lpmn(m:Dynamic, n:Dynamic, z:Dynamic):Dynamic;
 	/**
@@ -6963,7 +7187,7 @@ package scipy.special;
 		       Functions", John Wiley and Sons, 1996.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions
-		       http://dlmf.nist.gov/28.4#i
+		       https://dlmf.nist.gov/28.4#i
 	**/
 	static public function mathieu_even_coef(m:Dynamic, q:Dynamic):Dynamic;
 	/**
@@ -7179,7 +7403,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] NIST Digital Library of Mathematical Functions
-		       http://dlmf.nist.gov/11
+		       https://dlmf.nist.gov/11
 	**/
 	static public function modstruve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -7277,7 +7501,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function nbdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -7329,7 +7553,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function nbdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -7371,7 +7595,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function nbdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -7992,7 +8216,7 @@ package scipy.special;
 		
 		See Also
 		--------
-		nrdtristd, ndtr
+		ndtr
 	**/
 	static public function nrdtrisd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -8353,7 +8577,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Digital Library of Mathematical Functions, 14.30.
-		       http://dlmf.nist.gov/14.30
+		       https://dlmf.nist.gov/14.30
 		.. [2] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
@@ -8743,7 +8967,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] NIST Digital Library of Mathematical Functions
-		       http://dlmf.nist.gov/5
+		       https://dlmf.nist.gov/5
 		.. [2] Fredrik Johansson and others.
 		       "mpmath: a Python library for arbitrary-precision floating-point arithmetic"
 		       (Version 0.19) http://mpmath.org/
@@ -8840,7 +9064,7 @@ package scipy.special;
 		       Functions", John Wiley and Sons, 1996.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.51.E1
+		       https://dlmf.nist.gov/10.51.E1
 	**/
 	static public function riccati_jn(n:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -8881,7 +9105,7 @@ package scipy.special;
 		       Functions", John Wiley and Sons, 1996.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.51.E1
+		       https://dlmf.nist.gov/10.51.E1
 	**/
 	static public function riccati_yn(n:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -9685,7 +9909,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 		.. [2] Fredrik Johansson and others.
 		       "mpmath: a Python library for arbitrary-precision floating-point arithmetic"
 		       (Version 0.19) http://mpmath.org/
@@ -9739,7 +9963,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 		.. [2] Fredrik Johansson and others.
 		       "mpmath: a Python library for arbitrary-precision floating-point arithmetic"
 		       (Version 0.19) http://mpmath.org/
@@ -9779,10 +10003,11 @@ package scipy.special;
 		.. [1] Weisstein, Eric W. "Sinc Function." From MathWorld--A Wolfram Web
 		       Resource. http://mathworld.wolfram.com/SincFunction.html
 		.. [2] Wikipedia, "Sinc function",
-		       http://en.wikipedia.org/wiki/Sinc_function
+		       https://en.wikipedia.org/wiki/Sinc_function
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> x = np.linspace(-4, 4, 41)
 		>>> np.sinc(x)
 		array([ -3.89804309e-17,  -4.92362781e-02,  -8.40918587e-02,
@@ -9829,28 +10054,219 @@ package scipy.special;
 	/**
 		smirnov(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		smirnov(n, e)
+		smirnov(n, d)
 		
 		Kolmogorov-Smirnov complementary cumulative distribution function
 		
 		Returns the exact Kolmogorov-Smirnov complementary cumulative
-		distribution function (Dn+ or Dn-) for a one-sided test of
-		equality between an empirical and a theoretical distribution. It
-		is equal to the probability that the maximum difference between a
-		theoretical distribution and an empirical one based on `n` samples
-		is greater than e.
+		distribution function,(aka the Survival Function) of Dn+ (or Dn-)
+		for a one-sided test of equality between an empirical and a
+		theoretical distribution. It is equal to the probability that the
+		maximum difference between a theoretical distribution and an empirical
+		one based on `n` samples is greater than d.
+		
+		Parameters
+		----------
+		n : int
+		  Number of samples
+		d : float array_like
+		  Deviation between the Empirical CDF (ECDF) and the target CDF.
+		
+		Returns
+		-------
+		float
+		    The value(s) of smirnov(n, d), Prob(Dn+ >= d) (Also Prob(Dn- >= d))
+		
+		Notes
+		-----
+		`smirnov` is used by `stats.kstest` in the application of the
+		Kolmogorov-Smirnov Goodness of Fit test. For historial reasons this
+		function is exposed in `scpy.special`, but the recommended way to achieve
+		the most accurate CDF/SF/PDF/PPF/ISF computations is to use the
+		`stats.ksone` distrubution.
+		
+		See Also
+		--------
+		smirnovi : The Inverse Survival Function for the distribution
+		scipy.stats.ksone : Provides the functionality as a continuous distribution
+		kolmogorov, kolmogi : Functions for the two-sided distribution
+		
+		Examples
+		--------
+		>>> from scipy.special import smirnov
+		
+		Show the probability of a gap at least as big as 0, 0.5 and 1.0 for a sample of size 5
+		
+		>>> smirnov(5, [0, 0.5, 1.0])
+		array([ 1.   ,  0.056,  0.   ])
+		
+		Compare a sample of size 5 drawn from a source N(0.5, 1) distribution against
+		a target N(0, 1) CDF.
+		
+		>>> from scipy.stats import norm
+		>>> n = 5
+		>>> gendist = norm(0.5, 1)       # Normal distribution, mean 0.5, stddev 1
+		>>> np.random.seed(seed=233423)  # Set the seed for reproducibility
+		>>> x = np.sort(gendist.rvs(size=n))
+		>>> x
+		array([-0.20946287,  0.71688765,  0.95164151,  1.44590852,  3.08880533])
+		>>> target = norm(0, 1)
+		>>> cdfs = target.cdf(x)
+		>>> cdfs
+		array([ 0.41704346,  0.76327829,  0.82936059,  0.92589857,  0.99899518])
+		# Construct the Empirical CDF and the K-S statistics (Dn+, Dn-, Dn)
+		>>> ecdfs = np.arange(n+1, dtype=float)/n
+		>>> cols = np.column_stack([x, ecdfs[1:], cdfs, cdfs - ecdfs[:n], ecdfs[1:] - cdfs])
+		>>> np.set_printoptions(precision=3)
+		>>> cols
+		array([[ -2.095e-01,   2.000e-01,   4.170e-01,   4.170e-01,  -2.170e-01],
+		       [  7.169e-01,   4.000e-01,   7.633e-01,   5.633e-01,  -3.633e-01],
+		       [  9.516e-01,   6.000e-01,   8.294e-01,   4.294e-01,  -2.294e-01],
+		       [  1.446e+00,   8.000e-01,   9.259e-01,   3.259e-01,  -1.259e-01],
+		       [  3.089e+00,   1.000e+00,   9.990e-01,   1.990e-01,   1.005e-03]])
+		>>> gaps = cols[:, -2:]
+		>>> Dnpm = np.max(gaps, axis=0)
+		>>> print('Dn-=%f, Dn+=%f' % (Dnpm[0], Dnpm[1]))
+		Dn-=0.563278, Dn+=0.001005
+		>>> probs = smirnov(n, Dnpm)
+		>>> print(chr(10).join(['For a sample of size %d drawn from a N(0, 1) distribution:' % n,
+		...      ' Smirnov n=%d: Prob(Dn- >= %f) = %.4f' % (n, Dnpm[0], probs[0]),
+		...      ' Smirnov n=%d: Prob(Dn+ >= %f) = %.4f' % (n, Dnpm[1], probs[1])]))
+		For a sample of size 5 drawn from a N(0, 1) distribution:
+		 Smirnov n=5: Prob(Dn- >= 0.563278) = 0.0250
+		 Smirnov n=5: Prob(Dn+ >= 0.001005) = 0.9990
+		
+		Plot the Empirical CDF against the target N(0, 1) CDF
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.step(np.concatenate([[-3], x]), ecdfs, where='post', label='Empirical CDF')
+		>>> x3 = np.linspace(-3, 3, 100)
+		>>> plt.plot(x3, target.cdf(x3), label='CDF for N(0, 1)')
+		>>> plt.ylim([0, 1]); plt.grid(True); plt.legend();
+		# Add vertical lines marking Dn+ and Dn-
+		>>> iminus, iplus = np.argmax(gaps, axis=0)
+		>>> plt.vlines([x[iminus]], ecdfs[iminus], cdfs[iminus], color='r', linestyle='dashed', lw=4)
+		>>> plt.vlines([x[iplus]], cdfs[iplus], ecdfs[iplus+1], color='m', linestyle='dashed', lw=4)
+		>>> plt.show()
 	**/
 	static public function smirnov(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		smirnovi(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		smirnovi(n, y)
+		smirnovi(n, p)
 		
 		Inverse to `smirnov`
 		
-		Returns ``e`` such that ``smirnov(n, e) = y``.
+		Returns `d` such that ``smirnov(n, d) == p``, the critical value
+		corresponding to `p`.
+		
+		Parameters
+		----------
+		n : int
+		  Number of samples
+		p : float array_like
+		    Probability
+		
+		Returns
+		-------
+		float
+		    The value(s) of smirnovi(n, p), the critical values.
+		
+		Notes
+		-----
+		`smirnov` is used by `stats.kstest` in the application of the
+		Kolmogorov-Smirnov Goodness of Fit test. For historial reasons this
+		function is exposed in `scpy.special`, but the recommended way to achieve
+		the most accurate CDF/SF/PDF/PPF/ISF computations is to use the
+		`stats.ksone` distrubution.
+		
+		See Also
+		--------
+		smirnov  : The Survival Function (SF) for the distribution
+		scipy.stats.ksone : Provides the functionality as a continuous distribution
+		kolmogorov, kolmogi, scipy.stats.kstwobign : Functions for the two-sided distribution
 	**/
 	static public function smirnovi(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Softmax function
+		
+		The softmax function transforms each element of a collection by
+		computing the exponential of each element divided by the sum of the
+		exponentials of all the elements.  That is, if `x` is a one-dimensional
+		numpy array::
+		
+		    softmax(x) = np.exp(x)/sum(np.exp(x))
+		
+		Parameters
+		----------
+		x : array_like
+		    Input array.
+		axis : int or tuple of ints, optional
+		    Axis to compute values along. Default is None and softmax will be
+		    computed over the entire array `x`.
+		
+		Returns
+		-------
+		s : ndarray
+		    An array the same shape as `x`. The result will sum to 1 along the
+		    specified axis.
+		
+		Notes
+		-----
+		The formula for the softmax function :math:`\sigma(x)` for a vector
+		:math:`x = \{x_0, x_1, ..., x_{n-1}\}` is
+		
+		.. math:: \sigma(x)_j = \frac{e^{x_j}}{\sum_k e^{x_k}}
+		
+		The `softmax` function is the gradient of `logsumexp`.
+		
+		.. versionadded:: 1.2.0
+		
+		Examples
+		--------
+		>>> from scipy.special import softmax
+		>>> np.set_printoptions(precision=5)
+		
+		>>> x = np.array([[1, 0.5, 0.2, 3],
+		...               [1,  -1,   7, 3],
+		...               [2,  12,  13, 3]])
+		...
+		
+		Compute the softmax transformation over the entire array.
+		
+		>>> m = softmax(x)
+		>>> m
+		array([[  4.48309e-06,   2.71913e-06,   2.01438e-06,   3.31258e-05],
+		       [  4.48309e-06,   6.06720e-07,   1.80861e-03,   3.31258e-05],
+		       [  1.21863e-05,   2.68421e-01,   7.29644e-01,   3.31258e-05]])
+		
+		>>> m.sum()
+		1.0000000000000002
+		
+		Compute the softmax transformation along the first axis (i.e. the columns).
+		
+		>>> m = softmax(x, axis=0)
+		
+		>>> m
+		array([[  2.11942e-01,   1.01300e-05,   2.75394e-06,   3.33333e-01],
+		       [  2.11942e-01,   2.26030e-06,   2.47262e-03,   3.33333e-01],
+		       [  5.76117e-01,   9.99988e-01,   9.97525e-01,   3.33333e-01]])
+		
+		>>> m.sum(axis=0)
+		array([ 1.,  1.,  1.,  1.])
+		
+		Compute the softmax transformation along the second axis (i.e. the rows).
+		
+		>>> m = softmax(x, axis=1)
+		>>> m
+		array([[  1.05877e-01,   6.42177e-02,   4.75736e-02,   7.82332e-01],
+		       [  2.42746e-03,   3.28521e-04,   9.79307e-01,   1.79366e-02],
+		       [  1.22094e-05,   2.68929e-01,   7.31025e-01,   3.31885e-05]])
+		
+		>>> m.sum(axis=1)
+		array([ 1.,  1.,  1.])
+	**/
+	static public function softmax(x:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		spence(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -9950,7 +10366,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Digital Library of Mathematical Functions, 14.30.
-		       http://dlmf.nist.gov/14.30
+		       https://dlmf.nist.gov/14.30
 		.. [2] https://en.wikipedia.org/wiki/Spherical_harmonics#Condon.E2.80.93Shortley_phase
 	**/
 	static public function sph_harm(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -9994,8 +10410,8 @@ package scipy.special;
 		
 		References
 		----------
-		.. [1] http://dlmf.nist.gov/10.47.E7
-		.. [2] http://dlmf.nist.gov/10.51.E5
+		.. [1] https://dlmf.nist.gov/10.47.E7
+		.. [2] https://dlmf.nist.gov/10.51.E5
 	**/
 	static public function spherical_in(n:Dynamic, z:Dynamic, ?derivative:Dynamic):Dynamic;
 	/**
@@ -10040,9 +10456,9 @@ package scipy.special;
 		
 		References
 		----------
-		.. [1] http://dlmf.nist.gov/10.47.E3
-		.. [2] http://dlmf.nist.gov/10.51.E1
-		.. [3] http://dlmf.nist.gov/10.51.E2
+		.. [1] https://dlmf.nist.gov/10.47.E3
+		.. [2] https://dlmf.nist.gov/10.51.E1
+		.. [3] https://dlmf.nist.gov/10.51.E2
 	**/
 	static public function spherical_jn(n:Dynamic, z:Dynamic, ?derivative:Dynamic):Dynamic;
 	/**
@@ -10085,8 +10501,8 @@ package scipy.special;
 		
 		References
 		----------
-		.. [1] http://dlmf.nist.gov/10.47.E9
-		.. [2] http://dlmf.nist.gov/10.51.E5
+		.. [1] https://dlmf.nist.gov/10.47.E9
+		.. [2] https://dlmf.nist.gov/10.51.E5
 	**/
 	static public function spherical_kn(n:Dynamic, z:Dynamic, ?derivative:Dynamic):Dynamic;
 	/**
@@ -10130,9 +10546,9 @@ package scipy.special;
 		
 		References
 		----------
-		.. [1] http://dlmf.nist.gov/10.47.E4
-		.. [2] http://dlmf.nist.gov/10.51.E1
-		.. [3] http://dlmf.nist.gov/10.51.E2
+		.. [1] https://dlmf.nist.gov/10.47.E4
+		.. [2] https://dlmf.nist.gov/10.51.E1
+		.. [3] https://dlmf.nist.gov/10.51.E2
 	**/
 	static public function spherical_yn(n:Dynamic, z:Dynamic, ?derivative:Dynamic):Dynamic;
 	/**
@@ -10140,7 +10556,7 @@ package scipy.special;
 		
 		stdtr(df, t)
 		
-		Student t distribution cumulative density function
+		Student t distribution cumulative distribution function
 		
 		Returns the integral from minus infinity to t of the Student t
 		distribution with df > 0 degrees of freedom::
@@ -10215,7 +10631,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] NIST Digital Library of Mathematical Functions
-		       http://dlmf.nist.gov/11
+		       https://dlmf.nist.gov/11
 	**/
 	static public function struve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -10543,7 +10959,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function y0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -10612,7 +11028,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function y1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -10707,7 +11123,7 @@ package scipy.special;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function yn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -10861,7 +11277,7 @@ package scipy.special;
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
-		       http://dlmf.nist.gov/10.6.E7
+		       https://dlmf.nist.gov/10.6.E7
 	**/
 	static public function yvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**

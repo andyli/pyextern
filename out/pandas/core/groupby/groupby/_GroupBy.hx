@@ -63,7 +63,7 @@ package pandas.core.groupby.groupby;
 	**/
 	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Groupby iterator
+		Groupby iterator.
 		
 		Returns
 		-------
@@ -163,8 +163,8 @@ package pandas.core.groupby.groupby;
 	public function _apply_filter(indices:Dynamic, dropna:Dynamic):Dynamic;
 	static public var _apply_whitelist : Dynamic;
 	/**
-		we create the grouper on instantiation
-		sub-classes may have a different policy
+		We create the grouper on instantiation sub-classes may have a
+		different policy.
 	**/
 	public function _assure_grouper():Dynamic;
 	static public var _builtin_table : Dynamic;
@@ -198,12 +198,12 @@ package pandas.core.groupby.groupby;
 	**/
 	public function _dir_deletions():Dynamic;
 	/**
-		safe get index, translate keys for datelike to underlying repr 
+		Safe get index, translate keys for datelike to underlying repr.
 	**/
 	public function _get_index(name:Dynamic):Dynamic;
 	/**
-		safe get multiple indices, translate keys for
-		datelike to underlying repr
+		Safe get multiple indices, translate keys for
+		datelike to underlying repr.
 	**/
 	public function _get_indices(names:Dynamic):Dynamic;
 	/**
@@ -228,7 +228,7 @@ package pandas.core.groupby.groupby;
 	**/
 	public function _is_builtin_func(arg:Dynamic):Dynamic;
 	/**
-		if we define an internal function for this argument, return it 
+		if we define an internal function for this argument, return it
 	**/
 	public function _is_cython_func(arg:Dynamic):Dynamic;
 	public function _iterate_slices():Dynamic;
@@ -241,8 +241,10 @@ package pandas.core.groupby.groupby;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	/**
-		Clear group based selection. Used for methods needing to return info on
-		each group regardless of whether a group selection was previously set.
+		Clear group based selection.
+		
+		Used for methods needing to return info on each group regardless of
+		whether a group selection was previously set.
 	**/
 	public function _reset_group_selection():Dynamic;
 	public var _selected_obj : Dynamic;
@@ -255,15 +257,16 @@ package pandas.core.groupby.groupby;
 	**/
 	public var _selection_name : Dynamic;
 	/**
-		Create group based selection. Used when selection is not passed
-		directly but instead via a grouper.
+		Create group based selection.
+		
+		Used when selection is not passed directly but instead via a grouper.
 		
 		NOTE: this should be paired with a call to _reset_group_selection
 	**/
 	public function _set_group_selection():Dynamic;
 	public function _set_result_index_ordered(result:Dynamic):Dynamic;
 	/**
-		return a new object with the replacement attributes 
+		return a new object with the replacement attributes
 	**/
 	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -286,102 +289,56 @@ package pandas.core.groupby.groupby;
 	**/
 	public function _try_aggregate_string_function(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		try to cast the result to our obj original type,
-		we may have roundtripped thru object in the mean-time
+		Try to cast the result to our obj original type,
+		we may have roundtripped through object in the mean-time.
 		
-		if numeric_only is True, then only try to cast numerics
-		and not datetimelikes
+		If numeric_only is True, then only try to cast numerics
+		and not datetimelikes.
 	**/
 	public function _try_cast(result:Dynamic, obj:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	public function _wrap_applied_output(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function agg(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function aggregate(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Apply function ``func``  group-wise and combine the results together.
+		Apply function `func`  group-wise and combine the results together.
 		
-		The function passed to ``apply`` must take a dataframe as its first
-		argument and return a dataframe, a series or a scalar. ``apply`` will
+		The function passed to `apply` must take a dataframe as its first
+		argument and return a DataFrame, Series or scalar. `apply` will
 		then take care of combining the results back together into a single
-		dataframe or series. ``apply`` is therefore a highly flexible
+		dataframe or series. `apply` is therefore a highly flexible
 		grouping method.
 		
-		While ``apply`` is a very flexible method, its downside is that
-		using it can be quite a bit slower than using more specific methods.
-		Pandas offers a wide range of method that will be much faster
-		than using ``apply`` for their specific purposes, so try to use them
-		before reaching for ``apply``.
+		While `apply` is a very flexible method, its downside is that
+		using it can be quite a bit slower than using more specific methods
+		like `agg` or `transform`. Pandas offers a wide range of method that will
+		be much faster than using `apply` for their specific purposes, so try to
+		use them before reaching for `apply`.
 		
 		Parameters
 		----------
-		func : function
+		func : callable
 		    A callable that takes a dataframe as its first argument, and
 		    returns a dataframe, a series or a scalar. In addition the
-		    callable may take positional and keyword arguments
+		    callable may take positional and keyword arguments.
 		args, kwargs : tuple and dict
-		    Optional positional and keyword arguments to pass to ``func``
+		    Optional positional and keyword arguments to pass to `func`.
 		
 		Returns
 		-------
 		applied : Series or DataFrame
 		
-		Notes
-		-----
-		In the current implementation ``apply`` calls func twice on the
-		first group to decide whether it can take a fast or slow code
-		path. This can lead to unexpected behavior if func has
-		side-effects, as they will take effect twice for the first
-		group.
-		
-		Examples
-		--------
-		
-		>>> df = pd.DataFrame({'A': 'a a b'.split(), 'B': [1,2,3], 'C': [4,6, 5]})
-		>>> g = df.groupby('A')
-		
-		From ``df`` above we can see that ``g`` has two groups, ``a``, ``b``.
-		Calling ``apply`` in various ways, we can get different grouping results:
-		
-		Example 1: below the function passed to ``apply`` takes a dataframe as
-		its argument and returns a dataframe. ``apply`` combines the result for
-		each group together into a new dataframe:
-		
-		>>> g.apply(lambda x: x / x.sum())
-		          B    C
-		0  0.333333  0.4
-		1  0.666667  0.6
-		2  1.000000  1.0
-		
-		Example 2: The function passed to ``apply`` takes a dataframe as
-		its argument and returns a series.  ``apply`` combines the result for
-		each group together into a new dataframe:
-		
-		>>> g.apply(lambda x: x.max() - x.min())
-		   B  C
-		A
-		a  1  2
-		b  0  0
-		
-		Example 3: The function passed to ``apply`` takes a dataframe as
-		its argument and returns a scalar. ``apply`` combines the result for
-		each group together into a series, including setting the index as
-		appropriate:
-		
-		>>> g.apply(lambda x: x.C.max() - x.B.min())
-		A
-		a    5
-		b    2
-		dtype: int64
-		
-		
-		See also
+		See Also
 		--------
 		pipe : Apply function to the full GroupBy object instead of to each
 		    group.
-		aggregate, transform
+		aggregate : Apply aggregate function to the GroupBy object.
+		transform : Apply function column-by-column to the GroupBy object.
+		Series.apply : Apply a function to a Series.
+		DataFrame.apply : Apply a function to each row or column of a DataFrame.
 	**/
 	public function apply(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Constructs NDFrame from group with provided name
+		Constructs NDFrame from group with provided name.
 		
 		Parameters
 		----------
@@ -394,26 +351,26 @@ package pandas.core.groupby.groupby;
 		
 		Returns
 		-------
-		group : type of obj
+		group : same type as obj
 	**/
 	public function get_group(name:Dynamic, ?obj:Dynamic):Dynamic;
 	/**
-		dict {group name -> group labels} 
+		Dict {group name -> group labels}.
 	**/
 	public var groups : Dynamic;
 	/**
-		dict {group name -> group indices} 
+		Dict {group name -> group indices}.
 	**/
 	public var indices : Dynamic;
 	public var ndim : Dynamic;
 	public var ngroups : Dynamic;
 	/**
-		Apply a function ``func`` with arguments to this GroupBy object and return
+		Apply a function `func` with arguments to this GroupBy object and return
 		the function's result.
 		
 		.. versionadded:: 0.21.0
 		
-		Use ``.pipe`` when you want to improve readability by chaining together
+		Use `.pipe` when you want to improve readability by chaining together
 		functions that expect Series, DataFrames, GroupBy or Resampler objects.
 		Instead of writing
 		
@@ -432,17 +389,24 @@ package pandas.core.groupby.groupby;
 		----------
 		func : callable or tuple of (callable, string)
 		    Function to apply to this GroupBy object or, alternatively,
-		    a ``(callable, data_keyword)`` tuple where ``data_keyword`` is a
-		    string indicating the keyword of ``callable`` that expects the
+		    a `(callable, data_keyword)` tuple where `data_keyword` is a
+		    string indicating the keyword of `callable` that expects the
 		    GroupBy object.
 		args : iterable, optional
-		       positional arguments passed into ``func``.
+		       positional arguments passed into `func`.
 		kwargs : dict, optional
-		         a dictionary of keyword arguments passed into ``func``.
+		         a dictionary of keyword arguments passed into `func`.
 		
 		Returns
 		-------
-		object : the return type of ``func``.
+		object : the return type of `func`.
+		
+		See Also
+		--------
+		pandas.Series.pipe : Apply a function with arguments to a series.
+		pandas.DataFrame.pipe: Apply a function with arguments to a dataframe.
+		apply : Apply function to each group instead of to the
+		    full GroupBy object.
 		
 		Notes
 		-----
@@ -467,17 +431,10 @@ package pandas.core.groupby.groupby;
 		A
 		a  2
 		b  2
-		
-		See Also
-		--------
-		pandas.Series.pipe : Apply a function with arguments to a series
-		pandas.DataFrame.pipe: Apply a function with arguments to a dataframe
-		apply : Apply function to each group instead of to the
-		    full GroupBy object.
 	**/
 	public function pipe(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Class implementing the .plot attribute for groupby objects
+		Class implementing the .plot attribute for groupby objects.
 	**/
 	public var plot : Dynamic;
 	public function transform(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;

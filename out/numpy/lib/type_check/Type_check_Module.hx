@@ -10,122 +10,19 @@ package numpy.lib.type_check;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _asfarray_dispatcher(a:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function _asscalar_dispatcher(a:Dynamic):Dynamic;
+	static public function _common_type_dispatcher(?arrays:python.VarArgs<Dynamic>):Dynamic;
 	static public function _getmaxmin(t:Dynamic):Dynamic;
+	static public function _imag_dispatcher(val:Dynamic):Dynamic;
+	static public function _is_type_dispatcher(x:Dynamic):Dynamic;
 	static public var _namefromtype : Dynamic;
+	static public function _nan_to_num_dispatcher(x:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function _real_dispatcher(val:Dynamic):Dynamic;
+	static public function _real_if_close_dispatcher(a:Dynamic, ?tol:Dynamic):Dynamic;
 	static public var _typecodes_by_elsize : Dynamic;
 	static public var absolute_import : Dynamic;
-	/**
-		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
-		
-		Create an array.
-		
-		Parameters
-		----------
-		object : array_like
-		    An array, any object exposing the array interface, an object whose
-		    __array__ method returns an array, or any (nested) sequence.
-		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then the type will
-		    be determined as the minimum type required to hold the objects in the
-		    sequence.  This argument can only be used to 'upcast' the array.  For
-		    downcasting, use the .astype(t) method.
-		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy will
-		    only be made if __array__ returns a copy, if obj is a nested sequence,
-		    or if a copy is needed to satisfy any of the other requirements
-		    (`dtype`, `order`, etc.).
-		order : {'K', 'A', 'C', 'F'}, optional
-		    Specify the memory layout of the array. If object is not an array, the
-		    newly created array will be in C order (row major) unless 'F' is
-		    specified, in which case it will be in Fortran order (column major).
-		    If object is an array the following holds.
-		
-		    ===== ========= ===================================================
-		    order  no copy                     copy=True
-		    ===== ========= ===================================================
-		    'K'   unchanged F & C order preserved, otherwise most similar order
-		    'A'   unchanged F order if input is F and not C, otherwise C order
-		    'C'   C order   C order
-		    'F'   F order   F order
-		    ===== ========= ===================================================
-		
-		    When ``copy=False`` and a copy is made for other reasons, the result is
-		    the same as if ``copy=True``, with some exceptions for `A`, see the
-		    Notes section. The default order is 'K'.
-		subok : bool, optional
-		    If True, then sub-classes will be passed-through, otherwise
-		    the returned array will be forced to be a base-class array (default).
-		ndmin : int, optional
-		    Specifies the minimum number of dimensions that the resulting
-		    array should have.  Ones will be pre-pended to the shape as
-		    needed to meet this requirement.
-		
-		Returns
-		-------
-		out : ndarray
-		    An array object satisfying the specified requirements.
-		
-		See Also
-		--------
-		empty_like : Return an empty array with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		zeros_like : Return an array of zeros with shape and type of input.
-		full_like : Return a new array with shape of input filled with value.
-		empty : Return a new uninitialized array.
-		ones : Return a new array setting values to one.
-		zeros : Return a new array setting values to zero.
-		full : Return a new array of given shape filled with value.
-		
-		
-		Notes
-		-----
-		When order is 'A' and `object` is an array in neither 'C' nor 'F' order,
-		and a copy is forced by a change in dtype, then the order of the result is
-		not necessarily 'C' as expected. This is likely a bug.
-		
-		Examples
-		--------
-		>>> np.array([1, 2, 3])
-		array([1, 2, 3])
-		
-		Upcasting:
-		
-		>>> np.array([1, 2, 3.0])
-		array([ 1.,  2.,  3.])
-		
-		More than one dimension:
-		
-		>>> np.array([[1, 2], [3, 4]])
-		array([[1, 2],
-		       [3, 4]])
-		
-		Minimum dimensions 2:
-		
-		>>> np.array([1, 2, 3], ndmin=2)
-		array([[1, 2, 3]])
-		
-		Type provided:
-		
-		>>> np.array([1, 2, 3], dtype=complex)
-		array([ 1.+0.j,  2.+0.j,  3.+0.j])
-		
-		Data-type consisting of more than one element:
-		
-		>>> x = np.array([(1,2),(3,4)],dtype=[('a','<i4'),('b','<i4')])
-		>>> x['a']
-		array([1, 3])
-		
-		Creating an array from sub-classes:
-		
-		>>> np.array(np.mat('1 2; 3 4'))
-		array([[1, 2],
-		       [3, 4]])
-		
-		>>> np.array(np.mat('1 2; 3 4'), subok=True)
-		matrix([[1, 2],
-		        [3, 4]])
-	**/
-	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	static public var array_precision : Dynamic;
 	static public var array_type : Dynamic;
 	/**
@@ -273,6 +170,10 @@ package numpy.lib.type_check;
 	static public function asfarray(a:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
 		Convert an array of size 1 to its scalar equivalent.
+		
+		.. deprecated:: 1.16
+		
+		    Deprecated, use `numpy.ndarray.item()` instead.
 		
 		Parameters
 		----------
@@ -498,7 +399,8 @@ package numpy.lib.type_check;
 		(IEEE 754).
 		
 		Errors result if the second argument is also supplied when x is a scalar
-		input, or if first and second arguments have different shapes.
+		input, if first and second arguments have different shapes, or if the
+		first argument has complex values.
 		
 		Examples
 		--------
@@ -552,8 +454,9 @@ package numpy.lib.type_check;
 		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
-		Errors result if the second argument is also supplied when `x` is a
-		scalar input, or if first and second arguments have different shapes.
+		Errors result if the second argument is also supplied when x is a scalar
+		input, if first and second arguments have different shapes, or if the
+		first argument has complex values
 		
 		Examples
 		--------
@@ -813,6 +716,18 @@ package numpy.lib.type_check;
 		array([ 2.1 +4.00000000e-13j])
 	**/
 	static public function real_if_close(a:Dynamic, ?tol:Dynamic):numpy.Ndarray;
+	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
 	/**
 		Return a description for the given data type code.
 		

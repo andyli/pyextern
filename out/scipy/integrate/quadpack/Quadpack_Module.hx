@@ -551,7 +551,7 @@ package scipy.integrate.quadpack;
 		Examples
 		--------
 		
-		Compute the triple integral of ``x * y * z``, over ``x`` ranging 
+		Compute the triple integral of ``x * y * z``, over ``x`` ranging
 		from 1 to 2, ``y`` ranging from 2 to 3, ``z`` ranging from 0 to 1.
 		
 		>>> from scipy import integrate

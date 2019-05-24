@@ -6,6 +6,10 @@ package torch._c._jit_tree_views;
 	**/
 	static public function FalseLiteral(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		NoneLiteral(arg0: torch._C._jit_tree_views.SourceRange) -> torch::jit::script::Expr
+	**/
+	static public function NoneLiteral(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		TrueLiteral(arg0: torch._C._jit_tree_views.SourceRange) -> torch::jit::script::Expr
 	**/
 	static public function TrueLiteral(args:haxe.extern.Rest<Dynamic>):Dynamic;

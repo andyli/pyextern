@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 @:pythonImport("tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2", "ExponentialParam") extern class ExponentialParam {
-	static public var BASE_FIELD_NUMBER : Dynamic;
-	static public var BIAS_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -23,7 +21,6 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEPTH_MULTIPLIER_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		Discards the unknown fields.
@@ -57,7 +54,6 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MULTIPLIER_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -86,6 +82,10 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tensorforest.ExponentialParam.base
+	**/
+	public var base : Dynamic;
+	/**
+		Field tensorflow.tensorforest.ExponentialParam.bias
+	**/
+	public var bias : Dynamic;
+	/**
+		Field tensorflow.tensorforest.ExponentialParam.depth_multiplier
+	**/
+	public var depth_multiplier : Dynamic;
+	/**
+		Field tensorflow.tensorforest.ExponentialParam.multiplier
+	**/
+	public var multiplier : Dynamic;
 }

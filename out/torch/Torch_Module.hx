@@ -2,124 +2,19 @@
 package torch;
 @:pythonImport("torch") extern class Torch_Module {
 	static public var __all__ : Dynamic;
-	static public function __and__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
-	/**
-		Implement delattr(self, name).
-	**/
-	static public function __delattr__(self:Dynamic, name:Dynamic):Dynamic;
-	/**
-		__dir__() -> list
-		default dir() implementation
-	**/
-	static public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
-	/**
-		Return self==value.
-	**/
-	static public function __eq__(self:Dynamic, value:Dynamic):Dynamic;
 	static public var __file__ : Dynamic;
-	/**
-		default object formatter
-	**/
-	static public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Return self>=value.
-	**/
-	static public function __ge__(self:Dynamic, value:Dynamic):Dynamic;
-	/**
-		Return getattr(self, name).
-	**/
-	static public function __getattribute__(self:Dynamic, name:Dynamic):Dynamic;
-	/**
-		Return self>value.
-	**/
-	static public function __gt__(self:Dynamic, value:Dynamic):Dynamic;
-	/**
-		Return hash(self).
-	**/
-	static public function __hash__(self:Dynamic):Dynamic;
-	/**
-		Initialize self.  See help(type(self)) for accurate signature.
-	**/
-	@:native("__init__")
-	static public function ___init__(self:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		This method is called when a class is subclassed.
-		
-		The default implementation does nothing. It may be
-		overridden to extend subclasses.
-	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Return self<=value.
-	**/
-	static public function __le__(self:Dynamic, value:Dynamic):Dynamic;
 	static public var __loader__ : Dynamic;
-	static public function __lshift__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Return self<value.
-	**/
-	static public function __lt__(self:Dynamic, value:Dynamic):Dynamic;
 	static public var __name__ : Dynamic;
-	/**
-		Return self!=value.
-	**/
-	static public function __ne__(self:Dynamic, value:Dynamic):Dynamic;
-	/**
-		Create and return a new object.  See help(type) for accurate signature.
-	**/
-	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function __or__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
-	/**
-		helper for pickle
-	**/
-	static public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		helper for pickle
-	**/
-	static public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Return repr(self).
-	**/
-	static public function __repr__(self:Dynamic):Dynamic;
-	static public function __rshift__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Implement setattr(self, name, value).
-	**/
-	static public function __setattr__(self:Dynamic, name:Dynamic, value:Dynamic):Dynamic;
-	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
-	**/
-	static public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Return str(self).
-	**/
-	static public function __str__(self:Dynamic):Dynamic;
-	/**
-		Abstract classes can override this to customize issubclass().
-		
-		This is invoked early on by abc.ABCMeta.__subclasscheck__().
-		It should return True, False or NotImplemented.  If it returns
-		NotImplemented, the normal algorithm is used.  Otherwise, it
-		overrides the normal algorithm (and the outcome is cached).
-	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __version__ : Dynamic;
-	static public function __xor__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _abs(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _acos(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _addmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _addr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _argmax(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _argmin(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _asin(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _atan(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _baddbmm_mkl_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _cast_Byte(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _cast_Char(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _cast_Double(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -128,12 +23,11 @@ package torch;
 	static public function _cast_Int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _cast_Long(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _cast_Short(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _cat(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _convolution(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _convolution_nogroup(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _cosh(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _copy_same_type_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ctc_loss(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cudnn_ctc_loss(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _cudnn_init_dropout_state(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _cudnn_rnn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _cudnn_rnn_flatten_weight(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -143,39 +37,35 @@ package torch;
 	static public function _cufft_set_plan_cache_max_size(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _dim_arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _dirichlet_grad(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _dot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _embedding_bag(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _erf(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _erfc(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _expm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _fft_with_size(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _floor(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ger(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _fused_dropout(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _import_dotted_name(name:Dynamic):Dynamic;
-	static public function _log(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _log10(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _log1p(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _log2(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _mm(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _mv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _log_softmax(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _log_softmax_backward_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _masked_scale(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _pack_padded_sequence(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _pad_packed_sequence(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _promote_types(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _round(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _rsqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _reshape_from_tensor(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _s_copy_from(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _s_where(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _sin(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _sinh(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _sparse_coo_tensor_unsafe(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _shape_as_tensor(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _softmax(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _softmax_backward_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _sparse_addmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _sparse_mm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _sparse_sum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _standard_gamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _standard_gamma_grad(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _storage_classes : Dynamic;
 	static public var _string_classes : Dynamic;
-	static public function _tan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _tensor_classes : Dynamic;
 	static public function _trilinear(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _trunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _unique(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _unique_dim(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _weight_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _weight_norm_cuda_interface(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		abs(input, out=None) -> Tensor
 		
@@ -237,7 +127,7 @@ package torch;
 		and returns a new resulting tensor.
 		
 		.. math::
-		    out = input + value
+		    \text{out} = \text{input} + \text{value}
 		
 		If :attr:`input` is of type FloatTensor or DoubleTensor, :attr:`value` must be
 		a real number, otherwise it should be an integer.
@@ -267,7 +157,7 @@ package torch;
 		:ref:`broadcastable <broadcasting-semantics>`.
 		
 		.. math::
-		    out = input + value \times other
+		    \text{out} = \text{input} + \text{value} \times \text{other}
 		
 		If :attr:`other` is of type FloatTensor or DoubleTensor, :attr:`value` must be
 		a real number, otherwise it should be an integer.
@@ -316,7 +206,7 @@ package torch;
 		and :attr:`out` will be a :math:`(n \times p)` tensor.
 		
 		.. math::
-		    out = \beta\ mat + \alpha\ (\sum_{i=0}^{b} batch1_i \mathbin{@} batch2_i)
+		    out = \beta\ \text{mat} + \alpha\ (\sum_{i=0}^{b} \text{batch1}_i \mathbin{@} \text{batch2}_i)
 		
 		For inputs of type `FloatTensor` or `DoubleTensor`, arguments :attr:`beta` and :attr:`alpha`
 		must be real numbers, otherwise they should be integers.
@@ -347,7 +237,7 @@ package torch;
 		multiply the result by the scalar :attr:`value` and add it to :attr:`tensor`.
 		
 		.. math::
-		    out_i = tensor_i + value \times \frac{tensor1_i}{tensor2_i}
+		    \text{out}_i = \text{tensor}_i + \text{value} \times \frac{\text{tensor1}_i}{\text{tensor2}_i}
 		
 		The shapes of :attr:`tensor`, :attr:`tensor1`, and :attr:`tensor2` must be
 		:ref:`broadcastable <broadcasting-semantics>`.
@@ -357,7 +247,7 @@ package torch;
 		
 		Args:
 		    tensor (Tensor): the tensor to be added
-		    value (Number, optional): multiplier for :math:`tensor1 ./ tensor2`
+		    value (Number, optional): multiplier for :math:`\text{tensor1} / \text{tensor2}`
 		    tensor1 (Tensor): the numerator tensor
 		    tensor2 (Tensor): the denominator tensor
 		    out (Tensor, optional): the output tensor
@@ -381,7 +271,7 @@ package torch;
 		and add it to :attr:`tensor`.
 		
 		.. math::
-		    out_i = tensor_i + value \times tensor1_i \times tensor2_i
+		    \text{out}_i = \text{tensor}_i + \text{value} \times \text{tensor1}_i \times \text{tensor2}_i
 		
 		The shapes of :attr:`tensor`, :attr:`tensor1`, and :attr:`tensor2` must be
 		:ref:`broadcastable <broadcasting-semantics>`.
@@ -422,7 +312,7 @@ package torch;
 		:attr:`mat1` and :attr`mat2` and the added matrix :attr:`mat` respectively.
 		
 		.. math::
-		    out = \beta\ mat + \alpha\ (mat1_i \mathbin{@} mat2_i)
+		    \text{out} = \beta\ \text{mat} + \alpha\ (\text{mat1}_i \mathbin{@} \text{mat2}_i)
 		
 		For inputs of type `FloatTensor` or `DoubleTensor`, arguments :attr:`beta` and
 		:attr:`alpha` must be real numbers, otherwise they should be integers.
@@ -461,7 +351,7 @@ package torch;
 		:attr:`mat` and :attr:`vec` and the added tensor :attr:`tensor` respectively.
 		
 		.. math::
-		    out = \beta\ tensor + \alpha\ (mat \mathbin{@} vec)
+		    \text{out} = \beta\ \text{tensor} + \alpha\ (\text{mat} \mathbin{@} \text{vec})
 		
 		For inputs of type `FloatTensor` or `DoubleTensor`, arguments :attr:`beta` and
 		:attr:`alpha` must be real numbers, otherwise they should be integers
@@ -495,7 +385,7 @@ package torch;
 		:attr:`mat` respectively.
 		
 		.. math::
-		    out = \beta\ mat + \alpha\ (vec1 \otimes vec2)
+		    \text{out} = \beta\ \text{mat} + \alpha\ (\text{vec1} \otimes \text{vec2})
 		
 		If :attr:`vec1` is a vector of size `n` and :attr:`vec2` is a vector
 		of size `m`, then :attr:`mat` must be
@@ -509,7 +399,7 @@ package torch;
 		Args:
 		    beta (Number, optional): multiplier for :attr:`mat` (:math:`\beta`)
 		    mat (Tensor): matrix to be added
-		    alpha (Number, optional): multiplier for :math:`vec1 \otimes vec2` (:math:`\alpha`)
+		    alpha (Number, optional): multiplier for :math:`\text{vec1} \otimes \text{vec2}` (:math:`\alpha`)
 		    vec1 (Tensor): the first vector of the outer product
 		    vec2 (Tensor): the second vector of the outer product
 		    out (Tensor, optional): the output tensor
@@ -525,13 +415,45 @@ package torch;
 		            [ 3.,  6.]])
 	**/
 	static public function addr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function affine_grid_generator(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function all(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		allclose(self, other, rtol=1e-05, atol=1e-08, equal_nan=False) -> bool
+		
+		This function checks if all :attr:`self` and :attr:`other` satisfy the condition:
+		
+		.. math::
+		    \lvert \text{self} - \text{other} \rvert \leq \texttt{atol} + \texttt{rtol} \times \lvert \text{other} \rvert
+		
+		elementwise, for all elements of :attr:`self` and :attr:`other`. The behaviour of this function is analogous to
+		`numpy.allclose <https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html>`_
+		
+		Args:
+		    self (Tensor): first tensor to compare
+		    other (Tensor): second tensor to compare
+		    atol (float, optional): absolute tolerance. Default: 1e-08
+		    rtol (float, optional): relative tolerance. Default: 1e-05
+		    equal_nan (float, optional): if ``True``, then two ``NaN`` s will be compared as equal. Default: ``False``
+		
+		Example::
+		
+		    >>> torch.allclose(torch.tensor([10000., 1e-07]), torch.tensor([10000.1, 1e-08]))
+		    False
+		    >>> torch.allclose(torch.tensor([10000., 1e-08]), torch.tensor([10000.1, 1e-09]))
+		    True
+		    >>> torch.allclose(torch.tensor([1.0, float('nan')]), torch.tensor([1.0, float('nan')]))
+		    False
+		    >>> torch.allclose(torch.tensor([1.0, float('nan')]), torch.tensor([1.0, float('nan')]), equal_nan=True)
+		    True
+	**/
 	static public function allclose(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function alpha_dropout(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function alpha_dropout_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function any(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		arange(start=0, end, step=1, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
 		
-		Returns a 1-D tensor of size :math:`\left\lfloor \frac{end - start}{step} \right\rfloor`
+		Returns a 1-D tensor of size :math:`\left\lfloor \frac{\text{end} - \text{start}}{\text{step}} \right\rfloor`
 		with values from the interval ``[start, end)`` taken with common difference
 		:attr:`step` beginning from `start`.
 		
@@ -540,7 +462,7 @@ package torch;
 		in such cases.
 		
 		.. math::
-		    \text{out}_{i+1} = \text{out}_{i} + \text{step}
+		    \text{out}_{{i+1}} = \text{out}_{i} + \text{step}
 		
 		Args:
 		    start (Number): the starting value for the set of points. Default: ``0``.
@@ -626,14 +548,44 @@ package torch;
 		    tensor([ 2,  1,  3,  1])
 	**/
 	static public function argmin(input:Dynamic, ?dim:Dynamic, ?keepdim:Dynamic):Dynamic;
+	/**
+		Returns the indices that sort a tensor along a given dimension in ascending
+		order by value.
+		
+		This is the second value returned by :meth:`torch.sort`.  See its documentation
+		for the exact semantics of this method.
+		
+		Args:
+		    input (Tensor): the input tensor
+		    dim (int, optional): the dimension to sort along
+		    descending (bool, optional): controls the sorting order (ascending or descending)
+		
+		Example::
+		
+		    >>> a = torch.randn(4, 4)
+		    >>> a
+		    tensor([[ 0.0785,  1.5267, -0.8521,  0.4065],
+		            [ 0.1598,  0.0788, -0.0745, -1.2700],
+		            [ 1.2208,  1.0722, -0.7064,  1.2564],
+		            [ 0.0669, -0.2318, -0.8229, -0.9280]])
+		
+		
+		    >>> torch.argsort(a, dim=1)
+		    tensor([[2, 0, 3, 1],
+		            [3, 2, 1, 0],
+		            [2, 1, 0, 3],
+		            [3, 2, 1, 0]])
+	**/
+	static public function argsort(input:Dynamic, ?dim:Dynamic, ?descending:Dynamic):Dynamic;
 	static public function as_strided(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function as_strided_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		as_tensor(data, dtype=None, device=None) -> Tensor
 		
-		Convert the data into a `torch.Tensor`.  If the data is already a `Tensor` of the same `dtype` and `device`, no copy
-		will be performed.  Similarly, if the data is an ``ndarray`` of the corresponding `dtype` and the `device` is the cpu,
-		no copy will be performed.
+		Convert the data into a `torch.Tensor`. If the data is already a `Tensor` with the same `dtype` and `device`,
+		no copy will be performed, otherwise a new `Tensor` will be returned with computational graph retained if data
+		`Tensor` has ``requires_grad=True``. Similarly, if the data is an ``ndarray`` of the corresponding `dtype` and
+		the `device` is the cpu, no copy will be performed.
 		
 		Args:
 		    data (array_like): Initial data for the tensor. Can be a list, tuple,
@@ -647,18 +599,21 @@ package torch;
 		
 		Example::
 		
-		    >>> torch.tensor([[0.1, 1.2], [2.2, 3.1], [4.9, 5.2]])
-		    tensor([[ 0.1000,  1.2000],
-		            [ 2.2000,  3.1000],
-		            [ 4.9000,  5.2000]])
-		
 		    >>> a = numpy.array([1, 2, 3])
-		    >>> t = torch.from_numpy(a)
+		    >>> t = torch.as_tensor(a)
 		    >>> t
 		    tensor([ 1,  2,  3])
 		    >>> t[0] = -1
 		    >>> a
 		    array([-1,  2,  3])
+		
+		    >>> a = numpy.array([1, 2, 3])
+		    >>> t = torch.as_tensor(a, device=torch.device('cuda'))
+		    >>> t
+		    tensor([ 1,  2,  3])
+		    >>> t[0] = -1
+		    >>> a
+		    array([1,  2,  3])
 	**/
 	static public function as_tensor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -737,9 +692,9 @@ package torch;
 		See :class:`~torch.nn.AvgPool1d` for details and output shape.
 		
 		Args:
-		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iW`)
+		    input: input tensor of shape :math:`(\text{minibatch} \times \text{in\_channels} \times iW)`
 		    kernel_size: the size of the window. Can be a single number or a
-		      tuple `(kW,)`
+		      tuple :math:`(kW,)`
 		    stride: the stride of the window. Can be a single number or a tuple
 		      `(sW,)`. Default: :attr:`kernel_size`
 		    padding: implicit zero paddings on both sides of the input. Can be a
@@ -749,7 +704,7 @@ package torch;
 		    count_include_pad: when True, will include the zero-padding in the
 		        averaging calculation. Default: ``True``
 		
-		Example::
+		Examples::
 		    >>> # pool of square window of size=3, stride=2
 		    >>> input = torch.tensor([[[1,2,3,4,5,6,7]]])
 		    >>> F.avg_pool1d(input, kernel_size=3, stride=2)
@@ -774,7 +729,7 @@ package torch;
 		same as the scaling factors used in :meth:`torch.addbmm`.
 		
 		.. math::
-		    out_i = \beta\ mat_i + \alpha\ (batch1_i \mathbin{@} batch2_i)
+		    \text{out}_i = \beta\ \text{mat}_i + \alpha\ (\text{batch1}_i \mathbin{@} \text{batch2}_i)
 		
 		For inputs of type `FloatTensor` or `DoubleTensor`, arguments :attr:`beta` and
 		:attr:`alpha` must be real numbers, otherwise they should be integers.
@@ -782,7 +737,7 @@ package torch;
 		Args:
 		    beta (Number, optional): multiplier for :attr:`mat` (:math:`\beta`)
 		    mat (Tensor): the tensor to be added
-		    alpha (Number, optional): multiplier for `batch1 @ batch2` (:math:`\alpha`)
+		    alpha (Number, optional): multiplier for :math:`\text{batch1} \mathbin{@} \text{batch2}` (:math:`\alpha`)
 		    batch1 (Tensor): the first batch of matrices to be multiplied
 		    batch2 (Tensor): the second batch of matrices to be multiplied
 		    out (Tensor, optional): the output tensor
@@ -814,7 +769,7 @@ package torch;
 		window trims off the last duplicate value from the symmetric window and is
 		ready to be used as a periodic window with functions like
 		:meth:`torch.stft`. Therefore, if :attr:`periodic` is true, the :math:`N` in
-		above formula is in fact :math:`\text{window_length} + 1`. Also, we always have
+		above formula is in fact :math:`\text{window\_length} + 1`. Also, we always have
 		``torch.bartlett_window(L, periodic=True)`` equal to
 		``torch.bartlett_window(L + 1, periodic=False)[:-1])``.
 		
@@ -837,12 +792,12 @@ package torch;
 		        returned tensor. Default: ``False``.
 		
 		Returns:
-		    Tensor: A 1-D tensor of size :math:`(\text{window_length},)` containing the window
+		    Tensor: A 1-D tensor of size :math:`(\text{window\_length},)` containing the window
 	**/
 	static public function bartlett_window(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function batch_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bernoulli(input, out=None) -> Tensor
+		bernoulli(input, *, generator=None, out=None) -> Tensor
 		
 		Draws binary random numbers (0 or 1) from a Bernoulli distribution.
 		
@@ -852,14 +807,17 @@ package torch;
 		:math:`0 \leq \text{input}_i \leq 1`.
 		
 		The :math:`\text{i}^{th}` element of the output tensor will draw a
-		value `1` according to the :math:`\text{i}^{th}` probability value given
+		value :math:`1` according to the :math:`\text{i}^{th}` probability value given
 		in :attr:`input`.
 		
 		.. math::
 		    \text{out}_{i} \sim \mathrm{Bernoulli}(p = \text{input}_{i})
 		
 		The returned :attr:`out` tensor only has values 0 or 1 and is of the same
-		shape as :attr:`input`
+		shape as :attr:`input`.
+		
+		:attr:`out` can have integral ``dtype``, but :attr`input` must have floating
+		point ``dtype``.
 		
 		Args:
 		    input (Tensor): the input tensor of probability values for the Bernoulli distribution
@@ -867,7 +825,7 @@ package torch;
 		
 		Example::
 		
-		    >>> a = torch.empty(3, 3).uniform_(0, 1) # generate a uniform random matrix with range [0, 1]
+		    >>> a = torch.empty(3, 3).uniform_(0, 1)  # generate a uniform random matrix with range [0, 1]
 		    >>> a
 		    tensor([[ 0.1737,  0.0950,  0.3609],
 		            [ 0.7148,  0.0289,  0.2676],
@@ -889,27 +847,32 @@ package torch;
 		            [ 0.,  0.,  0.]])
 	**/
 	static public function bernoulli(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function bernoulli_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function bilinear(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function binary_cross_entropy_with_logits(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		bincount(self, weights=None, minlength=0) -> Tensor
 		
 		Count the frequency of each value in an array of non-negative ints.
 		
 		The number of bins (size 1) is one larger than the largest value in
-		:attr:`input`. If :attr:`minlength` is specified, the number of bins is at least
-		:attr:`minlength`. If ``n`` is the value at position ``i``,
-		:math:`out[n] += weights[i]` if :attr:`weights` is specified else
-		:math:`out[n] += 1`.
+		:attr:`input` unless :attr:`input` is empty, in which case the result is a
+		tensor of size 0. If :attr:`minlength` is specified, the number of bins is at least
+		:attr:`minlength` and if :attr:`input` is empty, then the result is tensor of size
+		:attr:`minlength` filled with zeros. If ``n`` is the value at position ``i``,
+		``out[n] += weights[i]`` if :attr:`weights` is specified else
+		``out[n] += 1``.
+		
+		.. include:: cuda_deterministic.rst
 		
 		Arguments:
 		    input (Tensor): 1-d int tensor
 		    weights (Tensor): optional, weight for each value in the input tensor.
 		        Should be of same size as input tensor.
-		    minlength (int): optional, min number of bins. Should be non-negative.
+		    minlength (int): optional, minimum number of bins. Should be non-negative.
 		
-		Shape:
-		    output (Tensor): ``Size([max(input) + 1])``
+		Returns:
+		    output (Tensor): a tensor of shape ``Size([max(input) + 1])`` if
+		    :attr:`input` is non-empty, else ``Size(0)``
 		
 		Example::
 		
@@ -941,7 +904,7 @@ package torch;
 		window trims off the last duplicate value from the symmetric window and is
 		ready to be used as a periodic window with functions like
 		:meth:`torch.stft`. Therefore, if :attr:`periodic` is true, the :math:`N` in
-		above formula is in fact :math:`\text{window_length} + 1`. Also, we always have
+		above formula is in fact :math:`\text{window\_length} + 1`. Also, we always have
 		``torch.blackman_window(L, periodic=True)`` equal to
 		``torch.blackman_window(L + 1, periodic=False)[:-1])``.
 		
@@ -964,7 +927,7 @@ package torch;
 		        returned tensor. Default: ``False``.
 		
 		Returns:
-		    Tensor: A 1-D tensor of size :math:`(\text{window_length},)` containing the window
+		    Tensor: A 1-D tensor of size :math:`(\text{window\_length},)` containing the window
 	**/
 	static public function blackman_window(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -981,7 +944,7 @@ package torch;
 		:math:`(b \times n \times p)` tensor.
 		
 		.. math::
-		    out_i = batch1_i \mathbin{@} batch2_i
+		    \text{out}_i = \text{batch1}_i \mathbin{@} \text{batch2}_i
 		
 		.. note:: This function does not :ref:`broadcast <broadcasting-semantics>`.
 		          For broadcasting matrix products, see :func:`torch.matmul`.
@@ -1000,6 +963,26 @@ package torch;
 		    torch.Size([10, 3, 5])
 	**/
 	static public function bmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		broadcast_tensors(*tensors) -> List of Tensors
+		
+		Broadcasts the given tensors according to :ref:`_broadcasting-semantics`.
+		
+		Args:
+		    *tensors: any number of tensors of the same type
+		
+		Example::
+		
+		    >>> x = torch.arange(3).view(1, 3)
+		    >>> y = torch.arange(2).view(2, 1)
+		    >>> a, b = torch.broadcast_tensors(x, y)
+		    >>> a.size()
+		    torch.Size([2, 3])
+		    >>> a
+		    tensor([[0, 1, 2],
+		            [0, 1, 2]])
+	**/
+	static public function broadcast_tensors(?tensors:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Batch LU factorization.
 		
@@ -1112,7 +1095,7 @@ package torch;
 	**/
 	static public function btriunpack(LU_data:Dynamic, LU_pivots:Dynamic, ?unpack_data:Dynamic, ?unpack_pivots:Dynamic):Dynamic;
 	/**
-		cat(seq, dim=0, out=None) -> Tensor
+		cat(tensors, dim=0, out=None) -> Tensor
 		
 		Concatenates the given sequence of :attr:`seq` tensors in the given dimension.
 		All tensors must either have the same shape (except in the concatenating
@@ -1124,7 +1107,7 @@ package torch;
 		:func:`torch.cat` can be best understood via examples.
 		
 		Args:
-		    seq (sequence of Tensors): any python sequence of tensors of the same type.
+		    tensors (sequence of Tensors): any python sequence of tensors of the same type.
 		        Non-empty tensors provided must have the same shape, except in the
 		        cat dimension.
 		    dim (int, optional): the dimension over which the tensors are concatenated
@@ -1173,6 +1156,101 @@ package torch;
 	**/
 	static public function ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function ceil_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function celu(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		celu_(input, alpha=1.) -> Tensor
+		
+		In-place version of :func:`~celu`.
+	**/
+	static public function celu_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Returns the matrix product of the :math:`N` 2-D tensors. This product is efficiently computed
+		using the matrix chain order algorithm which selects the order in which incurs the lowest cost in terms
+		of arithmetic operations (`[CLRS]`_). Note that since this is a function to compute the product, :math:`N`
+		needs to be greater than or equal to 2; if equal to 2 then a trivial matrix-matrix product is returned.
+		If :math:`N` is 1, then this is a no-op - the original matrix is returned as is.
+		
+		
+		Args:
+		    matrices (Tensors...): a sequence of 2 or more 2-D tensors whose product is to be determined.
+		
+		
+		Returns:
+		    Tensor: if the :math:`i^{th}` tensor was of dimensions :math:`p_{i} \times p_{i + 1}`, then the product
+		    would be of dimensions :math:`p_{1} \times p_{N + 1}`.
+		
+		Example::
+		
+		    >>> a = torch.randn(3, 4)
+		    >>> b = torch.randn(4, 5)
+		    >>> c = torch.randn(5, 6)
+		    >>> d = torch.randn(6, 7)
+		    >>> torch.chain_matmul(a, b, c, d)
+		    tensor([[ -2.3375,  -3.9790,  -4.1119,  -6.6577,   9.5609, -11.5095,  -3.2614],
+		            [ 21.4038,   3.3378,  -8.4982,  -5.2457, -10.2561,  -2.4684,   2.7163],
+		            [ -0.9647,  -5.8917,  -2.3213,  -5.2284,  12.8615, -12.2816,  -2.5095]])
+		
+		.. _`[CLRS]`: https://mitpress.mit.edu/books/introduction-algorithms-third-edition
+	**/
+	static public function chain_matmul(?matrices:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		cholesky(A, upper=False, out=None) -> Tensor
+		
+		Computes the Cholesky decomposition of a symmetric positive-definite
+		matrix :math:`A` or for batches of symmetric positive-definite matrices.
+		
+		If :attr:`upper` is ``True``, the returned matrix `U` is upper-triangular, and
+		the decomposition has the form:
+		
+		.. math::
+		
+		  A = U^TU
+		
+		If :attr:`upper` is ``False``, the returned matrix `L` is lower-triangular, and
+		the decomposition has the form:
+		
+		.. math::
+		
+		    A = LL^T
+		
+		If :attr:`upper` is ``True``, and :attr:`A` is a batch of symmetric positive-definite
+		matrices, then the returned tensor will be composed of upper-triangular Cholesky factors
+		of each of the individual matrices. Similarly, when :attr:`upper` is ``False``, the returned
+		tensor will be composed of lower-triangular Cholesky factors of each of the individual
+		matrices.
+		
+		Args:
+		    a (Tensor): the input tensor of size (*, n, n) where `*` is zero or more
+		                batch dimensions consisting of symmetric positive-definite matrices.
+		    upper (bool, optional): flag that indicates whether to return a
+		                            upper or lower triangular matrix. Default: ``False``
+		    out (Tensor, optional): the output matrix
+		
+		Example::
+		
+		    >>> a = torch.randn(3, 3)
+		    >>> a = torch.mm(a, a.t()) # make symmetric positive-definite
+		    >>> l = torch.cholesky(a)
+		    >>> a
+		    tensor([[ 2.4112, -0.7486,  1.4551],
+		            [-0.7486,  1.3544,  0.1294],
+		            [ 1.4551,  0.1294,  1.6724]])
+		    >>> l
+		    tensor([[ 1.5528,  0.0000,  0.0000],
+		            [-0.4821,  1.0592,  0.0000],
+		            [ 0.9371,  0.5487,  0.7023]])
+		    >>> torch.mm(l, l.t())
+		    tensor([[ 2.4112, -0.7486,  1.4551],
+		            [-0.7486,  1.3544,  0.1294],
+		            [ 1.4551,  0.1294,  1.6724]])
+		    >>> a = torch.randn(3, 2, 2)
+		    >>> a = torch.matmul(a, a.transpose(-1, -2)) + 1e-03 # make symmetric positive-definite
+		    >>> l = torch.cholesky(a)
+		    >>> z = torch.matmul(l, l.transpose(-1, -2))
+		    >>> torch.max(torch.abs(z - a)) # Max non-zero
+		    tensor(2.3842e-07)
+	**/
+	static public function cholesky(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		chunk(tensor, chunks, dim=0) -> List of Tensors
 		
@@ -1258,7 +1336,20 @@ package torch;
 		    tensor([ 0.5000, -0.4702, -0.4599,  0.5000])
 	**/
 	static public function clamp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function clamp_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function clamp_max(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function clamp_max_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function clamp_min(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function clamp_min_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function clone(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Returns whether PyTorch was built with _GLIBCXX_USE_CXX11_ABI=1
+	**/
+	static public function compiled_with_cxx11_abi():Dynamic;
+	static public var complex128 : Dynamic;
+	static public var complex32 : Dynamic;
+	static public var complex64 : Dynamic;
+	static public function constant_pad_nd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		conv1d(input, weight, bias=None, stride=1, padding=0, dilation=1, groups=1) -> Tensor
 		
@@ -1267,17 +1358,19 @@ package torch;
 		
 		See :class:`~torch.nn.Conv1d` for details and output shape.
 		
+		.. include:: cudnn_deterministic.rst
+		
 		Args:
-		    input: input tensor of shape :math:`minibatch \times in\_channels \times iW`
-		    weight: filters of shape :math:`out\_channels \times \frac{in\_channels}{groups} \times kW`
-		    bias: optional bias of shape (:math:`out\_channels`). Default: ``None``
+		    input: input tensor of shape :math:`(\text{minibatch} \times \text{in\_channels} \times iW)`
+		    weight: filters of shape :math:`(\text{out\_channels} \times \frac{\text{in\_channels}}{\text{groups}} \times kW)`
+		    bias: optional bias of shape :math:`(\text{out\_channels})`. Default: ``None``
 		    stride: the stride of the convolving kernel. Can be a single number or
 		      a one-element tuple `(sW,)`. Default: 1
 		    padding: implicit zero paddings on both sides of the input. Can be a
 		      single number or a one-element tuple `(padW,)`. Default: 0
 		    dilation: the spacing between kernel elements. Can be a single number or
 		      a one-element tuple `(dW,)`. Default: 1
-		    groups: split input into groups, :math:`in\_channels` should be divisible by
+		    groups: split input into groups, :math:`\text{in\_channels}` should be divisible by
 		      the number of groups. Default: 1
 		
 		Examples::
@@ -1295,17 +1388,19 @@ package torch;
 		
 		See :class:`~torch.nn.Conv2d` for details and output shape.
 		
+		.. include:: cudnn_deterministic.rst
+		
 		Args:
-		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iH \times iW`)
-		    weight: filters of shape (:math:`out\_channels \times \frac{in\_channels}{groups} \times kH \times kW`)
-		    bias: optional bias tensor of shape (:math:`out\_channels`). Default: ``None``
+		    input: input tensor of shape :math:`(\text{minibatch} \times \text{in\_channels} \times iH \times iW)`
+		    weight: filters of shape :math:`(\text{out\_channels} \times \frac{\text{in\_channels}}{\text{groups}} \times kH \times kW)`
+		    bias: optional bias tensor of shape :math:`(\text{out\_channels})`. Default: ``None``
 		    stride: the stride of the convolving kernel. Can be a single number or a
 		      tuple `(sH, sW)`. Default: 1
 		    padding: implicit zero paddings on both sides of the input. Can be a
 		      single number or a tuple `(padH, padW)`. Default: 0
 		    dilation: the spacing between kernel elements. Can be a single number or
 		      a tuple `(dH, dW)`. Default: 1
-		    groups: split input into groups, :math:`in\_channels` should be divisible by the
+		    groups: split input into groups, :math:`\text{in\_channels}` should be divisible by the
 		      number of groups. Default: 1
 		
 		Examples::
@@ -1324,17 +1419,19 @@ package torch;
 		
 		See :class:`~torch.nn.Conv3d` for details and output shape.
 		
+		.. include:: cudnn_deterministic.rst
+		
 		Args:
-		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iT \times iH \times iW`)
-		    weight: filters of shape (:math:`out\_channels \times \frac{in\_channels}{groups} \times kT \times kH \times kW`)
-		    bias: optional bias tensor of shape (:math:`out\_channels`). Default: None
+		    input: input tensor of shape :math:`(\text{minibatch} \times \text{in\_channels} \times iT \times iH \times iW)`
+		    weight: filters of shape :math:`(\text{out\_channels} \times \frac{\text{in\_channels}}{\text{groups}} \times kT \times kH \times kW)`
+		    bias: optional bias tensor of shape :math:`(\text{out\_channels})`. Default: None
 		    stride: the stride of the convolving kernel. Can be a single number or a
 		      tuple `(sT, sH, sW)`. Default: 1
 		    padding: implicit zero paddings on both sides of the input. Can be a
 		      single number or a tuple `(padT, padH, padW)`. Default: 0
 		    dilation: the spacing between kernel elements. Can be a single number or
 		      a tuple `(dT, dH, dW)`. Default: 1
-		    groups: split input into groups, :math:`in\_channels` should be divisible by
+		    groups: split input into groups, :math:`\text{in\_channels}` should be divisible by
 		      the number of groups. Default: 1
 		
 		Examples::
@@ -1344,6 +1441,16 @@ package torch;
 		    >>> F.conv3d(inputs, filters)
 	**/
 	static public function conv3d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Applies a 1-dimensional sequence convolution over an input sequence.
+		Input and output dimensions are (Time, Batch, Channels) - hence TBC.
+		
+		Args:
+		    input: input tensor of shape :math:`(\text{sequence length} \times batch \times \text{in\_channels})`
+		    weight: filter of shape (:math:`\text{kernel width} \times \text{in\_channels} \times \text{out\_channels}`)
+		    bias: bias of shape (:math:`\text{out\_channels}`)
+		    pad: number of timesteps to pad. Default: 0
+	**/
 	static public function conv_tbc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		conv_transpose1d(input, weight, bias=None, stride=1, padding=0, output_padding=0, groups=1, dilation=1) -> Tensor
@@ -1353,10 +1460,12 @@ package torch;
 		
 		See :class:`~torch.nn.ConvTranspose1d` for details and output shape.
 		
+		.. include:: cudnn_deterministic.rst
+		
 		Args:
-		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iW`)
-		    weight: filters of shape (:math:`in\_channels \times \frac{out\_channels}{groups} \times kW`)
-		    bias: optional bias of shape (:math:`out\_channels`). Default: None
+		    input: input tensor of shape :math:`(\text{minibatch} \times \text{in\_channels} \times iW)`
+		    weight: filters of shape :math:`(\text{in\_channels} \times \frac{\text{out\_channels}}{\text{groups}} \times kW)`
+		    bias: optional bias of shape :math:`(\text{out\_channels})`. Default: None
 		    stride: the stride of the convolving kernel. Can be a single number or a
 		      tuple ``(sW,)``. Default: 1
 		    padding: ``kernel_size - 1 - padding`` zero-padding will be added to both
@@ -1364,7 +1473,7 @@ package torch;
 		      ``(padW,)``. Default: 0
 		    output_padding: additional size added to one side of each dimension in the
 		      output shape. Can be a single number or a tuple ``(out_padW)``. Default: 0
-		    groups: split input into groups, :math:`in\_channels` should be divisible by the
+		    groups: split input into groups, :math:`\text{in\_channels}` should be divisible by the
 		      number of groups. Default: 1
 		    dilation: the spacing between kernel elements. Can be a single number or
 		      a tuple ``(dW,)``. Default: 1
@@ -1384,10 +1493,12 @@ package torch;
 		
 		See :class:`~torch.nn.ConvTranspose2d` for details and output shape.
 		
+		.. include:: cudnn_deterministic.rst
+		
 		Args:
-		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iH \times iW`)
-		    weight: filters of shape (:math:`in\_channels \times \frac{out\_channels}{groups} \times kH \times kW`)
-		    bias: optional bias of shape (:math:`out\_channels`). Default: None
+		    input: input tensor of shape :math:`(\text{minibatch} \times \text{in\_channels} \times iH \times iW)`
+		    weight: filters of shape :math:`(\text{in\_channels} \times \frac{\text{out\_channels}}{\text{groups}} \times kH \times kW)`
+		    bias: optional bias of shape :math:`(\text{out\_channels})`. Default: None
 		    stride: the stride of the convolving kernel. Can be a single number or a
 		      tuple ``(sH, sW)``. Default: 1
 		    padding: ``kernel_size - 1 - padding`` zero-padding will be added to both
@@ -1396,7 +1507,7 @@ package torch;
 		    output_padding: additional size added to one side of each dimension in the
 		      output shape. Can be a single number or a tuple ``(out_padH, out_padW)``.
 		      Default: 0
-		    groups: split input into groups, :math:`in\_channels` should be divisible by the
+		    groups: split input into groups, :math:`\text{in\_channels}` should be divisible by the
 		      number of groups. Default: 1
 		    dilation: the spacing between kernel elements. Can be a single number or
 		      a tuple ``(dH, dW)``. Default: 1
@@ -1417,10 +1528,12 @@ package torch;
 		
 		See :class:`~torch.nn.ConvTranspose3d` for details and output shape.
 		
+		.. include:: cudnn_deterministic.rst
+		
 		Args:
-		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iT \times iH \times iW`)
-		    weight: filters of shape (:math:`in\_channels \times \frac{out\_channels}{groups} \times kT \times kH \times kW`)
-		    bias: optional bias of shape (:math:`out\_channels`). Default: None
+		    input: input tensor of shape :math:`(\text{minibatch} \times \text{in\_channels} \times iT \times iH \times iW)`
+		    weight: filters of shape :math:`(\text{in\_channels} \times \frac{\text{out\_channels}}{\text{groups}} \times kT \times kH \times kW)`
+		    bias: optional bias of shape :math:`(\text{out\_channels})`. Default: None
 		    stride: the stride of the convolving kernel. Can be a single number or a
 		      tuple ``(sT, sH, sW)``. Default: 1
 		    padding: ``kernel_size - 1 - padding`` zero-padding will be added to both
@@ -1429,7 +1542,7 @@ package torch;
 		    output_padding: additional size added to one side of each dimension in the
 		      output shape. Can be a single number or a tuple
 		      ``(out_padT, out_padH, out_padW)``. Default: 0
-		    groups: split input into groups, :math:`in\_channels` should be divisible by the
+		    groups: split input into groups, :math:`\text{in\_channels}` should be divisible by the
 		      number of groups. Default: 1
 		    dilation: the spacing between kernel elements. Can be a single number or
 		      a tuple `(dT, dH, dW)`. Default: 1
@@ -1489,6 +1602,33 @@ package torch;
 	static public function cosh_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function cosine_embedding_loss(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		cosine_similarity(x1, x2, dim=1, eps=1e-8) -> Tensor
+		
+		Returns cosine similarity between x1 and x2, computed along dim.
+		
+		.. math ::
+		    \text{similarity} = \dfrac{x_1 \cdot x_2}{\max(\Vert x_1 \Vert _2 \cdot \Vert x_2 \Vert _2, \epsilon)}
+		
+		Args:
+		    x1 (Tensor): First input.
+		    x2 (Tensor): Second input (of size matching x1).
+		    dim (int, optional): Dimension of vectors. Default: 1
+		    eps (float, optional): Small value to avoid division by zero.
+		        Default: 1e-8
+		
+		Shape:
+		    - Input: :math:`(\ast_1, D, \ast_2)` where D is at position `dim`.
+		    - Output: :math:`(\ast_1, \ast_2)` where 1 is at position `dim`.
+		
+		Example::
+		
+		    >>> input1 = torch.randn(100, 128)
+		    >>> input2 = torch.randn(100, 128)
+		    >>> output = F.cosine_similarity(input1, input2)
+		    >>> print(output)
+	**/
+	static public function cosine_similarity(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		cross(input, other, dim=-1, out=None) -> Tensor
 		
 		
@@ -1533,6 +1673,7 @@ package torch;
 		            [-1.2329,  1.9883,  1.0551]])
 	**/
 	static public function cross(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ctc_loss(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function cudnn_affine_grid_generator(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function cudnn_batch_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function cudnn_convolution(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -1575,7 +1716,7 @@ package torch;
 	**/
 	static public function cumprod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cumsum(input, dim, out=None) -> Tensor
+		cumsum(input, dim, out=None, dtype=None) -> Tensor
 		
 		Returns the cumulative sum of elements of :attr:`input` in the dimension
 		:attr:`dim`.
@@ -1626,6 +1767,8 @@ package torch;
 		    tensor(3.7641)
 	**/
 	static public function det(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function detach(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function detach_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		diag(input, diagonal=0, out=None) -> Tensor
 		
@@ -1682,6 +1825,66 @@ package torch;
 		    tensor([ 0.0255, 0.1374])
 	**/
 	static public function diag(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		diag_embed(input, offset=0, dim1=-2, dim2=-1) -> Tensor
+		
+		Creates a tensor whose diagonals of certain 2D planes (specified by
+		:attr:`dim1` and :attr:`dim2`) are filled by :attr:`input`.
+		To facilitate creating batched diagonal matrices, the 2D planes formed by
+		the last two dimensions of the returned tensor are chosen by default.
+		
+		The argument :attr:`offset` controls which diagonal to consider:
+		
+		- If :attr:`offset` = 0, it is the main diagonal.
+		- If :attr:`offset` > 0, it is above the main diagonal.
+		- If :attr:`offset` < 0, it is below the main diagonal.
+		
+		The size of the new matrix will be calculated to make the specified diagonal
+		of the size of the last input dimension.
+		Note that for :attr:`offset` other than :math:`0`, the order of :attr:`dim1`
+		and :attr:`dim2` matters. Exchanging them is equivalent to changing the
+		sign of :attr:`offset`.
+		
+		Applying :meth:`torch.diagonal` to the output of this function with
+		the same arguments yields a matrix identical to input. However,
+		:meth:`torch.diagonal` has different default dimensions, so those
+		need to be explicitly specified.
+		
+		Args:
+		    input (Tensor): the input tensor. Must be at least 1-dimensional.
+		    offset (int, optional): which diagonal to consider. Default: 0
+		        (main diagonal).
+		    dim1 (int, optional): first dimension with respect to which to
+		        take diagonal. Default: -2.
+		    dim2 (int, optional): second dimension with respect to which to
+		        take diagonal. Default: -1.
+		
+		Example::
+		
+		    >>> a = torch.randn(2, 3)
+		    >>> torch.diag_embed(a)
+		    tensor([[[ 1.5410,  0.0000,  0.0000],
+		             [ 0.0000, -0.2934,  0.0000],
+		             [ 0.0000,  0.0000, -2.1788]],
+		
+		            [[ 0.5684,  0.0000,  0.0000],
+		             [ 0.0000, -1.0845,  0.0000],
+		             [ 0.0000,  0.0000, -1.3986]]])
+		
+		    >>> torch.diag_embed(a, offset=1, dim1=0, dim2=2)
+		    tensor([[[ 0.0000,  1.5410,  0.0000,  0.0000],
+		             [ 0.0000,  0.5684,  0.0000,  0.0000]],
+		
+		            [[ 0.0000,  0.0000, -0.2934,  0.0000],
+		             [ 0.0000,  0.0000, -1.0845,  0.0000]],
+		
+		            [[ 0.0000,  0.0000,  0.0000, -2.1788],
+		             [ 0.0000,  0.0000,  0.0000, -1.3986]],
+		
+		            [[ 0.0000,  0.0000,  0.0000,  0.0000],
+		             [ 0.0000,  0.0000,  0.0000,  0.0000]]])
+	**/
+	static public function diag_embed(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		diagflat(input, diagonal=0) -> Tensor
 		
@@ -1740,6 +1943,11 @@ package torch;
 		- If :attr:`offset` > 0, it is above the main diagonal.
 		- If :attr:`offset` < 0, it is below the main diagonal.
 		
+		Applying :meth:`torch.diag_embed` to the output of this function with
+		the same arguments yields a diagonal matrix with the diagonal entries
+		of the input. However, :meth:`torch.diag_embed` has different default
+		dimensions, so those need to be explicitly specified.
+		
 		Args:
 		    input (Tensor): the input tensor. Must be at least 2-dimensional.
 		    offset (int, optional): which diagonal to consider. Default: 0
@@ -1777,6 +1985,23 @@ package torch;
 		             [ 1.0500,  0.7336, -0.3836, -1.1015]]])
 	**/
 	static public function diagonal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		digamma(input, out=None) -> Tensor
+		
+		Computes the logarithmic derivative of the gamma function on `input`.
+		
+		.. math::
+		    \psi(x) = \frac{d}{dx} \ln\left(\Gamma\left(x\right)\right) = \frac{\Gamma'(x)}{\Gamma(x)}
+		
+		Args:
+		    input (Tensor): the tensor to compute the digamma function on
+		
+		Example::
+		
+		    >>> a = torch.tensor([1, 0.5])
+		    >>> torch.digamma(a)
+		    tensor([-0.5772, -1.9635])
+	**/
 	static public function digamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		dist(input, other, p=2) -> Tensor
@@ -1816,7 +2041,7 @@ package torch;
 		and returns a new resulting tensor.
 		
 		.. math::
-		    out_i = \frac{input_i}{value}
+		    \text{out}_i = \frac{\text{input}_i}{\text{value}}
 		
 		If :attr:`input` is of type `FloatTensor` or `DoubleTensor`, :attr:`value`
 		should be a real number, otherwise it should be an integer
@@ -1842,7 +2067,7 @@ package torch;
 		:ref:`broadcastable <broadcasting-semantics>`.
 		
 		.. math::
-		    out_i = \frac{input_i}{other_i}
+		    \text{out}_i = \frac{\text{input}_i}{\text{other}_i}
 		
 		Args:
 		    input (Tensor): the numerator tensor
@@ -1881,6 +2106,8 @@ package torch;
 	**/
 	static public function dot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var double : Dynamic;
+	static public function dropout(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function dropout_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function dsmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		eig(a, eigenvectors=False, out=None) -> (Tensor, Tensor)
@@ -1888,7 +2115,8 @@ package torch;
 		Computes the eigenvalues and eigenvectors of a real square matrix.
 		
 		Args:
-		    a (Tensor): the square matrix for which the eigenvalues and eigenvectors will be computed
+		    a (Tensor): the square matrix of shape :math:`(n \times n)` for which the eigenvalues and eigenvectors
+		        will be computed
 		    eigenvectors (bool): ``True`` to compute both eigenvalues and eigenvectors;
 		        otherwise, only eigenvalues will be computed
 		    out (tuple, optional): the output tensors
@@ -1896,12 +2124,22 @@ package torch;
 		Returns:
 		    (Tensor, Tensor): A tuple containing
 		
-		        - **e** (*Tensor*): the right eigenvalues of ``a``
-		        - **v** (*Tensor*): the eigenvectors of ``a`` if ``eigenvectors`` is ``True``; otherwise an empty tensor
+		        - **e** (*Tensor*): Shape :math:`(n \times 2)`. Each row is an eigenvalue of ``a``,
+		          where the first element is the real part and the second element is the imaginary part.
+		          The eigenvalues are not necessarily ordered.
+		        - **v** (*Tensor*): If ``eigenvectors=False``, it's an empty tensor.
+		          Otherwise, this tensor of shape :math:`(n \times n)` can be used to compute normalized (unit length)
+		          eigenvectors of corresponding eigenvalues ``e`` as follows.
+		          If the corresponding e[j] is a real number, column v[:, j] is the eigenvector corresponding to
+		          eigenvalue e[j].
+		          If the corresponding e[j] and e[j + 1] eigenvalues form a complex conjugate pair, then the true eigenvectors
+		          can be computed as
+		          :math:`\text{eigenvector}[j] = v[:, j] + i \times v[:, j + 1]`,
+		          :math:`\text{eigenvector}[j + 1] = v[:, j] - i \times v[:, j + 1]`.
 	**/
 	static public function eig(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		einsum(equation, operands) -> Tensor
+		einsum(equation, *operands) -> Tensor
 		
 		This function provides a way of computing multilinear expressions (i.e. sums of products) using the
 		Einstein summation convention.
@@ -1925,7 +2163,7 @@ package torch;
 		
 		    >>> x = torch.randn(5)
 		    >>> y = torch.randn(4)
-		    >>> torch.einsum('i,j->ij', (x,y))  # outer product
+		    >>> torch.einsum('i,j->ij', x, y)  # outer product
 		    tensor([[-0.0570, -0.0286, -0.0231,  0.0197],
 		            [ 1.2616,  0.6335,  0.5113, -0.4351],
 		            [ 1.4452,  0.7257,  0.5857, -0.4984],
@@ -1936,14 +2174,14 @@ package torch;
 		    >>> A = torch.randn(3,5,4)
 		    >>> l = torch.randn(2,5)
 		    >>> r = torch.randn(2,4)
-		    >>> torch.einsum('bn,anm,bm->ba', (l,A,r)) # compare torch.nn.functional.bilinear
+		    >>> torch.einsum('bn,anm,bm->ba', l, A, r) # compare torch.nn.functional.bilinear
 		    tensor([[-0.3430, -5.2405,  0.4494],
 		            [ 0.3311,  5.5201, -3.0356]])
 		
 		
 		    >>> As = torch.randn(3,2,5)
 		    >>> Bs = torch.randn(3,5,4)
-		    >>> torch.einsum('bij,bjk->bik', (As, Bs)) # batch matrix multiplication
+		    >>> torch.einsum('bij,bjk->bik', As, Bs) # batch matrix multiplication
 		    tensor([[[-1.0564, -1.5904,  3.2023,  3.1271],
 		             [-1.6706, -0.8097, -0.8025, -2.1183]],
 		
@@ -1954,21 +2192,21 @@ package torch;
 		             [ 0.3728, -2.1131,  0.0921,  0.8305]]])
 		
 		    >>> A = torch.randn(3, 3)
-		    >>> torch.einsum('ii->i', (A,)) # diagonal
+		    >>> torch.einsum('ii->i', A) # diagonal
 		    tensor([-0.7825,  0.8291, -0.1936])
 		
 		    >>> A = torch.randn(4, 3, 3)
-		    >>> torch.einsum('...ii->...i', (A,)) # batch diagonal
+		    >>> torch.einsum('...ii->...i', A) # batch diagonal
 		    tensor([[-1.0864,  0.7292,  0.0569],
 		            [-0.9725, -1.0270,  0.6493],
 		            [ 0.5832, -1.1716, -1.5084],
 		            [ 0.4041, -1.1690,  0.8570]])
 		
 		    >>> A = torch.randn(2, 3, 4, 5)
-		    >>> torch.einsum('...ij->...ji', (A,)).shape # batch permute
+		    >>> torch.einsum('...ij->...ji', A).shape # batch permute
 		    torch.Size([2, 3, 5, 4])
 	**/
-	static public function einsum(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function einsum(equation:Dynamic, ?operands:python.VarArgs<Dynamic>):Dynamic;
 	static public function embedding(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function embedding_bag(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function embedding_renorm_(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -2021,12 +2259,12 @@ package torch;
 		
 		Example::
 		
-		    >>> input = torch.empty((2,3), dtype=torch.int64)
-		    >>> input.new(input.size())
+		    >>> torch.empty((2,3), dtype=torch.int64)
 		    tensor([[ 9.4064e+13,  2.8000e+01,  9.3493e+13],
 		            [ 7.5751e+18,  7.1428e+18,  7.5955e+18]])
 	**/
 	static public function empty_like(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function empty_strided(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		eq(input, other, out=None) -> Tensor
 		
@@ -2081,9 +2319,10 @@ package torch;
 	static public function erf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function erf_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		erfc(tensor, out=None) -> Tensor
+		erfc(input, out=None) -> Tensor
 		
-		Computes the complementary error function of each element. The complementary error function is defined as follows:
+		Computes the complementary error function of each element of :attr:`input`.
+		The complementary error function is defined as follows:
 		
 		.. math::
 		    \mathrm{erfc}(x) = 1 - \frac{2}{\sqrt{\pi}} \int_{0}^{x} e^{-t^2} dt
@@ -2100,16 +2339,16 @@ package torch;
 	static public function erfc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function erfc_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		erfinv(tensor, out=None) -> Tensor
+		erfinv(input, out=None) -> Tensor
 		
-		Computes the inverse error function of each element. The inverse error function is defined
-		in the range :math:`(-1, 1)` as:
+		Computes the inverse error function of each element of :attr:`input`.
+		The inverse error function is defined in the range :math:`(-1, 1)` as:
 		
 		.. math::
 		    \mathrm{erfinv}(\mathrm{erf}(x)) = x
 		
 		Args:
-		    tensor (Tensor): the input tensor
+		    input (Tensor): the input tensor
 		    out (Tensor, optional): the output tensor
 		
 		Example::
@@ -2119,10 +2358,10 @@ package torch;
 	**/
 	static public function erfinv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		exp(tensor, out=None) -> Tensor
+		exp(input, out=None) -> Tensor
 		
 		Returns a new tensor with the exponential of the elements
-		of :attr:`input`.
+		of the input tensor :attr:`input`.
 		
 		.. math::
 		    y_{i} = e^{x_{i}}
@@ -2131,19 +2370,15 @@ package torch;
 		    input (Tensor): the input tensor
 		    out (Tensor, optional): the output tensor
 		
-		Args:
-		    tensor (Tensor): the input tensor
-		    out (Tensor, optional): the output tensor
-		
 		Example::
 		
-		    >>> torch.exp(torch.tensor([0, math.log(2)]))
+		    >>> torch.exp(torch.tensor([0, math.log(2.)]))
 		    tensor([ 1.,  2.])
 	**/
 	static public function exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function exp_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		expm1(tensor, out=None) -> Tensor
+		expm1(input, out=None) -> Tensor
 		
 		Returns a new tensor with the exponential of the elements minus 1
 		of :attr:`input`.
@@ -2155,13 +2390,9 @@ package torch;
 		    input (Tensor): the input tensor
 		    out (Tensor, optional): the output tensor
 		
-		Args:
-		    tensor (Tensor): the input tensor
-		    out (Tensor, optional): the output tensor
-		
 		Example::
 		
-		    >>> torch.expm1(torch.tensor([0, math.log(2)]))
+		    >>> torch.expm1(torch.tensor([0, math.log(2.)]))
 		    tensor([ 0.,  1.])
 	**/
 	static public function expm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -2197,6 +2428,10 @@ package torch;
 		            [ 0.,  0.,  1.]])
 	**/
 	static public function eye(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function feature_alpha_dropout(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function feature_alpha_dropout_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function feature_dropout(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function feature_dropout_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		fft(input, signal_ndim, normalized=False) -> Tensor
 		
@@ -2207,7 +2442,7 @@ package torch;
 		
 		.. math::
 		    X[\omega_1, \dots, \omega_d] =
-		        \frac{1}{\prod_{i=1}^d N_i} \sum_{n_1=0}^{N_1} \dots \sum_{n_d=0}^{N_d} x[n_1, \dots, n_d]
+		        \sum_{n_1=0}^{N_1} \dots \sum_{n_d=0}^{N_d} x[n_1, \dots, n_d]
 		         e^{-j\ 2 \pi \sum_{i=0}^d \frac{\omega_i n_i}{N_i}},
 		
 		where :math:`d` = :attr:`signal_ndim` is number of dimensions for the
@@ -2231,10 +2466,11 @@ package torch;
 		    repeatedly running FFT methods on tensors of same geometry with same
 		    same configuration.
 		
-		    Changing ``torch.backends.cuda.cufft_plan_cache.max_size`` (default 1023)
-		    controls the capacity of this cache. Some cuFFT plans may allocate GPU
-		    memory. You may use ``torch.backends.cuda.cufft_plan_cache.size`` to query
-		    the number of plans currently in cache, and
+		    Changing ``torch.backends.cuda.cufft_plan_cache.max_size`` (default is
+		    4096 on CUDA 10 and newer, and 1023 on older CUDA versions) controls the
+		    capacity of this cache. Some cuFFT plans may allocate GPU memory. You can
+		    use ``torch.backends.cuda.cufft_plan_cache.size`` to query the number of
+		    plans currently in cache, and
 		    ``torch.backends.cuda.cufft_plan_cache.clear()`` to clear the cache.
 		
 		.. warning::
@@ -2398,9 +2634,13 @@ package torch;
 	**/
 	static public function fmod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		frac(tensor, out=None) -> Tensor
+		fork(arg0: torch::jit::script::Module, *args) -> torch._C.Future
+	**/
+	static public function fork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		frac(input, out=None) -> Tensor
 		
-		Computes the fractional portion of each element in :attr:`tensor`.
+		Computes the fractional portion of each element in :attr:`input`.
 		
 		.. math::
 		    \text{out}_{i} = \text{input}_{i} - \left\lfloor \text{input}_{i} \right\rfloor
@@ -2411,6 +2651,7 @@ package torch;
 		    tensor([ 0.0000,  0.5000, -0.2000])
 	**/
 	static public function frac(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function frobenius_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		from_numpy(ndarray) -> Tensor
 		
@@ -2492,7 +2733,7 @@ package torch;
 		
 		If :attr:`input` is an n-dimensional tensor with size
 		:math:`(x_0, x_1..., x_{i-1}, x_i, x_{i+1}, ..., x_{n-1})`
-		and :attr:`dim` :math:`= i`, then :attr:`index` must be an :math:`n`-dimensional tensor with
+		and ``dim = i``, then :attr:`index` must be an :math:`n`-dimensional tensor with
 		size :math:`(x_0, x_1, ..., x_{i-1}, y, x_{i+1}, ..., x_{n-1})` where :math:`y \geq 1`
 		and :attr:`out` will have the same size as :attr:`index`.
 		
@@ -2513,7 +2754,7 @@ package torch;
 	/**
 		ge(input, other, out=None) -> Tensor
 		
-		Computes :math:`input \geq other` element-wise.
+		Computes :math:`\text{input} \geq \text{other}` element-wise.
 		
 		The second argument can be a number or a tensor whose shape is
 		:ref:`broadcastable <broadcasting-semantics>` with the first argument.
@@ -2538,7 +2779,7 @@ package torch;
 		
 		Computes the solution to the least squares and least norm problems for a full
 		rank matrix :math:`A` of size :math:`(m \times n)` and a matrix :math:`B` of
-		size :math:`(n \times k)`.
+		size :math:`(m \times k)`.
 		
 		If :math:`m \geq n`, :func:`gels` solves the least-squares problem:
 		
@@ -2553,11 +2794,11 @@ package torch;
 		.. math::
 		
 		   \begin{array}{ll}
-		   \min_X & \|X\|_2 & \mbox{subject to} & AX = B.
+		   \min_X & \|X\|_2 & \text{subject to} & AX = B.
 		   \end{array}
 		
 		Returned tensor :math:`X` has shape :math:`(\max(m, n) \times k)`. The first :math:`n`
-		rows of :math:`X` contains the solution. If :math`m \geq n`, the residual sum of squares
+		rows of :math:`X` contains the solution. If :math:`m \geq n`, the residual sum of squares
 		for the solution in each column is given by the sum of squares of elements in the
 		remaining :math:`m - n` rows of that column.
 		
@@ -2662,7 +2903,7 @@ package torch;
 		
 		.. note::
 		
-		    The `out` keyword only supports 2D matrix inputs, that is,
+		    The :attr:`out` keyword only supports 2D matrix inputs, that is,
 		    `B, A` must be 2D matrices.
 		
 		.. note::
@@ -2673,10 +2914,10 @@ package torch;
 		    `A.contiguous().transpose(-1, -2).strides()` respectively.
 		
 		Args:
-		    B (Tensor): input matrix of size :math:`(*, m, k)` , where `*`
-		    is zero or more batch dimensions.
+		    B (Tensor): input matrix of size :math:`(*, m, k)` , where :math:`*`
+		                is zero or more batch dimensions.
 		    A (Tensor): input square matrix of size :math:`(*, m, m)`, where
-		    `*` is zero or more batch dimensions.
+		                :math:`*` is zero or more batch dimensions.
 		    out ((Tensor, Tensor), optional): optional output tuple.
 		
 		Example::
@@ -2704,7 +2945,7 @@ package torch;
 	**/
 	static public function gesv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		get_default_dtype() -> :class:`torch.dtype`
+		get_default_dtype() -> torch.dtype
 		
 		Get the current default floating point :class:`torch.dtype`.
 		
@@ -2733,11 +2974,15 @@ package torch;
 	**/
 	static public function get_rng_state():Dynamic;
 	static public function grid_sampler(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function grid_sampler_2d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function grid_sampler_3d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function group_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function gru(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function gru_cell(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		gt(input, other, out=None) -> Tensor
 		
-		Computes :math:`input > other` element-wise.
+		Computes :math:`\text{input} > \text{other}` element-wise.
 		
 		The second argument can be a number or a tensor whose shape is
 		:ref:`broadcastable <broadcasting-semantics>` with the first argument.
@@ -2773,7 +3018,7 @@ package torch;
 		window trims off the last duplicate value from the symmetric window and is
 		ready to be used as a periodic window with functions like
 		:meth:`torch.stft`. Therefore, if :attr:`periodic` is true, the :math:`N` in
-		above formula is in fact :math:`\text{window_length} + 1`. Also, we always have
+		above formula is in fact :math:`\text{window\_length} + 1`. Also, we always have
 		``torch.hamming_window(L, periodic=True)`` equal to
 		``torch.hamming_window(L + 1, periodic=False)[:-1])``.
 		
@@ -2799,7 +3044,7 @@ package torch;
 		        returned tensor. Default: ``False``.
 		
 		Returns:
-		    Tensor: A 1-D tensor of size :math:`(\text{window_length},)` containing the window
+		    Tensor: A 1-D tensor of size :math:`(\text{window\_length},)` containing the window
 	**/
 	static public function hamming_window(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2818,7 +3063,7 @@ package torch;
 		window trims off the last duplicate value from the symmetric window and is
 		ready to be used as a periodic window with functions like
 		:meth:`torch.stft`. Therefore, if :attr:`periodic` is true, the :math:`N` in
-		above formula is in fact :math:`\text{window_length} + 1`. Also, we always have
+		above formula is in fact :math:`\text{window\_length} + 1`. Also, we always have
 		``torch.hann_window(L, periodic=True)`` equal to
 		``torch.hann_window(L + 1, periodic=False)[:-1])``.
 		
@@ -2841,11 +3086,12 @@ package torch;
 		        returned tensor. Default: ``False``.
 		
 		Returns:
-		    Tensor: A 1-D tensor of size :math:`(\text{window_length},)` containing the window
+		    Tensor: A 1-D tensor of size :math:`(\text{window\_length},)` containing the window
 	**/
 	static public function hann_window(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function hardshrink(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var has_cudnn : Dynamic;
+	static public var has_lapack : Dynamic;
 	static public var has_mkl : Dynamic;
 	static public function hinge_embedding_loss(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2908,10 +3154,11 @@ package torch;
 		    repeatedly running FFT methods on tensors of same geometry with same
 		    same configuration.
 		
-		    Changing ``torch.backends.cuda.cufft_plan_cache.max_size`` (default 1023)
-		    controls the capacity of this cache. Some cuFFT plans may allocate GPU
-		    memory. You may use ``torch.backends.cuda.cufft_plan_cache.size`` to query
-		    the number of plans currently in cache, and
+		    Changing ``torch.backends.cuda.cufft_plan_cache.max_size`` (default is
+		    4096 on CUDA 10 and newer, and 1023 on older CUDA versions) controls the
+		    capacity of this cache. Some cuFFT plans may allocate GPU memory. You can
+		    use ``torch.backends.cuda.cufft_plan_cache.size`` to query the number of
+		    plans currently in cache, and
 		    ``torch.backends.cuda.cufft_plan_cache.clear()`` to clear the cache.
 		
 		.. warning::
@@ -2959,6 +3206,14 @@ package torch;
 		             [-1.9034, -0.2196]]])
 	**/
 	static public function ifft(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		import_ir_module(arg0: Callable[[List[str]], torch._C.ScriptModule], arg1: str, arg2: object) -> None
+	**/
+	static public function import_ir_module(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		import_ir_module_from_buffer(arg0: Callable[[List[str]], torch._C.ScriptModule], arg1: str, arg2: object) -> None
+	**/
+	static public function import_ir_module_from_buffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function index_put(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function index_put_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3004,6 +3259,7 @@ package torch;
 		Python `long`.
 	**/
 	static public function initial_seed():Dynamic;
+	static public function instance_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var int : Dynamic;
 	static public var int16 : Dynamic;
 	static public var int32 : Dynamic;
@@ -3012,15 +3268,18 @@ package torch;
 	/**
 		inverse(input, out=None) -> Tensor
 		
-		Takes the inverse of the square matrix :attr:`input`.
+		Takes the inverse of the square matrix :attr:`input`. :attr:`input` can be batches
+		of 2D square tensors, in which case this function would return a tensor composed of
+		individual inverses.
 		
 		.. note::
 		
-		    Irrespective of the original strides, the returned matrix will be
-		    transposed, i.e. with strides `(1, m)` instead of `(m, 1)`
+		    Irrespective of the original strides, the returned tensors will be
+		    transposed, i.e. with strides like `input.contiguous().transpose(-2, -1).strides()`
 		
 		Args:
-		    input (Tensor): the input 2-D square tensor
+		    input (Tensor): the input tensor of size (*, n, n) where `*` is zero or more
+		                    batch dimensions
 		    out (Tensor, optional): the optional output tensor
 		
 		Example::
@@ -3033,9 +3292,14 @@ package torch;
 		            [ 0.0000,  1.0000,  0.0000,  0.0000],
 		            [ 0.0000,  0.0000,  1.0000,  0.0000],
 		            [ 0.0000, -0.0000, -0.0000,  1.0000]])
-		    >>> torch.max(torch.abs(z - torch.eye(4))) # Max nonzero
-		    tensor(1.00000e-07 *
-		           1.1921)
+		    >>> torch.max(torch.abs(z - torch.eye(4))) # Max non-zero
+		    tensor(1.1921e-07)
+		    >>> # Batched inverse example
+		    >>> x = torch.randn(2, 3, 4, 4)
+		    >>> y = torch.inverse(x)
+		    >>> z = torch.matmul(x, y)
+		    >>> torch.max(torch.abs(z - torch.eye(4).expand_as(x))) # Max non-zero
+		    tensor(1.9073e-06)
 	**/
 	static public function inverse(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3085,10 +3349,11 @@ package torch;
 		    repeatedly running FFT methods on tensors of same geometry with same
 		    same configuration.
 		
-		    Changing ``torch.backends.cuda.cufft_plan_cache.max_size`` (default 1023)
-		    controls the capacity of this cache. Some cuFFT plans may allocate GPU
-		    memory. You may use ``torch.backends.cuda.cufft_plan_cache.size`` to query
-		    the number of plans currently in cache, and
+		    Changing ``torch.backends.cuda.cufft_plan_cache.max_size`` (default is
+		    4096 on CUDA 10 and newer, and 1023 on older CUDA versions) controls the
+		    capacity of this cache. Some cuFFT plans may allocate GPU memory. You can
+		    use ``torch.backends.cuda.cufft_plan_cache.size`` to query the number of
+		    plans currently in cache, and
 		    ``torch.backends.cuda.cufft_plan_cache.clear()`` to clear the cache.
 		
 		.. warning::
@@ -3137,6 +3402,7 @@ package torch;
 	**/
 	static public function irfft(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_anomaly_enabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_complex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_distributed(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_floating_point(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_grad_enabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -3169,7 +3435,7 @@ package torch;
 		
 		Example::
 		
-		    >>> torch.isfinite(torch.Tensor([1, float('inf'), 2, float('-inf'), float('nan')]))
+		    >>> torch.isfinite(torch.tensor([1, float('inf'), 2, float('-inf'), float('nan')]))
 		    tensor([ 1,  0,  1,  0,  0], dtype=torch.uint8)
 	**/
 	static public function isfinite(tensor:Dynamic):Dynamic;
@@ -3184,7 +3450,7 @@ package torch;
 		
 		Example::
 		
-		    >>> torch.isinf(torch.Tensor([1, float('inf'), 2, float('-inf'), float('nan')]))
+		    >>> torch.isinf(torch.tensor([1, float('inf'), 2, float('-inf'), float('nan')]))
 		    tensor([ 0,  1,  0,  1,  0], dtype=torch.uint8)
 	**/
 	static public function isinf(tensor:Dynamic):Dynamic;
@@ -3203,6 +3469,7 @@ package torch;
 		    tensor([ 0,  1,  0], dtype=torch.uint8)
 	**/
 	static public function isnan(tensor:Dynamic):Dynamic;
+	static public function kl_div(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		kthvalue(input, k, dim=None, keepdim=False, out=None) -> (Tensor, LongTensor)
 		
@@ -3248,7 +3515,7 @@ package torch;
 	/**
 		le(input, other, out=None) -> Tensor
 		
-		Computes :math:`input \leq other` element-wise.
+		Computes :math:`\text{input} \leq \text{other}` element-wise.
 		
 		The second argument can be a number or a tensor whose shape is
 		:ref:`broadcastable <broadcasting-semantics>` with the first argument.
@@ -3275,7 +3542,7 @@ package torch;
 		on a scalar :attr:`weight` and returns the resulting :attr:`out` tensor.
 		
 		.. math::
-		    out_i = start_i + weight \times (end_i - start_i)
+		    \text{out}_i = \text{start}_i + \text{weight} \times (\text{end}_i - \text{start}_i)
 		
 		The shapes of :attr:`start` and :attr:`end` must be
 		:ref:`broadcastable <broadcasting-semantics>`.
@@ -3495,7 +3762,6 @@ package torch;
 	static public function log2_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function log_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function log_softmax(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function log_softmax_backward_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		logdet(A) -> Tensor
 		
@@ -3587,10 +3853,12 @@ package torch;
 	**/
 	static public function logsumexp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var long : Dynamic;
+	static public function lstm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function lstm_cell(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		lt(input, other, out=None) -> Tensor
 		
-		Computes :math:`input < other` element-wise.
+		Computes :math:`\text{input} < \text{other}` element-wise.
 		
 		The second argument can be a number or a tensor whose shape is
 		:ref:`broadcastable <broadcasting-semantics>` with the first argument.
@@ -3715,6 +3983,69 @@ package torch;
 	**/
 	static public function matmul(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		matrix_power(input, n) -> Tensor
+		
+		Returns the matrix raised to the power :attr:`n` for square matrices.
+		For batch of matrices, each individual matrix is raised to the power :attr:`n`.
+		
+		If :attr:`n` is negative, then the inverse of the matrix (if invertible) is
+		raised to the power :attr:`n`.  For a batch of matrices, the batched inverse
+		(if invertible) is raised to the power :attr:`n`. If :attr:`n` is 0, then an identity matrix
+		is returned.
+		
+		Args:
+		    input (Tensor): the input tensor
+		    n (int): the power to raise the matrix to
+		
+		Example::
+		
+		    >>> a = torch.randn(2, 2, 2)
+		    >>> a
+		    tensor([[[-1.9975, -1.9610],
+		             [ 0.9592, -2.3364]],
+		
+		            [[-1.2534, -1.3429],
+		             [ 0.4153, -1.4664]]])
+		    >>> torch.matrix_power(a, 3)
+		    tensor([[[  3.9392, -23.9916],
+		             [ 11.7357,  -0.2070]],
+		
+		            [[  0.2468,  -6.7168],
+		             [  2.0774,  -0.8187]]])
+	**/
+	static public function matrix_power(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		matrix_rank(input, tol=None, bool symmetric=False) -> Tensor
+		
+		Returns the numerical rank of a 2-D tensor. The method to compute the
+		matrix rank is done using SVD by default. If :attr:`symmetric` is ``True``,
+		then :attr:`input` is assumed to be symmetric, and the computation of the
+		rank is done by obtaining the eigenvalues.
+		
+		:attr:`tol` is the threshold below which the singular values (or the eigenvalues
+		when :attr:`symmetric` is ``True``) are considered to be 0. If :attr:`tol` is not
+		specified, :attr:`tol` is set to ``S.max() * max(S.size()) * eps`` where `S` is the
+		singular values (or the eigenvalues when :attr:`symmetric` is ``True``), and ``eps``
+		is the epsilon value for the datatype of :attr:`input`.
+		
+		Args:
+		    input (Tensor): the input 2-D tensor
+		    tol (float, optional): the tolerance value. Default: ``None``
+		    symmetric(bool, optional): indicates whether :attr:`input` is symmetric.
+		                               Default: ``False``
+		
+		Example::
+		
+		    >>> a = torch.eye(10)
+		    >>> torch.matrix_rank(a)
+		    tensor(10)
+		    >>> b = torch.eye(10)
+		    >>> b[0, 0] = 0
+		    >>> torch.matrix_rank(b)
+		    tensor(9)
+	**/
+	static public function matrix_rank(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		.. function:: max(input) -> Tensor
 		
 		Returns the maximum value of all elements in the :attr:`input` tensor.
@@ -3767,7 +4098,7 @@ package torch;
 		but they must be :ref:`broadcastable <broadcasting-semantics>`.
 		
 		.. math::
-		    out_i = \max(tensor_i, other_i)
+		    \text{out}_i = \max(\text{tensor}_i, \text{other}_i)
 		
 		.. note:: When the shapes do not match, the shape of the returned output tensor
 		          follows the :ref:`broadcasting rules <broadcasting-semantics>`.
@@ -3809,12 +4140,13 @@ package torch;
 		.. function:: mean(input, dim, keepdim=False, out=None) -> Tensor
 		
 		Returns the mean value of each row of the :attr:`input` tensor in the given
-		dimension :attr:`dim`.
+		dimension :attr:`dim`. If :attr:`dim` is a list of dimensions,
+		reduce over all of them.
 		
 		If :attr:`keepdim` is ``True``, the output tensor is of the same size
-		as :attr:`input` except in the dimension :attr:`dim` where it is of size 1.
+		as :attr:`input` except in the dimension(s) :attr:`dim` where it is of size 1.
 		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting in the
-		output tensor having 1 fewer dimension.
+		output tensor having 1 (or ``len(dim)``) fewer dimension(s).
 		
 		Args:
 		    input (Tensor): the input tensor
@@ -3888,36 +4220,40 @@ package torch;
 	**/
 	static public function median(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		meshgrid(seq) -> seq
-		
-		Take a sequence of :math:`N` tensors, each of which can be either scalar or 1-dimensional
+		merge_type_from_type_comment(arg0: torch._C._jit_tree_views.Decl, arg1: torch._C._jit_tree_views.Decl, arg2: bool) -> torch._C._jit_tree_views.Decl
+	**/
+	static public function merge_type_from_type_comment(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Take :math:`N` tensors, each of which can be either scalar or 1-dimensional
 		vector, and create :math:`N` N-dimensional grids, where the :math:`i`th grid is defined by
 		expanding the :math:`i`th input over dimensions defined by other inputs.
 		
-		Arguments:
-		    seq (sequence of Tensors): sequence of scalars or 1 dimensional tensors. Scalars will be
-		        treated as tensors of size :math:`(1,)` automatically.
 		
-		Returns:
-		    seq (sequence of Tensors): If the input has :math:`k` tensors of size
+		    Args:
+		        tensors (list of Tensor): list of scalars or 1 dimensional tensors. Scalars will be
+		        treated as tensors of size :math:`(1,)` automatically
+		
+		    Returns:
+		        seq (sequence of Tensors): If the input has :math:`k` tensors of size
 		        :math:`(N_1,), (N_2,), \ldots , (N_k,)`, then the output would also has :math:`k` tensors,
 		        where all tensors are of size :math:`(N_1, N_2, \ldots , N_k)`.
 		
-		Example::
+		    Example::
 		
-		    >>> x = torch.tensor([1, 2, 3])
-		    >>> y = torch.tensor([4, 5, 6])
-		    >>> grid_x, grid_y = torch.meshgrid([x, y])
-		    >>> grid_x
-		    tensor([[1, 1, 1],
-		            [2, 2, 2],
-		            [3, 3, 3]])
-		    >>> grid_y
-		    tensor([[4, 5, 6],
-		            [4, 5, 6],
-		            [4, 5, 6]])
+		        >>> x = torch.tensor([1, 2, 3])
+		        >>> y = torch.tensor([4, 5, 6])
+		        >>> grid_x, grid_y = torch.meshgrid(x, y)
+		        >>> grid_x
+		        tensor([[1, 1, 1],
+		                [2, 2, 2],
+		                [3, 3, 3]])
+		        >>> grid_y
+		        tensor([[4, 5, 6],
+		                [4, 5, 6],
+		                [4, 5, 6]])
+		    
 	**/
-	static public function meshgrid(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function meshgrid(?tensors:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		.. function:: min(input) -> Tensor
 		
@@ -3972,7 +4308,7 @@ package torch;
 		but they must be :ref:`broadcastable <broadcasting-semantics>`.
 		
 		.. math::
-		    out_i = \min(tensor_i, other_i)
+		    \text{out}_i = \min(\text{tensor}_i, \text{other}_i)
 		
 		.. note:: When the shapes do not match, the shape of the returned output tensor
 		          follows the :ref:`broadcasting rules <broadcasting-semantics>`.
@@ -3994,6 +4330,9 @@ package torch;
 		    tensor([-0.1369, -1.1740, -0.6460, -0.1929])
 	**/
 	static public function min(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function miopen_batch_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function miopen_convolution(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function miopen_convolution_transpose(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function mkldnn_convolution(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function mkldnn_convolution_backward_weights(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4063,7 +4402,7 @@ package torch;
 		:attr:`value` and returns a new resulting tensor.
 		
 		.. math::
-		    out_i = value \times input_i
+		    \text{out}_i = \text{value} \times \text{input}_i
 		
 		If :attr:`input` is of type `FloatTensor` or `DoubleTensor`, :attr:`value`
 		should be a real number, otherwise it should be an integer
@@ -4090,7 +4429,7 @@ package torch;
 		:ref:`broadcastable <broadcasting-semantics>`.
 		
 		.. math::
-		    out_i = input_i \times other_i
+		    \text{out}_i = \text{input}_i \times \text{other}_i
 		
 		Args:
 		    input (Tensor): the first multiplicand tensor
@@ -4133,7 +4472,7 @@ package torch;
 		If :attr:`input` is a vector, :attr:`out` is a vector of size :attr:`num_samples`.
 		
 		If :attr:`input` is a matrix with `m` rows, :attr:`out` is an matrix of shape
-		:math:`(m \times num\_samples)`.
+		:math:`(m \times \text{num\_samples})`.
 		
 		If replacement is ``True``, samples are drawn with replacement.
 		
@@ -4182,18 +4521,65 @@ package torch;
 		    tensor([ 1.0404, -0.6361])
 	**/
 	static public function mv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		mvlgamma(input, p) -> Tensor
+		
+		Computes the multivariate log-gamma function with dimension :math:`p` element-wise, given by
+		
+		.. math::
+		    \log(\Gamma_{p}(a)) = C + \displaystyle \sum_{i=1}^{p} \log\left(\Gamma\left(a - \frac{i - 1}{2}\right)\right)
+		
+		where :math:`C = \log(\pi) \times \frac{p (p - 1)}{2}` and :math:`\Gamma(\cdot)` is the Gamma function.
+		
+		If any of the elements are less than or equal to :math:`\frac{p - 1}{2}`, then an error
+		is thrown.
+		
+		Args:
+		    input (Tensor): the tensor to compute the multivariate log-gamma function
+		    p (int): the number of dimensions
+		
+		Example::
+		
+		    >>> a = torch.empty(2, 3).uniform_(1, 2)
+		    >>> a
+		    tensor([[1.6835, 1.8474, 1.1929],
+		            [1.0475, 1.7162, 1.4180]])
+		    >>> torch.mvlgamma(a, 2)
+		    tensor([[0.3928, 0.4007, 0.7586],
+		            [1.0311, 0.3901, 0.5049]])
+	**/
+	static public function mvlgamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var name : Dynamic;
+	/**
+		narrow(input, dimension, start, length) -> Tensor
+		
+		Returns a new tensor that is a narrowed version of :attr:`input` tensor. The
+		dimension :attr:`dim` is input from :attr:`start` to :attr:`start + length`. The
+		returned tensor and :attr:`input` tensor share the same underlying storage.
+		
+		Args:
+		    input (Tensor): the tensor to narrow
+		    dimension (int): the dimension along which to narrow
+		    start (int): the starting dimension
+		    length (int): the distance to the ending dimension
+		
+		Example::
+		
+		    >>> x = torch.tensor([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+		    >>> torch.narrow(x, 0, 0, 2)
+		    tensor([[ 1,  2,  3],
+		            [ 4,  5,  6]])
+		    >>> torch.narrow(x, 1, 1, 2)
+		    tensor([[ 2,  3],
+		            [ 5,  6],
+		            [ 8,  9]])
+	**/
 	static public function narrow(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function native_batch_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function native_clone(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function native_div(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function native_div_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function native_get_device(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function native_mul(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function native_mul_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function native_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function native_pow(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function native_resize_as_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function native_tensor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function native_zero_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ne(input, other, out=None) -> Tensor
@@ -4224,7 +4610,7 @@ package torch;
 		Returns a new tensor with the negative of the elements of :attr:`input`.
 		
 		.. math::
-		    out = -1 \times input
+		    \text{out} = -1 \times \text{input}
 		
 		Args:
 		    input (Tensor): the input tensor
@@ -4272,58 +4658,63 @@ package torch;
 	**/
 	static public function nonzero(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		.. function:: norm(input, p=2) -> Tensor
-		
-		Returns the p-norm of the :attr:`input` tensor.
-		
-		.. math::
-		    ||x||_{p} = \sqrt[p]{x_{1}^{p} + x_{2}^{p} + \ldots + x_{N}^{p}}
+		Returns the matrix norm or vector norm of a given tensor.
 		
 		Args:
 		    input (Tensor): the input tensor
-		    p (float, optional): the exponent value in the norm formulation
+		    p (int, float, inf, -inf, 'fro', 'nuc', optional): the order of norm. Default: ``'fro'``
+		        The following norms can be calculated:
+		
+		        =====  ============================  ==========================
+		        ord    matrix norm                   vector norm
+		        =====  ============================  ==========================
+		        None   Frobenius norm                2-norm
+		        'fro'  Frobenius norm                --
+		        'nuc'  nuclear norm                  --
+		        Other  as vec norm when dim is None  sum(abs(x)**ord)**(1./ord)
+		        =====  ============================  ==========================
+		
+		    dim (int, 2-tuple of ints, 2-list of ints, optional): If it is an int,
+		        vector norm will be calculated, if it is 2-tuple of ints, matrix norm
+		        will be calculated. If the value is None, matrix norm will be calculated
+		        when the input tensor only has two dimensions, vector norm will be
+		        calculated when the input tensor only has one dimension. If the input
+		        tensor has more than two dimensions, the vector norm will be applied to
+		        last dimension.
+		    keepdim (bool, optional): whether the output tensors have :attr:`dim`
+		        retained or not. Ignored if :attr:`dim` = ``None`` and
+		        :attr:`out` = ``None``. Default: ``False``
+		    out (Tensor, optional): the output tensor. Ignored if
+		        :attr:`dim` = ``None`` and :attr:`out` = ``None``.
+		
 		Example::
 		
-		    >>> a = torch.randn(1, 3)
-		    >>> a
-		    tensor([[-0.5192, -1.0782, -1.0448]])
-		    >>> torch.norm(a, 3)
-		    tensor(1.3633)
-		
-		.. function:: norm(input, p, dim, keepdim=False, out=None) -> Tensor
-		
-		Returns the p-norm of each row of the :attr:`input` tensor in the given
-		dimension :attr:`dim`.
-		
-		If :attr:`keepdim` is ``True``, the output tensor is of the same size as
-		:attr:`input` except in the dimension :attr:`dim` where it is of size 1.
-		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting
-		in the output tensor having 1 fewer dimension than :attr:`input`.
-		
-		Args:
-		    input (Tensor): the input tensor
-		    p (float):  the exponent value in the norm formulation
-		    dim (int): the dimension to reduce
-		    keepdim (bool): whether the output tensor has :attr:`dim` retained or not
-		    out (Tensor, optional): the output tensor
-		
-		Example::
-		
-		    >>> a = torch.randn(4, 2)
-		    >>> a
-		    tensor([[ 2.1983,  0.4141],
-		            [ 0.8734,  1.9710],
-		            [-0.7778,  0.7938],
-		            [-0.1342,  0.7347]])
-		    >>> torch.norm(a, 2, 1)
-		    tensor([ 2.2369,  2.1558,  1.1113,  0.7469])
-		    >>> torch.norm(a, 0, 1, True)
-		    tensor([[ 2.],
-		            [ 2.],
-		            [ 2.],
-		            [ 2.]])
+		    >>> import torch
+		    >>> a = torch.arange(9, dtype= torch.float) - 4
+		    >>> b = a.reshape((3, 3))
+		    >>> torch.norm(a)
+		    tensor(7.7460)
+		    >>> torch.norm(b)
+		    tensor(7.7460)
+		    >>> torch.norm(a, float('inf'))
+		    tensor(4.)
+		    >>> torch.norm(b, float('inf'))
+		    tensor([4., 3., 4.])
+		    >>> c = torch.tensor([[ 1, 2, 3],[-1, 1, 4]] , dtype= torch.float)
+		    >>> torch.norm(c, dim=0)
+		    tensor([1.4142, 2.2361, 5.0000])
+		    >>> torch.norm(c, dim=1)
+		    tensor([3.7417, 4.2426])
+		    >>> torch.norm(c, p=1, dim=1)
+		    tensor([6., 6.])
+		    >>> d = torch.arange(8, dtype= torch.float).reshape(2,2,2)
+		    >>> torch.norm(d, dim=(1,2))
+		    tensor([ 3.7417, 11.2250])
+		    >>> torch.norm(d[0, :, :]), torch.norm(d[1, :, :])
+		    (tensor(3.7417), tensor(11.2250))
 	**/
-	static public function norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function norm(input:Dynamic, ?p:Dynamic, ?dim:Dynamic, ?keepdim:Dynamic, ?out:Dynamic):Dynamic;
+	static public function norm_except_dim(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		.. function:: normal(mean, std, out=None) -> Tensor
 		
@@ -4384,6 +4775,7 @@ package torch;
 		    tensor([ 1.1552,  2.6148,  2.6535,  5.8318,  4.2361])
 	**/
 	static public function normal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function nuclear_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		numel(input) -> int
 		
@@ -4500,6 +4892,33 @@ package torch;
 	**/
 	static public function ormqr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function pairwise_distance(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		parse_type_comment(arg0: str) -> torch._C._jit_tree_views.Decl
+	**/
+	static public function parse_type_comment(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		pdist(input, p=2) -> Tensor
+		
+		Computes the p-norm distance between every pair of row vectors in the input.
+		This is identical to the upper triangular portion, excluding the diagonal, of
+		`torch.norm(input[:, None] - input, dim=2, p=p)`. This function will be faster
+		if the rows are contiguous.
+		
+		If input has shape :math:`N \times M` then the output will have shape
+		:math:`\frac{1}{2} N (N - 1)`.
+		
+		This function is equivalent to `scipy.spatial.distance.pdist(input,
+		'minkowski', p=p)` if :math:`p \in (0, \infty)`. When :math:`p = 0` it is
+		equivalent to `scipy.spatial.distance.pdist(input, 'hamming') * M`.
+		When :math:`p = \infty`, the closest scipy function is
+		`scipy.spatial.distance.pdist(xn, lambda x, y: np.abs(x - y).max())`.
+		
+		Args:
+		    input: input tensor of shape :math:`N \times M`.
+		    p: p value for the p-norm distance to calculate between each vector pair
+		        :math:`\in [0, \infty]`.
+	**/
+	static public function pdist(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function pin_memory(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		pinverse(input, rcond=1e-15) -> Tensor
@@ -4546,53 +4965,38 @@ package torch;
 		.. _[2]: https://www.jstor.org/stable/2156365
 	**/
 	static public function pinverse(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Rearranges elements in a tensor of shape :math:`(*, C \times r^2, H, W)` to a
+		tensor of shape :math:`(C, H \times r, W \times r)`.
+		
+		See :class:`~torch.nn.PixelShuffle` for details.
+		
+		Args:
+		    input (Tensor): the input tensor
+		    upscale_factor (int): factor to increase spatial resolution by
+		
+		Examples::
+		
+		    >>> input = torch.randn(1, 9, 4, 4)
+		    >>> output = torch.nn.functional.pixel_shuffle(input, 3)
+		    >>> print(output.size())
+		    torch.Size([1, 1, 12, 12])
+	**/
+	static public function pixel_shuffle(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function poisson(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function polygamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		potrf(a, upper=True, out=None) -> Tensor
-		
 		Computes the Cholesky decomposition of a symmetric positive-definite
 		matrix :math:`A`.
 		
-		If :attr:`upper` is ``True``, the returned matrix `U` is upper-triangular, and
-		the decomposition has the form:
+		For more information, regarding :func:`torch.potrf`, please check :func:`torch.cholesky`.
 		
-		.. math::
-		
-		  A = U^TU
-		
-		If :attr:`upper` is ``False``, the returned matrix `L` is lower-triangular, and
-		the decomposition has the form:
-		
-		.. math::
-		
-		    A = LL^T
-		
-		Args:
-		    a (Tensor): the input 2-D tensor, a symmetric positive-definite matrix
-		    upper (bool, optional): flag that indicates whether to return the
-		                            upper or lower triangular matrix
-		    out (Tensor, optional): the output matrix
-		
-		Example::
-		
-		    >>> a = torch.randn(3, 3)
-		    >>> a = torch.mm(a, a.t()) # make symmetric positive definite
-		    >>> u = torch.potrf(a)
-		    >>> a
-		    tensor([[ 2.4112, -0.7486,  1.4551],
-		            [-0.7486,  1.3544,  0.1294],
-		            [ 1.4551,  0.1294,  1.6724]])
-		    >>> u
-		    tensor([[ 1.5528, -0.4821,  0.9371],
-		            [ 0.0000,  1.0592,  0.5486],
-		            [ 0.0000,  0.0000,  0.7023]])
-		    >>> torch.mm(u.t(), u)
-		    tensor([[ 2.4112, -0.7486,  1.4551],
-		            [-0.7486,  1.3544,  0.1294],
-		            [ 1.4551,  0.1294,  1.6724]])
+		.. warning::
+		    torch.potrf is deprecated in favour of torch.cholesky and will be removed in the next
+		    release. Please use torch.cholesky instead and note that the :attr:`upper` argument in
+		    torch.cholesky defaults to ``False``.
 	**/
-	static public function potrf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function potrf(a:Dynamic, ?upper:Dynamic, ?out:Dynamic):Dynamic;
 	/**
 		potri(u, upper=True, out=None) -> Tensor
 		
@@ -4600,13 +5004,13 @@ package torch;
 		Cholesky factor :attr:`u`: returns matrix `inv`
 		
 		If :attr:`upper` is ``True`` or not provided, :attr:`u` is upper
-		triangular such that:
+		triangular such that the returned tensor is
 		
 		.. math::
 		    inv = (u^T u)^{-1}
 		
 		If :attr:`upper` is ``False``, :attr:`u` is lower triangular
-		such that:
+		such that the returned tensor is
 		
 		.. math::
 		    inv = (uu^{T})^{-1}
@@ -4621,7 +5025,7 @@ package torch;
 		
 		    >>> a = torch.randn(3, 3)
 		    >>> a = torch.mm(a, a.t()) # make symmetric positive definite
-		    >>> u = torch.potrf(a)
+		    >>> u = torch.cholesky(a)
 		    >>> a
 		    tensor([[  0.9935,  -0.6353,   1.5806],
 		            [ -0.6353,   0.8769,  -1.7183],
@@ -4654,11 +5058,21 @@ package torch;
 		.. math::
 		    c = (u u^T)^{-1} b
 		
-		.. note:: :attr:`b` is always a 2-D tensor, use `b.unsqueeze(1)` to convert a vector.
+		`torch.potrs(b, u)` can take in 2D inputs `b, u` or inputs that are
+		batches of 2D matrices. If the inputs are batches, then returns
+		batched outputs `c`
+		
+		.. note::
+		
+		    The :attr:`out` keyword only supports 2D matrix inputs, that is,
+		    `b, u` must be 2D matrices.
 		
 		Args:
-		    b (Tensor): the right hand side 2-D tensor
-		    u (Tensor): the input 2-D tensor, a upper or lower triangular Cholesky factor
+		    b (Tensor): input matrix of size :math:`(*, m, k)`,
+		                where :math:`*` is zero or more batch dimensions
+		    u (Tensor): input matrix of size :math:`(*, m, m)`,
+		                where :math:`*` is zero of more batch dimensions composed of
+		                upper or lower triangular Cholesky factor
 		    upper (bool, optional): whether to return a upper (default) or lower triangular matrix
 		    out (Tensor, optional): the output tensor for `c`
 		
@@ -4666,7 +5080,7 @@ package torch;
 		
 		    >>> a = torch.randn(3, 3)
 		    >>> a = torch.mm(a, a.t()) # make symmetric positive definite
-		    >>> u = torch.potrf(a)
+		    >>> u = torch.cholesky(a)
 		    >>> a
 		    tensor([[ 0.7747, -1.9549,  1.3086],
 		            [-1.9549,  6.7546, -5.4114],
@@ -4698,12 +5112,12 @@ package torch;
 		When :attr:`exponent` is a scalar value, the operation applied is:
 		
 		.. math::
-		    out_i = x_i ^ {exponent}
+		    \text{out}_i = x_i ^ \text{exponent}
 		
 		When :attr:`exponent` is a tensor, the operation applied is:
 		
 		.. math::
-		    out_i = x_i ^ {exponent_i}
+		    \text{out}_i = x_i ^ {\text{exponent}_i}
 		
 		When :attr:`exponent` is a tensor, the shapes of :attr:`input`
 		and :attr:`exponent` must be :ref:`broadcastable <broadcasting-semantics>`.
@@ -4753,6 +5167,7 @@ package torch;
 		    tensor([  2.,   4.,   8.,  16.])
 	**/
 	static public function pow(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function prelu(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function prepare_multiprocessing_environment(path:Dynamic):Dynamic;
 	/**
 		.. function:: prod(input, dtype=None) -> Tensor
@@ -4898,11 +5313,17 @@ package torch;
 		Args:
 		    sizes (int...): a sequence of integers defining the shape of the output tensor.
 		        Can be a variable number of arguments or a collection like a list or tuple.
-		    {out}
-		    {dtype}
-		    {layout}
-		    {device}
-		    {requires_grad}
+		    out (Tensor, optional): the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`).
+		    layout (:class:`torch.layout`, optional): the desired layout of returned Tensor.
+		        Default: ``torch.strided``.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
 		
 		Example::
 		
@@ -4943,7 +5364,7 @@ package torch;
 		
 		.. note:
 		    With the global dtype default (`torch.float32`), this function returns
-		    a tensor with dtype `torch.float32`, NOT an integer dtype.
+		    a tensor with dtype `torch.int64`.
 		
 		Args:
 		    low (int, optional): Lowest integer to be drawn from the distribution. Default: 0.
@@ -4964,17 +5385,17 @@ package torch;
 		Example::
 		
 		    >>> torch.randint(3, 5, (3,))
-		    tensor([ 4.,  3.,  4.])
+		    tensor([4, 3, 4])
 		
 		
-		    >>> torch.randint(10, (2,2))
-		    tensor([[ 0.,  2.],
-		            [ 5.,  5.]])
+		    >>> torch.randint(10, (2, 2))
+		    tensor([[0, 2],
+		            [5, 5]])
 		
 		
-		    >>> torch.randint(3, 10, (2,2))
-		    tensor([[ 4.,  5.],
-		            [ 6.,  7.]])
+		    >>> torch.randint(3, 10, (2, 2))
+		    tensor([[4, 5],
+		            [6, 7]])
 	**/
 	static public function randint(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4986,7 +5407,7 @@ package torch;
 		
 		.. note:
 		    With the global dtype default (`torch.float32`), this function returns
-		    a tensor with dtype `torch.float32`, NOT an integer dtype.
+		    a tensor with dtype `torch.int64`.
 		
 		Args:
 		    input (Tensor): the size of :attr:`input` will determine size of the output tensor
@@ -5080,18 +5501,18 @@ package torch;
 		Example::
 		
 		    >>> torch.randperm(4)
-		    tensor([ 2,  1,  0,  3])
+		    tensor([2, 1, 0, 3])
 	**/
 	static public function randperm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		range(start=0, end, step=1, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
 		
-		Returns a 1-D tensor of size :math:`\left\lfloor \frac{end - start}{step} \right\rfloor + 1`
+		Returns a 1-D tensor of size :math:`\left\lfloor \frac{\text{end} - \text{start}}{\text{step}} \right\rfloor + 1`
 		with values from :attr:`start` to :attr:`end` with step :attr:`step`. Step is
 		the gap between two values in the tensor.
 		
 		.. math::
-		    \text{out}_{i+1} = \text{out}_i + step.
+		    \text{out}_{i+1} = \text{out}_i + \text{step}.
 		
 		.. warning::
 		    This function is deprecated in favor of :func:`torch.arange`.
@@ -5120,7 +5541,6 @@ package torch;
 		    tensor([ 1.0000,  1.5000,  2.0000,  2.5000,  3.0000,  3.5000,  4.0000])
 	**/
 	static public function range(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function raw_copy_sparse_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		reciprocal(input, out=None) -> Tensor
 		
@@ -5225,6 +5645,8 @@ package torch;
 		with compatible strides can be reshaped without copying, but you should not
 		depend on the copying vs. viewing behavior.
 		
+		See :meth:`torch.Tensor.view` on when it is possible to return a view.
+		
 		A single dimension may be -1, in which case it's inferred from the remaining
 		dimensions and the number of elements in :attr:`input`.
 		
@@ -5257,7 +5679,7 @@ package torch;
 		by :attr:`signal_ndim`. :attr:`input` must be a tensor with at least
 		``signal_ndim`` dimensions with optionally arbitrary number of leading batch
 		dimensions. If :attr:`normalized` is set to ``True``, this normalizes the result
-		by multiplying it with :math:`\sqrt{\prod_{i=1}^K N_i}` so that the operator is
+		by dividing it with :math:`\sqrt{\prod_{i=1}^K N_i}` so that the operator is
 		unitary, where :math:`N_i` is the size of signal dimension :math:`i`.
 		
 		The real-to-complex Fourier transform results follow conjugate symmetry:
@@ -5280,10 +5702,11 @@ package torch;
 		    repeatedly running FFT methods on tensors of same geometry with same
 		    same configuration.
 		
-		    Changing ``torch.backends.cuda.cufft_plan_cache.max_size`` (default 1023)
-		    controls the capacity of this cache. Some cuFFT plans may allocate GPU
-		    memory. You may use ``torch.backends.cuda.cufft_plan_cache.size`` to query
-		    the number of plans currently in cache, and
+		    Changing ``torch.backends.cuda.cufft_plan_cache.max_size`` (default is
+		    4096 on CUDA 10 and newer, and 1023 on older CUDA versions) controls the
+		    capacity of this cache. Some cuFFT plans may allocate GPU memory. You can
+		    use ``torch.backends.cuda.cufft_plan_cache.size`` to query the number of
+		    plans currently in cache, and
 		    ``torch.backends.cuda.cufft_plan_cache.clear()`` to clear the cache.
 		
 		.. warning::
@@ -5311,6 +5734,87 @@ package torch;
 		    torch.Size([5, 5, 2])
 	**/
 	static public function rfft(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rnn_relu(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rnn_relu_cell(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rnn_tanh(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rnn_tanh_cell(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		roll(input, shifts, dims=None) -> Tensor
+		
+		Roll the tensor along the given dimension(s). Elements that are shifted beyond the
+		last position are re-introduced at the first position. If a dimension is not
+		specified, the tensor will be flattened before rolling and then restored
+		to the original shape.
+		
+		Args:
+		    input (Tensor): the input tensor
+		    shifts (int or tuple of ints): The number of places by which the elements
+		        of the tensor are shifted. If shifts is a tuple, dims must be a tuple of
+		        the same size, and each dimension will be rolled by the corresponding
+		        value
+		    dims (int or tuple of ints): Axis along which to roll
+		
+		Example::
+		
+		    >>> x = torch.tensor([1, 2, 3, 4, 5, 6, 7, 8]).view(4, 2)
+		    >>> x
+		    tensor([[1, 2],
+		            [3, 4],
+		            [5, 6],
+		            [7, 8]])
+		    >>> torch.roll(x, 1, 0)
+		    tensor([[7, 8],
+		            [1, 2],
+		            [3, 4],
+		            [5, 6]])
+		    >>> torch.roll(x, -1, 0)
+		    tensor([[3, 4],
+		            [5, 6],
+		            [7, 8],
+		            [1, 2]])
+		    >>> torch.roll(x, shifts=(2, 1), dims=(0, 1))
+		    tensor([[6, 5],
+		            [8, 7],
+		            [2, 1],
+		            [4, 3]])
+	**/
+	static public function roll(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		rot90(input, k, dims) -> Tensor
+		
+		Rotate a n-D tensor by 90 degrees in the plane specified by dims axis.
+		Rotation direction is from the first towards the second axis if k > 0, and from the second towards the first for k < 0.
+		
+		Args:
+		    input (Tensor): the input tensor
+		    k (int): number of times to rotate
+		    dims (a list or tuple): axis to rotate
+		
+		Example::
+		
+		    >>> x = torch.arange(4).view(2, 2)
+		    >>> x
+		    tensor([[0, 1],
+		            [2, 3]])
+		    >>> torch.rot90(x, 1, [0, 1])
+		    tensor([[1, 3],
+		            [0, 2]])
+		
+		    >>> x = torch.arange(8).view(2, 2, 2)
+		    >>> x
+		    tensor([[[0, 1],
+		             [2, 3]],
+		
+		            [[4, 5],
+		             [6, 7]]])
+		    >>> torch.rot90(x, 1, [1, 2])
+		    tensor([[[1, 3],
+		             [0, 2]],
+		
+		            [[5, 7],
+		             [4, 6]]])
+	**/
+	static public function rot90(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		round(input, out=None) -> Tensor
 		
@@ -5361,14 +5865,10 @@ package torch;
 	**/
 	static public function rsqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function rsqrt_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function s_native_add(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function s_native_add_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rsub(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function s_copy_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function s_native_addmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function s_native_addmm_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function s_native_mul(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function s_native_mul_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function s_native_sub(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function s_native_sub_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function saddmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Saves an object to a disk file.
@@ -5481,7 +5981,7 @@ package torch;
 		
 		Args:
 		    precision: Number of digits of precision for floating point output
-		        (default = 8).
+		        (default = 4).
 		    threshold: Total number of array elements which trigger summarization
 		        rather than full `repr` (default = 1000).
 		    edgeitems: Number of array items in summary at beginning and end of
@@ -5534,11 +6034,11 @@ package torch;
 		
 		Example::
 		
-		    >>> a = torch.randn(4)
+		    >>> a = torch.tensor([0.7, -1.2, 0., 2.3])
 		    >>> a
-		    tensor([ 1.0382, -1.4526, -0.9709,  0.4542])
+		    tensor([ 0.7000, -1.2000,  0.0000,  2.3000])
 		    >>> torch.sign(a)
-		    tensor([ 1., -1., -1.,  1.])
+		    tensor([ 1., -1.,  0.,  1.])
 	**/
 	static public function sign(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5620,7 +6120,6 @@ package torch;
 	static public function slogdet(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function smm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function softmax(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function softmax_backward_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		sort(input, dim=None, descending=False, out=None) -> (Tensor, LongTensor)
 		
@@ -5670,8 +6169,10 @@ package torch;
 	/**
 		sparse_coo_tensor(indices, values, size=None, dtype=None, device=None, requires_grad=False) -> Tensor
 		
-		Constructs a sparse_coo_tensor with non-zero elements at the given :attr:`indices` with the given
-		:attr:`values`.
+		Constructs a sparse tensors in COO(rdinate) format with non-zero elements at the given :attr:`indices`
+		with the given :attr:`values`. A sparse tensor can be `uncoalesced`, in that case, there are duplicate
+		coordinates in the indices, and the value at that index is the sum of all duplicate value entries:
+		`torch.sparse`_.
 		
 		Args:
 		    indices (array_like): Initial data for the tensor. Can be a list, tuple,
@@ -5696,36 +6197,50 @@ package torch;
 		
 		Example::
 		
-		    >>> i = torch.LongTensor([[0, 1, 1],
-		                              [2, 0, 2]])
-		    >>> v = torch.FloatTensor([3, 4, 5])
-		    >>> torch.sparse_coo_tensor(i, v, torch.Size([2,4]))
-		    torch.sparse.FloatTensor of size (2,4) with indices:
-		    tensor([[ 0,  1,  1],
-		            [ 2,  0,  2]])
-		    and values:
-		    tensor([ 3.,  4.,  5.])
+		    >>> i = torch.tensor([[0, 1, 1],
+		                          [2, 0, 2]])
+		    >>> v = torch.tensor([3, 4, 5], dtype=torch.float32)
+		    >>> torch.sparse_coo_tensor(i, v, [2, 4])
+		    tensor(indices=tensor([[0, 1, 1],
+		                           [2, 0, 2]]),
+		           values=tensor([3., 4., 5.]),
+		           size=(2, 4), nnz=3, layout=torch.sparse_coo)
 		
 		    >>> torch.sparse_coo_tensor(i, v)  # Shape inference
-		    torch.sparse.FloatTensor of size (2,3) with indices:
-		    tensor([[ 0,  1,  1],
-		            [ 2,  0,  2]])
-		    and values:
-		    tensor([ 3.,  4.,  5.])
+		    tensor(indices=tensor([[0, 1, 1],
+		                           [2, 0, 2]]),
+		           values=tensor([3., 4., 5.]),
+		           size=(2, 3), nnz=3, layout=torch.sparse_coo)
 		
-		    >>> torch.sparse_coo_tensor(i, v, torch.Size([2,4]), dtype=torch.float64,
+		    >>> torch.sparse_coo_tensor(i, v, [2, 4],
+		                                dtype=torch.float64,
 		                                device=torch.device('cuda:0'))
-		    torch.cuda.sparse.DoubleTensor of size (2,4) with indices:
-		    tensor([[ 0,  1,  1],
-		            [ 2,  0,  2]], device='cuda:0')
-		    and values:
-		    tensor([ 3.,  4.,  5.], dtype=torch.float64, device='cuda:0')
+		    tensor(indices=tensor([[0, 1, 1],
+		                           [2, 0, 2]]),
+		           values=tensor([3., 4., 5.]),
+		           device='cuda:0', size=(2, 4), nnz=3, dtype=torch.float64,
+		           layout=torch.sparse_coo)
 		
-		    >>> torch.sparse_coo_tensor([], [], torch.Size([])) # Create an empty tensor (of size (0,))
-		    torch.sparse.FloatTensor of size () with indices:
-		    tensor([], dtype=torch.int64)
-		    and values:
-		    tensor([])
+		    # Create an empty sparse tensor with the following invariants:
+		    #   1. sparse_dim + dense_dim = len(SparseTensor.shape)
+		    #   2. SparseTensor._indices().shape = (sparse_dim, nnz)
+		    #   3. SparseTensor._values().shape = (nnz, SparseTensor.shape[sparse_dim:])
+		    #
+		    # For instance, to create an empty sparse tensor with nnz = 0, dense_dim = 0 and
+		    # sparse_dim = 1 (hence indices is a 2D tensor of shape = (1, 0))
+		    >>> S = torch.sparse_coo_tensor(torch.empty([1, 0]), [], [1])
+		    tensor(indices=tensor([], size=(1, 0)),
+		           values=tensor([], size=(0,)),
+		           size=(1,), nnz=0, layout=torch.sparse_coo)
+		
+		    # and to create an empty sparse tensor with nnz = 0, dense_dim = 1 and
+		    # sparse_dim = 1
+		    >>> S = torch.sparse_coo_tensor(torch.empty([1, 0]), torch.empty([0, 2]), [1, 2])
+		    tensor(indices=tensor([], size=(1, 0)),
+		           values=tensor([], size=(0, 2)),
+		           size=(1, 2), nnz=0, layout=torch.sparse_coo)
+		
+		.. _torch.sparse: https://pytorch.org/docs/stable/sparse.html
 	**/
 	static public function sparse_coo_tensor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5733,7 +6248,7 @@ package torch;
 		
 		If :attr:`split_size_or_sections` is an integer type, then :attr:`tensor` will
 		be split into equally sized chunks (if possible). Last chunk will be smaller if
-		the tensor size along the given dimension :attr:`dim= is not divisible by
+		the tensor size along the given dimension :attr:`dim` is not divisible by
 		:attr:`split_size`.
 		
 		If :attr:`split_size_or_sections` is a list, then :attr:`tensor` will be split
@@ -5782,8 +6297,8 @@ package torch;
 		
 		When :attr:`dim` is given, a squeeze operation is done only in the given
 		dimension. If `input` is of shape: :math:`(A \times 1 \times B)`,
-		`squeeze(input, 0)` leaves the tensor unchanged, but :func:`squeeze(input, 1)` will
-		squeeze the tensor to the shape :math:`(A \times B)`.
+		``squeeze(input, 0)`` leaves the tensor unchanged, but ``squeeze(input, 1)``
+		will squeeze the tensor to the shape :math:`(A \times B)`.
 		
 		.. note:: The returned tensor shares the storage with the input tensor,
 		          so changing the contents of one will change the contents of the other.
@@ -5884,15 +6399,15 @@ package torch;
 		expression:
 		
 		.. math::
-		    X[m, \omega] = \sum_{k = 0}^{\text{win_length}}%
-		                        window[k]\ input[m \times hop_length + k]\ %
-		                        e^{- j \frac{2 \pi \cdot \omega k}{\text{win_length}}},
+		    X[m, \omega] = \sum_{k = 0}^{\text{win\_length}}%
+		                        \text{window}[k]\ \text{input}[m \times \text{hop\_length} + k]\ %
+		                        \exp\left(- j \frac{2 \pi \cdot \omega k}{\text{win\_length}}\right),
 		
 		where :math:`m` is the index of the sliding window, and :math:`\omega` is
-		the frequency that :math:`0 \leq \omega < \text{n_fft}`. When
+		the frequency that :math:`0 \leq \omega < \text{n\_fft}`. When
 		:attr:`onesided` is the default value ``True``,
 		
-		* :attr:`input` must be either a 1-D time sequenceor 2-D a batch of time
+		* :attr:`input` must be either a 1-D time sequence or a 2-D batch of time
 		  sequences.
 		
 		* If :attr:`hop_length` is ``None`` (default), it is treated as equal to
@@ -5904,25 +6419,25 @@ package torch;
 		* :attr:`window` can be a 1-D tensor of size :attr:`win_length`, e.g., from
 		  :meth:`torch.hann_window`. If :attr:`window` is ``None`` (default), it is
 		  treated as if having :math:`1` everywhere in the window. If
-		  :math:`\text{win_length} < \text{n_fft}`, :attr:`window` will be padded on
+		  :math:`\text{win\_length} < \text{n\_fft}`, :attr:`window` will be padded on
 		  both sides to length :attr:`n_fft` before being applied.
 		
 		* If :attr:`center` is ``True`` (default), :attr:`input` will be padded on
 		  both sides so that the :math:`t`-th frame is centered at time
-		  :math:`t \times \text{hop_length}`. Otherwise, the :math:`t`-th frame
-		  begins at time  :math:`t \times \text{hop_length}`.
+		  :math:`t \times \text{hop\_length}`. Otherwise, the :math:`t`-th frame
+		  begins at time  :math:`t \times \text{hop\_length}`.
 		
 		* :attr:`pad_mode` determines the padding method used on :attr:`input` when
 		  :attr:`center` is ``True``. See :meth:`torch.nn.functional.pad` for
 		  all available options. Default is ``"reflect"``.
 		
 		* If :attr:`onesided` is ``True`` (default), only values for :math:`\omega`
-		  in :math:`\left[0, 1, 2, \dots, \left\lfloor \frac{\text{n_fft}}{2} \right\rfloor + 1\right]`
+		  in :math:`\left[0, 1, 2, \dots, \left\lfloor \frac{\text{n\_fft}}{2} \right\rfloor + 1\right]`
 		  are returned because the real-to-complex Fourier transform satisfies the
-		  conjugate symmetry, i.e., :math:`X[m, \omega] = X[m, \text{n_fft} - \omega]^*`.
+		  conjugate symmetry, i.e., :math:`X[m, \omega] = X[m, \text{n\_fft} - \omega]^*`.
 		
 		* If :attr:`normalized` is ``True`` (default is ``False``), the function
-		  returns the normalized STFT results, i.e., multiplied by :math:`(\text{frame_length})^{-0.5}`.
+		  returns the normalized STFT results, i.e., multiplied by :math:`(\text{frame\_length})^{-0.5}`.
 		
 		Returns the real and the imaginary parts together as one tensor of size
 		:math:`(* \times N \times T \times 2)`, where :math:`*` is the optional
@@ -5937,15 +6452,15 @@ package torch;
 		
 		Arguments:
 		    input (Tensor): the input tensor
-		    n_fft (int, optional): size of Fourier transform
-		    hop_length (int): the distance between neighboring sliding window
+		    n_fft (int): size of Fourier transform
+		    hop_length (int, optional): the distance between neighboring sliding window
 		        frames. Default: ``None`` (treated as equal to ``floor(n_fft / 4)``)
-		    win_length (int): the size of window frame and STFT filter.
+		    win_length (int, optional): the size of window frame and STFT filter.
 		        Default: ``None``  (treated as equal to :attr:`n_fft`)
 		    window (Tensor, optional): the optional window function.
-		        Default: ``None`` (treated as window of all :math:`1`s)
+		        Default: ``None`` (treated as window of all :math:`1` s)
 		    center (bool, optional): whether to pad :attr:`input` on both sides so
-		        that the :math:`t`-th frame is centered at time :math:`t \times \text{hop_length}`.
+		        that the :math:`t`-th frame is centered at time :math:`t \times \text{hop\_length}`.
 		        Default: ``True``
 		    pad_mode (string, optional): controls the padding method used when
 		        :attr:`center` is ``True``. Default: ``"reflect"``
@@ -5982,13 +6497,13 @@ package torch;
 		.. function:: sum(input, dim, keepdim=False, dtype=None) -> Tensor
 		
 		Returns the sum of each row of the :attr:`input` tensor in the given
-		dimension :attr:`dim`. If :attr::`dim` is a list of dimensions,
+		dimension :attr:`dim`. If :attr:`dim` is a list of dimensions,
 		reduce over all of them.
 		
 		If :attr:`keepdim` is ``True``, the output tensor is of the same size
-		as :attr:`input` except in the dimension :attr:`dim` where it is of size 1.
-		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting in
-		the output tensor having 1 fewer dimension than :attr:`input`.
+		as :attr:`input` except in the dimension(s) :attr:`dim` where it is of size 1.
+		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting in the
+		output tensor having 1 (or ``len(dim)``) fewer dimension(s).
 		
 		Args:
 		    input (Tensor): the input tensor
@@ -6014,7 +6529,7 @@ package torch;
 	**/
 	static public function sum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		svd(input, some=True, out=None) -> (Tensor, Tensor, Tensor)
+		svd(input, some=True, compute_uv=True, out=None) -> (Tensor, Tensor, Tensor)
 		
 		`U, S, V = torch.svd(A)` returns the singular value decomposition of a
 		real matrix `A` of size `(n x m)` such that :math:`A = USV^T`.
@@ -6029,6 +6544,13 @@ package torch;
 		If :attr:`some` is ``True`` (default), the returned `U` and `V` matrices will
 		contain only :math:`min(n, m)` orthonormal columns.
 		
+		If :attr:`compute_uv` is ``False``, the returned `U` and `V` matrices will be zero matrices
+		of shape :math:`(n \times n)` and :math:`(m \times m)` respectively. :attr:`some` will be ignored here.
+		
+		.. note:: The implementation of SVD on CPU uses the LAPACK routine `?gesdd` (a divide-and-conquer
+		          algorithm) instead of `?gesvd` for speed. Analogously, the SVD on GPU uses the MAGMA routine
+		          `gesdd` as well.
+		
 		.. note:: Irrespective of the original strides, the returned matrix `U`
 		          will be transposed, i.e. with strides `(1, n)` instead of `(n, 1)`.
 		
@@ -6042,6 +6564,9 @@ package torch;
 		.. note:: When :attr:`some` = ``False``, the gradients on ``U[:, min(n, m):]``
 		          and ``V[:, min(n, m):]`` will be ignored in backward as those vectors
 		          can be arbitrary bases of the subspaces.
+		
+		.. note:: When :attr:`compute_uv` = ``False``, backward cannot be performed since ``U`` and ``V``
+		          from the forward pass is required for the backward operation.
 		
 		Args:
 		    input (Tensor): the input 2-D tensor
@@ -6087,7 +6612,7 @@ package torch;
 		:math:`m` dimensional vector.
 		
 		This function calculates all eigenvalues (and vectors) of :attr:`input`
-		such that :math:`input = V diag(e) V^T`.
+		such that :math:`\text{input} = V \text{diag}(e) V^T`.
 		
 		The boolean argument :attr:`eigenvectors` defines computation of
 		eigenvectors or eigenvalues only.
@@ -6108,6 +6633,15 @@ package torch;
 		    eigenvectors(boolean, optional): controls whether eigenvectors have to be computed
 		    upper(boolean, optional): controls whether to consider upper-triangular or lower-triangular region
 		    out (tuple, optional): the output tuple of (Tensor, Tensor)
+		
+		Returns:
+		    (Tensor, Tensor): A tuple containing
+		
+		        - **e** (*Tensor*): Shape :math:`(m)`. Each element is an eigenvalue of ``input``,
+		          The eigenvalues are in ascending order.
+		        - **V** (*Tensor*): Shape :math:`(m \times m)`.
+		          If ``eigenvectors=False``, it's a tensor filled with zeros.
+		          Otherwise, this tensor contains the orthonormal eigenvectors of the ``input``.
 		
 		Examples::
 		
@@ -6134,7 +6668,7 @@ package torch;
 		Expects :attr:`input` to be a matrix (2-D tensor) and transposes dimensions 0
 		and 1.
 		
-		Can be seen as a short-hand function for :meth:`transpose(input, 0, 1)`
+		Can be seen as a short-hand function for ``transpose(input, 0, 1)``.
 		
 		Args:
 		    input (Tensor): the input tensor
@@ -6228,6 +6762,13 @@ package torch;
 		    If you have a NumPy ``ndarray`` and want to avoid a copy, use
 		    :func:`torch.from_numpy`.
 		
+		.. warning::
+		
+		    When data is a tensor `x`, :func:`torch.tensor` reads out 'the data' from whatever it is passed,
+		    and constructs a leaf variable. Therefore ``torch.tensor(x)`` is equivalent to ``x.clone().detach()``
+		    and ``torch.tensor(x, requires_grad=True)`` is equivalent to ``x.clone().detach().requires_grad_(True)``.
+		    The equivalents using ``clone()`` and ``detach()`` are recommended.
+		
 		Args:
 		    data (array_like): Initial data for the tensor. Can be a list, tuple,
 		        NumPy ``ndarray``, scalar, and other types.
@@ -6263,21 +6804,57 @@ package torch;
 		    tensor([])
 	**/
 	static public function tensor(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_add(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_add_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_addmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_addmm_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_clone(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_div(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_div_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_mul(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_mul_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_pow(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_resize_as_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_sub(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_sub_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function th_zero_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Returns a contraction of a and b over multiple dimensions.
+		
+		:attr:`tensordot` implements a generalizes the matrix product.
+		
+		Args:
+		  a (Tensor): Left tensor to contract
+		  b (Tensor): Right tensor to contract
+		  dims (int or tuple of two lists of integers): number of dimensions to
+		     contract or explicit lists of dimensions for :attr:`a` and
+		     :attr:`b` respectively
+		
+		When called with an integer argument :attr:`dims` = :math:`d`, and the number of
+		dimensions of :attr:`a` and :attr:`b` is :math:`m` and :math:`n`, respectively,
+		it computes
+		
+		.. math::
+		    r_{i_0,...,i_{m-d}, i_d,...,i_n}
+		      = \sum_{k_0,...,k_{d-1}} a_{i_0,...,i_{m-d},k_0,...,k_{d-1}} \times b_{k_0,...,k_{d-1}, i_d,...,i_n}.
+		
+		When called with :attr:`dims` of the list form, the given dimensions will be contracted
+		in place of the last :math:`d` of :attr:`a` and the first :math:`d` of :math:`b`. The sizes
+		in these dimensions must match, but :attr:`tensordot` will deal with broadcasted
+		dimensions.
+		
+		Examples::
+		
+		    >>> a = torch.arange(60.).reshape(3, 4, 5)
+		    >>> b = torch.arange(24.).reshape(4, 3, 2)
+		    >>> torch.tensordot(a, b, dims=([1, 0], [0, 1]))
+		    tensor([[4400., 4730.],
+		            [4532., 4874.],
+		            [4664., 5018.],
+		            [4796., 5162.],
+		            [4928., 5306.]])
+		
+		    >>> a = torch.randn(3, 4, 5, device='cuda')
+		    >>> b = torch.randn(4, 5, 6, device='cuda')
+		    >>> c = torch.tensordot(a, b, dims=2).cpu()
+		    tensor([[ 8.3504, -2.5436,  6.2922,  2.7556, -1.0732,  3.2741],
+		            [ 3.3161,  0.0704,  5.0187, -0.4079, -4.3126,  4.8744],
+		            [ 0.8223,  3.9445,  3.2168, -0.2400,  3.4117,  1.7780]])
+	**/
+	static public function tensordot(a:Dynamic, b:Dynamic, ?dims:Dynamic):Dynamic;
+	static public function threshold(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		threshold_(input, threshold, value) -> Tensor
+		
+		In-place version of :func:`~threshold`.
+	**/
+	static public function threshold_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		to_batch_graph(arg0: torch._C.Graph) -> torch._C.Graph
 	**/
@@ -6364,8 +6941,8 @@ package torch;
 	/**
 		tril(input, diagonal=0, out=None) -> Tensor
 		
-		Returns the lower triangular part of the matrix (2-D tensor) :attr:`input`,
-		the other elements of the result tensor :attr:`out` are set to 0.
+		Returns the lower triangular part of the matrix (2-D tensor) or batch of matrices
+		:attr:`input`, the other elements of the result tensor :attr:`out` are set to 0.
 		
 		The lower triangular part of the matrix is defined as the elements on and
 		below the diagonal.
@@ -6417,8 +6994,8 @@ package torch;
 	/**
 		triu(input, diagonal=0, out=None) -> Tensor
 		
-		Returns the upper triangular part of the matrix (2-D tensor) :attr:`input`,
-		the other elements of the result tensor :attr:`out` are set to 0.
+		Returns the upper triangular part of a matrix (2-D tensor) or batch of matrices
+		:attr:`input`, the other elements of the result tensor :attr:`out` are set to 0.
 		
 		The upper triangular part of the matrix is defined as the elements on and
 		above the diagonal.
@@ -6462,43 +7039,43 @@ package torch;
 		            [-0.2447,  0.9556, -1.2919,  1.3378, -0.1768, -1.0857],
 		            [ 0.4333,  0.3146,  0.6576, -1.0432,  0.9348, -0.4410],
 		            [-0.9888,  1.0679, -1.3337, -1.6556,  0.4798,  0.2830]])
-		    >>> torch.tril(b, diagonal=1)
-		    tensor([[ 0.5876, -0.0794,  0.0000,  0.0000,  0.0000,  0.0000],
-		            [-0.2447,  0.9556, -1.2919,  0.0000,  0.0000,  0.0000],
-		            [ 0.4333,  0.3146,  0.6576, -1.0432,  0.0000,  0.0000],
-		            [-0.9888,  1.0679, -1.3337, -1.6556,  0.4798,  0.0000]])
-		    >>> torch.tril(b, diagonal=-1)
-		    tensor([[ 0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000],
-		            [-0.2447,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000],
-		            [ 0.4333,  0.3146,  0.0000,  0.0000,  0.0000,  0.0000],
-		            [-0.9888,  1.0679, -1.3337,  0.0000,  0.0000,  0.0000]])
+		    >>> torch.triu(b, diagonal=1)
+		    tensor([[ 0.0000, -0.0794, -1.8373,  0.6654,  0.2604,  1.5235],
+		            [ 0.0000,  0.0000, -1.2919,  1.3378, -0.1768, -1.0857],
+		            [ 0.0000,  0.0000,  0.0000, -1.0432,  0.9348, -0.4410],
+		            [ 0.0000,  0.0000,  0.0000,  0.0000,  0.4798,  0.2830]])
+		    >>> torch.triu(b, diagonal=-1)
+		    tensor([[ 0.5876, -0.0794, -1.8373,  0.6654,  0.2604,  1.5235],
+		            [-0.2447,  0.9556, -1.2919,  1.3378, -0.1768, -1.0857],
+		            [ 0.0000,  0.3146,  0.6576, -1.0432,  0.9348, -0.4410],
+		            [ 0.0000,  0.0000, -1.3337, -1.6556,  0.4798,  0.2830]])
 	**/
 	static public function triu(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		trtrs(b, A, upper=True, transpose=False, unitriangular=False) -> (Tensor, Tensor)
 		
-		Solves a system of equations with a triangular coefficient matrix `A`
-		and multiple right-hand sides `b`.
+		Solves a system of equations with a triangular coefficient matrix :math:`A`
+		and multiple right-hand sides :attr:`b`.
 		
-		In particular, solves :math:`AX = b` and assumes `A` is upper-triangular
+		In particular, solves :math:`AX = b` and assumes :math:`A` is upper-triangular
 		with the default keyword arguments.
 		
 		Args:
 		    A (Tensor): the input triangular coefficient matrix
-		    b (Tensor): multiple right-hand sides. Each column of `b` is a
+		    b (Tensor): multiple right-hand sides. Each column of :math:`b` is a
 		        right-hand side for the system of equations.
 		    upper (bool, optional): whether to solve the upper-triangular system
 		        of equations (default) or the lower-triangular system of equations. Default: True.
-		    transpose (bool, optional): whether `A` should be transposed before
+		    transpose (bool, optional): whether :math:`A` should be transposed before
 		        being sent into the solver. Default: False.
-		    unitriangular (bool, optional): whether `A` is unit triangular.
-		        If True, the diagonal elements of `A` are assumed to be
-		        1 and not referenced from `A`. Default: False.
+		    unitriangular (bool, optional): whether :math:`A` is unit triangular.
+		        If True, the diagonal elements of :math:`A` are assumed to be
+		        1 and not referenced from :math:`A`. Default: False.
 		
 		Returns:
-		    A tuple (X, M) where `M` is a clone of `A` and `X` is the solution to
-		    `AX = b` (or whatever variant of the system of equations, depending on
-		    the keyword arguments.)
+		    A tuple :math:`(X, M)` where :math:`M` is a clone of :math:`A` and :math:`X`
+		    is the solution to :math:`AX = b` (or whatever variant of the system of
+		    equations, depending on the keyword arguments.)
 		
 		Shape:
 		    - A: :math:`(N, N)`
@@ -6572,6 +7149,8 @@ package torch;
 		        before returning as output.
 		    return_inverse (bool): Whether to also return the indices for where
 		        elements in the original input ended up in the returned unique list.
+		    dim (int): the dimension to apply unique. If ``None``, the unique of the
+		        flattened input is returned. default: ``None``
 		
 		Returns:
 		    (Tensor, Tensor (optional)): A tensor or a tuple of tensors containing
@@ -6604,7 +7183,7 @@ package torch;
 		    tensor([[ 0,  2],
 		            [ 1,  2]])
 	**/
-	static public function unique(input:Dynamic, ?sorted:Dynamic, ?return_inverse:Dynamic):Dynamic;
+	static public function unique(input:Dynamic, ?sorted:Dynamic, ?return_inverse:Dynamic, ?dim:Dynamic):Dynamic;
 	/**
 		unsqueeze(input, dim, out=None) -> Tensor
 		
@@ -6689,6 +7268,10 @@ package torch;
 	@:native("var")
 	static public function _var(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		wait(arg0: torch._C.Future) -> None
+	**/
+	static public function wait(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		where(condition, x, y) -> Tensor
 		
 		Return a tensor of elements selected from either :attr:`x` or :attr:`y`, depending on :attr:`condition`.
@@ -6697,7 +7280,7 @@ package torch;
 		
 		.. math::
 		    out_i = \begin{cases}
-		        x_i & \text{if } condition_i \\
+		        x_i & \text{if } \text{condition}_i \\
 		        y_i & \text{otherwise} \\
 		    \end{cases}
 		

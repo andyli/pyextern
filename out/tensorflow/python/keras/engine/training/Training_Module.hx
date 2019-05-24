@@ -9,6 +9,7 @@ package tensorflow.python.keras.engine.training;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _is_symbolic_tensor(x:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
@@ -36,5 +37,29 @@ package tensorflow.python.keras.engine.training;
 		    ValueError: If the value of start is a list and stop is not None.
 	**/
 	static public function slice_arrays(arrays:Dynamic, ?start:Dynamic, ?stop:Dynamic):Dynamic;
+	/**
+		Squeeze or expand last dimension if needed.
+		
+		1. Squeezes last dim of `y_pred` or `y_true` if their rank differs by 1
+		(using `confusion_matrix.remove_squeezable_dimensions`).
+		2. Squeezes or expands last dim of `sample_weight` if its rank differs by 1
+		from the new rank of `y_pred`.
+		If `sample_weight` is scalar, it is kept scalar.
+		
+		This will use static shape if available. Otherwise, it will add graph
+		operations, which could result in a performance hit.
+		
+		Args:
+		  y_pred: Predicted values, a `Tensor` of arbitrary dimensions.
+		  y_true: Optional label `Tensor` whose dimensions match `y_pred`.
+		  sample_weight: Optional weight scalar or `Tensor` whose dimensions match
+		    `y_pred`.
+		
+		Returns:
+		  Tuple of `y_pred`, `y_true` and `sample_weight`. Each of them possibly has
+		  the last dimension squeezed,
+		  `sample_weight` could be extended by one dimension.
+	**/
+	static public function squeeze_or_expand_dimensions(y_pred:Dynamic, y_true:Dynamic, sample_weight:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

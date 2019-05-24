@@ -1,6 +1,8 @@
 /* This file is generated, do not edit! */
 package tensorflow._api.v1.sysconfig;
 @:pythonImport("tensorflow._api.v1.sysconfig") extern class Sysconfig_Module {
+	static public var CXX11_ABI_FLAG : Dynamic;
+	static public var MONOLITHIC_BUILD : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

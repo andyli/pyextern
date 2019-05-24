@@ -87,7 +87,7 @@ package torch.nn.utils.rnn;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -97,7 +97,7 @@ package torch.nn.utils.rnn;
 	/**
 		Create new instance of PackedSequence(data, batch_sizes)
 	**/
-	static public function __new__(cls:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __new__(cls:Dynamic, data:Dynamic, ?batch_sizes:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -111,7 +111,7 @@ package torch.nn.utils.rnn;
 	**/
 	public function __repr__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**

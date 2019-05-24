@@ -122,6 +122,7 @@ package tensorflow.contrib.tpu.python.tpu.keras_tpu_variables;
 		Converts a variable to a tensor.
 	**/
 	public function _dense_var_to_tensor(?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
+	public var _in_graph_mode : Dynamic;
 	public function _read_variable_op():Dynamic;
 	public var _shared_name : Dynamic;
 	/**

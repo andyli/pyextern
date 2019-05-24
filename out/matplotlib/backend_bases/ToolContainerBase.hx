@@ -193,7 +193,7 @@ package matplotlib.backend_bases;
 		
 		Parameters
 		----------
-		name : String
+		name : string
 		    Name (id) of the tool triggered from within the container
 	**/
 	public function trigger_tool(name:Dynamic):Dynamic;

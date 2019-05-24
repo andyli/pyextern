@@ -52,7 +52,7 @@ package tensorflow.contrib.timeseries.python.timeseries.math_utils;
 		  value_dtype: the type of the value tensors.
 		  default_value: The value to use if a key is missing in the table.
 		  empty_key: the key to use to represent empty buckets internally. Must not
-		    be used in insert or lookup operations.
+		    be used in insert, remove or lookup operations.
 		  initial_num_buckets: the initial number of buckets.
 		  shared_name: If non-empty, this table will be shared under
 		    the given name across multiple sessions.
@@ -60,9 +60,12 @@ package tensorflow.contrib.timeseries.python.timeseries.math_utils;
 		  checkpoint: if True, the contents of the table are saved to and restored
 		    from checkpoints. If `shared_name` is empty for a checkpointed table, it
 		    is shared using the table node name.
+		  deleted_key: the key to use to represent deleted buckets internally. Must
+		    not be used in insert, remove or lookup operations and be different from
+		    the empty_key.
 		
 		Returns:
-		  A `MutableHashTable` object.
+		  A `MutableDenseHashTable` object.
 		
 		Raises:
 		  ValueError: If checkpoint is True and no name was specified.
@@ -80,7 +83,7 @@ package tensorflow.contrib.timeseries.python.timeseries.math_utils;
 		  value_dtype: the type of the value tensors.
 		  default_value: The value to use if a key is missing in the table.
 		  empty_key: the key to use to represent empty buckets internally. Must not
-		    be used in insert or lookup operations.
+		    be used in insert, remove or lookup operations.
 		  initial_num_buckets: the initial number of buckets.
 		  shared_name: If non-empty, this table will be shared under
 		    the given name across multiple sessions.
@@ -88,9 +91,12 @@ package tensorflow.contrib.timeseries.python.timeseries.math_utils;
 		  checkpoint: if True, the contents of the table are saved to and restored
 		    from checkpoints. If `shared_name` is empty for a checkpointed table, it
 		    is shared using the table node name.
+		  deleted_key: the key to use to represent deleted buckets internally. Must
+		    not be used in insert, remove or lookup operations and be different from
+		    the empty_key.
 		
 		Returns:
-		  A `MutableHashTable` object.
+		  A `MutableDenseHashTable` object.
 		
 		Raises:
 		  ValueError: If checkpoint is True and no name was specified.
@@ -319,6 +325,10 @@ package tensorflow.contrib.timeseries.python.timeseries.math_utils;
 	**/
 	public function _track_checkpointable(checkpointable:Dynamic, name:Dynamic, ?overwrite:Dynamic):Dynamic;
 	/**
+		A function that creates a resource handle.
+	**/
+	public function create_resource():Dynamic;
+	/**
 		Returns tensors of all keys and values in the table.
 		
 		Args:
@@ -330,9 +340,9 @@ package tensorflow.contrib.timeseries.python.timeseries.math_utils;
 	**/
 	public function export(?name:Dynamic):Dynamic;
 	/**
-		The table initialization op.
+		A function that initializes the resource. Optional.
 	**/
-	public var init : Dynamic;
+	public function initialize():Dynamic;
 	/**
 		Associates `keys` with `values`.
 		
@@ -377,6 +387,27 @@ package tensorflow.contrib.timeseries.python.timeseries.math_utils;
 		The name of the table.
 	**/
 	public var name : Dynamic;
+	/**
+		Removes `keys` and its associated values from the table.
+		
+		If a key is not present in the table, it is silently ignored.
+		
+		Args:
+		  keys: Keys to remove. Can be a tensor of any shape. Must match the table's
+		    key type.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The created Operation.
+		
+		Raises:
+		  TypeError: when `keys` do not match the table data types.
+	**/
+	public function remove(keys:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns the resource handle associated with this Resource.
+	**/
+	public var resource_handle : Dynamic;
 	/**
 		Compute the number of elements in this table.
 		

@@ -9,38 +9,20 @@ package pandas.core.reshape.concat;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _all_indexes_same(indexes:Dynamic):Dynamic;
-	static public function _concat_indexes(indexes:Dynamic):Dynamic;
 	/**
-		Ensure that we have an index from some index-like object
+		Determine if all indexes contain the same elements.
 		
 		Parameters
 		----------
-		index : sequence
-		    An Index or other sequence
-		copy : bool
+		indexes : list of Index objects
 		
 		Returns
 		-------
-		index : Index or MultiIndex
-		
-		Examples
-		--------
-		>>> _ensure_index(['a', 'b'])
-		Index(['a', 'b'], dtype='object')
-		
-		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
-		Index([('a', 'a'), ('b', 'c')], dtype='object')
-		
-		>>> _ensure_index([['a', 'a'], ['b', 'c']])
-		MultiIndex(levels=[['a'], ['b', 'c']],
-		           labels=[[0, 0], [0, 1]])
-		
-		See Also
-		--------
-		_ensure_index_from_sequences
+		bool
+		    True if all indexes contain the same elements, False otherwise.
 	**/
-	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function _all_indexes_same(indexes:Dynamic):Dynamic;
+	static public function _concat_indexes(indexes:Dynamic):Dynamic;
 	/**
 		Factorize an input `values` into `categories` and `codes`. Preserves
 		categorical dtype in `categories`.
@@ -78,7 +60,44 @@ package pandas.core.reshape.concat;
 		See `_factorize_from_iterable` for more info.
 	**/
 	static public function _factorize_from_iterables(iterables:Dynamic):Dynamic;
+	/**
+		Give a consensus 'names' to indexes.
+		
+		If there's exactly one non-empty 'names', return this,
+		otherwise, return empty.
+		
+		Parameters
+		----------
+		indexes : list of Index objects
+		
+		Returns
+		-------
+		list
+		    A list representing the consensus 'names' found.
+	**/
 	static public function _get_consensus_names(indexes:Dynamic):Dynamic;
+	/**
+		Extract combined index: return intersection or union (depending on the
+		value of "intersect") of indexes on given axis, or None if all objects
+		lack indexes (e.g. they are numpy arrays).
+		
+		Parameters
+		----------
+		objs : list of objects
+		    Each object will only be considered if it has a _get_axis
+		    attribute.
+		intersect : bool, default False
+		    If True, calculate the intersection between indexes. Otherwise,
+		    calculate the union.
+		axis : {0 or 'index', 1 or 'outer'}, default 0
+		    The axis to extract indexes from.
+		sort : bool, default True
+		    Whether the result index should come out sorted or not.
+		
+		Returns
+		-------
+		Index
+	**/
 	static public function _get_objs_combined_axis(objs:Dynamic, ?intersect:Dynamic, ?axis:Dynamic, ?sort:Dynamic):Dynamic;
 	static public function _make_concat_multiindex(indexes:Dynamic, keys:Dynamic, ?levels:Dynamic, ?names:Dynamic):Dynamic;
 	/**
@@ -144,6 +163,13 @@ package pandas.core.reshape.concat;
 		    ``DataFrame``, a ``DataFrame`` is returned. When concatenating along
 		    the columns (axis=1), a ``DataFrame`` is returned.
 		
+		See Also
+		--------
+		Series.append
+		DataFrame.append
+		DataFrame.join
+		DataFrame.merge
+		
 		Notes
 		-----
 		The keys, levels, and names arguments are all optional.
@@ -151,13 +177,6 @@ package pandas.core.reshape.concat;
 		A walkthrough of how this method fits in with other tools for combining
 		pandas objects can be found `here
 		<http://pandas.pydata.org/pandas-docs/stable/merging.html>`__.
-		
-		See Also
-		--------
-		Series.append
-		DataFrame.append
-		DataFrame.join
-		DataFrame.merge
 		
 		Examples
 		--------
@@ -234,12 +253,12 @@ package pandas.core.reshape.concat;
 		  letter  number animal
 		0      c       3    cat
 		1      d       4    dog
-		>>> pd.concat([df1, df3])
-		  animal letter  number
-		0    NaN      a       1
-		1    NaN      b       2
-		0    cat      c       3
-		1    dog      d       4
+		>>> pd.concat([df1, df3], sort=False)
+		  letter  number animal
+		0      a       1    NaN
+		1      b       2    NaN
+		0      c       3    cat
+		1      d       4    dog
 		
 		Combine ``DataFrame`` objects with overlapping columns
 		and return only those that are shared by passing ``inner`` to
@@ -290,4 +309,34 @@ package pandas.core.reshape.concat;
 		copy : bool
 	**/
 	static public function concatenate_block_managers(mgrs_indexers:Dynamic, axes:Dynamic, concat_axis:Dynamic, copy:Dynamic):Dynamic;
+	/**
+		Ensure that we have an index from some index-like object.
+		
+		Parameters
+		----------
+		index : sequence
+		    An Index or other sequence
+		copy : bool
+		
+		Returns
+		-------
+		index : Index or MultiIndex
+		
+		Examples
+		--------
+		>>> ensure_index(['a', 'b'])
+		Index(['a', 'b'], dtype='object')
+		
+		>>> ensure_index([('a', 'a'),  ('b', 'c')])
+		Index([('a', 'a'), ('b', 'c')], dtype='object')
+		
+		>>> ensure_index([['a', 'a'], ['b', 'c']])
+		MultiIndex(levels=[['a'], ['b', 'c']],
+		           codes=[[0, 0], [0, 1]])
+		
+		See Also
+		--------
+		ensure_index_from_sequences
+	**/
+	static public function ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 }

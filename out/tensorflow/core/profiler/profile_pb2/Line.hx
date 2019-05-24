@@ -30,7 +30,6 @@ package tensorflow.core.profiler.profile_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FUNCTION_ID_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -51,7 +50,6 @@ package tensorflow.core.profiler.profile_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LINE_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -84,6 +82,10 @@ package tensorflow.core.profiler.profile_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -249,4 +251,12 @@ package tensorflow.core.profiler.profile_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Line.function_id
+	**/
+	public var function_id : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Line.line
+	**/
+	public var line : Dynamic;
 }

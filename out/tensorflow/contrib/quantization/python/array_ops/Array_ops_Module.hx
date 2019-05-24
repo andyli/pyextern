@@ -20,7 +20,7 @@ package tensorflow.contrib.quantization.python.array_ops;
 		In 'MIN_COMBINED' mode, each value of the tensor will undergo the following:
 		
 		```
-		if T == qint8, in[i] += (range(T) + 1)/ 2.0
+		if T == qint8: in[i] += (range(T) + 1)/ 2.0
 		out[i] = min_range + (in[i]* (max_range - min_range) / range(T))
 		```
 		here `range(T) = numeric_limits<T>::max() - numeric_limits<T>::min()`
@@ -115,7 +115,7 @@ package tensorflow.contrib.quantization.python.array_ops;
 		
 		```
 		out[i] = (in[i] - min_range) * range(T) / (max_range - min_range)
-		if T == qint8, out[i] -= (range(T) + 1) / 2.0
+		if T == qint8: out[i] -= (range(T) + 1) / 2.0
 		```
 		
 		here `range(T) = numeric_limits<T>::max() - numeric_limits<T>::min()`

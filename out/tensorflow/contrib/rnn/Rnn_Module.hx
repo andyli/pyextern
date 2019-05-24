@@ -127,7 +127,11 @@ package tensorflow.contrib.rnn;
 	**/
 	static public function stack_bidirectional_rnn(cells_fw:Dynamic, cells_bw:Dynamic, inputs:Dynamic, ?initial_states_fw:Dynamic, ?initial_states_bw:Dynamic, ?dtype:Dynamic, ?sequence_length:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Creates a bidirectional recurrent neural network.
+		Creates a bidirectional recurrent neural network. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use `keras.layers.Bidirectional(keras.layers.RNN(cell, unroll=True))`, which is equivalent to this API
 		
 		Similar to the unidirectional case above (rnn) but takes input and builds
 		independent forward and backward RNNs with the final forward and backward
@@ -170,7 +174,11 @@ package tensorflow.contrib.rnn;
 	**/
 	static public function static_bidirectional_rnn(cell_fw:Dynamic, cell_bw:Dynamic, inputs:Dynamic, ?initial_state_fw:Dynamic, ?initial_state_bw:Dynamic, ?dtype:Dynamic, ?sequence_length:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Creates a recurrent neural network specified by RNNCell `cell`.
+		Creates a recurrent neural network specified by RNNCell `cell`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use `keras.layers.RNN(cell, unroll=True)`, which is equivalent to this API
 		
 		The simplest form of RNN network generated is:
 		

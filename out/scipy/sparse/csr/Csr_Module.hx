@@ -13,7 +13,6 @@ package scipy.sparse.csr;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public function csr_count_blocks(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function csr_sample_values(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function csr_tobsr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function csr_tocsc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
@@ -38,13 +37,6 @@ package scipy.sparse.csr;
 		    Suitable index data type (int32 or int64)
 	**/
 	static public function get_index_dtype(?arrays:Dynamic, ?maxval:Dynamic, ?check_contents:Dynamic):Dynamic;
-	/**
-		Is x appropriate as an index into a sparse matrix? Returns True
-		if it can be cast safely to a machine int.
-	**/
-	static public function isintlike(x:Dynamic):Dynamic;
-	static public function ismatrix(t:Dynamic):Dynamic;
-	static public function issequence(t:Dynamic):Dynamic;
 	/**
 		Is x of csr_matrix type?
 		

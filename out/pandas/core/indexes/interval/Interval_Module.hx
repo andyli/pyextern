@@ -11,37 +11,6 @@ package pandas.core.indexes.interval;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Ensure that we have an index from some index-like object
-		
-		Parameters
-		----------
-		index : sequence
-		    An Index or other sequence
-		copy : bool
-		
-		Returns
-		-------
-		index : Index or MultiIndex
-		
-		Examples
-		--------
-		>>> _ensure_index(['a', 'b'])
-		Index(['a', 'b'], dtype='object')
-		
-		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
-		Index([('a', 'a'), ('b', 'c')], dtype='object')
-		
-		>>> _ensure_index([['a', 'a'], ['b', 'c']])
-		MultiIndex(levels=[['a'], ['b', 'c']],
-		           labels=[[0, 0], [0, 1]])
-		
-		See Also
-		--------
-		_ensure_index_from_sequences
-	**/
-	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
-	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		Given an Interval or IntervalIndex, return the corresponding interval with
 		closed bounds.
 	**/
@@ -50,6 +19,7 @@ package pandas.core.indexes.interval;
 	static public function _get_prev_label(label:Dynamic):Dynamic;
 	static public var _index_doc_kwargs : Dynamic;
 	static public var _index_shared_docs : Dynamic;
+	static public var _interval_shared_docs : Dynamic;
 	/**
 		helper for interval_range to check type compat of start/end/freq
 	**/
@@ -64,6 +34,10 @@ package pandas.core.indexes.interval;
 	**/
 	static public function _new_IntervalIndex(cls:Dynamic, d:Dynamic):Dynamic;
 	/**
+		Class decorator for creating a class with a metaclass.
+	**/
+	static public function add_metaclass(metaclass:Dynamic):Dynamic;
+	/**
 		Return a fixed frequency DatetimeIndex.
 		
 		Parameters
@@ -74,7 +48,7 @@ package pandas.core.indexes.interval;
 		    Right bound for generating dates.
 		periods : integer, optional
 		    Number of periods to generate.
-		freq : str or DateOffset, default 'D' (calendar daily)
+		freq : str or DateOffset, default 'D'
 		    Frequency strings can have multiples, e.g. '5H'. See
 		    :ref:`here <timeseries.offset_aliases>` for a list of
 		    frequency aliases.
@@ -146,7 +120,8 @@ package pandas.core.indexes.interval;
 		
 		>>> pd.date_range(start='2018-04-24', end='2018-04-27', periods=3)
 		DatetimeIndex(['2018-04-24 00:00:00', '2018-04-25 12:00:00',
-		               '2018-04-27 00:00:00'], freq=None)
+		               '2018-04-27 00:00:00'],
+		              dtype='datetime64[ns]', freq=None)
 		
 		**Other Parameters**
 		
@@ -201,6 +176,37 @@ package pandas.core.indexes.interval;
 	static public function date_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
 	static public function default_pprint(x:Dynamic, ?max_seq_items:Dynamic):Dynamic;
 	/**
+		Ensure that we have an index from some index-like object.
+		
+		Parameters
+		----------
+		index : sequence
+		    An Index or other sequence
+		copy : bool
+		
+		Returns
+		-------
+		index : Index or MultiIndex
+		
+		Examples
+		--------
+		>>> ensure_index(['a', 'b'])
+		Index(['a', 'b'], dtype='object')
+		
+		>>> ensure_index([('a', 'a'),  ('b', 'c')])
+		Index([('a', 'a'), ('b', 'c')], dtype='object')
+		
+		>>> ensure_index([['a', 'a'], ['b', 'c']])
+		MultiIndex(levels=[['a'], ['b', 'c']],
+		           codes=[[0, 0], [0, 1]])
+		
+		See Also
+		--------
+		ensure_index_from_sequences
+	**/
+	static public function ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Find a common data type among the given dtypes.
 		
 		Parameters
@@ -216,6 +222,21 @@ package pandas.core.indexes.interval;
 		numpy.find_common_type
 	**/
 	static public function find_common_type(types:Dynamic):Dynamic;
+	/**
+		Find the appropriate name to pin to an operation result.  This result
+		should always be either an Index or a Series.
+		
+		Parameters
+		----------
+		left : {Series, Index}
+		right : object
+		
+		Returns
+		-------
+		name : object
+		    Usually a string
+	**/
+	static public function get_op_result_name(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		get_option(pat)
 		
@@ -300,7 +321,7 @@ package pandas.core.indexes.interval;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
+		    [default: ANSI_X3.4-1968] [currently: ANSI_X3.4-1968]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -545,6 +566,17 @@ package pandas.core.indexes.interval;
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		interpret the dtype from a scalar
+		
+		Parameters
+		----------
+		pandas_dtype : bool, default False
+		    whether to infer dtype including pandas extension types.
+		    If False, scalar belongs to pandas extension types is inferred as
+		    object
+	**/
+	static public function infer_dtype_from_scalar(val:Dynamic, ?pandas_dtype:Dynamic):Dynamic;
+	/**
 		Return a fixed frequency IntervalIndex
 		
 		Parameters
@@ -558,12 +590,20 @@ package pandas.core.indexes.interval;
 		freq : numeric, string, or DateOffset, default None
 		    The length of each interval. Must be consistent with the type of start
 		    and end, e.g. 2 for numeric, or '5H' for datetime-like.  Default is 1
-		    for numeric and 'D' (calendar daily) for datetime-like.
+		    for numeric and 'D' for datetime-like.
 		name : string, default None
 		    Name of the resulting IntervalIndex
 		closed : {'left', 'right', 'both', 'neither'}, default 'right'
 		    Whether the intervals are closed on the left-side, right-side, both
 		    or neither.
+		
+		Returns
+		-------
+		rng : IntervalIndex
+		
+		See Also
+		--------
+		IntervalIndex : An Index of intervals that are all closed on the same side.
 		
 		Notes
 		-----
@@ -575,24 +615,20 @@ package pandas.core.indexes.interval;
 		To learn more about datetime-like frequency strings, please see `this link
 		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 		
-		Returns
-		-------
-		rng : IntervalIndex
-		
 		Examples
 		--------
 		Numeric ``start`` and  ``end`` is supported.
 		
 		>>> pd.interval_range(start=0, end=5)
-		IntervalIndex([(0, 1], (1, 2], (2, 3], (3, 4], (4, 5]]
+		IntervalIndex([(0, 1], (1, 2], (2, 3], (3, 4], (4, 5]],
 		              closed='right', dtype='interval[int64]')
 		
 		Additionally, datetime-like input is also supported.
 		
 		>>> pd.interval_range(start=pd.Timestamp('2017-01-01'),
-		                      end=pd.Timestamp('2017-01-04'))
+		...                   end=pd.Timestamp('2017-01-04'))
 		IntervalIndex([(2017-01-01, 2017-01-02], (2017-01-02, 2017-01-03],
-		               (2017-01-03, 2017-01-04]]
+		               (2017-01-03, 2017-01-04]],
 		              closed='right', dtype='interval[datetime64[ns]]')
 		
 		The ``freq`` parameter specifies the frequency between the left and right.
@@ -600,23 +636,23 @@ package pandas.core.indexes.interval;
 		numeric ``start`` and ``end``, the frequency must also be numeric.
 		
 		>>> pd.interval_range(start=0, periods=4, freq=1.5)
-		IntervalIndex([(0.0, 1.5], (1.5, 3.0], (3.0, 4.5], (4.5, 6.0]]
+		IntervalIndex([(0.0, 1.5], (1.5, 3.0], (3.0, 4.5], (4.5, 6.0]],
 		              closed='right', dtype='interval[float64]')
 		
 		Similarly, for datetime-like ``start`` and ``end``, the frequency must be
 		convertible to a DateOffset.
 		
 		>>> pd.interval_range(start=pd.Timestamp('2017-01-01'),
-		                      periods=3, freq='MS')
+		...                   periods=3, freq='MS')
 		IntervalIndex([(2017-01-01, 2017-02-01], (2017-02-01, 2017-03-01],
-		               (2017-03-01, 2017-04-01]]
+		               (2017-03-01, 2017-04-01]],
 		              closed='right', dtype='interval[datetime64[ns]]')
 		
 		Specify ``start``, ``end``, and ``periods``; the frequency is generated
 		automatically (linearly spaced).
 		
 		>>> pd.interval_range(start=0, end=6, periods=4)
-		IntervalIndex([(0.0, 1.5], (1.5, 3.0], (3.0, 4.5], (4.5, 6.0]]
+		IntervalIndex([(0.0, 1.5], (1.5, 3.0], (3.0, 4.5], (4.5, 6.0]],
 		          closed='right',
 		          dtype='interval[float64]')
 		
@@ -624,53 +660,10 @@ package pandas.core.indexes.interval;
 		intervals within the ``IntervalIndex`` are closed.
 		
 		>>> pd.interval_range(end=5, periods=4, closed='both')
-		IntervalIndex([[1, 2], [2, 3], [3, 4], [4, 5]]
+		IntervalIndex([[1, 2], [2, 3], [3, 4], [4, 5]],
 		              closed='both', dtype='interval[int64]')
-		
-		See Also
-		--------
-		IntervalIndex : an Index of intervals that are all closed on the same side.
 	**/
 	static public function interval_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.IntervalIndex;
-	/**
-		Parameters
-		----------
-		intervals: ndarray object array of Intervals / nulls
-		
-		Returns
-		-------
-		tuples (left: ndarray object array,
-		        right: ndarray object array,
-		        closed: str)
-	**/
-	static public function intervals_to_interval_bounds(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Check whether an array-like or dtype is of the Categorical dtype.
-		
-		Parameters
-		----------
-		arr_or_dtype : array-like
-		    The array-like or dtype to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array-like or dtype is
-		          of the Categorical dtype.
-		
-		Examples
-		--------
-		>>> is_categorical_dtype(object)
-		False
-		>>> is_categorical_dtype(CategoricalDtype())
-		True
-		>>> is_categorical_dtype([1, 2, 3])
-		False
-		>>> is_categorical_dtype(pd.Categorical([1, 2, 3]))
-		True
-		>>> is_categorical_dtype(pd.CategoricalIndex([1, 2, 3]))
-		True
-	**/
-	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check whether an array-like or dtype is of a DatetimeTZDtype dtype.
 		
@@ -737,9 +730,37 @@ package pandas.core.indexes.interval;
 		True
 	**/
 	static public function is_datetime_or_timedelta_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check if two dtypes are equal.
+		
+		Parameters
+		----------
+		source : The first dtype to compare
+		target : The second dtype to compare
+		
+		Returns
+		----------
+		boolean : Whether or not the two dtypes are equal.
+		
+		Examples
+		--------
+		>>> is_dtype_equal(int, float)
+		False
+		>>> is_dtype_equal("int", int)
+		True
+		>>> is_dtype_equal(object, "category")
+		False
+		>>> is_dtype_equal(CategoricalDtype(), "category")
+		True
+		>>> is_dtype_equal(DatetimeTZDtype(), "datetime64")
+		False
+	**/
+	static public function is_dtype_equal(source:Dynamic, target:Dynamic):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a float dtype.
+		
+		This function is internal and should not be exposed in the public API.
 		
 		Parameters
 		----------
@@ -772,6 +793,11 @@ package pandas.core.indexes.interval;
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
 		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -791,6 +817,12 @@ package pandas.core.indexes.interval;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -845,7 +877,11 @@ package pandas.core.indexes.interval;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -864,8 +900,12 @@ package pandas.core.indexes.interval;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Check if the object is a number.
 		
@@ -883,7 +923,7 @@ package pandas.core.indexes.interval;
 		
 		See Also
 		--------
-		pandas.api.types.is_integer: checks a subgroup of numbers
+		pandas.api.types.is_integer: Checks a subgroup of numbers.
 		
 		Examples
 		--------
@@ -932,50 +972,55 @@ package pandas.core.indexes.interval;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
-	**/
-	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Check whether the provided array or dtype is of the string dtype.
-		
 		Parameters
 		----------
-		arr_or_dtype : array-like
-		    The array or dtype to check.
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
 		
 		Returns
 		-------
-		boolean : Whether or not the array or dtype is of the string dtype.
+		bool
+		    Return True if given object is scalar, False otherwise
 		
 		Examples
 		--------
-		>>> is_string_dtype(str)
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
 		True
-		>>> is_string_dtype(object)
-		True
-		>>> is_string_dtype(int)
+		
+		>>> pd.api.types.is_scalar([2, 3])
 		False
-		>>>
-		>>> is_string_dtype(np.array(['a', 'b']))
-		True
-		>>> is_string_dtype(pd.Series([1, 2]))
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
 		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
-	static public function is_string_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -993,8 +1038,8 @@ package pandas.core.indexes.interval;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -1047,116 +1092,14 @@ package pandas.core.indexes.interval;
 	**/
 	static public function isna(obj:Dynamic):Dynamic;
 	/**
-		try to do platform conversion, allow ndarray or list here 
-	**/
-	static public function maybe_convert_platform(values:Dynamic):Dynamic;
-	/**
-		Try to do platform conversion, with special casing for IntervalIndex.
-		Wrapper around maybe_convert_platform that alters the default return
-		dtype in certain cases to be compatible with IntervalIndex.  For example,
-		empty lists return with integer dtype instead of object dtype, which is
-		prohibited for IntervalIndex.
-		
-		Parameters
-		----------
-		values : array-like
-		
-		Returns
-		-------
-		array
-	**/
-	static public function maybe_convert_platform_interval(values:Dynamic):Dynamic;
-	/**
 		try to cast to the specified dtype (e.g. convert back to bool/int
 		or could be an astype of float64->float32
 	**/
 	static public function maybe_downcast_to_dtype(result:Dynamic, dtype:Dynamic):Dynamic;
 	/**
-		Detect non-missing values for an array-like object.
-		
-		This function takes a scalar or array-like object and indictates
-		whether values are valid (not missing, which is ``NaN`` in numeric
-		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
-		
-		Parameters
-		----------
-		obj : array-like or object value
-		    Object to check for *not* null or *non*-missing values.
-		
-		Returns
-		-------
-		bool or array-like of bool
-		    For scalar input, returns a scalar boolean.
-		    For array input, returns an array of boolean indicating whether each
-		    corresponding element is valid.
-		
-		See Also
-		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
-		DataFrame.notna : Detect valid values in a DataFrame.
-		Index.notna : Detect valid values in an Index.
-		
-		Examples
-		--------
-		Scalar arguments (including strings) result in a scalar boolean.
-		
-		>>> pd.notna('dog')
-		True
-		
-		>>> pd.notna(np.nan)
-		False
-		
-		ndarrays result in an ndarray of booleans.
-		
-		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
-		>>> array
-		array([[ 1., nan,  3.],
-		       [ 4.,  5., nan]])
-		>>> pd.notna(array)
-		array([[ True, False,  True],
-		       [ True,  True, False]])
-		
-		For indexes, an ndarray of booleans is returned.
-		
-		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
-		...                          "2017-07-08"])
-		>>> index
-		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
-		              dtype='datetime64[ns]', freq=None)
-		>>> pd.notna(index)
-		array([ True,  True, False,  True])
-		
-		For Series and DataFrame, the same type is returned, containing booleans.
-		
-		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
-		>>> df
-		     0     1    2
-		0  ant   bee  cat
-		1  dog  None  fly
-		>>> pd.notna(df)
-		      0      1     2
-		0  True   True  True
-		1  True  False  True
-		
-		>>> pd.notna(df[1])
-		0     True
-		1    False
-		Name: 1, dtype: bool
+		Rewrite the message of an exception.
 	**/
-	static public function notna(obj:Dynamic):Dynamic;
-	/**
-		Converts input into a pandas only dtype object or a numpy dtype object.
-		
-		Parameters
-		----------
-		dtype : object to be converted
-		
-		Returns
-		-------
-		np.dtype or a pandas dtype
-	**/
-	static public function pandas_dtype(dtype:Dynamic):Dynamic;
+	static public function rewrite_exception(old_name:Dynamic, new_name:Dynamic):Dynamic;
 	/**
 		Return a fixed frequency TimedeltaIndex, with day as the default
 		frequency
@@ -1169,7 +1112,7 @@ package pandas.core.indexes.interval;
 		    Right bound for generating timedeltas
 		periods : integer, default None
 		    Number of periods to generate
-		freq : string or DateOffset, default 'D' (calendar daily)
+		freq : string or DateOffset, default 'D'
 		    Frequency strings can have multiples, e.g. '5H'
 		name : string, default None
 		    Name of the resulting TimedeltaIndex

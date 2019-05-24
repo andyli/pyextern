@@ -22,7 +22,6 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DURATION_MS_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -39,7 +38,6 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HOST_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -56,7 +54,6 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAX_EVENTS_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -65,17 +62,14 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var OPTS_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var REPOSITORY_ROOT_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SESSION_ID_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -88,12 +82,14 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TOOLS_FIELD_NUMBER : Dynamic;
-	static public var TOOL_OPTIONS_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
 	public function ToolOptionsEntry(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -259,4 +255,36 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.ProfileRequest.duration_ms
+	**/
+	public var duration_ms : Dynamic;
+	/**
+		Field tensorflow.ProfileRequest.host_name
+	**/
+	public var host_name : Dynamic;
+	/**
+		Field tensorflow.ProfileRequest.max_events
+	**/
+	public var max_events : Dynamic;
+	/**
+		Field tensorflow.ProfileRequest.opts
+	**/
+	public var opts : Dynamic;
+	/**
+		Field tensorflow.ProfileRequest.repository_root
+	**/
+	public var repository_root : Dynamic;
+	/**
+		Field tensorflow.ProfileRequest.session_id
+	**/
+	public var session_id : Dynamic;
+	/**
+		Field tensorflow.ProfileRequest.tool_options
+	**/
+	public var tool_options : Dynamic;
+	/**
+		Field tensorflow.ProfileRequest.tools
+	**/
+	public var tools : Dynamic;
 }

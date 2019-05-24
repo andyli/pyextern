@@ -39,6 +39,23 @@ package scipy.spatial._plotutils;
 		Notes
 		-----
 		Requires Matplotlib.
+		
+		
+		Examples
+		--------
+		
+		>>> import matplotlib.pyplot as plt
+		>>> from scipy.spatial import ConvexHull, convex_hull_plot_2d
+		
+		The convex hull of a random set of points:
+		
+		>>> points = np.random.rand(30, 2)
+		>>> hull = ConvexHull(points)
+		
+		Plot it:
+		
+		>>> _ = convex_hull_plot_2d(hull)
+		>>> plt.show()
 	**/
 	static public function convex_hull_plot_2d(hull:Dynamic, ?ax:Dynamic):Dynamic;
 	/**
@@ -64,6 +81,22 @@ package scipy.spatial._plotutils;
 		Notes
 		-----
 		Requires Matplotlib.
+		
+		Examples
+		--------
+		
+		>>> import matplotlib.pyplot as plt
+		>>> from scipy.spatial import Delaunay, delaunay_plot_2d
+		
+		The Delaunay triangulation of a set of random points:
+		
+		>>> points = np.random.rand(30, 2)
+		>>> tri = Delaunay(points)
+		
+		Plot it:
+		
+		>>> _ = delaunay_plot_2d(tri)
+		>>> plt.show()
 	**/
 	static public function delaunay_plot_2d(tri:Dynamic, ?ax:Dynamic):Dynamic;
 	static public var division : Dynamic;

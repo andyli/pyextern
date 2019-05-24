@@ -108,6 +108,13 @@ package matplotlib.backend_tools;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Return a placeholder object with a single `canvas` attribute.
+		
+		This is useful to reuse the implementations of tools already provided
+		by the classic Toolbars.
+	**/
+	public function _make_classic_style_pseudo_toolbar():Dynamic;
 	public var canvas : Dynamic;
 	static public var cursor : Dynamic;
 	static public var default_keymap : Dynamic;
@@ -151,7 +158,7 @@ package matplotlib.backend_tools;
 		
 		Parameters
 		----------
-		figure: `Figure`
+		figure : `Figure`
 	**/
 	public function set_figure(figure:Dynamic):Dynamic;
 	public function set_scale(ax:Dynamic, scale:Dynamic):Dynamic;

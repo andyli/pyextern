@@ -111,37 +111,31 @@ package matplotlib.colors;
 	static public var cache : Dynamic;
 	static public var colors : Dynamic;
 	/**
-		Returns an *RGB* tuple of three floats from 0-1.
-		
-		*arg* can be an *RGB* or *RGBA* sequence or a string in any of
-		several forms:
-		
-		    1) a letter from the set 'rgbcmykw'
-		    2) a hex color string, like '#00FFFF'
-		    3) a standard name, like 'aqua'
-		    4) a string representation of a float, like '0.4',
-		       indicating gray on a 0-1 scale
-		
-		if *arg* is *RGBA*, the *A* will simply be discarded.
+		Convert *c* to an RGB color, silently dropping the alpha channel.
 	**/
-	static public function to_rgb(arg:Dynamic):Dynamic;
+	static public function to_rgb(c:Dynamic):Dynamic;
 	/**
-		Returns an *RGBA* tuple of four floats from 0-1.
+		Convert *c* to an RGBA color.
 		
-		For acceptable values of *arg*, see :meth:`to_rgb`.
-		In addition, if *arg* is "none" (case-insensitive),
-		then (0,0,0,0) will be returned.
-		If *arg* is an *RGBA* sequence and *alpha* is not *None*,
-		*alpha* will replace the original *A*.
+		Parameters
+		----------
+		c : Matplotlib color
+		
+		alpha : scalar, optional
+		    If *alpha* is not ``None``, it forces the alpha value, except if *c* is
+		    ``"none"`` (case-insensitive), which always maps to ``(0, 0, 0, 0)``.
+		
+		Returns
+		-------
+		tuple
+		    Tuple of ``(r, g, b, a)`` scalars.
 	**/
-	static public function to_rgba(arg:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function to_rgba(c:Dynamic, ?alpha:Dynamic):Dynamic;
 	/**
-		Returns a numpy array of *RGBA* tuples.
+		Convert *c* to a (n, 4) array of RGBA colors.
 		
-		Accepts a single mpl color spec or a sequence of specs.
-		
-		Special case to handle "no color": if *c* is "none" (case-insensitive),
-		then an empty array will be returned.  Same for an empty list.
+		If *alpha* is not ``None``, it forces the alpha value.  If *c* is
+		``"none"`` (case-insensitive) or an empty list, an empty array is returned.
 	**/
-	static public function to_rgba_array(arg:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function to_rgba_array(c:Dynamic, ?alpha:Dynamic):Dynamic;
 }

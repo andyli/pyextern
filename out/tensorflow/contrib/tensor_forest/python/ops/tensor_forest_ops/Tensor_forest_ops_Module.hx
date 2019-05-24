@@ -76,5 +76,6 @@ package tensorflow.contrib.tensor_forest.python.ops.tensor_forest_ops;
 		  The created Operation.
 	**/
 	static public function scatter_add_ndim(input:Dynamic, indices:Dynamic, deltas:Dynamic, ?name:Dynamic):Dynamic;
+	static public function scatter_add_ndim_eager_fallback(input:Dynamic, indices:Dynamic, deltas:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

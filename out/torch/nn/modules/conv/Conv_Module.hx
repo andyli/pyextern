@@ -12,4 +12,6 @@ package torch.nn.modules.conv;
 	static public function _pair(x:Dynamic):Dynamic;
 	static public function _single(x:Dynamic):Dynamic;
 	static public function _triple(x:Dynamic):Dynamic;
+	static public function weak_module(cls:Dynamic):Dynamic;
+	static public function weak_script_method(fn:Dynamic):Dynamic;
 }

@@ -5,7 +5,6 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CUSTOM_LEFT_CHILD_TEST_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -22,7 +21,6 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEFAULT_DIRECTION_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	static public var Direction : Dynamic;
 	/**
@@ -49,13 +47,11 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INEQUALITY_LEFT_CHILD_TEST_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var LEFT : Dynamic;
-	static public var LEFT_CHILD_ID_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -73,7 +69,6 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var RIGHT : Dynamic;
-	static public var RIGHT_CHILD_ID_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -90,6 +85,10 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -255,4 +254,24 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.decision_trees.BinaryNode.custom_left_child_test
+	**/
+	public var custom_left_child_test : Dynamic;
+	/**
+		Field tensorflow.decision_trees.BinaryNode.default_direction
+	**/
+	public var default_direction : Dynamic;
+	/**
+		Field tensorflow.decision_trees.BinaryNode.inequality_left_child_test
+	**/
+	public var inequality_left_child_test : Dynamic;
+	/**
+		Field tensorflow.decision_trees.BinaryNode.left_child_id
+	**/
+	public var left_child_id : Dynamic;
+	/**
+		Field tensorflow.decision_trees.BinaryNode.right_child_id
+	**/
+	public var right_child_id : Dynamic;
 }

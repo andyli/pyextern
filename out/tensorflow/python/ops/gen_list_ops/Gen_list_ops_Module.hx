@@ -11,6 +11,7 @@ package tensorflow.python.ops.gen_list_ops;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var _op_def_lib : Dynamic;
+	static public var _tensor_list_concat_outputs : Dynamic;
 	static public var _tensor_list_pop_back_outputs : Dynamic;
 	/**
 		Decorator for marking endpoints deprecated.
@@ -41,18 +42,45 @@ package tensorflow.python.ops.gen_list_ops;
 		
 		Args:
 		  element_shape: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		  max_num_elements: A `Tensor` of type `int32`.
 		  element_dtype: A `tf.DType`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `variant`.
 	**/
-	static public function empty_tensor_list(element_shape:Dynamic, element_dtype:Dynamic, ?name:Dynamic):Dynamic;
+	static public function empty_tensor_list(element_shape:Dynamic, max_num_elements:Dynamic, element_dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function empty_tensor_list
 	**/
-	static public function empty_tensor_list_eager_fallback(element_shape:Dynamic, element_dtype:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function empty_tensor_list_eager_fallback(element_shape:Dynamic, max_num_elements:Dynamic, element_dtype:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Concats all tensors in the list along the 0th dimension.
+		
+		Requires that all tensors have the same shape except the first dimension.
+		
+		input_handle: The input list.
+		tensor: The concated result.
+		lengths: Output tensor containing sizes of the 0th dimension of tensors in the list, used for computing the gradient.
+		
+		Args:
+		  input_handle: A `Tensor` of type `variant`.
+		  element_dtype: A `tf.DType`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (tensor, lengths).
+		
+		  tensor: A `Tensor` of type `element_dtype`.
+		  lengths: A `Tensor` of type `int64`.
+	**/
+	static public function tensor_list_concat(input_handle:Dynamic, element_dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function tensor_list_concat
+	**/
+	static public function tensor_list_concat_eager_fallback(input_handle:Dynamic, element_dtype:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		TODO: add doc.
 		
@@ -319,6 +347,32 @@ package tensorflow.python.ops.gen_list_ops;
 		This is for function tensor_list_set_item
 	**/
 	static public function tensor_list_set_item_eager_fallback(input_handle:Dynamic, index:Dynamic, item:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Splits a tensor into a list.
+		
+		list[i] corresponds to lengths[i] tensors from the input tensor.
+		The tensor must have rank at least 1 and contain exactly sum(lengths) elements.
+		
+		tensor: The input tensor.
+		element_shape: A shape compatible with that of elements in the tensor.
+		lengths: Vector of sizes of the 0th dimension of tensors in the list.
+		output_handle: The list.
+		
+		Args:
+		  tensor: A `Tensor`.
+		  element_shape: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		  lengths: A `Tensor` of type `int64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `variant`.
+	**/
+	static public function tensor_list_split(tensor:Dynamic, element_shape:Dynamic, lengths:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function tensor_list_split
+	**/
+	static public function tensor_list_split_eager_fallback(tensor:Dynamic, element_shape:Dynamic, lengths:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Stacks all tensors in the list.
 		

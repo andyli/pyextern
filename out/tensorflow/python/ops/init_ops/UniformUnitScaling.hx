@@ -2,7 +2,14 @@
 package tensorflow.python.ops.init_ops;
 @:pythonImport("tensorflow.python.ops.init_ops", "UniformUnitScaling") extern class UniformUnitScaling {
 	/**
-		Call self as a function.
+		Returns a tensor object initialized as specified by the initializer.
+		
+		Args:
+		  shape: Shape of the tensor.
+		  dtype: Optional dtype of the tensor. If not provided use the initializer
+		    dtype.
+		  partition_info: Optional information about the possible partitioning of a
+		    tensor.
 	**/
 	public function __call__(shape:Dynamic, ?dtype:Dynamic, ?partition_info:Dynamic):Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -44,7 +51,7 @@ package tensorflow.python.ops.init_ops;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.initializers.variance_scaling instead with distribution=uniform to get equivalent behavior.
 	**/
@@ -53,7 +60,7 @@ package tensorflow.python.ops.init_ops;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.initializers.variance_scaling instead with distribution=uniform to get equivalent behavior.
 	**/

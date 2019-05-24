@@ -129,7 +129,7 @@ package pandas.core.indexes.accessors;
 	public var __weakref__ : Dynamic;
 	static public var _accessors : Dynamic;
 	/**
-		add accessors to cls from the delegate class
+		Add accessors to cls from the delegate class.
 		
 		Parameters
 		----------
@@ -167,7 +167,7 @@ package pandas.core.indexes.accessors;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	/**
-		ceil the data to the specified `freq`.
+		Perform ceil operation on the data to the specified `freq`.
 		
 		Parameters
 		----------
@@ -176,6 +176,35 @@ package pandas.core.indexes.accessors;
 		    frequency like 'S' (second) not 'ME' (month end). See
 		    :ref:`frequency aliases <timeseries.offset_aliases>` for
 		    a list of possible `freq` values.
+		ambiguous : 'infer', bool-ndarray, 'NaT', default 'raise'
+		    Only relevant for DatetimeIndex:
+		
+		    - 'infer' will attempt to infer fall dst-transition hours based on
+		      order
+		    - bool-ndarray where True signifies a DST time, False designates
+		      a non-DST time (note that this flag is only applicable for
+		      ambiguous times)
+		    - 'NaT' will return NaT where there are ambiguous times
+		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous
+		      times
+		
+		    .. versionadded:: 0.24.0
+		
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -211,20 +240,37 @@ package pandas.core.indexes.accessors;
 	**/
 	public function ceil(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return a dataframe of the components (days, hours, minutes,
-		seconds, milliseconds, microseconds, nanoseconds) of the Timedeltas.
+		Return a Dataframe of the components of the Timedeltas.
 		
 		Returns
 		-------
-		a DataFrame
+		DataFrame
+		
+		Examples
+		--------
+		>>> s = pd.Series(pd.to_timedelta(np.arange(5), unit='s'))
+		>>> s
+		0   00:00:00
+		1   00:00:01
+		2   00:00:02
+		3   00:00:03
+		4   00:00:04
+		dtype: timedelta64[ns]
+		>>> s.dt.components
+		   days  hours  minutes  seconds  milliseconds  microseconds  nanoseconds
+		0     0      0        0        0             0             0            0
+		1     0      0        0        1             0             0            0
+		2     0      0        0        2             0             0            0
+		3     0      0        0        3             0             0            0
+		4     0      0        0        4             0             0            0
 	**/
 	public var components : Dynamic;
 	/**
-		Number of days for each element. 
+		Number of days for each element.
 	**/
 	public var days : Dynamic;
 	/**
-		floor the data to the specified `freq`.
+		Perform floor operation on the data to the specified `freq`.
 		
 		Parameters
 		----------
@@ -233,6 +279,35 @@ package pandas.core.indexes.accessors;
 		    frequency like 'S' (second) not 'ME' (month end). See
 		    :ref:`frequency aliases <timeseries.offset_aliases>` for
 		    a list of possible `freq` values.
+		ambiguous : 'infer', bool-ndarray, 'NaT', default 'raise'
+		    Only relevant for DatetimeIndex:
+		
+		    - 'infer' will attempt to infer fall dst-transition hours based on
+		      order
+		    - bool-ndarray where True signifies a DST time, False designates
+		      a non-DST time (note that this flag is only applicable for
+		      ambiguous times)
+		    - 'NaT' will return NaT where there are ambiguous times
+		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous
+		      times
+		
+		    .. versionadded:: 0.24.0
+		
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -269,17 +344,15 @@ package pandas.core.indexes.accessors;
 	public function floor(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var freq : Dynamic;
 	/**
-		Number of microseconds (>= 0 and less than 1 second) for each
-		element. 
+		Number of microseconds (>= 0 and less than 1 second) for each element.
 	**/
 	public var microseconds : Dynamic;
 	/**
-		Number of nanoseconds (>= 0 and less than 1 microsecond) for each
-		element.
+		Number of nanoseconds (>= 0 and less than 1 microsecond) for each element.
 	**/
 	public var nanoseconds : Dynamic;
 	/**
-		round the data to the specified `freq`.
+		Perform round operation on the data to the specified `freq`.
 		
 		Parameters
 		----------
@@ -288,6 +361,35 @@ package pandas.core.indexes.accessors;
 		    frequency like 'S' (second) not 'ME' (month end). See
 		    :ref:`frequency aliases <timeseries.offset_aliases>` for
 		    a list of possible `freq` values.
+		ambiguous : 'infer', bool-ndarray, 'NaT', default 'raise'
+		    Only relevant for DatetimeIndex:
+		
+		    - 'infer' will attempt to infer fall dst-transition hours based on
+		      order
+		    - bool-ndarray where True signifies a DST time, False designates
+		      a non-DST time (note that this flag is only applicable for
+		      ambiguous times)
+		    - 'NaT' will return NaT where there are ambiguous times
+		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous
+		      times
+		
+		    .. versionadded:: 0.24.0
+		
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -323,7 +425,7 @@ package pandas.core.indexes.accessors;
 	**/
 	public function round(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Number of seconds (>= 0 and less than 1 day) for each element. 
+		Number of seconds (>= 0 and less than 1 day) for each element.
 	**/
 	public var seconds : Dynamic;
 	/**
@@ -338,6 +440,10 @@ package pandas.core.indexes.accessors;
 		-------
 		a : numpy.ndarray
 		    1D array containing data with `datetime.timedelta` type.
+		
+		See Also
+		--------
+		datetime.timedelta
 		
 		Examples
 		--------
@@ -354,25 +460,22 @@ package pandas.core.indexes.accessors;
 		array([datetime.timedelta(0), datetime.timedelta(1),
 		       datetime.timedelta(2), datetime.timedelta(3),
 		       datetime.timedelta(4)], dtype=object)
-		
-		See Also
-		--------
-		datetime.timedelta
 	**/
 	public function to_pytimedelta():Dynamic;
 	/**
 		Return total duration of each element expressed in seconds.
 		
-		This method is available directly on TimedeltaIndex and on Series
-		containing timedelta values under the ``.dt`` namespace.
+		This method is available directly on TimedeltaArray, TimedeltaIndex
+		and on Series containing timedelta values under the ``.dt`` namespace.
 		
 		Returns
 		-------
-		seconds : Float64Index or Series
-		    When the calling object is a TimedeltaIndex, the return type is a
-		    Float64Index. When the calling object is a Series, the return type
-		    is Series of type `float64` whose index is the same as the
-		    original.
+		seconds : [ndarray, Float64Index, Series]
+		    When the calling object is a TimedeltaArray, the return type
+		    is ndarray.  When the calling object is a TimedeltaIndex,
+		    the return type is a Float64Index. When the calling object
+		    is a Series, the return type is Series of type `float64` whose
+		    index is the same as the original.
 		
 		See Also
 		--------

@@ -22,7 +22,6 @@ package tensorflow.core.framework.summary_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DISPLAY_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -63,7 +62,6 @@ package tensorflow.core.framework.summary_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var PLUGIN_DATA_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -76,7 +74,6 @@ package tensorflow.core.framework.summary_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SUMMARY_DESCRIPTION_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -89,6 +86,10 @@ package tensorflow.core.framework.summary_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -256,4 +257,16 @@ package tensorflow.core.framework.summary_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.SummaryMetadata.display_name
+	**/
+	public var display_name : Dynamic;
+	/**
+		Field tensorflow.SummaryMetadata.plugin_data
+	**/
+	public var plugin_data : Dynamic;
+	/**
+		Field tensorflow.SummaryMetadata.summary_description
+	**/
+	public var summary_description : Dynamic;
 }

@@ -110,15 +110,22 @@ package matplotlib.backend_tools;
 	public var __weakref__ : Dynamic;
 	public function _cancel_action():Dynamic;
 	/**
-		the drag callback in zoom mode
+		Return a placeholder object with a single `canvas` attribute.
+		
+		This is useful to reuse the implementations of tools already provided
+		by the classic Toolbars.
+	**/
+	public function _make_classic_style_pseudo_toolbar():Dynamic;
+	/**
+		Callback for mouse moves in zoom-to-rectangle mode.
 	**/
 	public function _mouse_move(event:Dynamic):Dynamic;
 	/**
-		the _press mouse button in zoom to rect mode callback
+		Callback for mouse button presses in zoom-to-rectangle mode.
 	**/
 	public function _press(event:Dynamic):Dynamic;
 	/**
-		the release mouse button callback in zoom to rect mode
+		Callback for mouse button releases in zoom-to-rectangle mode.
 	**/
 	public function _release(event:Dynamic):Dynamic;
 	public function _switch_off_zoom_mode(event:Dynamic):Dynamic;
@@ -156,7 +163,7 @@ package matplotlib.backend_tools;
 		
 		Parameters
 		----------
-		figure: `Figure`
+		figure : `Figure`
 	**/
 	public function set_figure(figure:Dynamic):Dynamic;
 	/**

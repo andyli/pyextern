@@ -21,13 +21,11 @@ package tensorflow.core.protobuf.config_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEBUG_OPTIONS_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EXPERIMENTAL_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -54,7 +52,6 @@ package tensorflow.core.protobuf.config_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INTER_OP_THREAD_POOL_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -72,12 +69,10 @@ package tensorflow.core.protobuf.config_pb2;
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var NO_TRACE : Dynamic;
-	static public var OUTPUT_PARTITION_GRAPHS_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var REPORT_TENSOR_ALLOCATIONS_UPON_OOM_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -95,9 +90,11 @@ package tensorflow.core.protobuf.config_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TIMEOUT_IN_MS_FIELD_NUMBER : Dynamic;
-	static public var TRACE_LEVEL_FIELD_NUMBER : Dynamic;
 	static public var TraceLevel : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -265,4 +262,32 @@ package tensorflow.core.protobuf.config_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.RunOptions.debug_options
+	**/
+	public var debug_options : Dynamic;
+	/**
+		Field tensorflow.RunOptions.experimental
+	**/
+	public var experimental : Dynamic;
+	/**
+		Field tensorflow.RunOptions.inter_op_thread_pool
+	**/
+	public var inter_op_thread_pool : Dynamic;
+	/**
+		Field tensorflow.RunOptions.output_partition_graphs
+	**/
+	public var output_partition_graphs : Dynamic;
+	/**
+		Field tensorflow.RunOptions.report_tensor_allocations_upon_oom
+	**/
+	public var report_tensor_allocations_upon_oom : Dynamic;
+	/**
+		Field tensorflow.RunOptions.timeout_in_ms
+	**/
+	public var timeout_in_ms : Dynamic;
+	/**
+		Field tensorflow.RunOptions.trace_level
+	**/
+	public var trace_level : Dynamic;
 }

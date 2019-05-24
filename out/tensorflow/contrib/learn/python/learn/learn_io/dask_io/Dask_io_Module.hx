@@ -60,7 +60,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.dask_io;
 	/**
 		Extract data from dask.Series or dask.DataFrame for predictors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please feed input to tf.data to support dask.
 		
@@ -80,7 +80,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.dask_io;
 	/**
 		Extract data from dask.Series or dask.DataFrame for labels. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please feed input to tf.data to support dask.
 		

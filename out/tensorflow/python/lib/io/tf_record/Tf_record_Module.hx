@@ -14,7 +14,12 @@ package tensorflow.python.lib.io.tf_record;
 	static public var print_function : Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		An iterator that read the records from a TFRecords file.
+		An iterator that read the records from a TFRecords file. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use eager execution and: 
+		`tf.data.TFRecordDataset(path)`
 		
 		Args:
 		  path: The path to the TFRecords file.

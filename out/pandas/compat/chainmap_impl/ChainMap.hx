@@ -17,7 +17,7 @@ package pandas.compat.chainmap_impl;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __contains__(key:Dynamic):Dynamic;
 	/**
 		New ChainMap or subclass with a new copy of maps[0] and refs to

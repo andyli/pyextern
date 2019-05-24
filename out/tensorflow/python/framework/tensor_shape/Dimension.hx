@@ -368,7 +368,9 @@ package tensorflow.python.framework.tensor_shape;
 		tf.Dimension(n)   .merge_with(tf.Dimension(None)) == tf.Dimension(n)
 		tf.Dimension(None).merge_with(tf.Dimension(n))    == tf.Dimension(n)
 		tf.Dimension(None).merge_with(tf.Dimension(None)) == tf.Dimension(None)
-		tf.Dimension(n)   .merge_with(tf.Dimension(m))  # raises ValueError for n != m
+		
+		# raises ValueError for n != m
+		tf.Dimension(n)   .merge_with(tf.Dimension(m))
 		```
 		
 		Args:

@@ -133,7 +133,6 @@ package tensorflow.python.autograph.pyct.cfg;
 	public function visit_For(node:Dynamic):Dynamic;
 	public function visit_FunctionDef(node:Dynamic):Dynamic;
 	public function visit_If(node:Dynamic):Dynamic;
-	public function visit_Lambda(node:Dynamic):Dynamic;
 	public function visit_Print(node:Dynamic):Dynamic;
 	public function visit_Raise(node:Dynamic):Dynamic;
 	public function visit_Return(node:Dynamic):Dynamic;

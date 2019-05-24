@@ -548,9 +548,9 @@ package scipy.interpolate;
 		    Alternatively, the following string aliases are recognized:
 		
 		    * ``"clamped"``: The first derivatives at the ends are zero. This is
-		       equivalent to ``bc_type=((1, 0.0), (1, 0.0))``.
+		       equivalent to ``bc_type=([(1, 0.0)], [(1, 0.0)])``.
 		    * ``"natural"``: The second derivatives at ends are zero. This is
-		      equivalent to ``bc_type=((2, 0.0), (2, 0.0))``.
+		      equivalent to ``bc_type=([(2, 0.0)], [(2, 0.0)])``.
 		    * ``"not-a-knot"`` (default): The first and second segments are the same
 		      polynomial. This is equivalent to having ``bc_type=None``.
 		
@@ -746,7 +746,10 @@ package scipy.interpolate;
 		an : (N,) array_like
 		    Taylor series coefficients.
 		m : int
-		    The order of the returned approximating polynomials.
+		    The order of the returned approximating polynomial `q`.
+		n : int, optional
+		    The order of the returned approximating polynomial `p`. By default, 
+		    the order is ``len(an)-m``.
 		
 		Returns
 		-------
@@ -771,14 +774,15 @@ package scipy.interpolate;
 		>>> p(1)/q(1)
 		2.7179487179487181
 	**/
-	static public function pade(an:Dynamic, m:Dynamic):Dynamic;
+	static public function pade(an:Dynamic, m:Dynamic, ?n:Dynamic):Dynamic;
 	/**
 		Convenience function for pchip interpolation.
+		
 		xi and yi are arrays of values used to approximate some function f,
 		with ``yi = f(xi)``.  The interpolant uses monotonic cubic splines
 		to find the value of new points x and the derivatives there.
 		
-		See `PchipInterpolator` for details.
+		See `scipy.interpolate.PchipInterpolator` for details.
 		
 		Parameters
 		----------
@@ -969,7 +973,7 @@ package scipy.interpolate;
 		    of the spline. (Also see Notes.)
 		der : int, optional
 		    The order of derivative of the spline to compute (must be less than
-		    or equal to k).
+		    or equal to k, the degree of the spline).
 		ext : int, optional
 		    Controls the value returned for elements of ``x`` not in the
 		    interval defined by the knot sequence.
@@ -1009,75 +1013,6 @@ package scipy.interpolate;
 		    on Numerical Analysis, Oxford University Press, 1993.
 	**/
 	static public function splev(x:Dynamic, tck:Dynamic, ?der:Dynamic, ?ext:Dynamic):Dynamic;
-	/**
-		`spleval` is deprecated!
-		spleval is deprecated in scipy 0.19.0, use BSpline instead.
-		
-		
-		    Evaluate a fixed spline represented by the given tuple at the new x-values
-		
-		    The `xj` values are the interior knot points.  The approximation
-		    region is `xj[0]` to `xj[-1]`.  If N+1 is the length of `xj`, then `cvals`
-		    should have length N+k where `k` is the order of the spline.
-		
-		    Parameters
-		    ----------
-		    (xj, cvals, k) : tuple
-		        Parameters that define the fixed spline
-		    xj : array_like
-		        Interior knot points
-		    cvals : array_like
-		        Curvature
-		    k : int
-		        Order of the spline
-		    xnew : array_like
-		        Locations to calculate spline
-		    deriv : int
-		        Deriv
-		
-		    Returns
-		    -------
-		    spleval : ndarray
-		        If `cvals` represents more than one curve (`cvals.ndim` > 1) and/or
-		        `xnew` is N-d, then the result is `xnew.shape` + `cvals.shape[1:]`
-		        providing the interpolation of multiple curves.
-		
-		    Notes
-		    -----
-		    Internally, an additional `k`-1 knot points are added on either side of
-		    the spline.
-		
-		    
-	**/
-	static public function spleval(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`spline` is deprecated!
-		spline is deprecated in scipy 0.19.0, use Bspline class instead.
-		
-		
-		    Interpolate a curve at new points using a spline fit
-		
-		    Parameters
-		    ----------
-		    xk, yk : array_like
-		        The x and y values that define the curve.
-		    xnew : array_like
-		        The x values where spline should estimate the y values.
-		    order : int
-		        Default is 3.
-		    kind : string
-		        One of {'smoothest'}
-		    conds : Don't know
-		        Don't know
-		
-		    Returns
-		    -------
-		    spline : ndarray
-		        An array of y values; the spline evaluated at the positions `xnew`.
-		
-		    
-	**/
-	static public function spline(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Evaluate the definite integral of a B-spline between two given points.
 		
@@ -1123,39 +1058,6 @@ package scipy.interpolate;
 		    on Numerical Analysis, Oxford University Press, 1993.
 	**/
 	static public function splint(a:Dynamic, b:Dynamic, tck:Dynamic, ?full_output:Dynamic):Float;
-	/**
-		`splmake` is deprecated!
-		splmake is deprecated in scipy 0.19.0, use make_interp_spline instead.
-		
-		
-		    Return a representation of a spline given data-points at internal knots
-		
-		    Parameters
-		    ----------
-		    xk : array_like
-		        The input array of x values of rank 1
-		    yk : array_like
-		        The input array of y values of rank N. `yk` can be an N-d array to
-		        represent more than one curve, through the same `xk` points. The first
-		        dimension is assumed to be the interpolating dimension and is the same
-		        length of `xk`.
-		    order : int, optional
-		        Order of the spline
-		    kind : str, optional
-		        Can be 'smoothest', 'not_a_knot', 'fixed', 'clamped', 'natural',
-		        'periodic', 'symmetric', 'user', 'mixed' and it is ignored if order < 2
-		    conds : optional
-		        Conds
-		
-		    Returns
-		    -------
-		    splmake : tuple
-		        Return a (`xk`, `cvals`, `k`) representation of a spline given
-		        data-points where the (internal) knots are at the data-points.
-		
-		    
-	**/
-	static public function splmake(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find the B-spline representation of an N-dimensional curve.
 		
@@ -1421,13 +1323,6 @@ package scipy.interpolate;
 		>>> plt.show()
 	**/
 	static public function splrep(x:Dynamic, y:Dynamic, ?w:Dynamic, ?xb:Dynamic, ?xe:Dynamic, ?k:Dynamic, ?task:Dynamic, ?s:Dynamic, ?t:Dynamic, ?full_output:Dynamic, ?per:Dynamic, ?quiet:Dynamic):python.Tuple<Dynamic>;
-	/**
-		`spltopp` is deprecated!
-		spltopp is deprecated in scipy 0.19.0, use PPoly.from_spline instead.
-		
-		Return a piece-wise polynomial object from a fixed-spline tuple.
-	**/
-	static public function spltopp(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find the roots of a cubic B-spline.
 		

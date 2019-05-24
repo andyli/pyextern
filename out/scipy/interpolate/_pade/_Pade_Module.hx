@@ -177,7 +177,10 @@ package scipy.interpolate._pade;
 		an : (N,) array_like
 		    Taylor series coefficients.
 		m : int
-		    The order of the returned approximating polynomials.
+		    The order of the returned approximating polynomial `q`.
+		n : int, optional
+		    The order of the returned approximating polynomial `p`. By default, 
+		    the order is ``len(an)-m``.
 		
 		Returns
 		-------
@@ -202,7 +205,7 @@ package scipy.interpolate._pade;
 		>>> p(1)/q(1)
 		2.7179487179487181
 	**/
-	static public function pade(an:Dynamic, m:Dynamic):Dynamic;
+	static public function pade(an:Dynamic, m:Dynamic, ?n:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public var r_ : Dynamic;
 	/**

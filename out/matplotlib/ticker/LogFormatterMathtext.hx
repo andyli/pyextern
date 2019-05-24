@@ -119,6 +119,11 @@ package matplotlib.ticker;
 	**/
 	public function _non_decade_format(sign_string:Dynamic, base:Dynamic, fx:Dynamic, usetex:Dynamic):Dynamic;
 	public function _num_to_string(x:Dynamic, vmin:Dynamic, vmax:Dynamic):Dynamic;
+	public function _pprint_val(x:Dynamic, d:Dynamic):Dynamic;
+	/**
+		Subclasses may want to override this to set a locator.
+	**/
+	public function _set_locator(locator:Dynamic):Dynamic;
 	static public var axis : Dynamic;
 	/**
 		Change the *base* for labeling.
@@ -151,6 +156,10 @@ package matplotlib.ticker;
 		Return a short formatted string representation of a number.
 	**/
 	public function format_data_short(value:Dynamic):Dynamic;
+	/**
+		Return the tick labels for all the ticks at once.
+	**/
+	public function format_ticks(values:Dynamic):Dynamic;
 	public function get_offset():Dynamic;
 	/**
 		Switch minor tick labeling on or off.
@@ -162,7 +171,15 @@ package matplotlib.ticker;
 	**/
 	public function label_minor(labelOnlyBase:Dynamic):Dynamic;
 	static public var locs : Dynamic;
-	public function pprint_val(x:Dynamic, d:Dynamic):Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
+	public function pprint_val(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function set_axis(axis:Dynamic):Dynamic;
 	public function set_bounds(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function set_data_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;

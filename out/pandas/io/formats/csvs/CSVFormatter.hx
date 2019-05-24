@@ -111,5 +111,8 @@ package pandas.io.formats.csvs;
 	public function _save():Dynamic;
 	public function _save_chunk(start_i:Dynamic, end_i:Dynamic):Dynamic;
 	public function _save_header():Dynamic;
+	/**
+		Create the writer & save
+	**/
 	public function save():Dynamic;
 }

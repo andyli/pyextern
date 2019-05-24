@@ -13,7 +13,6 @@ package pandas._libs.reduction;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	static public function apply_frame_axis0(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var is_numpy_prior_1_6_2 : Dynamic;
 	/**
 		Type inference function-- convert object array to proper dtype
 	**/

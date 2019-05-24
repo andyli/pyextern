@@ -14,7 +14,7 @@ package tensorflow.contrib.data.python.ops.get_single_element;
 	/**
 		Returns the single element in `dataset` as a nested structure of tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.get_single_element(...)`.
 		
@@ -55,7 +55,7 @@ package tensorflow.contrib.data.python.ops.get_single_element;
 	/**
 		Returns the result of reducing the `dataset` using `reducer`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.Dataset.reduce(...)`.
 		

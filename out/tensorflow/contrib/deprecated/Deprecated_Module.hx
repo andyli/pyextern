@@ -14,7 +14,7 @@ package tensorflow.contrib.deprecated;
 	/**
 		Outputs a `Summary` protocol buffer with audio. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		Please switch to tf.summary.audio. Note that tf.summary.audio uses the node name instead of the tag. This means that TensorFlow will automatically de-duplicate summary names based on the scope they are created in.
 		
@@ -55,7 +55,7 @@ package tensorflow.contrib.deprecated;
 	/**
 		Outputs a `Summary` protocol buffer with a histogram. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		Please switch to tf.summary.histogram. Note that tf.summary.histogram uses the node name instead of the tag. This means that TensorFlow will automatically de-duplicate summary names based on the scope they are created in.
 		
@@ -86,7 +86,7 @@ package tensorflow.contrib.deprecated;
 	/**
 		Outputs a `Summary` protocol buffer with images. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		Please switch to tf.summary.image. Note that tf.summary.image uses the node name instead of the tag. This means that TensorFlow will automatically de-duplicate summary names based on the scope they are created in. Also, the max_images argument was renamed to max_outputs.
 		
@@ -138,7 +138,7 @@ package tensorflow.contrib.deprecated;
 	/**
 		Merges all summaries collected in the default graph. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		Please switch to tf.summary.merge_all.
 		
@@ -158,7 +158,7 @@ package tensorflow.contrib.deprecated;
 	/**
 		Merges summaries. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		Please switch to tf.summary.merge.
 		
@@ -188,7 +188,7 @@ package tensorflow.contrib.deprecated;
 	/**
 		Outputs a `Summary` protocol buffer with scalar values. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		Please switch to tf.summary.scalar. Note that tf.summary.scalar uses the node name instead of the tag. This means that TensorFlow will automatically de-duplicate summary names based on the scope they are created in. Also, passing a tensor or list of tags to a scalar summary op is no longer supported.
 		

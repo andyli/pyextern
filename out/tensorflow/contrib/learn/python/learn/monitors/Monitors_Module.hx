@@ -19,7 +19,7 @@ package tensorflow.contrib.learn.python.learn.monitors;
 	/**
 		Returns a default set of typically-used monitors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.train.MonitoredTrainingSession.
 		

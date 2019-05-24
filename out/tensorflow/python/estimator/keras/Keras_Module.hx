@@ -2,6 +2,7 @@
 package tensorflow.python.estimator.keras;
 @:pythonImport("tensorflow.python.estimator.keras") extern class Keras_Module {
 	static public var _DEFAULT_SERVING_KEY : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

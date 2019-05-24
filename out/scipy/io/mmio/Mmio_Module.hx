@@ -87,39 +87,6 @@ package scipy.io.mmio;
 	**/
 	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	static public function asbytes(s:Dynamic):Dynamic;
-	/**
-		Return a contiguous array in memory (C order).
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array.
-		dtype : str or dtype object, optional
-		    Data-type of returned array.
-		
-		Returns
-		-------
-		out : ndarray
-		    Contiguous array of same shape and content as `a`, with type `dtype`
-		    if specified.
-		
-		See Also
-		--------
-		asfortranarray : Convert input to an ndarray with column-major
-		                 memory order.
-		require : Return an ndarray that satisfies requirements.
-		ndarray.flags : Information about the memory layout of the array.
-		
-		Examples
-		--------
-		>>> x = np.arange(6).reshape(2,3)
-		>>> np.ascontiguousarray(x, dtype=np.float32)
-		array([[ 0.,  1.,  2.],
-		       [ 3.,  4.,  5.]], dtype=float32)
-		>>> x.flags['C_CONTIGUOUS']
-		True
-	**/
-	static public function ascontiguousarray(a:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function asstr(s:Dynamic):Dynamic;
 	/**
 		can_cast(from_, to, casting='safe')
@@ -263,6 +230,7 @@ package scipy.io.mmio;
 		hstack : Stack arrays in sequence horizontally (column wise)
 		vstack : Stack arrays in sequence vertically (row wise)
 		dstack : Stack arrays in sequence depth wise (along third dimension)
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -292,19 +260,19 @@ package scipy.io.mmio;
 		>>> a[1] = np.ma.masked
 		>>> b = np.arange(2, 5)
 		>>> a
-		masked_array(data = [0 -- 2],
-		             mask = [False  True False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2],
+		             mask=[False,  True, False],
+		       fill_value=999999)
 		>>> b
 		array([2, 3, 4])
 		>>> np.concatenate([a, b])
-		masked_array(data = [0 1 2 2 3 4],
-		             mask = False,
-		       fill_value = 999999)
+		masked_array(data=[0, 1, 2, 2, 3, 4],
+		             mask=False,
+		       fill_value=999999)
 		>>> np.ma.concatenate([a, b])
-		masked_array(data = [0 -- 2 2 3 4],
-		             mask = [False  True False False False False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2, 2, 3, 4],
+		             mask=[False,  True, False, False, False, False],
+		       fill_value=999999)
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -349,127 +317,6 @@ package scipy.io.mmio;
 	**/
 	static public function conj(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
-	/**
-		fromfile(file, dtype=float, count=-1, sep='')
-		
-		Construct an array from data in a text or binary file.
-		
-		A highly efficient way of reading binary data with a known data-type,
-		as well as parsing simply formatted text files.  Data written using the
-		`tofile` method can be read using this function.
-		
-		Parameters
-		----------
-		file : file or str
-		    Open file object or filename.
-		dtype : data-type
-		    Data type of the returned array.
-		    For binary files, it is used to determine the size and byte-order
-		    of the items in the file.
-		count : int
-		    Number of items to read. ``-1`` means all items (i.e., the complete
-		    file).
-		sep : str
-		    Separator between items if file is a text file.
-		    Empty ("") separator means the file should be treated as binary.
-		    Spaces (" ") in the separator match zero or more whitespace characters.
-		    A separator consisting only of spaces must match at least one
-		    whitespace.
-		
-		See also
-		--------
-		load, save
-		ndarray.tofile
-		loadtxt : More flexible way of loading data from a text file.
-		
-		Notes
-		-----
-		Do not rely on the combination of `tofile` and `fromfile` for
-		data storage, as the binary files generated are are not platform
-		independent.  In particular, no byte-order or data-type information is
-		saved.  Data can be stored in the platform independent ``.npy`` format
-		using `save` and `load` instead.
-		
-		Examples
-		--------
-		Construct an ndarray:
-		
-		>>> dt = np.dtype([('time', [('min', int), ('sec', int)]),
-		...                ('temp', float)])
-		>>> x = np.zeros((1,), dtype=dt)
-		>>> x['time']['min'] = 10; x['temp'] = 98.25
-		>>> x
-		array([((10, 0), 98.25)],
-		      dtype=[('time', [('min', '<i4'), ('sec', '<i4')]), ('temp', '<f8')])
-		
-		Save the raw data to disk:
-		
-		>>> import os
-		>>> fname = os.tmpnam()
-		>>> x.tofile(fname)
-		
-		Read the raw data from disk:
-		
-		>>> np.fromfile(fname, dtype=dt)
-		array([((10, 0), 98.25)],
-		      dtype=[('time', [('min', '<i4'), ('sec', '<i4')]), ('temp', '<f8')])
-		
-		The recommended way to store and load data:
-		
-		>>> np.save(fname, x)
-		>>> np.load(fname + '.npy')
-		array([((10, 0), 98.25)],
-		      dtype=[('time', [('min', '<i4'), ('sec', '<i4')]), ('temp', '<f8')])
-	**/
-	static public function fromfile(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		fromstring(string, dtype=float, count=-1, sep='')
-		
-		A new 1-D array initialized from text data in a string.
-		
-		Parameters
-		----------
-		string : str
-		    A string containing the data.
-		dtype : data-type, optional
-		    The data type of the array; default: float.  For binary input data,
-		    the data must be in exactly this format.
-		count : int, optional
-		    Read this number of `dtype` elements from the data.  If this is
-		    negative (the default), the count will be determined from the
-		    length of the data.
-		sep : str, optional
-		    The string separating numbers in the data; extra whitespace between
-		    elements is also ignored.
-		
-		    .. deprecated:: 1.14
-		        If this argument is not provided, `fromstring` falls back on the
-		        behaviour of `frombuffer` after encoding unicode string inputs as
-		        either utf-8 (python 3), or the default encoding (python 2).
-		
-		Returns
-		-------
-		arr : ndarray
-		    The constructed array.
-		
-		Raises
-		------
-		ValueError
-		    If the string is not the correct size to satisfy the requested
-		    `dtype` and `count`.
-		
-		See Also
-		--------
-		frombuffer, fromfile, fromiter
-		
-		Examples
-		--------
-		>>> np.fromstring('1 2', dtype=int, sep=' ')
-		array([1, 2])
-		>>> np.fromstring('1, 2', dtype=int, sep=',')
-		array([1, 2])
-	**/
-	static public function fromstring(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return the imaginary part of the complex argument.
 		
@@ -672,177 +519,7 @@ package scipy.io.mmio;
 		1.0
 	**/
 	static public function real(val:Dynamic):Dynamic;
-	/**
-		Save an array to a text file.
-		
-		Parameters
-		----------
-		fname : filename or file handle
-		    If the filename ends in ``.gz``, the file is automatically saved in
-		    compressed gzip format.  `loadtxt` understands gzipped files
-		    transparently.
-		X : 1D or 2D array_like
-		    Data to be saved to a text file.
-		fmt : str or sequence of strs, optional
-		    A single format (%10.5f), a sequence of formats, or a
-		    multi-format string, e.g. 'Iteration %d -- %10.5f', in which
-		    case `delimiter` is ignored. For complex `X`, the legal options
-		    for `fmt` are:
-		
-		    * a single specifier, `fmt='%.4e'`, resulting in numbers formatted
-		      like `' (%s+%sj)' % (fmt, fmt)`
-		    * a full string specifying every real and imaginary part, e.g.
-		      `' %.4e %+.4ej %.4e %+.4ej %.4e %+.4ej'` for 3 columns
-		    * a list of specifiers, one per column - in this case, the real
-		      and imaginary part must have separate specifiers,
-		      e.g. `['%.3e + %.3ej', '(%.15e%+.15ej)']` for 2 columns
-		delimiter : str, optional
-		    String or character separating columns.
-		newline : str, optional
-		    String or character separating lines.
-		
-		    .. versionadded:: 1.5.0
-		header : str, optional
-		    String that will be written at the beginning of the file.
-		
-		    .. versionadded:: 1.7.0
-		footer : str, optional
-		    String that will be written at the end of the file.
-		
-		    .. versionadded:: 1.7.0
-		comments : str, optional
-		    String that will be prepended to the ``header`` and ``footer`` strings,
-		    to mark them as comments. Default: '# ',  as expected by e.g.
-		    ``numpy.loadtxt``.
-		
-		    .. versionadded:: 1.7.0
-		encoding : {None, str}, optional
-		    Encoding used to encode the outputfile. Does not apply to output
-		    streams. If the encoding is something other than 'bytes' or 'latin1'
-		    you will not be able to load the file in NumPy versions < 1.14. Default
-		    is 'latin1'.
-		
-		    .. versionadded:: 1.14.0
-		
-		
-		See Also
-		--------
-		save : Save an array to a binary file in NumPy ``.npy`` format
-		savez : Save several arrays into an uncompressed ``.npz`` archive
-		savez_compressed : Save several arrays into a compressed ``.npz`` archive
-		
-		Notes
-		-----
-		Further explanation of the `fmt` parameter
-		(``%[flag]width[.precision]specifier``):
-		
-		flags:
-		    ``-`` : left justify
-		
-		    ``+`` : Forces to precede result with + or -.
-		
-		    ``0`` : Left pad the number with zeros instead of space (see width).
-		
-		width:
-		    Minimum number of characters to be printed. The value is not truncated
-		    if it has more characters.
-		
-		precision:
-		    - For integer specifiers (eg. ``d,i,o,x``), the minimum number of
-		      digits.
-		    - For ``e, E`` and ``f`` specifiers, the number of digits to print
-		      after the decimal point.
-		    - For ``g`` and ``G``, the maximum number of significant digits.
-		    - For ``s``, the maximum number of characters.
-		
-		specifiers:
-		    ``c`` : character
-		
-		    ``d`` or ``i`` : signed decimal integer
-		
-		    ``e`` or ``E`` : scientific notation with ``e`` or ``E``.
-		
-		    ``f`` : decimal floating point
-		
-		    ``g,G`` : use the shorter of ``e,E`` or ``f``
-		
-		    ``o`` : signed octal
-		
-		    ``s`` : string of characters
-		
-		    ``u`` : unsigned decimal integer
-		
-		    ``x,X`` : unsigned hexadecimal integer
-		
-		This explanation of ``fmt`` is not complete, for an exhaustive
-		specification see [1]_.
-		
-		References
-		----------
-		.. [1] `Format Specification Mini-Language
-		       <http://docs.python.org/library/string.html#
-		       format-specification-mini-language>`_, Python Documentation.
-		
-		Examples
-		--------
-		>>> x = y = z = np.arange(0.0,5.0,1.0)
-		>>> np.savetxt('test.out', x, delimiter=',')   # X is an array
-		>>> np.savetxt('test.out', (x,y,z))   # x,y,z equal sized 1D arrays
-		>>> np.savetxt('test.out', x, fmt='%1.4e')   # use exponential notation
-	**/
-	static public function savetxt(fname:Dynamic, X:Dynamic, ?fmt:Dynamic, ?delimiter:Dynamic, ?newline:Dynamic, ?header:Dynamic, ?footer:Dynamic, ?comments:Dynamic, ?encoding:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
-	/**
-		Stack arrays in sequence vertically (row wise).
-		
-		This is equivalent to concatenation along the first axis after 1-D arrays
-		of shape `(N,)` have been reshaped to `(1,N)`. Rebuilds arrays divided by
-		`vsplit`.
-		
-		This function makes most sense for arrays with up to 3 dimensions. For
-		instance, for pixel-data with a height (first axis), width (second axis),
-		and r/g/b channels (third axis). The functions `concatenate`, `stack` and
-		`block` provide more general stacking and concatenation operations.
-		
-		Parameters
-		----------
-		tup : sequence of ndarrays
-		    The arrays must have the same shape along all but the first axis.
-		    1-D arrays must have the same length.
-		
-		Returns
-		-------
-		stacked : ndarray
-		    The array formed by stacking the given arrays, will be at least 2-D.
-		
-		See Also
-		--------
-		stack : Join a sequence of arrays along a new axis.
-		hstack : Stack arrays in sequence horizontally (column wise).
-		dstack : Stack arrays in sequence depth wise (along third dimension).
-		concatenate : Join a sequence of arrays along an existing axis.
-		vsplit : Split array into a list of multiple sub-arrays vertically.
-		block : Assemble arrays from blocks.
-		
-		Examples
-		--------
-		>>> a = np.array([1, 2, 3])
-		>>> b = np.array([2, 3, 4])
-		>>> np.vstack((a,b))
-		array([[1, 2, 3],
-		       [2, 3, 4]])
-		
-		>>> a = np.array([[1], [2], [3]])
-		>>> b = np.array([[2], [3], [4]])
-		>>> np.vstack((a,b))
-		array([[1],
-		       [2],
-		       [3],
-		       [2],
-		       [3],
-		       [4]])
-	**/
-	static public function vstack(tup:Dynamic):Dynamic;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

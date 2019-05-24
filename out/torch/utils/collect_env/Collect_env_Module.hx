@@ -10,7 +10,9 @@ package torch.utils.collect_env;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
 	static public function check_release_file(run_lambda:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	static public var env_info_fmt : Dynamic;
 	static public function get_cmake_version(run_lambda:Dynamic):Dynamic;
 	static public function get_conda_packages(run_lambda:Dynamic):Dynamic;
@@ -56,6 +58,7 @@ package torch.utils.collect_env;
 	**/
 	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	static public function pretty_str(envinfo:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		Returns (return-code, stdout, stderr)
 	**/
@@ -68,4 +71,5 @@ package torch.utils.collect_env;
 		Runs command using run_lambda; reads and returns entire output if rc is 0
 	**/
 	static public function run_and_read_all(run_lambda:Dynamic, command:Dynamic):Dynamic;
+	static public var unicode_literals : Dynamic;
 }

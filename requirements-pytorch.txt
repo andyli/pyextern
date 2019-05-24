@@ -1,2 +1,2 @@
 docutils==0.14
-pytorch-cpu==0.4.1
+pytorch-cpu==1.0.1

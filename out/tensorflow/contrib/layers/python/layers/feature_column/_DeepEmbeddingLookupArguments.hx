@@ -87,7 +87,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -111,7 +111,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	**/
 	public function __repr__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**

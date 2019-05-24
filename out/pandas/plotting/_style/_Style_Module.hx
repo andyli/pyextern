@@ -10,7 +10,6 @@ package pandas.plotting._style;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _get_standard_colors(?num_colors:Dynamic, ?colormap:Dynamic, ?color_type:Dynamic, ?color:Dynamic):Dynamic;
-	static public function _mpl_ge_2_0_0():Dynamic;
 	/**
 		@contextmanager decorator.
 		
@@ -50,7 +49,11 @@ package pandas.plotting._style;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -69,8 +72,12 @@ package pandas.plotting._style;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var plot_params : Dynamic;

@@ -5,8 +5,6 @@ package tensorflow.core.protobuf.queue_runner_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CANCEL_OP_NAME_FIELD_NUMBER : Dynamic;
-	static public var CLOSE_OP_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -28,7 +26,6 @@ package tensorflow.core.protobuf.queue_runner_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ENQUEUE_OP_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
@@ -69,8 +66,6 @@ package tensorflow.core.protobuf.queue_runner_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var QUEUE_CLOSED_EXCEPTION_TYPES_FIELD_NUMBER : Dynamic;
-	static public var QUEUE_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -87,6 +82,10 @@ package tensorflow.core.protobuf.queue_runner_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -252,4 +251,24 @@ package tensorflow.core.protobuf.queue_runner_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.QueueRunnerDef.cancel_op_name
+	**/
+	public var cancel_op_name : Dynamic;
+	/**
+		Field tensorflow.QueueRunnerDef.close_op_name
+	**/
+	public var close_op_name : Dynamic;
+	/**
+		Field tensorflow.QueueRunnerDef.enqueue_op_name
+	**/
+	public var enqueue_op_name : Dynamic;
+	/**
+		Field tensorflow.QueueRunnerDef.queue_closed_exception_types
+	**/
+	public var queue_closed_exception_types : Dynamic;
+	/**
+		Field tensorflow.QueueRunnerDef.queue_name
+	**/
+	public var queue_name : Dynamic;
 }

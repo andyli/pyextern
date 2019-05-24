@@ -148,68 +148,17 @@ package torch._c;
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __truediv__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __xor__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _abs(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _acos(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _addmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _addmv_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _addr(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _addr_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _argmax(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _argmin(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _asin(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _atan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var _backward_hooks : Dynamic;
 	public var _base : Dynamic;
-	public function _bernoulli_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _cast_Byte(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _cast_Char(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _cast_Double(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _cast_Float(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _cast_Half(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _cast_Int(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _cast_Long(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _cast_Short(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var _cdata : Dynamic;
-	public function _ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _copy_ignoring_overlaps_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _cosh(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _denseDims(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _coalesced_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _dimI(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _dimV(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _dot(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _erf(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _erfc(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _expm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _fft_with_size(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _fill_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _floor(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _ger(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var _grad : Dynamic;
 	public var _grad_fn : Dynamic;
 	public function _indices(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _log(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _log10(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _log1p(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _log2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _make_subclass(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _mm(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _mv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _nnz(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _round(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _rsqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _s_where(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _sin(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _sinh(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _sparseDims(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _sparse_mask(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _standard_gamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _standard_gamma_grad(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _tan(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _trunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _unique(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _values(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var _version : Dynamic;
 	/**
@@ -329,14 +278,11 @@ package torch._c;
 		
 		Example::
 		
-		    >>> a = torch.randn(1, 3).mul(2).byte()
+		    >>> a = torch.randn(1, 3).byte() % 2
 		    >>> a
-		
-		     1  1  0
-		    [torch.ByteTensor of size 1x3]
-		
+		    tensor([[1, 0, 0]], dtype=torch.uint8)
 		    >>> a.all()
-		    False
+		    tensor(0, dtype=torch.uint8)
 		
 		.. function:: all(dim, keepdim=False, out=None) -> Tensor
 		
@@ -355,24 +301,21 @@ package torch._c;
 		
 		Example::
 		
-		    >>> a = torch.randn(4, 2).mul(2).byte()
+		    >>> a = torch.randn(4, 2).byte() % 2
 		    >>> a
-		
-		     1  1
-		     1  0
-		     0  0
-		     1  0
-		    [torch.ByteTensor of size 4x2]
-		
+		    tensor([[0, 0],
+		            [0, 0],
+		            [0, 1],
+		            [1, 1]], dtype=torch.uint8)
 		    >>> a.all(dim=1)
-		
-		     1
-		     0
-		     0
-		     0
-		    [torch.ByteTensor of size 4]
+		    tensor([0, 0, 0, 1], dtype=torch.uint8)
 	**/
 	public function all(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		allclose(other, rtol=1e-05, atol=1e-08, equal_nan=False) -> Tensor
+		
+		See :func:`torch.allclose`
+	**/
 	public function allclose(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		.. function:: any() -> bool
@@ -381,14 +324,11 @@ package torch._c;
 		
 		Example::
 		
-		    >>> a = torch.randn(1, 3).mul(2).byte()
+		    >>> a = torch.randn(1, 3).byte() % 2
 		    >>> a
-		
-		     1  1  0
-		    [torch.ByteTensor of size 1x3]
-		
+		    tensor([[0, 0, 1]], dtype=torch.uint8)
 		    >>> a.any()
-		    True
+		    tensor(1, dtype=torch.uint8)
 		
 		.. function:: any(dim, keepdim=False, out=None) -> Tensor
 		
@@ -407,22 +347,14 @@ package torch._c;
 		
 		Example::
 		
-		    >>> a = torch.randn(4, 2).mul(2).byte()
+		    >>> a = torch.randn(4, 2).byte() % 2
 		    >>> a
-		
-		     1  1
-		     1  0
-		     0  0
-		     1  0
-		    [torch.ByteTensor of size 4x2]
-		
+		    tensor([[1, 0],
+		            [0, 0],
+		            [0, 1],
+		            [0, 0]], dtype=torch.uint8)
 		    >>> a.any(dim=1)
-		
-		     1
-		     1
-		     0
-		     1
-		    [torch.ByteTensor of size 4]
+		    tensor([1, 0, 1, 0], dtype=torch.uint8)
 	**/
 	public function any(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -488,17 +420,41 @@ package torch._c;
 	**/
 	public function baddbmm_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bernoulli() -> Tensor
+		bernoulli(*, generator=None) -> Tensor
+		
+		Returns a result tensor where each :math:`\texttt{result[i]}` is independently
+		sampled from :math:`\text{Bernoulli}(\texttt{self[i]})`. :attr:`self` must have
+		floating point ``dtype``, and the result will have the same ``dtype``.
 		
 		See :func:`torch.bernoulli`
 	**/
 	public function bernoulli(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		bernoulli_() -> Tensor
+		.. function:: bernoulli_(p=0.5, *, generator=None) -> Tensor
 		
-		In-place version of :meth:`~Tensor.bernoulli`
+		    Fills each location of :attr:`self` with an independent sample from
+		    :math:`\text{Bernoulli}(\texttt{p})`. :attr:`self` can have integral
+		    ``dtype``.
+		
+		.. function:: bernoulli_(p_tensor, *, generator=None) -> Tensor
+		
+		    :attr:`p_tensor` should be a tensor containing probabilities to be used for
+		    drawing the binary random number.
+		
+		    The :math:`\text{i}^{th}` element of :attr:`self` tensor will be set to a
+		    value sampled from :math:`\text{Bernoulli}(\texttt{p\_tensor[i]})`.
+		
+		    :attr:`self` can have integral ``dtype``, but :attr`p_tensor` must have
+		    floating point ``dtype``.
+		
+		See also :meth:`~Tensor.bernoulli` and :func:`torch.bernoulli`
 	**/
 	public function bernoulli_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		bincount(weights=None, minlength=0) -> Tensor
+		
+		See :func:`torch.bincount`
+	**/
 	public function bincount(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		bmm(batch2) -> Tensor
@@ -513,6 +469,11 @@ package torch._c;
 		See :func:`torch.btrifact_with_info`
 	**/
 	public function btrifact_with_info(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		btrisolve(LU_data, LU_pivots) -> Tensor
+		
+		See :func:`torch.btrisolve`
+	**/
 	public function btrisolve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		byte() -> Tensor
@@ -527,7 +488,7 @@ package torch._c;
 		
 		.. math::
 		
-		    f(x) = \dfrac{1}{\pi} \dfrac{\sigma}{(x - median)^2 + \sigma^2}
+		    f(x) = \dfrac{1}{\pi} \dfrac{\sigma}{(x - \text{median})^2 + \sigma^2}
 	**/
 	public function cauchy_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -549,6 +510,12 @@ package torch._c;
 	**/
 	public function char(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		cholesky(upper=False) -> Tensor
+		
+		See :func:`torch.cholesky`
+	**/
+	public function cholesky(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		chunk(chunks, dim=0) -> List of Tensors
 		
 		See :func:`torch.chunk`
@@ -566,6 +533,10 @@ package torch._c;
 		In-place version of :meth:`~Tensor.clamp`
 	**/
 	public function clamp_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function clamp_max(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function clamp_max_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function clamp_min(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function clamp_min_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		clone() -> Tensor
 		
@@ -587,7 +558,6 @@ package torch._c;
 		tensor.
 	**/
 	public function contiguous(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function conv_tbc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		copy_(src, non_blocking=False) -> Tensor
 		
@@ -629,6 +599,14 @@ package torch._c;
 		In-place version of :meth:`~Tensor.cosh`
 	**/
 	public function cosh_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		cpu() -> Tensor
+		
+		Returns a copy of this object in CPU memory.
+		
+		If this object is already in CPU memory and on the correct device,
+		then no copy is performed and the original object is returned.
+	**/
 	public function cpu(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		cross(other, dim=-1) -> Tensor
@@ -672,6 +650,16 @@ package torch._c;
 	**/
 	public function data_ptr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		dense_dim() -> int
+		
+		If :attr:`self` is a sparse COO tensor (i.e., with ``torch.sparse_coo`` layout),
+		this returns a the number of dense dimensions. Otherwise, this throws an
+		error.
+		
+		See also :meth:`Tensor.sparse_dim`.
+	**/
+	public function dense_dim(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		det() -> Tensor
 		
 		See :func:`torch.det`
@@ -694,6 +682,9 @@ package torch._c;
 		Views cannot be detached in-place.
 	**/
 	public function detach_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Is the :class:`torch.device` where this Tensor is.
+	**/
 	public var device : Dynamic;
 	/**
 		diag(diagonal=0) -> Tensor
@@ -701,8 +692,35 @@ package torch._c;
 		See :func:`torch.diag`
 	**/
 	public function diag(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		diag_embed(offset=0, dim1=-2, dim2=-1) -> Tensor
+		
+		See :func:`torch.diag_embed`
+	**/
+	public function diag_embed(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		diagflat(diagonal=0) -> Tensor
+		
+		See :func:`torch.diagflat`
+	**/
+	public function diagflat(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		diagonal(offset=0, dim1=0, dim2=1) -> Tensor
+		
+		See :func:`torch.diagonal`
+	**/
 	public function diagonal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		digamma() -> Tensor
+		
+		See :func:`torch.digamma`
+	**/
 	public function digamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		digamma_() -> Tensor
+		
+		In-place version of :meth:`~Tensor.digamma`
+	**/
 	public function digamma_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		dim() -> int
@@ -784,13 +802,23 @@ package torch._c;
 		See :func:`torch.erf`
 	**/
 	public function erf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		erf_() -> Tensor
+		
+		In-place version of :meth:`~Tensor.erf`
+	**/
 	public function erf_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		erf() -> Tensor
+		erfc() -> Tensor
 		
 		See :func:`torch.erfc`
 	**/
 	public function erfc(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		erfc_() -> Tensor
+		
+		In-place version of :meth:`~Tensor.erfc`
+	**/
 	public function erfc_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		erfinv() -> Tensor
@@ -798,6 +826,11 @@ package torch._c;
 		See :func:`torch.erfinv`
 	**/
 	public function erfinv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		erfinv_() -> Tensor
+		
+		In-place version of :meth:`~Tensor.erfinv`
+	**/
 	public function erfinv_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		exp() -> Tensor
@@ -901,6 +934,11 @@ package torch._c;
 		see :func:`torch.flatten`
 	**/
 	public function flatten(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		flip(dims) -> Tensor
+		
+		See :func:`torch.flip`
+	**/
 	public function flip(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		float() -> Tensor
@@ -997,7 +1035,7 @@ package torch._c;
 	**/
 	public function gesv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		get_device(A) -> Device ordinal (Integer)
+		get_device() -> Device ordinal (Integer)
 		
 		For CUDA tensors, this function returns the device ordinal of the GPU on which the tensor resides.
 		For CPU tensors, an error is thrown.
@@ -1010,6 +1048,12 @@ package torch._c;
 		    >>> x.cpu().get_device()  # RuntimeError: get_device is not implemented for type torch.FloatTensor
 	**/
 	public function get_device(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		This attribute is ``None`` by default and becomes a Tensor the first time a call to
+		:func:`backward` computes gradients for ``self``.
+		The attribute will then contain the gradients computed and future calls to
+		:func:`backward` will accumulate (add) gradients into it.
+	**/
 	public var grad : Dynamic;
 	public var grad_fn : Dynamic;
 	/**
@@ -1030,6 +1074,11 @@ package torch._c;
 		``self.half()`` is equivalent to ``self.to(torch.float16)``. See :func:`to`.
 	**/
 	public function half(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		hardshrink(lambd=0.5) -> Tensor
+		
+		See :func:`torch.nn.functional.hardshrink`
+	**/
 	public function hardshrink(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		histc(bins=100, min=0, max=0) -> Tensor
@@ -1054,6 +1103,8 @@ package torch._c;
 		The :attr:`dim`\ th dimension of :attr:`tensor` must have the same size as the
 		length of :attr:`index` (which must be a vector), and all other dimensions must
 		match :attr:`self`, or an error will be raised.
+		
+		.. include:: cuda_deterministic.rst
 		
 		Args:
 		    dim (int): dimension along which to index
@@ -1125,16 +1176,21 @@ package torch._c;
 	public function index_fill_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function index_put(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		index_put_(indices, value) -> Tensor
+		index_put_(indices, value, accumulate=False) -> Tensor
 		
 		Puts values from the tensor :attr:`value` into the tensor :attr:`self` using
 		the indices specified in :attr:`indices` (which is a tuple of Tensors). The
 		expression ``tensor.index_put_(indices, value)`` is equivalent to
 		``tensor[indices] = value``. Returns :attr:`self`.
 		
+		If :attr:`accumulate` is ``True``, the elements in :attr:`tensor` are added to
+		:attr:`self`. If accumulate is ``False``, the behavior is undefined if indices
+		contain duplicate elements.
+		
 		Args:
 		    indices (tuple of LongTensor): tensors used to index into `self`.
 		    value (Tensor): tensor of same dtype as `self`.
+		    accumulate (bool): whether to accumulate into self
 	**/
 	public function index_put_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1143,6 +1199,20 @@ package torch._c;
 		See :func:`torch.index_select`
 	**/
 	public function index_select(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		indices() -> Tensor
+		
+		If :attr:`self` is a sparse COO tensor (i.e., with ``torch.sparse_coo`` layout),
+		this returns a view of the contained indices tensor. Otherwise, this throws an
+		error.
+		
+		See also :meth:`Tensor.values`.
+		
+		.. note::
+		  This method can only be called on a coalesced sparse tensor. See
+		  :meth:`Tensor.coalesce` for details.
+	**/
+	public function indices(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		int() -> Tensor
 		
@@ -1162,15 +1232,55 @@ package torch._c;
 	**/
 	public function irfft(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function is_coalesced(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function is_complex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		is_contiguous() -> bool
 		
 		Returns True if :attr:`self` tensor is contiguous in memory in C order.
 	**/
 	public function is_contiguous(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Is ``True`` if the Tensor is stored on the GPU, ``False`` otherwise.
+	**/
 	public var is_cuda : Dynamic;
 	public function is_distributed(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function is_floating_point(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		All Tensors that have :attr:`requires_grad` which is ``False`` will be leaf Tensors by convention.
+		
+		For Tensors that have :attr:`requires_grad` which is ``True``, they will be leaf Tensors if they were
+		created by the user. This means that they are not the result of an operation and so
+		:attr:`grad_fn` is None.
+		
+		Only leaf Tensors will have their :attr:`grad` populated during a call to :func:`backward`.
+		To get :attr:`grad` populated for non-leaf Tensors, you can use :func:`retain_grad`.
+		
+		Example::
+		
+		    >>> a = torch.rand(10, requires_grad=True)
+		    >>> a.is_leaf
+		    True
+		    >>> b = torch.rand(10, requires_grad=True).cuda()
+		    >>> b.is_leaf
+		    False
+		    # b was created by the operation that cast a cpu Tensor into a cuda Tensor
+		    >>> c = torch.rand(10, requires_grad=True) + 2
+		    >>> c.is_leaf
+		    False
+		    # c was created by the addition operation
+		    >>> d = torch.rand(10).cuda()
+		    >>> d.is_leaf
+		    True
+		    # d does not require gradients and so has no operation creating it (that is tracked by the autograd engine)
+		    >>> e = torch.rand(10).cuda().requires_grad_()
+		    >>> e.is_leaf
+		    True
+		    # e requires gradients and has no operations creating it
+		    >>> f = torch.rand(10, requires_grad=True, device="cuda")
+		    >>> f.is_leaf
+		    True
+		    # f requires grad, has not operation creating it
+	**/
 	public var is_leaf : Dynamic;
 	public function is_nonzero(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function is_same_size(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -1284,17 +1394,17 @@ package torch._c;
 		log_normal_(mean=1, std=2, *, generator=None)
 		
 		Fills :attr:`self` tensor with numbers samples from the log-normal distribution
-		parameterized by the given mean (µ) and standard deviation (σ).
-		Note that :attr:`mean` and :attr:`stdv` are the mean and standard deviation of
-		the underlying normal distribution, and not of the returned distribution:
+		parameterized by the given mean :math:`\mu` and standard deviation
+		:math:`\sigma`. Note that :attr:`mean` and :attr:`std` are the mean and
+		standard deviation of the underlying normal distribution, and not of the
+		returned distribution:
 		
 		.. math::
 		
-		    f(x) = \dfrac{1}{x \sigma \sqrt{2\pi}}\ e^{-\dfrac{(\ln x - \mu)^2}{2\sigma^2}}
+		    f(x) = \dfrac{1}{x \sigma \sqrt{2\pi}}\ e^{-\frac{(\ln x - \mu)^2}{2\sigma^2}}
 	**/
 	public function log_normal_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function log_softmax(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function log_softmax_backward_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		logdet() -> Tensor
 		
@@ -1383,6 +1493,12 @@ package torch._c;
 	**/
 	public function matmul(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		matrix_power(n) -> Tensor
+		
+		See :func:`torch.matrix_power`
+	**/
+	public function matrix_power(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		max(dim=None, keepdim=False) -> Tensor or (Tensor, Tensor)
 		
 		See :func:`torch.max`
@@ -1442,18 +1558,23 @@ package torch._c;
 		See :func:`torch.mv`
 	**/
 	public function mv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		mvlgamma(p) -> Tensor
+		
+		See :func:`torch.mvlgamma`
+	**/
+	public function mvlgamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		mvlgamma_(p) -> Tensor
+		
+		In-place version of :meth:`~Tensor.mvlgamma`
+	**/
+	public function mvlgamma_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var name : Dynamic;
 	/**
 		narrow(dimension, start, length) -> Tensor
 		
-		Returns a new tensor that is a narrowed version of :attr:`self` tensor. The
-		dimension :attr:`dim` is narrowed from :attr:`start` to :attr:`start + length`. The
-		returned tensor and :attr:`self` tensor share the same underlying storage.
-		
-		Args:
-		    dimension (int): the dimension along which to narrow
-		    start (int): the starting dimension
-		    length (int): the distance to the ending dimension
+		See :func:`torch.narrow`
 		
 		Example::
 		
@@ -1467,6 +1588,16 @@ package torch._c;
 		            [ 8,  9]])
 	**/
 	public function narrow(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		narrow_copy(dimension, start, length) -> Tensor
+		
+		Same as :meth:`Tensor.narrow` except returning a copy rather
+		than shared storage.  This is primarily for sparse tensors, which
+		do not have a shared-storage narrow method.  Calling ```narrow_copy``
+		with ```dimemsion > self.sparse_dim()``` will return a copy with the
+		relevant dense dimension narrowed, and ```self.shape``` updated accordingly.
+	**/
+	public function narrow_copy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ndimension() -> int
 		
@@ -1593,6 +1724,13 @@ package torch._c;
 		    If you have a numpy array and want to avoid a copy, use
 		    :func:`torch.from_numpy`.
 		
+		.. warning::
+		
+		    When data is a tensor `x`, :func:`new_tensor()` reads out 'the data' from whatever it is passed,
+		    and constructs a leaf variable. Therefore ``tensor.new_tensor(x)`` is equivalent to ``x.clone().detach()``
+		    and ``tensor.new_tensor(x, requires_grad=True)`` is equivalent to ``x.clone().detach().requires_grad_(True)``.
+		    The equivalents using ``clone()`` and ``detach()`` are recommended.
+		
 		Args:
 		    data (array_like): The returned Tensor copies :attr:`data`.
 		    dtype (:class:`torch.dtype`, optional): the desired type of returned tensor.
@@ -1708,12 +1846,6 @@ package torch._c;
 	public function polygamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function polygamma_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		potrf(upper=True) -> Tensor
-		
-		See :func:`torch.potrf`
-	**/
-	public function potrf(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		potri(upper=True) -> Tensor
 		
 		See :func:`torch.potri`
@@ -1737,6 +1869,7 @@ package torch._c;
 		In-place version of :meth:`~Tensor.pow`
 	**/
 	public function pow_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function prelu(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		prod(dim=None, keepdim=False, dtype=None) -> Tensor
 		
@@ -1860,6 +1993,14 @@ package torch._c;
 		    torch.Size([4, 2, 3])
 	**/
 	public function repeat(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Is ``True`` if gradients need to be computed for this Tensor, ``False`` otherwise.
+		
+		.. note::
+		
+		    The fact that gradients need to be computed for a Tensor do not mean that the :attr:`grad`
+		    attribute will be populated, see :attr:`is_leaf` for more details.
+	**/
 	public var requires_grad : Dynamic;
 	/**
 		requires_grad_(requires_grad=True) -> Tensor
@@ -1898,13 +2039,15 @@ package torch._c;
 	/**
 		reshape(*shape) -> Tensor
 		
-		Returns a tensor with the same data and number of elements as :attr:`self`,
-		but with the specified shape.
+		Returns a tensor with the same data and number of elements as :attr:`self`
+		but with the specified shape. This method returns a view if :attr:`shape` is
+		compatible with the current shape. See :meth:`torch.Tensor.view` on when it is
+		possible to return a view.
+		
+		See :func:`torch.reshape`
 		
 		Args:
 		    shape (tuple of ints or int...): the desired shape
-		
-		See :func:`torch.reshape`
 	**/
 	public function reshape(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1912,8 +2055,10 @@ package torch._c;
 		
 		Returns this tensor as the same shape as :attr:`other`.
 		``self.reshape_as(other)`` is equivalent to ``self.reshape(other.sizes())``.
+		This method returns a view if ``other.sizes()`` is compatible with the current
+		shape. See :meth:`torch.Tensor.view` on when it is possible to return a view.
 		
-		Please see :meth:`~Tensor.reshape` for more information about ``reshape``.
+		Please see :meth:`reshape` for more information about ``reshape``.
 		
 		Args:
 		    other (:class:`torch.Tensor`): The result tensor has the same shape
@@ -1928,6 +2073,15 @@ package torch._c;
 		to fit the new number of elements. If the number of elements is smaller, the
 		underlying storage is not changed. Existing elements are preserved but any new
 		memory is uninitialized.
+		
+		.. warning::
+		
+		    This is a low-level method. The storage is reinterpreted as C-contiguous,
+		    ignoring the current strides (unless the target size equals the current
+		    size, in which case the tensor is left unchanged). For most purposes, you
+		    will instead want to use :meth:`~Tensor.view()`, which checks for
+		    contiguity, or :meth:`~Tensor.reshape()`, which copies data if needed. To
+		    change the size in-place with custom strides, see :meth:`~Tensor.set_()`.
 		
 		Args:
 		    sizes (torch.Size or int...): the desired size
@@ -1953,6 +2107,18 @@ package torch._c;
 		See :func:`torch.rfft`
 	**/
 	public function rfft(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		roll(shifts, dims) -> Tensor
+		
+		See :func:`torch.roll`
+	**/
+	public function roll(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		rot90(k, dims) -> Tensor
+		
+		See :func:`torch.rot90`
+	**/
+	public function rot90(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		round() -> Tensor
 		
@@ -2004,7 +2170,9 @@ package torch._c;
 		
 		Args:
 		    dim (int): the axis along which to index
-		    index (LongTensor): the indices of elements to scatter
+		    index (LongTensor): the indices of elements to scatter,
+		      can be either empty or the same size of src.
+		      When empty, the operation returns identity
 		    src (Tensor or float): the source element(s) to scatter
 		
 		Example::
@@ -2049,9 +2217,13 @@ package torch._c;
 		between ``0`` and ``self.size(dim) - 1`` inclusive, and all values in a row along
 		the specified dimension :attr:`dim` must be unique.
 		
+		.. include:: cuda_deterministic.rst
+		
 		Args:
 		    dim (int): the axis along which to index
-		    index (LongTensor): the indices of elements to scatter and add
+		    index (LongTensor): the indices of elements to scatter and add,
+		      can be either empty or the same size of src.
+		      When empty, the operation returns identity.
 		    other (Tensor): the source elements to scatter and add
 		
 		Example::
@@ -2176,13 +2348,62 @@ package torch._c;
 	public function slogdet(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function smm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function softmax(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function softmax_backward_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		sort(dim=None, descending=False) -> (Tensor, LongTensor)
 		
 		See :func:`torch.sort`
 	**/
 	public function sort(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		sparse_dim() -> int
+		
+		If :attr:`self` is a sparse COO tensor (i.e., with ``torch.sparse_coo`` layout),
+		this returns a the number of sparse dimensions. Otherwise, this throws an
+		error.
+		
+		See also :meth:`Tensor.dense_dim`.
+	**/
+	public function sparse_dim(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		sparse_mask(input, mask) -> Tensor
+		
+		Returns a new SparseTensor with values from Tensor :attr:`input` filtered
+		by indices of :attr:`mask` and values are ignored. :attr:`input` and :attr:`mask`
+		must have the same shape.
+		
+		Args:
+		    input (Tensor): an input Tensor
+		    mask (SparseTensor): a SparseTensor which we filter :attr:`input` based on its indices
+		
+		Example::
+		
+		    >>> nnz = 5
+		    >>> dims = [5, 5, 2, 2]
+		    >>> I = torch.cat([torch.randint(0, dims[0], size=(nnz,)),
+		                       torch.randint(0, dims[1], size=(nnz,))], 0).reshape(2, nnz)
+		    >>> V = torch.randn(nnz, dims[2], dims[3])
+		    >>> size = torch.Size(dims)
+		    >>> S = torch.sparse_coo_tensor(I, V, size).coalesce()
+		    >>> D = torch.randn(dims)
+		    >>> D.sparse_mask(S)
+		    tensor(indices=tensor([[0, 0, 0, 2],
+		                           [0, 1, 4, 3]]),
+		           values=tensor([[[ 1.6550,  0.2397],
+		                           [-0.1611, -0.0779]],
+		
+		                          [[ 0.2326, -1.0558],
+		                           [ 1.4711,  1.9678]],
+		
+		                          [[-0.5138, -0.0411],
+		                           [ 1.9417,  0.5158]],
+		
+		                          [[ 0.0793,  0.0036],
+		                           [-0.2569, -0.1055]]]),
+		           size=(5, 5, 2, 2), nnz=4, layout=torch.sparse_coo)
+	**/
+	public function sparse_mask(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function sparse_resize_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function sparse_resize_and_clear_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function split(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function split_with_sizes(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2293,7 +2514,7 @@ package torch._c;
 	**/
 	public function sum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		svd(some=True) -> (Tensor, Tensor, Tensor)
+		svd(some=True, compute_uv=True) -> (Tensor, Tensor, Tensor)
 		
 		See :func:`torch.svd`
 	**/
@@ -2356,24 +2577,28 @@ package torch._c;
 		
 		Here are the ways to call ``to``:
 		
-		.. function:: to(dtype) -> Tensor
+		.. function:: to(dtype, non_blocking=False, copy=False) -> Tensor
 		
 		    Returns a Tensor with the specified :attr:`dtype`
 		
-		.. function:: to(device=None, dtype=None, non_blocking=False) -> Tensor
+		.. function:: to(device=None, dtype=None, non_blocking=False, copy=False) -> Tensor
 		
 		    Returns a Tensor with the specified :attr:`device` and (optional)
 		    :attr:`dtype`. If :attr:`dtype` is ``None`` it is inferred to be ``self.dtype``.
 		    When :attr:`non_blocking`, tries to convert asynchronously with respect to
 		    the host if possible, e.g., converting a CPU Tensor with pinned memory to a
 		    CUDA Tensor.
+		    When :attr:`copy` is set, a new Tensor is created even when the Tensor
+		    already matches the desired conversion.
 		
-		.. function:: to(other, non_blocking=False) -> Tensor
+		.. function:: to(other, non_blocking=False, copy=False) -> Tensor
 		
 		    Returns a Tensor with same :class:`torch.dtype` and :class:`torch.device` as
 		    the Tensor :attr:`other`. When :attr:`non_blocking`, tries to convert
 		    asynchronously with respect to the host if possible, e.g., converting a CPU
 		    Tensor with pinned memory to a CUDA Tensor.
+		    When :attr:`copy` is set, a new Tensor is created even when the Tensor
+		    already matches the desired conversion.
 		
 		Example::
 		
@@ -2398,6 +2623,29 @@ package torch._c;
 	**/
 	public function to(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function to_dense(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		to_sparse(sparseDims) -> Tensor
+		Returns a sparse copy of the tensor.  PyTorch supports sparse tensors in
+		:ref:`coordinate format <sparse-docs>`.
+		Args:
+		    sparseDims (int, optional): the number of sparse dimensions to include in the new sparse tensor
+		Example::
+		    >>> d = torch.tensor([[0, 0, 0], [9, 0, 10], [0, 0, 0]])
+		    >>> d
+		    tensor([[ 0,  0,  0],
+		            [ 9,  0, 10],
+		            [ 0,  0,  0]])
+		    >>> d.to_sparse()
+		    tensor(indices=tensor([[1, 1],
+		                           [0, 2]]),
+		           values=tensor([ 9, 10]),
+		           size=(3, 3), nnz=2, layout=torch.sparse_coo)
+		    >>> d.to_sparse(1)
+		    tensor(indices=tensor([[1]]),
+		           values=tensor([[ 9,  0, 10]]),
+		           size=(3, 3), nnz=1, layout=torch.sparse_coo)
+	**/
+	public function to_sparse(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		"
 		tolist() -> list or number
@@ -2582,6 +2830,20 @@ package torch._c;
 	**/
 	public function unsqueeze_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		values() -> Tensor
+		
+		If :attr:`self` is a sparse COO tensor (i.e., with ``torch.sparse_coo`` layout),
+		this returns a view of the contained values tensor. Otherwise, this throws an
+		error.
+		
+		See also :meth:`Tensor.indices`.
+		
+		.. note::
+		  This method can only be called on a coalesced sparse tensor. See
+		  :meth:`Tensor.coalesce` for details.
+	**/
+	public function values(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		var(dim=None, unbiased=True, keepdim=False) -> Tensor
 		
 		See :func:`torch.var`
@@ -2589,10 +2851,10 @@ package torch._c;
 	@:native("var")
 	public function _var(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		view(*args) -> Tensor
+		view(*shape) -> Tensor
 		
 		Returns a new tensor with the same data as the :attr:`self` tensor but of a
-		different size.
+		different :attr:`shape`.
 		
 		The returned tensor shares the same data and must have the same number
 		of elements, but may have a different size. For a tensor to be viewed, the new
@@ -2603,13 +2865,14 @@ package torch._c;
 		
 		.. math::
 		
-		  stride[i] = stride[i+1] \times size[i+1]
+		  \text{stride}[i] = \text{stride}[i+1] \times \text{size}[i+1]
 		
-		Otherwise, :func:`contiguous` needs to be called before the tensor can be
-		viewed.
+		Otherwise, :meth:`contiguous` needs to be called before the tensor can be
+		viewed. See also: :meth:`reshape`, which returns a view if the shapes are
+		compatible, and copies (equivalent to calling :meth:`contiguous`) otherwise.
 		
 		Args:
-		    args (torch.Size or int...): the desired size
+		    shape (torch.Size or int...): the desired size
 		
 		Example::
 		

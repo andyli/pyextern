@@ -55,6 +55,7 @@ package tensorflow.python.ops.gen_lookup_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function hash_table(key_dtype:Dynamic, value_dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?use_node_name_sharing:Dynamic, ?name:Dynamic):Dynamic;
+	static public function hash_table_eager_fallback(key_dtype:Dynamic, value_dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?use_node_name_sharing:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates a non-initialized hash table.
 		
@@ -99,6 +100,7 @@ package tensorflow.python.ops.gen_lookup_ops;
 		  The created Operation.
 	**/
 	static public function initialize_table(table_handle:Dynamic, keys:Dynamic, values:Dynamic, ?name:Dynamic):Dynamic;
+	static public function initialize_table_eager_fallback(table_handle:Dynamic, keys:Dynamic, values:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Initializes a table from a text file.
 		
@@ -132,6 +134,7 @@ package tensorflow.python.ops.gen_lookup_ops;
 		  The created Operation.
 	**/
 	static public function initialize_table_from_text_file(table_handle:Dynamic, filename:Dynamic, key_index:Dynamic, value_index:Dynamic, ?vocab_size:Dynamic, ?delimiter:Dynamic, ?name:Dynamic):Dynamic;
+	static public function initialize_table_from_text_file_eager_fallback(table_handle:Dynamic, filename:Dynamic, key_index:Dynamic, value_index:Dynamic, ?vocab_size:Dynamic, ?delimiter:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Initializes a table from a text file.
 		
@@ -205,6 +208,7 @@ package tensorflow.python.ops.gen_lookup_ops;
 		  values: A `Tensor` of type `Tvalues`.
 	**/
 	static public function lookup_table_export(table_handle:Dynamic, Tkeys:Dynamic, Tvalues:Dynamic, ?name:Dynamic):Dynamic;
+	static public function lookup_table_export_eager_fallback(table_handle:Dynamic, Tkeys:Dynamic, Tvalues:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Outputs all keys and values in the table.
 		
@@ -245,6 +249,7 @@ package tensorflow.python.ops.gen_lookup_ops;
 		  A `Tensor`. Has the same type as `default_value`.
 	**/
 	static public function lookup_table_find(table_handle:Dynamic, keys:Dynamic, default_value:Dynamic, ?name:Dynamic):Dynamic;
+	static public function lookup_table_find_eager_fallback(table_handle:Dynamic, keys:Dynamic, default_value:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Looks up keys in a table, outputs the corresponding values.
 		
@@ -285,6 +290,7 @@ package tensorflow.python.ops.gen_lookup_ops;
 		  The created Operation.
 	**/
 	static public function lookup_table_import(table_handle:Dynamic, keys:Dynamic, values:Dynamic, ?name:Dynamic):Dynamic;
+	static public function lookup_table_import_eager_fallback(table_handle:Dynamic, keys:Dynamic, values:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Replaces the contents of the table with the specified keys and values.
 		
@@ -322,6 +328,7 @@ package tensorflow.python.ops.gen_lookup_ops;
 		  The created Operation.
 	**/
 	static public function lookup_table_insert(table_handle:Dynamic, keys:Dynamic, values:Dynamic, ?name:Dynamic):Dynamic;
+	static public function lookup_table_insert_eager_fallback(table_handle:Dynamic, keys:Dynamic, values:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Updates the table to associates keys with values.
 		
@@ -344,6 +351,26 @@ package tensorflow.python.ops.gen_lookup_ops;
 	**/
 	static public function lookup_table_insert_v2_eager_fallback(table_handle:Dynamic, keys:Dynamic, values:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		Removes keys and its associated values from a table.
+		
+		The tensor `keys` must of the same type as the keys of the table. Keys not
+		already in the table are silently ignored.
+		
+		Args:
+		  table_handle: A `Tensor` of type `resource`. Handle to the table.
+		  keys: A `Tensor`. Any shape.  Keys of the elements to remove.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The created Operation.
+	**/
+	static public function lookup_table_remove_v2(table_handle:Dynamic, keys:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function lookup_table_remove_v2
+	**/
+	static public function lookup_table_remove_v2_eager_fallback(table_handle:Dynamic, keys:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Computes the number of elements in the given table.
 		
 		Args:
@@ -354,6 +381,7 @@ package tensorflow.python.ops.gen_lookup_ops;
 		  A `Tensor` of type `int64`.
 	**/
 	static public function lookup_table_size(table_handle:Dynamic, ?name:Dynamic):Dynamic;
+	static public function lookup_table_size_eager_fallback(table_handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes the number of elements in the given table.
 		
@@ -406,6 +434,7 @@ package tensorflow.python.ops.gen_lookup_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function mutable_dense_hash_table(empty_key:Dynamic, value_dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?use_node_name_sharing:Dynamic, ?value_shape:Dynamic, ?initial_num_buckets:Dynamic, ?max_load_factor:Dynamic, ?name:Dynamic):Dynamic;
+	static public function mutable_dense_hash_table_eager_fallback(empty_key:Dynamic, value_dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?use_node_name_sharing:Dynamic, ?value_shape:Dynamic, ?initial_num_buckets:Dynamic, ?max_load_factor:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates an empty hash table that uses tensors as the backing store.
 		
@@ -420,6 +449,7 @@ package tensorflow.python.ops.gen_lookup_ops;
 		  empty_key: A `Tensor`.
 		    The key used to represent empty key buckets internally. Must not
 		    be used in insert or lookup operations.
+		  deleted_key: A `Tensor`. Must have the same type as `empty_key`.
 		  value_dtype: A `tf.DType`. Type of the table values.
 		  container: An optional `string`. Defaults to `""`.
 		    If non-empty, this table is placed in the given container.
@@ -441,12 +471,12 @@ package tensorflow.python.ops.gen_lookup_ops;
 		Returns:
 		  A `Tensor` of type `resource`.
 	**/
-	static public function mutable_dense_hash_table_v2(empty_key:Dynamic, value_dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?use_node_name_sharing:Dynamic, ?value_shape:Dynamic, ?initial_num_buckets:Dynamic, ?max_load_factor:Dynamic, ?name:Dynamic):Dynamic;
+	static public function mutable_dense_hash_table_v2(empty_key:Dynamic, deleted_key:Dynamic, value_dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?use_node_name_sharing:Dynamic, ?value_shape:Dynamic, ?initial_num_buckets:Dynamic, ?max_load_factor:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function mutable_dense_hash_table_v2
 	**/
-	static public function mutable_dense_hash_table_v2_eager_fallback(empty_key:Dynamic, value_dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?use_node_name_sharing:Dynamic, ?value_shape:Dynamic, ?initial_num_buckets:Dynamic, ?max_load_factor:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function mutable_dense_hash_table_v2_eager_fallback(empty_key:Dynamic, deleted_key:Dynamic, value_dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?use_node_name_sharing:Dynamic, ?value_shape:Dynamic, ?initial_num_buckets:Dynamic, ?max_load_factor:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates an empty hash table.
 		
@@ -472,6 +502,7 @@ package tensorflow.python.ops.gen_lookup_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function mutable_hash_table(key_dtype:Dynamic, value_dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?use_node_name_sharing:Dynamic, ?name:Dynamic):Dynamic;
+	static public function mutable_hash_table_eager_fallback(key_dtype:Dynamic, value_dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?use_node_name_sharing:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates an empty hash table.
 		
@@ -496,6 +527,7 @@ package tensorflow.python.ops.gen_lookup_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function mutable_hash_table_of_tensors(key_dtype:Dynamic, value_dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?use_node_name_sharing:Dynamic, ?value_shape:Dynamic, ?name:Dynamic):Dynamic;
+	static public function mutable_hash_table_of_tensors_eager_fallback(key_dtype:Dynamic, value_dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?use_node_name_sharing:Dynamic, ?value_shape:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates an empty hash table.
 		

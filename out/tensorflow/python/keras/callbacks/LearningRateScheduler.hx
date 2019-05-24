@@ -114,6 +114,8 @@ package tensorflow.python.keras.callbacks;
 	public function on_batch_end(batch:Dynamic, ?logs:Dynamic):Dynamic;
 	public function on_epoch_begin(epoch:Dynamic, ?logs:Dynamic):Dynamic;
 	public function on_epoch_end(epoch:Dynamic, ?logs:Dynamic):Dynamic;
+	public function on_train_batch_begin(batch:Dynamic, ?logs:Dynamic):Dynamic;
+	public function on_train_batch_end(batch:Dynamic, ?logs:Dynamic):Dynamic;
 	public function on_train_begin(?logs:Dynamic):Dynamic;
 	public function on_train_end(?logs:Dynamic):Dynamic;
 	public function set_model(model:Dynamic):Dynamic;

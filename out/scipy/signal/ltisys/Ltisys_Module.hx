@@ -5,7 +5,7 @@ package scipy.signal.ltisys;
 		Algorithm "KNV0" Kautsky et Al. Robust pole
 		assignment in linear state feedback, Int journal of Control
 		1985, vol 41 p 1129->1155
-		http://la.epfl.ch/files/content/sites/la/files/
+		https://la.epfl.ch/files/content/sites/la/files/
 		    users/105941/public/KautskyNicholsDooren
 	**/
 	static public function _KNV0(B:Dynamic, ker_pole:Dynamic, transfer_matrix:Dynamic, j:Dynamic, poles:Dynamic):Dynamic;
@@ -20,7 +20,7 @@ package scipy.signal.ltisys;
 	/**
 		Algorithm "YT" Tits, Yang. Globally Convergent
 		Algorithms for Robust Pole Assignment by State Feedback
-		http://drum.lib.umd.edu/handle/1903/5598
+		https://hdl.handle.net/1903/5598
 		The poles P have to be sorted accordingly to section 6.2 page 20
 	**/
 	static public function _YT_loop(ker_pole:Dynamic, transfer_matrix:Dynamic, poles:Dynamic, B:Dynamic, maxiter:Dynamic, rtol:Dynamic):Dynamic;
@@ -318,7 +318,7 @@ package scipy.signal.ltisys;
 		
 		dt : float
 		    The discretization time step.
-		method : {"gbt", "bilinear", "euler", "backward_diff", "zoh"}, optional
+		method : str, optional
 		    Which method to use:
 		
 		        * gbt: generalized bilinear transformation
@@ -326,6 +326,8 @@ package scipy.signal.ltisys;
 		        * euler: Euler (or forward differencing) method ("gbt" with alpha=0)
 		        * backward_diff: Backwards differencing ("gbt" with alpha=1.0)
 		        * zoh: zero-order hold (default)
+		        * foh: first-order hold (*versionadded: 1.3.0*)
+		        * impulse: equivalent impulse response (*versionadded: 1.3.0*)
 		
 		alpha : float within [0, 1], optional
 		    The generalized bilinear transformation weighting parameter, which
@@ -348,18 +350,23 @@ package scipy.signal.ltisys;
 		an Euler's method technique, or a backwards differencing technique.
 		
 		The Zero-Order Hold (zoh) method is based on [1]_, the generalized bilinear
-		approximation is based on [2]_ and [3]_.
+		approximation is based on [2]_ and [3]_, the First-Order Hold (foh) method
+		is based on [4]_.
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Discretization#Discretization_of_linear_state_space_models
+		.. [1] https://en.wikipedia.org/wiki/Discretization#Discretization_of_linear_state_space_models
 		
 		.. [2] http://techteach.no/publications/discretetime_signals_systems/discrete.pdf
 		
 		.. [3] G. Zhang, X. Chen, and T. Chen, Digital redesign via the generalized
 		    bilinear transformation, Int. J. Control, vol. 82, no. 4, pp. 741-754,
 		    2009.
-		    (http://www.mypolyuweb.hk/~magzhang/Research/ZCC09_IJC.pdf)
+		    (https://www.mypolyuweb.hk/~magzhang/Research/ZCC09_IJC.pdf)
+		
+		.. [4] G. F. Franklin, J. D. Powell, and M. L. Workman, Digital control
+		    of dynamic systems, 3rd ed. Menlo Park, Calif: Addison-Wesley,
+		    pp. 204-206, 1998.
 	**/
 	static public function cont2discrete(system:Dynamic, dt:Dynamic, ?method:Dynamic, ?alpha:Dynamic):Dynamic;
 	/**
@@ -509,13 +516,25 @@ package scipy.signal.ltisys;
 		-------
 		tout : ndarray
 		    Time values for the output, as a 1-D array.
-		yout : ndarray
+		yout : tuple of ndarray
 		    Impulse response of system.  Each element of the tuple represents
 		    the output of the system based on an impulse in each input.
 		
 		See Also
 		--------
 		impulse, dstep, dlsim, cont2discrete
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		>>> butter = signal.dlti(*signal.butter(3, 0.5))
+		>>> t, y = signal.dimpulse(butter, n=25)
+		>>> plt.step(t, np.squeeze(y))
+		>>> plt.grid()
+		>>> plt.xlabel('n [samples]')
+		>>> plt.ylabel('Amplitude')
 	**/
 	static public function dimpulse(system:Dynamic, ?x0:Dynamic, ?t:Dynamic, ?n:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -682,13 +701,25 @@ package scipy.signal.ltisys;
 		-------
 		tout : ndarray
 		    Output time points, as a 1-D array.
-		yout : ndarray
+		yout : tuple of ndarray
 		    Step response of system.  Each element of the tuple represents
 		    the output of the system based on a step response to each input.
 		
 		See Also
 		--------
 		step, dimpulse, dlsim, cont2discrete
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		>>> butter = signal.dlti(*signal.butter(3, 0.5))
+		>>> t, y = signal.dstep(butter, n=25)
+		>>> plt.step(t, np.squeeze(y))
+		>>> plt.grid()
+		>>> plt.xlabel('n [samples]')
+		>>> plt.ylabel('Amplitude')
 	**/
 	static public function dstep(system:Dynamic, ?x0:Dynamic, ?t:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -888,30 +919,35 @@ package scipy.signal.ltisys;
 		    and ``b.shape[1:]``, ``a.shape[1:]``, and the shape of the frequencies
 		    array must be compatible for broadcasting.
 		worN : {None, int, array_like}, optional
-		    If None, then compute at 512 equally spaced frequencies.
-		    If a single integer, then compute at that many frequencies.  This is
-		    a convenient alternative to::
+		    If a single integer, then compute at that many frequencies (default is
+		    N=512).  This is a convenient alternative to::
 		
-		        np.linspace(0, 2*pi if whole else pi, N, endpoint=False)
+		        np.linspace(0, fs if whole else fs/2, N, endpoint=False)
 		
 		    Using a number that is fast for FFT computations can result in
 		    faster computations (see Notes).
-		    If an array_like, compute the response at the frequencies given (in
-		    radians/sample).
+		
+		    If an array_like, compute the response at the frequencies given.
+		    These are in the same units as `fs`.
 		whole : bool, optional
 		    Normally, frequencies are computed from 0 to the Nyquist frequency,
-		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
-		    compute frequencies from 0 to 2*pi radians/sample.
+		    fs/2 (upper-half of unit-circle).  If `whole` is True, compute
+		    frequencies from 0 to fs.  Ignored if w is array_like.
 		plot : callable
 		    A callable that takes two arguments. If given, the return parameters
 		    `w` and `h` are passed to plot. Useful for plotting the frequency
 		    response inside `freqz`.
+		fs : float, optional
+		    The sampling frequency of the digital system.  Defaults to 2*pi
+		    radians/sample (so w is from 0 to pi).
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
 		w : ndarray
-		    The normalized frequencies at which `h` was computed, in
-		    radians/sample.
+		    The frequencies at which `h` was computed, in the same units as `fs`.
+		    By default, `w` is normalized to the range [0, pi) (radians/sample).
 		h : ndarray
 		    The frequency response, as complex numbers.
 		
@@ -948,20 +984,19 @@ package scipy.signal.ltisys;
 		>>> w, h = signal.freqz(b)
 		
 		>>> import matplotlib.pyplot as plt
-		>>> fig = plt.figure()
-		>>> plt.title('Digital filter frequency response')
-		>>> ax1 = fig.add_subplot(111)
+		>>> fig, ax1 = plt.subplots()
+		>>> ax1.set_title('Digital filter frequency response')
 		
-		>>> plt.plot(w, 20 * np.log10(abs(h)), 'b')
-		>>> plt.ylabel('Amplitude [dB]', color='b')
-		>>> plt.xlabel('Frequency [rad/sample]')
+		>>> ax1.plot(w, 20 * np.log10(abs(h)), 'b')
+		>>> ax1.set_ylabel('Amplitude [dB]', color='b')
+		>>> ax1.set_xlabel('Frequency [rad/sample]')
 		
 		>>> ax2 = ax1.twinx()
 		>>> angles = np.unwrap(np.angle(h))
-		>>> plt.plot(w, angles, 'g')
-		>>> plt.ylabel('Angle (radians)', color='g')
-		>>> plt.grid()
-		>>> plt.axis('tight')
+		>>> ax2.plot(w, angles, 'g')
+		>>> ax2.set_ylabel('Angle (radians)', color='g')
+		>>> ax2.grid()
+		>>> ax2.axis('tight')
 		>>> plt.show()
 		
 		Broadcasting Examples
@@ -1006,12 +1041,12 @@ package scipy.signal.ltisys;
 		>>> h.shape
 		(2, 1024)
 	**/
-	static public function freqz(b:Dynamic, ?a:Dynamic, ?worN:Dynamic, ?whole:Dynamic, ?plot:Dynamic):Dynamic;
+	static public function freqz(b:Dynamic, ?a:Dynamic, ?worN:Dynamic, ?whole:Dynamic, ?plot:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Compute the frequency response of a digital filter in ZPK form.
 		
 		Given the Zeros, Poles and Gain of a digital filter, compute its frequency
-		response::
+		response:
 		
 		:math:`H(z)=k \prod_i (z - Z[i]) / \prod_j (z - P[j])`
 		
@@ -1027,21 +1062,28 @@ package scipy.signal.ltisys;
 		k : scalar
 		    Gain of a linear filter
 		worN : {None, int, array_like}, optional
-		    If single integer (default 512, same as None), then compute at `worN`
-		    frequencies equally spaced around the unit circle. If an array_like,
-		    compute the response at the frequencies given (in radians/sample).
+		    If a single integer, then compute at that many frequencies (default is
+		    N=512).
+		
+		    If an array_like, compute the response at the frequencies given.
+		    These are in the same units as `fs`.
 		whole : bool, optional
 		    Normally, frequencies are computed from 0 to the Nyquist frequency,
-		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
-		    compute frequencies from 0 to 2*pi radians/sample.
+		    fs/2 (upper-half of unit-circle).  If `whole` is True, compute
+		    frequencies from 0 to fs.  Ignored if w is array_like.
+		fs : float, optional
+		    The sampling frequency of the digital system.  Defaults to 2*pi
+		    radians/sample (so w is from 0 to pi).
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
 		w : ndarray
-		    The normalized frequencies at which `h` was computed, in
-		    radians/sample.
+		    The frequencies at which `h` was computed, in the same units as `fs`.
+		    By default, `w` is normalized to the range [0, pi) (radians/sample).
 		h : ndarray
-		    The frequency response.
+		    The frequency response, as complex numbers.
 		
 		See Also
 		--------
@@ -1055,28 +1097,32 @@ package scipy.signal.ltisys;
 		
 		Examples
 		--------
+		Design a 4th-order digital Butterworth filter with cut-off of 100 Hz in a
+		system with sample rate of 1000 Hz, and plot the frequency response:
+		
 		>>> from scipy import signal
-		>>> z, p, k = signal.butter(4, 0.2, output='zpk')
-		>>> w, h = signal.freqz_zpk(z, p, k)
+		>>> z, p, k = signal.butter(4, 100, output='zpk', fs=1000)
+		>>> w, h = signal.freqz_zpk(z, p, k, fs=1000)
 		
 		>>> import matplotlib.pyplot as plt
 		>>> fig = plt.figure()
-		>>> plt.title('Digital filter frequency response')
-		>>> ax1 = fig.add_subplot(111)
+		>>> ax1 = fig.add_subplot(1, 1, 1)
+		>>> ax1.set_title('Digital filter frequency response')
 		
-		>>> plt.plot(w, 20 * np.log10(abs(h)), 'b')
-		>>> plt.ylabel('Amplitude [dB]', color='b')
-		>>> plt.xlabel('Frequency [rad/sample]')
+		>>> ax1.plot(w, 20 * np.log10(abs(h)), 'b')
+		>>> ax1.set_ylabel('Amplitude [dB]', color='b')
+		>>> ax1.set_xlabel('Frequency [Hz]')
+		>>> ax1.grid()
 		
 		>>> ax2 = ax1.twinx()
 		>>> angles = np.unwrap(np.angle(h))
-		>>> plt.plot(w, angles, 'g')
-		>>> plt.ylabel('Angle (radians)', color='g')
-		>>> plt.grid()
+		>>> ax2.plot(w, angles, 'g')
+		>>> ax2.set_ylabel('Angle [radians]', color='g')
+		
 		>>> plt.axis('tight')
 		>>> plt.show()
 	**/
-	static public function freqz_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?worN:Dynamic, ?whole:Dynamic):Dynamic;
+	static public function freqz_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?worN:Dynamic, ?whole:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Impulse response of continuous-time system.
 		
@@ -1112,6 +1158,16 @@ package scipy.signal.ltisys;
 		If (num, den) is passed in for ``system``, coefficients for both the
 		numerator and denominator should be specified in descending exponent
 		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
+		
+		Examples
+		--------
+		Second order system with a repeated root: x''(t) + 2*x(t) + x(t) = u(t)
+		
+		>>> from scipy import signal
+		>>> system = ([1.0], [1.0, 2.0, 1.0])
+		>>> t, y = signal.impulse2(system)
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(t, y)
 	**/
 	static public function impulse(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
 	/**
@@ -1153,7 +1209,7 @@ package scipy.signal.ltisys;
 		
 		See Also
 		--------
-		impulse, lsim2, integrate.odeint
+		impulse, lsim2, scipy.integrate.odeint
 		
 		Notes
 		-----
@@ -1185,11 +1241,14 @@ package scipy.signal.ltisys;
 		
 		The endpoint of the interval can optionally be excluded.
 		
+		.. versionchanged:: 1.16.0
+		    Non-scalar `start` and `stop` are now supported.
+		
 		Parameters
 		----------
-		start : scalar
+		start : array_like
 		    The starting value of the sequence.
-		stop : scalar
+		stop : array_like
 		    The end value of the sequence, unless `endpoint` is set to False.
 		    In that case, the sequence consists of all but the last of ``num + 1``
 		    evenly spaced samples, so that `stop` is excluded.  Note that the step
@@ -1208,6 +1267,13 @@ package scipy.signal.ltisys;
 		
 		    .. versionadded:: 1.9.0
 		
+		axis : int, optional
+		    The axis in the result to store the samples.  Relevant only if start
+		    or stop are array-like.  By default (0), the samples will be along a
+		    new axis inserted at the beginning. Use -1 to get an axis at the end.
+		
+		    .. versionadded:: 1.16.0
+		
 		Returns
 		-------
 		samples : ndarray
@@ -1224,7 +1290,10 @@ package scipy.signal.ltisys;
 		--------
 		arange : Similar to `linspace`, but uses a step size (instead of the
 		         number of samples).
-		logspace : Samples uniformly distributed in log space.
+		geomspace : Similar to `linspace`, but with numbers spaced evenly on a log
+		            scale (a geometric progression).
+		logspace : Similar to `geomspace`, but with the end points specified as
+		           logarithms.
 		
 		Examples
 		--------
@@ -1250,7 +1319,7 @@ package scipy.signal.ltisys;
 		(-0.5, 1)
 		>>> plt.show()
 	**/
-	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Simulate output of a continuous-time linear system.
 		
@@ -1589,7 +1658,7 @@ package scipy.signal.ltisys;
 		when ``abs(det(X))`` is used as a robustness indicator.
 		
 		[2]_ is available as a technical report on the following URL:
-		http://drum.lib.umd.edu/handle/1903/5598
+		https://hdl.handle.net/1903/5598
 		
 		References
 		----------
@@ -1729,7 +1798,7 @@ package scipy.signal.ltisys;
 		    Determines what information is to be returned: either both Q and R
 		    ('full', default), only R ('r') or both Q and R but computed in
 		    economy-size ('economic', see Notes). The final option 'raw'
-		    (added in Scipy 0.11) makes the function return two matrices
+		    (added in SciPy 0.11) makes the function return two matrices
 		    (Q, TAU) in the internal format used by LAPACK.
 		pivoting : bool, optional
 		    Whether or not factorization should include pivoting for rank-revealing
@@ -1967,6 +2036,18 @@ package scipy.signal.ltisys;
 		If (num, den) is passed in for ``system``, coefficients for both the
 		numerator and denominator should be specified in descending exponent
 		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		>>> lti = signal.lti([1.0], [1.0, 1.0])
+		>>> t, y = signal.step(lti)
+		>>> plt.plot(t, y)
+		>>> plt.xlabel('Time [s]')
+		>>> plt.ylabel('Amplitude')
+		>>> plt.title('Step response for 1. Order Lowpass')
+		>>> plt.grid()
 	**/
 	static public function step(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
 	/**
@@ -2018,6 +2099,18 @@ package scipy.signal.ltisys;
 		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
 		
 		.. versionadded:: 0.8.0
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		>>> lti = signal.lti([1.0], [1.0, 1.0])
+		>>> t, y = signal.step2(lti)
+		>>> plt.plot(t, y)
+		>>> plt.xlabel('Time [s]')
+		>>> plt.ylabel('Amplitude')
+		>>> plt.title('Step response for 1. Order Lowpass')
+		>>> plt.grid()
 	**/
 	static public function step2(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

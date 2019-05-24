@@ -1,13 +1,14 @@
 /* This file is generated, do not edit! */
 package pandas._libs.tslibs.timedeltas;
 @:pythonImport("pandas._libs.tslibs.timedeltas") extern class Timedeltas_Module {
-	static public var NaT : Dynamic;
+	static public var DAY_SECONDS : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __pyx_capi__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function __pyx_unpickle__Timedelta(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
@@ -19,27 +20,32 @@ package pandas._libs.tslibs.timedeltas;
 		coerce non-convertible objects to NaT. Otherwise, raise.
 	**/
 	static public function array_to_timedelta64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		return a casting of the unit represented to nanoseconds
-		round the fractional part of a float to our precision, p 
-	**/
-	static public function cast_from_unit(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Convert an incoming object to a timedelta64 if possible
-		
-		Handle these types of objects:
-		    - timedelta/Timedelta
-		    - timedelta64
-		    - an offset
-		    - np.int64 (with unit providing a possible modifier)
-		    - None/NaT
-		
-		Return an ns based int64
-		
-		# kludgy here until we have a timedelta scalar
-		# handle the numpy < 1.7 case
-	**/
-	static public function convert_to_timedelta64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function delta_to_nanoseconds(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		convert an i8 repr to an ndarray of timedelta or Timedelta (if box ==
+		True)
+		
+		Parameters
+		----------
+		arr : ndarray[int64_t]
+		box : bool, default False
+		
+		Returns
+		-------
+		result : ndarray[object]
+		    array of Timedelta or timedeltas objects
+	**/
+	static public function ints_to_pytimedelta(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var nat_strings : Dynamic;
+	/**
+		Parameters
+		----------
+		unit : an unit string
+	**/
+	static public function parse_timedelta_unit(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return a casting of the unit represented to nanoseconds + the precision
+		to round the fractional part.
+	**/
+	static public function precision_from_unit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

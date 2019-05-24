@@ -160,7 +160,7 @@ package matplotlib.widgets;
 	**/
 	public function connect_event(event:Dynamic, callback:Dynamic):Dynamic;
 	/**
-		remove the observer with connection id *cid*
+		Remove the callback function with connection id *cid*.
 	**/
 	public function disconnect(cid:Dynamic):Dynamic;
 	/**
@@ -182,10 +182,9 @@ package matplotlib.widgets;
 	**/
 	public function ignore(event:Dynamic):Dynamic;
 	/**
-		When the button is clicked, call this *func* with event.
+		Connect the callback function *func* to button click events.
 		
-		A connection id is returned. It can be used to disconnect
-		the button from its callback.
+		Returns a connection id, which can be used to disconnect the callback.
 	**/
 	public function on_clicked(func:Dynamic):Dynamic;
 	/**

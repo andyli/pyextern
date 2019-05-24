@@ -88,7 +88,7 @@ package tensorflow.contrib.eager.python.network;
 	/**
 		Restore the Network from a checkpoint. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please inherit from tf.keras.Model instead of tfe.Network, and use tf.keras.Model.load_weights.
 		
@@ -123,7 +123,7 @@ package tensorflow.contrib.eager.python.network;
 	/**
 		Save variables from the Network to a checkpoint. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please inherit from tf.keras.Model instead of tfe.Network, and use tf.keras.Model.save_weights.
 		

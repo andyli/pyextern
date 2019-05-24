@@ -14,25 +14,28 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		Changes blockVectorV in place.
 	**/
 	static public function _applyConstraints(blockVectorV:Dynamic, factYBY:Dynamic, blockVectorBY:Dynamic, blockVectorY:Dynamic):Dynamic;
-	static public function _assert_symmetric(M:Dynamic, ?rtol:Dynamic, ?atol:Dynamic):Dynamic;
-	static public function _b_orthonormalize(B:Dynamic, blockVectorV:Dynamic, ?blockVectorBV:Dynamic, ?retInvR:Dynamic):Dynamic;
-	/**
-		Takes a dense numpy array or a sparse matrix or
-		a function and makes an operator performing matrix * blockvector
-		products.
-		
-		Examples
-		--------
-		>>> A = _makeOperator( arrayA, (n, n) )
-		>>> vectorB = A( vectorX )
-	**/
-	static public function _makeOperator(operatorInput:Dynamic, expectedShape:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
 		If the input array is 2D return it, if it is 1D, append a dimension,
 		making it a column vector.
 	**/
-	static public function as2d(ar:Dynamic):Dynamic;
+	static public function _as2d(ar:Dynamic):Dynamic;
+	static public function _b_orthonormalize(B:Dynamic, blockVectorV:Dynamic, ?blockVectorBV:Dynamic, ?retInvR:Dynamic):Dynamic;
+	/**
+		Get `num` indices into `_lambda` depending on `largest` option.
+	**/
+	static public function _get_indx(_lambda:Dynamic, num:Dynamic, largest:Dynamic):Dynamic;
+	/**
+		Takes a dense numpy array or a sparse matrix or
+		a function and makes an operator performing matrix * blockvector
+		products.
+	**/
+	static public function _makeOperator(operatorInput:Dynamic, expectedShape:Dynamic):Dynamic;
+	/**
+		Report if `M` is not a hermitian matrix given the tolerances `a`, `b`.
+	**/
+	static public function _report_nonhermitian(M:Dynamic, a:Dynamic, b:Dynamic, name:Dynamic):Dynamic;
+	static public function _save(ar:Dynamic, fileName:Dynamic):Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Return A as a LinearOperator.
 		
@@ -59,49 +62,7 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		<2x3 MatrixLinearOperator with dtype=int32>
 	**/
 	static public function aslinearoperator(A:Dynamic):Dynamic;
-	/**
-		Raises an AssertionError if two objects are not equal up to desired
-		tolerance.
-		
-		The test is equivalent to ``allclose(actual, desired, rtol, atol)``.
-		It compares the difference between `actual` and `desired` to
-		``atol + rtol * abs(desired)``.
-		
-		.. versionadded:: 1.5.0
-		
-		Parameters
-		----------
-		actual : array_like
-		    Array obtained.
-		desired : array_like
-		    Array desired.
-		rtol : float, optional
-		    Relative tolerance.
-		atol : float, optional
-		    Absolute tolerance.
-		equal_nan : bool, optional.
-		    If True, NaNs will compare equal.
-		err_msg : str, optional
-		    The error message to be printed in case of failure.
-		verbose : bool, optional
-		    If True, the conflicting values are appended to the error message.
-		
-		Raises
-		------
-		AssertionError
-		    If actual and desired are not equal up to specified precision.
-		
-		See Also
-		--------
-		assert_array_almost_equal_nulp, assert_array_max_ulp
-		
-		Examples
-		--------
-		>>> x = [1e-5, 1e-3, 1e-1]
-		>>> y = np.arccos(np.cos(x))
-		>>> assert_allclose(x, y, rtol=1e-5, atol=0)
-	**/
-	static public function assert_allclose(actual:Dynamic, desired:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic, ?err_msg:Dynamic, ?verbose:Dynamic):Dynamic;
+	static public function bmat(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the Cholesky decomposition of a matrix, to use in cho_solve
 		
@@ -402,16 +363,6 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		    n-by-sizeY matrix of constraints, sizeY < n
 		    The iterations will be performed in the B-orthogonal complement
 		    of the column-space of Y. Y must be full rank.
-		
-		Returns
-		-------
-		w : array
-		    Array of k eigenvalues
-		v : array
-		    An array of k eigenvectors.  V has the same shape as X.
-		
-		Other Parameters
-		----------------
 		tol : scalar, optional
 		    Solver tolerance (stopping criterion)
 		    by default: tol=n*sqrt(eps)
@@ -427,6 +378,17 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		retResidualNormsHistory : boolean, optional
 		    whether to return history of residual norms
 		
+		Returns
+		-------
+		w : array
+		    Array of k eigenvalues
+		v : array
+		    An array of k eigenvectors.  V has the same shape as X.
+		lambdas : list of arrays, optional
+		    The eigenvalue history, if `retLambdaHistory` is True.
+		rnorms : list of arrays, optional
+		    The history of residual norms, if `retResidualNormsHistory` is True.
+		
 		Examples
 		--------
 		
@@ -438,13 +400,13 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		>>> vals = [np.arange(n, dtype=np.float64) + 1]
 		>>> A = spdiags(vals, 0, n, n)
 		>>> A.toarray()
-		array([[   1.,    0.,    0., ...,    0.,    0.,    0.],
-		       [   0.,    2.,    0., ...,    0.,    0.,    0.],
-		       [   0.,    0.,    3., ...,    0.,    0.,    0.],
+		array([[  1.,   0.,   0., ...,   0.,   0.,   0.],
+		       [  0.,   2.,   0., ...,   0.,   0.,   0.],
+		       [  0.,   0.,   3., ...,   0.,   0.,   0.],
 		       ...,
-		       [   0.,    0.,    0., ...,   98.,    0.,    0.],
-		       [   0.,    0.,    0., ...,    0.,   99.,    0.],
-		       [   0.,    0.,    0., ...,    0.,    0.,  100.]])
+		       [  0.,   0.,   0., ...,  98.,   0.,   0.],
+		       [  0.,   0.,   0., ...,   0.,  99.,   0.],
+		       [  0.,   0.,   0., ...,   0.,   0., 100.]])
 		
 		Constraints.
 		
@@ -465,9 +427,9 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		Here, ``invA`` could of course have been used directly as a preconditioner.
 		Let us then solve the problem:
 		
-		>>> eigs, vecs = lobpcg(A, X, Y=Y, M=M, tol=1e-4, maxiter=40, largest=False)
+		>>> eigs, vecs = lobpcg(A, X, Y=Y, M=M, largest=False)
 		>>> eigs
-		array([ 4.,  5.,  6.])
+		array([4., 5., 6.])
 		
 		Note that the vectors passed in Y are the eigenvectors of the 3 smallest
 		eigenvalues. The results returned are orthogonal to those.
@@ -487,27 +449,26 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		code, but rather one should use the "standard" eigensolver,
 		e.g. numpy or scipy function in this case.
 		If one calls the LOBPCG algorithm for 5``m``>``n``,
-		it will most likely break internally, so the code tries to call the standard
-		function instead.
+		it will most likely break internally, so the code tries to call
+		the standard function instead.
 		
 		It is not that n should be large for the LOBPCG to work, but rather the
-		ratio ``n``/``m`` should be large. It you call the LOBPCG code with ``m``=1
-		and ``n``=10, it should work, though ``n`` is small. The method is intended
+		ratio ``n``/``m`` should be large. It you call LOBPCG with ``m``=1
+		and ``n``=10, it works though ``n`` is small. The method is intended
 		for extremely large ``n``/``m``, see e.g., reference [28] in
-		http://arxiv.org/abs/0705.2626
+		https://arxiv.org/abs/0705.2626
 		
 		The convergence speed depends basically on two factors:
 		
-		1.  How well relatively separated the seeking eigenvalues are
-		    from the rest of the eigenvalues.
-		    One can try to vary ``m`` to make this better.
+		1. How well relatively separated the seeking eigenvalues are from the rest
+		   of the eigenvalues. One can try to vary ``m`` to make this better.
 		
-		2.  How well conditioned the problem is. This can be changed by using proper
-		    preconditioning. For example, a rod vibration test problem (under tests
-		    directory) is ill-conditioned for large ``n``, so convergence will be
-		    slow, unless efficient preconditioning is used.
-		    For this specific problem, a good simple preconditioner function would
-		    be a linear solve for A, which is easy to code since A is tridiagonal.
+		2. How well conditioned the problem is. This can be changed by using proper
+		   preconditioning. For example, a rod vibration test problem (under tests
+		   directory) is ill-conditioned for large ``n``, so convergence will be
+		   slow, unless efficient preconditioning is used. For this specific
+		   problem, a good simple preconditioner function would be a linear solve
+		   for A, which is easy to code since A is tridiagonal.
 		
 		*Acknowledgements*
 		
@@ -523,15 +484,13 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		       SIAM Journal on Scientific Computing 23, no. 2,
 		       pp. 517-541. http://dx.doi.org/10.1137/S1064827500366124
 		
-		.. [2] A. V. Knyazev, I. Lashuk, M. E. Argentati, and E. Ovchinnikov (2007),
-		       Block Locally Optimal Preconditioned Eigenvalue Xolvers (BLOPEX)
-		       in hypre and PETSc.  http://arxiv.org/abs/0705.2626
+		.. [2] A. V. Knyazev, I. Lashuk, M. E. Argentati, and E. Ovchinnikov
+		       (2007), Block Locally Optimal Preconditioned Eigenvalue Xolvers
+		       (BLOPEX) in hypre and PETSc. https://arxiv.org/abs/0705.2626
 		
 		.. [3] A. V. Knyazev's C and MATLAB implementations:
 		       https://bitbucket.org/joseroman/blopex
 	**/
 	static public function lobpcg(A:Dynamic, X:Dynamic, ?B:Dynamic, ?M:Dynamic, ?Y:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?largest:Dynamic, ?verbosityLevel:Dynamic, ?retLambdaHistory:Dynamic, ?retResidualNormsHistory:Dynamic):Array<Dynamic>;
-	static public function pause():Dynamic;
 	static public var print_function : Dynamic;
-	static public function save(ar:Dynamic, fileName:Dynamic):Dynamic;
 }

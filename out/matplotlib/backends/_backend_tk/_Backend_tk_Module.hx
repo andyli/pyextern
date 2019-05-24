@@ -56,7 +56,6 @@ package matplotlib.backends._backend_tk;
 	static public var cursord : Dynamic;
 	static public var cursors : Dynamic;
 	static public function draw_if_interactive():Dynamic;
-	static public function error_msg_tkpaint(msg:Dynamic, ?parent:Dynamic):Dynamic;
 	/**
 		Create a new figure manager instance.
 		        
@@ -66,10 +65,6 @@ package matplotlib.backends._backend_tk;
 		Create a new figure manager instance for the given figure.
 	**/
 	static public function new_figure_manager_given_figure(num:Dynamic, figure:Dynamic):Dynamic;
-	/**
-		msg is a return arg from a raise.  Join with new lines
-	**/
-	static public function raise_msg_to_str(msg:Dynamic):Dynamic;
 	static public var rcParams : Dynamic;
 	static public var required_interactive_framework : Dynamic;
 	/**

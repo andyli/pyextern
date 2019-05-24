@@ -372,6 +372,11 @@ package scipy.linalg;
 		-------
 		c : (u + 1, M) ndarray
 		    Cholesky factorization of a, in the same banded format as ab
+		    
+		See also
+		--------
+		cho_solve_banded : Solve a linear set equations, given the Cholesky factorization
+		            of a banded hermitian.
 		
 		Examples
 		--------
@@ -420,18 +425,15 @@ package scipy.linalg;
 	static public function circulant(c:Dynamic):Dynamic;
 	/**
 		"
-		Find low-rank matrix approximation via the Clarkson-Woodruff Transform.
+		Applies a Clarkson-Woodruff Transform/sketch to the input matrix.
 		
 		Given an input_matrix ``A`` of size ``(n, d)``, compute a matrix ``A'`` of
-		size (sketch_size, d) which holds:
+		size (sketch_size, d) so that
 		
-		.. math:: ||Ax|| = (1 \pm \epsilon)||A'x||
+		.. math:: \|Ax\| \approx \|A'x\|
 		
-		with high probability.
-		
-		The error is related to the number of rows of the sketch and it is bounded
-		
-		.. math:: poly(r(\epsilon^{-1}))
+		with high probability via the Clarkson-Woodruff Transform, otherwise
+		known as the CountSketch matrix.
 		
 		Parameters
 		----------
@@ -453,33 +455,82 @@ package scipy.linalg;
 		
 		Notes
 		-----
-		This is an implementation of the Clarkson-Woodruff Transform (CountSketch).
-		``A'`` can be computed in principle in ``O(nnz(A))`` (with ``nnz`` meaning
-		the number of nonzero entries), however we don't take advantage of sparse
-		matrices in this implementation.
+		To make the statement
+		
+		.. math:: \|Ax\| \approx \|A'x\|
+		
+		precise, observe the following result which is adapted from the
+		proof of Theorem 14 of [2]_ via Markov's Inequality. If we have
+		a sketch size ``sketch_size=k`` which is at least
+		
+		.. math:: k \geq \frac{2}{\epsilon^2\delta}
+		
+		Then for any fixed vector ``x``,
+		
+		.. math:: \|Ax\| = (1\pm\epsilon)\|A'x\|
+		
+		with probability at least one minus delta.
+		
+		This implementation takes advantage of sparsity: computing
+		a sketch takes time proportional to ``A.nnz``. Data ``A`` which
+		is in ``scipy.sparse.csc_matrix`` format gives the quickest
+		computation time for sparse input.
+		
+		>>> from scipy import linalg
+		>>> from scipy import sparse
+		>>> n_rows, n_columns, density, sketch_n_rows = 15000, 100, 0.01, 200
+		>>> A = sparse.rand(n_rows, n_columns, density=density, format='csc')
+		>>> B = sparse.rand(n_rows, n_columns, density=density, format='csr')
+		>>> C = sparse.rand(n_rows, n_columns, density=density, format='coo')
+		>>> D = np.random.randn(n_rows, n_columns)
+		>>> SA = linalg.clarkson_woodruff_transform(A, sketch_n_rows) # fastest
+		>>> SB = linalg.clarkson_woodruff_transform(B, sketch_n_rows) # fast
+		>>> SC = linalg.clarkson_woodruff_transform(C, sketch_n_rows) # slower
+		>>> SD = linalg.clarkson_woodruff_transform(D, sketch_n_rows) # slowest
+		
+		That said, this method does perform well on dense inputs, just slower
+		on a relative scale.
 		
 		Examples
 		--------
 		Given a big dense matrix ``A``:
 		
 		>>> from scipy import linalg
-		>>> n_rows, n_columns, sketch_n_rows = (2000, 100, 100)
-		>>> threshold = 0.1
-		>>> tmp = np.random.normal(0, 0.1, n_rows*n_columns)
-		>>> A = np.reshape(tmp, (n_rows, n_columns))
+		>>> n_rows, n_columns, sketch_n_rows = 15000, 100, 200
+		>>> A = np.random.randn(n_rows, n_columns)
 		>>> sketch = linalg.clarkson_woodruff_transform(A, sketch_n_rows)
 		>>> sketch.shape
-		(100, 100)
-		>>> normA = linalg.norm(A)
-		>>> norm_sketch = linalg.norm(sketch)
+		(200, 100)
+		>>> norm_A = np.linalg.norm(A)
+		>>> norm_sketch = np.linalg.norm(sketch)
 		
-		Now with high probability, the condition ``abs(normA-normSketch) <
-		threshold`` holds.
+		Now with high probability, the true norm ``norm_A`` is close to
+		the sketched norm ``norm_sketch`` in absolute value.
+		
+		Similarly, applying our sketch preserves the solution to a linear
+		regression of :math:`\min \|Ax - b\|`.
+		
+		>>> from scipy import linalg
+		>>> n_rows, n_columns, sketch_n_rows = 15000, 100, 200
+		>>> A = np.random.randn(n_rows, n_columns)
+		>>> b = np.random.randn(n_rows)
+		>>> x = np.linalg.lstsq(A, b, rcond=None)
+		>>> Ab = np.hstack((A, b.reshape(-1,1)))
+		>>> SAb = linalg.clarkson_woodruff_transform(Ab, sketch_n_rows)
+		>>> SA, Sb = SAb[:,:-1], SAb[:,-1]
+		>>> x_sketched = np.linalg.lstsq(SA, Sb, rcond=None)
+		
+		As with the matrix norm example, ``np.linalg.norm(A @ x - b)``
+		is close to ``np.linalg.norm(A @ x_sketched - b)`` with high
+		probability.
 		
 		References
 		----------
 		.. [1] Kenneth L. Clarkson and David P. Woodruff. Low rank approximation and
 		       regression in input sparsity time. In STOC, 2013.
+		
+		.. [2] David P. Woodruff. Sketching as a tool for numerical linear algebra.
+		       In Foundations and Trends in Theoretical Computer Science, 2014.
 	**/
 	static public function clarkson_woodruff_transform(input_matrix:Dynamic, sketch_size:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
@@ -667,7 +718,7 @@ package scipy.linalg;
 		
 		References
 		----------
-		.. [1] "DFT matrix", http://en.wikipedia.org/wiki/DFT_matrix
+		.. [1] "DFT matrix", https://en.wikipedia.org/wiki/DFT_matrix
 		
 		Examples
 		--------
@@ -1582,6 +1633,119 @@ package scipy.linalg;
 	**/
 	static public function expm_frechet(A:Dynamic, E:Dynamic, ?method:Dynamic, ?compute_expm:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
+		Returns a symmetric Fiedler matrix
+		
+		Given an sequence of numbers `a`, Fiedler matrices have the structure
+		``F[i, j] = np.abs(a[i] - a[j])``, and hence zero diagonals and nonnegative
+		entries. A Fiedler matrix has a dominant positive eigenvalue and other
+		eigenvalues are negative. Although not valid generally, for certain inputs,
+		the inverse and the determinant can be derived explicitly as given in [1]_.
+		
+		Parameters
+		----------
+		a : (n,) array_like
+		    coefficient array
+		
+		Returns
+		-------
+		F : (n, n) ndarray
+		
+		See Also
+		--------
+		circulant, toeplitz
+		
+		Notes
+		-----
+		
+		.. versionadded:: 1.3.0
+		
+		References
+		----------
+		.. [1] J. Todd, "Basic Numerical Mathematics: Vol.2 : Numerical Algebra",
+		    1977, Birkhauser, :doi:`10.1007/978-3-0348-7286-7`
+		
+		Examples
+		--------
+		>>> from scipy.linalg import det, inv, fiedler
+		>>> a = [1, 4, 12, 45, 77]
+		>>> n = len(a)
+		>>> A = fiedler(a)
+		>>> A
+		array([[ 0,  3, 11, 44, 76],
+		       [ 3,  0,  8, 41, 73],
+		       [11,  8,  0, 33, 65],
+		       [44, 41, 33,  0, 32],
+		       [76, 73, 65, 32,  0]])
+		
+		The explicit formulas for determinant and inverse seem to hold only for
+		monotonically increasing/decreasing arrays. Note the tridiagonal structure
+		and the corners.
+		
+		>>> Ai = inv(A)
+		>>> Ai[np.abs(Ai) < 1e-12] = 0.  # cleanup the numerical noise for display
+		>>> Ai
+		array([[-0.16008772,  0.16666667,  0.        ,  0.        ,  0.00657895],
+		       [ 0.16666667, -0.22916667,  0.0625    ,  0.        ,  0.        ],
+		       [ 0.        ,  0.0625    , -0.07765152,  0.01515152,  0.        ],
+		       [ 0.        ,  0.        ,  0.01515152, -0.03077652,  0.015625  ],
+		       [ 0.00657895,  0.        ,  0.        ,  0.015625  , -0.00904605]])
+		>>> det(A)
+		15409151.999999998
+		>>> (-1)**(n-1) * 2**(n-2) * np.diff(a).prod() * (a[-1] - a[0])
+		15409152
+	**/
+	static public function fiedler(a:Dynamic):Dynamic;
+	/**
+		Returns a Fiedler companion matrix
+		
+		Given a polynomial coefficient array ``a``, this function forms a
+		pentadiagonal matrix with a special structure whose eigenvalues coincides
+		with the roots of ``a``.
+		
+		Parameters
+		----------
+		a : (N,) array_like
+		    1-D array of polynomial coefficients in descending order with a nonzero
+		    leading coefficient. For ``N < 2``, an empty array is returned.
+		
+		Returns
+		-------
+		c : (N-1, N-1) ndarray
+		    Resulting companion matrix
+		
+		Notes
+		-----
+		Similar to `companion` the leading coefficient should be nonzero. In case
+		the leading coefficient is not 1., other coefficients are rescaled before
+		the array generation. To avoid numerical issues, it is best to provide a
+		monic polynomial.
+		
+		.. versionadded:: 1.3.0
+		
+		See Also
+		--------
+		companion
+		
+		References
+		----------
+		.. [1] M. Fiedler, " A note on companion matrices", Linear Algebra and its
+		    Applications, 2003, :doi:`10.1016/S0024-3795(03)00548-2`
+		
+		Examples
+		--------
+		>>> from scipy.linalg import fiedler_companion, eigvals
+		>>> p = np.poly(np.arange(1, 9, 2))  # [1., -16., 86., -176., 105.]
+		>>> fc = fiedler_companion(p)
+		>>> fc
+		array([[  16.,  -86.,    1.,    0.],
+		       [   1.,    0.,    0.,    0.],
+		       [   0.,  176.,    0., -105.],
+		       [   0.,    1.,    0.,    0.]])
+		>>> eigvals(fc)
+		array([7.+0.j, 5.+0.j, 3.+0.j, 1.+0.j])
+	**/
+	static public function fiedler_companion(a:Dynamic):Dynamic;
+	/**
 		Find best-matching BLAS/LAPACK type.
 		
 		Arrays are used to determine the optimal prefix of BLAS routines.
@@ -2127,7 +2291,7 @@ package scipy.linalg;
 		    Default is 'symmetric'.
 		exact : bool, optional
 		    If `exact` is True, the result is either an array of type
-		    `numpy.int64` (if `n` <= 35) or an object array of Python integers.
+		    ``numpy.int64`` (if `n` <= 35) or an object array of Python integers.
 		    If `exact` is False, the coefficients in the matrix are computed using
 		    `scipy.special.comb` with `exact=False`.  The result will be a floating
 		    point array, and for large `n`, the values in the array will not be the
@@ -2149,7 +2313,7 @@ package scipy.linalg;
 		
 		References
 		----------
-		.. [1] "Pascal matrix",  http://en.wikipedia.org/wiki/Pascal_matrix
+		.. [1] "Pascal matrix", https://en.wikipedia.org/wiki/Pascal_matrix
 		.. [2] Cohen, A. M., "The inverse of a Pascal matrix", Mathematical
 		       Gazette, 59(408), pp. 111-112, 1975.
 		
@@ -2326,7 +2490,8 @@ package scipy.linalg;
 		Create a Leslie matrix.
 		
 		Given the length n array of fecundity coefficients `f` and the length
-		n-1 array of survival coefficients `s`, return the associated Leslie matrix.
+		n-1 array of survival coefficients `s`, return the associated Leslie
+		matrix.
 		
 		Parameters
 		----------
@@ -2433,9 +2598,9 @@ package scipy.linalg;
 		Parameters
 		----------
 		a : (M, N) array_like
-		    Left hand side matrix (2-D array).
+		    Left hand side array
 		b : (M,) or (M, K) array_like
-		    Right hand side matrix or vector (1-D or 2-D array).
+		    Right hand side array
 		cond : float, optional
 		    Cutoff for 'small' singular values; used to determine effective
 		    rank of a. Singular values smaller than
@@ -2461,16 +2626,15 @@ package scipy.linalg;
 		-------
 		x : (N,) or (N, K) ndarray
 		    Least-squares solution.  Return shape matches shape of `b`.
-		residues : (0,) or () or (K,) ndarray
-		    Sums of residues, squared 2-norm for each column in ``b - a x``.
-		    If rank of matrix a is ``< N`` or ``N > M``, or ``'gelsy'`` is used,
-		    this is a length zero array. If b was 1-D, this is a () shape array
-		    (numpy scalar), otherwise the shape is (K,).
+		residues : (K,) ndarray or float
+		    Square of the 2-norm for each column in ``b - a x``, if ``M > N`` and
+		    ``ndim(A) == n`` (returns a scalar if b is 1-D). Otherwise a
+		    (0,)-shaped array is returned.
 		rank : int
-		    Effective rank of matrix `a`.
-		s : (min(M,N),) ndarray or None
+		    Effective rank of `a`.
+		s : (min(M, N),) ndarray or None
 		    Singular values of `a`. The condition number of a is
-		    ``abs(s[0] / s[-1])``. None is returned when ``'gelsy'`` is used.
+		    ``abs(s[0] / s[-1])``.
 		
 		Raises
 		------
@@ -2478,11 +2642,16 @@ package scipy.linalg;
 		    If computation does not converge.
 		
 		ValueError
-		    When parameters are wrong.
+		    When parameters are not compatible.
 		
 		See Also
 		--------
-		optimize.nnls : linear least squares with non-negativity constraint
+		scipy.optimize.nnls : linear least squares with non-negativity constraint
+		
+		Notes
+		-----
+		When ``'gelsy'`` is used as a driver, `residues` is set to a (0,)-shaped
+		array and `s` is always ``None``.
 		
 		Examples
 		--------
@@ -2574,7 +2743,7 @@ package scipy.linalg;
 		
 		Notes
 		-----
-		This is a LU factorization routine written for Scipy.
+		This is a LU factorization routine written for SciPy.
 		
 		Examples
 		--------
@@ -2736,8 +2905,6 @@ package scipy.linalg;
 		    ``T`` above, the scaling and the permutation vectors are given
 		    separately as a tuple without allocating the full array ``T``.
 		
-		.. versionadded:: 0.19.0
-		
 		Notes
 		-----
 		
@@ -2753,6 +2920,8 @@ package scipy.linalg;
 		
 		The code is a wrapper around LAPACK's xGEBAL routine family for matrix
 		balancing.
+		
+		.. versionadded:: 0.19.0
 		
 		Examples
 		--------
@@ -2779,7 +2948,7 @@ package scipy.linalg;
 		
 		.. [2] : R. James, J. Langou, B.R. Lowery, "On matrix balancing and
 		   eigenvector computation", 2014, Available online:
-		   http://arxiv.org/abs/1401.5766
+		   https://arxiv.org/abs/1401.5766
 		
 		.. [3] :  D.S. Watkins. A case where balancing is harmful.
 		   Electron. Trans. Numer. Anal, Vol.23, 2006.
@@ -3169,7 +3338,7 @@ package scipy.linalg;
 		
 		Notes
 		-----
-		See http://en.wikipedia.org/wiki/Pascal_matrix for more information
+		See https://en.wikipedia.org/wiki/Pascal_matrix for more information
 		about Pascal matrices.
 		
 		.. versionadded:: 0.11.0
@@ -3205,9 +3374,16 @@ package scipy.linalg;
 		a : (M, N) array_like
 		    Matrix to be pseudo-inverted.
 		cond, rcond : float, optional
-		    Cutoff for 'small' singular values in the least-squares solver.
-		    Singular values smaller than ``rcond * largest_singular_value``
-		    are considered zero.
+		    Cutoff factor for 'small' singular values. In `lstsq`, 
+		    singular values less than ``cond*largest_singular_value`` will be
+		    considered as zero. If both are omitted, the default value
+		    ``max(M, N) * eps`` is passed to `lstsq` where ``eps`` is the
+		    corresponding machine precision value of the datatype of ``a``.
+		
+		    .. versionchanged:: 1.3.0
+		        Previously the default cutoff value was just `eps` without the
+		        factor ``max(M, N)``.
+		
 		return_rank : bool, optional
 		    if True, return the effective rank of the matrix
 		check_finite : bool, optional
@@ -3250,12 +3426,17 @@ package scipy.linalg;
 		a : (M, N) array_like
 		    Matrix to be pseudo-inverted.
 		cond, rcond : float or None
-		    Cutoff for 'small' singular values.
-		    Singular values smaller than ``rcond*largest_singular_value``
-		    are considered zero.
-		    If None or -1, suitable machine precision is used.
+		    Cutoff for 'small' singular values; singular values smaller than this
+		    value are considered as zero. If both are omitted, the default value
+		    ``max(M,N)*largest_singular_value*eps`` is used where ``eps`` is the
+		    machine precision value of the datatype of ``a``.
+		
+		    .. versionchanged:: 1.3.0
+		        Previously the default cutoff value was just ``eps*f`` where ``f``
+		        was ``1e3`` for single precision and ``1e6`` for double precision.
+		
 		return_rank : bool, optional
-		    if True, return the effective rank of the matrix
+		    If True, return the effective rank of the matrix.
 		check_finite : bool, optional
 		    Whether to check that the input matrix contains only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
@@ -3266,7 +3447,7 @@ package scipy.linalg;
 		B : (N, M) ndarray
 		    The pseudo-inverse of matrix `a`.
 		rank : int
-		    The effective rank of the matrix.  Returned if return_rank == True
+		    The effective rank of the matrix.  Returned if `return_rank` is True.
 		
 		Raises
 		------
@@ -3296,16 +3477,20 @@ package scipy.linalg;
 		a : (N, N) array_like
 		    Real symmetric or complex hermetian matrix to be pseudo-inverted
 		cond, rcond : float or None
-		    Cutoff for 'small' eigenvalues.
-		    Singular values smaller than rcond * largest_eigenvalue are considered
-		    zero.
+		    Cutoff for 'small' singular values; singular values smaller than this
+		    value are considered as zero. If both are omitted, the default
+		    ``max(M,N)*largest_eigenvalue*eps`` is used where ``eps`` is the
+		    machine precision value of the datatype of ``a``.
 		
-		    If None or -1, suitable machine precision is used.
+		    .. versionchanged:: 1.3.0
+		        Previously the default cutoff value was just ``eps*f`` where ``f``
+		        was ``1e3`` for single precision and ``1e6`` for double precision.
+		
 		lower : bool, optional
 		    Whether the pertinent array data is taken from the lower or upper
-		    triangle of a. (Default: lower)
+		    triangle of `a`. (Default: lower)
 		return_rank : bool, optional
-		    if True, return the effective rank of the matrix
+		    If True, return the effective rank of the matrix.
 		check_finite : bool, optional
 		    Whether to check that the input matrix contains only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
@@ -3316,7 +3501,7 @@ package scipy.linalg;
 		B : (N, N) ndarray
 		    The pseudo-inverse of matrix `a`.
 		rank : int
-		    The effective rank of the matrix.  Returned if return_rank == True
+		    The effective rank of the matrix.  Returned if `return_rank` is True.
 		
 		Raises
 		------
@@ -3442,7 +3627,7 @@ package scipy.linalg;
 		    Determines what information is to be returned: either both Q and R
 		    ('full', default), only R ('r') or both Q and R but computed in
 		    economy-size ('economic', see Notes). The final option 'raw'
-		    (added in Scipy 0.11) makes the function return two matrices
+		    (added in SciPy 0.11) makes the function return two matrices
 		    (Q, TAU) in the internal format used by LAPACK.
 		pivoting : bool, optional
 		    Whether or not factorization should include pivoting for rank-revealing
@@ -3512,7 +3697,7 @@ package scipy.linalg;
 	**/
 	static public function qr(a:Dynamic, ?overwrite_a:Dynamic, ?lwork:Dynamic, ?mode:Dynamic, ?pivoting:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
-		qr_delete(Q, R, k, int p=1, which='row', overwrite_qr=False, check_finite=True)
+		qr_delete(Q, R, k, int p=1, which=u'row', overwrite_qr=False, check_finite=True)
 		
 		QR downdate on row or column deletions
 		
@@ -3620,7 +3805,7 @@ package scipy.linalg;
 	**/
 	static public function qr_delete(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		qr_insert(Q, R, u, k, which='row', rcond=None, overwrite_qru=False, check_finite=True)
+		qr_insert(Q, R, u, k, which=u'row', rcond=None, overwrite_qru=False, check_finite=True)
 		
 		QR update on row or column insertions
 		
@@ -5423,7 +5608,8 @@ package scipy.linalg;
 		Returns
 		-------
 		angles : ndarray, shape (min(N, K),)
-		    The subspace angles between the column spaces of `A` and `B`.
+		    The subspace angles between the column spaces of `A` and `B` in
+		    descending order.
 		
 		See Also
 		--------

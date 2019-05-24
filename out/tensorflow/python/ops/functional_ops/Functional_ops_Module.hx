@@ -91,6 +91,10 @@ package tensorflow.python.ops.functional_ops;
 		  hostmem: A list of integer. If i is in the list, input[i] is a
 		    host memory tensor.
 		
+		Raises:
+		  ValueError: if `cond` has implicitly captured inputs or if `cond` and `body`
+		    have different signatures.
+		
 		Returns:
 		  A list of `Tensor` objects. Has the same type as `input`.
 		  A list of output tensors whose types are T.
@@ -100,6 +104,10 @@ package tensorflow.python.ops.functional_ops;
 		Helper to implement a For loop using a While.
 	**/
 	static public function _ForUsingWhile(start:Dynamic, limit:Dynamic, delta:Dynamic, inputs:Dynamic, forbody:Dynamic, ?name:Dynamic, ?hostmem:Dynamic):Dynamic;
+	/**
+		Returns a wrapper for `func` that handles loop-carried captured inputs.
+	**/
+	static public function _LoopBodyCaptureWrapper(func:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -108,6 +116,8 @@ package tensorflow.python.ops.functional_ops;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _get_disabled_rewriter_config():Dynamic;
+	static public var _rewriter_config_optimizer_disabled : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -332,13 +342,19 @@ package tensorflow.python.ops.functional_ops;
 		    the signature of `f`.
 		  executing_eagerly: (Optional) A boolean indicating whether the context is
 		    executing eagerly. If `None`, fetched from the global context.
+		  config: (Optional) A `tensorflow::ConfigProto` proto, serialized. If
+		    `None`, all optimizations are disabled. Currently only handled for eager
+		    defined functions.
+		  executor_type: (Optional) A string for the name of the executor to be used
+		    in the function call. If not set, or set to an empty string, the default
+		    tensorflow executor will be used.
 		
 		Returns:
 		  The list of `Tensor`s returned by invoking `f(args)`. If the function does
 		  not return anything, then returns `None` if eager execution is enabled, or
 		  the `Operation` if not.
 	**/
-	static public function partitioned_call(args:Dynamic, f:Dynamic, ?tout:Dynamic, ?executing_eagerly:Dynamic):Dynamic;
+	static public function partitioned_call(args:Dynamic, f:Dynamic, ?tout:Dynamic, ?executing_eagerly:Dynamic, ?config:Dynamic, ?executor_type:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Runs function `f` on a remote device indicated by `target`.

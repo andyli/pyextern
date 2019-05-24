@@ -73,6 +73,13 @@ package pandas.core.reshape.melt;
 		    ``DataFrame``, a ``DataFrame`` is returned. When concatenating along
 		    the columns (axis=1), a ``DataFrame`` is returned.
 		
+		See Also
+		--------
+		Series.append
+		DataFrame.append
+		DataFrame.join
+		DataFrame.merge
+		
 		Notes
 		-----
 		The keys, levels, and names arguments are all optional.
@@ -80,13 +87,6 @@ package pandas.core.reshape.melt;
 		A walkthrough of how this method fits in with other tools for combining
 		pandas objects can be found `here
 		<http://pandas.pydata.org/pandas-docs/stable/merging.html>`__.
-		
-		See Also
-		--------
-		Series.append
-		DataFrame.append
-		DataFrame.join
-		DataFrame.merge
 		
 		Examples
 		--------
@@ -163,12 +163,12 @@ package pandas.core.reshape.melt;
 		  letter  number animal
 		0      c       3    cat
 		1      d       4    dog
-		>>> pd.concat([df1, df3])
-		  animal letter  number
-		0    NaN      a       1
-		1    NaN      b       2
-		0    cat      c       3
-		1    dog      d       4
+		>>> pd.concat([df1, df3], sort=False)
+		  letter  number animal
+		0      a       1    NaN
+		1      b       2    NaN
+		0      c       3    cat
+		1      d       4    dog
 		
 		Combine ``DataFrame`` objects with overlapping columns
 		and return only those that are shared by passing ``inner`` to
@@ -267,7 +267,11 @@ package pandas.core.reshape.melt;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -286,8 +290,12 @@ package pandas.core.reshape.melt;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Reshape long-format data to wide. Generalized inverse of DataFrame.pivot
 		
@@ -300,7 +308,6 @@ package pandas.core.reshape.melt;
 		
 		Examples
 		--------
-		>>> import pandas as pd
 		>>> data = pd.DataFrame({'hr1': [514, 573], 'hr2': [545, 526],
 		...                      'team': ['Red Sox', 'Yankees'],
 		...                      'year1': [2007, 2007], 'year2': [2008, 2008]})
@@ -322,7 +329,7 @@ package pandas.core.reshape.melt;
 	**/
 	static public function lreshape(data:Dynamic, groups:Dynamic, ?dropna:Dynamic, ?label:Dynamic):pandas.DataFrame;
 	/**
-		"Unpivots" a DataFrame from wide format to long format, optionally
+		Unpivots a DataFrame from wide format to long format, optionally
 		leaving identifier variables set.
 		
 		This function is useful to massage a DataFrame into a format where one
@@ -348,7 +355,7 @@ package pandas.core.reshape.melt;
 		col_level : int or string, optional
 		    If columns are a MultiIndex then use this level to melt.
 		
-		See also
+		See Also
 		--------
 		DataFrame.melt
 		pivot_table
@@ -356,7 +363,6 @@ package pandas.core.reshape.melt;
 		
 		Examples
 		--------
-		>>> import pandas as pd
 		>>> df = pd.DataFrame({'A': {0: 'a', 1: 'b', 2: 'c'},
 		...                    'B': {0: 1, 1: 3, 2: 5},
 		...                    'C': {0: 2, 1: 4, 2: 6}})
@@ -416,7 +422,7 @@ package pandas.core.reshape.melt;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -434,8 +440,8 @@ package pandas.core.reshape.melt;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -490,6 +496,10 @@ package pandas.core.reshape.melt;
 	/**
 		Convert argument to a numeric type.
 		
+		The default return dtype is `float64` or `int64`
+		depending on the data supplied. Use the `downcast` parameter
+		to obtain other dtypes.
+		
 		Parameters
 		----------
 		arg : list, tuple, 1-d array, or Series
@@ -524,11 +534,17 @@ package pandas.core.reshape.melt;
 		ret : numeric if parsing succeeded.
 		    Return type depends on input.  Series if Series, otherwise ndarray
 		
+		See Also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_datetime : Convert argument to datetime.
+		pandas.to_timedelta : Convert argument to timedelta.
+		numpy.ndarray.astype : Cast a numpy array to a specified type.
+		
 		Examples
 		--------
 		Take separate series and convert to numeric, coercing when told to
 		
-		>>> import pandas as pd
 		>>> s = pd.Series(['1.0', '2', -3])
 		>>> pd.to_numeric(s)
 		0    1.0
@@ -558,20 +574,14 @@ package pandas.core.reshape.melt;
 		2    2.0
 		3   -3.0
 		dtype: float64
-		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_datetime : Convert argument to datetime.
-		pandas.to_timedelta : Convert argument to timedelta.
-		numpy.ndarray.astype : Cast a numpy array to a specified type.
 	**/
 	static public function to_numeric(arg:Dynamic, ?errors:Dynamic, ?downcast:Dynamic):Dynamic;
 	/**
 		Wide panel to long format. Less flexible but more user-friendly than melt.
 		
 		With stubnames ['A', 'B'], this function expects to find one or more
-		group of columns with format Asuffix1, Asuffix2,..., Bsuffix1, Bsuffix2,...
+		group of columns with format
+		A-suffix1, A-suffix2,..., B-suffix1, B-suffix2,...
 		You specify what you want to call this suffix in the resulting long format
 		with `j` (for example `j='year'`)
 		
@@ -590,7 +600,7 @@ package pandas.core.reshape.melt;
 		i : str or list-like
 		    Column(s) to use as id variable(s)
 		j : str
-		    The name of the subobservation variable. What you wish to name your
+		    The name of the sub-observation variable. What you wish to name your
 		    suffix in the long format.
 		sep : str, default ""
 		    A character indicating the separation of the variable names
@@ -605,7 +615,7 @@ package pandas.core.reshape.melt;
 		    numeric suffixes. Suffixes with no numbers could be specified with the
 		    negated character class '\\D+'. You can also further disambiguate
 		    suffixes, for example, if your wide variables are of the form
-		    Aone, Btwo,.., and you have an unrelated column Arating, you can
+		    A-one, B-two,.., and you have an unrelated column A-rating, you can
 		    ignore the last one by specifying `suffix='(!?one|two)'`
 		
 		    .. versionadded:: 0.20.0
@@ -619,10 +629,14 @@ package pandas.core.reshape.melt;
 		    A DataFrame that contains each stub name as a variable, with new index
 		    (i, j)
 		
+		Notes
+		-----
+		All extra variables are left untouched. This simply uses
+		`pandas.melt` under the hood, but is hard-coded to "do the right thing"
+		in a typical case.
+		
 		Examples
 		--------
-		>>> import pandas as pd
-		>>> import numpy as np
 		>>> np.random.seed(123)
 		>>> df = pd.DataFrame({"A1970" : {0 : "a", 1 : "b", 2 : "c"},
 		...                    "A1980" : {0 : "d", 1 : "e", 2 : "f"},
@@ -647,7 +661,7 @@ package pandas.core.reshape.melt;
 		1  1980  0.997345  e  1.3
 		2  1980  0.282978  f  0.1
 		
-		With multuple id columns
+		With multiple id columns
 		
 		>>> df = pd.DataFrame({
 		...     'famid': [1, 1, 1, 2, 2, 2, 3, 3, 3],
@@ -792,12 +806,6 @@ package pandas.core.reshape.melt;
 		            two  3.4
 		      3     one  2.1
 		            two  2.9
-		
-		Notes
-		-----
-		All extra variables are left untouched. This simply uses
-		`pandas.melt` under the hood, but is hard-coded to "do the right thing"
-		in a typical case.
 	**/
 	static public function wide_to_long(df:Dynamic, stubnames:Dynamic, i:Dynamic, j:Dynamic, ?sep:Dynamic, ?suffix:Dynamic):Dynamic;
 }

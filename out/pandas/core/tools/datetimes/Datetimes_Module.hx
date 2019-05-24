@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package pandas.core.tools.datetimes;
 @:pythonImport("pandas.core.tools.datetimes") extern class Datetimes_Module {
-	static public var OLE_TIME_ZERO : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,6 +9,24 @@ package pandas.core.tools.datetimes;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Helper function for to_datetime.
+		Adjust input argument to the specified origin
+		
+		Parameters
+		----------
+		arg : list, tuple, ndarray, Series, Index
+		    date to be adjusted
+		origin : 'julian' or Timestamp
+		    origin offset for the arg
+		unit : string
+		    passed unit from to_datetime, must be 'D'
+		
+		Returns
+		-------
+		ndarray or scalar of adjusted date(s)
+	**/
+	static public function _adjust_to_origin(arg:Dynamic, origin:Dynamic, unit:Dynamic):Dynamic;
 	/**
 		assemble the unit specified fields from the arg (DataFrame)
 		Return a Series for actual parsing
@@ -22,16 +39,21 @@ package pandas.core.tools.datetimes;
 		    - If 'raise', then invalid parsing will raise an exception
 		    - If 'coerce', then invalid parsing will be set as NaT
 		    - If 'ignore', then invalid parsing will return the input
+		box : boolean
+		
+		    - If True, return a DatetimeIndex
+		    - If False, return an array
+		tz : None or 'utc'
 		
 		Returns
 		-------
 		Series
 	**/
-	static public function _assemble_from_unit_mappings(arg:Dynamic, errors:Dynamic):Dynamic;
+	static public function _assemble_from_unit_mappings(arg:Dynamic, errors:Dynamic, box:Dynamic, tz:Dynamic):Dynamic;
 	/**
 		try to parse the YYYYMMDD/%Y%m%d format, try to deal with NaT-like,
-		    arg is a passed in as an object dtype, but could really be ints/strings
-		    with nan-like/or floats (e.g. with nan)
+		arg is a passed in as an object dtype, but could really be ints/strings
+		with nan-like/or floats (e.g. with nan)
 		
 		Parameters
 		----------
@@ -63,7 +85,42 @@ package pandas.core.tools.datetimes;
 		    - ndarray if box=False
 	**/
 	static public function _convert_and_box_cache(arg:Dynamic, cache_array:Dynamic, box:Dynamic, errors:Dynamic, ?name:Dynamic):Dynamic;
-	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Helper function for to_datetime. Performs the conversions of 1D listlike
+		of dates
+		
+		Parameters
+		----------
+		arg : list, tuple, ndarray, Series, Index
+		    date to be parced
+		box : boolean
+		    True boxes result as an Index-like, False returns an ndarray
+		name : object
+		    None or string for the Index name
+		tz : object
+		    None or 'utc'
+		unit : string
+		    None or string of the frequency of the passed data
+		errors : string
+		    error handing behaviors from to_datetime, 'raise', 'coerce', 'ignore'
+		infer_datetime_format : boolean
+		    inferring format behavior from to_datetime
+		dayfirst : boolean
+		    dayfirst parsing behavior from to_datetime
+		yearfirst : boolean
+		    yearfirst parsing behavior from to_datetime
+		exact : boolean
+		    exact format matching behavior from to_datetime
+		
+		Returns
+		-------
+		ndarray of parsed dates
+		    Returns:
+		
+		    - Index-like if box=True
+		    - ndarray of Timestamps if box=False
+	**/
+	static public function _convert_listlike_datetimes(arg:Dynamic, box:Dynamic, format:Dynamic, ?name:Dynamic, ?tz:Dynamic, ?unit:Dynamic, ?errors:Dynamic, ?infer_datetime_format:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?exact:Dynamic):Dynamic;
 	/**
 		Does format match the iso8601 set that can be handled by the C parser?
 		Generally of form YYYY-MM-DDTHH:MM:SS - date separator can be different
@@ -105,8 +162,6 @@ package pandas.core.tools.datetimes;
 		    Strftime format to parse time
 		cache : boolean
 		    True attempts to create a cache of converted values
-		tz : string
-		    Timezone of the dates
 		convert_listlike : function
 		    Conversion function to apply on dates
 		
@@ -115,7 +170,32 @@ package pandas.core.tools.datetimes;
 		cache_array : Series
 		    Cache of converted, unique dates. Can be empty
 	**/
-	static public function _maybe_cache(arg:Dynamic, format:Dynamic, cache:Dynamic, tz:Dynamic, convert_listlike:Dynamic):pandas.Series;
+	static public function _maybe_cache(arg:Dynamic, format:Dynamic, cache:Dynamic, convert_listlike:Dynamic):pandas.Series;
+	/**
+		Return results from array_strptime if a %z or %Z directive was passed.
+		
+		Parameters
+		----------
+		result : ndarray
+		    int64 date representations of the dates
+		timezones : ndarray
+		    pytz timezone objects
+		box : boolean
+		    True boxes result as an Index-like, False returns an ndarray
+		tz : object
+		    None or pytz timezone object
+		name : string, default None
+		    Name for a DatetimeIndex
+		
+		Returns
+		-------
+		tz_result : ndarray of parsed dates with timezone
+		    Returns:
+		
+		    - Index-like if box=True
+		    - ndarray of Timestamps if box=False
+	**/
+	static public function _return_parsed_timezone_results(result:Dynamic, timezones:Dynamic, box:Dynamic, tz:Dynamic, name:Dynamic):Dynamic;
 	static public var _time_formats : Dynamic;
 	static public var _unit_map : Dynamic;
 	/**
@@ -126,13 +206,10 @@ package pandas.core.tools.datetimes;
 		values : ndarray of string-like objects
 		fmt : string-like regex
 		exact : matches must be exact if True, search if False
-		coerce : if invalid values found, coerce to NaT
+		errors : string specifying error handling, {'raise', 'ignore', 'coerce'}
 	**/
 	static public function array_strptime(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Returns date in YYYYMMDD format.
-	**/
-	static public function format(dt:Dynamic):Dynamic;
+	static public function ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether an array-like or dtype is of the datetime64 dtype.
 		
@@ -235,6 +312,11 @@ package pandas.core.tools.datetimes;
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
 		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -254,6 +336,12 @@ package pandas.core.tools.datetimes;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -279,7 +367,11 @@ package pandas.core.tools.datetimes;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -298,8 +390,12 @@ package pandas.core.tools.datetimes;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Check whether the provided array or dtype is of a numeric dtype.
 		
@@ -337,25 +433,83 @@ package pandas.core.tools.datetimes;
 	**/
 	static public function is_numeric_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
+		Check whether an array-like or dtype is of the object dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of the object dtype.
+		
+		Examples
+		--------
+		>>> is_object_dtype(object)
+		True
+		>>> is_object_dtype(int)
+		False
+		>>> is_object_dtype(np.array([], dtype=object))
+		True
+		>>> is_object_dtype(np.array([], dtype=int))
+		False
+		>>> is_object_dtype([1, 2, 3])
+		False
+	**/
+	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -373,8 +527,8 @@ package pandas.core.tools.datetimes;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -427,10 +581,6 @@ package pandas.core.tools.datetimes;
 	**/
 	static public function notna(obj:Dynamic):Dynamic;
 	/**
-		function for converting excel date to normal date format
-	**/
-	static public function ole2datetime(oledt:Dynamic):Dynamic;
-	/**
 		Try hard to parse datetime string, leveraging dateutil plus some extra
 		goodies like quarter recognition.
 		
@@ -480,7 +630,7 @@ package pandas.core.tools.datetimes;
 		      as dateutil).
 		
 		    Warning: yearfirst=True is not strict, but will prefer to parse
-		    with year first (this is a known bug, based on dateutil beahavior).
+		    with year first (this is a known bug, based on dateutil behavior).
 		
 		    .. versionadded:: 0.16.1
 		
@@ -489,7 +639,7 @@ package pandas.core.tools.datetimes;
 		    datetime.datetime objects as well).
 		box : boolean, default True
 		
-		    - If True returns a DatetimeIndex
+		    - If True returns a DatetimeIndex or Index-like object
 		    - If False returns ndarray of values.
 		format : string, default None
 		    strftime to parse time, eg "%d/%m/%Y", note that "%f" will parse
@@ -523,8 +673,8 @@ package pandas.core.tools.datetimes;
 		    .. versionadded:: 0.20.0
 		cache : boolean, default False
 		    If True, use a cache of unique, converted dates to apply the datetime
-		    conversion. May produce sigificant speed-up when parsing duplicate date
-		    strings, especially ones with timezone offsets.
+		    conversion. May produce significant speed-up when parsing duplicate
+		    date strings, especially ones with timezone offsets.
 		
 		    .. versionadded:: 0.23.0
 		
@@ -541,6 +691,11 @@ package pandas.core.tools.datetimes;
 		    any element of input is before Timestamp.min or after Timestamp.max)
 		    return will have datetime.datetime type (or corresponding
 		    array/Series).
+		
+		See Also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
 		
 		Examples
 		--------
@@ -605,11 +760,6 @@ package pandas.core.tools.datetimes;
 		0    1960-01-02
 		1    1960-01-03
 		2    1960-01-04
-		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_timedelta : Convert argument to timedelta.
 	**/
 	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 	/**

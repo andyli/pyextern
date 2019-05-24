@@ -30,10 +30,6 @@ package pandas.tseries.offsets;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	/**
-		Return a pickleable state
-	**/
-	public function __getstate__():Dynamic;
-	/**
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
@@ -114,7 +110,7 @@ package pandas.tseries.offsets;
 	public var __weakref__ : Dynamic;
 	public function _repr_attrs():Dynamic;
 	/**
-		Alias for self._offset
+		Alias for self._offset.
 	**/
 	public var offset : Dynamic;
 }

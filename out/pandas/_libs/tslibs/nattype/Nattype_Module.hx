@@ -16,5 +16,19 @@ package pandas._libs.tslibs.nattype;
 	static public function _make_nan_func(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _make_nat_func(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var iNaT : Dynamic;
+	/**
+		Determine if we have a null for a timedelta/datetime (or integer versions)
+		
+		Parameters
+		----------
+		val : object
+		inat_is_null : bool, default True
+		    Whether to treat integer iNaT value as null
+		
+		Returns
+		-------
+		null_datetimelike : bool
+	**/
+	static public function is_null_datetimelike(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var nat_strings : Dynamic;
 }

@@ -83,7 +83,7 @@ package numpy.polynomial.hermite;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __mod__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(other:Dynamic):Dynamic;
@@ -167,7 +167,7 @@ package numpy.polynomial.hermite;
 		
 		See Also
 		--------
-		hermsub, hermmul, hermdiv, hermpow
+		hermsub, hermmulx, hermmul, hermdiv, hermpow
 		
 		Notes
 		-----
@@ -259,7 +259,7 @@ package numpy.polynomial.hermite;
 		
 		See Also
 		--------
-		hermadd, hermsub, hermmul, hermpow
+		hermadd, hermsub, hermmulx, hermmul, hermpow
 		
 		Notes
 		-----
@@ -392,7 +392,7 @@ package numpy.polynomial.hermite;
 		References
 		----------
 		.. [1] Wikipedia, "Curve fitting",
-		       http://en.wikipedia.org/wiki/Curve_fitting
+		       https://en.wikipedia.org/wiki/Curve_fitting
 		
 		Examples
 		--------
@@ -610,7 +610,7 @@ package numpy.polynomial.hermite;
 		
 		See Also
 		--------
-		hermadd, hermsub, hermdiv, hermpow
+		hermadd, hermsub, hermmulx, hermdiv, hermpow
 		
 		Notes
 		-----
@@ -652,7 +652,7 @@ package numpy.polynomial.hermite;
 		
 		See Also
 		--------
-		hermadd, hermsub, hermmul, hermdiv
+		hermadd, hermsub, hermmulx, hermmul, hermdiv
 		
 		Examples
 		--------
@@ -661,6 +661,9 @@ package numpy.polynomial.hermite;
 		array([ 81.,  52.,  82.,  12.,   9.])
 	**/
 	static public function _pow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):numpy.Ndarray;
+	public function _repr_latex_():Dynamic;
+	static public function _repr_latex_scalar(x:Dynamic):Dynamic;
+	static public function _repr_latex_term(i:Dynamic, arg_str:Dynamic, needs_parens:Dynamic):Dynamic;
 	/**
 		Compute the roots of a Hermite series.
 		
@@ -726,7 +729,7 @@ package numpy.polynomial.hermite;
 		
 		See Also
 		--------
-		hermadd, hermmul, hermdiv, hermpow
+		hermadd, hermmulx, hermmul, hermdiv, hermpow
 		
 		Notes
 		-----
@@ -838,6 +841,7 @@ package numpy.polynomial.hermite;
 		    all others zero.
 	**/
 	static public function basis(deg:Dynamic, ?domain:Dynamic, ?window:Dynamic):Dynamic;
+	static public var basis_name : Dynamic;
 	/**
 		Convert series to series of this class.
 		
@@ -1024,7 +1028,9 @@ package numpy.polynomial.hermite;
 		-------
 		new_series : series
 		    A series that represents the least squares fit to the data and
-		    has the domain specified in the call.
+		    has the domain and window specified in the call. If the
+		    coefficients for the unscaled and unshifted basis polynomials are
+		    of interest, do ``new_series.convert().coef``.
 		
 		[resid, rank, sv, rcond] : list
 		    These values are only returned if `full` = True

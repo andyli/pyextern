@@ -146,6 +146,7 @@ package numpy.lib.index_tricks;
 		hstack : Stack arrays in sequence horizontally (column wise)
 		vstack : Stack arrays in sequence vertically (row wise)
 		dstack : Stack arrays in sequence depth wise (along third dimension)
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -175,19 +176,19 @@ package numpy.lib.index_tricks;
 		>>> a[1] = np.ma.masked
 		>>> b = np.arange(2, 5)
 		>>> a
-		masked_array(data = [0 -- 2],
-		             mask = [False  True False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2],
+		             mask=[False,  True, False],
+		       fill_value=999999)
 		>>> b
 		array([2, 3, 4])
 		>>> np.concatenate([a, b])
-		masked_array(data = [0 1 2 2 3 4],
-		             mask = False,
-		       fill_value = 999999)
+		masked_array(data=[0, 1, 2, 2, 3, 4],
+		             mask=False,
+		       fill_value=999999)
 		>>> np.ma.concatenate([a, b])
-		masked_array(data = [0 -- 2 2 3 4],
-		             mask = [False  True False False False False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2, 2, 3, 4],
+		             mask=[False,  True, False, False, False, False],
+		       fill_value=999999)
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

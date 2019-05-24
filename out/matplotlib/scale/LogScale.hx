@@ -2,155 +2,59 @@
 package matplotlib.scale;
 @:pythonImport("matplotlib.scale", "LogScale") extern class LogScale {
 	/**
-		The base class of all :class:`TransformNode` instances that
-		actually perform a transformation.
+		[*Deprecated*] 
 		
-		All non-affine transformations should be subclasses of this class.
-		New affine transformations should be subclasses of
-		:class:`Affine2D`.
-		
-		Subclasses of this class should override the following members (at
-		minimum):
-		
-		  - :attr:`input_dims`
-		  - :attr:`output_dims`
-		  - :meth:`transform`
-		  - :attr:`is_separable`
-		  - :attr:`has_inverse`
-		  - :meth:`inverted` (if :attr:`has_inverse` is True)
-		
-		If the transform needs to do something non-standard with
-		:class:`matplotlib.path.Path` objects, such as adding curves
-		where there were once line segments, it should override:
-		
-		  - :meth:`transform_path`
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
 	**/
-	static public function InvertedLog10Transform(?shorthand_name:Dynamic):Dynamic;
+	static public function InvertedLog10Transform(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		The base class of all :class:`TransformNode` instances that
-		actually perform a transformation.
+		[*Deprecated*] 
 		
-		All non-affine transformations should be subclasses of this class.
-		New affine transformations should be subclasses of
-		:class:`Affine2D`.
-		
-		Subclasses of this class should override the following members (at
-		minimum):
-		
-		  - :attr:`input_dims`
-		  - :attr:`output_dims`
-		  - :meth:`transform`
-		  - :attr:`is_separable`
-		  - :attr:`has_inverse`
-		  - :meth:`inverted` (if :attr:`has_inverse` is True)
-		
-		If the transform needs to do something non-standard with
-		:class:`matplotlib.path.Path` objects, such as adding curves
-		where there were once line segments, it should override:
-		
-		  - :meth:`transform_path`
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
 	**/
-	static public function InvertedLog2Transform(?shorthand_name:Dynamic):Dynamic;
+	static public function InvertedLog2Transform(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		The base class of all :class:`TransformNode` instances that
-		actually perform a transformation.
+		[*Deprecated*] 
 		
-		All non-affine transformations should be subclasses of this class.
-		New affine transformations should be subclasses of
-		:class:`Affine2D`.
-		
-		Subclasses of this class should override the following members (at
-		minimum):
-		
-		  - :attr:`input_dims`
-		  - :attr:`output_dims`
-		  - :meth:`transform`
-		  - :attr:`is_separable`
-		  - :attr:`has_inverse`
-		  - :meth:`inverted` (if :attr:`has_inverse` is True)
-		
-		If the transform needs to do something non-standard with
-		:class:`matplotlib.path.Path` objects, such as adding curves
-		where there were once line segments, it should override:
-		
-		  - :meth:`transform_path`
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
 	**/
 	static public function InvertedLogTransform(base:Dynamic):Dynamic;
 	/**
-		The base class of all :class:`TransformNode` instances that
-		actually perform a transformation.
+		[*Deprecated*] 
 		
-		All non-affine transformations should be subclasses of this class.
-		New affine transformations should be subclasses of
-		:class:`Affine2D`.
-		
-		Subclasses of this class should override the following members (at
-		minimum):
-		
-		  - :attr:`input_dims`
-		  - :attr:`output_dims`
-		  - :meth:`transform`
-		  - :attr:`is_separable`
-		  - :attr:`has_inverse`
-		  - :meth:`inverted` (if :attr:`has_inverse` is True)
-		
-		If the transform needs to do something non-standard with
-		:class:`matplotlib.path.Path` objects, such as adding curves
-		where there were once line segments, it should override:
-		
-		  - :meth:`transform_path`
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
 	**/
-	static public function InvertedNaturalLogTransform(?shorthand_name:Dynamic):Dynamic;
+	static public function InvertedNaturalLogTransform(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		The base class of all :class:`TransformNode` instances that
-		actually perform a transformation.
+		[*Deprecated*] 
 		
-		All non-affine transformations should be subclasses of this class.
-		New affine transformations should be subclasses of
-		:class:`Affine2D`.
-		
-		Subclasses of this class should override the following members (at
-		minimum):
-		
-		  - :attr:`input_dims`
-		  - :attr:`output_dims`
-		  - :meth:`transform`
-		  - :attr:`is_separable`
-		  - :attr:`has_inverse`
-		  - :meth:`inverted` (if :attr:`has_inverse` is True)
-		
-		If the transform needs to do something non-standard with
-		:class:`matplotlib.path.Path` objects, such as adding curves
-		where there were once line segments, it should override:
-		
-		  - :meth:`transform_path`
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
 	**/
-	static public function Log10Transform(?nonpos:Dynamic):Dynamic;
+	static public function Log10Transform(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		The base class of all :class:`TransformNode` instances that
-		actually perform a transformation.
+		[*Deprecated*] 
 		
-		All non-affine transformations should be subclasses of this class.
-		New affine transformations should be subclasses of
-		:class:`Affine2D`.
-		
-		Subclasses of this class should override the following members (at
-		minimum):
-		
-		  - :attr:`input_dims`
-		  - :attr:`output_dims`
-		  - :meth:`transform`
-		  - :attr:`is_separable`
-		  - :attr:`has_inverse`
-		  - :meth:`inverted` (if :attr:`has_inverse` is True)
-		
-		If the transform needs to do something non-standard with
-		:class:`matplotlib.path.Path` objects, such as adding curves
-		where there were once line segments, it should override:
-		
-		  - :meth:`transform_path`
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
 	**/
-	static public function Log2Transform(?nonpos:Dynamic):Dynamic;
+	static public function Log2Transform(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The base class of all :class:`TransformNode` instances that
 		actually perform a transformation.
@@ -177,55 +81,23 @@ package matplotlib.scale;
 	**/
 	static public function LogTransform(base:Dynamic, ?nonpos:Dynamic):Dynamic;
 	/**
-		The base class of all :class:`TransformNode` instances that
-		actually perform a transformation.
+		[*Deprecated*] 
 		
-		All non-affine transformations should be subclasses of this class.
-		New affine transformations should be subclasses of
-		:class:`Affine2D`.
-		
-		Subclasses of this class should override the following members (at
-		minimum):
-		
-		  - :attr:`input_dims`
-		  - :attr:`output_dims`
-		  - :meth:`transform`
-		  - :attr:`is_separable`
-		  - :attr:`has_inverse`
-		  - :meth:`inverted` (if :attr:`has_inverse` is True)
-		
-		If the transform needs to do something non-standard with
-		:class:`matplotlib.path.Path` objects, such as adding curves
-		where there were once line segments, it should override:
-		
-		  - :meth:`transform_path`
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
 	**/
-	static public function LogTransformBase(?nonpos:Dynamic):Dynamic;
+	static public function LogTransformBase(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		The base class of all :class:`TransformNode` instances that
-		actually perform a transformation.
+		[*Deprecated*] 
 		
-		All non-affine transformations should be subclasses of this class.
-		New affine transformations should be subclasses of
-		:class:`Affine2D`.
-		
-		Subclasses of this class should override the following members (at
-		minimum):
-		
-		  - :attr:`input_dims`
-		  - :attr:`output_dims`
-		  - :meth:`transform`
-		  - :attr:`is_separable`
-		  - :attr:`has_inverse`
-		  - :meth:`inverted` (if :attr:`has_inverse` is True)
-		
-		If the transform needs to do something non-standard with
-		:class:`matplotlib.path.Path` objects, such as adding curves
-		where there were once line segments, it should override:
-		
-		  - :meth:`transform_path`
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
 	**/
-	static public function NaturalLogTransform(?nonpos:Dynamic):Dynamic;
+	static public function NaturalLogTransform(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -359,6 +231,7 @@ package matplotlib.scale;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public var base : Dynamic;
 	/**
 		Return a :class:`~matplotlib.transforms.Transform` instance
 		appropriate for the given logarithm base.

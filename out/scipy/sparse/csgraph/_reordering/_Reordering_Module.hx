@@ -155,6 +155,31 @@ package scipy.sparse.csgraph._reordering;
 		I. S. Duff, K. Kaya, and B. Ucar, "Design, Implementation, and 
 		Analysis of Maximum Transversal Algorithms", ACM Trans. Math. Softw.
 		38, no. 2, (2011).
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import maximum_bipartite_matching
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [1, 0, 0, 1],
+		... [2, 0, 0, 3],
+		... [0, 1, 3, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 0)    1
+		  (1, 3)    1
+		  (2, 0)    2
+		  (2, 3)    3
+		  (3, 1)    1
+		  (3, 2)    3
+		
+		>>> maximum_bipartite_matching(graph, perm_type='row')
+		array([1, 0, 3, 2], dtype=int32)
 	**/
 	static public function maximum_bipartite_matching(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -188,6 +213,28 @@ package scipy.sparse.csgraph._reordering;
 		----------
 		E. Cuthill and J. McKee, "Reducing the Bandwidth of Sparse Symmetric Matrices",
 		ACM '69 Proceedings of the 1969 24th national conference, (1969).
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import reverse_cuthill_mckee
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [2, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 3)    1
+		  (2, 0)    2
+		  (2, 3)    3
+		
+		>>> reverse_cuthill_mckee(graph)
+		array([3, 2, 1, 0], dtype=int32)
 	**/
 	static public function reverse_cuthill_mckee(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -201,6 +248,8 @@ package scipy.sparse.csgraph._reordering;
 		on the numerical rank of the matrix. A graph has full structural rank 
 		if it is possible to permute the elements to make the diagonal zero-free.
 		
+		.. versionadded:: 0.19.0
+		
 		Parameters
 		----------
 		graph : sparse matrix
@@ -211,14 +260,37 @@ package scipy.sparse.csgraph._reordering;
 		rank : int
 		    The structural rank of the sparse graph.
 		
-		.. versionadded:: 0.19.0
-		
 		References
 		----------
 		.. [1] I. S. Duff, "Computing the Structural Index", SIAM J. Alg. Disc. 
 		        Meth., Vol. 7, 594 (1986).
 		
 		.. [2] http://www.cise.ufl.edu/research/sparse/matrices/legend.html
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import structural_rank
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [1, 0, 0, 1],
+		... [2, 0, 0, 3],
+		... [0, 1, 3, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 0)    1
+		  (1, 3)    1
+		  (2, 0)    2
+		  (2, 3)    3
+		  (3, 1)    1
+		  (3, 2)    3
+		
+		>>> structural_rank(graph)
+		4
 	**/
 	static public function structural_rank(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

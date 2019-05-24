@@ -13,32 +13,54 @@ package tensorflow.python.keras.metrics;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _assert_thresholds_range(thresholds:Dynamic):Dynamic;
+	static public function _parse_init_thresholds(thresholds:Dynamic, ?default_threshold:Dynamic):Dynamic;
+	/**
+		Returns op to update the given confusion matrix variables.
+		
+		For every pair of values in y_true and y_pred:
+		
+		true_positive: y_true == True and y_pred > thresholds
+		false_negatives: y_true == True and y_pred <= thresholds
+		true_negatives: y_true == False and y_pred <= thresholds
+		false_positive: y_true == False and y_pred > thresholds
+		
+		The results will be weighted and added together. When multiple thresholds are
+		provided, we will repeat the same for every threshold.
+		
+		For estimation of these metrics over a stream of data, the function creates an
+		`update_op` operation that updates the given variables.
+		
+		If `sample_weight` is `None`, weights default to 1.
+		Use weights of 0 to mask values.
+		
+		Args:
+		  variables_to_update: Dictionary with 'tp', 'fn', 'tn', 'fp' as valid keys
+		    and corresponding variables to update as values.
+		  y_true: A `Tensor` whose shape matches `y_pred`. Will be cast to `bool`.
+		  y_pred: A floating point `Tensor` of arbitrary shape and whose values are in
+		    the range `[0, 1]`.
+		  thresholds: A float value or a python list or tuple of float thresholds in
+		    `[0, 1]`.
+		  sample_weight: Optional `Tensor` whose rank is either 0, or the same rank as
+		    `y_true`, and must be broadcastable to `y_true` (i.e., all dimensions must
+		    be either `1`, or the same as the corresponding `y_true` dimension).
+		
+		Returns:
+		  Update op.
+		
+		Raises:
+		  ValueError: If `y_pred` and `y_true` have mismatched shapes, or if
+		    `sample_weight` is not `None` and its shape doesn't match `y_pred`, or if
+		    `variables_to_update` contains invalid keys.
+	**/
+	static public function _update_confusion_matrix_variables(variables_to_update:Dynamic, y_true:Dynamic, y_pred:Dynamic, thresholds:Dynamic, ?sample_weight:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
-	/**
-		A decorator indicating abstract methods.
-		
-		Requires that the metaclass is ABCMeta or derived from it.  A
-		class that has a metaclass derived from ABCMeta cannot be
-		instantiated unless all of its abstract methods are overridden.
-		The abstract methods can be called using any of the normal
-		'super' call mechanisms.
-		
-		Usage:
-		
-		    class C(metaclass=ABCMeta):
-		        @abstractmethod
-		        def my_abstract_method(self, ...):
-		            ...
-	**/
-	static public function abstractmethod(funcobj:Dynamic):Dynamic;
+	static public function accuracy(y_true:Dynamic, y_pred:Dynamic):Dynamic;
 	static public function binary_accuracy(y_true:Dynamic, y_pred:Dynamic, ?threshold:Dynamic):Dynamic;
-	static public function binary_crossentropy(y_true:Dynamic, y_pred:Dynamic):Dynamic;
+	static public function binary_crossentropy(y_true:Dynamic, y_pred:Dynamic, ?from_logits:Dynamic):Dynamic;
 	static public function categorical_accuracy(y_true:Dynamic, y_pred:Dynamic):Dynamic;
-	static public function categorical_crossentropy(y_true:Dynamic, y_pred:Dynamic):Dynamic;
-	/**
-		Raises type error if the given input is not a tensor or operation.
-	**/
-	static public function check_is_tensor_or_operation(x:Dynamic, name:Dynamic):Dynamic;
+	static public function categorical_crossentropy(y_true:Dynamic, y_pred:Dynamic, ?from_logits:Dynamic):Dynamic;
 	/**
 		Returns a clone of the metric if stateful, otherwise returns it as is.
 	**/
@@ -87,7 +109,7 @@ package tensorflow.python.keras.metrics;
 		Result computation is an idempotent operation that simply calculates the
 		metric value using the state variables.
 		
-		If metric state variables are distributed across towers/devices and
+		If metric state variables are distributed across replicas/devices and
 		`result()` is requested from the context of one device - This function wraps
 		`result()` in a distribution strategy `merge_call()`. With this,
 		the metric state variables will be aggregated across devices.
@@ -100,21 +122,10 @@ package tensorflow.python.keras.metrics;
 		  `merge_call()`.
 	**/
 	static public function result_wrapper(result_fn:Dynamic):Dynamic;
-	/**
-		Divides two tensors element-wise, returning 0 if the denominator is <= 0.
-		
-		Args:
-		  numerator: A `Tensor`.
-		  denominator: A `Tensor`, with dtype matching `numerator`.
-		
-		Returns:
-		  0 if `denominator` <= 0, else `numerator` / `denominator`
-	**/
-	static public function safe_div(numerator:Dynamic, denominator:Dynamic):Dynamic;
 	static public function serialize(metric:Dynamic):Dynamic;
 	static public function serialize_keras_object(instance:Dynamic):Dynamic;
 	static public function sparse_categorical_accuracy(y_true:Dynamic, y_pred:Dynamic):Dynamic;
-	static public function sparse_categorical_crossentropy(y_true:Dynamic, y_pred:Dynamic):Dynamic;
+	static public function sparse_categorical_crossentropy(y_true:Dynamic, y_pred:Dynamic, ?from_logits:Dynamic):Dynamic;
 	static public function sparse_top_k_categorical_accuracy(y_true:Dynamic, y_pred:Dynamic, ?k:Dynamic):Dynamic;
 	static public function squared_hinge(y_true:Dynamic, y_pred:Dynamic):Dynamic;
 	/**
@@ -142,6 +153,19 @@ package tensorflow.python.keras.metrics;
 	**/
 	static public function squeeze_or_expand_dimensions(y_pred:Dynamic, y_true:Dynamic, sample_weight:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Normalizes a list/tensor into a list.
+		
+		If a tensor is passed, we return
+		a list of size 1 containing the tensor.
+		
+		Arguments:
+		    x: target object to be normalized.
+		
+		Returns:
+		    A list.
+	**/
+	static public function to_list(x:Dynamic):Dynamic;
 	static public function top_k_categorical_accuracy(y_true:Dynamic, y_pred:Dynamic, ?k:Dynamic):Dynamic;
 	/**
 		Decorator to wrap metric `update_state()` with `add_update()`.

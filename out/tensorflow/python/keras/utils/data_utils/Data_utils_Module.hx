@@ -126,10 +126,35 @@ package tensorflow.python.keras.utils.data_utils;
 	**/
 	static public function get_index(uid:Dynamic, i:Dynamic):Dynamic;
 	static public function init_pool(seqs:Dynamic):Dynamic;
+	static public function init_pool_generator(gens:Dynamic, ?random_seed:Dynamic):Dynamic;
 	/**
 		Check if `x` is a Keras generator type.
 	**/
 	static public function is_generator_or_sequence(x:Dynamic):Dynamic;
+	/**
+		Iterates indefinitely over a Sequence.
+		
+		Arguments:
+		  seq: Sequence instance.
+		
+		Yields:
+		  Batches of data from the Sequence.
+	**/
+	static public function iter_sequence_infinite(seq:Dynamic):Dynamic;
+	/**
+		Gets the next value from the generator `uid`.
+		
+		To allow multiple generators to be used at the same time, we use `uid` to
+		get a specific one. A single generator would cause the validation to
+		overwrite the training generator.
+		
+		Arguments:
+		    uid: int, generator identifier
+		
+		Returns:
+		    The next value of generator `uid`.
+	**/
+	static public function next_sample(uid:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

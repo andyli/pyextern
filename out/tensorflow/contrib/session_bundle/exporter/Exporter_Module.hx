@@ -13,7 +13,7 @@ package tensorflow.contrib.session_bundle.exporter;
 	/**
 		Creates a classification signature. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
 		No longer supported. Switch to SavedModel immediately.
 		
@@ -63,7 +63,7 @@ package tensorflow.contrib.session_bundle.exporter;
 	/**
 		Creates a generic signature of name to Tensor name. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
 		No longer supported. Switch to SavedModel immediately.
 		
@@ -77,7 +77,7 @@ package tensorflow.contrib.session_bundle.exporter;
 	/**
 		Callback to copy files using `gfile.Copy` to an export directory. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
 		No longer supported. Switch to SavedModel immediately.
 		
@@ -96,7 +96,7 @@ package tensorflow.contrib.session_bundle.exporter;
 	/**
 		Creates a regression signature. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
 		No longer supported. Switch to SavedModel immediately.
 		

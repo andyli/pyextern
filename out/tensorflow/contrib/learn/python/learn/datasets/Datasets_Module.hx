@@ -50,7 +50,7 @@ package tensorflow.contrib.learn.python.learn.datasets;
 	/**
 		Load Boston housing dataset. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use scikits.learn.datasets.
 		
@@ -64,7 +64,7 @@ package tensorflow.contrib.learn.python.learn.datasets;
 	/**
 		Loads dataset by name. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.data.
 		
@@ -83,7 +83,7 @@ package tensorflow.contrib.learn.python.learn.datasets;
 	/**
 		Load Iris dataset. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use scikits.learn.datasets.
 		
@@ -97,7 +97,7 @@ package tensorflow.contrib.learn.python.learn.datasets;
 	/**
 		Creates binary synthetic datasets. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.data.
 		

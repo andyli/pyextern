@@ -19,6 +19,7 @@ package scipy.linalg.blas;
 	**/
 	static public function _get_funcs(names:Dynamic, arrays:Dynamic, dtype:Dynamic, lib_name:Dynamic, fmodule:Dynamic, cmodule:Dynamic, fmodule_name:Dynamic, cmodule_name:Dynamic, alias:Dynamic):Dynamic;
 	static public var _type_conv : Dynamic;
+	static public var _type_score : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		z = caxpy(x,y,[n,a,offx,incx,offy,incy])

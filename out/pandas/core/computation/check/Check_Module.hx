@@ -3,6 +3,7 @@ package pandas.core.computation.check;
 @:pythonImport("pandas.core.computation.check") extern class Check_Module {
 	static public var _MIN_NUMEXPR_VERSION : Dynamic;
 	static public var _NUMEXPR_INSTALLED : Dynamic;
+	static public var _NUMEXPR_VERSION : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;

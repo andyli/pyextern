@@ -26,6 +26,10 @@ package tensorflow.python.ops.linalg_grad;
 	**/
 	static public function _MatrixSolveLsGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
+		Gradient for MatrixSquareRoot.
+	**/
+	static public function _MatrixSquareRootGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
 		Gradient for MatrixTriangularSolve.
 	**/
 	static public function _MatrixTriangularSolveGrad(op:Dynamic, grad:Dynamic):Dynamic;

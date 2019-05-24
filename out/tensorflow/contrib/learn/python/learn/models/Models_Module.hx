@@ -26,7 +26,7 @@ package tensorflow.contrib.learn.python.learn.models;
 	/**
 		Creates a bidirectional recurrent neural network. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please consider `tf.nn.bidirectional_dynamic_rnn`.
 		
@@ -103,7 +103,7 @@ package tensorflow.contrib.learn.python.learn.models;
 	/**
 		Returns a function that creates a RNN TensorFlow subgraph. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please consider tensorflow/tensor2tensor.
 		
@@ -138,7 +138,7 @@ package tensorflow.contrib.learn.python.learn.models;
 	/**
 		Creates linear regression TensorFlow subgraph. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Consider using a class from tf.estimator.
 		
@@ -163,7 +163,7 @@ package tensorflow.contrib.learn.python.learn.models;
 	/**
 		Linear regression subgraph with zero-value initial weights and bias. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Consider using a tf.estimator.LinearRegressor
 		
@@ -178,7 +178,7 @@ package tensorflow.contrib.learn.python.learn.models;
 	/**
 		Creates logistic regression TensorFlow subgraph. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Consider using a class from tf.estimator.
 		
@@ -209,7 +209,7 @@ package tensorflow.contrib.learn.python.learn.models;
 	/**
 		Logistic regression subgraph with zero-value initial weights and bias. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Consider using a class from tf.estimator.LinearClassifier
 		

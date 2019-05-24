@@ -60,7 +60,7 @@ package matplotlib.axes._base;
 		**kwargs
 		    Other optional keyword arguments:
 		      adjustable: {'box', 'datalim'}
-		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array
 		  alpha: float
 		  anchor: 2-tuple of floats or {'C', 'SW', 'S', 'SE', ...}
 		  animated: bool
@@ -72,7 +72,7 @@ package matplotlib.axes._base;
 		  axisbelow: bool or 'line'
 		  clip_box: `.Bbox`
 		  clip_on: bool
-		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 		  contains: callable
 		  facecolor: color
 		  fc: color
@@ -88,7 +88,7 @@ package matplotlib.axes._base;
 		  position: [left, bottom, width, height] or `~matplotlib.transforms.Bbox`
 		  rasterization_zorder: float or None
 		  rasterized: bool or None
-		  sketch_params: (scale: float, length: float, randomness: float) 
+		  sketch_params: (scale: float, length: float, randomness: float)
 		  snap: bool or None
 		  title: str
 		  transform: `.Transform`
@@ -139,7 +139,7 @@ package matplotlib.axes._base;
 		**kwargs
 		    Other optional keyword arguments:
 		      adjustable: {'box', 'datalim'}
-		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array
 		  alpha: float
 		  anchor: 2-tuple of floats or {'C', 'SW', 'S', 'SE', ...}
 		  animated: bool
@@ -151,7 +151,7 @@ package matplotlib.axes._base;
 		  axisbelow: bool or 'line'
 		  clip_box: `.Bbox`
 		  clip_on: bool
-		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 		  contains: callable
 		  facecolor: color
 		  fc: color
@@ -167,7 +167,7 @@ package matplotlib.axes._base;
 		  position: [left, bottom, width, height] or `~matplotlib.transforms.Bbox`
 		  rasterization_zorder: float or None
 		  rasterized: bool or None
-		  sketch_params: (scale: float, length: float, randomness: float) 
+		  sketch_params: (scale: float, length: float, randomness: float)
 		  snap: bool or None
 		  title: str
 		  transform: `.Transform`
@@ -259,7 +259,7 @@ package matplotlib.axes._base;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		        
+		Add a `~.Text` to the axes' texts; return the text.
 	**/
 	public function _add_text(txt:Dynamic):Dynamic;
 	/**
@@ -268,29 +268,33 @@ package matplotlib.axes._base;
 	**/
 	public function _gci():Dynamic;
 	/**
-		Returns the patch used to draw the background of the axes.  It
-		is also used as the clipping path for any data elements on the
-		axes.
+		Returns
+		-------
+		Patch
+		    The patch used to draw the background of the axes.  It is also used
+		    as the clipping path for any data elements on the axes.
 		
-		In the standard axes, this is a rectangle, but in other
-		projections it may not be.
+		    In the standard axes, this is a rectangle, but in other projections
+		    it may not be.
 		
-		.. note::
-		
-		    Intended to be overridden by new projection types.
+		Notes
+		-----
+		Intended to be overridden by new projection types.
 	**/
 	public function _gen_axes_patch():Dynamic;
 	/**
-		Returns a dict whose keys are spine names and values are
-		Line2D or Patch instances. Each element is used to draw a
-		spine of the axes.
+		Returns
+		-------
+		dict
+		    Mapping of spine names to `Line2D` or `Patch` instances that are
+		    used to draw axes spines.
 		
-		In the standard axes, this is a single line segment, but in
-		other projections it may not be.
+		    In the standard axes, spines are single line segments, but in other
+		    projections they may not be.
 		
-		.. note::
-		
-		    Intended to be overridden by new projection types.
+		Notes
+		-----
+		Intended to be overridden by new projection types.
 	**/
 	public function _gen_axes_spines(?locations:Dynamic, ?offset:Dynamic, ?units:Dynamic):Dynamic;
 	public function _get_axis_list():Dynamic;
@@ -308,7 +312,6 @@ package matplotlib.axes._base;
 		    :meth:`_set_view` if you implement this method.
 	**/
 	public function _get_view():Dynamic;
-	public var _hold : Dynamic;
 	/**
 		move this out of __init__ because non-separable axes don't use it
 	**/
@@ -345,18 +348,16 @@ package matplotlib.axes._base;
 	**/
 	public function _set_gc_clip(gc:Dynamic):Dynamic;
 	/**
-		set the *_xaxis_transform*, *_yaxis_transform*,
-		*transScale*, *transData*, *transLimits* and *transAxes*
-		transformations.
+		Set the *_xaxis_transform*, *_yaxis_transform*, *transScale*,
+		*transData*, *transLimits* and *transAxes* transformations.
 		
 		.. note::
 		
-		    This method is primarily used by rectilinear projections
-		    of the :class:`~matplotlib.axes.Axes` class, and is meant
-		    to be overridden by new kinds of projection axes that need
-		    different transformations and limits. (See
-		    :class:`~matplotlib.projections.polar.PolarAxes` for an
-		    example.
+		    This method is primarily used by rectilinear projections of the
+		    `~matplotlib.axes.Axes` class, and is meant to be overridden by
+		    new kinds of projection axes that need different transformations
+		    and limits. (See `~matplotlib.projections.polar.PolarAxes` for an
+		    example.)
 	**/
 	public function _set_lim_and_transforms():Dynamic;
 	/**
@@ -448,7 +449,7 @@ package matplotlib.axes._base;
 	**/
 	public function _validate_converted_limits(limit:Dynamic, convert:Dynamic):Dynamic;
 	/**
-		Add any :class:`~matplotlib.artist.Artist` to the axes.
+		Add an `~.Artist` to the axes, and return the artist.
 		
 		Use `add_artist` only for artists for which there is no dedicated
 		"add" method; and if necessary, use a method such as `update_datalim`
@@ -458,78 +459,64 @@ package matplotlib.axes._base;
 		If no ``transform`` has been specified when creating the artist (e.g.
 		``artist.get_transform() == None``) then the transform is set to
 		``ax.transData``.
-		
-		Returns the artist.
 	**/
 	public function add_artist(a:Dynamic):Dynamic;
 	/**
-		Adds a callback function that will be called whenever one of
-		the :class:`Artist`'s properties changes.
-		
-		Returns an *id* that is useful for removing the callback with
-		:meth:`remove_callback` later.
-	**/
-	public function add_callback(func:Dynamic):Dynamic;
-	/**
-		Add a :class:`~matplotlib.axes.Axesbase` instance
-		as a child to the axes.
-		
-		Returns the added axes.
-		
-		This is the lowlevel version.  See `.axes.Axes.inset_axes`
-	**/
-	public function add_child_axes(ax:Dynamic):Dynamic;
-	/**
-		Add a :class:`~matplotlib.collections.Collection` instance
-		to the axes.
-		
-		Returns the collection.
-	**/
-	public function add_collection(collection:Dynamic, ?autolim:Dynamic):Dynamic;
-	/**
-		Add a :class:`~matplotlib.container.Container` instance
-		to the axes.
-		
-		Returns the collection.
-	**/
-	public function add_container(container:Dynamic):Dynamic;
-	/**
-		Add a :class:`~matplotlib.image.AxesImage` to the axes.
-		
-		Returns the image.
-	**/
-	public function add_image(image:Dynamic):Dynamic;
-	/**
-		Add a :class:`~matplotlib.lines.Line2D` to the list of plot
-		lines
-		
-		Returns the line.
-	**/
-	public function add_line(line:Dynamic):Dynamic;
-	/**
-		Add a :class:`~matplotlib.patches.Patch` *p* to the list of
-		axes patches; the clipbox will be set to the Axes clipping
-		box.  If the transform is not set, it will be set to
-		:attr:`transData`.
-		
-		Returns the patch.
-	**/
-	public function add_patch(p:Dynamic):Dynamic;
-	/**
-		Add a :class:`~matplotlib.table.Table` instance to the
-		list of axes tables
+		Add a callback function that will be called whenever one of the
+		`.Artist`'s properties changes.
 		
 		Parameters
 		----------
-		tab: `matplotlib.table.Table`
-		    Table instance
+		func : callable
+		    The callback function. It must have the signature::
+		
+		        def func(artist: Artist) -> Any
+		
+		    where *artist* is the calling `.Artist`. Return values may exist
+		    but are ignored.
 		
 		Returns
 		-------
-		`matplotlib.table.Table`: the table.
+		oid : int
+		    The observer id associated with the callback. This id can be
+		    used for removing the callback with `.remove_callback` later.
+		
+		See Also
+		--------
+		remove_callback
+	**/
+	public function add_callback(func:Dynamic):Int;
+	/**
+		Add an `~.AxesBase` to the axes' children; return the child axes.
+		
+		This is the lowlevel version.  See `.axes.Axes.inset_axes`.
+	**/
+	public function add_child_axes(ax:Dynamic):Dynamic;
+	/**
+		Add a `~.Collection` to the axes' collections; return the collection.
+	**/
+	public function add_collection(collection:Dynamic, ?autolim:Dynamic):Dynamic;
+	/**
+		Add a `~.Container` to the axes' containers; return the container.
+	**/
+	public function add_container(container:Dynamic):Dynamic;
+	/**
+		Add an `~.AxesImage` to the axes' images; return the image.
+	**/
+	public function add_image(image:Dynamic):Dynamic;
+	/**
+		Add a `~.Line2D` to the axes' lines; return the line.
+	**/
+	public function add_line(line:Dynamic):Dynamic;
+	/**
+		Add a `~.Patch` to the axes' patches; return the patch.
+	**/
+	public function add_patch(p:Dynamic):Dynamic;
+	/**
+		Add a `~.Table` to the axes' tables; return the table.
 	**/
 	public function add_table(tab:Dynamic):Dynamic;
-	static public var aname : Dynamic;
+	public var aname : Dynamic;
 	/**
 		Adjust the Axes for a specified data aspect ratio.
 		
@@ -571,7 +558,7 @@ package matplotlib.axes._base;
 		axis : {'both', 'x', 'y'}, optional
 		    which axis to operate on; default is 'both'
 		
-		tight: bool or None, optional
+		tight : bool or None, optional
 		    If True, set view limits to data limits;
 		    if False, let the locator and margins expand the view limits;
 		    if None, use tight scaling if the only artist is an image,
@@ -602,8 +589,7 @@ package matplotlib.axes._base;
 	**/
 	public function autoscale_view(?tight:Dynamic, ?scalex:Dynamic, ?scaley:Dynamic):Dynamic;
 	/**
-		The :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*.
+		The `~.axes.Axes` instance the artist resides in, or *None*.
 	**/
 	public var axes : Dynamic;
 	/**
@@ -612,24 +598,25 @@ package matplotlib.axes._base;
 		Call signatures::
 		
 		  xmin, xmax, ymin, ymax = axis()
-		  xmin, xmax, ymin, ymax = axis(xmin, xmax, ymin, ymax)
+		  xmin, xmax, ymin, ymax = axis([xmin, xmax, ymin, ymax])
 		  xmin, xmax, ymin, ymax = axis(option)
 		  xmin, xmax, ymin, ymax = axis(**kwargs)
 		
 		Parameters
 		----------
-		xmin, ymin, xmax, ymax : float, optional
+		xmin, xmax, ymin, ymax : float, optional
 		    The axis limits to be set. Either none or all of the limits must
 		    be given.
 		
-		option : str
-		    Possible values:
+		option : bool or str
+		    If a bool, turns axis lines and labels on or off. If a string,
+		    possible values are:
 		
 		    ======== ==========================================================
 		    Value    Description
 		    ======== ==========================================================
-		    'on'     Turn on axis lines and labels.
-		    'off'    Turn off axis lines and labels.
+		    'on'     Turn on axis lines and labels. Same as ``True``.
+		    'off'    Turn off axis lines and labels. Same as ``False``.
 		    'equal'  Set equal scaling (i.e., make circles circular) by
 		             changing axis limits.
 		    'scaled' Set equal scaling (i.e., make circles circular) by
@@ -657,7 +644,7 @@ package matplotlib.axes._base;
 		matplotlib.axes.Axes.set_xlim
 		matplotlib.axes.Axes.set_ylim
 	**/
-	public function axis(?v:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Float;
+	public function axis(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Float;
 	/**
 		Return *True* if this axes supports any pan/zoom button functionality.
 	**/
@@ -675,25 +662,43 @@ package matplotlib.axes._base;
 	**/
 	public function clear():Dynamic;
 	/**
-		Test whether the mouse event occurred in the axes.
+		Test whether the artist contains the mouse event.
 		
-		Returns *True* / *False*, {}
+		Parameters
+		----------
+		mouseevent : `matplotlib.backend_bases.MouseEvent`
+		
+		Returns
+		-------
+		contains : bool
+		    Whether any values are within the radius.
+		details : dict
+		    An artist-specific dictionary of details of the event context,
+		    such as which points are contained in the pick radius. See the
+		    individual Artist subclasses for details.
+		
+		See Also
+		--------
+		set_contains, get_contains
 	**/
-	public function contains(mouseevent:Dynamic):Dynamic;
+	public function contains(mouseevent:Dynamic):Bool;
 	/**
-		Returns *True* if the point (tuple of x,y) is inside the axes
-		(the area defined by the its patch). A pixel coordinate is
-		required.
+		Return whether *point* (pair of pixel coordinates) is inside the axes
+		patch.
 	**/
 	public function contains_point(point:Dynamic):Dynamic;
 	/**
-		For artists in an axes, if the xaxis has units support,
-		convert *x* using xaxis unit type
+		Convert *x* using the unit type of the xaxis.
+		
+		If the artist is not in contained in an Axes or if the xaxis does not
+		have units, *x* itself is returned.
 	**/
 	public function convert_xunits(x:Dynamic):Dynamic;
 	/**
-		For artists in an axes, if the yaxis has units support,
-		convert *y* using yaxis unit type
+		Convert *y* using the unit type of the yaxis.
+		
+		If the artist is not in contained in an Axes or if the yaxis does not
+		have units, *y* itself is returned.
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
 	/**
@@ -736,40 +741,60 @@ package matplotlib.axes._base;
 	/**
 		Find artist objects.
 		
-		Recursively find all :class:`~matplotlib.artist.Artist` instances
-		contained in self.
+		Recursively find all `.Artist` instances contained in the artist.
 		
-		*match* can be
+		Parameters
+		----------
+		match
+		    A filter criterion for the matches. This can be
 		
-		  - None: return all objects contained in artist.
+		    - *None*: Return all objects contained in artist.
+		    - A function with signature ``def match(artist: Artist) -> bool``.
+		      The result will only contain artists for which the function
+		      returns *True*.
+		    - A class instance: e.g., `.Line2D`. The result will only contain
+		      artists of this class or its subclasses (``isinstance`` check).
 		
-		  - function with signature ``boolean = match(artist)``
-		    used to filter matches
+		include_self : bool
+		    Include *self* in the list to be checked for a match.
 		
-		  - class instance: e.g., Line2D.  Only return artists of class type.
-		
-		If *include_self* is True (default), include self in the list to be
-		checked for a match.
+		Returns
+		-------
+		artists : list of `.Artist`
 	**/
 	public function findobj(?match:Dynamic, ?include_self:Dynamic):Dynamic;
 	/**
-		Return a format string formatting the *x*, *y* coord
+		Return a format string formatting the *x*, *y* coordinates.
 	**/
 	public function format_coord(x:Dynamic, y:Dynamic):Dynamic;
 	/**
-		Return *cursor data* string formatted.
+		Return a string representation of *data*.
+		
+		.. note::
+		    This method is intended to be overridden by artist subclasses.
+		    As an end-user of Matplotlib you will most likely not call this
+		    method yourself.
+		
+		The default implementation converts ints and floats and arrays of ints
+		and floats into a comma-separated string enclosed in square brackets.
+		
+		See Also
+		--------
+		get_cursor_data
 	**/
 	public function format_cursor_data(data:Dynamic):Dynamic;
 	/**
-		Return *x* string formatted.  This function will use the attribute
-		self.fmt_xdata if it is callable, else will fall back on the xaxis
-		major formatter
+		Return *x* formatted as an x-value.
+		
+		This function will use the `.fmt_xdata` attribute if it is not None,
+		else will fall back on the xaxis major formatter.
 	**/
 	public function format_xdata(x:Dynamic):Dynamic;
 	/**
-		Return y string formatted.  This function will use the
-		:attr:`fmt_ydata` attribute if it is callable, else will fall
-		back on the yaxis major formatter
+		Return *y* formatted as an y-value.
+		
+		This function will use the `.fmt_ydata` attribute if it is not None,
+		else will fall back on the yaxis major formatter.
 	**/
 	public function format_ydata(y:Dynamic):Dynamic;
 	public function get_adjustable():Dynamic;
@@ -794,7 +819,7 @@ package matplotlib.axes._base;
 	**/
 	public function get_anchor():Dynamic;
 	/**
-		Return the artist's animated state
+		Return the animated state.
 	**/
 	public function get_animated():Dynamic;
 	public function get_aspect():Dynamic;
@@ -827,39 +852,71 @@ package matplotlib.axes._base;
 	**/
 	public function get_axisbelow():Dynamic;
 	/**
-		return a list of child artists
+		Return a list of the child `.Artist`\s of this `.Artist`.
 	**/
 	public function get_children():Dynamic;
 	/**
-		Return artist clipbox
+		Return the clipbox.
 	**/
 	public function get_clip_box():Dynamic;
 	/**
-		Return whether artist uses clipping
+		Return whether the artist uses clipping.
 	**/
 	public function get_clip_on():Dynamic;
 	/**
-		Return artist clip path
+		Return the clip path.
 	**/
 	public function get_clip_path():Dynamic;
 	/**
-		Return the _contains test used by the artist, or *None* for default.
+		Return the custom contains function of the artist if set, or *None*.
+		
+		See Also
+		--------
+		set_contains
 	**/
 	public function get_contains():Dynamic;
 	/**
-		Get the cursor data for a given event.
+		Return the cursor data for a given event.
+		
+		.. note::
+		    This method is intended to be overridden by artist subclasses.
+		    As an end-user of Matplotlib you will most likely not call this
+		    method yourself.
+		
+		Cursor data can be used by Artists to provide additional context
+		information for a given event. The default implementation just returns
+		*None*.
+		
+		Subclasses can override the method and return arbitrary data. However,
+		when doing so, they must ensure that `.format_cursor_data` can convert
+		the data to a string representation.
+		
+		The only current use case is displaying the z-value of an `.AxesImage`
+		in the status bar of a plot window, while moving the mouse.
+		
+		Parameters
+		----------
+		event : `matplotlib.backend_bases.MouseEvent`
+		
+		See Also
+		--------
+		format_cursor_data
 	**/
 	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
-		Returns the aspect ratio of the raw data.
+		Return the aspect ratio of the raw data.
 		
-		This method is intended to be overridden by new projection
-		types.
+		Notes
+		-----
+		This method is intended to be overridden by new projection types.
 	**/
 	public function get_data_ratio():Dynamic;
 	/**
-		Returns the aspect ratio of the raw data in log scale.
-		Will be used when both axis scales are in log.
+		Return the aspect ratio of the raw data in log scale.
+		
+		Notes
+		-----
+		Will be used when both axis are in log scale.
 	**/
 	public function get_data_ratio_log():Dynamic;
 	/**
@@ -887,7 +944,7 @@ package matplotlib.axes._base;
 	**/
 	public function get_frame_on():Dynamic;
 	/**
-		Returns the group id.
+		Return the group id.
 	**/
 	public function get_gid():Dynamic;
 	/**
@@ -904,7 +961,7 @@ package matplotlib.axes._base;
 	**/
 	public function get_in_layout():Dynamic;
 	/**
-		Get the label used for this artist in the legend.
+		Return the label used for this artist in the legend.
 	**/
 	public function get_label():Dynamic;
 	/**
@@ -925,7 +982,13 @@ package matplotlib.axes._base;
 	public function get_navigate_mode():Dynamic;
 	public function get_path_effects():Dynamic;
 	/**
-		Return the picker object used by this artist.
+		Return the picking behavior of the artist.
+		
+		The possible values are described in `.set_picker`.
+		
+		See Also
+		--------
+		set_picker, pickable, pick
 	**/
 	public function get_picker():Dynamic;
 	/**
@@ -965,32 +1028,23 @@ package matplotlib.axes._base;
 		
 		Returns
 		-------
-		sketch_params : tuple or `None`
+		sketch_params : tuple or None
 		
 		    A 3-tuple with the following elements:
 		
-		      * `scale`: The amplitude of the wiggle perpendicular to the
-		        source line.
+		    - *scale*: The amplitude of the wiggle perpendicular to the
+		      source line.
+		    - *length*: The length of the wiggle along the line.
+		    - *randomness*: The scale factor by which the length is
+		      shrunken or expanded.
 		
-		      * `length`: The length of the wiggle along the line.
-		
-		      * `randomness`: The scale factor by which the length is
-		        shrunken or expanded.
-		
-		    May return `None` if no sketch parameters were set.
+		    Returns *None* if no sketch parameters were set.
 	**/
 	public function get_sketch_params():Dynamic;
 	/**
-		Returns the snap setting which may be:
+		Returns the snap setting.
 		
-		  * True: snap vertices to the nearest pixel center
-		
-		  * False: leave vertices as-is
-		
-		  * None: (auto) If the path contains only rectilinear line
-		    segments, round to the nearest pixel center
-		
-		Only supported by the Agg and MacOSX backends.
+		See `.set_snap` for details.
 	**/
 	public function get_snap():Dynamic;
 	/**
@@ -1022,11 +1076,16 @@ package matplotlib.axes._base;
 		-------
 		bbox : `.BboxBase`
 		    bounding box in figure pixel coordinates.
+		
+		See Also
+		--------
+		matplotlib.axis.Axes.get_window_extent
+		matplotlib.axis.Axis.get_tightbbox
+		matplotlib.spines.get_window_extent
 	**/
 	public function get_tightbbox(renderer:Dynamic, ?call_axes_locator:Dynamic, ?bbox_extra_artists:Dynamic):Dynamic;
 	/**
-		Return the :class:`~matplotlib.transforms.Transform`
-		instance used by this artist.
+		Return the `.Transform` instance used by this artist.
 	**/
 	public function get_transform():Dynamic;
 	/**
@@ -1036,16 +1095,26 @@ package matplotlib.axes._base;
 	**/
 	public function get_transformed_clip_path_and_affine():Dynamic;
 	/**
-		Returns the url.
+		Return the url.
 	**/
 	public function get_url():Dynamic;
 	/**
-		Return the artist's visiblity
+		Return the visibility.
 	**/
 	public function get_visible():Dynamic;
 	/**
-		get the axes bounding box in display space; *args* and
-		*kwargs* are empty
+		Return the axes bounding box in display space; *args* and *kwargs*
+		are empty.
+		
+		This bounding box does not include the spines, ticks, ticklables,
+		or other labels.  For a bounding box including these elements use
+		`~matplotlib.axes.Axes.get_tightbbox`.
+		
+		See Also
+		--------
+		matplotlib.axes.Axes.get_tightbbox
+		matplotlib.axis.Axis.get_tightbbox
+		matplotlib.spines.get_window_extent
 	**/
 	public function get_window_extent(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1053,43 +1122,43 @@ package matplotlib.axes._base;
 	**/
 	public function get_xaxis():Dynamic;
 	/**
-		Get the transformation used for drawing x-axis labels, which
-		will add the given amount of padding (in points) between the
-		axes and the label.  The x-direction is in data coordinates
-		and the y-direction is in axis coordinates.  Returns a
-		3-tuple of the form::
+		Returns
+		-------
+		transform : Transform
+		    The transform used for drawing x-axis labels, which will add
+		    *pad_points* of padding (in points) between the axes and the label.
+		    The x-direction is in data coordinates and the y-direction is in
+		    axis corrdinates
+		valign : {'center', 'top', 'bottom', 'baseline', 'center_baseline'}
+		    The text vertical alignment.
+		halign : {'center', 'left', 'right'}
+		    The text horizontal alignment.
 		
-		  (transform, valign, halign)
-		
-		where *valign* and *halign* are requested alignments for the
-		text.
-		
-		.. note::
-		
-		    This transformation is primarily used by the
-		    :class:`~matplotlib.axis.Axis` class, and is meant to be
-		    overridden by new kinds of projections that may need to
-		    place axis elements in different locations.
+		Notes
+		-----
+		This transformation is primarily used by the `~matplotlib.axis.Axis`
+		class, and is meant to be overridden by new kinds of projections that
+		may need to place axis elements in different locations.
 	**/
 	public function get_xaxis_text1_transform(pad_points:Dynamic):Dynamic;
 	/**
-		Get the transformation used for drawing the secondary x-axis
-		labels, which will add the given amount of padding (in points)
-		between the axes and the label.  The x-direction is in data
-		coordinates and the y-direction is in axis coordinates.
-		Returns a 3-tuple of the form::
+		Returns
+		-------
+		transform : Transform
+		    The transform used for drawing secondary x-axis labels, which will
+		    add *pad_points* of padding (in points) between the axes and the
+		    label.  The x-direction is in data coordinates and the y-direction
+		    is in axis corrdinates
+		valign : {'center', 'top', 'bottom', 'baseline', 'center_baseline'}
+		    The text vertical alignment.
+		halign : {'center', 'left', 'right'}
+		    The text horizontal alignment.
 		
-		  (transform, valign, halign)
-		
-		where *valign* and *halign* are requested alignments for the
-		text.
-		
-		.. note::
-		
-		    This transformation is primarily used by the
-		    :class:`~matplotlib.axis.Axis` class, and is meant to be
-		    overridden by new kinds of projections that may need to
-		    place axis elements in different locations.
+		Notes
+		-----
+		This transformation is primarily used by the `~matplotlib.axis.Axis`
+		class, and is meant to be overridden by new kinds of projections that
+		may need to place axis elements in different locations.
 	**/
 	public function get_xaxis_text2_transform(pad_points:Dynamic):Dynamic;
 	/**
@@ -1100,7 +1169,7 @@ package matplotlib.axes._base;
 		.. note::
 		
 		    This transformation is primarily used by the
-		    :class:`~matplotlib.axis.Axis` class, and is meant to be
+		    `~matplotlib.axis.Axis` class, and is meant to be
 		    overridden by new kinds of projections that may need to
 		    place axis elements in different locations.
 	**/
@@ -1145,7 +1214,7 @@ package matplotlib.axes._base;
 		Returns
 		-------
 		labels : list
-		    List of :class:`~matplotlib.text.Text` instances
+		    List of `~matplotlib.text.Text` instances
 	**/
 	public function get_xmajorticklabels():Array<Dynamic>;
 	/**
@@ -1154,7 +1223,7 @@ package matplotlib.axes._base;
 		Returns
 		-------
 		labels : list
-		    List of :class:`~matplotlib.text.Text` instances
+		    List of `~matplotlib.text.Text` instances
 	**/
 	public function get_xminorticklabels():Array<Dynamic>;
 	/**
@@ -1166,8 +1235,7 @@ package matplotlib.axes._base;
 	**/
 	public function get_xscale():Dynamic;
 	/**
-		Get the x tick labels as a list of :class:`~matplotlib.text.Text`
-		instances.
+		Get the x tick labels as a list of `~matplotlib.text.Text` instances.
 		
 		Parameters
 		----------
@@ -1183,7 +1251,7 @@ package matplotlib.axes._base;
 		Returns
 		-------
 		ret : list
-		   List of :class:`~matplotlib.text.Text` instances.
+		   List of `~matplotlib.text.Text` instances.
 	**/
 	public function get_xticklabels(?minor:Dynamic, ?which:Dynamic):Array<Dynamic>;
 	/**
@@ -1199,43 +1267,43 @@ package matplotlib.axes._base;
 	**/
 	public function get_yaxis():Dynamic;
 	/**
-		Get the transformation used for drawing y-axis labels, which
-		will add the given amount of padding (in points) between the
-		axes and the label.  The x-direction is in axis coordinates
-		and the y-direction is in data coordinates.  Returns a 3-tuple
-		of the form::
+		Returns
+		-------
+		transform : Transform
+		    The transform used for drawing y-axis labels, which will add
+		    *pad_points* of padding (in points) between the axes and the label.
+		    The x-direction is in axis coordinates and the y-direction is in
+		    data corrdinates
+		valign : {'center', 'top', 'bottom', 'baseline', 'center_baseline'}
+		    The text vertical alignment.
+		halign : {'center', 'left', 'right'}
+		    The text horizontal alignment.
 		
-		  (transform, valign, halign)
-		
-		where *valign* and *halign* are requested alignments for the
-		text.
-		
-		.. note::
-		
-		    This transformation is primarily used by the
-		    :class:`~matplotlib.axis.Axis` class, and is meant to be
-		    overridden by new kinds of projections that may need to
-		    place axis elements in different locations.
+		Notes
+		-----
+		This transformation is primarily used by the `~matplotlib.axis.Axis`
+		class, and is meant to be overridden by new kinds of projections that
+		may need to place axis elements in different locations.
 	**/
 	public function get_yaxis_text1_transform(pad_points:Dynamic):Dynamic;
 	/**
-		Get the transformation used for drawing the secondary y-axis
-		labels, which will add the given amount of padding (in points)
-		between the axes and the label.  The x-direction is in axis
-		coordinates and the y-direction is in data coordinates.
-		Returns a 3-tuple of the form::
+		Returns
+		-------
+		transform : Transform
+		    The transform used for drawing secondart y-axis labels, which will
+		    add *pad_points* of padding (in points) between the axes and the
+		    label.  The x-direction is in axis coordinates and the y-direction
+		    is in data corrdinates
+		valign : {'center', 'top', 'bottom', 'baseline', 'center_baseline'}
+		    The text vertical alignment.
+		halign : {'center', 'left', 'right'}
+		    The text horizontal alignment.
 		
-		  (transform, valign, halign)
-		
-		where *valign* and *halign* are requested alignments for the
-		text.
-		
-		.. note::
-		
-		    This transformation is primarily used by the
-		    :class:`~matplotlib.axis.Axis` class, and is meant to be
-		    overridden by new kinds of projections that may need to
-		    place axis elements in different locations.
+		Notes
+		-----
+		This transformation is primarily used by the `~matplotlib.axis.Axis`
+		class, and is meant to be overridden by new kinds of projections that
+		may need to place axis elements in different locations.
 	**/
 	public function get_yaxis_text2_transform(pad_points:Dynamic):Dynamic;
 	/**
@@ -1246,7 +1314,7 @@ package matplotlib.axes._base;
 		.. note::
 		
 		    This transformation is primarily used by the
-		    :class:`~matplotlib.axis.Axis` class, and is meant to be
+		    `~matplotlib.axis.Axis` class, and is meant to be
 		    overridden by new kinds of projections that may need to
 		    place axis elements in different locations.
 	**/
@@ -1291,7 +1359,7 @@ package matplotlib.axes._base;
 		Returns
 		-------
 		labels : list
-		    List of :class:`~matplotlib.text.Text` instances
+		    List of `~matplotlib.text.Text` instances
 	**/
 	public function get_ymajorticklabels():Array<Dynamic>;
 	/**
@@ -1300,11 +1368,11 @@ package matplotlib.axes._base;
 		Returns
 		-------
 		labels : list
-		    List of :class:`~matplotlib.text.Text` instances
+		    List of `~matplotlib.text.Text` instances
 	**/
 	public function get_yminorticklabels():Array<Dynamic>;
 	/**
-		Return the x-axis scale as string.
+		Return the y-axis scale as string.
 		
 		See Also
 		--------
@@ -1312,8 +1380,7 @@ package matplotlib.axes._base;
 	**/
 	public function get_yscale():Dynamic;
 	/**
-		Get the y tick labels as a list of :class:`~matplotlib.text.Text`
-		instances.
+		Get the y tick labels as a list of `~matplotlib.text.Text` instances.
 		
 		Parameters
 		----------
@@ -1329,7 +1396,7 @@ package matplotlib.axes._base;
 		Returns
 		-------
 		ret : list
-		   List of :class:`~matplotlib.text.Text` instances.
+		   List of `~matplotlib.text.Text` instances.
 	**/
 	public function get_yticklabels(?minor:Dynamic, ?which:Dynamic):Array<Dynamic>;
 	/**
@@ -1349,17 +1416,17 @@ package matplotlib.axes._base;
 		
 		Parameters
 		----------
-		b : bool or None
+		b : bool or None, optional
 		    Whether to show the grid lines. If any *kwargs* are supplied,
 		    it is assumed you want the grid on and *b* will be set to True.
 		
 		    If *b* is *None* and there are no *kwargs*, this toggles the
 		    visibility of the lines.
 		
-		which : {'major', 'minor', 'both'}
+		which : {'major', 'minor', 'both'}, optional
 		    The grid lines to apply the changes on.
 		
-		axis : {'both', 'x', 'y'}
+		axis : {'both', 'x', 'y'}, optional
 		    The axis to apply the changes on.
 		
 		**kwargs : `.Line2D` properties
@@ -1369,42 +1436,42 @@ package matplotlib.axes._base;
 		
 		    Valid *kwargs* are
 		
-		      agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array
 		  alpha: float
 		  animated: bool
-		  antialiased: bool
+		  antialiased or aa: bool
 		  clip_box: `.Bbox`
 		  clip_on: bool
-		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
-		  color: color
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
+		  color or c: color
 		  contains: callable
 		  dash_capstyle: {'butt', 'round', 'projecting'}
 		  dash_joinstyle: {'miter', 'round', 'bevel'}
 		  dashes: sequence of floats (on/off ink in points) or (None, None)
-		  drawstyle: {'default', 'steps', 'steps-pre', 'steps-mid', 'steps-post'}
+		  drawstyle or ds: {'default', 'steps', 'steps-pre', 'steps-mid', 'steps-post'}, default: 'default'
 		  figure: `.Figure`
 		  fillstyle: {'full', 'left', 'right', 'bottom', 'top', 'none'}
 		  gid: str
 		  in_layout: bool
 		  label: object
-		  linestyle: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
-		  linewidth: float
-		  marker: unknown
-		  markeredgecolor: color
-		  markeredgewidth: float
-		  markerfacecolor: color
-		  markerfacecoloralt: color
-		  markersize: float
-		  markevery: unknown
+		  linestyle or ls: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
+		  linewidth or lw: float
+		  marker: marker style
+		  markeredgecolor or mec: color
+		  markeredgewidth or mew: float
+		  markerfacecolor or mfc: color
+		  markerfacecoloralt or mfcalt: color
+		  markersize or ms: float
+		  markevery: None or int or (int, int) or slice or List[int] or float or (float, float)
 		  path_effects: `.AbstractPathEffect`
 		  picker: float or callable[[Artist, Event], Tuple[bool, dict]]
 		  pickradius: float
 		  rasterized: bool or None
-		  sketch_params: (scale: float, length: float, randomness: float) 
+		  sketch_params: (scale: float, length: float, randomness: float)
 		  snap: bool or None
 		  solid_capstyle: {'butt', 'round', 'projecting'}
 		  solid_joinstyle: {'miter', 'round', 'bevel'}
-		  transform: matplotlib.transforms.Transform
+		  transform: `matplotlib.transforms.Transform`
 		  url: str
 		  visible: bool
 		  xdata: 1D array
@@ -1413,7 +1480,11 @@ package matplotlib.axes._base;
 		
 		Notes
 		-----
-		The grid will be drawn according to the axes' zorder and not its own.
+		The axis is drawn as a unit, so the effective zorder for drawing the
+		grid is determined by the zorder of each axis, not by the zorder of the
+		`.Line2D` objects comprising the grid.  Therefore, to set grid zorder,
+		use `.set_axisbelow` or, for more control, call the
+		`~matplotlib.axis.Axis.set_zorder` method of each axis.
 	**/
 	public function grid(?b:Dynamic, ?which:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1425,16 +1496,9 @@ package matplotlib.axes._base;
 	**/
 	public function has_data():Dynamic;
 	/**
-		Return *True* if units are set on the *x* or *y* axes
+		Return *True* if units are set on the *x* or *y* axes.
 	**/
 	public function have_units():Dynamic;
-	/**
-		.. deprecated:: 2.2
-		    The hitlist function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
-		
-		List the children of the artist which contain the mouse event *event*.
-	**/
-	public function hitlist(event:Dynamic):Dynamic;
 	/**
 		Return *True* if the given *mouseevent* (in display coords)
 		is in the Axes
@@ -1461,19 +1525,16 @@ package matplotlib.axes._base;
 	**/
 	public function invert_yaxis():Dynamic;
 	/**
-		.. deprecated:: 2.2
-		    artist.figure is not None
+		Return whether the Artist has an explicitly set transform.
 		
-		Returns whether the artist is assigned to a `.Figure`.
-	**/
-	public function is_figure_set():Dynamic;
-	/**
-		Returns *True* if :class:`Artist` has a transform explicitly
-		set.
+		This is *True* after `.set_transform` has been called.
 	**/
 	public function is_transform_set():Dynamic;
 	/**
-		Control behavior of tick locators.
+		Control behavior of major tick locators.
+		
+		Because the locator is involved in autoscaling, `~.Axes.autoscale_view`
+		is called automatically after the parameters are changed.
 		
 		Parameters
 		----------
@@ -1481,28 +1542,24 @@ package matplotlib.axes._base;
 		    The axis on which to operate.
 		
 		tight : bool or None, optional
-		    Parameter passed to :meth:`autoscale_view`.
+		    Parameter passed to `~.Axes.autoscale_view`.
 		    Default is None, for no change.
 		
 		Other Parameters
 		----------------
-		**kw :
+		**kwargs
 		    Remaining keyword arguments are passed to directly to the
-		    :meth:`~matplotlib.ticker.MaxNLocator.set_params` method.
+		    ``set_params()`` method of the locator. Supported keywords depend
+		    on the type of the locator. See for example
+		    `~.ticker.MaxNLocator.set_params` for the `.ticker.MaxNLocator`
+		    used by default for linear axes.
 		
-		Typically one might want to reduce the maximum number
-		of ticks and use tight bounds when plotting small
-		subplots, for example::
+		Examples
+		--------
+		When plotting small subplots, one might want to reduce the maximum
+		number of ticks and use tight bounds, for example::
 		
 		    ax.locator_params(tight=True, nbins=4)
-		
-		Because the locator is involved in autoscaling,
-		:meth:`autoscale_view` is called automatically after
-		the parameters are changed.
-		
-		This presently works only for the
-		:class:`~matplotlib.ticker.MaxNLocator` used
-		by default on linear axes, but it may be generalized.
 	**/
 	public function locator_params(?axis:Dynamic, ?tight:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1522,7 +1579,7 @@ package matplotlib.axes._base;
 		
 		Parameters
 		----------
-		args : float, optional
+		*margins : float, optional
 		    If a single positional argument is provided, it specifies
 		    both margins of the x-axis and y-axis limits. If two
 		    positional arguments are provided, they will be interpreted
@@ -1535,14 +1592,13 @@ package matplotlib.axes._base;
 		    arguments, but can be used individually to alter on e.g.,
 		    only the y-axis.
 		
-		tight : bool, default is True
+		tight : bool or None, default is True
 		    The *tight* parameter is passed to :meth:`autoscale_view`,
 		    which is executed after a margin is changed; the default
 		    here is *True*, on the assumption that when margins are
 		    specified, no additional padding to match tick marks is
 		    usually desired.  Set *tight* to *None* will preserve
 		    the previous setting.
-		
 		
 		Returns
 		-------
@@ -1569,36 +1625,40 @@ package matplotlib.axes._base;
 	**/
 	public function minorticks_on():Dynamic;
 	public var mouseover : Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The mouseover_set function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		\ 
-	**/
 	public var mouseover_set : Dynamic;
 	static public var name : Dynamic;
 	/**
-		Fire an event when property changed, calling all of the
-		registered callbacks.
+		Call all of the registered callbacks.
+		
+		This function is triggered internally when a property is changed.
+		
+		See Also
+		--------
+		add_callback
+		remove_callback
 	**/
 	public function pchanged():Dynamic;
 	/**
-		Trigger pick event
+		Process a pick event.
 		
-		Call signature::
+		Each child artist will fire a pick event if *mouseevent* is over
+		the artist and the artist has picker set.
 		
-		    pick(mouseevent)
-		
-		each child artist will fire a pick event if mouseevent is over
-		the artist and the artist has picker set
+		See Also
+		--------
+		set_picker, get_picker, pickable
 	**/
-	public function pick(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function pick(mouseevent:Dynamic):Dynamic;
 	/**
-		Return *True* if :class:`Artist` is pickable.
+		Return whether the artist is pickable.
+		
+		See Also
+		--------
+		set_picker, get_picker, pick
 	**/
 	public function pickable():Dynamic;
 	/**
-		return a dictionary mapping property name -> value for all Artist props
+		Return a dictionary of all the properties of the artist.
 	**/
 	public function properties():Dynamic;
 	/**
@@ -1608,35 +1668,35 @@ package matplotlib.axes._base;
 	**/
 	public function redraw_in_frame():Dynamic;
 	/**
-		Recompute the data limits based on current artists. If you want to
-		exclude invisible artists from the calculation, set
-		``visible_only=True``
+		Recompute the data limits based on current artists.
 		
-		At present, :class:`~matplotlib.collections.Collection`
-		instances are not supported.
+		At present, `~.Collection` instances are not supported.
+		
+		Parameters
+		----------
+		visible_only : bool
+		    Whether to exclude invisible artists.  Defaults to False.
 	**/
 	public function relim(?visible_only:Dynamic):Dynamic;
 	/**
-		Remove the artist from the figure if possible.  The effect
-		will not be visible until the figure is redrawn, e.g., with
-		:meth:`matplotlib.axes.Axes.draw_idle`.  Call
-		:meth:`matplotlib.axes.Axes.relim` to update the axes limits
-		if desired.
+		Remove the artist from the figure if possible.
 		
-		Note: :meth:`~matplotlib.axes.Axes.relim` will not see
-		collections even if the collection was added to axes with
-		*autolim* = True.
+		The effect will not be visible until the figure is redrawn, e.g.,
+		with `.FigureCanvasBase.draw_idle`.  Call `~.axes.Axes.relim` to
+		update the axes limits if desired.
+		
+		Note: `~.axes.Axes.relim` will not see collections even if the
+		collection was added to the axes with *autolim* = True.
 		
 		Note: there is no support for removing the artist's legend entry.
 	**/
 	public function remove():Dynamic;
 	/**
-		Remove a callback based on its *id*.
+		Remove a callback based on its observer id.
 		
-		.. seealso::
-		
-		    :meth:`add_callback`
-		       For adding callbacks
+		See Also
+		--------
+		add_callback
 	**/
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
@@ -1647,8 +1707,7 @@ package matplotlib.axes._base;
 	**/
 	public function reset_position():Dynamic;
 	/**
-		A property batch setter. Pass *kwargs* to set properties.
-		        
+		A property batch setter.  Pass *kwargs* to set properties.
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1863,8 +1922,9 @@ package matplotlib.axes._base;
 		    Possible values:
 		
 		    - *True* (zorder = 0.5): Ticks and gridlines are below all Artists.
-		    - 'line' (zorder = 1.5): Ticks and gridlines are above patches (
-		      e.g. rectangles) but still below lines / markers.
+		    - 'line' (zorder = 1.5): Ticks and gridlines are above patches
+		      (e.g. rectangles, with default zorder = 1) but still below lines
+		      and markers (with their default zorder = 2).
 		    - *False* (zorder = 2.5): Ticks and gridlines are above patches
 		      and lines / markers.
 		
@@ -1882,7 +1942,7 @@ package matplotlib.axes._base;
 	**/
 	public function set_clip_box(clipbox:Dynamic):Dynamic;
 	/**
-		Set whether artist uses clipping.
+		Set whether the artist uses clipping.
 		
 		When False artists will be visible out side of the axes which
 		can lead to unexpected results.
@@ -1910,19 +1970,26 @@ package matplotlib.axes._base;
 	**/
 	public function set_clip_path(path:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
-		Replace the contains test used by this artist. The new picker
-		should be a callable function which determines whether the
-		artist is hit by the mouse event::
+		Define a custom contains test for the artist.
 		
-		    hit, props = picker(artist, mouseevent)
-		
-		If the mouse event is over the artist, return *hit* = *True*
-		and *props* is a dictionary of properties you want returned
-		with the contains test.
+		The provided callable replaces the default `.contains` method
+		of the artist.
 		
 		Parameters
 		----------
 		picker : callable
+		    A custom picker function to evaluate if an event is within the
+		    artist. The function must have the signature::
+		
+		        def contains(artist: Artist, event: MouseEvent) -> bool, dict
+		
+		    that returns:
+		
+		    - a bool indicating if the event is within the artist
+		    - a dict of additional information. The dict should at least
+		      return the same information as the default ``contains()``
+		      implementation of the respective artist, but may provide
+		      additional information.
 	**/
 	public function set_contains(picker:Dynamic):Dynamic;
 	/**
@@ -1958,7 +2025,7 @@ package matplotlib.axes._base;
 	**/
 	public function set_frame_on(b:Dynamic):Dynamic;
 	/**
-		Sets the (group) id for the artist.
+		Set the (group) id for the artist.
 		
 		Parameters
 		----------
@@ -1977,7 +2044,7 @@ package matplotlib.axes._base;
 	**/
 	public function set_in_layout(in_layout:Dynamic):Dynamic;
 	/**
-		Set the label to *s* for auto legend.
+		Set a label that will be displayed in the legend.
 		
 		Parameters
 		----------
@@ -2009,37 +2076,36 @@ package matplotlib.axes._base;
 	**/
 	public function set_path_effects(path_effects:Dynamic):Dynamic;
 	/**
-		Set the epsilon for picking used by this artist
-		
-		*picker* can be one of the following:
-		
-		  * *None*: picking is disabled for this artist (default)
-		
-		  * A boolean: if *True* then picking will be enabled and the
-		    artist will fire a pick event if the mouse event is over
-		    the artist
-		
-		  * A float: if picker is a number it is interpreted as an
-		    epsilon tolerance in points and the artist will fire
-		    off an event if it's data is within epsilon of the mouse
-		    event.  For some artists like lines and patch collections,
-		    the artist may provide additional data to the pick event
-		    that is generated, e.g., the indices of the data within
-		    epsilon of the pick event
-		
-		  * A function: if picker is callable, it is a user supplied
-		    function which determines whether the artist is hit by the
-		    mouse event::
-		
-		      hit, props = picker(artist, mouseevent)
-		
-		    to determine the hit test.  if the mouse event is over the
-		    artist, return *hit=True* and props is a dictionary of
-		    properties you want added to the PickEvent attributes.
+		Define the picking behavior of the artist.
 		
 		Parameters
 		----------
 		picker : None or bool or float or callable
+		    This can be one of the following:
+		
+		    - *None*: Picking is disabled for this artist (default).
+		
+		    - A boolean: If *True* then picking will be enabled and the
+		      artist will fire a pick event if the mouse event is over
+		      the artist.
+		
+		    - A float: If picker is a number it is interpreted as an
+		      epsilon tolerance in points and the artist will fire
+		      off an event if it's data is within epsilon of the mouse
+		      event.  For some artists like lines and patch collections,
+		      the artist may provide additional data to the pick event
+		      that is generated, e.g., the indices of the data within
+		      epsilon of the pick event
+		
+		    - A function: If picker is callable, it is a user supplied
+		      function which determines whether the artist is hit by the
+		      mouse event::
+		
+		        hit, props = picker(artist, mouseevent)
+		
+		      to determine the hit test.  if the mouse event is over the
+		      artist, return *hit=True* and props is a dictionary of
+		      properties you want added to the PickEvent attributes.
 	**/
 	public function set_picker(picker:Dynamic):Dynamic;
 	/**
@@ -2163,20 +2229,28 @@ package matplotlib.axes._base;
 	**/
 	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
 	/**
-		Sets the snap setting which may be:
+		Set the snapping behavior.
 		
-		  * True: snap vertices to the nearest pixel center
+		Snapping aligns positions with the pixel grid, which results in
+		clearer images. For example, if a black line of 1px width was
+		defined at a position in between two pixels, the resulting image
+		would contain the interpolated value of that line in the pixel grid,
+		which would be a grey value on both adjacent pixel positions. In
+		contrast, snapping will move the line to the nearest integer pixel
+		value, so that the resulting image will really contain a 1px wide
+		black line.
 		
-		  * False: leave vertices as-is
-		
-		  * None: (auto) If the path contains only rectilinear line
-		    segments, round to the nearest pixel center
-		
-		Only supported by the Agg and MacOSX backends.
+		Snapping is currently only supported by the Agg and MacOSX backends.
 		
 		Parameters
 		----------
 		snap : bool or None
+		    Possible values:
+		
+		    - *True*: Snap vertices to the nearest pixel center.
+		    - *False*: Do not modify vertex positions.
+		    - *None*: (auto) If the path contains only rectilinear line
+		      segments, round to the nearest pixel center.
 	**/
 	public function set_snap(snap:Dynamic):Dynamic;
 	/**
@@ -2188,7 +2262,7 @@ package matplotlib.axes._base;
 	**/
 	public function set_transform(t:Dynamic):Dynamic;
 	/**
-		Sets the url for the artist.
+		Set the url for the artist.
 		
 		Parameters
 		----------
@@ -2234,8 +2308,8 @@ package matplotlib.axes._base;
 		    limit unchanged.
 		
 		    The left and right xlims may be passed as the tuple
-		    (`left`, `right`) as the first positional argument (or as
-		    the `left` keyword argument).
+		    (*left*, *right*) as the first positional argument (or as
+		    the *left* keyword argument).
 		
 		right : scalar, optional
 		    The right xlim in data coordinates. Passing *None* leaves the
@@ -2249,8 +2323,7 @@ package matplotlib.axes._base;
 		    False turns off (default action), None leaves unchanged.
 		
 		xmin, xmax : scalar, optional
-		    These arguments are deprecated and will be removed in a future
-		    version.  They are equivalent to left and right respectively,
+		    They are equivalent to left and right respectively,
 		    and it is an error to pass both *xmin* and *left* or
 		    *xmax* and *right*.
 		
@@ -2281,7 +2354,7 @@ package matplotlib.axes._base;
 		>>> set_xlim(right=right_lim)
 		
 		Limits may be passed in reverse order to flip the direction of
-		the x-axis. For example, suppose ``x`` represents the number of
+		the x-axis. For example, suppose *x* represents the number of
 		years before present. The x-axis limits might be set like the
 		following so 5000 years ago is on the left of the plot and the
 		present is on the right.
@@ -2405,23 +2478,22 @@ package matplotlib.axes._base;
 		    limit unchanged.
 		
 		    The bottom and top ylims may be passed as the tuple
-		    (`bottom`, `top`) as the first positional argument (or as
-		    the `bottom` keyword argument).
+		    (*bottom*, *top*) as the first positional argument (or as
+		    the *bottom* keyword argument).
 		
 		top : scalar, optional
 		    The top ylim in data coordinates. Passing *None* leaves the
 		    limit unchanged.
 		
 		emit : bool, optional
-		    Whether to notify observers of limit change (default: True).
+		    Whether to notify observers of limit change (default: ``True``).
 		
 		auto : bool or None, optional
 		    Whether to turn on autoscaling of the y-axis. *True* turns on,
 		    *False* turns off (default action), *None* leaves unchanged.
 		
 		ymin, ymax : scalar, optional
-		    These arguments are deprecated and will be removed in a future
-		    version.  They are equivalent to bottom and top respectively,
+		    They are equivalent to bottom and top respectively,
 		    and it is an error to pass both *ymin* and *bottom* or
 		    *ymax* and *top*.
 		
@@ -2555,8 +2627,8 @@ package matplotlib.axes._base;
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
 	/**
-		If the artist is 'stale' and needs to be re-drawn for the output to
-		match the internal state of the artist.
+		Whether the artist is 'stale' and needs to be re-drawn for the output
+		to match the internal state of the artist.
 	**/
 	public var stale : Dynamic;
 	/**
@@ -2575,16 +2647,16 @@ package matplotlib.axes._base;
 	**/
 	public function start_pan(x:Dynamic, y:Dynamic, button:Dynamic):Dynamic;
 	/**
-		`x` and `y` sticky edge lists.
+		``x`` and ``y`` sticky edge lists for autoscaling.
 		
 		When performing autoscaling, if a data limit coincides with a value in
 		the corresponding sticky_edges list, then no margin will be added--the
-		view limit "sticks" to the edge. A typical usecase is histograms,
+		view limit "sticks" to the edge. A typical use case is histograms,
 		where one usually expects no margin on the bottom edge (0) of the
 		histogram.
 		
-		This attribute cannot be assigned to; however, the `x` and `y` lists
-		can be modified in place as needed.
+		This attribute cannot be assigned to; however, the ``x`` and ``y``
+		lists can be modified in place as needed.
 		
 		Examples
 		--------
@@ -2662,7 +2734,7 @@ package matplotlib.axes._base;
 		    Width of gridlines in points.
 		
 		grid_linestyle : string
-		    Any valid :class:`~matplotlib.lines.Line2D` line style spec.
+		    Any valid `~matplotlib.lines.Line2D` line style spec.
 		
 		Examples
 		--------
@@ -2713,10 +2785,9 @@ package matplotlib.axes._base;
 		  ==============   =========================================
 		
 		Only the major ticks are affected.
-		If the method is called when the
-		:class:`~matplotlib.ticker.ScalarFormatter` is not the
-		:class:`~matplotlib.ticker.Formatter` being used, an
-		:exc:`AttributeError` will be raised.
+		If the method is called when the `~matplotlib.ticker.ScalarFormatter`
+		is not the `~matplotlib.ticker.Formatter` being used, an
+		`AttributeError` will be raised.
 	**/
 	public function ticklabel_format(?axis:Dynamic, ?style:Dynamic, ?scilimits:Dynamic, ?useOffset:Dynamic, ?useLocale:Dynamic, ?useMathText:Dynamic):Dynamic;
 	/**
@@ -2760,7 +2831,7 @@ package matplotlib.axes._base;
 	**/
 	public function twiny():Dynamic;
 	/**
-		Update this artist's properties from the dictionary *prop*.
+		Update this artist's properties from the dictionary *props*.
 	**/
 	public function update(props:Dynamic):Dynamic;
 	/**
@@ -2813,8 +2884,8 @@ package matplotlib.axes._base;
 		
 		Parameters
 		----------
-		tz : string or :class:`tzinfo` instance, optional
-		    Timezone string or timezone. Defaults to rc value.
+		tz : string or `tzinfo` instance, optional
+		    Timezone.  Defaults to :rc:`timezone`.
 	**/
 	public function xaxis_date(?tz:Dynamic):Dynamic;
 	/**
@@ -2834,8 +2905,8 @@ package matplotlib.axes._base;
 		
 		Parameters
 		----------
-		tz : string or :class:`tzinfo` instance, optional
-		    Timezone string or timezone. Defaults to rc value.
+		tz : string or `tzinfo` instance, optional
+		    Timezone.  Defaults to :rc:`timezone`.
 	**/
 	public function yaxis_date(?tz:Dynamic):Dynamic;
 	/**

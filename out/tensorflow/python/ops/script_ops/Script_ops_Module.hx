@@ -26,7 +26,7 @@ package tensorflow.python.ops.script_ops;
 		This function allows expressing computations in a TensorFlow graph as
 		Python functions. In particular, it wraps a Python function `func`
 		in a once-differentiable TensorFlow operation that executes it with eager
-		exeuction enabled. As a consequence, `tf.contrib.eager.py_func` makes it
+		execution enabled. As a consequence, `tf.contrib.eager.py_func` makes it
 		possible to express control flow using Python constructs (`if`, `while`,
 		`for`, etc.), instead of TensorFlow control flow constructs (`tf.cond`,
 		`tf.while_loop`). For example, you might use `tf.contrib.eager.py_func` to
@@ -102,7 +102,17 @@ package tensorflow.python.ops.script_ops;
 	static public function eager_py_func(func:Dynamic, inp:Dynamic, Tout:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Wraps a python function and uses it as a TensorFlow op.
+		Wraps a python function and uses it as a TensorFlow op. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		tf.py_func is deprecated in TF V2. Instead, use
+		    tf.py_function, which takes a python function which manipulates tf eager
+		    tensors instead of numpy arrays. It's easy to convert a tf eager tensor to
+		    an ndarray (just call tensor.numpy()) but having access to eager tensors
+		    means `tf.py_function`s can use accelerators such as GPUs as well as
+		    being differentiable using a gradient tape.
+		    
 		
 		Given a python function `func`, which takes numpy arrays as its
 		arguments and returns numpy arrays as its outputs, wrap this function as an

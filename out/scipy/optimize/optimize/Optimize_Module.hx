@@ -303,10 +303,10 @@ package scipy.optimize.optimize;
 		
 		Examples
 		--------
-		>>> a = np.arange(6).reshape(2,3)
+		>>> a = np.arange(6).reshape(2,3) + 10
 		>>> a
-		array([[0, 1, 2],
-		       [3, 4, 5]])
+		array([[10, 11, 12],
+		       [13, 14, 15]])
 		>>> np.argmin(a)
 		0
 		>>> np.argmin(a, axis=0)
@@ -320,12 +320,12 @@ package scipy.optimize.optimize;
 		>>> ind
 		(0, 0)
 		>>> a[ind]
-		0
+		10
 		
-		>>> b = np.arange(6)
-		>>> b[4] = 0
+		>>> b = np.arange(6) + 10
+		>>> b[4] = 10
 		>>> b
-		array([0, 1, 2, 3, 0, 5])
+		array([10, 11, 12, 13, 10, 15])
 		>>> np.argmin(b)  # Only the first occurrence is returned.
 		0
 	**/
@@ -613,7 +613,18 @@ package scipy.optimize.optimize;
 		    and/or `disp` as keyword arguments.  Use None if no "polishing"
 		    function is to be used. See Notes for more details.
 		disp : bool, optional
-		    Set to True to print convergence messages.
+		    Set to True to print convergence messages from the `finish` callable.
+		workers : int or map-like callable, optional
+		    If `workers` is an int the grid is subdivided into `workers`
+		    sections and evaluated in parallel (uses
+		    `multiprocessing.Pool <multiprocessing>`).
+		    Supply `-1` to use all cores available to the Process.
+		    Alternatively supply a map-like callable, such as
+		    `multiprocessing.Pool.map` for evaluating the grid in parallel.
+		    This evaluation is carried out as ``workers(func, iterable)``.
+		    Requires that `func` be pickleable.
+		
+		    .. versionadded:: 1.3.0
 		
 		Returns
 		-------
@@ -722,7 +733,7 @@ package scipy.optimize.optimize;
 		Note that if `finish` had been set to None, we would have gotten the
 		gridpoint [-1.0 1.75] where the rounded function value is -2.892.
 	**/
-	static public function brute(func:Dynamic, ranges:Dynamic, ?args:Dynamic, ?Ns:Dynamic, ?full_output:Dynamic, ?finish:Dynamic, ?disp:Dynamic):Dynamic;
+	static public function brute(func:Dynamic, ranges:Dynamic, ?args:Dynamic, ?Ns:Dynamic, ?full_output:Dynamic, ?finish:Dynamic, ?disp:Dynamic, ?workers:Dynamic):Dynamic;
 	static public function callable(obj:Dynamic):Dynamic;
 	/**
 		Check the correctness of a gradient function by comparing it against a
@@ -1214,8 +1225,9 @@ package scipy.optimize.optimize;
 	**/
 	static public function fmin_ncg(f:Dynamic, x0:Dynamic, fprime:Dynamic, ?fhess_p:Dynamic, ?fhess:Dynamic, ?args:Dynamic, ?avextol:Dynamic, ?epsilon:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic, ?retall:Dynamic, ?callback:Dynamic):Dynamic;
 	/**
-		Minimize a function using modified Powell's method. This method
-		only uses function values, not derivatives.
+		Minimize a function using modified Powell's method.
+		
+		This method only uses function values, not derivatives.
 		
 		Parameters
 		----------
@@ -1225,12 +1237,6 @@ package scipy.optimize.optimize;
 		    Initial guess.
 		args : tuple, optional
 		    Extra arguments passed to func.
-		callback : callable, optional
-		    An optional user-supplied function, called after each
-		    iteration.  Called as ``callback(xk)``, where ``xk`` is the
-		    current parameter vector.
-		direc : ndarray, optional
-		    Initial direction set.
 		xtol : float, optional
 		    Line-search error tolerance.
 		ftol : float, optional
@@ -1240,12 +1246,25 @@ package scipy.optimize.optimize;
 		maxfun : int, optional
 		    Maximum number of function evaluations to make.
 		full_output : bool, optional
-		    If True, fopt, xi, direc, iter, funcalls, and
-		    warnflag are returned.
+		    If True, ``fopt``, ``xi``, ``direc``, ``iter``, ``funcalls``, and
+		    ``warnflag`` are returned.
 		disp : bool, optional
 		    If True, print convergence messages.
 		retall : bool, optional
 		    If True, return a list of the solution at each iteration.
+		callback : callable, optional
+		    An optional user-supplied function, called after each
+		    iteration.  Called as ``callback(xk)``, where ``xk`` is the
+		    current parameter vector.
+		direc : ndarray, optional
+		    Initial fitting step and parameter order set as an (N, N) array, where N
+		    is the number of fitting parameters in `x0`.  Defaults to step size 1.0
+		    fitting all parameters simultaneously (``np.ones((N, N))``).  To
+		    prevent initial consideration of values in a step or to change initial
+		    step size, set to 0 or desired step size in the Jth position in the Mth
+		    block, where J is the position in `x0` and M is the desired evaluation
+		    step, with steps being evaluated in index order.  Step size and ordering
+		    will change freely as minimization proceeds.
 		
 		Returns
 		-------
@@ -1269,7 +1288,7 @@ package scipy.optimize.optimize;
 		See also
 		--------
 		minimize: Interface to unconstrained minimization algorithms for
-		    multivariate functions. See the 'Powell' `method` in particular.
+		    multivariate functions. See the 'Powell' method in particular.
 		
 		Notes
 		-----
@@ -1277,13 +1296,12 @@ package scipy.optimize.optimize;
 		a function of N variables. Powell's method is a conjugate
 		direction method.
 		
-		The algorithm has two loops. The outer loop
-		merely iterates over the inner loop. The inner loop minimizes
-		over each current direction in the direction set. At the end
-		of the inner loop, if certain conditions are met, the direction
-		that gave the largest decrease is dropped and replaced with
-		the difference between the current estimated x and the estimated
-		x from the beginning of the inner-loop.
+		The algorithm has two loops.  The outer loop merely iterates over the inner
+		loop. The inner loop minimizes over each current direction in the direction
+		set. At the end of the inner loop, if certain conditions are met, the
+		direction that gave the largest decrease is dropped and replaced with the
+		difference between the current estimated x and the estimated x from the
+		beginning of the inner-loop.
 		
 		The technical conditions for replacing the direction of greatest
 		increase amount to checking that
@@ -1293,6 +1311,15 @@ package scipy.optimize.optimize;
 		2. The direction of greatest increase accounted for a large sufficient
 		   fraction of the decrease in the function value from that iteration of
 		   the inner loop.
+		
+		References
+		----------
+		Powell M.J.D. (1964) An efficient method for finding the minimum of a
+		function of several variables without calculating derivatives,
+		Computer Journal, 7 (2):155-162.
+		
+		Press W., Teukolsky S.A., Vetterling W.T., and Flannery B.P.:
+		Numerical Recipes (any edition), Cambridge University Press
 		
 		Examples
 		--------
@@ -1308,15 +1335,6 @@ package scipy.optimize.optimize;
 		         Function evaluations: 18
 		>>> minimum
 		array(0.0)
-		
-		References
-		----------
-		Powell M.J.D. (1964) An efficient method for finding the minimum of a
-		function of several variables without calculating derivatives,
-		Computer Journal, 7 (2):155-162.
-		
-		Press W., Teukolsky S.A., Vetterling W.T., and Flannery B.P.:
-		Numerical Recipes (any edition), Cambridge University Press
 	**/
 	static public function fmin_powell(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfun:Dynamic, ?full_output:Dynamic, ?disp:Dynamic, ?retall:Dynamic, ?callback:Dynamic, ?direc:Dynamic):Dynamic;
 	/**
@@ -1681,46 +1699,6 @@ package scipy.optimize.optimize;
 	**/
 	static public function line_search_wolfe2(f:Dynamic, myfprime:Dynamic, xk:Dynamic, pk:Dynamic, ?gfk:Dynamic, ?old_fval:Dynamic, ?old_old_fval:Dynamic, ?args:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic, ?extra_condition:Dynamic, ?maxiter:Dynamic):Dynamic;
 	static public function main():Dynamic;
-	/**
-		`nd_grid` instance which returns a dense multi-dimensional "meshgrid".
-		
-		An instance of `numpy.lib.index_tricks.nd_grid` which returns an dense
-		(or fleshed out) mesh-grid when indexed, so that each returned argument
-		has the same shape.  The dimensions and number of the output arrays are
-		equal to the number of indexing dimensions.  If the step length is not a
-		complex number, then the stop is not inclusive.
-		
-		However, if the step length is a **complex number** (e.g. 5j), then
-		the integer part of its magnitude is interpreted as specifying the
-		number of points to create between the start and stop values, where
-		the stop value **is inclusive**.
-		
-		Returns
-		----------
-		mesh-grid `ndarrays` all of the same dimensions
-		
-		See Also
-		--------
-		numpy.lib.index_tricks.nd_grid : class of `ogrid` and `mgrid` objects
-		ogrid : like mgrid but returns open (not fleshed out) mesh grids
-		r_ : array concatenator
-		
-		Examples
-		--------
-		>>> np.mgrid[0:5,0:5]
-		array([[[0, 0, 0, 0, 0],
-		        [1, 1, 1, 1, 1],
-		        [2, 2, 2, 2, 2],
-		        [3, 3, 3, 3, 3],
-		        [4, 4, 4, 4, 4]],
-		       [[0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4]]])
-		>>> np.mgrid[-1:1:5j]
-		array([-1. , -0.5,  0. ,  0.5,  1. ])
-	**/
 	static public var mgrid : Dynamic;
 	static public var print_function : Dynamic;
 	/**
@@ -1743,6 +1721,13 @@ package scipy.optimize.optimize;
 		See Also
 		--------
 		rosen_der, rosen_hess, rosen_hess_prod
+		
+		Examples
+		--------
+		>>> from scipy.optimize import rosen
+		>>> X = 0.1 * np.arange(10)
+		>>> rosen(X)
+		76.56
 	**/
 	static public function rosen(x:Dynamic):Float;
 	/**
@@ -1761,6 +1746,13 @@ package scipy.optimize.optimize;
 		See Also
 		--------
 		rosen, rosen_hess, rosen_hess_prod
+		
+		Examples
+		--------
+		>>> from scipy.optimize import rosen_der
+		>>> X = 0.1 * np.arange(9)
+		>>> rosen_der(X)
+		array([ -2. ,  10.6,  15.6,  13.4,   6.4,  -3. , -12.4, -19.4,  62. ])
 	**/
 	static public function rosen_der(x:Dynamic):Dynamic;
 	/**
@@ -1779,6 +1771,16 @@ package scipy.optimize.optimize;
 		See Also
 		--------
 		rosen, rosen_der, rosen_hess_prod
+		
+		Examples
+		--------
+		>>> from scipy.optimize import rosen_hess
+		>>> X = 0.1 * np.arange(4)
+		>>> rosen_hess(X)
+		array([[-38.,   0.,   0.,   0.],
+		       [  0., 134., -40.,   0.],
+		       [  0., -40., 130., -80.],
+		       [  0.,   0., -80., 200.]])
 	**/
 	static public function rosen_hess(x:Dynamic):Dynamic;
 	/**
@@ -1800,6 +1802,14 @@ package scipy.optimize.optimize;
 		See Also
 		--------
 		rosen, rosen_der, rosen_hess
+		
+		Examples
+		--------
+		>>> from scipy.optimize import rosen_hess_prod
+		>>> X = 0.1 * np.arange(9)
+		>>> p = 0.5 * np.arange(9)
+		>>> rosen_hess_prod(X, p)
+		array([  -0.,   27.,  -10.,  -95., -192., -265., -278., -195., -180.])
 	**/
 	static public function rosen_hess_prod(x:Dynamic, p:Dynamic):Dynamic;
 	/**
@@ -1861,7 +1871,7 @@ package scipy.optimize.optimize;
 		Returns
 		-------
 		text
-		    Either None (for disp=False) or the text string (disp=True)
+		    Either None (for disp=True) or the text string (disp=False)
 		
 		Notes
 		-----

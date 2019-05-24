@@ -68,9 +68,17 @@ package matplotlib.ticker;
 		    * ``sep="\N{THIN SPACE}"`` (``U+2009``);
 		    * ``sep="\N{NARROW NO-BREAK SPACE}"`` (``U+202F``);
 		    * ``sep="\N{NO-BREAK SPACE}"`` (``U+00A0``).
+		
+		usetex : bool (default: None)
+		    To enable/disable the use of TeX's math mode for rendering the
+		    numbers in the formatter.
+		
+		useMathText : bool (default: None)
+		    To enable/disable the use mathtext for rendering the numbers in
+		    the formatter.
 	**/
 	@:native("__init__")
-	public function ___init__(?unit:Dynamic, ?places:Dynamic, ?sep:Dynamic):Dynamic;
+	public function ___init__(?unit:Dynamic, ?places:Dynamic, ?sep:Dynamic, ?usetex:Dynamic, ?useMathText:Dynamic):Dynamic;
 	/**
 		Parameters
 		----------
@@ -96,8 +104,16 @@ package matplotlib.ticker;
 		    * ``sep="\N{THIN SPACE}"`` (``U+2009``);
 		    * ``sep="\N{NARROW NO-BREAK SPACE}"`` (``U+202F``);
 		    * ``sep="\N{NO-BREAK SPACE}"`` (``U+00A0``).
+		
+		usetex : bool (default: None)
+		    To enable/disable the use of TeX's math mode for rendering the
+		    numbers in the formatter.
+		
+		useMathText : bool (default: None)
+		    To enable/disable the use mathtext for rendering the numbers in
+		    the formatter.
 	**/
-	public function new(?unit:Dynamic, ?places:Dynamic, ?sep:Dynamic):Void;
+	public function new(?unit:Dynamic, ?places:Dynamic, ?sep:Dynamic, ?usetex:Dynamic, ?useMathText:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -160,20 +176,14 @@ package matplotlib.ticker;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Subclasses may want to override this to set a locator.
+	**/
+	public function _set_locator(locator:Dynamic):Dynamic;
 	static public var axis : Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Some classes may want to replace a hyphen for minus with the
-		proper unicode symbol (U+2212) for typographical correctness.
-		The default is to not replace it.
-		
-		Note, if you use this method, e.g., in :meth:`format_data` or
-		call, you probably don't want to use it for
-		:meth:`format_data_short` since the toolbar uses this for
-		interactive coord reporting and I doubt we can expect GUIs
-		across platforms will handle the unicode correctly.  So for
-		now the classes that override :meth:`fix_minus` should have an
-		explicit :meth:`format_data_short` method
+		Replace hyphens with a unicode minus.
 	**/
 	public function fix_minus(s:Dynamic):Dynamic;
 	/**
@@ -199,14 +209,24 @@ package matplotlib.ticker;
 		'1.0 M'
 		
 		>>> format_eng("-1e-6") # for self.places = 2
-		'-1.00 μ'
+		'-1.00 µ'
 	**/
 	public function format_eng(num:Dynamic):Dynamic;
+	/**
+		Return the tick labels for all the ticks at once.
+	**/
+	public function format_ticks(values:Dynamic):Dynamic;
 	public function get_offset():Dynamic;
+	public function get_useMathText():Dynamic;
+	public function get_usetex():Dynamic;
 	static public var locs : Dynamic;
 	public function set_axis(axis:Dynamic):Dynamic;
 	public function set_bounds(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function set_data_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function set_locs(locs:Dynamic):Dynamic;
+	public function set_useMathText(val:Dynamic):Dynamic;
+	public function set_usetex(val:Dynamic):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
+	public var useMathText : Dynamic;
+	public var usetex : Dynamic;
 }

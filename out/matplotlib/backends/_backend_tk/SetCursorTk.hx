@@ -109,13 +109,20 @@ package matplotlib.backends._backend_tk;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		set the cursor when the tool is triggered
+		Set the cursor when the tool is triggered.
 	**/
 	public function _add_tool(tool:Dynamic):Dynamic;
 	/**
-		Process every newly added tool
+		Process every newly added tool.
 	**/
 	public function _add_tool_cbk(event:Dynamic):Dynamic;
+	/**
+		Return a placeholder object with a single `canvas` attribute.
+		
+		This is useful to reuse the implementations of tools already provided
+		by the classic Toolbars.
+	**/
+	public function _make_classic_style_pseudo_toolbar():Dynamic;
 	public function _set_cursor_cbk(event:Dynamic):Dynamic;
 	public function _tool_trigger_cbk(event:Dynamic):Dynamic;
 	public var canvas : Dynamic;
@@ -145,7 +152,7 @@ package matplotlib.backends._backend_tk;
 		
 		Parameters
 		----------
-		figure: `Figure`
+		figure : `Figure`
 	**/
 	public function set_figure(figure:Dynamic):Dynamic;
 	public var toolmanager : Dynamic;
@@ -157,11 +164,11 @@ package matplotlib.backends._backend_tk;
 		
 		Parameters
 		----------
-		event: `Event`
+		event : `Event`
 		    The Canvas event that caused this tool to be called
-		sender: object
+		sender : object
 		    Object that requested the tool to be triggered
-		data: object
+		data : object
 		    Extra data
 	**/
 	public function trigger(sender:Dynamic, event:Dynamic, ?data:Dynamic):Dynamic;

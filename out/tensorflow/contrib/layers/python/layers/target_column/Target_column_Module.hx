@@ -4,7 +4,7 @@ package tensorflow.contrib.layers.python.layers.target_column;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
 		Instructions for updating:
 		This file will be removed after the deprecation date.Please switch to third_party/tensorflow/contrib/learn/python/learn/estimators/head.py
 	**/
@@ -31,7 +31,7 @@ package tensorflow.contrib.layers.python.layers.target_column;
 	/**
 		Creates a _TargetColumn for binary classification with SVMs. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
 		Instructions for updating:
 		This file will be removed after the deprecation date.Please switch to third_party/tensorflow/contrib/learn/python/learn/estimators/head.py
 		
@@ -85,7 +85,7 @@ package tensorflow.contrib.layers.python.layers.target_column;
 	/**
 		Returns a dictionary of basic metrics for logistic regression. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
 		Instructions for updating:
 		This file will be removed after the deprecation date.Please switch to third_party/tensorflow/contrib/learn/python/learn/estimators/head.py
 		
@@ -100,7 +100,7 @@ package tensorflow.contrib.layers.python.layers.target_column;
 	/**
 		Creates a _TargetColumn for multi class single label classification. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
 		Instructions for updating:
 		This file will be removed after the deprecation date.Please switch to third_party/tensorflow/contrib/learn/python/learn/estimators/head.py
 		
@@ -125,7 +125,7 @@ package tensorflow.contrib.layers.python.layers.target_column;
 	/**
 		Creates a _TargetColumn for linear regression. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
 		Instructions for updating:
 		This file will be removed after the deprecation date.Please switch to third_party/tensorflow/contrib/learn/python/learn/estimators/head.py
 		

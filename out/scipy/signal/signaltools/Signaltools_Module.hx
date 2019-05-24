@@ -70,6 +70,36 @@ package scipy.signal.signaltools;
 	**/
 	static public function _filtfilt_gust(b:Dynamic, a:Dynamic, x:Dynamic, ?axis:Dynamic, ?irlen:Dynamic):Dynamic;
 	/**
+		Handle and sort shape and axes arguments for n-dimensional transforms.
+		
+		This is identical to `_init_nd_shape_and_axes`, except the axes are
+		returned in sorted order and the shape is reordered to match.
+		
+		Parameters
+		----------
+		x : array_like
+		    The input array.
+		shape : int or array_like of ints or None
+		    The shape of the result.  If both `shape` and `axes` (see below) are
+		    None, `shape` is ``x.shape``; if `shape` is None but `axes` is
+		    not None, then `shape` is ``scipy.take(x.shape, axes, axis=0)``.
+		    If `shape` is -1, the size of the corresponding dimension of `x` is
+		    used.
+		axes : int or array_like of ints or None
+		    Axes along which the calculation is computed.
+		    The default is over all axes.
+		    Negative indices are automatically converted to their positive
+		    counterpart.
+		
+		Returns
+		-------
+		shape : array
+		    The shape of the result. It is a 1D integer array.
+		axes : array
+		    The shape of the result. It is a 1D integer array.
+	**/
+	static public function _init_nd_shape_and_axes_sorted(x:Dynamic, shape:Dynamic, axes:Dynamic):Array<Dynamic>;
+	/**
 		If in 'valid' mode, returns whether or not the input arrays need to be
 		swapped depending on whether `shape1` is at least as large as `shape2` in
 		every dimension.
@@ -85,8 +115,8 @@ package scipy.signal.signaltools;
 	static public var _modedict : Dynamic;
 	/**
 		See if numpy supports convolution of `volume` and `kernel` (i.e. both are
-		1D ndarrays and of the appropriate shape).  Numpy's 'same' mode uses the
-		size of the larger input, while Scipy's uses the size of the first input.
+		1D ndarrays and of the appropriate shape).  NumPy's 'same' mode uses the
+		size of the larger input, while SciPy's uses the size of the first input.
 		
 		Invalid mode strings will return False and be caught by the calling func.
 	**/
@@ -223,6 +253,9 @@ package scipy.signal.signaltools;
 		angle : ndarray or scalar
 		    The counterclockwise angle from the positive real axis on
 		    the complex plane, with dtype as numpy.float64.
+		    
+		    ..versionchanged:: 1.16.0
+		        This function works on subclasses of ndarray like `ma.array`.
 		
 		See Also
 		--------
@@ -245,11 +278,10 @@ package scipy.signal.signaltools;
 		Values are generated within the half-open interval ``[start, stop)``
 		(in other words, the interval including `start` but excluding `stop`).
 		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
+		`range` function, but returns an ndarray rather than a list.
 		
 		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
+		be consistent.  It is better to use `numpy.linspace` for these cases.
 		
 		Parameters
 		----------
@@ -674,7 +706,7 @@ package scipy.signal.signaltools;
 		-----
 		The keyword arguments start, stop and step are used by calling
 		slice(start, stop, step).  This implies axis_slice() does not
-		handle its arguments the exacty the same as indexing.  To select
+		handle its arguments the exactly the same as indexing.  To select
 		a single index k, for example, use
 		    axis_slice(a, start=k, stop=k+1)
 		In this case, the length of the axis 'axis' in the result will
@@ -702,9 +734,12 @@ package scipy.signal.signaltools;
 		    A scalar or length-2 sequence giving the critical frequencies.
 		    For Type I filters, this is the point in the transition band at which
 		    the gain first drops below -`rp`.
-		    For digital filters, `Wn` is normalized from 0 to 1, where 1 is the
-		    Nyquist frequency, pi radians/sample.  (`Wn` is thus in
+		
+		    For digital filters, `Wn` are in the same units as `fs`.  By default,
+		    `fs` is 2 half-cycles/sample, so these are normalized from 0 to 1,
+		    where 1 is the Nyquist frequency.  (`Wn` is thus in
 		    half-cycles / sample.)
+		
 		    For analog filters, `Wn` is an angular frequency (e.g. rad/s).
 		btype : {'lowpass', 'highpass', 'bandpass', 'bandstop'}, optional
 		    The type of filter.  Default is 'lowpass'.
@@ -714,6 +749,10 @@ package scipy.signal.signaltools;
 		output : {'ba', 'zpk', 'sos'}, optional
 		    Type of output:  numerator/denominator ('ba'), pole-zero ('zpk'), or
 		    second-order sections ('sos'). Default is 'ba'.
+		fs : float, optional
+		    The sampling frequency of the digital system.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -748,7 +787,8 @@ package scipy.signal.signaltools;
 		
 		Examples
 		--------
-		Plot the filter's frequency response, showing the critical points:
+		Design an analog filter and plot its frequency response, showing the
+		critical points:
 		
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
@@ -764,8 +804,31 @@ package scipy.signal.signaltools;
 		>>> plt.axvline(100, color='green') # cutoff frequency
 		>>> plt.axhline(-5, color='green') # rp
 		>>> plt.show()
+		
+		Generate a signal made up of 10 Hz and 20 Hz, sampled at 1 kHz
+		
+		>>> t = np.linspace(0, 1, 1000, False)  # 1 second
+		>>> sig = np.sin(2*np.pi*10*t) + np.sin(2*np.pi*20*t)
+		>>> fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
+		>>> ax1.plot(t, sig)
+		>>> ax1.set_title('10 Hz and 20 Hz sinusoids')
+		>>> ax1.axis([0, 1, -2, 2])
+		
+		Design a digital high-pass filter at 15 Hz to remove the 10 Hz tone, and
+		apply it to the signal.  (It's recommended to use second-order sections
+		format when filtering, to avoid numerical error with transfer function
+		(``ba``) format):
+		
+		>>> sos = signal.cheby1(10, 1, 15, 'hp', fs=1000, output='sos')
+		>>> filtered = signal.sosfilt(sos, sig)
+		>>> ax2.plot(t, filtered)
+		>>> ax2.set_title('After 15 Hz high-pass filter')
+		>>> ax2.axis([0, 1, -2, 2])
+		>>> ax2.set_xlabel('Time [seconds]')
+		>>> plt.tight_layout()
+		>>> plt.show()
 	**/
-	static public function cheby1(N:Dynamic, rp:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic):Dynamic;
+	static public function cheby1(N:Dynamic, rp:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Find the fastest convolution/correlation method.
 		
@@ -1358,6 +1421,8 @@ package scipy.signal.signaltools;
 		    A sequence of break points. If given, an individual linear fit is
 		    performed for each part of `data` between two break points.
 		    Break points are specified as indices into `data`.
+		overwrite_data : bool, optional
+		    If True, perform in place detrending and avoid a copy. Default is False
 		
 		Returns
 		-------
@@ -1374,7 +1439,7 @@ package scipy.signal.signaltools;
 		>>> (signal.detrend(x) - noise).max() < 0.01
 		True
 	**/
-	static public function detrend(data:Dynamic, ?axis:Dynamic, ?type:Dynamic, ?bp:Dynamic):Dynamic;
+	static public function detrend(data:Dynamic, ?axis:Dynamic, ?type:Dynamic, ?bp:Dynamic, ?overwrite_data:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		dot(a, b, out=None)
@@ -1541,7 +1606,7 @@ package scipy.signal.signaltools;
 		References
 		----------
 		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
+		       https://en.wikipedia.org/wiki/Exponential_function
 		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
 		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
 		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
@@ -1704,6 +1769,11 @@ package scipy.signal.signaltools;
 		    ``same``
 		       The output is the same size as `in1`, centered
 		       with respect to the 'full' output.
+		       axis : tuple, optional
+		axes : int or array_like of ints or None, optional
+		    Axes over which to compute the convolution.
+		    The default is over all axes.
+		
 		
 		Returns
 		-------
@@ -1751,7 +1821,7 @@ package scipy.signal.signaltools;
 		>>> ax_blurred.set_axis_off()
 		>>> fig.show()
 	**/
-	static public function fftconvolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
+	static public function fftconvolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic, ?axes:Dynamic):Array<Dynamic>;
 	/**
 		Apply a digital filter forward and backward to a signal.
 		
@@ -1918,25 +1988,29 @@ package scipy.signal.signaltools;
 		----------
 		numtaps : int
 		    Length of the filter (number of coefficients, i.e. the filter
-		    order + 1).  `numtaps` must be even if a passband includes the
+		    order + 1).  `numtaps` must be odd if a passband includes the
 		    Nyquist frequency.
 		cutoff : float or 1D array_like
-		    Cutoff frequency of filter (expressed in the same units as `nyq`)
+		    Cutoff frequency of filter (expressed in the same units as `fs`)
 		    OR an array of cutoff frequencies (that is, band edges). In the
 		    latter case, the frequencies in `cutoff` should be positive and
-		    monotonically increasing between 0 and `nyq`.  The values 0 and
-		    `nyq` must not be included in `cutoff`.
+		    monotonically increasing between 0 and `fs/2`.  The values 0 and
+		    `fs/2` must not be included in `cutoff`.
 		width : float or None, optional
 		    If `width` is not None, then assume it is the approximate width
-		    of the transition region (expressed in the same units as `nyq`)
+		    of the transition region (expressed in the same units as `fs`)
 		    for use in Kaiser FIR filter design.  In this case, the `window`
 		    argument is ignored.
 		window : string or tuple of string and parameter values, optional
 		    Desired window to use. See `scipy.signal.get_window` for a list
 		    of windows and required parameters.
-		pass_zero : bool, optional
+		pass_zero : {True, False, 'bandpass', 'lowpass', 'highpass', 'bandstop'}, optional
 		    If True, the gain at the frequency 0 (i.e. the "DC gain") is 1.
-		    Otherwise the DC gain is 0.
+		    If False, the DC gain is 0. Can also be a string argument for the
+		    desired filter type (equivalent to ``btype`` in IIR design functions).
+		
+		    .. versionadded:: 1.3.0
+		       Support for string arguments.
 		scale : bool, optional
 		    Set to True to scale the coefficients so that the frequency
 		    response is exactly unity at a certain frequency.
@@ -1944,8 +2018,8 @@ package scipy.signal.signaltools;
 		
 		    - 0 (DC) if the first passband starts at 0 (i.e. pass_zero
 		      is True)
-		    - `nyq` (the Nyquist frequency) if the first passband ends at
-		      `nyq` (i.e the filter is a single band highpass filter);
+		    - `fs/2` (the Nyquist frequency) if the first passband ends at
+		      `fs/2` (i.e the filter is a single band highpass filter);
 		      center of first passband otherwise
 		
 		nyq : float, optional
@@ -2025,7 +2099,7 @@ package scipy.signal.signaltools;
 	**/
 	static public function gcd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return a window.
+		Return a window of a given length and type.
 		
 		Parameters
 		----------
@@ -2048,13 +2122,26 @@ package scipy.signal.signaltools;
 		-----
 		Window types:
 		
-		    `boxcar`, `triang`, `blackman`, `hamming`, `hann`, `bartlett`,
-		    `flattop`, `parzen`, `bohman`, `blackmanharris`, `nuttall`,
-		    `barthann`, `kaiser` (needs beta), `gaussian` (needs standard
-		    deviation), `general_gaussian` (needs power, width), `slepian`
-		    (needs width), `dpss` (needs normalized half-bandwidth),
-		    `chebwin` (needs attenuation), `exponential` (needs decay scale),
-		    `tukey` (needs taper fraction)
+		- `~scipy.signal.windows.boxcar`
+		- `~scipy.signal.windows.triang`
+		- `~scipy.signal.windows.blackman`
+		- `~scipy.signal.windows.hamming`
+		- `~scipy.signal.windows.hann`
+		- `~scipy.signal.windows.bartlett`
+		- `~scipy.signal.windows.flattop`
+		- `~scipy.signal.windows.parzen`
+		- `~scipy.signal.windows.bohman`
+		- `~scipy.signal.windows.blackmanharris`
+		- `~scipy.signal.windows.nuttall`
+		- `~scipy.signal.windows.barthann`
+		- `~scipy.signal.windows.kaiser` (needs beta)
+		- `~scipy.signal.windows.gaussian` (needs standard deviation)
+		- `~scipy.signal.windows.general_gaussian` (needs power, width)
+		- `~scipy.signal.windows.slepian` (needs width)
+		- `~scipy.signal.windows.dpss` (needs normalized half-bandwidth)
+		- `~scipy.signal.windows.chebwin` (needs attenuation)
+		- `~scipy.signal.windows.exponential` (needs decay scale)
+		- `~scipy.signal.windows.tukey` (needs taper fraction)
 		
 		If the window requires no parameters, then `window` can be a string.
 		
@@ -2063,7 +2150,7 @@ package scipy.signal.signaltools;
 		arguments the needed parameters.
 		
 		If `window` is a floating point number, it is interpreted as the beta
-		parameter of the `kaiser` window.
+		parameter of the `~scipy.signal.windows.kaiser` window.
 		
 		Each of the window types listed above is also the name of
 		a function that can be called directly to create a window of
@@ -2164,7 +2251,7 @@ package scipy.signal.signaltools;
 		References
 		----------
 		.. [1] Wikipedia, "Analytic signal".
-		       http://en.wikipedia.org/wiki/Analytic_signal
+		       https://en.wikipedia.org/wiki/Analytic_signal
 		.. [2] Leon Cohen, "Time-Frequency Analysis", 1995. Chapter 2.
 		.. [3] Alan V. Oppenheim, Ronald W. Schafer. Discrete-Time Signal
 		       Processing, Third Edition, 2009. Chapter 12.
@@ -2189,7 +2276,7 @@ package scipy.signal.signaltools;
 		References
 		----------
 		.. [1] Wikipedia, "Analytic signal",
-		    http://en.wikipedia.org/wiki/Analytic_signal
+		    https://en.wikipedia.org/wiki/Analytic_signal
 	**/
 	static public function hilbert2(x:Dynamic, ?N:Dynamic):Dynamic;
 	/**
@@ -2667,7 +2754,7 @@ package scipy.signal.signaltools;
 		Perform a median filter on an N-dimensional array.
 		
 		Apply a median filter to the input array using a local window-size
-		given by `kernel_size`.
+		given by `kernel_size`. The array will automatically be zero-padded.
 		
 		Parameters
 		----------
@@ -2684,13 +2771,23 @@ package scipy.signal.signaltools;
 		out : ndarray
 		    An array the same size as input containing the median filtered
 		    result.
+		
+		See also
+		--------
+		scipy.ndimage.median_filter
+		
+		Notes
+		-------
+		The more general function `scipy.ndimage.median_filter` has a more
+		efficient implementation of a median filter and therefore runs much faster.
 	**/
 	static public function medfilt(volume:Dynamic, ?kernel_size:Dynamic):Dynamic;
 	/**
 		Median filter a 2-dimensional array.
 		
 		Apply a median filter to the `input` array using a local window-size
-		given by `kernel_size` (must be odd).
+		given by `kernel_size` (must be odd). The array is zero-padded
+		automatically.
 		
 		Parameters
 		----------
@@ -2708,6 +2805,15 @@ package scipy.signal.signaltools;
 		out : ndarray
 		    An array the same size as input containing the median filtered
 		    result.
+		
+		See also
+		--------
+		scipy.ndimage.median_filter
+		
+		Notes
+		-------
+		The more general function `scipy.ndimage.median_filter` has a more
+		efficient implementation of a median filter and therefore runs much faster.
 	**/
 	static public function medfilt2d(input:Dynamic, ?kernel_size:Dynamic):Dynamic;
 	static public var newaxis : Dynamic;
@@ -3208,11 +3314,109 @@ package scipy.signal.signaltools;
 	/**
 		Return the product of array elements over a given axis.
 		
+		Parameters
+		----------
+		a : array_like
+		    Input data.
+		axis : None or int or tuple of ints, optional
+		    Axis or axes along which a product is performed.  The default,
+		    axis=None, will calculate the product of all the elements in the
+		    input array. If axis is negative it counts from the last to the
+		    first axis.
+		
+		    .. versionadded:: 1.7.0
+		
+		    If axis is a tuple of ints, a product is performed on all of the
+		    axes specified in the tuple instead of a single axis or all the
+		    axes as before.
+		dtype : dtype, optional
+		    The type of the returned array, as well as of the accumulator in
+		    which the elements are multiplied.  The dtype of `a` is used by
+		    default unless `a` has an integer dtype of less precision than the
+		    default platform integer.  In that case, if `a` is signed then the
+		    platform integer is used while if `a` is unsigned then an unsigned
+		    integer of the same precision as the platform integer is used.
+		out : ndarray, optional
+		    Alternative output array in which to place the result. It must have
+		    the same shape as the expected output, but the type of the output
+		    values will be cast if necessary.
+		keepdims : bool, optional
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the input array.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `prod` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-class' method does not implement `keepdims` any
+		    exceptions will be raised.
+		initial : scalar, optional
+		    The starting value for this product. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
+		
+		Returns
+		-------
+		product_along_axis : ndarray, see `dtype` parameter above.
+		    An array shaped as `a` but with the specified axis removed.
+		    Returns a reference to `out` if specified.
+		
 		See Also
 		--------
-		prod : equivalent function; see for details.
+		ndarray.prod : equivalent method
+		numpy.doc.ufuncs : Section "Output arguments"
+		
+		Notes
+		-----
+		Arithmetic is modular when using integer types, and no error is
+		raised on overflow.  That means that, on a 32-bit platform:
+		
+		>>> x = np.array([536870910, 536870910, 536870910, 536870910])
+		>>> np.prod(x)  # random
+		16
+		
+		The product of an empty array is the neutral element 1:
+		
+		>>> np.prod([])
+		1.0
+		
+		Examples
+		--------
+		By default, calculate the product of all elements:
+		
+		>>> np.prod([1.,2.])
+		2.0
+		
+		Even when the input array is two-dimensional:
+		
+		>>> np.prod([[1.,2.],[3.,4.]])
+		24.0
+		
+		But we can also specify the axis over which to multiply:
+		
+		>>> np.prod([[1.,2.],[3.,4.]], axis=1)
+		array([  2.,  12.])
+		
+		If the type of `x` is unsigned, then the output type is
+		the unsigned platform integer:
+		
+		>>> x = np.array([1, 2, 3], dtype=np.uint8)
+		>>> np.prod(x).dtype == np.uint
+		True
+		
+		If `x` is of a signed integer type, then the output type
+		is the default platform integer:
+		
+		>>> x = np.array([1, 2, 3], dtype=np.int8)
+		>>> np.prod(x).dtype == int
+		True
+		
+		You can also start the product with a value other than one:
+		
+		>>> np.prod([1, 2], initial=5)
+		10
 	**/
-	static public function product(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function prod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	static public var r_ : Dynamic;
 	/**
 		Return a contiguous flattened array.
@@ -4506,70 +4710,72 @@ package scipy.signal.signaltools;
 	/**
 		where(condition, [x, y])
 		
-		Return elements, either from `x` or `y`, depending on `condition`.
+		Return elements chosen from `x` or `y` depending on `condition`.
 		
-		If only `condition` is given, return ``condition.nonzero()``.
+		.. note::
+		    When only `condition` is provided, this function is a shorthand for
+		    ``np.asarray(condition).nonzero()``. Using `nonzero` directly should be
+		    preferred, as it behaves correctly for subclasses. The rest of this
+		    documentation covers only the case where all three arguments are
+		    provided.
 		
 		Parameters
 		----------
 		condition : array_like, bool
-		    When True, yield `x`, otherwise yield `y`.
-		x, y : array_like, optional
+		    Where True, yield `x`, otherwise yield `y`.
+		x, y : array_like
 		    Values from which to choose. `x`, `y` and `condition` need to be
 		    broadcastable to some shape.
 		
 		Returns
 		-------
-		out : ndarray or tuple of ndarrays
-		    If both `x` and `y` are specified, the output array contains
-		    elements of `x` where `condition` is True, and elements from
-		    `y` elsewhere.
-		
-		    If only `condition` is given, return the tuple
-		    ``condition.nonzero()``, the indices where `condition` is True.
+		out : ndarray
+		    An array with elements from `x` where `condition` is True, and elements
+		    from `y` elsewhere.
 		
 		See Also
 		--------
-		nonzero, choose
+		choose
+		nonzero : The function that is called when x and y are omitted
 		
 		Notes
 		-----
-		If `x` and `y` are given and input arrays are 1-D, `where` is
-		equivalent to::
+		If all the arrays are 1-D, `where` is equivalent to::
 		
-		    [xv if c else yv for (c,xv,yv) in zip(condition,x,y)]
+		    [xv if c else yv
+		     for c, xv, yv in zip(condition, x, y)]
 		
 		Examples
 		--------
+		>>> a = np.arange(10)
+		>>> a
+		array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+		>>> np.where(a < 5, a, 10*a)
+		array([ 0,  1,  2,  3,  4, 50, 60, 70, 80, 90])
+		
+		This can be used on multidimensional arrays too:
+		
 		>>> np.where([[True, False], [True, True]],
 		...          [[1, 2], [3, 4]],
 		...          [[9, 8], [7, 6]])
 		array([[1, 8],
 		       [3, 4]])
 		
-		>>> np.where([[0, 1], [1, 0]])
-		(array([0, 1]), array([1, 0]))
+		The shapes of x, y, and the condition are broadcast together:
 		
-		>>> x = np.arange(9.).reshape(3, 3)
-		>>> np.where( x > 5 )
-		(array([2, 2, 2]), array([0, 1, 2]))
-		>>> x[np.where( x > 3.0 )]               # Note: result is 1D.
-		array([ 4.,  5.,  6.,  7.,  8.])
-		>>> np.where(x < 5, x, -1)               # Note: broadcasting.
-		array([[ 0.,  1.,  2.],
-		       [ 3.,  4., -1.],
-		       [-1., -1., -1.]])
+		>>> x, y = np.ogrid[:3, :4]
+		>>> np.where(x < y, x, 10 + y)  # both x and 10+y are broadcast
+		array([[10,  0,  0,  0],
+		       [10, 11,  1,  1],
+		       [10, 11, 12,  2]])
 		
-		Find the indices of elements of `x` that are in `goodvalues`.
-		
-		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.isin(x, goodvalues)
-		>>> ix
-		array([[False, False, False],
-		       [ True,  True, False],
-		       [False,  True, False]])
-		>>> np.where(ix)
-		(array([1, 1, 2]), array([0, 1, 1]))
+		>>> a = np.array([[0, 1, 2],
+		...               [0, 2, 4],
+		...               [0, 3, 6]])
+		>>> np.where(a < 4, a, -1)  # -1 is broadcast
+		array([[ 0,  1,  2],
+		       [ 0,  2, -1],
+		       [ 0,  3, -1]])
 	**/
 	static public function where(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

@@ -15,5 +15,5 @@ package tensorflow.compiler.xla.experimental.xla_sharding.xla_sharding;
 	static public var print_function : Dynamic;
 	static public function replicate(tensor:Dynamic):Dynamic;
 	static public function split(tensor:Dynamic, split_dimension:Dynamic, num_devices:Dynamic):Dynamic;
-	static public function tile(tensor:Dynamic, tile_shape:Dynamic, tile_assignment:Dynamic):Dynamic;
+	static public function tile(tensor:Dynamic, tile_assignment:Dynamic):Dynamic;
 }

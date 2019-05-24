@@ -120,6 +120,10 @@ package matplotlib.category;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		Subclasses may want to override this to set a locator.
+	**/
+	public function _set_locator(locator:Dynamic):Dynamic;
+	/**
 		Converts text values into utf-8 or ascii strings.
 		        
 	**/
@@ -151,6 +155,10 @@ package matplotlib.category;
 		Defaults to the position-independent long value.
 	**/
 	public function format_data_short(value:Dynamic):Dynamic;
+	/**
+		Return the tick labels for all the ticks at once.
+	**/
+	public function format_ticks(values:Dynamic):Dynamic;
 	public function get_offset():Dynamic;
 	static public var locs : Dynamic;
 	public function set_axis(axis:Dynamic):Dynamic;

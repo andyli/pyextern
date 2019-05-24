@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.lite.python;
 @:pythonImport("tensorflow.contrib.lite.python") extern class Python_Module {
+	static public var WARNING : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,4 +11,8 @@ package tensorflow.contrib.lite.python;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var __warningregistry__ : Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
+	static public var print_function : Dynamic;
 }

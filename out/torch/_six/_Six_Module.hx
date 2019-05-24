@@ -21,6 +21,7 @@ package torch._six;
 		If only globals is given, locals defaults to it.
 	**/
 	static public function exec_(source:Dynamic, ?globals:Dynamic, ?locals:Dynamic):Dynamic;
+	static public function get_function_from_type(cls:Dynamic, name:Dynamic):Dynamic;
 	static public var inf : Dynamic;
 	static public var nan : Dynamic;
 	static public function raise_from(value:Dynamic, from_value:Dynamic):Dynamic;

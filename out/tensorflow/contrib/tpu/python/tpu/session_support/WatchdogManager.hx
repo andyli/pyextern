@@ -141,6 +141,10 @@ package tensorflow.contrib.tpu.python.tpu.session_support;
 	public function _exc_info(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _initialized : Dynamic;
 	public function _reset_internal_locks(is_alive:Dynamic):Dynamic;
+	/**
+		Reset the graph, session and worker manager.
+	**/
+	public function _reset_manager():Dynamic;
 	public function _set_ident():Dynamic;
 	/**
 		Set a lock object which will be released by the interpreter when
@@ -167,7 +171,7 @@ package tensorflow.contrib.tpu.python.tpu.session_support;
 	/**
 		Thread identifier of this thread or None if it has not been started.
 		
-		This is a nonzero integer. See the thread.get_ident() function. Thread
+		This is a nonzero integer. See the get_ident() function. Thread
 		identifiers may be recycled when a thread exits and another thread is
 		created. The identifier is available even after the thread has exited.
 	**/
@@ -241,4 +245,5 @@ package tensorflow.contrib.tpu.python.tpu.session_support;
 		same thread object.
 	**/
 	public function start():Dynamic;
+	public function stop():Dynamic;
 }

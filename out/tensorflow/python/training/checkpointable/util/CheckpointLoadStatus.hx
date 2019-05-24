@@ -139,6 +139,10 @@ package tensorflow.python.training.checkpointable.util;
 	**/
 	public function assert_existing_objects_matched():Dynamic;
 	/**
+		Raises an exception if only the root object matched.
+	**/
+	public function assert_nontrivial_match():Dynamic;
+	/**
 		Run operations to initialize or restore objects in the dependency graph.
 		
 		Any objects in the dependency graph which have initializers but are not in

@@ -22,8 +22,6 @@ package tensorflow.contrib.tpu.profiler.trace_events_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DEVICE_ID_FIELD_NUMBER : Dynamic;
-	static public var DURATION_PS_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -64,12 +62,10 @@ package tensorflow.contrib.tpu.profiler.trace_events_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var RESOURCE_ID_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -86,7 +82,10 @@ package tensorflow.contrib.tpu.profiler.trace_events_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TIMESTAMP_PS_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -252,4 +251,24 @@ package tensorflow.contrib.tpu.profiler.trace_events_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tpu.TraceEvent.device_id
+	**/
+	public var device_id : Dynamic;
+	/**
+		Field tensorflow.tpu.TraceEvent.duration_ps
+	**/
+	public var duration_ps : Dynamic;
+	/**
+		Field tensorflow.tpu.TraceEvent.name
+	**/
+	public var name : Dynamic;
+	/**
+		Field tensorflow.tpu.TraceEvent.resource_id
+	**/
+	public var resource_id : Dynamic;
+	/**
+		Field tensorflow.tpu.TraceEvent.timestamp_ps
+	**/
+	public var timestamp_ps : Dynamic;
 }

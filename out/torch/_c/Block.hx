@@ -103,4 +103,8 @@ package torch._c;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		nodes(self: torch._C.Block) -> iterator
+	**/
+	public function nodes(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

@@ -120,7 +120,7 @@ package matplotlib.docstring;
 	**/
 	static public function from_params(params:Dynamic):Dynamic;
 	/**
-		Assume self.params is a dict and update it with supplied args
+		Update ``self.params`` (which must be a dict) with the supplied args.
 	**/
 	public function update(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

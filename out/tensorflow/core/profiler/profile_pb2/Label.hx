@@ -50,7 +50,6 @@ package tensorflow.core.profiler.profile_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var KEY_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -63,7 +62,6 @@ package tensorflow.core.profiler.profile_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NUM_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -72,7 +70,6 @@ package tensorflow.core.profiler.profile_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var STR_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -85,6 +82,10 @@ package tensorflow.core.profiler.profile_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -250,4 +251,16 @@ package tensorflow.core.profiler.profile_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Label.key
+	**/
+	public var key : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Label.num
+	**/
+	public var num : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Label.str
+	**/
+	public var str : Dynamic;
 }

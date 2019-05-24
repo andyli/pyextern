@@ -22,9 +22,6 @@ package tensorflow.core.framework.step_stats_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DEVICE_PERSISTENT_MEMORY_SIZE_FIELD_NUMBER : Dynamic;
-	static public var DEVICE_PERSISTENT_TENSOR_ALLOC_IDS_FIELD_NUMBER : Dynamic;
-	static public var DEVICE_TEMP_MEMORY_SIZE_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -65,8 +62,6 @@ package tensorflow.core.framework.step_stats_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var PERSISTENT_MEMORY_SIZE_FIELD_NUMBER : Dynamic;
-	static public var PERSISTENT_TENSOR_ALLOC_IDS_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -87,7 +82,10 @@ package tensorflow.core.framework.step_stats_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TEMP_MEMORY_SIZE_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -253,4 +251,28 @@ package tensorflow.core.framework.step_stats_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.MemoryStats.device_persistent_memory_size
+	**/
+	public var device_persistent_memory_size : Dynamic;
+	/**
+		Field tensorflow.MemoryStats.device_persistent_tensor_alloc_ids
+	**/
+	public var device_persistent_tensor_alloc_ids : Dynamic;
+	/**
+		Field tensorflow.MemoryStats.device_temp_memory_size
+	**/
+	public var device_temp_memory_size : Dynamic;
+	/**
+		Field tensorflow.MemoryStats.persistent_memory_size
+	**/
+	public var persistent_memory_size : Dynamic;
+	/**
+		Field tensorflow.MemoryStats.persistent_tensor_alloc_ids
+	**/
+	public var persistent_tensor_alloc_ids : Dynamic;
+	/**
+		Field tensorflow.MemoryStats.temp_memory_size
+	**/
+	public var temp_memory_size : Dynamic;
 }

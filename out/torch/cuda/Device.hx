@@ -43,11 +43,11 @@ package torch.cuda;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(idx:Dynamic):Dynamic;
+	public function ___init__(device:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(idx:Dynamic):Void;
+	public function new(device:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		

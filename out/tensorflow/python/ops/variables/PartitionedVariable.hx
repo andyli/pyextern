@@ -1,15 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.variables;
 @:pythonImport("tensorflow.python.ops.variables", "PartitionedVariable") extern class PartitionedVariable {
-	/**
-		An iterator that allows accessing the underlying `Variable` objects.
-		
-		This iterator is necessary to control order of access when Variables
-		are not partitioned in a standard way along a single axis.
-		
-		Allows e.g. `list(partitioned_variable)` to return a proper list.
-	**/
-	static public function PartitionedVariableIterator(partitioned_variable:Dynamic):Dynamic;
 	static public function _TensorConversionFunction(v:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -66,7 +57,6 @@ package tensorflow.python.ops.variables;
 		    `partitions` is not a list.
 		  ValueError: If `variable_list` is empty, or the `Variable` shape
 		    information does not match `shape`, or `partitions` has invalid values.
-		  RuntimeError: If eager execution is enabled
 	**/
 	@:native("__init__")
 	public function ___init__(name:Dynamic, shape:Dynamic, dtype:Dynamic, variable_list:Dynamic, partitions:Dynamic):Dynamic;
@@ -89,7 +79,6 @@ package tensorflow.python.ops.variables;
 		    `partitions` is not a list.
 		  ValueError: If `variable_list` is empty, or the `Variable` shape
 		    information does not match `shape`, or `partitions` has invalid values.
-		  RuntimeError: If eager execution is enabled
 	**/
 	public function new(name:Dynamic, shape:Dynamic, dtype:Dynamic, variable_list:Dynamic, partitions:Dynamic):Void;
 	/**

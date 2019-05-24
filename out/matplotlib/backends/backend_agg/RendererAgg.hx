@@ -111,21 +111,18 @@ package matplotlib.backends.backend_agg;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		draw the text by converting them to paths using textpath module.
+		Draw the text by converting them to paths using textpath module.
 		
 		Parameters
 		----------
 		prop : `matplotlib.font_manager.FontProperties`
-		  font property
-		
+		    The font property.
 		s : str
-		  text to be converted
-		
+		    The text to be converted.
 		usetex : bool
-		  If True, use matplotlib usetex mode.
-		
-		ismath : bool
-		  If True, use mathtext parser. If "TeX", use *usetex* mode.
+		    Whether to use matplotlib usetex mode.
+		ismath : bool or "TeX"
+		    If True, use mathtext parser. If "TeX", use *usetex* mode.
 	**/
 	public function _draw_text_as_path(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ismath:Dynamic):Dynamic;
 	/**
@@ -133,21 +130,16 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function _get_agg_font(prop:Dynamic):Dynamic;
 	/**
-		return the text path and transform
+		Return the text path and transform.
 		
 		Parameters
 		----------
 		prop : `matplotlib.font_manager.FontProperties`
-		  font property
-		
+		    The font property.
 		s : str
-		  text to be converted
-		
-		usetex : bool
-		  If True, use matplotlib usetex mode.
-		
-		ismath : bool
-		  If True, use mathtext parser. If "TeX", use *usetex* mode.
+		    The text to be converted.
+		ismath : bool or "TeX"
+		    If True, use mathtext parser. If "TeX", use *usetex* mode.
 	**/
 	public function _get_text_path_transform(x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ismath:Dynamic):Dynamic;
 	/**
@@ -206,7 +198,8 @@ package matplotlib.backends.backend_agg;
 	public function clear():Dynamic;
 	/**
 		Close a grouping element with label *s*
-		Is only currently used by :mod:`~matplotlib.backends.backend_svg`
+		
+		Only used by the SVG renderer.
 	**/
 	public function close_group(s:Dynamic):Dynamic;
 	/**
@@ -298,7 +291,8 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function draw_mathtext(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic):Dynamic;
 	/**
-		Draw the path
+		Draws a :class:`~matplotlib.path.Path` instance using the
+		given affine transform.
 	**/
 	public function draw_path(gc:Dynamic, path:Dynamic, transform:Dynamic, ?rgbFace:Dynamic):Dynamic;
 	/**
@@ -334,17 +328,47 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function draw_tex(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ?ismath:Dynamic, ?mtext:Dynamic):Dynamic;
 	/**
-		Render the text
+		Draw the text instance.
+		
+		Parameters
+		----------
+		gc : `GraphicsContextBase`
+		    The graphics context.
+		x : scalar
+		    The x location of the text in display coords.
+		y : scalar
+		    The y location of the text baseline in display coords.
+		s : str
+		    The text string.
+		prop : `matplotlib.font_manager.FontProperties`
+		    The font properties.
+		angle : scalar
+		    The rotation angle in degrees.
+		mtext : `matplotlib.text.Text`
+		    The original text object to be rendered.
+		
+		Notes
+		-----
+		**backend implementers note**
+		
+		When you are trying to determine if you have gotten your bounding box
+		right (which is what enables the text layout/alignment to work
+		properly), it helps to change the line in text.py::
+		
+		    if 0: bbox_artist(self, renderer)
+		
+		to if 1, and then the actual bounding box will be plotted along with
+		your text.
 	**/
 	public function draw_text(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ?ismath:Dynamic, ?mtext:Dynamic):Dynamic;
 	/**
-		Return true if y small numbers are top for renderer Is used
-		for drawing text (:mod:`matplotlib.text`) and images
-		(:mod:`matplotlib.image`) only
+		Return whether y values increase from top to bottom.
+		
+		Note that this only affects drawing of texts and images.
 	**/
 	public function flipy():Dynamic;
 	/**
-		return the canvas width and height in display coords
+		Return the canvas width and height in display coords.
 	**/
 	public function get_canvas_width_height():Dynamic;
 	/**
@@ -354,7 +378,7 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function get_image_magnification():Dynamic;
 	/**
-		return the :class:`matplotlib.texmanager.TexManager` instance
+		Return the `.TexManager` instance.
 	**/
 	public function get_texmanager():Dynamic;
 	/**
@@ -365,33 +389,51 @@ package matplotlib.backends.backend_agg;
 	public function get_text_width_height_descent(s:Dynamic, prop:Dynamic, ismath:Dynamic):Dynamic;
 	static public var lock : Dynamic;
 	/**
-		Return an instance of a :class:`GraphicsContextBase`
+		Return an instance of a `GraphicsContextBase`.
 	**/
 	public function new_gc():Dynamic;
 	/**
-		Open a grouping element with label *s*. If *gid* is given, use
-		*gid* as the id of the group. Is only currently used by
-		:mod:`~matplotlib.backends.backend_svg`.
+		Open a grouping element with label *s* and *gid* (if set) as id.
+		
+		Only used by the SVG renderer.
 	**/
 	public function open_group(s:Dynamic, ?gid:Dynamic):Dynamic;
 	/**
-		override this method for renderers that do not necessarily always
-		want to rescale and composite raster images. (like SVG, PDF, or PS)
+		Return whether image composition by Matplotlib should be skipped.
+		
+		Raster backends should usually return False (letting the C-level
+		rasterizer take care of image composition); vector backends should
+		usually return ``not rcParams["image.composite_image"]``.
 	**/
 	public function option_image_nocomposite():Dynamic;
 	/**
-		agg backend doesn't support arbitrary scaling of image.
+		Return whether arbitrary affine transformations in :meth:`draw_image`
+		are supported (True for most vector backends).
 	**/
 	public function option_scale_image():Dynamic;
 	/**
-		convert point measures to pixes using dpi and the pixels per
-		inch of the display
+		Convert points to display units.
+		
+		You need to override this function (unless your backend
+		doesn't have a dpi, e.g., postscript or svg).  Some imaging
+		systems assume some value for pixels per inch::
+		
+		    points to pixels = points * pixels_per_inch/72.0 * dpi/72.0
+		
+		Parameters
+		----------
+		points : scalar or array_like
+		    a float or a numpy array of float
+		
+		Returns
+		-------
+		Points converted to pixels
 	**/
 	public function points_to_pixels(points:Dynamic):Dynamic;
 	/**
 		Restore the saved region. If bbox (instance of BboxBase, or
 		its extents) is given, only the region specified by the bbox
-		will be restored. *xy* (a tuple of two floasts) optionally
+		will be restored. *xy* (a pair of floats) optionally
 		specifies the new position (the LLC of the original region,
 		not the LLC of the bbox) where the region will be restored.
 		
@@ -406,7 +448,9 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function start_filter():Dynamic;
 	/**
-		Used in MixedModeRenderer. Switch to the raster renderer.
+		Switch to the raster renderer.
+		
+		Used by `MixedModeRenderer`.
 	**/
 	public function start_rasterizing():Dynamic;
 	/**
@@ -427,11 +471,20 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function stop_filter(post_processing:Dynamic):Dynamic;
 	/**
-		Used in MixedModeRenderer. Switch back to the vector renderer
-		and draw the contents of the raster renderer as an image on
-		the vector renderer.
+		Switch back to the vector renderer and draw the contents of the raster
+		renderer as an image on the vector renderer.
+		
+		Used by `MixedModeRenderer`.
 	**/
 	public function stop_rasterizing():Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	public function strip_math(s:Dynamic):Dynamic;
 	public function tostring_argb():Dynamic;
 	public function tostring_rgb():Dynamic;

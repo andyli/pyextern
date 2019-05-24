@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 @:pythonImport("tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2", "Summation") extern class Summation {
-	static public var ADDITIONAL_DATA_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -83,6 +82,10 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -248,4 +251,8 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.decision_trees.Summation.additional_data
+	**/
+	public var additional_data : Dynamic;
 }

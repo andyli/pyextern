@@ -178,8 +178,6 @@ package tensorflow.python.training.moving_averages;
 		
 		Raises:
 		  TypeError: If the arguments are not an allowed type.
-		  ValueError: If the moving average of one of the variables is already
-		    being computed.
 	**/
 	public function apply(?var_list:Dynamic):Dynamic;
 	/**

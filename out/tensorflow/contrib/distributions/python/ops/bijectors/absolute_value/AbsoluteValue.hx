@@ -15,7 +15,7 @@ package tensorflow.contrib.distributions.python.ops.bijectors.absolute_value;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -54,7 +54,7 @@ package tensorflow.contrib.distributions.python.ops.bijectors.absolute_value;
 	/**
 		Instantiates the `AbsoluteValue` bijector. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 		
@@ -69,7 +69,7 @@ package tensorflow.contrib.distributions.python.ops.bijectors.absolute_value;
 	/**
 		Instantiates the `AbsoluteValue` bijector. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 		

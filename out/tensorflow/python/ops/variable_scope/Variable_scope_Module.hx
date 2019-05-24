@@ -20,9 +20,20 @@ package tensorflow.python.ops.variable_scope;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Computes which dimension is being sliced and the typical slice shape.
+		Call partitioner validating its inputs/output.
+		
+		Args:
+		  partitioner: a function mapping `Tensor` shape and dtype to a
+		      list of partitions.
+		  shape: shape of the `Tensor` to partition, must have at least two
+		      dimensions.
+		  dtype: dtype of the elements in the `Tensor`.
+		
+		Returns:
+		  A list with elements >=1 and exactly one >1. The index of that
+		  element corresponds to the partitioning axis.
 	**/
-	static public function _compute_slice_dim_and_shape(full_shape:Dynamic, slicing:Dynamic):Dynamic;
+	static public function _call_partitioner(partitioner:Dynamic, shape:Dynamic, dtype:Dynamic):Dynamic;
 	static public function _get_default_variable_store():Dynamic;
 	/**
 		Gets or creates a sharded variable list with these parameters.
@@ -82,6 +93,15 @@ package tensorflow.python.ops.variable_scope;
 		    variable and return the Tensor for the projected value
 		    (which must have the same shape). Constraints are not safe to
 		    use when doing asynchronous distributed training.
+		  synchronization: Indicates when a distributed a variable will be
+		    aggregated. Accepted values are constants defined in the class
+		    `tf.VariableSynchronization`. By default the synchronization is set to
+		    `AUTO` and the current `DistributionStrategy` chooses
+		    when to synchronize. If `synchronization` is set to `ON_READ`,
+		    `trainable` must not be set to `True`.
+		  aggregation: Indicates how a distributed variable will be aggregated.
+		    Accepted values are constants defined in the class
+		    `tf.VariableAggregation`.
 		
 		Returns:
 		  A tuple `(shards, partitions)` where `shards` is the list of `Variable`
@@ -93,7 +113,11 @@ package tensorflow.python.ops.variable_scope;
 		    or when violating reuse during variable creation. Reuse is set inside
 		    `variable_scope`.
 	**/
-	static public function _get_partitioned_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?constraint:Dynamic):Dynamic;
+	static public function _get_partitioned_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?constraint:Dynamic, ?synchronization:Dynamic, ?aggregation:Dynamic):Dynamic;
+	/**
+		Get slicing dimension and number of slices from the partitioner output.
+	**/
+	static public function _get_slice_dim_and_num_slices(slicing:Dynamic):Dynamic;
 	/**
 		Computes the trainable value based on the given arguments.
 	**/
@@ -102,6 +126,10 @@ package tensorflow.python.ops.variable_scope;
 		Get a name with the given prefix unique in the current variable scope.
 	**/
 	static public function _get_unique_variable_scope(prefix:Dynamic):Dynamic;
+	/**
+		Slices a given a shape along the specified dimension.
+	**/
+	static public function _iter_slices(full_shape:Dynamic, num_slices:Dynamic, slice_dim:Dynamic):Dynamic;
 	/**
 		Gets around capturing loop variables in python being broken.
 	**/
@@ -124,7 +152,7 @@ package tensorflow.python.ops.variable_scope;
 	/**
 		Opts out of resource variables. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		non-resource variables are not supported in the long term
 		

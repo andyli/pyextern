@@ -38,12 +38,20 @@ package tensorflow.contrib.linear_optimizer.python.ops.sdca_ops;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Create a new sdca optimizer.
+		Create a new sdca optimizer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This class is deprecated. To UPDATE or USE linear optimizers, please check its latest version in core: tensorflow_estimator/python/estimator/canned/linear_optimizer/.
 	**/
 	@:native("__init__")
 	public function ___init__(examples:Dynamic, variables:Dynamic, options:Dynamic):Dynamic;
 	/**
-		Create a new sdca optimizer.
+		Create a new sdca optimizer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This class is deprecated. To UPDATE or USE linear optimizers, please check its latest version in core: tensorflow_estimator/python/estimator/canned/linear_optimizer/.
 	**/
 	public function new(examples:Dynamic, variables:Dynamic, options:Dynamic):Void;
 	/**

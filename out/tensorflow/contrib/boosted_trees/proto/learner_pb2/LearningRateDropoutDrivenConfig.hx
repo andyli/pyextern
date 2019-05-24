@@ -22,7 +22,6 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DROPOUT_PROBABILITY_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -51,7 +50,6 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LEARNING_RATE_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -64,7 +62,6 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var PROBABILITY_OF_SKIPPING_DROPOUT_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -85,6 +82,10 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -250,4 +251,16 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearningRateDropoutDrivenConfig.dropout_probability
+	**/
+	public var dropout_probability : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearningRateDropoutDrivenConfig.learning_rate
+	**/
+	public var learning_rate : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearningRateDropoutDrivenConfig.probability_of_skipping_dropout
+	**/
+	public var probability_of_skipping_dropout : Dynamic;
 }

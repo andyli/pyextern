@@ -74,7 +74,7 @@ package numpy.polynomial.legendre;
 		
 		See Also
 		--------
-		legsub, legmul, legdiv, legpow
+		legsub, legmulx, legmul, legdiv, legpow
 		
 		Notes
 		-----
@@ -199,7 +199,7 @@ package numpy.polynomial.legendre;
 		
 		See Also
 		--------
-		legadd, legsub, legmul, legpow
+		legadd, legsub, legmulx, legmul, legpow
 		
 		Notes
 		-----
@@ -337,7 +337,7 @@ package numpy.polynomial.legendre;
 		References
 		----------
 		.. [1] Wikipedia, "Curve fitting",
-		       http://en.wikipedia.org/wiki/Curve_fitting
+		       https://en.wikipedia.org/wiki/Curve_fitting
 		
 		Examples
 		--------
@@ -660,7 +660,7 @@ package numpy.polynomial.legendre;
 		
 		See Also
 		--------
-		legadd, legsub, legdiv, legpow
+		legadd, legsub, legmulx, legdiv, legpow
 		
 		Notes
 		-----
@@ -697,6 +697,10 @@ package numpy.polynomial.legendre;
 		out : ndarray
 		    Array representing the result of the multiplication.
 		
+		See Also
+		--------
+		legadd, legmul, legmul, legdiv, legpow
+		
 		Notes
 		-----
 		The multiplication uses the recursion relationship for Legendre
@@ -705,6 +709,12 @@ package numpy.polynomial.legendre;
 		.. math::
 		
 		  xP_i(x) = ((i + 1)*P_{i + 1}(x) + i*P_{i - 1}(x))/(2i + 1)
+		
+		Examples
+		--------
+		>>> from numpy.polynomial import legendre as L
+		>>> L.legmulx([1,2,3])
+		array([ 0.66666667, 2.2, 1.33333333, 1.8])
 	**/
 	static public function legmulx(c:Dynamic):numpy.Ndarray;
 	static public var legone : Dynamic;
@@ -733,7 +743,7 @@ package numpy.polynomial.legendre;
 		
 		See Also
 		--------
-		legadd, legsub, legmul, legdiv
+		legadd, legsub, legmulx, legmul, legdiv
 		
 		Examples
 		--------
@@ -801,7 +811,7 @@ package numpy.polynomial.legendre;
 		
 		See Also
 		--------
-		legadd, legmul, legdiv, legpow
+		legadd, legmulx, legmul, legdiv, legpow
 		
 		Notes
 		-----

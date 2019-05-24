@@ -82,7 +82,7 @@ package torch;
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -106,7 +106,7 @@ package torch;
 	**/
 	public function __repr__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**
@@ -140,4 +140,5 @@ package torch;
 		Raises ValueError if the value is not present.
 	**/
 	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function numel(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

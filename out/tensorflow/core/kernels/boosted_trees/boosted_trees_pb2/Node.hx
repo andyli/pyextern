@@ -1,12 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.kernels.boosted_trees.boosted_trees_pb2;
 @:pythonImport("tensorflow.core.kernels.boosted_trees.boosted_trees_pb2", "Node") extern class Node {
-	static public var BUCKETIZED_SPLIT_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CATEGORICAL_SPLIT_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -52,12 +50,10 @@ package tensorflow.core.kernels.boosted_trees.boosted_trees_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LEAF_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var METADATA_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -86,6 +82,10 @@ package tensorflow.core.kernels.boosted_trees.boosted_trees_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,24 @@ package tensorflow.core.kernels.boosted_trees.boosted_trees_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.Node.bucketized_split
+	**/
+	public var bucketized_split : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.Node.categorical_split
+	**/
+	public var categorical_split : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.Node.dense_split
+	**/
+	public var dense_split : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.Node.leaf
+	**/
+	public var leaf : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.Node.metadata
+	**/
+	public var metadata : Dynamic;
 }

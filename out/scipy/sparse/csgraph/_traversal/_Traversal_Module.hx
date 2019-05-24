@@ -46,6 +46,28 @@ package scipy.sparse.csgraph._traversal;
 		    tree.  If node i is in the tree, then its parent is given by
 		    predecessors[i]. If node i is not in the tree (and for the parent
 		    node) then predecessors[i] = -9999.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import breadth_first_order
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [2, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 3)    1
+		  (2, 0)    2
+		  (2, 3)    3
+		
+		>>> breadth_first_order(graph,0)
+		(array([0, 1, 2, 3], dtype=int32), array([-9999,     0,     0,     1], dtype=int32))
 	**/
 	static public function breadth_first_order(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -153,6 +175,31 @@ package scipy.sparse.csgraph._traversal;
 		----------
 		.. [1] D. J. Pearce, "An Improved Algorithm for Finding the Strongly
 		       Connected Components of a Directed Graph", Technical Report, 2005
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import connected_components
+		
+		>>> graph = [
+		... [ 0, 1 , 1, 0 , 0 ],
+		... [ 0, 0 , 1 , 0 ,0 ],
+		... [ 0, 0, 0, 0, 0],
+		... [0, 0 , 0, 0, 1],
+		... [0, 0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    1
+		  (1, 2)    1
+		  (3, 4)    1
+		
+		>>> n_components, labels = connected_components(csgraph=graph, directed=False, return_labels=True)
+		>>> n_components
+		2
+		>>> labels
+		array([0, 0, 0, 1, 1], dtype=int32)
 	**/
 	static public function connected_components(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -194,6 +241,28 @@ package scipy.sparse.csgraph._traversal;
 		    tree.  If node i is in the tree, then its parent is given by
 		    predecessors[i]. If node i is not in the tree (and for the parent
 		    node) then predecessors[i] = -9999.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import depth_first_order
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [2, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 3)    1
+		  (2, 0)    2
+		  (2, 3)    3
+		
+		>>> depth_first_order(graph,0)
+		(array([0, 1, 3, 2], dtype=int32), array([-9999,     0,     0,     1], dtype=int32))
 	**/
 	static public function depth_first_order(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -367,6 +436,33 @@ package scipy.sparse.csgraph._traversal;
 		cstree : csr matrix
 		    The N x N directed compressed-sparse representation of the tree drawn
 		    from csgraph which is encoded by the predecessor list.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import reconstruct_path
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [0, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 3)    1
+		  (2, 3)    3
+		
+		>>> pred = np.array([-9999, 0, 0, 1], dtype=np.int32)
+		
+		>>> cstree = reconstruct_path(csgraph=graph, predecessors=pred, directed=False)
+		>>> cstree.todense()
+		matrix([[ 0.,  1.,  2.,  0.],
+		        [ 0.,  0.,  0.,  1.],
+		        [ 0.,  0.,  0.,  0.],
+		        [ 0.,  0.,  0.,  0.]])
 	**/
 	static public function reconstruct_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

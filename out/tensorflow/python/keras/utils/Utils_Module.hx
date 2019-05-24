@@ -11,6 +11,10 @@ package tensorflow.python.keras.utils;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Returns the class name and config for a serialized keras object.
+	**/
+	static public function class_and_config_for_serialized_keras_object(config:Dynamic, ?module_objects:Dynamic, ?custom_objects:Dynamic, ?printable_module_name:Dynamic):Dynamic;
+	/**
 		Converts all convolution kernels in a model from Theano to TensorFlow.
 		
 		Also works from TensorFlow to Theano.
@@ -266,7 +270,35 @@ package tensorflow.python.keras.utils;
 		        'LR' creates a horizontal plot.
 	**/
 	static public function plot_model(model:Dynamic, ?to_file:Dynamic, ?show_shapes:Dynamic, ?show_layer_names:Dynamic, ?rankdir:Dynamic):Dynamic;
+	/**
+		Returns the serialization of the class with the given config.
+	**/
+	static public function serialize_keras_class_and_config(cls_name:Dynamic, cls_config:Dynamic):Dynamic;
 	static public function serialize_keras_object(instance:Dynamic):Dynamic;
+	/**
+		Squeeze or expand last dimension if needed.
+		
+		1. Squeezes last dim of `y_pred` or `y_true` if their rank differs by 1
+		(using `confusion_matrix.remove_squeezable_dimensions`).
+		2. Squeezes or expands last dim of `sample_weight` if its rank differs by 1
+		from the new rank of `y_pred`.
+		If `sample_weight` is scalar, it is kept scalar.
+		
+		This will use static shape if available. Otherwise, it will add graph
+		operations, which could result in a performance hit.
+		
+		Args:
+		  y_pred: Predicted values, a `Tensor` of arbitrary dimensions.
+		  y_true: Optional label `Tensor` whose dimensions match `y_pred`.
+		  sample_weight: Optional weight scalar or `Tensor` whose dimensions match
+		    `y_pred`.
+		
+		Returns:
+		  Tuple of `y_pred`, `y_true` and `sample_weight`. Each of them possibly has
+		  the last dimension squeezed,
+		  `sample_weight` could be extended by one dimension.
+	**/
+	static public function squeeze_or_expand_dimensions(y_pred:Dynamic, y_true:Dynamic, sample_weight:Dynamic):Dynamic;
 	/**
 		Converts a class vector (integers) to binary class matrix.
 		
@@ -276,10 +308,11 @@ package tensorflow.python.keras.utils;
 		    y: class vector to be converted into a matrix
 		        (integers from 0 to num_classes).
 		    num_classes: total number of classes.
+		    dtype: The data type expected by the input. Default: `'float32'`.
 		
 		Returns:
 		    A binary matrix representation of the input. The classes axis is placed
 		    last.
 	**/
-	static public function to_categorical(y:Dynamic, ?num_classes:Dynamic):Dynamic;
+	static public function to_categorical(y:Dynamic, ?num_classes:Dynamic, ?dtype:Dynamic):Dynamic;
 }

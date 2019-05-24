@@ -45,7 +45,7 @@ package matplotlib.patches;
 	**/
 	static public function bbox_artist(artist:Dynamic, renderer:Dynamic, ?props:Dynamic, ?fill:Dynamic):Dynamic;
 	/**
-		concatenate list of paths into a single path.
+		Concatenate a list of paths into a single path.
 	**/
 	static public function concatenate_paths(paths:Dynamic):Dynamic;
 	/**
@@ -57,8 +57,8 @@ package matplotlib.patches;
 	static public function draw_bbox(bbox:Dynamic, renderer:Dynamic, ?color:Dynamic, ?trans:Dynamic):Dynamic;
 	static public function get_cos_sin(x0:Dynamic, y0:Dynamic, x1:Dynamic, y1:Dynamic):Dynamic;
 	/**
-		return a intersecting point between a line through (cx1, cy1)
-		and having angle t1 and a line through (cx2, cy2) and angle t2.
+		Return the intersection between the line through (*cx1*, *cy1*) at angle
+		*t1* and the line through (*cx2, cy2) at angle *t2*.
 	**/
 	static public function get_intersection(cx1:Dynamic, cy1:Dynamic, cos_t1:Dynamic, sin_t1:Dynamic, cx2:Dynamic, cy2:Dynamic, cos_t2:Dynamic, sin_t2:Dynamic):Dynamic;
 	/**
@@ -70,11 +70,13 @@ package matplotlib.patches;
 	static public function inside_circle(cx:Dynamic, cy:Dynamic, r:Dynamic):Dynamic;
 	static public var k : Dynamic;
 	/**
-		fill in the codes if None.
+		If the :attr:`codes` attribute of `Path` *p* is None, return a copy of *p*
+		with the :attr:`codes` set to (MOVETO, LINETO, LINETO, ..., LINETO);
+		otherwise return *p* itself.
 	**/
 	static public function make_path_regular(p:Dynamic):Dynamic;
 	/**
-		Being similar to get_parallels, returns control points of two quadrativ
+		Being similar to get_parallels, returns control points of two quadratic
 		bezier lines having a width roughly parallel to given one separated by
 		*width*.
 	**/
@@ -85,10 +87,10 @@ package matplotlib.patches;
 		inside_closedpath : a function which returns true if the point is inside
 		                    the path
 	**/
-	static public function split_bezier_intersecting_with_closedpath(bezier:Dynamic, inside_closedpath:Dynamic, ?tolerence:Dynamic):Dynamic;
+	static public function split_bezier_intersecting_with_closedpath(bezier:Dynamic, inside_closedpath:Dynamic, ?tolerance:Dynamic):Dynamic;
 	/**
 		divide a path into two segment at the point where inside(x, y)
 		becomes False.
 	**/
-	static public function split_path_inout(path:Dynamic, inside:Dynamic, ?tolerence:Dynamic, ?reorder_inout:Dynamic):Dynamic;
+	static public function split_path_inout(path:Dynamic, inside:Dynamic, ?tolerance:Dynamic, ?reorder_inout:Dynamic):Dynamic;
 }

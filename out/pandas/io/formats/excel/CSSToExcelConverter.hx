@@ -133,6 +133,7 @@ package pandas.io.formats.excel;
 	public function build_border(props:Dynamic):Dynamic;
 	public function build_fill(props:Dynamic):Dynamic;
 	public function build_font(props:Dynamic):Dynamic;
+	public function build_number_format(props:Dynamic):Dynamic;
 	public function build_xlstyle(props:Dynamic):Dynamic;
 	public function color_to_excel(val:Dynamic):Dynamic;
 	static public function compute_css(declarations_str:Dynamic, ?inherited:Dynamic):Dynamic;

@@ -38,28 +38,12 @@ package scipy.spatial._spherical_voronoi;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initializes the object and starts the computation of the Voronoi
-		diagram.
-		
-		points : The generator points of the Voronoi diagram assumed to be
-		 all on the sphere with radius supplied by the radius parameter and
-		 center supplied by the center parameter.
-		radius : The radius of the sphere. Will default to 1 if not supplied.
-		center : The center of the sphere. Will default to the origin if not
-		 supplied.
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
 	public function ___init__(points:Dynamic, ?radius:Dynamic, ?center:Dynamic, ?threshold:Dynamic):Dynamic;
 	/**
-		Initializes the object and starts the computation of the Voronoi
-		diagram.
-		
-		points : The generator points of the Voronoi diagram assumed to be
-		 all on the sphere with radius supplied by the radius parameter and
-		 center supplied by the center parameter.
-		radius : The radius of the sphere. Will default to 1 if not supplied.
-		center : The center of the sphere. Will default to the origin if not
-		 supplied.
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(points:Dynamic, ?radius:Dynamic, ?center:Dynamic, ?threshold:Dynamic):Void;
 	/**
@@ -134,6 +118,10 @@ package scipy.spatial._spherical_voronoi;
 	**/
 	public function _calc_vertices_regions():Dynamic;
 	/**
+		Sort indices of the vertices to be (counter-)clockwise ordered.
+		
+		Notes
+		-----
 		For each region in regions, it sorts the indices of the Voronoi
 		vertices such that the resulting points are in a clockwise or
 		counterclockwise order around the generator point.

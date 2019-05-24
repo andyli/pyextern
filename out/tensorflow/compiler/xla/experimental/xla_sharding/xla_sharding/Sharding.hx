@@ -157,19 +157,15 @@ package tensorflow.compiler.xla.experimental.xla_sharding.xla_sharding;
 		XLA device.
 		
 		Args:
-		  tile_shape: A xla_shape.Shape describing the tile shape that each core
-		    will compute.
-		    The tile shape does not need to be divisible by the tile assignment.
 		  tile_assignment: An np.ndarray describing the topology of the tiling and
 		    which device will compute which part of the topology.
 		
 		Raises:
-		  TypeError: tile_assignment was not of np.array type or tile_shape was
-		     not of xla_shape.Shape type.
+		  TypeError: tile_assignment was not of np.array type.
 		
 		TODO(jmolloy): This concept is nefarious and is not
 		something we really want to expose to users (especially as the
 		contract for tile_assignment is very strict).
 	**/
-	static public function tile(tile_shape:Dynamic, tile_assignment:Dynamic):Dynamic;
+	static public function tile(tile_assignment:Dynamic):Dynamic;
 }

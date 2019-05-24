@@ -147,6 +147,23 @@ package pandas._libs.interval;
 		Return self/value.
 	**/
 	public function __truediv__(value:Dynamic):Dynamic;
+	/**
+		Check if the closed attribute of `other` matches.
+		
+		Note that 'left' and 'right' are considered different from 'both'.
+		
+		Parameters
+		----------
+		other : Interval, IntervalIndex, IntervalArray
+		name : str
+		    Name to use for 'other' in the error message.
+		
+		Raises
+		------
+		ValueError
+		    When `other` is not closed exactly the same as self.
+	**/
+	public function _check_closed_matches(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _repr_base(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _typ : Dynamic;
 	/**
@@ -214,6 +231,54 @@ package pandas._libs.interval;
 		    ``False``.
 	**/
 	public var open_right : Dynamic;
+	/**
+		Check whether two Interval objects overlap.
+		
+		Two intervals overlap if they share a common point, including closed
+		endpoints. Intervals that only have an open endpoint in common do not
+		overlap.
+		
+		.. versionadded:: 0.24.0
+		
+		Parameters
+		----------
+		other : Interval
+		    The interval to check against for an overlap.
+		
+		Returns
+		-------
+		bool
+		    ``True`` if the two intervals overlap, else ``False``.
+		
+		See Also
+		--------
+		IntervalArray.overlaps : The corresponding method for IntervalArray.
+		IntervalIndex.overlaps : The corresponding method for IntervalIndex.
+		
+		Examples
+		--------
+		>>> i1 = pd.Interval(0, 2)
+		>>> i2 = pd.Interval(1, 3)
+		>>> i1.overlaps(i2)
+		True
+		>>> i3 = pd.Interval(4, 5)
+		>>> i1.overlaps(i3)
+		False
+		
+		Intervals that share closed endpoints overlap:
+		
+		>>> i4 = pd.Interval(0, 1, closed='both')
+		>>> i5 = pd.Interval(1, 2, closed='both')
+		>>> i4.overlaps(i5)
+		True
+		
+		Intervals that only have an open endpoint in common do not overlap:
+		
+		>>> i6 = pd.Interval(1, 2, closed='neither')
+		>>> i4.overlaps(i6)
+		False
+	**/
+	public function overlaps(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Right bound for the interval
 	**/

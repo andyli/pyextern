@@ -129,7 +129,7 @@ package matplotlib.axes._subplots;
 	/**
 		Make a twinx axes of self. This is used for twinx and twiny.
 	**/
-	public function _make_twin_axes(?kl:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _make_twin_axes(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		change subplot geometry, e.g., from 1,1,1 to 2,2,3
 	**/

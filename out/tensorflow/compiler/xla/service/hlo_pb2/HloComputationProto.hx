@@ -46,8 +46,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ID_FIELD_NUMBER : Dynamic;
-	static public var INSTRUCTIONS_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -64,13 +62,10 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NAME_FIELD_NUMBER : Dynamic;
-	static public var PROGRAM_SHAPE_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ROOT_ID_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -87,6 +82,10 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -252,4 +251,24 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.HloComputationProto.id
+	**/
+	public var id : Dynamic;
+	/**
+		Field xla.HloComputationProto.instructions
+	**/
+	public var instructions : Dynamic;
+	/**
+		Field xla.HloComputationProto.name
+	**/
+	public var name : Dynamic;
+	/**
+		Field xla.HloComputationProto.program_shape
+	**/
+	public var program_shape : Dynamic;
+	/**
+		Field xla.HloComputationProto.root_id
+	**/
+	public var root_id : Dynamic;
 }

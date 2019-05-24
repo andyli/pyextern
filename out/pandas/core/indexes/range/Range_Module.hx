@@ -46,6 +46,12 @@ package pandas.core.indexes.range;
 		False
 		>>> is_int64_dtype(np.int64)
 		True
+		>>> is_int64_dtype('int8')
+		False
+		>>> is_int64_dtype('Int8')
+		False
+		>>> is_int64_dtype(pd.Int64Dtype)
+		True
 		>>> is_int64_dtype(float)
 		False
 		>>> is_int64_dtype(np.uint64)  # unsigned
@@ -64,18 +70,77 @@ package pandas.core.indexes.range;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check whether an array-like or dtype is of the timedelta64 dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is
+		          of the timedelta64 dtype.
+		
+		Examples
+		--------
+		>>> is_timedelta64_dtype(object)
+		False
+		>>> is_timedelta64_dtype(np.timedelta64)
+		True
+		>>> is_timedelta64_dtype([1, 2, 3])
+		False
+		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
+		True
+		>>> is_timedelta64_dtype('0 days')
+		False
+	**/
+	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

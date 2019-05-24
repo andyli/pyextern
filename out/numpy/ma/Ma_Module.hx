@@ -531,6 +531,9 @@ package numpy.ma;
 		angle : ndarray or scalar
 		    The counterclockwise angle from the positive real axis on
 		    the complex plane, with dtype as numpy.float64.
+		    
+		    ..versionchanged:: 1.16.0
+		        This function works on subclasses of ndarray like `ma.array`.
 		
 		See Also
 		--------
@@ -817,11 +820,10 @@ package numpy.ma;
 		Values are generated within the half-open interval ``[start, stop)``
 		(in other words, the interval including `start` but excluding `stop`).
 		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
+		`range` function, but returns an ndarray rather than a list.
 		
 		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
+		be consistent.  It is better to use `numpy.linspace` for these cases.
 		
 		Parameters
 		----------
@@ -992,7 +994,7 @@ package numpy.ma;
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
 		.. [2] Wikipedia, "Inverse hyperbolic function",
-		       http://en.wikipedia.org/wiki/Arccosh
+		       https://en.wikipedia.org/wiki/Arccosh
 		
 		Examples
 		--------
@@ -1114,7 +1116,7 @@ package numpy.ma;
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
 		.. [2] Wikipedia, "Inverse hyperbolic function",
-		       http://en.wikipedia.org/wiki/Arcsinh
+		       https://en.wikipedia.org/wiki/Arcsinh
 		
 		Examples
 		--------
@@ -1339,7 +1341,7 @@ package numpy.ma;
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
 		.. [2] Wikipedia, "Inverse hyperbolic function",
-		       http://en.wikipedia.org/wiki/Arctanh
+		       https://en.wikipedia.org/wiki/Arctanh
 		
 		Examples
 		--------
@@ -1480,11 +1482,9 @@ package numpy.ma;
 	/**
 		Round an array to the given number of decimals.
 		
-		Refer to `around` for full documentation.
-		
 		See Also
 		--------
-		around : equivalent function
+		around : equivalent function; see for details.
 	**/
 	static public function around(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -2708,7 +2708,7 @@ package numpy.ma;
 		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function cos(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
@@ -3099,6 +3099,12 @@ package numpy.ma;
 		axis : int, optional
 		    The axis along which the difference is taken, default is the
 		    last axis.
+		prepend, append : array_like, optional
+		    Values to prepend or append to "a" along axis prior to
+		    performing the difference.  Scalar values are expanded to
+		    arrays with length 1 in the direction of axis and the shape
+		    of the input array in along all other axes.  Otherwise the
+		    dimension and shape must match "a" except along axis.
 		
 		Returns
 		-------
@@ -3156,7 +3162,7 @@ package numpy.ma;
 		>>> np.diff(x)
 		array([1, 1], dtype='timedelta64[D]')
 	**/
-	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):numpy.Ndarray;
+	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?prepend:Dynamic, ?append:Dynamic):numpy.Ndarray;
 	/**
 		true_divide(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -3567,7 +3573,7 @@ package numpy.ma;
 		References
 		----------
 		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
+		       https://en.wikipedia.org/wiki/Exponential_function
 		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
 		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
 		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
@@ -3597,42 +3603,61 @@ package numpy.ma;
 	/**
 		Expand the shape of an array.
 		
-		Expands the shape of the array by including a new axis before the one
-		specified by the `axis` parameter. This function behaves the same as
-		`numpy.expand_dims` but preserves masked elements.
+		Insert a new axis that will appear at the `axis` position in the expanded
+		array shape.
+		
+		.. note:: Previous to NumPy 1.13.0, neither ``axis < -a.ndim - 1`` nor
+		   ``axis > a.ndim`` raised errors or put the new axis where documented.
+		   Those axis values are now deprecated and will raise an AxisError in the
+		   future.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.
+		axis : int
+		    Position in the expanded axes where the new axis is placed.
+		
+		Returns
+		-------
+		res : ndarray
+		    Output array. The number of dimensions is one greater than that of
+		    the input array.
 		
 		See Also
 		--------
-		numpy.expand_dims : Equivalent function in top-level NumPy module.
+		squeeze : The inverse operation, removing singleton dimensions
+		reshape : Insert, remove, and combine dimensions, and resize existing ones
+		doc.indexing, atleast_1d, atleast_2d, atleast_3d
 		
 		Examples
 		--------
-		>>> import numpy.ma as ma
-		>>> x = ma.array([1, 2, 4])
-		>>> x[1] = ma.masked
-		>>> x
-		masked_array(data = [1 -- 4],
-		             mask = [False  True False],
-		       fill_value = 999999)
-		>>> np.expand_dims(x, axis=0)
-		array([[1, 2, 4]])
-		>>> ma.expand_dims(x, axis=0)
-		masked_array(data =
-		 [[1 -- 4]],
-		             mask =
-		 [[False  True False]],
-		       fill_value = 999999)
+		>>> x = np.array([1,2])
+		>>> x.shape
+		(2,)
 		
-		The same result can be achieved using slicing syntax with `np.newaxis`.
+		The following is equivalent to ``x[np.newaxis,:]`` or ``x[np.newaxis]``:
 		
-		>>> x[np.newaxis, :]
-		masked_array(data =
-		 [[1 -- 4]],
-		             mask =
-		 [[False  True False]],
-		       fill_value = 999999)
+		>>> y = np.expand_dims(x, axis=0)
+		>>> y
+		array([[1, 2]])
+		>>> y.shape
+		(1, 2)
+		
+		>>> y = np.expand_dims(x, axis=1)  # Equivalent to x[:,np.newaxis]
+		>>> y
+		array([[1],
+		       [2]])
+		>>> y.shape
+		(2, 1)
+		
+		Note that some examples may use ``None`` instead of ``np.newaxis``.  These
+		are the same objects:
+		
+		>>> np.newaxis is None
+		True
 	**/
-	static public function expand_dims(x:Dynamic, axis:Dynamic):Dynamic;
+	static public function expand_dims(a:Dynamic, axis:Dynamic):numpy.Ndarray;
 	/**
 		fabs(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -4194,7 +4219,7 @@ package numpy.ma;
 		    The result of the call to `function` is passed back directly.
 		    Therefore the shape of `fromfunction` is completely determined by
 		    `function`.  If `function` returns a scalar value, the shape of
-		    `fromfunction` would match the `shape` parameter.
+		    `fromfunction` would not match the `shape` parameter.
 		
 		See Also
 		--------
@@ -5370,7 +5395,7 @@ package numpy.ma;
 		----------
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+		.. [2] Wikipedia, "Logarithm". https://en.wikipedia.org/wiki/Logarithm
 		
 		Examples
 		--------
@@ -5429,7 +5454,7 @@ package numpy.ma;
 		----------
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+		.. [2] Wikipedia, "Logarithm". https://en.wikipedia.org/wiki/Logarithm
 		
 		Examples
 		--------
@@ -7021,8 +7046,7 @@ package numpy.ma;
 		Returns
 		-------
 		y : ndarray
-		    The product of `x1` and `x2`, element-wise. Returns a scalar if
-		    both `x1` and `x2` are scalars.
+		    The product of `x1` and `x2`, element-wise.
 		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
@@ -7567,7 +7591,11 @@ package numpy.ma;
 		
 		Fit a polynomial ``p(x) = p[0] * x**deg + ... + p[deg]`` of degree `deg`
 		to points `(x, y)`. Returns a vector of coefficients `p` that minimises
-		the squared error.
+		the squared error in the order `deg`, `deg-1`, ... `0`.
+		
+		The `Polynomial.fit <numpy.polynomial.polynomial.Polynomial.fit>` class
+		method is recommended for new code as it is more stable numerically. See
+		the documentation of the method for more information.
 		
 		Parameters
 		----------
@@ -7591,9 +7619,14 @@ package numpy.ma;
 		w : array_like, shape (M,), optional
 		    Weights to apply to the y-coordinates of the sample points. For
 		    gaussian uncertainties, use 1/sigma (not 1/sigma**2).
-		cov : bool, optional
-		    Return the estimate and the covariance matrix of the estimate
-		    If full is True, then cov is not returned.
+		cov : bool or str, optional
+		    If given and not `False`, return not just the estimate but also its
+		    covariance matrix. By default, the covariance are scaled by
+		    chi2/sqrt(N-dof), i.e., the weights are presumed to be unreliable
+		    except in a relative sense and everything is scaled such that the
+		    reduced chi2 is unity. This scaling is omitted if ``cov='unscaled'``,
+		    as is relevant for the case that the weights are 1/sigma**2, with
+		    sigma known to be a reliable estimate of the uncertainty.
 		
 		Returns
 		-------
@@ -7670,9 +7703,9 @@ package numpy.ma;
 		References
 		----------
 		.. [1] Wikipedia, "Curve fitting",
-		       http://en.wikipedia.org/wiki/Curve_fitting
+		       https://en.wikipedia.org/wiki/Curve_fitting
 		.. [2] Wikipedia, "Polynomial interpolation",
-		       http://en.wikipedia.org/wiki/Polynomial_interpolation
+		       https://en.wikipedia.org/wiki/Polynomial_interpolation
 		
 		Examples
 		--------
@@ -8383,7 +8416,7 @@ package numpy.ma;
 		>>> np.sinh(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function sinh(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
@@ -8827,7 +8860,7 @@ package numpy.ma;
 		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function tan(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
@@ -8871,7 +8904,7 @@ package numpy.ma;
 		       http://www.math.sfu.ca/~cbm/aands/
 		
 		.. [2] Wikipedia, "Hyperbolic function",
-		       http://en.wikipedia.org/wiki/Hyperbolic_function
+		       https://en.wikipedia.org/wiki/Hyperbolic_function
 		
 		Examples
 		--------
@@ -8888,7 +8921,7 @@ package numpy.ma;
 		>>> np.tanh(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function tanh(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?durations:Dynamic, ?tests:Dynamic):Dynamic;
@@ -9259,32 +9292,32 @@ package numpy.ma;
 	**/
 	static public function vstack(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return a masked array with elements from x or y, depending on condition.
+		Return a masked array with elements from `x` or `y`, depending on condition.
 		
-		Returns a masked array, shaped like condition, where the elements
-		are from `x` when `condition` is True, and from `y` otherwise.
-		If neither `x` nor `y` are given, the function returns a tuple of
-		indices where `condition` is True (the result of
-		``condition.nonzero()``).
+		.. note::
+		    When only `condition` is provided, this function is identical to
+		    `nonzero`. The rest of this documentation covers only the case where
+		    all three arguments are provided.
 		
 		Parameters
 		----------
 		condition : array_like, bool
-		    The condition to meet. For each True element, yield the corresponding
-		    element from `x`, otherwise from `y`.
+		    Where True, yield `x`, otherwise yield `y`.
 		x, y : array_like, optional
 		    Values from which to choose. `x`, `y` and `condition` need to be
 		    broadcastable to some shape.
 		
 		Returns
 		-------
-		out : MaskedArray or tuple of ndarrays
-		    The resulting masked array if `x` and `y` were given, otherwise
-		    the result of ``condition.nonzero()``.
+		out : MaskedArray
+		    An masked array with `masked` elements where the condition is masked,
+		    elements from `x` where `condition` is True, and elements from `y`
+		    elsewhere.
 		
 		See Also
 		--------
 		numpy.where : Equivalent function in the top-level NumPy module.
+		nonzero : The function that is called when x and y are omitted
 		
 		Examples
 		--------
@@ -9295,15 +9328,12 @@ package numpy.ma;
 		[[0.0 -- 2.0]
 		 [-- 4.0 --]
 		 [6.0 -- 8.0]]
-		>>> np.ma.where(x > 5)    # return the indices where x > 5
-		(array([2, 2]), array([0, 2]))
-		
 		>>> print(np.ma.where(x > 5, x, -3.1416))
 		[[-3.1416 -- -3.1416]
 		 [-- -3.1416 --]
 		 [6.0 -- 8.0]]
 	**/
-	static public function where(condition:Dynamic, ?x:Dynamic, ?y:Dynamic):Dynamic;
+	static public function where(condition:Dynamic, ?x:Dynamic, ?y:Dynamic):numpy.ma.MaskedArray;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

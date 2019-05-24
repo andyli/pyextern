@@ -115,7 +115,7 @@ package scipy.spatial.kdtree;
 		Count how many nearby pairs can be formed.
 		
 		Count the number of pairs (x1,x2) can be formed, with x1 drawn
-		from self and x2 drawn from `other`, and where
+		from self and x2 drawn from ``other``, and where
 		``distance(x1, x2, p) <= r``.
 		This is the "two-point correlation" described in Gray and Moore 2000,
 		"N-body problems in statistical learning", and the code here is based

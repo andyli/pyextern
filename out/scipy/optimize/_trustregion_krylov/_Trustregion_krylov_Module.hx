@@ -15,13 +15,13 @@ package scipy.optimize._trustregion_krylov;
 		a nearly exact trust-region algorithm that only requires matrix
 		vector products with the hessian matrix.
 		
+		.. versionadded:: 1.0.0
+		
 		Options
 		-------
 		inexact : bool, optional
 		    Accuracy to solve subproblems. If True requires less nonlinear
 		    iterations, but more vector products.
-		
-		.. versionadded:: 1.0.0
 	**/
 	static public function _minimize_trust_krylov(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?hess:Dynamic, ?hessp:Dynamic, ?inexact:Dynamic, ?trust_region_options:python.KwArgs<Dynamic>):Dynamic;
 	/**

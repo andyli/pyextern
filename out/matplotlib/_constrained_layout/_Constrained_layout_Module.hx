@@ -33,8 +33,8 @@ package matplotlib._constrained_layout;
 	/**
 		Check for unoccupied gridspec slots and make ghost axes for these
 		slots...  Do for each gs separately.  This is a pretty big kludge
-		but shoudn't have too much ill effect.  The worst is that
-		someone querrying the figure will wonder why there are more
+		but shouldn't have too much ill effect.  The worst is that
+		someone querying the figure will wonder why there are more
 		axes than they thought.
 	**/
 	static public function _make_ghost_gridspec_slots(fig:Dynamic, gs:Dynamic):Dynamic;
@@ -52,10 +52,10 @@ package matplotlib._constrained_layout;
 		----------
 		
 		
-		fig: Figure
+		fig : Figure
 		  is the ``figure`` instance to do the layout in.
 		
-		renderer: Renderer
+		renderer : Renderer
 		  the renderer to use.
 		
 		 h_pad, w_pad : float
@@ -67,13 +67,13 @@ package matplotlib._constrained_layout;
 	**/
 	static public function do_constrained_layout(fig:Dynamic, renderer:Dynamic, h_pad:Dynamic, w_pad:Dynamic, ?hspace:Dynamic, ?wspace:Dynamic):Dynamic;
 	/**
-		Do the layout for a colorbar, to not oeverly pollute colorbar.py
+		Do the layout for a colorbar, to not overly pollute colorbar.py
 		
 		`pad` is in fraction of the original axis size.
 	**/
 	static public function layoutcolorbargridspec(parents:Dynamic, cax:Dynamic, shrink:Dynamic, aspect:Dynamic, location:Dynamic, ?pad:Dynamic):Dynamic;
 	/**
-		Do the layout for a colorbar, to not oeverly pollute colorbar.py
+		Do the layout for a colorbar, to not overly pollute colorbar.py
 		
 		`pad` is in fraction of the original axis size.
 	**/

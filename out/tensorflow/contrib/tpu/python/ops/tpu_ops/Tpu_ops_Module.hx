@@ -11,6 +11,7 @@ package tensorflow.contrib.tpu.python.ops.tpu_ops;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _all_to_all_grad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _collective_permute_grad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _create_default_group_assignment():Dynamic;
 	static public function _cross_replica_sum_grad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;

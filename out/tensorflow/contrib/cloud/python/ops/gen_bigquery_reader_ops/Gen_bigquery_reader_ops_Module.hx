@@ -38,6 +38,7 @@ package tensorflow.contrib.cloud.python.ops.gen_bigquery_reader_ops;
 		  A `Tensor` of type mutable `string`. The handle to reference the Reader.
 	**/
 	static public function big_query_reader(project_id:Dynamic, dataset_id:Dynamic, table_id:Dynamic, columns:Dynamic, timestamp_millis:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?test_end_point:Dynamic, ?name:Dynamic):Dynamic;
+	static public function big_query_reader_eager_fallback(project_id:Dynamic, dataset_id:Dynamic, table_id:Dynamic, columns:Dynamic, timestamp_millis:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?test_end_point:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Decorator for marking endpoints deprecated.
 		

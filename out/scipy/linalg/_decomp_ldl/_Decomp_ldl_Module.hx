@@ -176,11 +176,10 @@ package scipy.linalg._decomp_ldl;
 		Values are generated within the half-open interval ``[start, stop)``
 		(in other words, the interval including `start` but excluding `stop`).
 		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
+		`range` function, but returns an ndarray rather than a list.
 		
 		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
+		be consistent.  It is better to use `numpy.linspace` for these cases.
 		
 		Parameters
 		----------

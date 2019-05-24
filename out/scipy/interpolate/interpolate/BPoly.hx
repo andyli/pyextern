@@ -144,10 +144,10 @@ package scipy.interpolate.interpolate;
 		given the values and derivatives at the edges.
 		
 		Return the coefficients of a polynomial in the Bernstein basis
-		defined on `[xa, xb]` and having the values and derivatives at the
-		endpoints ``xa`` and ``xb`` as specified by ``ya`` and ``yb``.
+		defined on ``[xa, xb]`` and having the values and derivatives at the
+		endpoints `xa` and `xb` as specified by `ya`` and `yb`.
 		The polynomial constructed is of the minimal possible degree, i.e.,
-		if the lengths of ``ya`` and ``yb`` are ``na`` and ``nb``, the degree
+		if the lengths of `ya` and `yb` are `na` and `nb`, the degree
 		of the polynomial is ``na + nb - 1``.
 		
 		Parameters
@@ -157,10 +157,10 @@ package scipy.interpolate.interpolate;
 		xb : float
 		    Right-hand end point of the interval
 		ya : array_like
-		    Derivatives at ``xa``. ``ya[0]`` is the value of the function, and
-		    ``ya[i]`` for ``i > 0`` is the value of the ``i``-th derivative.
+		    Derivatives at `xa`. `ya[0]` is the value of the function, and
+		    `ya[i]` for ``i > 0`` is the value of the ``i``-th derivative.
 		yb : array_like
-		    Derivatives at ``xb``.
+		    Derivatives at `xb`.
 		
 		Returns
 		-------
@@ -190,7 +190,7 @@ package scipy.interpolate.interpolate;
 		This way, only `a=0` contributes to :math: `B^{q}(x = xa)`, and
 		`c_q` are found one by one by iterating `q = 0, ..., na`.
 		
-		At `x = xb` it's the same with `a = n - q`.
+		At ``x = xb`` it's the same with ``a = n - q``.
 	**/
 	static public function _construct_from_derivatives(xa:Dynamic, xb:Dynamic, ya:Dynamic, yb:Dynamic):Dynamic;
 	/**
@@ -256,8 +256,8 @@ package scipy.interpolate.interpolate;
 		Construct the piecewise polynomial without making checks.
 		
 		Takes the same parameters as the constructor. Input arguments
-		`c` and `x` must be arrays of the correct shape and type.  The
-		`c` array can only be of dtypes float and complex, and `x`
+		``c`` and ``x`` must be arrays of the correct shape and type.  The
+		``c`` array can only be of dtypes float and complex, and ``x``
 		array must have dtype float.
 	**/
 	static public function construct_fast(c:Dynamic, x:Dynamic, ?extrapolate:Dynamic, ?axis:Dynamic):Dynamic;
@@ -285,10 +285,10 @@ package scipy.interpolate.interpolate;
 		c : ndarray, size (k, m, ...)
 		    Additional coefficients for polynomials in intervals. Note that
 		    the first additional interval will be formed using one of the
-		    `self.x` end points.
+		    ``self.x`` end points.
 		x : ndarray, size (m,)
 		    Additional breakpoints. Must be sorted in the same order as
-		    `self.x` and either to the right or to the left of the current
+		    ``self.x`` and either to the right or to the left of the current
 		    breakpoints.
 		right
 		    Deprecated argument. Has no effect.
@@ -350,7 +350,7 @@ package scipy.interpolate.interpolate;
 		Based on the number of derivatives provided, the order of the
 		local polynomials is 2 on `[0, 1]` and 1 on `[1, 2]`.
 		Notice that no restriction is imposed on the derivatives at
-		`x = 1` and `x = 2`.
+		``x = 1`` and ``x = 2``.
 		
 		Indeed, the explicit form of the polynomial is::
 		

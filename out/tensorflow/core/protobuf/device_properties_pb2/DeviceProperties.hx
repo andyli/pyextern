@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.protobuf.device_properties_pb2;
 @:pythonImport("tensorflow.core.protobuf.device_properties_pb2", "DeviceProperties") extern class DeviceProperties {
-	static public var BANDWIDTH_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -27,7 +26,6 @@ package tensorflow.core.protobuf.device_properties_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ENVIRONMENT_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -36,7 +34,6 @@ package tensorflow.core.protobuf.device_properties_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FREQUENCY_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -57,15 +54,10 @@ package tensorflow.core.protobuf.device_properties_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var L1_CACHE_SIZE_FIELD_NUMBER : Dynamic;
-	static public var L2_CACHE_SIZE_FIELD_NUMBER : Dynamic;
-	static public var L3_CACHE_SIZE_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MEMORY_SIZE_FIELD_NUMBER : Dynamic;
-	static public var MODEL_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -74,8 +66,6 @@ package tensorflow.core.protobuf.device_properties_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NUM_CORES_FIELD_NUMBER : Dynamic;
-	static public var NUM_REGISTERS_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -84,7 +74,6 @@ package tensorflow.core.protobuf.device_properties_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SHARED_MEMORY_SIZE_PER_MULTIPROCESSOR_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -97,8 +86,10 @@ package tensorflow.core.protobuf.device_properties_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TYPE_FIELD_NUMBER : Dynamic;
-	static public var VENDOR_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -264,4 +255,56 @@ package tensorflow.core.protobuf.device_properties_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.DeviceProperties.bandwidth
+	**/
+	public var bandwidth : Dynamic;
+	/**
+		Field tensorflow.DeviceProperties.environment
+	**/
+	public var environment : Dynamic;
+	/**
+		Field tensorflow.DeviceProperties.frequency
+	**/
+	public var frequency : Dynamic;
+	/**
+		Field tensorflow.DeviceProperties.l1_cache_size
+	**/
+	public var l1_cache_size : Dynamic;
+	/**
+		Field tensorflow.DeviceProperties.l2_cache_size
+	**/
+	public var l2_cache_size : Dynamic;
+	/**
+		Field tensorflow.DeviceProperties.l3_cache_size
+	**/
+	public var l3_cache_size : Dynamic;
+	/**
+		Field tensorflow.DeviceProperties.memory_size
+	**/
+	public var memory_size : Dynamic;
+	/**
+		Field tensorflow.DeviceProperties.model
+	**/
+	public var model : Dynamic;
+	/**
+		Field tensorflow.DeviceProperties.num_cores
+	**/
+	public var num_cores : Dynamic;
+	/**
+		Field tensorflow.DeviceProperties.num_registers
+	**/
+	public var num_registers : Dynamic;
+	/**
+		Field tensorflow.DeviceProperties.shared_memory_size_per_multiprocessor
+	**/
+	public var shared_memory_size_per_multiprocessor : Dynamic;
+	/**
+		Field tensorflow.DeviceProperties.type
+	**/
+	public var type : Dynamic;
+	/**
+		Field tensorflow.DeviceProperties.vendor
+	**/
+	public var vendor : Dynamic;
 }

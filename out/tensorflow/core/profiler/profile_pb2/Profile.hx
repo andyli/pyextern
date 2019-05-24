@@ -5,7 +5,6 @@ package tensorflow.core.profiler.profile_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var COMMENT_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -22,10 +21,7 @@ package tensorflow.core.profiler.profile_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEFAULT_SAMPLE_TYPE_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DROP_FRAMES_FIELD_NUMBER : Dynamic;
-	static public var DURATION_NANOS_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -34,7 +30,6 @@ package tensorflow.core.profiler.profile_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FUNCTION_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -55,13 +50,10 @@ package tensorflow.core.profiler.profile_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var KEEP_FRAMES_FIELD_NUMBER : Dynamic;
-	static public var LOCATION_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAPPING_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -70,8 +62,6 @@ package tensorflow.core.profiler.profile_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var PERIOD_FIELD_NUMBER : Dynamic;
-	static public var PERIOD_TYPE_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -80,9 +70,6 @@ package tensorflow.core.profiler.profile_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SAMPLE_FIELD_NUMBER : Dynamic;
-	static public var SAMPLE_TYPE_FIELD_NUMBER : Dynamic;
-	static public var STRING_TABLE_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -95,7 +82,10 @@ package tensorflow.core.profiler.profile_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TIME_NANOS_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -261,4 +251,61 @@ package tensorflow.core.profiler.profile_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Profile.comment
+	**/
+	public var comment : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Profile.default_sample_type
+	**/
+	public var default_sample_type : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Profile.drop_frames
+	**/
+	public var drop_frames : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Profile.duration_nanos
+	**/
+	public var duration_nanos : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Profile.function
+	**/
+	@:native("function")
+	public var _function : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Profile.keep_frames
+	**/
+	public var keep_frames : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Profile.location
+	**/
+	public var location : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Profile.mapping
+	**/
+	public var mapping : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Profile.period
+	**/
+	public var period : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Profile.period_type
+	**/
+	public var period_type : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Profile.sample
+	**/
+	public var sample : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Profile.sample_type
+	**/
+	public var sample_type : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Profile.string_table
+	**/
+	public var string_table : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Profile.time_nanos
+	**/
+	public var time_nanos : Dynamic;
 }

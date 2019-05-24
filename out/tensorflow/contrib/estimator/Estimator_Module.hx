@@ -164,6 +164,12 @@ package tensorflow.contrib.estimator;
 		  DNNRegressor with layer annotations.
 	**/
 	static public function DNNRegressorWithLayerAnnotations(hidden_units:Dynamic, feature_columns:Dynamic, ?model_dir:Dynamic, ?label_dimension:Dynamic, ?weight_column:Dynamic, ?optimizer:Dynamic, ?activation_fn:Dynamic, ?dropout:Dynamic, ?input_layer_partitioner:Dynamic, ?config:Dynamic, ?warm_start_from:Dynamic, ?loss_reduction:Dynamic):Dynamic;
+	static public var _FRIENDLY_METHOD_NAMES : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
+	static public var _SINGLE_FEATURE_DEFAULT_NAME : Dynamic;
+	static public var _SINGLE_LABEL_DEFAULT_NAME : Dynamic;
+	static public var _SINGLE_RECEIVER_DEFAULT_NAME : Dynamic;
+	static public var _SINGLE_TENSOR_DEFAULT_NAMES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -174,6 +180,45 @@ package tensorflow.contrib.estimator;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var _allowed_symbols : Dynamic;
+	/**
+		Check that passed `tensor` is a Tensor or SparseTensor.
+	**/
+	static public function _check_tensor(tensor:Dynamic, name:Dynamic, ?error_label:Dynamic):Dynamic;
+	static public function _check_tensor_key(name:Dynamic, ?error_label:Dynamic):Dynamic;
+	/**
+		Log a report of which signatures were produced.
+	**/
+	static public function _log_signature_report(signature_def_map:Dynamic, excluded_signatures:Dynamic):Dynamic;
+	/**
+		Creates a placeholder that matches the dtype and shape of passed tensor.
+		
+		Args:
+		  t: Tensor or EagerTensor
+		  default_batch_size: the number of query examples expected per batch.
+		      Leave unset for variable batch size (recommended).
+		
+		Returns:
+		  Placeholder that matches the passed tensor.
+	**/
+	static public function _placeholder_from_tensor(t:Dynamic, ?default_batch_size:Dynamic):Dynamic;
+	static public function _placeholders_from_receiver_tensors_dict(input_vals:Dynamic, ?default_batch_size:Dynamic):Dynamic;
+	/**
+		Ensure that tensors is a dict of str to Tensor mappings.
+		
+		Args:
+		  tensors: dict of str to Tensors, or a single Tensor.
+		  field_name: name of the member field of `ServingInputReceiver`
+		    whose value is being passed to `tensors`.
+		
+		Returns:
+		  dict of str to Tensors; this is the original dict if one was passed, or
+		  the original tensor wrapped in a dictionary.
+		
+		Raises:
+		  ValueError: if tensors is None, or has non-string keys,
+		    or non-Tensor values
+	**/
+	static public function _wrap_and_check_input_tensors(tensors:Dynamic, field_name:Dynamic):Dynamic;
 	/**
 		Creates a new `tf.estimator.Estimator` which has given metrics.
 		
@@ -254,7 +299,7 @@ package tensorflow.contrib.estimator;
 		
 		```python
 		my_head = tf.contrib.estimator.binary_classification_head()
-		my_estimator = tf.contrib.estimator.DNNEstimator(
+		my_estimator = tf.estimator.DNNEstimator(
 		    head=my_head,
 		    hidden_units=...,
 		    feature_columns=...)
@@ -348,7 +393,7 @@ package tensorflow.contrib.estimator;
 		    the model. All items in the set should be instances of classes derived
 		    from `FeatureColumn`.
 		  model_dir: Directory to save model parameters, graph and etc. This can
-		    also be used to load checkpoints from the directory into a estimator
+		    also be used to load checkpoints from the directory into an estimator
 		    to continue training a previously saved model.
 		  n_classes: number of label classes. Default is binary classification.
 		    Multiclass support is not yet implemented.
@@ -391,6 +436,9 @@ package tensorflow.contrib.estimator;
 		      pruning (build the tree up to a max depth and then prune branches with
 		      negative gain). For pre and post pruning, you MUST provide
 		      tree_complexity >0.
+		  quantile_sketch_epsilon: float between 0 and 1. Error bound for quantile
+		      computation. This is only used for float feature columns, and the number
+		      of buckets generated per float feature is 1/quantile_sketch_epsilon.
 		
 		Returns:
 		  a `BoostedTreesClassifier` instance created with the given arguments and
@@ -400,7 +448,7 @@ package tensorflow.contrib.estimator;
 		  ValueError: when wrong arguments are given or unsupported functionalities
 		     are requested.
 	**/
-	static public function boosted_trees_classifier_train_in_memory(train_input_fn:Dynamic, feature_columns:Dynamic, ?model_dir:Dynamic, ?n_classes:Dynamic, ?weight_column:Dynamic, ?label_vocabulary:Dynamic, ?n_trees:Dynamic, ?max_depth:Dynamic, ?learning_rate:Dynamic, ?l1_regularization:Dynamic, ?l2_regularization:Dynamic, ?tree_complexity:Dynamic, ?min_node_weight:Dynamic, ?config:Dynamic, ?train_hooks:Dynamic, ?center_bias:Dynamic, ?pruning_mode:Dynamic):Dynamic;
+	static public function boosted_trees_classifier_train_in_memory(train_input_fn:Dynamic, feature_columns:Dynamic, ?model_dir:Dynamic, ?n_classes:Dynamic, ?weight_column:Dynamic, ?label_vocabulary:Dynamic, ?n_trees:Dynamic, ?max_depth:Dynamic, ?learning_rate:Dynamic, ?l1_regularization:Dynamic, ?l2_regularization:Dynamic, ?tree_complexity:Dynamic, ?min_node_weight:Dynamic, ?config:Dynamic, ?train_hooks:Dynamic, ?center_bias:Dynamic, ?pruning_mode:Dynamic, ?quantile_sketch_epsilon:Dynamic):Dynamic;
 	/**
 		Trains a boosted tree regressor with in memory dataset.
 		
@@ -442,7 +490,7 @@ package tensorflow.contrib.estimator;
 		    the model. All items in the set should be instances of classes derived
 		    from `FeatureColumn`.
 		  model_dir: Directory to save model parameters, graph and etc. This can
-		    also be used to load checkpoints from the directory into a estimator
+		    also be used to load checkpoints from the directory into an estimator
 		    to continue training a previously saved model.
 		  label_dimension: Number of regression targets per example.
 		    Multi-dimensional support is not yet implemented.
@@ -478,6 +526,9 @@ package tensorflow.contrib.estimator;
 		      pruning (build the tree up to a max depth and then prune branches with
 		      negative gain). For pre and post pruning, you MUST provide
 		      tree_complexity >0.
+		  quantile_sketch_epsilon: float between 0 and 1. Error bound for quantile
+		      computation. This is only used for float feature columns, and the number
+		      of buckets generated per float feature is 1/quantile_sketch_epsilon.
 		
 		Returns:
 		  a `BoostedTreesClassifier` instance created with the given arguments and
@@ -487,7 +538,7 @@ package tensorflow.contrib.estimator;
 		  ValueError: when wrong arguments are given or unsupported functionalities
 		     are requested.
 	**/
-	static public function boosted_trees_regressor_train_in_memory(train_input_fn:Dynamic, feature_columns:Dynamic, ?model_dir:Dynamic, ?label_dimension:Dynamic, ?weight_column:Dynamic, ?n_trees:Dynamic, ?max_depth:Dynamic, ?learning_rate:Dynamic, ?l1_regularization:Dynamic, ?l2_regularization:Dynamic, ?tree_complexity:Dynamic, ?min_node_weight:Dynamic, ?config:Dynamic, ?train_hooks:Dynamic, ?center_bias:Dynamic, ?pruning_mode:Dynamic):Dynamic;
+	static public function boosted_trees_regressor_train_in_memory(train_input_fn:Dynamic, feature_columns:Dynamic, ?model_dir:Dynamic, ?label_dimension:Dynamic, ?weight_column:Dynamic, ?n_trees:Dynamic, ?max_depth:Dynamic, ?learning_rate:Dynamic, ?l1_regularization:Dynamic, ?l2_regularization:Dynamic, ?tree_complexity:Dynamic, ?min_node_weight:Dynamic, ?config:Dynamic, ?train_hooks:Dynamic, ?center_bias:Dynamic, ?pruning_mode:Dynamic, ?quantile_sketch_epsilon:Dynamic):Dynamic;
 	/**
 		Build a supervised_input_receiver_fn for raw features and labels.
 		
@@ -598,8 +649,6 @@ package tensorflow.contrib.estimator;
 		    coordinate.
 		  input_layer_partitioner: Partitioner for input layer.
 		  batch_norm: Whether to use batch normalization after each hidden layer.
-		  shared_state_manager: A SharedEmbeddingStateManager object to hold the
-		    shared state for SharedEmbeddingColumn's.
 		
 		Returns:
 		  A logit_fn (see below).
@@ -607,9 +656,13 @@ package tensorflow.contrib.estimator;
 		Raises:
 		  ValueError: If units is not an int.
 	**/
-	static public function dnn_logit_fn_builder(units:Dynamic, hidden_units:Dynamic, feature_columns:Dynamic, activation_fn:Dynamic, dropout:Dynamic, input_layer_partitioner:Dynamic, batch_norm:Dynamic, ?shared_state_manager:Dynamic):Dynamic;
+	static public function dnn_logit_fn_builder(units:Dynamic, hidden_units:Dynamic, feature_columns:Dynamic, activation_fn:Dynamic, dropout:Dynamic, input_layer_partitioner:Dynamic, batch_norm:Dynamic):Dynamic;
 	/**
-		Exports requested train/eval/predict graphs as separate SavedModels.
+		Exports requested train/eval/predict graphs as separate SavedModels. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-12-03.
+		Instructions for updating:
+		Use estimator.experimental_export_all_saved_models
 		
 		See tf.contrib.estimator.export_all_saved_models for the currently
 		exposed version of this function.
@@ -673,8 +726,8 @@ package tensorflow.contrib.estimator;
 		    export_dir_base='my_model/',
 		    input_receiver_fn_map=rcvr_fn_map)
 		
-		# export_dirs is a dict of directories with SavedModels, which
-		# can be used for serving, analysis with TFMA, or directly loaded in.
+		# export_dir is a directory with SavedModels, which can be used for serving,
+		# analysis with TFMA, or directly loaded in.
 		with ops.Graph().as_default() as graph:
 		  with session.Session(graph=graph) as sess:
 		    loader.load(sess, [tag_constants.TRAINING], export_dir)
@@ -694,21 +747,21 @@ package tensorflow.contrib.estimator;
 		  as_text: whether to write the SavedModel proto in text format.
 		  checkpoint_path: The checkpoint path to export.  If `None` (the default),
 		    the most recent checkpoint found within the model directory is chosen.
-		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
-		    removed from the NodeDefs. For a detailed guide, see
-		    [Stripping Default-Valued Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
 		
 		Returns:
-		  A dict of tf.estimator.ModeKeys value to string path for each exported
-		  directory.
+		  The string path to the exported directory.
 		
 		Raises:
 		  ValueError: if any input_receiver_fn is None, no export_outputs
 		    are provided, or no checkpoint can be found.
 	**/
-	static public function export_all_saved_models(estimator:Dynamic, export_dir_base:Dynamic, input_receiver_fn_map:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic, ?strip_default_attrs:Dynamic):Dynamic;
+	static public function export_all_saved_models(estimator:Dynamic, export_dir_base:Dynamic, input_receiver_fn_map:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic):Dynamic;
 	/**
-		Exports a single train/eval/predict graph as a SavedModel.
+		Exports a single train/eval/predict graph as a SavedModel. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-12-03.
+		Instructions for updating:
+		Use estimator.export_saved_model(*args, experimental_mode=...)
 		
 		For a detailed guide, see [Using SavedModel with Estimators](
 		https://tensorflow.org/guide/saved_model#using_savedmodel_with_estimators).
@@ -761,9 +814,6 @@ package tensorflow.contrib.estimator;
 		  as_text: whether to write the SavedModel proto in text format.
 		  checkpoint_path: The checkpoint path to export.  If `None` (the default),
 		    the most recent checkpoint found within the model directory is chosen.
-		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
-		    removed from the NodeDefs. For a detailed guide, see
-		    [Stripping Default-Valued Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
 		  mode: tf.estimator.ModeKeys value indicating with mode will be exported.
 		
 		Returns:
@@ -773,7 +823,7 @@ package tensorflow.contrib.estimator;
 		  ValueError: if input_receiver_fn is None, no export_outputs
 		    are provided, or no checkpoint can be found.
 	**/
-	static public function export_saved_model_for_mode(estimator:Dynamic, export_dir_base:Dynamic, input_receiver_fn:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic, ?strip_default_attrs:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function export_saved_model_for_mode(estimator:Dynamic, export_dir_base:Dynamic, input_receiver_fn:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		Forward features to predictions dictionary.
 		
@@ -861,7 +911,7 @@ package tensorflow.contrib.estimator;
 		
 		```python
 		my_head = tf.contrib.estimator.logistic_regression_head()
-		my_estimator = tf.contrib.estimator.DNNEstimator(
+		my_estimator = tf.estimator.DNNEstimator(
 		    head=my_head,
 		    hidden_units=...,
 		    feature_columns=...)
@@ -947,10 +997,6 @@ package tensorflow.contrib.estimator;
 	**/
 	static public function make_early_stopping_hook(estimator:Dynamic, should_stop_fn:Dynamic, ?run_every_secs:Dynamic, ?run_every_steps:Dynamic):Dynamic;
 	/**
-		Creates a proper StopAtCheckpointStepHook based on chief status.
-	**/
-	static public function make_stop_at_checkpoint_step_hook(estimator:Dynamic, last_step:Dynamic, ?wait_after_file_check_secs:Dynamic):Dynamic;
-	/**
 		Creates a `_Head` for multi class classification.
 		
 		Uses `sparse_softmax_cross_entropy` loss.
@@ -980,7 +1026,7 @@ package tensorflow.contrib.estimator;
 		
 		```python
 		my_head = tf.contrib.estimator.multi_class_head(n_classes=3)
-		my_estimator = tf.contrib.estimator.DNNEstimator(
+		my_estimator = tf.estimator.DNNEstimator(
 		    head=my_head,
 		    hidden_units=...,
 		    feature_columns=...)
@@ -1141,7 +1187,7 @@ package tensorflow.contrib.estimator;
 		
 		```python
 		my_head = tf.contrib.estimator.multi_label_head(n_classes=3)
-		my_estimator = tf.contrib.estimator.DNNEstimator(
+		my_estimator = tf.estimator.DNNEstimator(
 		    head=my_head,
 		    hidden_units=...,
 		    feature_columns=...)
@@ -1225,7 +1271,7 @@ package tensorflow.contrib.estimator;
 		
 		```python
 		my_head = tf.contrib.estimator.poisson_regression_head()
-		my_estimator = tf.contrib.estimator.DNNEstimator(
+		my_estimator = tf.estimator.DNNEstimator(
 		    head=my_head,
 		    hidden_units=...,
 		    feature_columns=...)
@@ -1316,7 +1362,7 @@ package tensorflow.contrib.estimator;
 		
 		```python
 		my_head = tf.contrib.estimator.regression_head()
-		my_estimator = tf.contrib.estimator.DNNEstimator(
+		my_estimator = tf.estimator.DNNEstimator(
 		    head=my_head,
 		    hidden_units=...,
 		    feature_columns=...)
@@ -1367,7 +1413,7 @@ package tensorflow.contrib.estimator;
 	/**
 		Replicate `Estimator.model_fn` over GPUs. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-05-31.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-05-31.
 		Instructions for updating:
 		Please use `tf.contrib.distribute.MirroredStrategy` instead.
 		

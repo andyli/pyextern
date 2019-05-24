@@ -4,7 +4,7 @@ package tensorflow.contrib.data.python.ops.counter;
 	/**
 		Creates a `Dataset` that counts from `start` in steps of size `step`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.Counter(...)`.
 		

@@ -52,7 +52,11 @@ package tensorflow.python.ops.distributions.bernoulli;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct Bernoulli distributions.
+		Construct Bernoulli distributions. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		Args:
 		  logits: An N-D `Tensor` representing the log-odds of a `1` event. Each
@@ -80,7 +84,11 @@ package tensorflow.python.ops.distributions.bernoulli;
 	@:native("__init__")
 	public function ___init__(?logits:Dynamic, ?probs:Dynamic, ?dtype:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Construct Bernoulli distributions.
+		Construct Bernoulli distributions. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		Args:
 		  logits: An N-D `Tensor` representing the log-odds of a `1` event. Each

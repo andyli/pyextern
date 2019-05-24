@@ -46,16 +46,10 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INPUT_BATCH_DIMENSION_FIELD_NUMBER : Dynamic;
-	static public var INPUT_FEATURE_DIMENSION_FIELD_NUMBER : Dynamic;
-	static public var INPUT_SPATIAL_DIMENSIONS_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var KERNEL_INPUT_FEATURE_DIMENSION_FIELD_NUMBER : Dynamic;
-	static public var KERNEL_OUTPUT_FEATURE_DIMENSION_FIELD_NUMBER : Dynamic;
-	static public var KERNEL_SPATIAL_DIMENSIONS_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -68,9 +62,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var OUTPUT_BATCH_DIMENSION_FIELD_NUMBER : Dynamic;
-	static public var OUTPUT_FEATURE_DIMENSION_FIELD_NUMBER : Dynamic;
-	static public var OUTPUT_SPATIAL_DIMENSIONS_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -91,6 +82,10 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -256,4 +251,40 @@ package tensorflow.compiler.xla.xla_data_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.ConvolutionDimensionNumbers.input_batch_dimension
+	**/
+	public var input_batch_dimension : Dynamic;
+	/**
+		Field xla.ConvolutionDimensionNumbers.input_feature_dimension
+	**/
+	public var input_feature_dimension : Dynamic;
+	/**
+		Field xla.ConvolutionDimensionNumbers.input_spatial_dimensions
+	**/
+	public var input_spatial_dimensions : Dynamic;
+	/**
+		Field xla.ConvolutionDimensionNumbers.kernel_input_feature_dimension
+	**/
+	public var kernel_input_feature_dimension : Dynamic;
+	/**
+		Field xla.ConvolutionDimensionNumbers.kernel_output_feature_dimension
+	**/
+	public var kernel_output_feature_dimension : Dynamic;
+	/**
+		Field xla.ConvolutionDimensionNumbers.kernel_spatial_dimensions
+	**/
+	public var kernel_spatial_dimensions : Dynamic;
+	/**
+		Field xla.ConvolutionDimensionNumbers.output_batch_dimension
+	**/
+	public var output_batch_dimension : Dynamic;
+	/**
+		Field xla.ConvolutionDimensionNumbers.output_feature_dimension
+	**/
+	public var output_feature_dimension : Dynamic;
+	/**
+		Field xla.ConvolutionDimensionNumbers.output_spatial_dimensions
+	**/
+	public var output_spatial_dimensions : Dynamic;
 }

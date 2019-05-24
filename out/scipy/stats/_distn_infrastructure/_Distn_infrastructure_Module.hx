@@ -46,7 +46,8 @@ package scipy.stats._distn_infrastructure;
 	/**
 		Iterate from x0 to x1 in chunks of chunksize and steps inc.
 		
-		x0 must be finite, x1 need not be. In the latter case, the iterator is infinite.
+		x0 must be finite, x1 need not be. In the latter case, the iterator is
+		infinite.
 		Handles both x0 < x1 and x0 > x1. In the latter case, iterates downwards
 		(make sure to set inc < 0.)
 		
@@ -64,46 +65,6 @@ package scipy.stats._distn_infrastructure;
 		kurtosis is fourth central moment / variance**2 - 3
 	**/
 	static public function _kurtosis(data:Dynamic):Dynamic;
-	/**
-		Mimic `np.select(condlist, choicelist)`.
-		
-		Notice it assumes that all `arrays` are of the same shape, or can be
-		broadcasted together.
-		
-		All functions in `choicelist` must accept array arguments in the order
-		given in `arrays` and must return an array of the same shape as broadcasted
-		`arrays`.
-		
-		Examples
-		--------
-		>>> x = np.arange(6)
-		>>> np.select([x <3, x > 3], [x**2, x**3], default=0)
-		array([  0,   1,   4,   0,  64, 125])
-		
-		>>> _lazyselect([x < 3, x > 3], [lambda x: x**2, lambda x: x**3], (x,))
-		array([   0.,    1.,    4.,   0.,   64.,  125.])
-		
-		>>> a = -np.ones_like(x)
-		>>> _lazyselect([x < 3, x > 3],
-		...             [lambda x, a: x**2, lambda x, a: a * x**3],
-		...             (x, a), default=np.nan)
-		array([   0.,    1.,    4.,   nan,  -64., -125.])
-	**/
-	static public function _lazyselect(condlist:Dynamic, choicelist:Dynamic, arrays:Dynamic, ?_default:Dynamic):Dynamic;
-	/**
-		np.where(cond, x, fillvalue) always evaluates x even where cond is False.
-		This one only evaluates f(arr1[cond], arr2[cond], ...).
-		For example,
-		>>> a, b = np.array([1, 2, 3, 4]), np.array([5, 6, 7, 8])
-		>>> def f(a, b):
-		    return a*b
-		>>> _lazywhere(a > 2, (a, b), f, np.nan)
-		array([ nan,  nan,  21.,  32.])
-		
-		Notice it assumes that all `arrays` are of the same shape, or can be
-		broadcasted together.
-	**/
-	static public function _lazywhere(cond:Dynamic, arrays:Dynamic, f:Dynamic, ?fillvalue:Dynamic, ?f2:Dynamic):Dynamic;
 	static public function _moment(data:Dynamic, n:Dynamic, ?mu:Dynamic):Dynamic;
 	static public function _moment_from_stats(n:Dynamic, mu:Dynamic, mu2:Dynamic, g1:Dynamic, g2:Dynamic, moment_func:Dynamic, args:Dynamic):Dynamic;
 	static public function _ncx2_cdf(x:Dynamic, df:Dynamic, nc:Dynamic):Dynamic;
@@ -122,11 +83,10 @@ package scipy.stats._distn_infrastructure;
 		Values are generated within the half-open interval ``[start, stop)``
 		(in other words, the interval including `start` but excluding `stop`).
 		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
+		`range` function, but returns an ndarray rather than a list.
 		
 		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
+		be consistent.  It is better to use `numpy.linspace` for these cases.
 		
 		Parameters
 		----------
@@ -207,10 +167,10 @@ package scipy.stats._distn_infrastructure;
 		
 		Examples
 		--------
-		>>> a = np.arange(6).reshape(2,3)
+		>>> a = np.arange(6).reshape(2,3) + 10
 		>>> a
-		array([[0, 1, 2],
-		       [3, 4, 5]])
+		array([[10, 11, 12],
+		       [13, 14, 15]])
 		>>> np.argmax(a)
 		5
 		>>> np.argmax(a, axis=0)
@@ -224,7 +184,7 @@ package scipy.stats._distn_infrastructure;
 		>>> ind
 		(1, 2)
 		>>> a[ind]
-		5
+		15
 		
 		>>> b = np.arange(6)
 		>>> b[1] = 5
@@ -234,96 +194,6 @@ package scipy.stats._distn_infrastructure;
 		1
 	**/
 	static public function argmax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
-	/**
-		Returns the indices that would sort an array.
-		
-		Perform an indirect sort along the given axis using the algorithm specified
-		by the `kind` keyword. It returns an array of indices of the same shape as
-		`a` that index data along the given axis in sorted order.
-		
-		Parameters
-		----------
-		a : array_like
-		    Array to sort.
-		axis : int or None, optional
-		    Axis along which to sort.  The default is -1 (the last axis). If None,
-		    the flattened array is used.
-		kind : {'quicksort', 'mergesort', 'heapsort', 'stable'}, optional
-		    Sorting algorithm.
-		order : str or list of str, optional
-		    When `a` is an array with fields defined, this argument specifies
-		    which fields to compare first, second, etc.  A single field can
-		    be specified as a string, and not all fields need be specified,
-		    but unspecified fields will still be used, in the order in which
-		    they come up in the dtype, to break ties.
-		
-		Returns
-		-------
-		index_array : ndarray, int
-		    Array of indices that sort `a` along the specified axis.
-		    If `a` is one-dimensional, ``a[index_array]`` yields a sorted `a`.
-		    More generally, ``np.take_along_axis(a, index_array, axis=a)`` always
-		    yields the sorted `a`, irrespective of dimensionality.
-		
-		See Also
-		--------
-		sort : Describes sorting algorithms used.
-		lexsort : Indirect stable sort with multiple keys.
-		ndarray.sort : Inplace sort.
-		argpartition : Indirect partial sort.
-		
-		Notes
-		-----
-		See `sort` for notes on the different sorting algorithms.
-		
-		As of NumPy 1.4.0 `argsort` works with real/complex arrays containing
-		nan values. The enhanced sort order is documented in `sort`.
-		
-		Examples
-		--------
-		One dimensional array:
-		
-		>>> x = np.array([3, 1, 2])
-		>>> np.argsort(x)
-		array([1, 2, 0])
-		
-		Two-dimensional array:
-		
-		>>> x = np.array([[0, 3], [2, 2]])
-		>>> x
-		array([[0, 3],
-		       [2, 2]])
-		
-		>>> np.argsort(x, axis=0)  # sorts along first axis (down)
-		array([[0, 1],
-		       [1, 0]])
-		
-		>>> np.argsort(x, axis=1)  # sorts along last axis (across)
-		array([[0, 1],
-		       [0, 1]])
-		
-		Indices of the sorted elements of a N-dimensional array:
-		
-		>>> ind = np.unravel_index(np.argsort(x, axis=None), x.shape)
-		>>> ind
-		(array([0, 1, 1, 0]), array([0, 0, 1, 1]))
-		>>> x[ind]  # same as np.sort(x, axis=None)
-		array([0, 2, 2, 3])
-		
-		Sorting with keys:
-		
-		>>> x = np.array([(1, 0), (0, 1)], dtype=[('x', '<i4'), ('y', '<i4')])
-		>>> x
-		array([(1, 0), (0, 1)],
-		      dtype=[('x', '<i4'), ('y', '<i4')])
-		
-		>>> np.argsort(x, order=('x','y'))
-		array([1, 0])
-		
-		>>> np.argsort(x, order=('y','x'))
-		array([0, 1])
-	**/
-	static public function argsort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
 	/**
 		Return the sequence of ravel(args[i]) where ravel(condition) is
 		True in 1D.
@@ -634,81 +504,6 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function exec_(source:Dynamic, ?globals:Dynamic, ?locals:Dynamic):Dynamic;
 	/**
-		exp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
-		
-		Calculate the exponential of all elements in the input array.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input values.
-		out : ndarray, None, or tuple of ndarray and None, optional
-		    A location into which the result is stored. If provided, it must have
-		    a shape that the inputs broadcast to. If not provided or `None`,
-		    a freshly-allocated array is returned. A tuple (possible only as a
-		    keyword argument) must have length equal to the number of outputs.
-		where : array_like, optional
-		    Values of True indicate to calculate the ufunc at that position, values
-		    of False indicate to leave the value in the output alone.
-		**kwargs
-		    For other keyword-only arguments, see the
-		    :ref:`ufunc docs <ufuncs.kwargs>`.
-		
-		Returns
-		-------
-		out : ndarray or scalar
-		    Output array, element-wise exponential of `x`.
-		    This is a scalar if `x` is a scalar.
-		
-		See Also
-		--------
-		expm1 : Calculate ``exp(x) - 1`` for all elements in the array.
-		exp2  : Calculate ``2**x`` for all elements in the array.
-		
-		Notes
-		-----
-		The irrational number ``e`` is also known as Euler's number.  It is
-		approximately 2.718281, and is the base of the natural logarithm,
-		``ln`` (this means that, if :math:`x = \ln y = \log_e y`,
-		then :math:`e^x = y`. For real input, ``exp(x)`` is always positive.
-		
-		For complex arguments, ``x = a + ib``, we can write
-		:math:`e^x = e^a e^{ib}`.  The first term, :math:`e^a`, is already
-		known (it is the real argument, described above).  The second term,
-		:math:`e^{ib}`, is :math:`\cos b + i \sin b`, a function with
-		magnitude 1 and a periodic phase.
-		
-		References
-		----------
-		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
-		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
-		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
-		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
-		
-		Examples
-		--------
-		Plot the magnitude and phase of ``exp(x)`` in the complex plane:
-		
-		>>> import matplotlib.pyplot as plt
-		
-		>>> x = np.linspace(-2*np.pi, 2*np.pi, 100)
-		>>> xx = x + 1j * x[:, np.newaxis] # a + ib over complex plane
-		>>> out = np.exp(xx)
-		
-		>>> plt.subplot(121)
-		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='gray')
-		>>> plt.title('Magnitude of exp(x)')
-		
-		>>> plt.subplot(122)
-		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='hsv')
-		>>> plt.title('Phase (angle) of exp(x)')
-		>>> plt.show()
-	**/
-	static public function exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		floor(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Return the floor of the input, element-wise.
@@ -893,38 +688,6 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function ive(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		kl_div(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
-		
-		kl_div(x, y)
-		
-		Elementwise function for computing Kullback-Leibler divergence.
-		
-		.. math:: \mathrm{kl\_div}(x, y) = \begin{cases} x \log(x / y) - x + y & x > 0, y > 0 \\ y & x = 0, y \ge 0 \\ \infty & \text{otherwise} \end{cases}
-		
-		Parameters
-		----------
-		x : ndarray
-		    First input array.
-		y : ndarray
-		    Second input array.
-		
-		Returns
-		-------
-		res : ndarray
-		    Output array.
-		
-		See Also
-		--------
-		entr, rel_entr
-		
-		Notes
-		-----
-		This function is non-negative and is jointly convex in `x` and `y`.
-		
-		.. versionadded:: 0.15.0
-	**/
-	static public function kl_div(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		log(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Natural logarithm, element-wise.
@@ -978,7 +741,7 @@ package scipy.stats._distn_infrastructure;
 		----------
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+		.. [2] Wikipedia, "Logarithm". https://en.wikipedia.org/wiki/Logarithm
 		
 		Examples
 		--------
@@ -1115,14 +878,6 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function place(arr:Dynamic, mask:Dynamic, vals:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	/**
-		Return the product of array elements over a given axis.
-		
-		See Also
-		--------
-		prod : equivalent function; see for details.
-	**/
-	static public function product(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		putmask(a, mask, values)
 		
@@ -1296,100 +1051,6 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function rel_entr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Gives a new shape to an array without changing its data.
-		
-		Parameters
-		----------
-		a : array_like
-		    Array to be reshaped.
-		newshape : int or tuple of ints
-		    The new shape should be compatible with the original shape. If
-		    an integer, then the result will be a 1-D array of that length.
-		    One shape dimension can be -1. In this case, the value is
-		    inferred from the length of the array and remaining dimensions.
-		order : {'C', 'F', 'A'}, optional
-		    Read the elements of `a` using this index order, and place the
-		    elements into the reshaped array using this index order.  'C'
-		    means to read / write the elements using C-like index order,
-		    with the last axis index changing fastest, back to the first
-		    axis index changing slowest. 'F' means to read / write the
-		    elements using Fortran-like index order, with the first index
-		    changing fastest, and the last index changing slowest. Note that
-		    the 'C' and 'F' options take no account of the memory layout of
-		    the underlying array, and only refer to the order of indexing.
-		    'A' means to read / write the elements in Fortran-like index
-		    order if `a` is Fortran *contiguous* in memory, C-like order
-		    otherwise.
-		
-		Returns
-		-------
-		reshaped_array : ndarray
-		    This will be a new view object if possible; otherwise, it will
-		    be a copy.  Note there is no guarantee of the *memory layout* (C- or
-		    Fortran- contiguous) of the returned array.
-		
-		See Also
-		--------
-		ndarray.reshape : Equivalent method.
-		
-		Notes
-		-----
-		It is not always possible to change the shape of an array without
-		copying the data. If you want an error to be raised when the data is copied,
-		you should assign the new shape to the shape attribute of the array::
-		
-		 >>> a = np.zeros((10, 2))
-		 # A transpose makes the array non-contiguous
-		 >>> b = a.T
-		 # Taking a view makes it possible to modify the shape without modifying
-		 # the initial object.
-		 >>> c = b.view()
-		 >>> c.shape = (20)
-		 AttributeError: incompatible shape for a non-contiguous array
-		
-		The `order` keyword gives the index ordering both for *fetching* the values
-		from `a`, and then *placing* the values into the output array.
-		For example, let's say you have an array:
-		
-		>>> a = np.arange(6).reshape((3, 2))
-		>>> a
-		array([[0, 1],
-		       [2, 3],
-		       [4, 5]])
-		
-		You can think of reshaping as first raveling the array (using the given
-		index order), then inserting the elements from the raveled array into the
-		new array using the same kind of index ordering as was used for the
-		raveling.
-		
-		>>> np.reshape(a, (2, 3)) # C-like index ordering
-		array([[0, 1, 2],
-		       [3, 4, 5]])
-		>>> np.reshape(np.ravel(a), (2, 3)) # equivalent to C ravel then C reshape
-		array([[0, 1, 2],
-		       [3, 4, 5]])
-		>>> np.reshape(a, (2, 3), order='F') # Fortran-like index ordering
-		array([[0, 4, 3],
-		       [2, 1, 5]])
-		>>> np.reshape(np.ravel(a, order='F'), (2, 3), order='F')
-		array([[0, 4, 3],
-		       [2, 1, 5]])
-		
-		Examples
-		--------
-		>>> a = np.array([[1,2,3], [4,5,6]])
-		>>> np.reshape(a, 6)
-		array([1, 2, 3, 4, 5, 6])
-		>>> np.reshape(a, 6, order='F')
-		array([1, 4, 2, 5, 3, 6])
-		
-		>>> np.reshape(a, (3,-1))       # the unspecified value is inferred to be 2
-		array([[1, 2],
-		       [3, 4],
-		       [5, 6]])
-	**/
-	static public function reshape(a:Dynamic, newshape:Dynamic, ?order:Dynamic):Dynamic;
-	/**
 		Return the shape of an array.
 		
 		Parameters
@@ -1483,101 +1144,6 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var string_types : Dynamic;
-	/**
-		Take elements from an array along an axis.
-		
-		When axis is not None, this function does the same thing as "fancy"
-		indexing (indexing arrays using arrays); however, it can be easier to use
-		if you need elements along a given axis. A call such as
-		``np.take(arr, indices, axis=3)`` is equivalent to
-		``arr[:,:,:,indices,...]``.
-		
-		Explained without fancy indexing, this is equivalent to the following use
-		of `ndindex`, which sets each of ``ii``, ``jj``, and ``kk`` to a tuple of
-		indices::
-		
-		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
-		    Nj = indices.shape
-		    for ii in ndindex(Ni):
-		        for jj in ndindex(Nj):
-		            for kk in ndindex(Nk):
-		                out[ii + jj + kk] = a[ii + (indices[jj],) + kk]
-		
-		Parameters
-		----------
-		a : array_like (Ni..., M, Nk...)
-		    The source array.
-		indices : array_like (Nj...)
-		    The indices of the values to extract.
-		
-		    .. versionadded:: 1.8.0
-		
-		    Also allow scalars for indices.
-		axis : int, optional
-		    The axis over which to select values. By default, the flattened
-		    input array is used.
-		out : ndarray, optional (Ni..., Nj..., Nk...)
-		    If provided, the result will be placed in this array. It should
-		    be of the appropriate shape and dtype.
-		mode : {'raise', 'wrap', 'clip'}, optional
-		    Specifies how out-of-bounds indices will behave.
-		
-		    * 'raise' -- raise an error (default)
-		    * 'wrap' -- wrap around
-		    * 'clip' -- clip to the range
-		
-		    'clip' mode means that all indices that are too large are replaced
-		    by the index that addresses the last element along that axis. Note
-		    that this disables indexing with negative numbers.
-		
-		Returns
-		-------
-		out : ndarray (Ni..., Nj..., Nk...)
-		    The returned array has the same type as `a`.
-		
-		See Also
-		--------
-		compress : Take elements using a boolean mask
-		ndarray.take : equivalent method
-		take_along_axis : Take elements by matching the array and the index arrays
-		
-		Notes
-		-----
-		
-		By eliminating the inner loop in the description above, and using `s_` to
-		build simple slice objects, `take` can be expressed  in terms of applying
-		fancy indexing to each 1-d slice::
-		
-		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
-		    for ii in ndindex(Ni):
-		        for kk in ndindex(Nj):
-		            out[ii + s_[...,] + kk] = a[ii + s_[:,] + kk][indices]
-		
-		For this reason, it is equivalent to (but faster than) the following use
-		of `apply_along_axis`::
-		
-		    out = np.apply_along_axis(lambda a_1d: a_1d[indices], axis, a)
-		
-		Examples
-		--------
-		>>> a = [4, 3, 5, 7, 6, 8]
-		>>> indices = [0, 1, 4]
-		>>> np.take(a, indices)
-		array([4, 3, 6])
-		
-		In this example if `a` is an ndarray, "fancy" indexing can be used.
-		
-		>>> a = np.array(a)
-		>>> a[indices]
-		array([4, 3, 6])
-		
-		If `indices` is not one dimensional, the output also has these dimensions.
-		
-		>>> np.take(a, [[0, 1], [2, 3]])
-		array([[4, 3],
-		       [5, 7]])
-	**/
-	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		Return an array of all value.
 		    

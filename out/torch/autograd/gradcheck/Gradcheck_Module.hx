@@ -18,16 +18,7 @@ package torch.autograd.gradcheck;
 		gradients w.r.t. tensors in :attr:`inputs` that are of floating point type
 		and with ``requires_grad=True``.
 		
-		The check between numerical and analytical gradients has the same behaviour as
-		`numpy.allclose <https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html>`_,
-		i.e., it checks that
-		
-		.. math::
-		
-		    \lvert a - n \rvert \leq \texttt{atol} + \texttt{rtol} \times \lvert n \rvert
-		
-		holds for all elements of analytical gradient :math:`a` and numerical
-		gradient :math:`n`.
+		The check between numerical and analytical gradients uses :func:`~torch.allclose`.
 		
 		.. note::
 		    The default values are designed for :attr:`input` of double precision.
@@ -44,7 +35,7 @@ package torch.autograd.gradcheck;
 		Args:
 		    func (function): a Python function that takes Tensor inputs and returns
 		        a Tensor or a tuple of Tensors
-		    inputs (tuple of Tensor): inputs to the function
+		    inputs (tuple of Tensor or Tensor): inputs to the function
 		    eps (float, optional): perturbation for finite differences
 		    atol (float, optional): absolute tolerance
 		    rtol (float, optional): relative tolerance
@@ -65,16 +56,7 @@ package torch.autograd.gradcheck;
 		This function checks that backpropagating through the gradients computed
 		to the given :attr:`grad_outputs` are correct.
 		
-		The check between numerical and analytical gradients has the same behaviour as
-		`numpy.allclose <https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html>`_,
-		i.e., it checks that
-		
-		.. math::
-		
-		    \lvert a - n \rvert \leq \texttt{atol} + \texttt{rtol} \times \lvert n \rvert
-		
-		holds for all elements of analytical gradient :math:`a` and numerical
-		gradient :math:`n`.
+		The check between numerical and analytical gradients uses :func:`~torch.allclose`.
 		
 		.. note::
 		    The default values are designed for :attr:`input` and
@@ -92,9 +74,9 @@ package torch.autograd.gradcheck;
 		Args:
 		    func (function): a Python function that takes Tensor inputs and returns
 		        a Tensor or a tuple of Tensors
-		    inputs (tuple of Tensor): inputs to the function
-		    grad_outputs (tuple of Tensor, optional): The gradients with respect to
-		        the function's outputs.
+		    inputs (tuple of Tensor or Tensor): inputs to the function
+		    grad_outputs (tuple of Tensor or Tensor, optional): The gradients with
+		        respect to the function's outputs.
 		    eps (float, optional): perturbation for finite differences
 		    atol (float, optional): absolute tolerance
 		    rtol (float, optional): relative tolerance

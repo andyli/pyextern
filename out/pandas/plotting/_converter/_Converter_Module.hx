@@ -31,7 +31,6 @@ package pandas.plotting._converter;
 	**/
 	static public function _get_default_annual_spacing(nyears:Dynamic):Dynamic;
 	static public function _monthly_finder(vmin:Dynamic, vmax:Dynamic, freq:Dynamic):Dynamic;
-	static public function _mpl_le_2_0_0():Dynamic;
 	static public var _mpl_units : Dynamic;
 	static public function _quarterly_finder(vmin:Dynamic, vmax:Dynamic, freq:Dynamic):Dynamic;
 	static public function _to_ordinalf(tm:Dynamic):Dynamic;
@@ -46,7 +45,7 @@ package pandas.plotting._converter;
 		    Right bound for generating dates.
 		periods : integer, optional
 		    Number of periods to generate.
-		freq : str or DateOffset, default 'D' (calendar daily)
+		freq : str or DateOffset, default 'D'
 		    Frequency strings can have multiples, e.g. '5H'. See
 		    :ref:`here <timeseries.offset_aliases>` for a list of
 		    frequency aliases.
@@ -118,7 +117,8 @@ package pandas.plotting._converter;
 		
 		>>> pd.date_range(start='2018-04-24', end='2018-04-27', periods=3)
 		DatetimeIndex(['2018-04-24 00:00:00', '2018-04-25 12:00:00',
-		               '2018-04-27 00:00:00'], freq=None)
+		               '2018-04-27 00:00:00'],
+		              dtype='datetime64[ns]', freq=None)
 		
 		**Other Parameters**
 		
@@ -188,6 +188,19 @@ package pandas.plotting._converter;
 	static public function deregister():Dynamic;
 	static public function get_datevalue(date:Dynamic, freq:Dynamic):Dynamic;
 	static public function get_finder(freq:Dynamic):Dynamic;
+	/**
+		Return frequency code of given frequency str.
+		If input is not string, return input as it is.
+		
+		Examples
+		--------
+		>>> get_freq('A')
+		1000
+		
+		>>> get_freq('3A')
+		1000
+	**/
+	static public function get_freq(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function get_pairs():Dynamic;
 	/**
 		Returns true if the ``label_flags`` indicate there is at least one label
@@ -237,6 +250,8 @@ package pandas.plotting._converter;
 	/**
 		Check whether the provided array or dtype is of a float dtype.
 		
+		This function is internal and should not be exposed in the public API.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -268,6 +283,11 @@ package pandas.plotting._converter;
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
 		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -287,6 +307,12 @@ package pandas.plotting._converter;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -310,7 +336,7 @@ package pandas.plotting._converter;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -342,29 +368,6 @@ package pandas.plotting._converter;
 		is_list_like
 	**/
 	static public function is_nested_list_like(obj:Dynamic):Bool;
-	/**
-		Check whether an array-like is a periodical array-like or PeriodIndex.
-		
-		Parameters
-		----------
-		arr : array-like
-		    The array-like to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array-like is a periodical
-		          array-like or PeriodIndex instance.
-		
-		Examples
-		--------
-		>>> is_period_arraylike([1, 2, 3])
-		False
-		>>> is_period_arraylike(pd.Index([1, 2, 3]))
-		False
-		>>> is_period_arraylike(pd.PeriodIndex(["2017-01-01"], freq="D"))
-		True
-	**/
-	static public function is_period_arraylike(arr:Dynamic):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Modify the endpoints of a range as needed to avoid singularities.
@@ -404,6 +407,57 @@ package pandas.plotting._converter;
 		    Name of the period to monitor.
 	**/
 	static public function period_break(dates:Dynamic, period:Dynamic):Dynamic;
+	/**
+		Return a fixed frequency PeriodIndex, with day (calendar) as the default
+		frequency
+		
+		Parameters
+		----------
+		start : string or period-like, default None
+		    Left bound for generating periods
+		end : string or period-like, default None
+		    Right bound for generating periods
+		periods : integer, default None
+		    Number of periods to generate
+		freq : string or DateOffset, optional
+		    Frequency alias. By default the freq is taken from `start` or `end`
+		    if those are Period objects. Otherwise, the default is ``"D"`` for
+		    daily frequency.
+		
+		name : string, default None
+		    Name of the resulting PeriodIndex
+		
+		Returns
+		-------
+		prng : PeriodIndex
+		
+		Notes
+		-----
+		Of the three parameters: ``start``, ``end``, and ``periods``, exactly two
+		must be specified.
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
+		
+		Examples
+		--------
+		
+		>>> pd.period_range(start='2017-01-01', end='2018-01-01', freq='M')
+		PeriodIndex(['2017-01', '2017-02', '2017-03', '2017-04', '2017-05',
+		             '2017-06', '2017-06', '2017-07', '2017-08', '2017-09',
+		             '2017-10', '2017-11', '2017-12', '2018-01'],
+		            dtype='period[M]', freq='M')
+		
+		If ``start`` or ``end`` are ``Period`` objects, they will be used as anchor
+		endpoints for a ``PeriodIndex`` with frequency matching that of the
+		``period_range`` constructor.
+		
+		>>> pd.period_range(start=pd.Period('2017Q1', freq='Q'),
+		...                 end=pd.Period('2017Q2', freq='Q'), freq='M')
+		PeriodIndex(['2017-03', '2017-04', '2017-05', '2017-06'],
+		            dtype='period[M]', freq='M')
+	**/
+	static public function period_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic):pandas.PeriodIndex;
 	/**
 		Register Pandas Formatters and Converters with matplotlib
 		

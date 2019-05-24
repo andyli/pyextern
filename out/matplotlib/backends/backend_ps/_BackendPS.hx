@@ -24,11 +24,18 @@ package matplotlib.backends.backend_ps;
 		    The figure number
 		
 		key_press_handler_id : int
-		    The default key handler cid, when using the toolmanager.  Can be used
-		    to disable default key press handling ::
+		    The default key handler cid, when using the toolmanager.
+		    To disable the default key press handling use::
 		
 		        figure.canvas.mpl_disconnect(
 		            figure.canvas.manager.key_press_handler_id)
+		
+		button_press_handler_id : int
+		    The default mouse button handler cid, when using the toolmanager.
+		    To disable the default button press handling use::
+		
+		        figure.canvas.mpl_disconnect(
+		            figure.canvas.manager.button_press_handler_id)
 	**/
 	static public function FigureManager(canvas:Dynamic, num:Dynamic):Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;

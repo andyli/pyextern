@@ -139,12 +139,14 @@ package tensorflow.python.feature_column.feature_column_v2;
 		  shape: variable shape.
 		  dtype: The type of the variable. Defaults to `self.dtype` or `float32`.
 		  trainable: Whether this variable is trainable or not.
+		  use_resource: If true, we use resource variables. Otherwise we use
+		    RefVariable.
 		  initializer: initializer instance (callable).
 		
 		Returns:
 		  The created variable.
 	**/
-	public function create_variable(feature_column:Dynamic, name:Dynamic, shape:Dynamic, ?dtype:Dynamic, ?trainable:Dynamic, ?initializer:Dynamic):Dynamic;
+	public function create_variable(feature_column:Dynamic, name:Dynamic, shape:Dynamic, ?dtype:Dynamic, ?trainable:Dynamic, ?use_resource:Dynamic, ?initializer:Dynamic):Dynamic;
 	/**
 		Returns an already created resource.
 		

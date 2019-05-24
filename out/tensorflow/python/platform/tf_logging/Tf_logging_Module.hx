@@ -31,7 +31,10 @@ package tensorflow.python.platform.tf_logging;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _get_logger():Dynamic;
+	/**
+		Returns a code and frame object for the lowest non-logging stack frame.
+	**/
+	static public function _get_caller(?offset:Dynamic):Dynamic;
 	/**
 		Get id of current thread, suitable for logging as an unsigned quantity.
 	**/
@@ -43,6 +46,7 @@ package tensorflow.python.platform.tf_logging;
 	**/
 	static public function _log_prefix(level:Dynamic, ?timestamp:Dynamic, ?file_and_line:Dynamic):Dynamic;
 	static public var _logger : Dynamic;
+	static public function _logger_find_caller(?stack_info:Dynamic):Dynamic;
 	static public var _logger_lock : Dynamic;
 	static public var _tf_api_constants : Dynamic;
 	static public var _tf_api_constants_v1 : Dynamic;
@@ -52,6 +56,10 @@ package tensorflow.python.platform.tf_logging;
 	static public function error(msg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function fatal(msg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function flush():Dynamic;
+	/**
+		Return TF logger instance.
+	**/
+	static public function get_logger():Dynamic;
 	/**
 		Return how much logging output will be produced.
 	**/

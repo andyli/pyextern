@@ -43,6 +43,57 @@ package matplotlib.cbook;
 		dimension; leaves everything else untouched.
 	**/
 	static public function _check_1d(x:Dynamic):Dynamic;
+	/**
+		Run *command* using `subprocess.check_output`.  If it succeeds, return the
+		output (stdout and stderr); if not, raise an exception whose text includes
+		the failed command and captured output.  Both the command and the output
+		are logged at DEBUG level on *logger*.
+	**/
+	static public function _check_and_log_subprocess(command:Dynamic, logger:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		For each *key, value* pair in *kwargs*, check that *value* is in *values*;
+		if not, raise an appropriate ValueError.
+		
+		Examples
+		--------
+		>>> cbook._check_in_list(["foo", "bar"], arg=arg, other_arg=other_arg)
+	**/
+	static public function _check_in_list(values:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		If any value in *kwargs* is a `np.matrix`, raise a TypeError with the key
+		name in its message.
+	**/
+	static public function _check_not_matrix(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Find all masked and/or non-finite points in a set of arguments,
+		and return the arguments as masked arrays with a common mask.
+		
+		Arguments can be in any of 5 categories:
+		
+		1) 1-D masked arrays
+		2) 1-D ndarrays
+		3) ndarrays with more than one dimension
+		4) other non-string iterables
+		5) anything else
+		
+		The first argument must be in one of the first four categories;
+		any argument with a length differing from that of the first
+		argument (and hence anything in category 5) then will be
+		passed through unchanged.
+		
+		Masks are obtained from all arguments of the correct length
+		in categories 1, 2, and 4; a point is bad if masked in a masked
+		array or if it is a nan or inf.  No attempt is made to
+		extract a mask from categories 2 and 4 if :meth:`np.isfinite`
+		does not yield a Boolean array.  Category 3 is included to
+		support RGB or RGBA ndarrays, which are assumed to have only
+		valid values and which are passed through unchanged.
+		
+		All input arguments that are not passed unchanged are returned
+		as masked arrays if any masked points are found, otherwise as
+		ndarrays.
+	**/
+	static public function _combine_masks(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var _dedent_regex : Dynamic;
 	/**
 		Class decorator for defining property aliases.
@@ -62,6 +113,26 @@ package matplotlib.cbook;
 		aliases come last).
 	**/
 	static public function _define_aliases(alias_d:Dynamic, ?cls:Dynamic):Dynamic;
+	/**
+		Decorator indicating that parameter *name* of *func* is being deprecated.
+		
+		The actual implementation of *func* should keep the *name* parameter in its
+		signature.
+		
+		Parameters that come after the deprecated parameter effectively become
+		keyword-only (as they cannot be passed positionally without triggering the
+		DeprecationWarning on the deprecated parameter), and should be marked as
+		such after the deprecation period has passed and the deprecated parameter
+		is removed.
+		
+		Examples
+		--------
+		
+		::
+		    @_delete_parameter("3.1", "unused")
+		    def func(used_arg, other_arg, unused, more_args): ...
+	**/
+	static public function _delete_parameter(since:Dynamic, name:Dynamic, ?func:Dynamic):Dynamic;
 	static public function _exception_printer(exc:Dynamic):Dynamic;
 	static public var _find_dedent_regex : Dynamic;
 	/**
@@ -81,9 +152,37 @@ package matplotlib.cbook;
 	static public function _lock_path(path:Dynamic):Dynamic;
 	static public var _lockstr : Dynamic;
 	/**
+		Decorator indicating that passing parameter *name* (or any of the following
+		ones) positionally to *func* is being deprecated.
+		
+		Note that this decorator **cannot** be applied to a function that has a
+		pyplot-level wrapper, as the wrapper always pass all arguments by keyword.
+		If it is used, users will see spurious DeprecationWarnings every time they
+		call the pyplot wrapper.
+	**/
+	static public function _make_keyword_only(since:Dynamic, name:Dynamic, ?func:Dynamic):Dynamic;
+	/**
 		Convert a premultiplied ARGB32 buffer to an unmultiplied RGBA8888 buffer.
 	**/
 	static public function _premultiplied_argb32_to_unmultiplied_rgba8888(buf:Dynamic):Dynamic;
+	/**
+		Decorator indicating that parameter *old* of *func* is renamed to *new*.
+		
+		The actual implementation of *func* should use *new*, not *old*.  If *old*
+		is passed to *func*, a DeprecationWarning is emitted, and its value is
+		used, even if *new* is also passed by keyword (this is to simplify pyplot
+		wrapper functions, which always pass *new* explicitly to the Axes method).
+		If *new* is also passed but positionally, a TypeError will be raised by the
+		underlying function during argument binding.
+		
+		Examples
+		--------
+		
+		::
+		    @_rename_parameter("3.1", "bad_name", "good_name")
+		    def func(good_name): ...
+	**/
+	static public function _rename_parameter(since:Dynamic, old:Dynamic, _new:Dynamic, ?func:Dynamic):Dynamic;
 	/**
 		Use Fortran ordering to convert ndarrays and lists of iterables to lists of
 		1D arrays.
@@ -117,10 +216,7 @@ package matplotlib.cbook;
 		cannot be used in a boolean context.
 	**/
 	static public function _str_lower_equal(obj:Dynamic, s:Dynamic):Dynamic;
-	/**
-		Parses the string argument as a boolean
-	**/
-	static public function _string_to_bool(s:Dynamic):Dynamic;
+	static public function _suppress_matplotlib_deprecation_warning():Dynamic;
 	/**
 		Convert a sequence to a float array; if input was a masked array, masked
 		values are converted to nans.
@@ -148,18 +244,6 @@ package matplotlib.cbook;
 	**/
 	static public function _warn_external(message:Dynamic, ?category:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 2.2
-		    The align_iterators function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
-		
-		This generator takes a bunch of iterables that are ordered by func
-		It sends out ordered tuples::
-		
-		   (func(row), [rows from all iterators matching func(row)])
-		
-		It is used by :func:`matplotlib.mlab.recs_join` to join record arrays
-	**/
-	static public function align_iterators(func:Dynamic, ?iterables:python.VarArgs<Dynamic>):Dynamic;
-	/**
 		Returns list of dictionaries of statistics used to draw a series
 		of box and whisker plots. The `Returns` section enumerates the
 		required keys of the dictionary. Users can skip this function and
@@ -173,14 +257,14 @@ package matplotlib.cbook;
 		    fewer dimensions.
 		
 		whis : float, string, or sequence (default = 1.5)
-		    As a float, determines the reach of the whiskers to the beyond the
+		    As a float, determines the reach of the whiskers beyond the
 		    first and third quartiles. In other words, where IQR is the
 		    interquartile range (`Q3-Q1`), the upper whisker will extend to last
-		    datum less than `Q3 + whis*IQR`). Similarly, the lower whisker will
+		    datum less than `Q3 + whis*IQR`. Similarly, the lower whisker will
 		    extend to the first datum greater than `Q1 - whis*IQR`.
 		    Beyond the whiskers, data are considered outliers
-		    and are plotted as individual points. This can be set this to an
-		    ascending sequence of percentile (e.g., [5, 95]) to set the
+		    and are plotted as individual points. This can be set to an
+		    ascending sequence of percentiles (e.g., [5, 95]) to set the
 		    whiskers at specific percentiles of the data. Finally, `whis`
 		    can be the string ``'range'`` to force the whiskers to the
 		    minimum and maximum of the data. In the edge case that the 25th
@@ -210,7 +294,7 @@ package matplotlib.cbook;
 		    Key        Value Description
 		    ========   ===================================
 		    label      tick label for the boxplot
-		    mean       arithemetic mean value
+		    mean       arithmetic mean value
 		    med        50th percentile
 		    q1         first quartile (25th percentile)
 		    q3         third quartile (75th percentile)
@@ -241,7 +325,7 @@ package matplotlib.cbook;
 	**/
 	static public function contiguous_regions(mask:Dynamic):Dynamic;
 	/**
-		Remove excess indentation from docstring *s*.
+		[*Deprecated*] Remove excess indentation from docstring *s*.
 		
 		Discards any leading blank lines, then removes up to n whitespace
 		characters from each line, where n is the number of leading
@@ -250,6 +334,11 @@ package matplotlib.cbook;
 		of the first non-blank line to determine the indentation.
 		
 		It is also faster in most cases.
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function dedent(s:Dynamic):Dynamic;
 	/**
@@ -284,7 +373,12 @@ package matplotlib.cbook;
 	**/
 	static public function delete_masked_points(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Decorator to mark a function or a class as deprecated.
+		Decorator to mark a function, a class, or a property as deprecated.
+		
+		When deprecating a classmethod, a staticmethod, or a property, the
+		``@deprecated`` decorator should go *under* the ``@classmethod``, etc.
+		decorator (i.e., `deprecated` should directly decorate the underlying
+		callable).
 		
 		Parameters
 		----------
@@ -308,7 +402,7 @@ package matplotlib.cbook;
 		
 		        def new_function():
 		            ...
-		        oldFunction = new_function
+		        old_function = new_function
 		
 		alternative : str, optional
 		    An alternative API that the user may use in place of the deprecated
@@ -319,14 +413,18 @@ package matplotlib.cbook;
 		    If True, uses a PendingDeprecationWarning instead of a
 		    DeprecationWarning.  Cannot be used together with *removal*.
 		
+		obj_type : str, optional
+		    The object type being deprecated; by default, 'function' if decorating
+		    a function and 'class' if decorating a class.
+		
+		addendum : str, optional
+		    Additional text appended directly to the final message.
+		
 		removal : str, optional
 		    The expected removal version.  With the default (an empty string), a
 		    removal version is automatically computed from *since*.  Set to other
 		    Falsy values to not schedule a removal date.  Cannot be used together
 		    with *pending*.
-		
-		addendum : str, optional
-		    Additional text appended directly to the final message.
 		
 		Examples
 		--------
@@ -339,12 +437,12 @@ package matplotlib.cbook;
 	**/
 	static public function deprecated(since:Dynamic, ?message:Dynamic, ?name:Dynamic, ?alternative:Dynamic, ?pending:Dynamic, ?obj_type:Dynamic, ?addendum:Dynamic, ?removal:Dynamic):Dynamic;
 	/**
-		Returns `True` if the given writable file-like object requires Unicode
-		to be written to it.
+		Return whether the given writable file-like object requires Unicode to be
+		written to it.
 	**/
 	static public function file_requires_unicode(x:Dynamic):Dynamic;
 	/**
-		Returns a generator of flattened nested containers
+		Return a generator of flattened nested containers
 		
 		For example:
 		
@@ -358,6 +456,14 @@ package matplotlib.cbook;
 		and Recipe 1.12 in cookbook
 	**/
 	static public function flatten(seq:Dynamic, ?scalarp:Dynamic):Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	static public function get_label(y:Dynamic, default_name:Dynamic):Dynamic;
 	static public function get_realpath_and_stat(path:Dynamic):Dynamic;
 	/**
@@ -395,15 +501,22 @@ package matplotlib.cbook;
 	**/
 	static public function index_of(y:Dynamic):Dynamic;
 	/**
-		Returns true if *obj* can be hashed
+		[*Deprecated*] Returns true if *obj* can be hashed
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function is_hashable(obj:Dynamic):Dynamic;
 	static public function is_math_text(s:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 3.0
-		    isinstance(..., numbers.Number)
+		[*Deprecated*] return true if *obj* looks like a number
 		
-		return true if *obj* looks like a number
+		Notes
+		-----
+		.. deprecated:: 3.0
+		   
 	**/
 	static public function is_numlike(obj:Dynamic):Dynamic;
 	/**
@@ -411,20 +524,27 @@ package matplotlib.cbook;
 	**/
 	static public function is_scalar_or_string(val:Dynamic):Dynamic;
 	/**
-		return true if *obj* looks like a file object with a *write* method
+		Return whether *obj* looks like a file object with a *write* method.
 	**/
 	static public function is_writable_file_like(obj:Dynamic):Dynamic;
 	/**
-		return true if *obj* is iterable
+		[*Deprecated*] return true if *obj* is iterable
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function iterable(obj:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 3.0
-		    The listFiles function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		Recursively list files
+		[*Deprecated*] Recursively list files
 		
 		from Parmar and Martelli in the Python Cookbook
+		
+		Notes
+		-----
+		.. deprecated:: 3.0
+		   
 	**/
 	static public function listFiles(root:Dynamic, ?patterns:Dynamic, ?recurse:Dynamic, ?return_folders:Dynamic):Dynamic;
 	/**
@@ -440,19 +560,19 @@ package matplotlib.cbook;
 		
 		Parameters
 		----------
-		    local_var: any object
+		    local_var : any object
 		        The local variable (highest priority)
 		
-		    kwargs: dict
+		    kwargs : dict
 		        Dictionary of keyword arguments; modified in place
 		
-		    keys: str(s)
+		    keys : str(s)
 		        Name(s) of keyword arguments to process, in descending order of
 		        priority
 		
 		Returns
 		-------
-		    out: any object
+		    out : any object
 		        Either local_var or one of kwargs[key] for key in keys
 		
 		Raises
@@ -465,13 +585,15 @@ package matplotlib.cbook;
 	static public var ls_mapper : Dynamic;
 	static public var ls_mapper_r : Dynamic;
 	/**
-		.. deprecated:: 3.0
-		    The mkdirs function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		make directory *newdir* recursively, and set *mode*.  Equivalent to ::
+		[*Deprecated*] make directory *newdir* recursively, and set *mode*.  Equivalent to ::
 		
 		    > mkdir -p NEWDIR
 		    > chmod MODE NEWDIR
+		
+		Notes
+		-----
+		.. deprecated:: 3.0
+		   
 	**/
 	static public function mkdirs(newdir:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
@@ -618,13 +740,18 @@ package matplotlib.cbook;
 	**/
 	static public function pts_to_prestep(x:Dynamic, ?args:python.VarArgs<Dynamic>):Array<Dynamic>;
 	/**
-		return the memory consumed by process
+		Return the memory consumed by the process.
 	**/
 	static public function report_memory(?i:Dynamic):Dynamic;
 	static public function safe_first_element(obj:Dynamic):Dynamic;
 	static public function safe_masked_invalid(x:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
-		make sure *args* are equal len before zipping
+		[*Deprecated*] make sure *args* are equal len before zipping
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function safezip(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -648,20 +775,47 @@ package matplotlib.cbook;
 	**/
 	static public function simple_linear_interpolation(a:Dynamic, steps:Dynamic):Dynamic;
 	/**
-		remove latex formatting from mathtext
+		Remove latex formatting from mathtext.
+		
+		Only handles fully math and fully non-math strings.
 	**/
 	static public function strip_math(s:Dynamic):Dynamic;
 	/**
-		*fname* can be an `os.PathLike` or a file handle.  Support for gzipped
-		files is automatic, if the filename ends in .gz.  *flag* is a
-		read/write flag for :func:`file`
+		Convert a path to an open file handle or pass-through a file-like object.
+		
+		Consider using `open_file_cm` instead, as it allows one to properly close
+		newly created file objects more easily.
+		
+		Parameters
+		----------
+		fname : str or PathLike or file-like object
+		    If `str` or `os.PathLike`, the file is opened using the flags specified
+		    by *flag* and *encoding*.  If a file-like object, it is passed through.
+		flag : str, default 'r'
+		    Passed as the *mode* argument to `open` when *fname* is `str` or
+		    `os.PathLike`; ignored if *fname* is file-like.
+		return_opened : bool, default False
+		    If True, return both the file object and a boolean indicating whether
+		    this was a new file (that the caller needs to close).  If False, return
+		    only the new file.
+		encoding : str or None, default None
+		    Passed as the *mode* argument to `open` when *fname* is `str` or
+		    `os.PathLike`; ignored if *fname* is file-like.
+		
+		Returns
+		-------
+		fh : file-like
+		opened : bool
+		    *opened* is only returned if *return_opened* is True.
 	**/
 	static public function to_filehandle(fname:Dynamic, ?flag:Dynamic, ?return_opened:Dynamic, ?encoding:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 3.0
-		    The unicode_safe function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		[*Deprecated*] 
 		
-		\ 
+		Notes
+		-----
+		.. deprecated:: 3.0
+		   \ 
 	**/
 	static public function unicode_safe(s:Dynamic):Dynamic;
 	/**
@@ -731,17 +885,17 @@ package matplotlib.cbook;
 		    If True, uses a PendingDeprecationWarning instead of a
 		    DeprecationWarning.  Cannot be used together with *removal*.
 		
-		removal : str, optional
-		    The expected removal version.  With the default (an empty string), a
-		    removal version is automatically computed from *since*.  Set to other
-		    Falsy values to not schedule a removal date.  Cannot be used together
-		    with *pending*.
-		
 		obj_type : str, optional
 		    The object type being deprecated.
 		
 		addendum : str, optional
 		    Additional text appended directly to the final message.
+		
+		removal : str, optional
+		    The expected removal version.  With the default (an empty string), a
+		    removal version is automatically computed from *since*.  Set to other
+		    Falsy values to not schedule a removal date.  Cannot be used together
+		    with *pending*.
 		
 		Examples
 		--------

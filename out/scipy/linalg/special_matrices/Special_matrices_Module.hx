@@ -235,7 +235,7 @@ package scipy.linalg.special_matrices;
 		
 		References
 		----------
-		.. [1] "DFT matrix", http://en.wikipedia.org/wiki/DFT_matrix
+		.. [1] "DFT matrix", https://en.wikipedia.org/wiki/DFT_matrix
 		
 		Examples
 		--------
@@ -256,6 +256,119 @@ package scipy.linalg.special_matrices;
 	**/
 	static public function dft(n:Dynamic, ?scale:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Returns a symmetric Fiedler matrix
+		
+		Given an sequence of numbers `a`, Fiedler matrices have the structure
+		``F[i, j] = np.abs(a[i] - a[j])``, and hence zero diagonals and nonnegative
+		entries. A Fiedler matrix has a dominant positive eigenvalue and other
+		eigenvalues are negative. Although not valid generally, for certain inputs,
+		the inverse and the determinant can be derived explicitly as given in [1]_.
+		
+		Parameters
+		----------
+		a : (n,) array_like
+		    coefficient array
+		
+		Returns
+		-------
+		F : (n, n) ndarray
+		
+		See Also
+		--------
+		circulant, toeplitz
+		
+		Notes
+		-----
+		
+		.. versionadded:: 1.3.0
+		
+		References
+		----------
+		.. [1] J. Todd, "Basic Numerical Mathematics: Vol.2 : Numerical Algebra",
+		    1977, Birkhauser, :doi:`10.1007/978-3-0348-7286-7`
+		
+		Examples
+		--------
+		>>> from scipy.linalg import det, inv, fiedler
+		>>> a = [1, 4, 12, 45, 77]
+		>>> n = len(a)
+		>>> A = fiedler(a)
+		>>> A
+		array([[ 0,  3, 11, 44, 76],
+		       [ 3,  0,  8, 41, 73],
+		       [11,  8,  0, 33, 65],
+		       [44, 41, 33,  0, 32],
+		       [76, 73, 65, 32,  0]])
+		
+		The explicit formulas for determinant and inverse seem to hold only for
+		monotonically increasing/decreasing arrays. Note the tridiagonal structure
+		and the corners.
+		
+		>>> Ai = inv(A)
+		>>> Ai[np.abs(Ai) < 1e-12] = 0.  # cleanup the numerical noise for display
+		>>> Ai
+		array([[-0.16008772,  0.16666667,  0.        ,  0.        ,  0.00657895],
+		       [ 0.16666667, -0.22916667,  0.0625    ,  0.        ,  0.        ],
+		       [ 0.        ,  0.0625    , -0.07765152,  0.01515152,  0.        ],
+		       [ 0.        ,  0.        ,  0.01515152, -0.03077652,  0.015625  ],
+		       [ 0.00657895,  0.        ,  0.        ,  0.015625  , -0.00904605]])
+		>>> det(A)
+		15409151.999999998
+		>>> (-1)**(n-1) * 2**(n-2) * np.diff(a).prod() * (a[-1] - a[0])
+		15409152
+	**/
+	static public function fiedler(a:Dynamic):Dynamic;
+	/**
+		Returns a Fiedler companion matrix
+		
+		Given a polynomial coefficient array ``a``, this function forms a
+		pentadiagonal matrix with a special structure whose eigenvalues coincides
+		with the roots of ``a``.
+		
+		Parameters
+		----------
+		a : (N,) array_like
+		    1-D array of polynomial coefficients in descending order with a nonzero
+		    leading coefficient. For ``N < 2``, an empty array is returned.
+		
+		Returns
+		-------
+		c : (N-1, N-1) ndarray
+		    Resulting companion matrix
+		
+		Notes
+		-----
+		Similar to `companion` the leading coefficient should be nonzero. In case
+		the leading coefficient is not 1., other coefficients are rescaled before
+		the array generation. To avoid numerical issues, it is best to provide a
+		monic polynomial.
+		
+		.. versionadded:: 1.3.0
+		
+		See Also
+		--------
+		companion
+		
+		References
+		----------
+		.. [1] M. Fiedler, " A note on companion matrices", Linear Algebra and its
+		    Applications, 2003, :doi:`10.1016/S0024-3795(03)00548-2`
+		
+		Examples
+		--------
+		>>> from scipy.linalg import fiedler_companion, eigvals
+		>>> p = np.poly(np.arange(1, 9, 2))  # [1., -16., 86., -176., 105.]
+		>>> fc = fiedler_companion(p)
+		>>> fc
+		array([[  16.,  -86.,    1.,    0.],
+		       [   1.,    0.,    0.,    0.],
+		       [   0.,  176.,    0., -105.],
+		       [   0.,    1.,    0.,    0.]])
+		>>> eigvals(fc)
+		array([7.+0.j, 5.+0.j, 3.+0.j, 1.+0.j])
+	**/
+	static public function fiedler_companion(a:Dynamic):Dynamic;
 	/**
 		Construct a Hadamard matrix.
 		
@@ -469,7 +582,7 @@ package scipy.linalg.special_matrices;
 		    Default is 'symmetric'.
 		exact : bool, optional
 		    If `exact` is True, the result is either an array of type
-		    `numpy.int64` (if `n` <= 35) or an object array of Python integers.
+		    ``numpy.int64`` (if `n` <= 35) or an object array of Python integers.
 		    If `exact` is False, the coefficients in the matrix are computed using
 		    `scipy.special.comb` with `exact=False`.  The result will be a floating
 		    point array, and for large `n`, the values in the array will not be the
@@ -491,7 +604,7 @@ package scipy.linalg.special_matrices;
 		
 		References
 		----------
-		.. [1] "Pascal matrix",  http://en.wikipedia.org/wiki/Pascal_matrix
+		.. [1] "Pascal matrix", https://en.wikipedia.org/wiki/Pascal_matrix
 		.. [2] Cohen, A. M., "The inverse of a Pascal matrix", Mathematical
 		       Gazette, 59(408), pp. 111-112, 1975.
 		
@@ -559,7 +672,8 @@ package scipy.linalg.special_matrices;
 		Create a Leslie matrix.
 		
 		Given the length n array of fecundity coefficients `f` and the length
-		n-1 array of survival coefficients `s`, return the associated Leslie matrix.
+		n-1 array of survival coefficients `s`, return the associated Leslie
+		matrix.
 		
 		Parameters
 		----------
@@ -638,7 +752,7 @@ package scipy.linalg.special_matrices;
 		
 		Notes
 		-----
-		See http://en.wikipedia.org/wiki/Pascal_matrix for more information
+		See https://en.wikipedia.org/wiki/Pascal_matrix for more information
 		about Pascal matrices.
 		
 		.. versionadded:: 0.11.0

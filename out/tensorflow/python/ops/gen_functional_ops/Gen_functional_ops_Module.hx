@@ -56,17 +56,18 @@ package tensorflow.python.ops.gen_functional_ops;
 		  else_branch: A function decorated with @Defun.
 		        A function that takes 'inputs' and returns a list of tensors, whose
 		        types are the same as what then_branch returns.
+		  output_shapes: An optional list of shapes (each a `tf.TensorShape` or list of `ints`). Defaults to `[]`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A list of `Tensor` objects of type `Tout`.
 	**/
-	static public function _if(cond:Dynamic, input:Dynamic, Tout:Dynamic, then_branch:Dynamic, else_branch:Dynamic, ?name:Dynamic):Dynamic;
+	static public function _if(cond:Dynamic, input:Dynamic, Tout:Dynamic, then_branch:Dynamic, else_branch:Dynamic, ?output_shapes:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function _if
 	**/
-	static public function _if_eager_fallback(cond:Dynamic, input:Dynamic, Tout:Dynamic, then_branch:Dynamic, else_branch:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function _if_eager_fallback(cond:Dynamic, input:Dynamic, Tout:Dynamic, then_branch:Dynamic, else_branch:Dynamic, ?output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public var _op_def_lib : Dynamic;
 	/**
 		output = input; While (Cond(output)) { output = Body(output) }
@@ -86,17 +87,18 @@ package tensorflow.python.ops.gen_functional_ops;
 		          A function that takes a list of tensors and returns another
 		          list of tensors. Both lists have the same types as specified
 		          by T.
+		  output_shapes: An optional list of shapes (each a `tf.TensorShape` or list of `ints`). Defaults to `[]`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A list of `Tensor` objects. Has the same type as `input`.
 	**/
-	static public function _while(input:Dynamic, cond:Dynamic, body:Dynamic, ?name:Dynamic):Dynamic;
+	static public function _while(input:Dynamic, cond:Dynamic, body:Dynamic, ?output_shapes:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function _while
 	**/
-	static public function _while_eager_fallback(input:Dynamic, cond:Dynamic, body:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function _while_eager_fallback(input:Dynamic, cond:Dynamic, body:Dynamic, ?output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Decorator for marking endpoints deprecated.
 		
@@ -147,17 +149,20 @@ package tensorflow.python.ops.gen_functional_ops;
 		          another list of tensors. Input and output types are specified by 'Tin'
 		          and 'Tout'. The function body of f will be placed and partitioned across
 		          devices, setting this op apart from the regular Call op.
+		  config: An optional `string`. Defaults to `""`.
+		  config_proto: An optional `string`. Defaults to `""`.
+		  executor_type: An optional `string`. Defaults to `""`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A list of `Tensor` objects of type `Tout`.
 	**/
-	static public function partitioned_call(args:Dynamic, Tout:Dynamic, f:Dynamic, ?name:Dynamic):Dynamic;
+	static public function partitioned_call(args:Dynamic, Tout:Dynamic, f:Dynamic, ?config:Dynamic, ?config_proto:Dynamic, ?executor_type:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function partitioned_call
 	**/
-	static public function partitioned_call_eager_fallback(args:Dynamic, Tout:Dynamic, f:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function partitioned_call_eager_fallback(args:Dynamic, Tout:Dynamic, f:Dynamic, ?config:Dynamic, ?config_proto:Dynamic, ?executor_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Runs function `f` on a remote device indicated by `target`.
 		
@@ -191,17 +196,20 @@ package tensorflow.python.ops.gen_functional_ops;
 		          and 'Tout'. The function body of f will be placed and partitioned across
 		          devices, setting this op apart from the regular Call op. This op is
 		          stateful.
+		  config: An optional `string`. Defaults to `""`.
+		  config_proto: An optional `string`. Defaults to `""`.
+		  executor_type: An optional `string`. Defaults to `""`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A list of `Tensor` objects of type `Tout`.
 	**/
-	static public function stateful_partitioned_call(args:Dynamic, Tout:Dynamic, f:Dynamic, ?name:Dynamic):Dynamic;
+	static public function stateful_partitioned_call(args:Dynamic, Tout:Dynamic, f:Dynamic, ?config:Dynamic, ?config_proto:Dynamic, ?executor_type:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function stateful_partitioned_call
 	**/
-	static public function stateful_partitioned_call_eager_fallback(args:Dynamic, Tout:Dynamic, f:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function stateful_partitioned_call_eager_fallback(args:Dynamic, Tout:Dynamic, f:Dynamic, ?config:Dynamic, ?config_proto:Dynamic, ?executor_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		output = cond ? then_branch(input) : else_branch(input)
 		

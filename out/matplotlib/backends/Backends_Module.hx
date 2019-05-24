@@ -24,10 +24,7 @@ package matplotlib.backends;
 	static public var _log : Dynamic;
 	static public var backend : Dynamic;
 	/**
-		.. deprecated:: 3.0
-		    The pylab_setup function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		Return new_figure_manager, draw_if_interactive and show for pyplot.
+		[*Deprecated*] Return new_figure_manager, draw_if_interactive and show for pyplot.
 		
 		This provides the backend-specific functions that are used by pyplot to
 		abstract away the difference between backends.
@@ -51,6 +48,11 @@ package matplotlib.backends;
 		
 		show : function
 		    Show (and possibly block) any unshown figures.
+		
+		Notes
+		-----
+		.. deprecated:: 3.0
+		   
 	**/
 	static public function pylab_setup(?name:Dynamic):Dynamic;
 }

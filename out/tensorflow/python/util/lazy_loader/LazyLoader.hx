@@ -42,11 +42,11 @@ package tensorflow.python.util.lazy_loader;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(local_name:Dynamic, parent_module_globals:Dynamic, name:Dynamic):Dynamic;
+	public function ___init__(local_name:Dynamic, parent_module_globals:Dynamic, name:Dynamic, ?warning:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(local_name:Dynamic, parent_module_globals:Dynamic, name:Dynamic):Void;
+	public function new(local_name:Dynamic, parent_module_globals:Dynamic, name:Dynamic, ?warning:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -105,5 +105,8 @@ package tensorflow.python.util.lazy_loader;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Load the module and insert it into the parent's globals.
+	**/
 	public function _load():Dynamic;
 }

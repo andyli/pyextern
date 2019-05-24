@@ -1898,7 +1898,7 @@ package tensorflow.contrib.layers;
 	/**
 		Creates a _TargetColumn for multi class single label classification. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
 		Instructions for updating:
 		This file will be removed after the deprecation date.Please switch to third_party/tensorflow/contrib/learn/python/learn/estimators/head.py
 		
@@ -2182,7 +2182,7 @@ package tensorflow.contrib.layers;
 	/**
 		Creates a _TargetColumn for linear regression. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
 		Instructions for updating:
 		This file will be removed after the deprecation date.Please switch to third_party/tensorflow/contrib/learn/python/learn/estimators/head.py
 		
@@ -2483,7 +2483,7 @@ package tensorflow.contrib.layers;
 	/**
 		Builds inputs for sequence models from `FeatureColumn`s. (experimental)
 		
-		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
+		Warning: THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
 		
 		See documentation for `input_from_feature_columns`. The following types of
 		`FeatureColumn` are permitted in `feature_columns`: `_OneHotColumn`,

@@ -26,7 +26,6 @@ package torch.nn.grad;
 		    padding (int or tuple, optional): Zero-padding added to both sides of the input. Default: 0
 		    dilation (int or tuple, optional): Spacing between kernel elements. Default: 1
 		    groups (int, optional): Number of blocked connections from input channels to output channels. Default: 1
-		    bias: optional bias tensor (out_channels). Default: None
 		
 		Examples::
 		
@@ -37,7 +36,7 @@ package torch.nn.grad;
 		    >>> grad_input = torch.autograd.grad(output, input, grad_output)
 		    >>> F.grad.conv1d_input(input.shape, weight, grad_output)
 	**/
-	static public function conv1d_input(input_size:Dynamic, weight:Dynamic, grad_output:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic, ?bias:Dynamic):Dynamic;
+	static public function conv1d_input(input_size:Dynamic, weight:Dynamic, grad_output:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic):Dynamic;
 	/**
 		Computes the gradient of conv1d with respect to the weight of the convolution.
 		
@@ -49,7 +48,6 @@ package torch.nn.grad;
 		    padding (int or tuple, optional): Zero-padding added to both sides of the input. Default: 0
 		    dilation (int or tuple, optional): Spacing between kernel elements. Default: 1
 		    groups (int, optional): Number of blocked connections from input channels to output channels. Default: 1
-		    bias: optional bias tensor (out_channels). Default: None
 		
 		Examples::
 		
@@ -60,7 +58,7 @@ package torch.nn.grad;
 		    >>> grad_weight = torch.autograd.grad(output, filter, grad_output)
 		    >>> F.grad.conv1d_weight(input, weight.shape, grad_output)
 	**/
-	static public function conv1d_weight(input:Dynamic, weight_size:Dynamic, grad_output:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic, ?bias:Dynamic):Dynamic;
+	static public function conv1d_weight(input:Dynamic, weight_size:Dynamic, grad_output:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic):Dynamic;
 	/**
 		Computes the gradient of conv2d with respect to the input of the convolution.
 		This is same as the 2D transposed convolution operator under the hood but requires
@@ -74,7 +72,6 @@ package torch.nn.grad;
 		    padding (int or tuple, optional): Zero-padding added to both sides of the input. Default: 0
 		    dilation (int or tuple, optional): Spacing between kernel elements. Default: 1
 		    groups (int, optional): Number of blocked connections from input channels to output channels. Default: 1
-		    bias: optional bias tensor (out_channels). Default: None
 		
 		Examples::
 		
@@ -85,7 +82,7 @@ package torch.nn.grad;
 		    >>> grad_input = torch.autograd.grad(output, input, grad_output)
 		    >>> F.grad.conv2d_input(input.shape, weight, grad_output)
 	**/
-	static public function conv2d_input(input_size:Dynamic, weight:Dynamic, grad_output:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic, ?bias:Dynamic):Dynamic;
+	static public function conv2d_input(input_size:Dynamic, weight:Dynamic, grad_output:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic):Dynamic;
 	/**
 		Computes the gradient of conv2d with respect to the weight of the convolution.
 		
@@ -97,7 +94,6 @@ package torch.nn.grad;
 		    padding (int or tuple, optional): Zero-padding added to both sides of the input. Default: 0
 		    dilation (int or tuple, optional): Spacing between kernel elements. Default: 1
 		    groups (int, optional): Number of blocked connections from input channels to output channels. Default: 1
-		    bias: optional bias tensor (out_channels). Default: None
 		
 		Examples::
 		
@@ -108,7 +104,7 @@ package torch.nn.grad;
 		    >>> grad_weight = torch.autograd.grad(output, filter, grad_output)
 		    >>> F.grad.conv2d_weight(input, weight.shape, grad_output)
 	**/
-	static public function conv2d_weight(input:Dynamic, weight_size:Dynamic, grad_output:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic, ?bias:Dynamic):Dynamic;
+	static public function conv2d_weight(input:Dynamic, weight_size:Dynamic, grad_output:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic):Dynamic;
 	/**
 		Computes the gradient of conv3d with respect to the input of the convolution.
 		This is same as the 3D transposed convolution operator under the hood but requires
@@ -122,7 +118,6 @@ package torch.nn.grad;
 		    padding (int or tuple, optional): Zero-padding added to both sides of the input. Default: 0
 		    dilation (int or tuple, optional): Spacing between kernel elements. Default: 1
 		    groups (int, optional): Number of blocked connections from input channels to output channels. Default: 1
-		    bias: optional bias tensor (out_channels). Default: None
 		
 		Examples::
 		
@@ -133,7 +128,7 @@ package torch.nn.grad;
 		    >>> grad_input = torch.autograd.grad(output, input, grad_output)
 		    >>> F.grad.conv3d_input(input.shape, weight, grad_output)
 	**/
-	static public function conv3d_input(input_size:Dynamic, weight:Dynamic, grad_output:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic, ?bias:Dynamic):Dynamic;
+	static public function conv3d_input(input_size:Dynamic, weight:Dynamic, grad_output:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic):Dynamic;
 	/**
 		Computes the gradient of conv3d with respect to the weight of the convolution.
 		
@@ -145,7 +140,6 @@ package torch.nn.grad;
 		    padding (int or tuple, optional): Zero-padding added to both sides of the input. Default: 0
 		    dilation (int or tuple, optional): Spacing between kernel elements. Default: 1
 		    groups (int, optional): Number of blocked connections from input channels to output channels. Default: 1
-		    bias: optional bias tensor (out_channels). Default: None
 		
 		Examples::
 		
@@ -156,5 +150,5 @@ package torch.nn.grad;
 		    >>> grad_weight = torch.autograd.grad(output, weight, grad_output)
 		    >>> F.grad.conv3d_weight(input, weight.shape, grad_output)
 	**/
-	static public function conv3d_weight(input:Dynamic, weight_size:Dynamic, grad_output:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic, ?bias:Dynamic):Dynamic;
+	static public function conv3d_weight(input:Dynamic, weight_size:Dynamic, grad_output:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic):Dynamic;
 }

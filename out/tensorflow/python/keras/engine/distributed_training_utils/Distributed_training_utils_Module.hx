@@ -9,6 +9,22 @@ package tensorflow.python.keras.engine.distributed_training_utils;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Creates a variable and assigns the value of the numpy array to it.
+		
+		Args:
+		  distribution_strategy: The DistributionStrategy used to compile the model.
+		  input_array: The input numpy array whose value will be assigned to the
+		    variable we create.
+		
+		Returns:
+		  The variable to which we will copy the value of the input numpy array.
+	**/
+	static public function _get_var_for_numpy(distribution_strategy:Dynamic, input_array:Dynamic):Dynamic;
+	/**
+		Utility to wait for variables to be initialized.
+	**/
+	static public function _wait_for_variable_initialization(session:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Configure session config and create a session with it.
@@ -34,23 +50,53 @@ package tensorflow.python.keras.engine.distributed_training_utils;
 	static public function flatten_perdevice_values(distribution_strategy:Dynamic, perdevice_values:Dynamic):Dynamic;
 	static public function get_batch_dimension(iterator:Dynamic):Dynamic;
 	/**
+		Returns the CPU device of the TPU host or the default CPU device string.
+		
+		Args:
+		  distribution_strategy: The DistributionStrategy used to compile the model.
+		
+		Returns:
+		  A device string which is the TPU host's CPU device in case of
+		  TPUDistributionStrategy or the default CPU device string in all other
+		  cases.
+		
+		Raises:
+		  NotImplementedError: We currently don't support copying numpy data to
+		  multiple hosts in the case of Cloud TPU pods.
+	**/
+	static public function get_cpu_device(distribution_strategy:Dynamic):Dynamic;
+	/**
 		Calculate the number of batches and steps/steps_per_epoch.
 		
 		Args:
+		  distribution_strategy: The DistributionStrategy used to compile the model.
 		  first_x_value: This is the first input numpy array that is passed in as the
 		    model input.
-		  batch_size: The specified batch_size or the default batch_size of 32.
-		  current_strategy: The current DistributionStrategy used to compile the
-		    model.
+		  steps:  The specified number of steps.
+		  batch_size: The specified batch_size.
+		  is_training: Boolean to relax the constraints on consuming all the training
+		    samples to keep compatibility till we support partial batches.
 		
 		Returns:
-		  The steps or steps_per_epoch argument depending on if a user is
-		  calling `fit`, `evaluate` or `predict`.
+		  steps: The steps or steps_per_epoch argument depending on if a user is
+		      calling `fit`, `evaluate` or `predict`. If the is_training flag is set
+		      we don't require the number of samples to be used completely.
+		  batch_size: The batch size to be used in model iterations.
 		
 		Raises:
 		  ValueError: If the number of batches or steps evaluates to 0.
 	**/
-	static public function get_input_batch_params(first_x_value:Dynamic, batch_size:Dynamic, current_strategy:Dynamic):Dynamic;
+	static public function get_input_params(distribution_strategy:Dynamic, first_x_value:Dynamic, steps:Dynamic, batch_size:Dynamic, ?is_training:Dynamic):Dynamic;
+	static public function get_var_for_numpy(distribution_strategy:Dynamic, x:Dynamic):Dynamic;
+	static public function global_batch_size_supported(distribution_strategy:Dynamic):Dynamic;
+	/**
+		Initialize or restore variables or wait for variables to be initialized.
+	**/
+	static public function init_restore_or_wait_for_variables():Dynamic;
+	/**
+		We're executing TPU Strategy.
+	**/
+	static public function is_tpu_strategy(strategy:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Sets the weights of the replicated models.
@@ -91,7 +137,7 @@ package tensorflow.python.keras.engine.distributed_training_utils;
 		Returns:
 		  Values of each of the PerDevice parameters.
 	**/
-	static public function unwrap_values(distribution_strategy:Dynamic, grouped_inputs:Dynamic, grouped_outputs:Dynamic, grouped_updates:Dynamic, grouped_session_args:Dynamic, ?with_loss_tensor:Dynamic):Dynamic;
+	static public function unwrap_values(distribution_strategy:Dynamic, grouped_inputs:Dynamic, grouped_outputs:Dynamic, ?grouped_updates:Dynamic, ?grouped_session_args:Dynamic, ?with_loss_tensor:Dynamic):Dynamic;
 	static public function validate_all_tensor_shapes(x:Dynamic, x_values:Dynamic):Dynamic;
 	static public function validate_all_tensor_types(x:Dynamic, x_values:Dynamic):Dynamic;
 	/**
@@ -99,6 +145,9 @@ package tensorflow.python.keras.engine.distributed_training_utils;
 		
 		Args:
 		  input_callbacks: List of callbacks passed by the user to fit.
+		  optimizer: Optimizer instance used to train the model.
+		  current_strategy: The DistributionStrategy used to distribute training
+		    and validation.
 		
 		Raises:
 		  ValueError: If `LearningRateScheduler` or `ReduceLROnPlateau` is one of the
@@ -106,7 +155,7 @@ package tensorflow.python.keras.engine.distributed_training_utils;
 		  ValueError: If `histogram_freq` or `write_grads` is one of the parameters
 		      passed as part of the TensorBoard callback.
 	**/
-	static public function validate_callbacks(input_callbacks:Dynamic):Dynamic;
+	static public function validate_callbacks(input_callbacks:Dynamic, optimizer:Dynamic, current_strategy:Dynamic):Dynamic;
 	/**
 		Validate all the components of a DistributedValue Dataset input.
 		
@@ -121,6 +170,9 @@ package tensorflow.python.keras.engine.distributed_training_utils;
 		      `MirroredStrategy` this is a PerDevice object with a tensor for each
 		      device set in the dict. y can also be a tuple or dict. The keys of the
 		      dict should match the names of the output layers of the model.
+		  sample_weights: Sample weights Dataset DistributedValue object. For example,
+		      when we use `MirroredStrategy` this is a PerDevice object with a tensor
+		      for each device set in the dict.
 		
 		Returns:
 		  The unwrapped values list of the x and y DistributedValues inputs.
@@ -130,7 +182,7 @@ package tensorflow.python.keras.engine.distributed_training_utils;
 		      or if x and y contain elements that are not tensors or if x and y
 		      contain elements that have a shape or dtype mismatch.
 	**/
-	static public function validate_distributed_dataset_inputs(distribution_strategy:Dynamic, x:Dynamic, y:Dynamic):Dynamic;
+	static public function validate_distributed_dataset_inputs(distribution_strategy:Dynamic, x:Dynamic, y:Dynamic, ?sample_weights:Dynamic):Dynamic;
 	/**
 		Validate inputs when using DistributionStrategy.
 		
@@ -141,7 +193,8 @@ package tensorflow.python.keras.engine.distributed_training_utils;
 		    compiled.
 		
 		Raises:
-		  ValueError: if input is not a Dataset or a numpy array.
+		  ValueError: if input is not a Dataset or a numpy array(when we use
+		    MirroredStrategy).
 	**/
 	static public function validate_inputs(x:Dynamic, y:Dynamic, distribution_strategy:Dynamic):Dynamic;
 	/**

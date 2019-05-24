@@ -162,12 +162,6 @@ package scipy.optimize._differentiable_functions;
 		array([ 2.])
 	**/
 	static public function approx_derivative(fun:Dynamic, x0:Dynamic, ?method:Dynamic, ?rel_step:Dynamic, ?f0:Dynamic, ?bounds:Dynamic, ?sparsity:Dynamic, ?as_linear_operator:Dynamic, ?args:Dynamic, ?kwargs:Dynamic):Dynamic;
-	/**
-		Deep copy operation on arbitrary Python objects.
-		
-		See the module's __doc__ string for more info.
-	**/
-	static public function deepcopy(x:Dynamic, ?memo:Dynamic, ?_nil:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Group columns of a 2-d matrix for sparse finite differencing [1]_.

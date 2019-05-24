@@ -42,7 +42,11 @@ package tensorflow.python.training.checkpoint_management;
 	static public function _prefix_to_checkpoint_path(prefix:Dynamic, format_version:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Checks whether a V1 or V2 checkpoint exists with the specified prefix.
+		Checks whether a V1 or V2 checkpoint exists with the specified prefix. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use standard file APIs to check for files with this prefix.
 		
 		This is the recommended way to check if a checkpoint exists, since it takes
 		into account the naming difference between V1 and V2 formats.
@@ -84,7 +88,11 @@ package tensorflow.python.training.checkpoint_management;
 	**/
 	static public function generate_checkpoint_state_proto(save_dir:Dynamic, model_checkpoint_path:Dynamic, ?all_model_checkpoint_paths:Dynamic, ?all_model_checkpoint_timestamps:Dynamic, ?last_preserved_timestamp:Dynamic):Dynamic;
 	/**
-		Returns the mtimes (modification timestamps) of the checkpoints.
+		Returns the mtimes (modification timestamps) of the checkpoints. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use standard file utilities to get mtimes.
 		
 		Globs for the checkpoints pointed to by `checkpoint_prefixes`.  If the files
 		exist, collect their mtime.  Both V2 and V1 checkpoints are considered, in
@@ -146,7 +154,11 @@ package tensorflow.python.training.checkpoint_management;
 	static public function meta_graph_filename(checkpoint_filename:Dynamic, ?meta_graph_suffix:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Removes a checkpoint given by `checkpoint_prefix`.
+		Removes a checkpoint given by `checkpoint_prefix`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use standard file APIs to delete files with this prefix.
 		
 		Args:
 		  checkpoint_prefix: The prefix of a V1 or V2 checkpoint. Typically the result
@@ -159,7 +171,11 @@ package tensorflow.python.training.checkpoint_management;
 	static public function remove_checkpoint(checkpoint_prefix:Dynamic, ?checkpoint_format_version:Dynamic, ?meta_graph_suffix:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Updates the content of the 'checkpoint' file.
+		Updates the content of the 'checkpoint' file. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.train.CheckpointManager to manage checkpoints rather than manually editing the Checkpoint proto.
 		
 		This updates the checkpoint file containing a CheckpointState
 		proto.

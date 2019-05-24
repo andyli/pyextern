@@ -43,15 +43,23 @@ package tensorflow.python.data.experimental.ops.stats_ops;
 	static public function latency_stats(tag:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Set the given `stats_aggregator` for aggregating the input dataset stats.
+		Set the given `stats_aggregator` for aggregating the input dataset stats. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use `tf.data.experimental.StatsOptions`.
 		
 		Args:
-		  stats_aggregator: A `tf.data.experimental.StatsAggregator` object.
+		  stats_aggregator: A `tf.contrib.data.StatsAggregator` object.
+		  prefix: (Optional) String, all statistics recorded for the input `dataset`
+		    will have given `prefix` prepend with the name.
+		  counter_prefix: (Optional) String, all statistics recorded as `counters`
+		    will have the given `prefix` for the counter. Defaults to "/tensorflow".
 		
 		Returns:
 		  A `Dataset` transformation function, which can be passed to
 		  `tf.data.Dataset.apply`.
 	**/
-	static public function set_stats_aggregator(stats_aggregator:Dynamic):Dynamic;
+	static public function set_stats_aggregator(stats_aggregator:Dynamic, ?prefix:Dynamic, ?counter_prefix:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

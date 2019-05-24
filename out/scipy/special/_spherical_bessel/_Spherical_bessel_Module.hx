@@ -100,8 +100,8 @@ package scipy.special._spherical_bessel;
 		
 		References
 		----------
-		.. [1] http://dlmf.nist.gov/10.47.E7
-		.. [2] http://dlmf.nist.gov/10.51.E5
+		.. [1] https://dlmf.nist.gov/10.47.E7
+		.. [2] https://dlmf.nist.gov/10.51.E5
 	**/
 	static public function spherical_in(n:Dynamic, z:Dynamic, ?derivative:Dynamic):Dynamic;
 	/**
@@ -146,9 +146,9 @@ package scipy.special._spherical_bessel;
 		
 		References
 		----------
-		.. [1] http://dlmf.nist.gov/10.47.E3
-		.. [2] http://dlmf.nist.gov/10.51.E1
-		.. [3] http://dlmf.nist.gov/10.51.E2
+		.. [1] https://dlmf.nist.gov/10.47.E3
+		.. [2] https://dlmf.nist.gov/10.51.E1
+		.. [3] https://dlmf.nist.gov/10.51.E2
 	**/
 	static public function spherical_jn(n:Dynamic, z:Dynamic, ?derivative:Dynamic):Dynamic;
 	/**
@@ -191,8 +191,8 @@ package scipy.special._spherical_bessel;
 		
 		References
 		----------
-		.. [1] http://dlmf.nist.gov/10.47.E9
-		.. [2] http://dlmf.nist.gov/10.51.E5
+		.. [1] https://dlmf.nist.gov/10.47.E9
+		.. [2] https://dlmf.nist.gov/10.51.E5
 	**/
 	static public function spherical_kn(n:Dynamic, z:Dynamic, ?derivative:Dynamic):Dynamic;
 	/**
@@ -236,9 +236,9 @@ package scipy.special._spherical_bessel;
 		
 		References
 		----------
-		.. [1] http://dlmf.nist.gov/10.47.E4
-		.. [2] http://dlmf.nist.gov/10.51.E1
-		.. [3] http://dlmf.nist.gov/10.51.E2
+		.. [1] https://dlmf.nist.gov/10.47.E4
+		.. [2] https://dlmf.nist.gov/10.51.E1
+		.. [3] https://dlmf.nist.gov/10.51.E2
 	**/
 	static public function spherical_yn(n:Dynamic, z:Dynamic, ?derivative:Dynamic):Dynamic;
 }

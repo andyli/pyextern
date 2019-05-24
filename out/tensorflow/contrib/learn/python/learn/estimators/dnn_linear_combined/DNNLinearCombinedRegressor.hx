@@ -8,7 +8,21 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn_linear_combined;
 		interface.
 	**/
 	static public function _Config(?master:Dynamic, ?num_cores:Dynamic, ?log_device_placement:Dynamic, ?gpu_memory_fraction:Dynamic, ?tf_random_seed:Dynamic, ?save_summary_steps:Dynamic, ?save_checkpoints_secs:Dynamic, ?save_checkpoints_steps:Dynamic, ?keep_checkpoint_max:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?log_step_count_steps:Dynamic, ?protocol:Dynamic, ?evaluation_master:Dynamic, ?model_dir:Dynamic, ?session_config:Dynamic):Dynamic;
-	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var __abstractmethods__ : Dynamic;
+	/**
+		Metaclass for defining Abstract Base Classes (ABCs).
+		
+		Use this metaclass to create an ABC.  An ABC can be subclassed
+		directly, and then acts as a mix-in class.  You can also register
+		unrelated concrete classes (even built-in classes) and unrelated
+		ABCs as 'virtual subclasses' -- these and their descendants will
+		be considered subclasses of the registering ABC by the built-in
+		issubclass() function, but the registering ABC won't show up in
+		their MRO (Method Resolution Order) nor will method
+		implementations defined by the registering ABC be callable (not
+		even via super()).
+	**/
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -45,9 +59,9 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn_linear_combined;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initializes a DNNLinearCombinedRegressor instance. (deprecated arguments)
+		Initializes a DNNLinearCombinedRegressor instance. (deprecated argument values)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2017-04-15.
+		Warning: SOME ARGUMENT VALUES ARE DEPRECATED: `(fix_global_step_increment_bug=False)`. They will be removed after 2017-04-15.
 		Instructions for updating:
 		Please set fix_global_step_increment_bug=True and update training steps in your pipeline. See pydoc for details.
 		
@@ -110,9 +124,9 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn_linear_combined;
 	@:native("__init__")
 	public function ___init__(?model_dir:Dynamic, ?weight_column_name:Dynamic, ?linear_feature_columns:Dynamic, ?linear_optimizer:Dynamic, ?_joint_linear_weights:Dynamic, ?dnn_feature_columns:Dynamic, ?dnn_optimizer:Dynamic, ?dnn_hidden_units:Dynamic, ?dnn_activation_fn:Dynamic, ?dnn_dropout:Dynamic, ?gradient_clip_norm:Dynamic, ?enable_centered_bias:Dynamic, ?label_dimension:Dynamic, ?config:Dynamic, ?feature_engineering_fn:Dynamic, ?embedding_lr_multipliers:Dynamic, ?input_layer_min_slice_size:Dynamic, ?fix_global_step_increment_bug:Dynamic):Dynamic;
 	/**
-		Initializes a DNNLinearCombinedRegressor instance. (deprecated arguments)
+		Initializes a DNNLinearCombinedRegressor instance. (deprecated argument values)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2017-04-15.
+		Warning: SOME ARGUMENT VALUES ARE DEPRECATED: `(fix_global_step_increment_bug=False)`. They will be removed after 2017-04-15.
 		Instructions for updating:
 		Please set fix_global_step_increment_bug=True and update training steps in your pipeline. See pydoc for details.
 		
@@ -188,20 +202,6 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn_linear_combined;
 		Return self<value.
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
-	/**
-		Metaclass for defining Abstract Base Classes (ABCs).
-		
-		Use this metaclass to create an ABC.  An ABC can be subclassed
-		directly, and then acts as a mix-in class.  You can also register
-		unrelated concrete classes (even built-in classes) and unrelated
-		ABCs as 'virtual subclasses' -- these and their descendants will
-		be considered subclasses of the registering ABC by the built-in
-		issubclass() function, but the registering ABC won't show up in
-		their MRO (Method Resolution Order) nor will method
-		implementations defined by the registering ABC be callable (not
-		even via super()).
-	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -249,6 +249,10 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn_linear_combined;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _abc_cache : Dynamic;
+	static public var _abc_negative_cache : Dynamic;
+	static public var _abc_negative_cache_version : Dynamic;
+	static public var _abc_registry : Dynamic;
 	/**
 		Calls model function with support of 2, 3 or 4 arguments.
 		
@@ -303,7 +307,7 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn_linear_combined;
 	/**
 		Returns feature parser for given example batch using features info. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-23.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-23.
 		Instructions for updating:
 		The signature of the input_fn accepted by export is changing to be consistent with what's used by tf.Learn Estimator's train/evaluate, which makes this function useless. This will be removed after the deprecation date.
 		
@@ -362,7 +366,7 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn_linear_combined;
 	/**
 		See BaseEstimator.export. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
 		Instructions for updating:
 		Please use Estimator.export_savedmodel() instead.
 	**/
@@ -406,7 +410,7 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn_linear_combined;
 	/**
 		See `Trainable`. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-12-01.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(batch_size, x, y)`. They will be removed after 2016-12-01.
 		Instructions for updating:
 		Estimator is decoupled from Scikit Learn interface by moving into
 		separate class SKCompat. Arguments x, y and batch_size are only
@@ -465,7 +469,7 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn_linear_combined;
 	/**
 		Incremental fit on a batch of samples. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-12-01.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(batch_size, x, y)`. They will be removed after 2016-12-01.
 		Instructions for updating:
 		Estimator is decoupled from Scikit Learn interface by moving into
 		separate class SKCompat. Arguments x, y and batch_size are only
@@ -506,15 +510,15 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn_linear_combined;
 	**/
 	public function partial_fit(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?steps:Dynamic, ?batch_size:Dynamic, ?monitors:Dynamic):Dynamic;
 	/**
-		Returns predictions for given features. (deprecated arguments) (deprecated arguments)
+		Returns predictions for given features. (deprecated argument values) (deprecated argument values)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-09-15.
+		Warning: SOME ARGUMENT VALUES ARE DEPRECATED: `(as_iterable=False)`. They will be removed after 2016-09-15.
 		Instructions for updating:
 		The default behavior of predict() is changing. The default value for
 		as_iterable will change to True, and then the flag will be removed
 		altogether. The behavior of this flag is described below.
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2017-03-01.
+		Warning: SOME ARGUMENT VALUES ARE DEPRECATED: `(outputs=None)`. They will be removed after 2017-03-01.
 		Instructions for updating:
 		Please switch to predict_scores, or set `outputs` argument.
 		
@@ -540,9 +544,9 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn_linear_combined;
 	**/
 	public function predict(?x:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?outputs:Dynamic, ?as_iterable:Dynamic):Dynamic;
 	/**
-		Returns predicted scores for given features. (deprecated arguments)
+		Returns predicted scores for given features. (deprecated argument values)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-09-15.
+		Warning: SOME ARGUMENT VALUES ARE DEPRECATED: `(as_iterable=False)`. They will be removed after 2016-09-15.
 		Instructions for updating:
 		The default behavior of predict() is changing. The default value for
 		as_iterable will change to True, and then the flag will be removed

@@ -9,9 +9,64 @@ package matplotlib.cbook.deprecation;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _generate_deprecation_message(since:Dynamic, ?message:Dynamic, ?name:Dynamic, ?alternative:Dynamic, ?pending:Dynamic, ?obj_type:Dynamic, ?addendum:Dynamic, ?removal:Dynamic):Dynamic;
 	/**
-		Decorator to mark a function or a class as deprecated.
+		Decorator indicating that parameter *name* of *func* is being deprecated.
+		
+		The actual implementation of *func* should keep the *name* parameter in its
+		signature.
+		
+		Parameters that come after the deprecated parameter effectively become
+		keyword-only (as they cannot be passed positionally without triggering the
+		DeprecationWarning on the deprecated parameter), and should be marked as
+		such after the deprecation period has passed and the deprecated parameter
+		is removed.
+		
+		Examples
+		--------
+		
+		::
+		    @_delete_parameter("3.1", "unused")
+		    def func(used_arg, other_arg, unused, more_args): ...
+	**/
+	static public function _delete_parameter(since:Dynamic, name:Dynamic, ?func:Dynamic):Dynamic;
+	static public var _deprecated_parameter : Dynamic;
+	static public function _generate_deprecation_warning(since:Dynamic, ?message:Dynamic, ?name:Dynamic, ?alternative:Dynamic, ?pending:Dynamic, ?obj_type:Dynamic, ?addendum:Dynamic, ?removal:Dynamic):Dynamic;
+	/**
+		Decorator indicating that passing parameter *name* (or any of the following
+		ones) positionally to *func* is being deprecated.
+		
+		Note that this decorator **cannot** be applied to a function that has a
+		pyplot-level wrapper, as the wrapper always pass all arguments by keyword.
+		If it is used, users will see spurious DeprecationWarnings every time they
+		call the pyplot wrapper.
+	**/
+	static public function _make_keyword_only(since:Dynamic, name:Dynamic, ?func:Dynamic):Dynamic;
+	/**
+		Decorator indicating that parameter *old* of *func* is renamed to *new*.
+		
+		The actual implementation of *func* should use *new*, not *old*.  If *old*
+		is passed to *func*, a DeprecationWarning is emitted, and its value is
+		used, even if *new* is also passed by keyword (this is to simplify pyplot
+		wrapper functions, which always pass *new* explicitly to the Axes method).
+		If *new* is also passed but positionally, a TypeError will be raised by the
+		underlying function during argument binding.
+		
+		Examples
+		--------
+		
+		::
+		    @_rename_parameter("3.1", "bad_name", "good_name")
+		    def func(good_name): ...
+	**/
+	static public function _rename_parameter(since:Dynamic, old:Dynamic, _new:Dynamic, ?func:Dynamic):Dynamic;
+	static public function _suppress_matplotlib_deprecation_warning():Dynamic;
+	/**
+		Decorator to mark a function, a class, or a property as deprecated.
+		
+		When deprecating a classmethod, a staticmethod, or a property, the
+		``@deprecated`` decorator should go *under* the ``@classmethod``, etc.
+		decorator (i.e., `deprecated` should directly decorate the underlying
+		callable).
 		
 		Parameters
 		----------
@@ -35,7 +90,7 @@ package matplotlib.cbook.deprecation;
 		
 		        def new_function():
 		            ...
-		        oldFunction = new_function
+		        old_function = new_function
 		
 		alternative : str, optional
 		    An alternative API that the user may use in place of the deprecated
@@ -46,14 +101,18 @@ package matplotlib.cbook.deprecation;
 		    If True, uses a PendingDeprecationWarning instead of a
 		    DeprecationWarning.  Cannot be used together with *removal*.
 		
+		obj_type : str, optional
+		    The object type being deprecated; by default, 'function' if decorating
+		    a function and 'class' if decorating a class.
+		
+		addendum : str, optional
+		    Additional text appended directly to the final message.
+		
 		removal : str, optional
 		    The expected removal version.  With the default (an empty string), a
 		    removal version is automatically computed from *since*.  Set to other
 		    Falsy values to not schedule a removal date.  Cannot be used together
 		    with *pending*.
-		
-		addendum : str, optional
-		    Additional text appended directly to the final message.
 		
 		Examples
 		--------
@@ -93,17 +152,17 @@ package matplotlib.cbook.deprecation;
 		    If True, uses a PendingDeprecationWarning instead of a
 		    DeprecationWarning.  Cannot be used together with *removal*.
 		
-		removal : str, optional
-		    The expected removal version.  With the default (an empty string), a
-		    removal version is automatically computed from *since*.  Set to other
-		    Falsy values to not schedule a removal date.  Cannot be used together
-		    with *pending*.
-		
 		obj_type : str, optional
 		    The object type being deprecated.
 		
 		addendum : str, optional
 		    Additional text appended directly to the final message.
+		
+		removal : str, optional
+		    The expected removal version.  With the default (an empty string), a
+		    removal version is automatically computed from *since*.  Set to other
+		    Falsy values to not schedule a removal date.  Cannot be used together
+		    with *pending*.
 		
 		Examples
 		--------

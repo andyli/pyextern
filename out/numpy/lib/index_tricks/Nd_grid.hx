@@ -58,7 +58,6 @@ package numpy.lib.index_tricks;
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
-	public function __len__():Dynamic;
 	/**
 		Return self<value.
 	**/

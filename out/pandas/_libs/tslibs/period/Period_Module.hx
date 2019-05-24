@@ -1,20 +1,16 @@
 /* This file is generated, do not edit! */
 package pandas._libs.tslibs.period;
 @:pythonImport("pandas._libs.tslibs.period") extern class Period_Module {
+	static public var DIFFERENT_FREQ : Dynamic;
 	static public var MONTH_NUMBERS : Dynamic;
-	static public var NAT_SENTINEL : Dynamic;
-	static public var NaT : Dynamic;
-	static public var PY2 : Dynamic;
-	static public var _DIFFERENT_FREQ : Dynamic;
-	static public var _DIFFERENT_FREQ_INDEX : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
-	static public function _quarter_to_myear(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _validate_end_alias(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Convert array of datetime64 values (passed in as 'i8' dtype) to a set of
@@ -24,7 +20,6 @@ package pandas._libs.tslibs.period;
 	static public function extract_freq(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function extract_ordinals(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function get_period_field_arr(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var iNaT : Dynamic;
 	static public var nat_strings : Dynamic;
 	/**
 		Try hard to parse datetime string, leveraging dateutil plus some extra
@@ -82,4 +77,25 @@ package pandas._libs.tslibs.period;
 		periods per period convention.
 	**/
 	static public function periodarr_to_dt64arr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		A quarterly frequency defines a "year" which may not coincide with
+		the calendar-year.  Find the calendar-year and calendar-month associated
+		with the given year and quarter under the `freq`-derived calendar.
+		
+		Parameters
+		----------
+		year : int
+		quarter : int
+		freq : DateOffset
+		
+		Returns
+		-------
+		year : int
+		month : int
+		
+		See Also
+		--------
+		Period.qyear
+	**/
+	static public function quarter_to_myear(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

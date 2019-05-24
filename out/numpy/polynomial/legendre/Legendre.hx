@@ -83,7 +83,7 @@ package numpy.polynomial.legendre;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __mod__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(other:Dynamic):Dynamic;
@@ -167,7 +167,7 @@ package numpy.polynomial.legendre;
 		
 		See Also
 		--------
-		legsub, legmul, legdiv, legpow
+		legsub, legmulx, legmul, legdiv, legpow
 		
 		Notes
 		-----
@@ -266,7 +266,7 @@ package numpy.polynomial.legendre;
 		
 		See Also
 		--------
-		legadd, legsub, legmul, legpow
+		legadd, legsub, legmulx, legmul, legpow
 		
 		Notes
 		-----
@@ -403,7 +403,7 @@ package numpy.polynomial.legendre;
 		References
 		----------
 		.. [1] Wikipedia, "Curve fitting",
-		       http://en.wikipedia.org/wiki/Curve_fitting
+		       https://en.wikipedia.org/wiki/Curve_fitting
 		
 		Examples
 		--------
@@ -616,7 +616,7 @@ package numpy.polynomial.legendre;
 		
 		See Also
 		--------
-		legadd, legsub, legdiv, legpow
+		legadd, legsub, legmulx, legdiv, legpow
 		
 		Notes
 		-----
@@ -660,12 +660,15 @@ package numpy.polynomial.legendre;
 		
 		See Also
 		--------
-		legadd, legsub, legmul, legdiv
+		legadd, legsub, legmulx, legmul, legdiv
 		
 		Examples
 		--------
 	**/
 	static public function _pow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):numpy.Ndarray;
+	public function _repr_latex_():Dynamic;
+	static public function _repr_latex_scalar(x:Dynamic):Dynamic;
+	static public function _repr_latex_term(i:Dynamic, arg_str:Dynamic, needs_parens:Dynamic):Dynamic;
 	/**
 		Compute the roots of a Legendre series.
 		
@@ -728,7 +731,7 @@ package numpy.polynomial.legendre;
 		
 		See Also
 		--------
-		legadd, legmul, legdiv, legpow
+		legadd, legmulx, legmul, legdiv, legpow
 		
 		Notes
 		-----
@@ -837,6 +840,7 @@ package numpy.polynomial.legendre;
 		    all others zero.
 	**/
 	static public function basis(deg:Dynamic, ?domain:Dynamic, ?window:Dynamic):Dynamic;
+	static public var basis_name : Dynamic;
 	/**
 		Convert series to series of this class.
 		
@@ -1023,7 +1027,9 @@ package numpy.polynomial.legendre;
 		-------
 		new_series : series
 		    A series that represents the least squares fit to the data and
-		    has the domain specified in the call.
+		    has the domain and window specified in the call. If the
+		    coefficients for the unscaled and unshifted basis polynomials are
+		    of interest, do ``new_series.convert().coef``.
 		
 		[resid, rank, sv, rcond] : list
 		    These values are only returned if `full` = True

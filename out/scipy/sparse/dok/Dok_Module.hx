@@ -12,10 +12,6 @@ package scipy.sparse.dok;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _is_sequence(x:Dynamic):Dynamic;
-	/**
-		Product of a list of numbers; ~40x faster vs np.prod for Python tuples
-	**/
-	static public function _prod(x:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Imitate numpy.matrix handling of shape arguments

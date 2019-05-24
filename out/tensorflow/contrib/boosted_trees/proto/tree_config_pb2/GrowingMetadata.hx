@@ -62,8 +62,6 @@ package tensorflow.contrib.boosted_trees.proto.tree_config_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NUM_LAYERS_ATTEMPTED_FIELD_NUMBER : Dynamic;
-	static public var NUM_TREES_ATTEMPTED_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -84,7 +82,10 @@ package tensorflow.contrib.boosted_trees.proto.tree_config_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var USED_HANDLER_IDS_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -250,4 +251,16 @@ package tensorflow.contrib.boosted_trees.proto.tree_config_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.trees.GrowingMetadata.num_layers_attempted
+	**/
+	public var num_layers_attempted : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.trees.GrowingMetadata.num_trees_attempted
+	**/
+	public var num_trees_attempted : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.trees.GrowingMetadata.used_handler_ids
+	**/
+	public var used_handler_ids : Dynamic;
 }

@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.distribute.python.tpu_strategy;
 @:pythonImport("tensorflow.contrib.distribute.python.tpu_strategy") extern class Tpu_strategy_Module {
-	static public var _TPU_INITIALIZE_SYSTEM_COLLECTION : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

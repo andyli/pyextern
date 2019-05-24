@@ -18,86 +18,6 @@ package scipy.interpolate.fitpack2;
 	static public var _surfit_messages : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Test whether all array elements along a given axis evaluate to True.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array or object that can be converted to an array.
-		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a logical AND reduction is performed.
-		    The default (`axis` = `None`) is to perform a logical AND over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
-		
-		    .. versionadded:: 1.7.0
-		
-		    If this is a tuple of ints, a reduction is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
-		out : ndarray, optional
-		    Alternate output array in which to place the result.
-		    It must have the same shape as the expected output and its
-		    type is preserved (e.g., if ``dtype(out)`` is float, the result
-		    will consist of 0.0's and 1.0's).  See `doc.ufuncs` (Section
-		    "Output arguments") for more details.
-		
-		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the input array.
-		
-		    If the default value is passed, then `keepdims` will not be
-		    passed through to the `all` method of sub-classes of
-		    `ndarray`, however any non-default value will be.  If the
-		    sub-class' method does not implement `keepdims` any
-		    exceptions will be raised.
-		
-		Returns
-		-------
-		all : ndarray, bool
-		    A new boolean or array is returned unless `out` is specified,
-		    in which case a reference to `out` is returned.
-		
-		See Also
-		--------
-		ndarray.all : equivalent method
-		
-		any : Test whether any element along a given axis evaluates to True.
-		
-		Notes
-		-----
-		Not a Number (NaN), positive infinity and negative infinity
-		evaluate to `True` because these are not equal to zero.
-		
-		Examples
-		--------
-		>>> np.all([[True,False],[True,True]])
-		False
-		
-		>>> np.all([[True,False],[True,True]], axis=0)
-		array([ True, False])
-		
-		>>> np.all([-1, 4, 5])
-		True
-		
-		>>> np.all([1.0, np.nan])
-		True
-		
-		>>> o=np.array([False])
-		>>> z=np.all([-1, 4, 5], out=o)
-		>>> id(z), id(o), z                             # doctest: +SKIP
-		(28293632, 28293632, array([ True]))
-	**/
-	static public function all(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
-	/**
-		Check if all elements of input array are true.
-		
-		See Also
-		--------
-		numpy.all : Equivalent function; see for details.
-	**/
-	static public function alltrue(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
 		Create an array.
@@ -245,6 +165,7 @@ package scipy.interpolate.fitpack2;
 		hstack : Stack arrays in sequence horizontally (column wise)
 		vstack : Stack arrays in sequence vertically (row wise)
 		dstack : Stack arrays in sequence depth wise (along third dimension)
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -274,19 +195,19 @@ package scipy.interpolate.fitpack2;
 		>>> a[1] = np.ma.masked
 		>>> b = np.arange(2, 5)
 		>>> a
-		masked_array(data = [0 -- 2],
-		             mask = [False  True False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2],
+		             mask=[False,  True, False],
+		       fill_value=999999)
 		>>> b
 		array([2, 3, 4])
 		>>> np.concatenate([a, b])
-		masked_array(data = [0 1 2 2 3 4],
-		             mask = False,
-		       fill_value = 999999)
+		masked_array(data=[0, 1, 2, 2, 3, 4],
+		             mask=False,
+		       fill_value=999999)
 		>>> np.ma.concatenate([a, b])
-		masked_array(data = [0 -- 2 2 3 4],
-		             mask = [False  True False False False False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2, 2, 3, 4],
+		             mask=[False,  True, False, False, False, False],
+		       fill_value=999999)
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -306,6 +227,12 @@ package scipy.interpolate.fitpack2;
 		axis : int, optional
 		    The axis along which the difference is taken, default is the
 		    last axis.
+		prepend, append : array_like, optional
+		    Values to prepend or append to "a" along axis prior to
+		    performing the difference.  Scalar values are expanded to
+		    arrays with length 1 in the direction of axis and the shape
+		    of the input array in along all other axes.  Otherwise the
+		    dimension and shape must match "a" except along axis.
 		
 		Returns
 		-------
@@ -363,7 +290,7 @@ package scipy.interpolate.fitpack2;
 		>>> np.diff(x)
 		array([1, 1], dtype='timedelta64[D]')
 	**/
-	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?prepend:Dynamic, ?append:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Return a new array of given shape and type, filled with ones.

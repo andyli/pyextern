@@ -14,7 +14,7 @@ package tensorflow.contrib.data.python.ops.iterator_ops;
 	/**
 		Returns a SaveableObject for saving/restore iterator state using Saver. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.make_saveable_from_iterator(...)`.
 		

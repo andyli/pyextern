@@ -15,6 +15,28 @@ package pandas.core.reshape.pivot;
 	static public function _generate_marginal_results(table:Dynamic, data:Dynamic, values:Dynamic, rows:Dynamic, cols:Dynamic, aggfunc:Dynamic, observed:Dynamic, grand_margin:Dynamic, ?margins_name:Dynamic):Dynamic;
 	static public function _generate_marginal_results_without_values(table:Dynamic, data:Dynamic, rows:Dynamic, cols:Dynamic, aggfunc:Dynamic, observed:Dynamic, ?margins_name:Dynamic):Dynamic;
 	static public function _get_names(arrs:Dynamic, names:Dynamic, ?prefix:Dynamic):Dynamic;
+	/**
+		Extract combined index: return intersection or union (depending on the
+		value of "intersect") of indexes on given axis, or None if all objects
+		lack indexes (e.g. they are numpy arrays).
+		
+		Parameters
+		----------
+		objs : list of objects
+		    Each object will only be considered if it has a _get_axis
+		    attribute.
+		intersect : bool, default False
+		    If True, calculate the intersection between indexes. Otherwise,
+		    calculate the union.
+		axis : {0 or 'index', 1 or 'outer'}, default 0
+		    The axis to extract indexes from.
+		sort : bool, default True
+		    Whether the result index should come out sorted or not.
+		
+		Returns
+		-------
+		Index
+	**/
 	static public function _get_objs_combined_axis(objs:Dynamic, ?intersect:Dynamic, ?axis:Dynamic, ?sort:Dynamic):Dynamic;
 	static public function _normalize(table:Dynamic, normalize:Dynamic, margins:Dynamic, ?margins_name:Dynamic):Dynamic;
 	static public var _shared_docs : Dynamic;
@@ -36,7 +58,7 @@ package pandas.core.reshape.pivot;
 		[array(['A', 'A', 'B', 'B', 'C', 'C'], dtype='|S1'),
 		array([1, 2, 1, 2, 1, 2])]
 		
-		See also
+		See Also
 		--------
 		itertools.product : Cartesian product of input iterables.  Equivalent to
 		    nested for-loops.
@@ -106,6 +128,13 @@ package pandas.core.reshape.pivot;
 		    ``DataFrame``, a ``DataFrame`` is returned. When concatenating along
 		    the columns (axis=1), a ``DataFrame`` is returned.
 		
+		See Also
+		--------
+		Series.append
+		DataFrame.append
+		DataFrame.join
+		DataFrame.merge
+		
 		Notes
 		-----
 		The keys, levels, and names arguments are all optional.
@@ -113,13 +142,6 @@ package pandas.core.reshape.pivot;
 		A walkthrough of how this method fits in with other tools for combining
 		pandas objects can be found `here
 		<http://pandas.pydata.org/pandas-docs/stable/merging.html>`__.
-		
-		See Also
-		--------
-		Series.append
-		DataFrame.append
-		DataFrame.join
-		DataFrame.merge
 		
 		Examples
 		--------
@@ -196,12 +218,12 @@ package pandas.core.reshape.pivot;
 		  letter  number animal
 		0      c       3    cat
 		1      d       4    dog
-		>>> pd.concat([df1, df3])
-		  animal letter  number
-		0    NaN      a       1
-		1    NaN      b       2
-		0    cat      c       3
-		1    dog      d       4
+		>>> pd.concat([df1, df3], sort=False)
+		  letter  number animal
+		0      a       1    NaN
+		1      b       2    NaN
+		0      c       3    cat
+		1      d       4    dog
 		
 		Combine ``DataFrame`` objects with overlapping columns
 		and return only those that are shared by passing ``inner`` to
@@ -255,12 +277,12 @@ package pandas.core.reshape.pivot;
 		values : array-like, optional
 		    Array of values to aggregate according to the factors.
 		    Requires `aggfunc` be specified.
-		aggfunc : function, optional
-		    If specified, requires `values` be specified as well
 		rownames : sequence, default None
 		    If passed, must match number of row arrays passed
 		colnames : sequence, default None
 		    If passed, must match number of column arrays passed
+		aggfunc : function, optional
+		    If specified, requires `values` be specified as well
 		margins : boolean, default False
 		    Add row/column margins (subtotals)
 		margins_name : string, default 'All'
@@ -281,6 +303,9 @@ package pandas.core.reshape.pivot;
 		
 		    .. versionadded:: 0.18.1
 		
+		Returns
+		-------
+		crosstab : DataFrame
 		
 		Notes
 		-----
@@ -315,23 +340,35 @@ package pandas.core.reshape.pivot;
 		>>> foo = pd.Categorical(['a', 'b'], categories=['a', 'b', 'c'])
 		>>> bar = pd.Categorical(['d', 'e'], categories=['d', 'e', 'f'])
 		>>> crosstab(foo, bar)  # 'c' and 'f' are not represented in the data,
-		...                     # but they still will be counted in the output
+		                        # and will not be shown in the output because
+		                        # dropna is True by default. Set 'dropna=False'
+		                        # to preserve categories with no data
+		... # doctest: +SKIP
+		col_0  d  e
+		row_0
+		a      1  0
+		b      0  1
+		
+		>>> crosstab(foo, bar, dropna=False)  # 'c' and 'f' are not represented
+		                        # in the data, but they still will be counted
+		                        # and shown in the output
 		... # doctest: +SKIP
 		col_0  d  e  f
 		row_0
 		a      1  0  0
 		b      0  1  0
 		c      0  0  0
-		
-		Returns
-		-------
-		crosstab : DataFrame
 	**/
 	static public function crosstab(index:Dynamic, columns:Dynamic, ?values:Dynamic, ?rownames:Dynamic, ?colnames:Dynamic, ?aggfunc:Dynamic, ?margins:Dynamic, ?margins_name:Dynamic, ?dropna:Dynamic, ?normalize:Dynamic):pandas.DataFrame;
 	/**
 		Check whether the provided array or dtype is of an integer dtype.
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
 		
 		Parameters
 		----------
@@ -352,6 +389,12 @@ package pandas.core.reshape.pivot;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -377,7 +420,11 @@ package pandas.core.reshape.pivot;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -396,22 +443,58 @@ package pandas.core.reshape.pivot;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -421,9 +504,113 @@ package pandas.core.reshape.pivot;
 	**/
 	static public function maybe_downcast_to_dtype(result:Dynamic, dtype:Dynamic):Dynamic;
 	/**
+		Return reshaped DataFrame organized by given index / column values.
+		
+		Reshape data (produce a "pivot" table) based on column values. Uses
+		unique values from specified `index` / `columns` to form axes of the
+		resulting DataFrame. This function does not support data
+		aggregation, multiple values will result in a MultiIndex in the
+		columns. See the :ref:`User Guide <reshaping>` for more on reshaping.
+		
+		Parameters
+		----------
+		data : DataFrame
+		index : string or object, optional
+		    Column to use to make new frame's index. If None, uses
+		    existing index.
+		columns : string or object
+		    Column to use to make new frame's columns.
+		values : string, object or a list of the previous, optional
+		    Column(s) to use for populating new frame's values. If not
+		    specified, all remaining columns will be used and the result will
+		    have hierarchically indexed columns.
+		
+		    .. versionchanged :: 0.23.0
+		       Also accept list of column names.
+		
+		Returns
+		-------
+		DataFrame
+		    Returns reshaped DataFrame.
+		
+		Raises
+		------
+		ValueError:
+		    When there are any `index`, `columns` combinations with multiple
+		    values. `DataFrame.pivot_table` when you need to aggregate.
+		
+		See Also
+		--------
+		DataFrame.pivot_table : Generalization of pivot that can handle
+		    duplicate values for one index/column pair.
+		DataFrame.unstack : Pivot based on the index values instead of a
+		    column.
+		
+		Notes
+		-----
+		For finer-tuned control, see hierarchical indexing documentation along
+		with the related stack/unstack methods.
+		
+		Examples
+		--------
+		>>> df = pd.DataFrame({'foo': ['one', 'one', 'one', 'two', 'two',
+		...                            'two'],
+		...                    'bar': ['A', 'B', 'C', 'A', 'B', 'C'],
+		...                    'baz': [1, 2, 3, 4, 5, 6],
+		...                    'zoo': ['x', 'y', 'z', 'q', 'w', 't']})
+		>>> df
+		    foo   bar  baz  zoo
+		0   one   A    1    x
+		1   one   B    2    y
+		2   one   C    3    z
+		3   two   A    4    q
+		4   two   B    5    w
+		5   two   C    6    t
+		
+		>>> df.pivot(index='foo', columns='bar', values='baz')
+		bar  A   B   C
+		foo
+		one  1   2   3
+		two  4   5   6
+		
+		>>> df.pivot(index='foo', columns='bar')['baz']
+		bar  A   B   C
+		foo
+		one  1   2   3
+		two  4   5   6
+		
+		>>> df.pivot(index='foo', columns='bar', values=['baz', 'zoo'])
+		      baz       zoo
+		bar   A  B  C   A  B  C
+		foo
+		one   1  2  3   x  y  z
+		two   4  5  6   q  w  t
+		
+		A ValueError is raised if there are any duplicates.
+		
+		>>> df = pd.DataFrame({"foo": ['one', 'one', 'two', 'two'],
+		...                    "bar": ['A', 'A', 'B', 'C'],
+		...                    "baz": [1, 2, 3, 4]})
+		>>> df
+		   foo bar  baz
+		0  one   A    1
+		1  one   A    2
+		2  two   B    3
+		3  two   C    4
+		
+		Notice that the first two rows are the same for our `index`
+		and `columns` arguments.
+		
+		>>> df.pivot(index='foo', columns='bar', values='baz')
+		Traceback (most recent call last):
+		   ...
+		ValueError: Index contains duplicate entries, cannot reshape
+	**/
+	static public function pivot(data:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?values:Dynamic):Dynamic;
+	/**
 		Create a spreadsheet-style pivot table as a DataFrame. The levels in
 		the pivot table will be stored in MultiIndex objects (hierarchical
-		indexes) on the index and columns of the result DataFrame
+		indexes) on the index and columns of the result DataFrame.
 		
 		Parameters
 		----------
@@ -455,6 +642,15 @@ package pandas.core.reshape.pivot;
 		    Name of the row / column that will contain the totals
 		    when margins is True.
 		
+		Returns
+		-------
+		table : DataFrame
+		
+		See Also
+		--------
+		DataFrame.pivot : Pivot without aggregation that can handle
+		    non-numeric data.
+		
 		Examples
 		--------
 		>>> df = pd.DataFrame({"A": ["foo", "foo", "foo", "foo", "foo",
@@ -464,59 +660,72 @@ package pandas.core.reshape.pivot;
 		...                    "C": ["small", "large", "large", "small",
 		...                          "small", "large", "small", "small",
 		...                          "large"],
-		...                    "D": [1, 2, 2, 3, 3, 4, 5, 6, 7]})
+		...                    "D": [1, 2, 2, 3, 3, 4, 5, 6, 7],
+		...                    "E": [2, 4, 5, 5, 6, 6, 8, 9, 9]})
 		>>> df
-		     A    B      C  D
-		0  foo  one  small  1
-		1  foo  one  large  2
-		2  foo  one  large  2
-		3  foo  two  small  3
-		4  foo  two  small  3
-		5  bar  one  large  4
-		6  bar  one  small  5
-		7  bar  two  small  6
-		8  bar  two  large  7
+		     A    B      C  D  E
+		0  foo  one  small  1  2
+		1  foo  one  large  2  4
+		2  foo  one  large  2  5
+		3  foo  two  small  3  5
+		4  foo  two  small  3  6
+		5  bar  one  large  4  6
+		6  bar  one  small  5  8
+		7  bar  two  small  6  9
+		8  bar  two  large  7  9
+		
+		This first example aggregates values by taking the sum.
 		
 		>>> table = pivot_table(df, values='D', index=['A', 'B'],
 		...                     columns=['C'], aggfunc=np.sum)
 		>>> table
 		C        large  small
 		A   B
-		bar one    4.0    5.0
-		    two    7.0    6.0
-		foo one    4.0    1.0
-		    two    NaN    6.0
+		bar one      4      5
+		    two      7      6
+		foo one      4      1
+		    two    NaN      6
+		
+		We can also fill missing values using the `fill_value` parameter.
 		
 		>>> table = pivot_table(df, values='D', index=['A', 'B'],
-		...                     columns=['C'], aggfunc=np.sum)
+		...                     columns=['C'], aggfunc=np.sum, fill_value=0)
 		>>> table
 		C        large  small
 		A   B
-		bar one    4.0    5.0
-		    two    7.0    6.0
-		foo one    4.0    1.0
-		    two    NaN    6.0
+		bar one      4      5
+		    two      7      6
+		foo one      4      1
+		    two      0      6
+		
+		The next example aggregates by taking the mean across multiple columns.
+		
+		>>> table = pivot_table(df, values=['D', 'E'], index=['A', 'C'],
+		...                     aggfunc={'D': np.mean,
+		...                              'E': np.mean})
+		>>> table
+		                  D         E
+		               mean      mean
+		A   C
+		bar large  5.500000  7.500000
+		    small  5.500000  8.500000
+		foo large  2.000000  4.500000
+		    small  2.333333  4.333333
+		
+		We can also calculate multiple types of aggregations for any given
+		value column.
 		
 		>>> table = pivot_table(df, values=['D', 'E'], index=['A', 'C'],
 		...                     aggfunc={'D': np.mean,
 		...                              'E': [min, max, np.mean]})
 		>>> table
 		                  D   E
-		               mean max median min
+		               mean max      mean min
 		A   C
-		bar large  5.500000  16   14.5  13
-		    small  5.500000  15   14.5  14
-		foo large  2.000000  10    9.5   9
-		    small  2.333333  12   11.0   8
-		
-		Returns
-		-------
-		table : DataFrame
-		
-		See also
-		--------
-		DataFrame.pivot : pivot without aggregation that can handle
-		    non-numeric data
+		bar large  5.500000  9   7.500000   6
+		    small  5.500000  9   8.500000   8
+		foo large  2.000000  5   4.500000   4
+		    small  2.333333  6   4.333333   2
 	**/
 	static public function pivot_table(data:Dynamic, ?values:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?aggfunc:Dynamic, ?fill_value:Dynamic, ?margins:Dynamic, ?dropna:Dynamic, ?margins_name:Dynamic):pandas.DataFrame;
 }

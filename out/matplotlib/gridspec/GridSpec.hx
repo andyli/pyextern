@@ -31,7 +31,7 @@ package matplotlib.gridspec;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	/**
-		Create and return a SuplotSpec instance.
+		Create and return a SubplotSpec instance.
 		        
 	**/
 	public function __getitem__(key:Dynamic):Dynamic;
@@ -57,20 +57,26 @@ package matplotlib.gridspec;
 		ncols : int
 		    Number or columns in grid.
 		
-		figure : ~.figure.Figure, optional
+		figure : `~.figure.Figure`, optional
 		
-		left, right, top, bottom : float
+		left, right, top, bottom : float, optional
 		    Extent of the subplots as a fraction of figure width or height.
 		    Left cannot be larger than right, and bottom cannot be larger than
 		    top.
 		
-		wspace : float
+		wspace : float, optional
 		    The amount of width reserved for space between subplots,
 		    expressed as a fraction of the average axis width.
 		
-		hspace : float
+		hspace : float, optional
 		    The amount of height reserved for space between subplots,
 		    expressed as a fraction of the average axis height.
+		
+		width_ratios : length *ncols* iterable, optional
+		    Width ratios of the columns.
+		
+		height_ratios : length *nrows* iterable, optional
+		    Height ratios of the rows.
 		
 		Notes
 		-----
@@ -91,20 +97,26 @@ package matplotlib.gridspec;
 		ncols : int
 		    Number or columns in grid.
 		
-		figure : ~.figure.Figure, optional
+		figure : `~.figure.Figure`, optional
 		
-		left, right, top, bottom : float
+		left, right, top, bottom : float, optional
 		    Extent of the subplots as a fraction of figure width or height.
 		    Left cannot be larger than right, and bottom cannot be larger than
 		    top.
 		
-		wspace : float
+		wspace : float, optional
 		    The amount of width reserved for space between subplots,
 		    expressed as a fraction of the average axis width.
 		
-		hspace : float
+		hspace : float, optional
 		    The amount of height reserved for space between subplots,
 		    expressed as a fraction of the average axis height.
+		
+		width_ratios : length *ncols* iterable, optional
+		    Width ratios of the columns.
+		
+		height_ratios : length *nrows* iterable, optional
+		    Height ratios of the rows.
 		
 		Notes
 		-----
@@ -191,11 +203,11 @@ package matplotlib.gridspec;
 		Return a dictionary of subplot layout parameters. The default
 		parameters are from rcParams unless a figure attribute is set.
 	**/
-	public function get_subplot_params(?figure:Dynamic, ?fig:Dynamic):Dynamic;
+	public function get_subplot_params(?figure:Dynamic):Dynamic;
 	public function get_width_ratios():Dynamic;
 	public function locally_modified_subplot_params():Dynamic;
 	/**
-		create and return a SuplotSpec instance.
+		create and return a SubplotSpec instance.
 	**/
 	public function new_subplotspec(loc:Dynamic, ?rowspan:Dynamic, ?colspan:Dynamic):Dynamic;
 	public function set_height_ratios(height_ratios:Dynamic):Dynamic;
@@ -219,8 +231,9 @@ package matplotlib.gridspec;
 	**/
 	public function tight_layout(figure:Dynamic, ?renderer:Dynamic, ?pad:Dynamic, ?h_pad:Dynamic, ?w_pad:Dynamic, ?rect:Dynamic):Dynamic;
 	/**
-		Update the current values.  If any kwarg is None, default to
-		the current value, if set, otherwise to rc.
+		Update the current values.
+		
+		Values set to None use the rcParams value.
 	**/
 	public function update(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

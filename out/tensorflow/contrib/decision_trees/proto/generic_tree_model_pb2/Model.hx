@@ -1,12 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 @:pythonImport("tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2", "Model") extern class Model {
-	static public var ADDITIONAL_DATA_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CUSTOM_MODEL_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -23,13 +21,11 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DECISION_TREE_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ENSEMBLE_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
@@ -86,6 +82,10 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.decision_trees.Model.additional_data
+	**/
+	public var additional_data : Dynamic;
+	/**
+		Field tensorflow.decision_trees.Model.custom_model
+	**/
+	public var custom_model : Dynamic;
+	/**
+		Field tensorflow.decision_trees.Model.decision_tree
+	**/
+	public var decision_tree : Dynamic;
+	/**
+		Field tensorflow.decision_trees.Model.ensemble
+	**/
+	public var ensemble : Dynamic;
 }

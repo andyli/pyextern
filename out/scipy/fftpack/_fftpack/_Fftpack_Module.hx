@@ -153,6 +153,29 @@ package scipy.fftpack._fftpack;
 	**/
 	static public function dct3(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		y = dct4(x,[n,normalize,overwrite_x])
+		
+		Wrapper for ``dct4``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		n : input int, optional
+		    Default: size(x)
+		normalize : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		y : rank-1 array('f') with bounds (*) and x storage
+	**/
+	static public function dct4(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		y = ddct1(x,[n,normalize,overwrite_x])
 		
 		Wrapper for ``ddct1``.
@@ -221,6 +244,29 @@ package scipy.fftpack._fftpack;
 		y : rank-1 array('d') with bounds (*) and x storage
 	**/
 	static public function ddct3(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		y = ddct4(x,[n,normalize,overwrite_x])
+		
+		Wrapper for ``ddct4``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		n : input int, optional
+		    Default: size(x)
+		normalize : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		y : rank-1 array('d') with bounds (*) and x storage
+	**/
+	static public function ddct4(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		y = ddst1(x,[n,normalize,overwrite_x])
 		
@@ -291,6 +337,29 @@ package scipy.fftpack._fftpack;
 	**/
 	static public function ddst3(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		y = ddst4(x,[n,normalize,overwrite_x])
+		
+		Wrapper for ``ddst4``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		n : input int, optional
+		    Default: size(x)
+		normalize : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		y : rank-1 array('d') with bounds (*) and x storage
+	**/
+	static public function ddst4(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		destroy_cfft_cache()
 		
 		Wrapper for ``destroy_cfft_cache``.
@@ -315,6 +384,12 @@ package scipy.fftpack._fftpack;
 	**/
 	static public function destroy_dct2_cache(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		destroy_dct4_cache()
+		
+		Wrapper for ``destroy_dct4_cache``.
+	**/
+	static public function destroy_dct4_cache(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		destroy_ddct1_cache()
 		
 		Wrapper for ``destroy_ddct1_cache``.
@@ -326,6 +401,12 @@ package scipy.fftpack._fftpack;
 		Wrapper for ``destroy_ddct2_cache``.
 	**/
 	static public function destroy_ddct2_cache(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		destroy_ddct4_cache()
+		
+		Wrapper for ``destroy_ddct4_cache``.
+	**/
+	static public function destroy_ddct4_cache(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		destroy_ddst1_cache()
 		
@@ -468,6 +549,29 @@ package scipy.fftpack._fftpack;
 		y : rank-1 array('f') with bounds (*) and x storage
 	**/
 	static public function dst3(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		y = dst4(x,[n,normalize,overwrite_x])
+		
+		Wrapper for ``dst4``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		n : input int, optional
+		    Default: size(x)
+		normalize : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		y : rank-1 array('f') with bounds (*) and x storage
+	**/
+	static public function dst4(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		y = rfft(x,[n,direction,normalize,overwrite_x])
 		

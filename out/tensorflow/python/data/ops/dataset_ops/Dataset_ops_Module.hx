@@ -14,6 +14,10 @@ package tensorflow.python.data.ops.dataset_ops;
 	**/
 	static public function _default_padding(input_dataset:Dynamic):Dynamic;
 	/**
+		Walks the dataset graph to ensure all datasets come from the same graph.
+	**/
+	static public function _ensure_same_dataset_graph(dataset:Dynamic):Dynamic;
+	/**
 		Returns `True` if `input_component_shape` can be padded to `padded_shape`.
 		
 		Args:
@@ -93,6 +97,42 @@ package tensorflow.python.data.ops.dataset_ops;
 		  constructors.
 	**/
 	static public function flat_structure(dataset:Dynamic):Dynamic;
+	/**
+		Creates a `tf.data.Iterator` for enumerating the elements of a dataset.
+		
+		Note: The returned iterator will be in an uninitialized state,
+		and you must run the `iterator.initializer` operation before using it:
+		
+		```python
+		dataset = ...
+		iterator = dataset.make_initializable_iterator()
+		# ...
+		sess.run(iterator.initializer)
+		```
+		
+		Args:
+		  dataset: A `tf.data.Dataset`.
+		
+		Returns:
+		  A `tf.data.Iterator` over the elements of `dataset`.
+		
+		Raises:
+		  RuntimeError: If eager execution is enabled.
+	**/
+	static public function make_initializable_iterator(dataset:Dynamic):Dynamic;
+	/**
+		Creates a `tf.data.Iterator` for enumerating the elements of a dataset.
+		
+		Note: The returned iterator will be initialized automatically.
+		A "one-shot" iterator does not support re-initialization.
+		
+		Args:
+		  dataset: A `tf.data.Dataset`.
+		
+		Returns:
+		  A `tf.data.Iterator` over the elements of this dataset.
+	**/
+	static public function make_one_shot_iterator(dataset:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

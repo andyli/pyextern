@@ -90,18 +90,6 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	**/
 	static public function _next_array_size(required_size:Dynamic, ?growth_factor:Dynamic):Dynamic;
 	/**
-		Divides two values, returning 0 if the denominator is <= 0.
-		
-		Args:
-		  numerator: A real `Tensor`.
-		  denominator: A real `Tensor`, with dtype matching `numerator`.
-		  name: Name for the returned op.
-		
-		Returns:
-		  0 if `denominator` <= 0, else `numerator` / `denominator`
-	**/
-	static public function _safe_div(numerator:Dynamic, denominator:Dynamic, name:Dynamic):Dynamic;
-	/**
 		Computes true_positives, false_negatives, true_negatives, false_positives.
 		
 		This function creates up to four local variables, `true_positives`,
@@ -571,7 +559,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Calculates how often `predictions` matches `labels`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.accuracy. Note that the order of the labels and predictions arguments has been switched.
 		
@@ -619,7 +607,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Computes the approximate AUC via a Riemann sum. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.auc. Note that the order of the labels and predictions arguments has been switched.
 		
@@ -944,7 +932,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Computes the total number of false negatives. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.false_negatives. Note that the order of the labels and predictions arguments has been switched.
 		
@@ -1067,7 +1055,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Sum the weights of false positives. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.false_positives. Note that the order of the labels and predictions arguments has been switched.
 		
@@ -1103,7 +1091,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Computes the (weighted) mean of the given values. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.mean
 		
@@ -1145,7 +1133,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Computes the mean absolute error between the labels and predictions. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.mean_absolute_error. Note that the order of the labels and predictions arguments has been switched.
 		
@@ -1323,7 +1311,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Computes the mean squared error between the labels and predictions. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.mean_squared_error. Note that the order of the labels and predictions arguments has been switched.
 		
@@ -1372,7 +1360,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Computes the element-wise (weighted) mean of the given tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.mean_tensor
 		
@@ -1501,7 +1489,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Computes the precision of the predictions with respect to the labels. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.precision. Note that the order of the labels and predictions arguments has been switched.
 		
@@ -1548,7 +1536,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Computes precision values for different `thresholds` on `predictions`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.precision_at_thresholds. Note that the order of the labels and predictions arguments are switched.
 		
@@ -1596,7 +1584,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Computes the recall of the predictions with respect to the labels. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.recall. Note that the order of the labels and predictions arguments has been switched.
 		
@@ -1641,7 +1629,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Computes the recall@k of the predictions with respect to dense labels. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-08.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-08.
 		Instructions for updating:
 		Please use `streaming_sparse_recall_at_k`, and reshape labels from [batch_size] to [batch_size, 1].
 		
@@ -1690,7 +1678,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Computes various recall values for different `thresholds` on `predictions`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.recall_at_thresholds. Note that the order of the labels and predictions arguments has been switched.
 		
@@ -1736,7 +1724,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Computes the root mean squared error between the labels and predictions. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.root_mean_squared_error. Note that the order of the labels and predictions arguments has been switched.
 		
@@ -2196,7 +2184,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Sum the weights of true_negatives. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.true_negatives. Note that the order of the labels and predictions arguments has been switched.
 		
@@ -2232,7 +2220,7 @@ package tensorflow.contrib.metrics.python.ops.metric_ops;
 	/**
 		Sum the weights of true_positives. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.metrics.true_positives. Note that the order of the labels and predictions arguments has been switched.
 		

@@ -27,7 +27,6 @@ package tensorflow.core.protobuf.tensor_bundle_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ENDIANNESS_FIELD_NUMBER : Dynamic;
 	static public var Endianness : Dynamic;
 	/**
 		Extension dict
@@ -66,7 +65,6 @@ package tensorflow.core.protobuf.tensor_bundle_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NUM_SHARDS_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -87,7 +85,10 @@ package tensorflow.core.protobuf.tensor_bundle_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var VERSION_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -253,4 +254,16 @@ package tensorflow.core.protobuf.tensor_bundle_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.BundleHeaderProto.endianness
+	**/
+	public var endianness : Dynamic;
+	/**
+		Field tensorflow.BundleHeaderProto.num_shards
+	**/
+	public var num_shards : Dynamic;
+	/**
+		Field tensorflow.BundleHeaderProto.version
+	**/
+	public var version : Dynamic;
 }

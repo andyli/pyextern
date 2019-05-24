@@ -38,30 +38,34 @@ package matplotlib.widgets;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Add radio buttons to :class:`matplotlib.axes.Axes` instance *ax*
+		Add radio buttons to an `~.axes.Axes`.
 		
-		*labels*
-		    A len(buttons) list of labels as strings
-		
-		*active*
-		    The index into labels for the button that is active
-		
-		*activecolor*
-		    The color of the button when clicked
+		Parameters
+		----------
+		ax : `~matplotlib.axes.Axes`
+		    The axes to add the buttons to.
+		labels : list of str
+		    The button labels.
+		active : int
+		    The index of the initially selected button.
+		activecolor : color
+		    The color of the selected button.
 	**/
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, labels:Dynamic, ?active:Dynamic, ?activecolor:Dynamic):Dynamic;
 	/**
-		Add radio buttons to :class:`matplotlib.axes.Axes` instance *ax*
+		Add radio buttons to an `~.axes.Axes`.
 		
-		*labels*
-		    A len(buttons) list of labels as strings
-		
-		*active*
-		    The index into labels for the button that is active
-		
-		*activecolor*
-		    The color of the button when clicked
+		Parameters
+		----------
+		ax : `~matplotlib.axes.Axes`
+		    The axes to add the buttons to.
+		labels : list of str
+		    The button labels.
+		active : int
+		    The index of the initially selected button.
+		activecolor : color
+		    The color of the selected button.
 	**/
 	public function new(ax:Dynamic, labels:Dynamic, ?active:Dynamic, ?activecolor:Dynamic):Void;
 	/**
@@ -140,7 +144,7 @@ package matplotlib.widgets;
 	**/
 	public function connect_event(event:Dynamic, callback:Dynamic):Dynamic;
 	/**
-		remove the observer with connection id *cid*
+		Remove the observer with connection id *cid*.
 	**/
 	public function disconnect(cid:Dynamic):Dynamic;
 	/**
@@ -162,17 +166,13 @@ package matplotlib.widgets;
 	**/
 	public function ignore(event:Dynamic):Dynamic;
 	/**
-		When the button is clicked, call *func* with button label
+		Connect the callback function *func* to button click events.
 		
-		A connection id is returned which can be used to disconnect
+		Returns a connection id, which can be used to disconnect the callback.
 	**/
 	public function on_clicked(func:Dynamic):Dynamic;
 	/**
-		Trigger which radio button to make active.
-		
-		*index* is an index into the original label list
-		    that this object was constructed with.
-		    Raise ValueError if the index is invalid.
+		Select button with number *index*.
 		
 		Callbacks will be triggered if :attr:`eventson` is True.
 	**/

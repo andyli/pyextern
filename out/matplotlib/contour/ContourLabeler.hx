@@ -158,26 +158,8 @@ package matplotlib.contour;
 		determine rotation and then to break contour if desired.
 	**/
 	public function calc_label_rot_and_inline(slc:Dynamic, ind:Dynamic, lw:Dynamic, ?lc:Dynamic, ?spacing:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The <lambda> function was deprecated in Matplotlib 3.0 and will be removed in 3.2. Use labelTexts instead.
-		
-		\ 
-	**/
 	public var cl : Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The <lambda> function was deprecated in Matplotlib 3.0 and will be removed in 3.2. Use labelCValues instead.
-		
-		\ 
-	**/
 	public var cl_cvalues : Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The <lambda> function was deprecated in Matplotlib 3.0 and will be removed in 3.2. Use labelXYs instead.
-		
-		\ 
-	**/
 	public var cl_xy : Dynamic;
 	/**
 		Label a contour plot.
@@ -282,17 +264,6 @@ package matplotlib.contour;
 		Return the width of the label in points.
 	**/
 	public function get_label_width(lev:Dynamic, fmt:Dynamic, fsize:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 2.2
-		    The get_real_label_width function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
-		
-		This computes actual onscreen label width.
-		This uses some black magic to determine onscreen extent of non-drawn
-		label.  This magic may not be very robust.
-		
-		This method is not being used, and may be modified or removed.
-	**/
-	public function get_real_label_width(lev:Dynamic, fmt:Dynamic, fsize:Dynamic):Dynamic;
 	/**
 		Get the text of the label.
 	**/

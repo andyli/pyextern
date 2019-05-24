@@ -84,8 +84,6 @@ package pandas.core.arrays.base;
 	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Iterate over elements of the array.
-		
-		        
 	**/
 	public function __iter__():Dynamic;
 	/**
@@ -190,7 +188,35 @@ package pandas.core.arrays.base;
 	**/
 	static public function _concat_same_type(to_concat:Dynamic):Dynamic;
 	/**
+		Formatting function for scalar values.
+		
+		This is used in the default '__repr__'. The returned formatting
+		function receives instances of your scalar type.
+		
+		Parameters
+		----------
+		boxed: bool, default False
+		    An indicated for whether or not your array is being printed
+		    within a Series, DataFrame, or Index (True), or just by
+		    itself (False). This may be useful if you want scalar values
+		    to appear differently within a Series versus on its own (e.g.
+		    quoted or not).
+		
+		Returns
+		-------
+		Callable[[Any], str]
+		    A callable that gets instances of the scalar type and
+		    returns a string. By default, :func:`repr` is used
+		    when ``boxed=False`` and :func:`str` is used when
+		    ``boxed=True``.
+	**/
+	public function _formatter(?boxed:Dynamic):Dynamic;
+	/**
 		An array of values to be printed in, e.g. the Series repr
+		
+		.. deprecated:: 0.24.0
+		
+		   Use :meth:`ExtensionArray._formatter` instead.
 	**/
 	public function _formatting_values():Dynamic;
 	/**
@@ -217,11 +243,38 @@ package pandas.core.arrays.base;
 		scalars : Sequence
 		    Each element will be an instance of the scalar type for this
 		    array, ``cls.dtype.type``.
+		dtype : dtype, optional
+		    Construct for this particular dtype. This should be a Dtype
+		    compatible with the ExtensionArray.
+		copy : boolean, default False
+		    If True, copy the underlying data.
+		
 		Returns
 		-------
 		ExtensionArray
 	**/
-	static public function _from_sequence(scalars:Dynamic):Dynamic;
+	static public function _from_sequence(scalars:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		Construct a new ExtensionArray from a sequence of strings.
+		
+		.. versionadded:: 0.24.0
+		
+		Parameters
+		----------
+		strings : Sequence
+		    Each element will be an instance of the scalar type for this
+		    array, ``cls.dtype.type``.
+		dtype : dtype, optional
+		    Construct for this particular dtype. This should be a Dtype
+		    compatible with the ExtensionArray.
+		copy : boolean, default False
+		    If True, copy the underlying data.
+		
+		Returns
+		-------
+		ExtensionArray
+	**/
+	static public function _from_sequence_of_strings(strings:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Internal pandas method for lossy conversion to a NumPy ndarray.
 		
@@ -231,6 +284,30 @@ package pandas.core.arrays.base;
 		used for interacting with our indexers.
 	**/
 	public var _ndarray_values : Dynamic;
+	/**
+		Return a scalar result of performing the reduction operation.
+		
+		Parameters
+		----------
+		name : str
+		    Name of the function, supported values are:
+		    { any, all, min, max, sum, mean, median, prod,
+		    std, var, sem, kurt, skew }.
+		skipna : bool, default True
+		    If True, skip NaN values.
+		**kwargs
+		    Additional keyword arguments passed to the reduction function.
+		    Currently, `ddof` is the only supported kwarg.
+		
+		Returns
+		-------
+		scalar
+		
+		Raises
+		------
+		TypeError : subclass does not define reductions
+	**/
+	public function _reduce(name:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _typ : Dynamic;
 	/**
 		Return values for sorting.
@@ -261,6 +338,11 @@ package pandas.core.arrays.base;
 		    as NA in the factorization routines, so it will be coded as
 		    `na_sentinal` and not included in `uniques`. By default,
 		    ``np.nan`` is used.
+		
+		Notes
+		-----
+		The values returned by this method are also used in
+		:func:`pandas.util.hash_pandas_object`.
 	**/
 	public function _values_for_factorize():Dynamic;
 	/**
@@ -317,6 +399,14 @@ package pandas.core.arrays.base;
 		ExtensionArray
 	**/
 	public function copy(?deep:Dynamic):Dynamic;
+	/**
+		Return ExtensionArray without NA values
+		
+		Returns
+		-------
+		valid : ExtensionArray
+	**/
+	public function dropna():Dynamic;
 	/**
 		An instance of 'ExtensionDtype'.
 	**/
@@ -379,15 +469,27 @@ package pandas.core.arrays.base;
 	**/
 	public function fillna(?value:Dynamic, ?method:Dynamic, ?limit:Dynamic):Dynamic;
 	/**
-		Boolean NumPy array indicating if each value is missing.
+		A 1-D array indicating if each value is missing.
 		
-		This should return a 1-D array the same length as 'self'.
+		Returns
+		-------
+		na_values : Union[np.ndarray, ExtensionArray]
+		    In most cases, this should return a NumPy ndarray. For
+		    exceptional cases like ``SparseArray``, where returning
+		    an ndarray would be expensive, an ExtensionArray may be
+		    returned.
+		
+		Notes
+		-----
+		If returning an ExtensionArray, then
+		
+		* ``na_values._is_boolean`` should be True
+		* `na_values` should implement :func:`ExtensionArray._reduce`
+		* ``na_values.any`` and ``na_values.all`` should be implemented
 	**/
 	public function isna():Dynamic;
 	/**
 		The number of bytes needed to store this object in memory.
-		
-		        
 	**/
 	public var nbytes : Dynamic;
 	/**
@@ -395,9 +497,125 @@ package pandas.core.arrays.base;
 	**/
 	public var ndim : Dynamic;
 	/**
+		Repeat elements of a ExtensionArray.
+		
+		Returns a new ExtensionArray where each element of the current ExtensionArray
+		is repeated consecutively a given number of times.
+		
+		Parameters
+		----------
+		repeats : int or array of ints
+		    The number of repetitions for each element. This should be a
+		    non-negative integer. Repeating 0 times will return an empty
+		    ExtensionArray.
+		axis : None
+		    Must be ``None``. Has no effect but is accepted for compatibility
+		    with numpy.
+		
+		Returns
+		-------
+		repeated_array : ExtensionArray
+		    Newly created ExtensionArray with repeated elements.
+		
+		See Also
+		--------
+		Series.repeat : Equivalent function for Series.
+		Index.repeat : Equivalent function for Index.
+		numpy.repeat : Similar method for :class:`numpy.ndarray`.
+		ExtensionArray.take : Take arbitrary positions.
+		
+		Examples
+		--------
+		>>> cat = pd.Categorical(['a', 'b', 'c'])
+		>>> cat
+		[a, b, c]
+		Categories (3, object): [a, b, c]
+		>>> cat.repeat(2)
+		[a, a, b, b, c, c]
+		Categories (3, object): [a, b, c]
+		>>> cat.repeat([1, 2, 3])
+		[a, b, b, c, c, c]
+		Categories (3, object): [a, b, c]
+	**/
+	public function repeat(repeats:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Find indices where elements should be inserted to maintain order.
+		
+		.. versionadded:: 0.24.0
+		
+		Find the indices into a sorted array `self` (a) such that, if the
+		corresponding elements in `v` were inserted before the indices, the
+		order of `self` would be preserved.
+		
+		Assuming that `a` is sorted:
+		
+		======  ============================
+		`side`  returned index `i` satisfies
+		======  ============================
+		left    ``self[i-1] < v <= self[i]``
+		right   ``self[i-1] <= v < self[i]``
+		======  ============================
+		
+		Parameters
+		----------
+		value : array_like
+		    Values to insert into `self`.
+		side : {'left', 'right'}, optional
+		    If 'left', the index of the first suitable location found is given.
+		    If 'right', return the last such index.  If there is no suitable
+		    index, return either 0 or N (where N is the length of `self`).
+		sorter : 1-D array_like, optional
+		    Optional array of integer indices that sort array a into ascending
+		    order. They are typically the result of argsort.
+		
+		Returns
+		-------
+		indices : array of ints
+		    Array of insertion points with the same shape as `value`.
+		
+		See Also
+		--------
+		numpy.searchsorted : Similar method from NumPy.
+	**/
+	public function searchsorted(value:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
+	/**
 		Return a tuple of the array dimensions.
 	**/
 	public var shape : Dynamic;
+	/**
+		Shift values by desired number.
+		
+		Newly introduced missing values are filled with
+		``self.dtype.na_value``.
+		
+		.. versionadded:: 0.24.0
+		
+		Parameters
+		----------
+		periods : int, default 1
+		    The number of periods to shift. Negative values are allowed
+		    for shifting backwards.
+		
+		fill_value : object, optional
+		    The scalar value to use for newly introduced missing values.
+		    The default is ``self.dtype.na_value``
+		
+		    .. versionadded:: 0.24.0
+		
+		Returns
+		-------
+		shifted : ExtensionArray
+		
+		Notes
+		-----
+		If ``self`` is empty or ``periods`` is 0, a copy of ``self`` is
+		returned.
+		
+		If ``periods > len(self)``, then an array of size
+		len(self) is returned, with all values filled with
+		``self.dtype.na_value``.
+	**/
+	public function shift(?periods:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
 		Take elements from an array.
 		
@@ -425,7 +643,7 @@ package pandas.core.arrays.base;
 		    `fill_value`: a user-facing "boxed" scalar, and a low-level
 		    physical NA value. `fill_value` should be the user-facing version,
 		    and the implementation should handle translating that to the
-		    physical version for processing the take if nescessary.
+		    physical version for processing the take if necessary.
 		
 		Returns
 		-------
@@ -444,7 +662,7 @@ package pandas.core.arrays.base;
 		ExtensionArray.take is called by ``Series.__getitem__``, ``.loc``,
 		``iloc``, when `indices` is a sequence of values. Additionally,
 		it's called by :meth:`Series.reindex`, or any other method
-		that causes realignemnt, with a `fill_value`.
+		that causes realignment, with a `fill_value`.
 		
 		See Also
 		--------
@@ -475,7 +693,7 @@ package pandas.core.arrays.base;
 		
 		       result = take(data, indices, fill_value=fill_value,
 		                     allow_fill=allow_fill)
-		       return self._from_sequence(result)
+		       return self._from_sequence(result, dtype=self.dtype)
 	**/
 	public function take(indices:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**

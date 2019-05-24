@@ -112,6 +112,7 @@ package tensorflow.python.autograph.pyct.qual_names;
 	public function has_attr():Dynamic;
 	public function has_subscript():Dynamic;
 	public function is_composite():Dynamic;
+	public function is_simple():Dynamic;
 	public function is_symbol():Dynamic;
 	/**
 		Returns all the symbols (simple or composite) that own this QN.

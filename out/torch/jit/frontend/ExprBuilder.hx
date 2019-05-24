@@ -125,6 +125,7 @@ package torch.jit.frontend;
 	static public function build_NameConstant(ctx:Dynamic, expr:Dynamic):Dynamic;
 	static public function build_Num(ctx:Dynamic, expr:Dynamic):Dynamic;
 	static public function build_Starred(ctx:Dynamic, expr:Dynamic):Dynamic;
+	static public function build_Str(ctx:Dynamic, expr:Dynamic):Dynamic;
 	static public function build_Subscript(ctx:Dynamic, expr:Dynamic):Dynamic;
 	static public function build_Tuple(ctx:Dynamic, expr:Dynamic):Dynamic;
 	static public function build_UnaryOp(ctx:Dynamic, expr:Dynamic):Dynamic;

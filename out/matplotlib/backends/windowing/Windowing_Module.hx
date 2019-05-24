@@ -11,6 +11,5 @@ package matplotlib.backends.windowing;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
 	static public var rcParams : Dynamic;
 }

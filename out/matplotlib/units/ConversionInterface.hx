@@ -109,15 +109,14 @@ package matplotlib.units;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Return an `~units.AxisInfo` instance for the axis with the
-		specified units.
+		Return an `~units.AxisInfo` for the axis with the specified units.
 	**/
 	static public function axisinfo(unit:Dynamic, axis:Dynamic):Dynamic;
 	/**
 		Convert *obj* using *unit* for the specified *axis*.
-		If *obj* is a sequence, return the converted sequence.
-		The output must be a sequence of scalars that can be used by the numpy
-		array layer.
+		
+		If *obj* is a sequence, return the converted sequence.  The output must
+		be a sequence of scalars that can be used by the numpy array layer.
 	**/
 	static public function convert(obj:Dynamic, unit:Dynamic, axis:Dynamic):Dynamic;
 	/**
@@ -125,10 +124,10 @@ package matplotlib.units;
 	**/
 	static public function default_units(x:Dynamic, axis:Dynamic):Dynamic;
 	/**
-		The Matplotlib datalim, autoscaling, locators etc work with
-		scalars which are the units converted to floats given the
-		current unit.  The converter may be passed these floats, or
-		arrays of them, even when units are set.
+		The Matplotlib datalim, autoscaling, locators etc work with scalars
+		which are the units converted to floats given the current unit.  The
+		converter may be passed these floats, or arrays of them, even when
+		units are set.
 	**/
 	static public function is_numlike(x:Dynamic):Dynamic;
 }

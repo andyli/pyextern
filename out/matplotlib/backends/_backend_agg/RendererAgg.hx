@@ -115,6 +115,4 @@ package matplotlib.backends._backend_agg;
 	public function draw_text_image(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function get_content_extents(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function restore_region(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function tostring_argb(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function tostring_rgb(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

@@ -195,6 +195,14 @@ package tensorflow.contrib.eager.python.datasets;
 	**/
 	public var _deferred_dependencies : Dynamic;
 	/**
+		The structure of an element of this iterator.
+		
+		Returns:
+		  A `Structure` object representing the structure of the components of this
+		    optional.
+	**/
+	public var _element_structure : Dynamic;
+	/**
 		Returns a dictionary of values to checkpoint with this object.
 		
 		Keys in the returned dictionary are local to this object and in a separate

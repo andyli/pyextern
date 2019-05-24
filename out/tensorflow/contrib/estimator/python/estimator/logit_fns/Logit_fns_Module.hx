@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.estimator.python.estimator.logit_fns;
 @:pythonImport("tensorflow.contrib.estimator.python.estimator.logit_fns") extern class Logit_fns_Module {
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -46,8 +47,6 @@ package tensorflow.contrib.estimator.python.estimator.logit_fns;
 		    coordinate.
 		  input_layer_partitioner: Partitioner for input layer.
 		  batch_norm: Whether to use batch normalization after each hidden layer.
-		  shared_state_manager: A SharedEmbeddingStateManager object to hold the
-		    shared state for SharedEmbeddingColumn's.
 		
 		Returns:
 		  A logit_fn (see below).
@@ -55,7 +54,7 @@ package tensorflow.contrib.estimator.python.estimator.logit_fns;
 		Raises:
 		  ValueError: If units is not an int.
 	**/
-	static public function dnn_logit_fn_builder(units:Dynamic, hidden_units:Dynamic, feature_columns:Dynamic, activation_fn:Dynamic, dropout:Dynamic, input_layer_partitioner:Dynamic, batch_norm:Dynamic, ?shared_state_manager:Dynamic):Dynamic;
+	static public function dnn_logit_fn_builder(units:Dynamic, hidden_units:Dynamic, feature_columns:Dynamic, activation_fn:Dynamic, dropout:Dynamic, input_layer_partitioner:Dynamic, batch_norm:Dynamic):Dynamic;
 	/**
 		Function builder for a linear logit_fn.
 		

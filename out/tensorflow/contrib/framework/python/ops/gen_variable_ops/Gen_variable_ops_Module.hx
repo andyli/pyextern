@@ -45,6 +45,7 @@ package tensorflow.contrib.framework.python.ops.gen_variable_ops;
 		  Same as "ref".
 	**/
 	static public function zero_initializer(ref:Dynamic, ?name:Dynamic):Dynamic;
+	static public function zero_initializer_eager_fallback(ref:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Initialize 'var' with all zeros. This op requires that the resource var is not
 		

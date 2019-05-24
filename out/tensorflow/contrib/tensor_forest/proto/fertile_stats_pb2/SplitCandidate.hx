@@ -50,7 +50,6 @@ package tensorflow.contrib.tensor_forest.proto.fertile_stats_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LEFT_STATS_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -67,12 +66,10 @@ package tensorflow.contrib.tensor_forest.proto.fertile_stats_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var RIGHT_STATS_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SPLIT_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -85,7 +82,10 @@ package tensorflow.contrib.tensor_forest.proto.fertile_stats_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var UNIQUE_ID_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.contrib.tensor_forest.proto.fertile_stats_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tensorforest.SplitCandidate.left_stats
+	**/
+	public var left_stats : Dynamic;
+	/**
+		Field tensorflow.tensorforest.SplitCandidate.right_stats
+	**/
+	public var right_stats : Dynamic;
+	/**
+		Field tensorflow.tensorforest.SplitCandidate.split
+	**/
+	public var split : Dynamic;
+	/**
+		Field tensorflow.tensorforest.SplitCandidate.unique_id
+	**/
+	public var unique_id : Dynamic;
 }

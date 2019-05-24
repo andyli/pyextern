@@ -79,6 +79,8 @@ package tensorflow.contrib.quantize;
 		    default graph.
 		  weight_bits: Number of bits to use for quantizing weights.
 		  activation_bits: Number of bits to use for quantizing activations.
+		  symmetric: If true, use symmetric quantization limits instead of training
+		    the minimum and maximum of each quantization range separately.
 		  quant_delay: Number of steps after which weights and activations are
 		    quantized during eval.
 		  scope: The scope to be transformed. If it's not None, only the ops which
@@ -88,7 +90,7 @@ package tensorflow.contrib.quantize;
 		  ValueError: If elements contains an element that isn't a tf.Tensor or
 		    tf.Operation.
 	**/
-	static public function experimental_create_eval_graph(?input_graph:Dynamic, ?weight_bits:Dynamic, ?activation_bits:Dynamic, ?quant_delay:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function experimental_create_eval_graph(?input_graph:Dynamic, ?weight_bits:Dynamic, ?activation_bits:Dynamic, ?symmetric:Dynamic, ?quant_delay:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Rewrites a training input_graph in place for simulated quantization.
 		
@@ -118,6 +120,8 @@ package tensorflow.contrib.quantize;
 		    default graph.
 		  weight_bits: Number of bits to use for quantizing weights.
 		  activation_bits: Number of bits to use for quantizing activations.
+		  symmetric: If true, use symmetric quantization limits instead of training
+		    the minimum and maximum of each quantization range separately.
 		  quant_delay: Number of steps after which weights and activations are
 		    quantized during training.
 		  freeze_bn_delay: Number of steps after which moving mean and variance are
@@ -131,5 +135,5 @@ package tensorflow.contrib.quantize;
 		  ValueError: If elements contains an element that isn't a tf.Tensor or
 		      tf.Operation.
 	**/
-	static public function experimental_create_training_graph(?input_graph:Dynamic, ?weight_bits:Dynamic, ?activation_bits:Dynamic, ?quant_delay:Dynamic, ?freeze_bn_delay:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function experimental_create_training_graph(?input_graph:Dynamic, ?weight_bits:Dynamic, ?activation_bits:Dynamic, ?symmetric:Dynamic, ?quant_delay:Dynamic, ?freeze_bn_delay:Dynamic, ?scope:Dynamic):Dynamic;
 }

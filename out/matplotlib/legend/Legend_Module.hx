@@ -35,7 +35,12 @@ package matplotlib.legend;
 	**/
 	static public function allow_rasterization(draw:Dynamic):Dynamic;
 	/**
-		Returns true if *obj* can be hashed
+		[*Deprecated*] Returns true if *obj* can be hashed
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function is_hashable(obj:Dynamic):Dynamic;
 	static public var rcParams : Dynamic;
@@ -67,17 +72,17 @@ package matplotlib.legend;
 		    If True, uses a PendingDeprecationWarning instead of a
 		    DeprecationWarning.  Cannot be used together with *removal*.
 		
-		removal : str, optional
-		    The expected removal version.  With the default (an empty string), a
-		    removal version is automatically computed from *since*.  Set to other
-		    Falsy values to not schedule a removal date.  Cannot be used together
-		    with *pending*.
-		
 		obj_type : str, optional
 		    The object type being deprecated.
 		
 		addendum : str, optional
 		    Additional text appended directly to the final message.
+		
+		removal : str, optional
+		    The expected removal version.  With the default (an empty string), a
+		    removal version is automatically computed from *since*.  Set to other
+		    Falsy values to not schedule a removal date.  Cannot be used together
+		    with *pending*.
 		
 		Examples
 		--------

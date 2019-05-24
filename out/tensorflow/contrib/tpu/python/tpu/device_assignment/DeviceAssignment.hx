@@ -129,17 +129,9 @@ package tensorflow.contrib.tpu.python.tpu.device_assignment;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Computes a nested dict which maps task and logical core to replicas.
-	**/
-	public function _compute_task_and_cores_to_replicas(core_assignment:Dynamic, topology_tasks:Dynamic):Dynamic;
-	/**
 		Returns the physical topology coordinates of a logical core.
 	**/
 	public function _coordinates(replica:Dynamic, logical_core:Dynamic):Dynamic;
-	/**
-		Inverts a [task,device,axis] topology to [x,y,z] -> task/device maps.
-	**/
-	public function _invert_topology(topology:Dynamic):Dynamic;
 	/**
 		The logical to physical core mapping.
 		

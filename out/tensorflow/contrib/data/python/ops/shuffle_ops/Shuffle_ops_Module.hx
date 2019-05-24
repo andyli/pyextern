@@ -15,7 +15,7 @@ package tensorflow.contrib.data.python.ops.shuffle_ops;
 	/**
 		Shuffles and repeats a Dataset returning a new permutation for each epoch. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.shuffle_and_repeat(...)`.
 		

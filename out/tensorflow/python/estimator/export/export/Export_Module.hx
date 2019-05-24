@@ -2,6 +2,7 @@
 package tensorflow.python.estimator.export.export;
 @:pythonImport("tensorflow.python.estimator.export.export") extern class Export_Module {
 	static public var _FRIENDLY_METHOD_NAMES : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var _SINGLE_FEATURE_DEFAULT_NAME : Dynamic;
 	static public var _SINGLE_LABEL_DEFAULT_NAME : Dynamic;
 	static public var _SINGLE_RECEIVER_DEFAULT_NAME : Dynamic;

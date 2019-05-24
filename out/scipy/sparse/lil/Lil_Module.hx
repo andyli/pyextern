@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.sparse.lil;
 @:pythonImport("scipy.sparse.lil") extern class Lil_Module {
+	static public var INT_TYPES : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -34,6 +35,7 @@ package scipy.sparse.lil;
 	**/
 	static public function _prepare_index_for_memoryview(i:Dynamic, j:Dynamic, ?x:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	static public function asmatrix(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		bisect_left(a, x[, lo[, hi]]) -> index
 		
@@ -89,11 +91,6 @@ package scipy.sparse.lil;
 		Furthermore, 'dtype' must be in 'allowed' set.
 	**/
 	static public function getdtype(dtype:Dynamic, ?a:Dynamic, ?_default:Dynamic):Dynamic;
-	/**
-		Is x appropriate as an index into a sparse matrix? Returns True
-		if it can be cast safely to a machine int.
-	**/
-	static public function isintlike(x:Dynamic):Dynamic;
 	/**
 		Is x either a scalar, an array scalar, or a 0-dim array?
 	**/

@@ -180,7 +180,7 @@ package matplotlib.tri.triinterpolate;
 		Returns
 		-------
 		Returns the arrays d2sdksi2 (N x 3 x 1) Hessian of shape functions
-		expressed in covariante coordinates in first apex basis.
+		expressed in covariant coordinates in first apex basis.
 	**/
 	public function get_d2Sidksij2(alpha:Dynamic, ecc:Dynamic):Dynamic;
 	/**

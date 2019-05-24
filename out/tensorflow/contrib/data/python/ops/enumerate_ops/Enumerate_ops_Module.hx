@@ -14,7 +14,7 @@ package tensorflow.contrib.data.python.ops.enumerate_ops;
 	/**
 		A transformation that enumerate the elements of a dataset. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.enumerate_dataset(...)`.
 		

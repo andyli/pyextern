@@ -125,6 +125,9 @@ package pandas.core.indexes.multi;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Index Engine for use with object-dtype Index, namely the base class Index
+	**/
 	public function _base(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _call_map_locations(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _call_monotonic(args:haxe.extern.Rest<Dynamic>):Dynamic;

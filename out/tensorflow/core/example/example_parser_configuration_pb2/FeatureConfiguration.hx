@@ -30,7 +30,6 @@ package tensorflow.core.example.example_parser_configuration_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FIXED_LEN_FEATURE_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -83,7 +82,10 @@ package tensorflow.core.example.example_parser_configuration_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var VAR_LEN_FEATURE_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -249,4 +251,12 @@ package tensorflow.core.example.example_parser_configuration_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.FeatureConfiguration.fixed_len_feature
+	**/
+	public var fixed_len_feature : Dynamic;
+	/**
+		Field tensorflow.FeatureConfiguration.var_len_feature
+	**/
+	public var var_len_feature : Dynamic;
 }

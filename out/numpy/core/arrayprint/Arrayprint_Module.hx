@@ -12,6 +12,155 @@ package numpy.core.arrayprint;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _array2string(a:Dynamic, options:Dynamic, ?separator:Dynamic, ?prefix:Dynamic):Dynamic;
+	static public function _array2string_dispatcher(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic, ?threshold:Dynamic, ?edgeitems:Dynamic, ?sign:Dynamic, ?floatmode:Dynamic, ?suffix:Dynamic, ?kwarg:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Return a string representation of an array.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.
+		max_line_width : int, optional
+		    The maximum number of columns the string should span. Newline
+		    characters splits the string appropriately after array elements.
+		precision : int or None, optional
+		    Floating point precision. Default is the current printing
+		    precision (usually 8), which can be altered using `set_printoptions`.
+		suppress_small : bool, optional
+		    Represent very small numbers as zero. A number is "very small" if it
+		    is smaller than the current printing precision.
+		separator : str, optional
+		    Inserted between elements.
+		prefix : str, optional
+		suffix: str, optional
+		    The length of the prefix and suffix strings are used to respectively
+		    align and wrap the output. An array is typically printed as::
+		
+		      prefix + array2string(a) + suffix
+		
+		    The output is left-padded by the length of the prefix string, and
+		    wrapping is forced at the column ``max_line_width - len(suffix)``.
+		    It should be noted that the content of prefix and suffix strings are
+		    not included in the output.
+		style : _NoValue, optional
+		    Has no effect, do not use.
+		
+		    .. deprecated:: 1.14.0
+		formatter : dict of callables, optional
+		    If not None, the keys should indicate the type(s) that the respective
+		    formatting function applies to.  Callables should return a string.
+		    Types that are not specified (by their corresponding keys) are handled
+		    by the default formatters.  Individual types for which a formatter
+		    can be set are:
+		
+		    - 'bool'
+		    - 'int'
+		    - 'timedelta' : a `numpy.timedelta64`
+		    - 'datetime' : a `numpy.datetime64`
+		    - 'float'
+		    - 'longfloat' : 128-bit floats
+		    - 'complexfloat'
+		    - 'longcomplexfloat' : composed of two 128-bit floats
+		    - 'void' : type `numpy.void`
+		    - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
+		    - 'str' : all other strings
+		
+		    Other keys that can be used to set a group of types at once are:
+		
+		    - 'all' : sets all types
+		    - 'int_kind' : sets 'int'
+		    - 'float_kind' : sets 'float' and 'longfloat'
+		    - 'complex_kind' : sets 'complexfloat' and 'longcomplexfloat'
+		    - 'str_kind' : sets 'str' and 'numpystr'
+		threshold : int, optional
+		    Total number of array elements which trigger summarization
+		    rather than full repr.
+		edgeitems : int, optional
+		    Number of array items in summary at beginning and end of
+		    each dimension.
+		sign : string, either '-', '+', or ' ', optional
+		    Controls printing of the sign of floating-point types. If '+', always
+		    print the sign of positive values. If ' ', always prints a space
+		    (whitespace character) in the sign position of positive values.  If
+		    '-', omit the sign character of positive values.
+		floatmode : str, optional
+		    Controls the interpretation of the `precision` option for
+		    floating-point types. Can take the following values:
+		
+		    - 'fixed': Always print exactly `precision` fractional digits,
+		      even if this would print more or fewer digits than
+		      necessary to specify the value uniquely.
+		    - 'unique': Print the minimum number of fractional digits necessary
+		      to represent each value uniquely. Different elements may
+		      have a different number of digits.  The value of the
+		      `precision` option is ignored.
+		    - 'maxprec': Print at most `precision` fractional digits, but if
+		      an element can be uniquely represented with fewer digits
+		      only print it with that many.
+		    - 'maxprec_equal': Print at most `precision` fractional digits,
+		      but if every element in the array can be uniquely
+		      represented with an equal number of fewer digits, use that
+		      many digits for all elements.
+		legacy : string or `False`, optional
+		    If set to the string `'1.13'` enables 1.13 legacy printing mode. This
+		    approximates numpy 1.13 print output by including a space in the sign
+		    position of floats and different behavior for 0d arrays. If set to
+		    `False`, disables legacy mode. Unrecognized strings will be ignored
+		    with a warning for forward compatibility.
+		
+		    .. versionadded:: 1.14.0
+		
+		Returns
+		-------
+		array_str : str
+		    String representation of the array.
+		
+		Raises
+		------
+		TypeError
+		    if a callable in `formatter` does not return a string.
+		
+		See Also
+		--------
+		array_str, array_repr, set_printoptions, get_printoptions
+		
+		Notes
+		-----
+		If a formatter is specified for a certain type, the `precision` keyword is
+		ignored for that type.
+		
+		This is a very flexible function; `array_repr` and `array_str` are using
+		`array2string` internally so keywords with the same name should work
+		identically in all three functions.
+		
+		Examples
+		--------
+		>>> x = np.array([1e-16,1,2,3])
+		>>> print(np.array2string(x, precision=2, separator=',',
+		...                       suppress_small=True))
+		[ 0., 1., 2., 3.]
+		
+		>>> x  = np.arange(3.)
+		>>> np.array2string(x, formatter={'float_kind':lambda x: "%.2f" % x})
+		'[0.00 1.00 2.00]'
+		
+		>>> x  = np.arange(3)
+		>>> np.array2string(x, formatter={'int':lambda x: hex(x)})
+		'[0x0L 0x1L 0x2L]'
+	**/
+	static public function _array2string_impl(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic, ?threshold:Dynamic, ?edgeitems:Dynamic, ?sign:Dynamic, ?floatmode:Dynamic, ?suffix:Dynamic, ?kwarg:python.KwArgs<Dynamic>):String;
+	static public function _array_repr_dispatcher(arr:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic):Dynamic;
+	/**
+		Internal version of array_repr() that allows overriding array2string.
+	**/
+	static public function _array_repr_implementation(arr:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?array2string:Dynamic):Dynamic;
+	static public function _array_str_dispatcher(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic):Dynamic;
+	/**
+		Internal version of array_str() that allows overriding array2string.
+	**/
+	static public function _array_str_implementation(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?array2string:Dynamic):Dynamic;
+	static public function _default_array_repr(arr:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?array2string:Dynamic):Dynamic;
+	static public function _default_array_str(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?array2string:Dynamic):Dynamic;
 	static public function _extendLine(s:Dynamic, line:Dynamic, word:Dynamic, line_width:Dynamic, next_line_prefix:Dynamic, legacy:Dynamic):Dynamic;
 	/**
 		formatArray is designed for two modes of operation:
@@ -345,6 +494,8 @@ package numpy.core.arrayprint;
 		
 		    The output is left-padded by the length of the prefix string, and
 		    wrapping is forced at the column ``max_line_width - len(suffix)``.
+		    It should be noted that the content of prefix and suffix strings are
+		    not included in the output.
 		style : _NoValue, optional
 		    Has no effect, do not use.
 		
@@ -452,6 +603,38 @@ package numpy.core.arrayprint;
 		'[0x0L 0x1L 0x2L]'
 	**/
 	static public function array2string(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic, ?threshold:Dynamic, ?edgeitems:Dynamic, ?sign:Dynamic, ?floatmode:Dynamic, ?suffix:Dynamic, ?kwarg:python.KwArgs<Dynamic>):String;
+	/**
+		Decorator for adding dispatch with the __array_function__ protocol.
+		
+		See NEP-18 for example usage.
+		
+		Parameters
+		----------
+		dispatcher : callable
+		    Function that when called like ``dispatcher(*args, **kwargs)`` with
+		    arguments from the NumPy function call returns an iterable of
+		    array-like arguments to check for ``__array_function__``.
+		module : str, optional
+		    __module__ attribute to set on new function, e.g., ``module='numpy'``.
+		    By default, module is copied from the decorated function.
+		verify : bool, optional
+		    If True, verify the that the signature of the dispatcher and decorated
+		    function signatures match exactly: all required and optional arguments
+		    should appear in order with the same names, but the default values for
+		    all optional arguments should be ``None``. Only disable verification
+		    if the dispatcher's signature needs to deviate for some particular
+		    reason, e.g., because the function has a signature like
+		    ``func(*args, **kwargs)``.
+		docs_from_dispatcher : bool, optional
+		    If True, copy docs from the dispatcher function onto the dispatched
+		    function, rather than from the implementation. This is useful for
+		    functions defined in C, which otherwise don't have docstrings.
+		
+		Returns
+		-------
+		Function suitable for decorating the implementation of a NumPy function.
+	**/
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	/**
 		Return the string representation of an array.
 		
@@ -630,6 +813,7 @@ package numpy.core.arrayprint;
 		hstack : Stack arrays in sequence horizontally (column wise)
 		vstack : Stack arrays in sequence vertically (row wise)
 		dstack : Stack arrays in sequence depth wise (along third dimension)
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -659,19 +843,19 @@ package numpy.core.arrayprint;
 		>>> a[1] = np.ma.masked
 		>>> b = np.arange(2, 5)
 		>>> a
-		masked_array(data = [0 -- 2],
-		             mask = [False  True False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2],
+		             mask=[False,  True, False],
+		       fill_value=999999)
 		>>> b
 		array([2, 3, 4])
 		>>> np.concatenate([a, b])
-		masked_array(data = [0 1 2 2 3 4],
-		             mask = False,
-		       fill_value = 999999)
+		masked_array(data=[0, 1, 2, 2, 3, 4],
+		             mask=False,
+		       fill_value=999999)
 		>>> np.ma.concatenate([a, b])
-		masked_array(data = [0 -- 2 2 3 4],
-		             mask = [False  True False False False False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2, 2, 3, 4],
+		             mask=[False,  True, False, False, False, False],
+		       fill_value=999999)
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -739,8 +923,8 @@ package numpy.core.arrayprint;
 		
 		Get information about the step size of a date or time type.
 		
-		The returned tuple can be passed as the second argument of `datetime64` and
-		`timedelta64`.
+		The returned tuple can be passed as the second argument of `numpy.datetime64` and
+		`numpy.timedelta64`.
 		
 		Parameters
 		----------
@@ -764,10 +948,10 @@ package numpy.core.arrayprint;
 		array(250, dtype='timedelta64[s]')
 		
 		The result can be used to construct a datetime that uses the same units
-		as a timedelta::
+		as a timedelta
 		
 		>>> np.datetime64('2010', np.datetime_data(dt_25s))
-		numpy.datetime64('2010-01-01T00:00:00','25s')
+		numpy.datetime64('2010-01-01T00:00:00', '25s')
 	**/
 	static public function datetime_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
@@ -1150,6 +1334,8 @@ package numpy.core.arrayprint;
 		
 		Test element-wise for NaT (not a time) and return result as a boolean array.
 		
+		.. versionadded:: 1.13.0
+		
 		Parameters
 		----------
 		x : array_like
@@ -1354,6 +1540,18 @@ package numpy.core.arrayprint;
 	static public function ravel(a:Dynamic, ?order:Dynamic):python.NativeIterable<Dynamic>;
 	static public function repr_format(x:Dynamic):Dynamic;
 	static public function set_legacy_print_mode(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
 	/**
 		Set printing options.
 		

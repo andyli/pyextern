@@ -92,7 +92,7 @@ package tensorflow.contrib.timeseries.python.timeseries.head;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.

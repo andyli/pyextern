@@ -47,7 +47,7 @@ package tensorflow.contrib.session_bundle.session_bundle;
 	/**
 		Load session bundle from the given path. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
 		No longer supported. Switch to SavedModel immediately.
 		
@@ -74,7 +74,7 @@ package tensorflow.contrib.session_bundle.session_bundle;
 	/**
 		Checks if the model path contains session bundle model. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
 		No longer supported. Switch to SavedModel immediately.
 		

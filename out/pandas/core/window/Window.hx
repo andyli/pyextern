@@ -120,7 +120,7 @@ package pandas.core.window;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		provide a nice str repr of our rolling object 
+		Provide a nice str repr of our rolling object.
 	**/
 	public function __unicode__():Dynamic;
 	/**
@@ -128,7 +128,8 @@ package pandas.core.window;
 	**/
 	public var __weakref__ : Dynamic;
 	static public var _accessors : Dynamic;
-	static public var _agg_doc : Dynamic;
+	static public var _agg_examples_doc : Dynamic;
+	static public var _agg_see_also_doc : Dynamic;
 	/**
 		provide an implementation for the aggregators
 		
@@ -154,18 +155,18 @@ package pandas.core.window;
 		
 		Parameters
 		----------
-		mean : boolean, default True
+		mean : bool, default True
 		    If True computes weighted mean, else weighted sum
 		
 		Returns
 		-------
-		y : type of input argument
+		y : same type as input argument
 	**/
 	public function _apply_window(?mean:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _attributes : Dynamic;
 	static public var _builtin_table : Dynamic;
 	/**
-		center the result in the window 
+		Center the result in the window.
 	**/
 	public function _center_window(result:Dynamic, window:Dynamic):Dynamic;
 	/**
@@ -173,11 +174,11 @@ package pandas.core.window;
 	**/
 	public var _constructor : Dynamic;
 	/**
-		resample according to the how, return a new object 
+		Resample according to the how, return a new object.
 	**/
 	public function _convert_freq():Dynamic;
 	/**
-		split data into blocks & return conformed data 
+		Split data into blocks & return conformed data.
 	**/
 	public function _create_blocks():Dynamic;
 	static public var _cython_table : Dynamic;
@@ -191,7 +192,7 @@ package pandas.core.window;
 	**/
 	public function _dir_deletions():Dynamic;
 	/**
-		Return index as ndarrays
+		Return index as ndarrays.
 		
 		Returns
 		-------
@@ -200,12 +201,11 @@ package pandas.core.window;
 	public function _get_index(?index:Dynamic):Dynamic;
 	public function _get_window(?other:Dynamic):Dynamic;
 	/**
-		sub-classes to define
-		return a sliced object
+		Sub-classes to define. Return a sliced object.
 		
 		Parameters
 		----------
-		key : string / list of selections
+		key : str / list of selections
 		ndim : 1,2
 		    requested ndim of result
 		subset : object, default None
@@ -220,15 +220,15 @@ package pandas.core.window;
 	**/
 	public function _is_builtin_func(arg:Dynamic):Dynamic;
 	/**
-		if we define an internal function for this argument, return it 
+		if we define an internal function for this argument, return it
 	**/
 	public function _is_cython_func(arg:Dynamic):Dynamic;
 	public var _obj_with_exclusions : Dynamic;
 	public var _on : Dynamic;
 	public function _prep_values(?values:Dynamic, ?kill_inf:Dynamic):Dynamic;
 	/**
-		provide validation for our window type, return the window
-		we have already been validated
+		Provide validation for our window type, return the window
+		we have already been validated.
 	**/
 	public function _prep_window(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -245,7 +245,7 @@ package pandas.core.window;
 	**/
 	public var _selection_name : Dynamic;
 	/**
-		return a new object with the replacement attributes 
+		return a new object with the replacement attributes
 	**/
 	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -257,11 +257,11 @@ package pandas.core.window;
 	public function _try_aggregate_string_function(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _window_type : Dynamic;
 	/**
-		wrap a single result 
+		Wrap a single result.
 	**/
 	public function _wrap_result(result:Dynamic, ?block:Dynamic, ?obj:Dynamic):Dynamic;
 	/**
-		wrap the results
+		Wrap the results.
 		
 		Parameters
 		----------
@@ -277,18 +277,16 @@ package pandas.core.window;
 		
 		Parameters
 		----------
-		func : function, string, dictionary, or list of string/functions
+		func : function, str, list or dict
 		    Function to use for aggregating the data. If a function, must either
-		    work when passed a Series/DataFrame or when passed to Series/DataFrame.apply. For
-		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
+		    work when passed a Series/DataFrame or when passed to Series/DataFrame.apply.
 		
 		    Accepted combinations are:
 		
-		    - string function name.
-		    - function.
-		    - list of functions.
-		    - dict of column names -> functions (or list of functions).
-		
+		    - function
+		    - string function name
+		    - list of functions and/or function names, e.g. ``[np.sum, 'mean']``
+		    - dict of axis labels -> functions, function names or list of such.
 		
 		*args
 		    Positional arguments to pass to `func`.
@@ -297,13 +295,25 @@ package pandas.core.window;
 		
 		Returns
 		-------
-		aggregated : Series/DataFrame
+		DataFrame, Series or scalar
+		    if DataFrame.agg is called with a single function, returns a Series
+		    if DataFrame.agg is called with several functions, returns a DataFrame
+		    if Series.agg is called with single function, returns a scalar
+		    if Series.agg is called with several functions, returns a Series
+		
+		
+		See Also
+		--------
+		pandas.DataFrame.rolling.aggregate
+		pandas.DataFrame.aggregate
+		
 		
 		Notes
 		-----
 		`agg` is an alias for `aggregate`. Use the alias.
 		
 		A passed user-defined-function will be passed a Series for evaluation.
+		
 		
 		Examples
 		--------
@@ -334,11 +344,6 @@ package pandas.core.window;
 		7  0.906020  1.283573  0.085482
 		8 -0.096361  0.818139  0.472290
 		9  0.070889  0.134399 -0.031308
-		
-		See also
-		--------
-		pandas.DataFrame.rolling.aggregate
-		pandas.DataFrame.aggregate
 	**/
 	public function agg(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -348,18 +353,16 @@ package pandas.core.window;
 		
 		Parameters
 		----------
-		func : function, string, dictionary, or list of string/functions
+		func : function, str, list or dict
 		    Function to use for aggregating the data. If a function, must either
-		    work when passed a Series/DataFrame or when passed to Series/DataFrame.apply. For
-		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
+		    work when passed a Series/DataFrame or when passed to Series/DataFrame.apply.
 		
 		    Accepted combinations are:
 		
-		    - string function name.
-		    - function.
-		    - list of functions.
-		    - dict of column names -> functions (or list of functions).
-		
+		    - function
+		    - string function name
+		    - list of functions and/or function names, e.g. ``[np.sum, 'mean']``
+		    - dict of axis labels -> functions, function names or list of such.
 		
 		*args
 		    Positional arguments to pass to `func`.
@@ -368,13 +371,25 @@ package pandas.core.window;
 		
 		Returns
 		-------
-		aggregated : Series/DataFrame
+		DataFrame, Series or scalar
+		    if DataFrame.agg is called with a single function, returns a Series
+		    if DataFrame.agg is called with several functions, returns a DataFrame
+		    if Series.agg is called with single function, returns a scalar
+		    if Series.agg is called with several functions, returns a Series
+		
+		
+		See Also
+		--------
+		pandas.DataFrame.rolling.aggregate
+		pandas.DataFrame.aggregate
+		
 		
 		Notes
 		-----
 		`agg` is an alias for `aggregate`. Use the alias.
 		
 		A passed user-defined-function will be passed a Series for evaluation.
+		
 		
 		Examples
 		--------
@@ -405,11 +420,6 @@ package pandas.core.window;
 		7  0.906020  1.283573  0.085482
 		8 -0.096361  0.818139  0.472290
 		9  0.070889  0.134399 -0.031308
-		
-		See also
-		--------
-		pandas.DataFrame.rolling.aggregate
-		pandas.DataFrame.aggregate
 	**/
 	public function aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var exclusions : Dynamic;
@@ -433,10 +443,10 @@ package pandas.core.window;
 		
 		See Also
 		--------
-		Series.window : Calling object with Series data
-		DataFrame.window : Calling object with DataFrames
-		Series.mean : Equivalent method for Series
-		DataFrame.mean : Equivalent method for DataFrame
+		Series.window : Calling object with Series data.
+		DataFrame.window : Calling object with DataFrames.
+		Series.mean : Equivalent method for Series.
+		DataFrame.mean : Equivalent method for DataFrame.
 		
 		Examples
 		--------

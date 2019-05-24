@@ -41,11 +41,11 @@ package matplotlib.texmanager;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__():Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new():Void;
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -66,10 +66,7 @@ package matplotlib.texmanager;
 		Return self!=value.
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
-	/**
-		Create and return a new object.  See help(type) for accurate signature.
-	**/
-	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __new__(cls:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -111,6 +108,7 @@ package matplotlib.texmanager;
 	static public var _rc_cache : Dynamic;
 	static public var _rc_cache_keys : Dynamic;
 	static public var _re_vbox : Dynamic;
+	public function _reinit():Dynamic;
 	public function _run_checked_subprocess(command:Dynamic, tex:Dynamic):Dynamic;
 	static public var cachedir : Dynamic;
 	static public var cursive : Dynamic;
@@ -137,13 +135,6 @@ package matplotlib.texmanager;
 		Return the alpha channel.
 	**/
 	public function get_grey(tex:Dynamic, ?fontsize:Dynamic, ?dpi:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 2.2
-		    The get_ps_bbox function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
-		
-		Return a list of PS bboxes for latex's rendering of the tex string.
-	**/
-	public function get_ps_bbox(tex:Dynamic, fontsize:Dynamic):Dynamic;
 	/**
 		Return latex's rendering of the tex string as an rgba array.
 	**/
@@ -175,15 +166,6 @@ package matplotlib.texmanager;
 	**/
 	public function make_png(tex:Dynamic, fontsize:Dynamic, dpi:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 2.2
-		    The make_ps function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
-		
-		Generate a postscript file containing latex's rendering of tex string.
-		
-		Return the file name.
-	**/
-	public function make_ps(tex:Dynamic, fontsize:Dynamic):Dynamic;
-	/**
 		Generate a tex file to render the tex string at a specific font size.
 		
 		Return the file name.
@@ -199,20 +181,6 @@ package matplotlib.texmanager;
 	**/
 	public function make_tex_preview(tex:Dynamic, fontsize:Dynamic):Dynamic;
 	static public var monospace : Dynamic;
-	/**
-		.. deprecated:: 2.2
-		    The <lambda> function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
-		
-		\ 
-	**/
-	public var postscriptd : Dynamic;
-	/**
-		.. deprecated:: 2.2
-		    The <lambda> function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
-		
-		\ 
-	**/
-	public var pscnt : Dynamic;
 	static public var rgba_arrayd : Dynamic;
 	static public var sans_serif : Dynamic;
 	static public var serif : Dynamic;

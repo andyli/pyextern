@@ -38,7 +38,6 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_analysis_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HOSTS_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -67,13 +66,10 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_analysis_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var REPOSITORY_ROOT_FIELD_NUMBER : Dynamic;
-	static public var REQUEST_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SESSION_ID_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -86,6 +82,10 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_analysis_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_analysis_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.NewProfileSessionRequest.hosts
+	**/
+	public var hosts : Dynamic;
+	/**
+		Field tensorflow.NewProfileSessionRequest.repository_root
+	**/
+	public var repository_root : Dynamic;
+	/**
+		Field tensorflow.NewProfileSessionRequest.request
+	**/
+	public var request : Dynamic;
+	/**
+		Field tensorflow.NewProfileSessionRequest.session_id
+	**/
+	public var session_id : Dynamic;
 }

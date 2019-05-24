@@ -50,11 +50,12 @@ package scipy.interpolate._cubic;
 	static public var division : Dynamic;
 	/**
 		Convenience function for pchip interpolation.
+		
 		xi and yi are arrays of values used to approximate some function f,
 		with ``yi = f(xi)``.  The interpolant uses monotonic cubic splines
 		to find the value of new points x and the derivatives there.
 		
-		See `PchipInterpolator` for details.
+		See `scipy.interpolate.PchipInterpolator` for details.
 		
 		Parameters
 		----------
@@ -82,6 +83,15 @@ package scipy.interpolate._cubic;
 		    The result, of length R or length M or M by R,
 	**/
 	static public function pchip_interpolate(xi:Dynamic, yi:Dynamic, x:Dynamic, ?der:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Prepare input for cubic spline interpolators.
+		
+		All data are converted to numpy arrays and checked for correctness.
+		Axes equal to `axis` of arrays `y` and `dydx` are rolled to be the 0-th
+		axis. The value of `axis` is converted to lie in
+		[0, number of dimensions of `y`).
+	**/
+	static public function prepare_input(x:Dynamic, y:Dynamic, axis:Dynamic, ?dydx:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Solves the linear equation set ``a * x = b`` for the unknown ``x``

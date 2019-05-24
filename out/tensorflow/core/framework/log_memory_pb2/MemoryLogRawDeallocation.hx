@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.framework.log_memory_pb2;
 @:pythonImport("tensorflow.core.framework.log_memory_pb2", "MemoryLogRawDeallocation") extern class MemoryLogRawDeallocation {
-	static public var ALLOCATION_ID_FIELD_NUMBER : Dynamic;
-	static public var ALLOCATOR_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -23,7 +21,6 @@ package tensorflow.core.framework.log_memory_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEFERRED_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		Discards the unknown fields.
@@ -65,7 +62,6 @@ package tensorflow.core.framework.log_memory_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var OPERATION_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -74,7 +70,6 @@ package tensorflow.core.framework.log_memory_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var STEP_ID_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -87,6 +82,10 @@ package tensorflow.core.framework.log_memory_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -252,4 +251,24 @@ package tensorflow.core.framework.log_memory_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.MemoryLogRawDeallocation.allocation_id
+	**/
+	public var allocation_id : Dynamic;
+	/**
+		Field tensorflow.MemoryLogRawDeallocation.allocator_name
+	**/
+	public var allocator_name : Dynamic;
+	/**
+		Field tensorflow.MemoryLogRawDeallocation.deferred
+	**/
+	public var deferred : Dynamic;
+	/**
+		Field tensorflow.MemoryLogRawDeallocation.operation
+	**/
+	public var operation : Dynamic;
+	/**
+		Field tensorflow.MemoryLogRawDeallocation.step_id
+	**/
+	public var step_id : Dynamic;
 }

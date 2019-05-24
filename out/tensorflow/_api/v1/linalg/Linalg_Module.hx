@@ -344,7 +344,6 @@ package tensorflow._api.v1.linalg;
 		* Ellipses (subscripts like `ij...,jk...->ik...`)
 		* Subscripts where an axis appears more than once for a single input
 		  (e.g. `ijj,k->ik`).
-		* Subscripts that are summed across multiple inputs (e.g., `ij,ij,jk->ik`).
 		
 		Args:
 		  equation: a `str` describing the contraction, in the same format as
@@ -480,7 +479,7 @@ package tensorflow._api.v1.linalg;
 	/**
 		Normalizes along dimension `axis` using an L2 norm. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(dim)`. They will be removed in a future version.
 		Instructions for updating:
 		dim is deprecated, use axis instead
 		
@@ -613,6 +612,41 @@ package tensorflow._api.v1.linalg;
 	**/
 	static public function lstsq(matrix:Dynamic, rhs:Dynamic, ?l2_regularizer:Dynamic, ?fast:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Computes the LU decomposition of one or more square matrices.
+		
+		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
+		form square matrices.
+		
+		The input has to be invertible.
+		
+		The output consists of two tensors LU and P containing the LU decomposition
+		of all input submatrices `[..., :, :]`. LU encodes the lower triangular and
+		upper triangular factors.
+		
+		For each input submatrix of shape `[M, M]`, L is a lower triangular matrix of
+		shape `[M, M]` with unit diagonal whose entries correspond to the strictly lower
+		triangular part of LU. U is a upper triangular matrix of shape `[M, M]` whose
+		entries correspond to the upper triangular part, including the diagonal, of LU.
+		
+		P represents a permutation matrix encoded as a list of indices each between `0`
+		and `M-1`, inclusive. If P_mat denotes the permutation matrix corresponding to
+		P, then the L, U and P satisfies P_mat * input = L * U.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
+		    A tensor of shape `[..., M, M]` whose inner-most 2 dimensions form matrices of
+		    size `[M, M]`.
+		  output_idx_type: An optional `tf.DType` from: `tf.int32, tf.int64`. Defaults to `tf.int32`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (lu, p).
+		
+		  lu: A `Tensor`. Has the same type as `input`.
+		  p: A `Tensor` of type `output_idx_type`.
+	**/
+	static public function lu(input:Dynamic, ?output_idx_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Multiplies matrix `a` by matrix `b`, producing `a` * `b`.
 		
 		The inputs must, following any transpositions, be tensors of rank >= 2
@@ -715,9 +749,90 @@ package tensorflow._api.v1.linalg;
 	**/
 	static public function matmul(a:Dynamic, b:Dynamic, ?transpose_a:Dynamic, ?transpose_b:Dynamic, ?adjoint_a:Dynamic, ?adjoint_b:Dynamic, ?a_is_sparse:Dynamic, ?b_is_sparse:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Multiplies matrix `a` by vector `b`, producing `a` * `b`.
+		
+		The matrix `a` must, following any transpositions, be a tensor of rank >= 2,
+		and we must have `shape(b) = shape(a)[:-2] + [shape(a)[-1]]`.
+		
+		Both `a` and `b` must be of the same type. The supported types are:
+		`float16`, `float32`, `float64`, `int32`, `complex64`, `complex128`.
+		
+		Matrix `a` can be transposed or adjointed (conjugated and transposed) on
+		the fly by setting one of the corresponding flag to `True`. These are `False`
+		by default.
+		
+		If one or both of the inputs contain a lot of zeros, a more efficient
+		multiplication algorithm can be used by setting the corresponding
+		`a_is_sparse` or `b_is_sparse` flag to `True`. These are `False` by default.
+		This optimization is only available for plain matrices/vectors (rank-2/1
+		tensors) with datatypes `bfloat16` or `float32`.
+		
+		For example:
+		
+		```python
+		# 2-D tensor `a`
+		# [[1, 2, 3],
+		#  [4, 5, 6]]
+		a = tf.constant([1, 2, 3, 4, 5, 6], shape=[2, 3])
+		
+		# 1-D tensor `b`
+		# [7, 9, 11]
+		b = tf.constant([7, 9, 11], shape=[3])
+		
+		# `a` * `b`
+		# [ 58,  64]
+		c = tf.matvec(a, b)
+		
+		
+		# 3-D tensor `a`
+		# [[[ 1,  2,  3],
+		#   [ 4,  5,  6]],
+		#  [[ 7,  8,  9],
+		#   [10, 11, 12]]]
+		a = tf.constant(np.arange(1, 13, dtype=np.int32),
+		                shape=[2, 2, 3])
+		
+		# 2-D tensor `b`
+		# [[13, 14, 15],
+		#  [16, 17, 18]]
+		b = tf.constant(np.arange(13, 19, dtype=np.int32),
+		                shape=[2, 3])
+		
+		# `a` * `b`
+		# [[ 86, 212],
+		#  [410, 563]]
+		c = tf.matvec(a, b)
+		```
+		
+		Args:
+		  a: `Tensor` of type `float16`, `float32`, `float64`, `int32`, `complex64`,
+		    `complex128` and rank > 1.
+		  b: `Tensor` with same type and rank = `rank(a) - 1`.
+		  transpose_a: If `True`, `a` is transposed before multiplication.
+		  adjoint_a: If `True`, `a` is conjugated and transposed before
+		    multiplication.
+		  a_is_sparse: If `True`, `a` is treated as a sparse matrix.
+		  b_is_sparse: If `True`, `b` is treated as a sparse matrix.
+		  name: Name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of the same type as `a` and `b` where each inner-most vector is
+		  the product of the corresponding matrices in `a` and vectors in `b`, e.g. if
+		  all transpose or adjoint attributes are `False`:
+		
+		  `output`[..., i] = sum_k (`a`[..., i, k] * `b`[..., k]), for all indices i.
+		
+		  Note: This is matrix-vector product, not element-wise product.
+		
+		
+		Raises:
+		  ValueError: If transpose_a and adjoint_a are both set to True.
+	**/
+	static public function matvec(a:Dynamic, b:Dynamic, ?transpose_a:Dynamic, ?adjoint_a:Dynamic, ?a_is_sparse:Dynamic, ?b_is_sparse:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Computes the norm of vectors, matrices, and tensors. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		keep_dims is deprecated, use keepdims instead
 		
@@ -884,6 +999,34 @@ package tensorflow._api.v1.linalg;
 	**/
 	static public function solve(matrix:Dynamic, rhs:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Computes the matrix square root of one or more square matrices:
+		
+		matmul(sqrtm(A), sqrtm(A)) = A
+		
+		The input matrix should be invertible. If the input matrix is real, it should
+		have no eigenvalues which are real and negative (pairs of complex conjugate
+		eigenvalues are allowed).
+		
+		The matrix square root is computed by first reducing the matrix to 
+		quasi-triangular form with the real Schur decomposition. The square root 
+		of the quasi-triangular matrix is then computed directly. Details of 
+		the algorithm can be found in: Nicholas J. Higham, "Computing real 
+		square roots of a real matrix", Linear Algebra Appl., 1987.
+		
+		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
+		form square matrices. The output is a tensor of the same shape as the input
+		containing the matrix square root for all input submatrices `[..., :, :]`.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
+		    Shape is `[..., M, M]`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function sqrtm(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Computes the singular value decompositions of one or more matrices.
 		
 		Computes the SVD of each inner matrix in `tensor` such that
@@ -1037,12 +1180,11 @@ package tensorflow._api.v1.linalg;
 		  a: `Tensor` of type `float32` or `float64`.
 		  b: `Tensor` with the same type as `a`.
 		  axes: Either a scalar `N`, or a list or an `int32` `Tensor` of shape [2, k].
-		   If axes is a scalar, sum over the last N axes of a and the first N axes
-		   of b in order.
-		   If axes is a list or `Tensor` the first and second row contain the set of
-		   unique integers specifying axes along which the contraction is computed,
-		   for `a` and `b`, respectively. The number of axes for `a` and `b` must
-		   be equal.
+		    If axes is a scalar, sum over the last N axes of a and the first N axes of
+		    b in order. If axes is a list or `Tensor` the first and second row contain
+		    the set of unique integers specifying axes along which the contraction is
+		    computed, for `a` and `b`, respectively. The number of axes for `a` and
+		    `b` must be equal.
 		  name: A name for the operation (optional).
 		
 		Returns:

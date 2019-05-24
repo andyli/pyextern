@@ -1,8 +1,8 @@
 /* This file is generated, do not edit! */
 package pandas._libs.tslibs.frequencies;
 @:pythonImport("pandas._libs.tslibs.frequencies") extern class Frequencies_Module {
+	static public var INVALID_FREQ_ERR_MSG : Dynamic;
 	static public var MONTH_NUMBERS : Dynamic;
-	static public var _INVALID_FREQ_ERROR : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;
@@ -13,6 +13,11 @@ package pandas._libs.tslibs.frequencies;
 	static public var __test__ : Dynamic;
 	/**
 		Return base freq and stride info from string representation
+		
+		Returns
+		-------
+		base : str
+		stride : int
 		
 		Examples
 		--------

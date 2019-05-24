@@ -265,19 +265,74 @@ package pandas.plotting._core;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	/**
-		Area plot
+		Draw a stacked area plot.
+		
+		An area plot displays quantitative data visually.
+		This function wraps the matplotlib area function.
 		
 		Parameters
 		----------
-		x, y : label or position, optional
-		    Coordinates for each point.
-		`**kwds` : optional
+		x : label or position, optional
+		    Coordinates for the X axis. By default uses the index.
+		y : label or position, optional
+		    Column to plot. By default uses all columns.
+		stacked : bool, default True
+		    Area plots are stacked by default. Set to False to create a
+		    unstacked plot.
+		**kwds : optional
 		    Additional keyword arguments are documented in
 		    :meth:`pandas.DataFrame.plot`.
 		
 		Returns
 		-------
-		axes : :class:`matplotlib.axes.Axes` or numpy.ndarray of them
+		matplotlib.axes.Axes or numpy.ndarray
+		    Area plot, or array of area plots if subplots is True
+		
+		See Also
+		--------
+		DataFrame.plot : Make plots of DataFrame using matplotlib / pylab.
+		
+		Examples
+		--------
+		Draw an area plot based on basic business metrics:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> df = pd.DataFrame({
+		    ...     'sales': [3, 2, 3, 9, 10, 6],
+		    ...     'signups': [5, 5, 6, 12, 14, 13],
+		    ...     'visits': [20, 42, 28, 62, 81, 50],
+		    ... }, index=pd.date_range(start='2018/01/01', end='2018/07/01',
+		    ...                        freq='M'))
+		    >>> ax = df.plot.area()
+		
+		Area plots are stacked by default. To produce an unstacked plot,
+		pass ``stacked=False``:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = df.plot.area(stacked=False)
+		
+		Draw an area plot for a single column:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = df.plot.area(y='sales')
+		
+		Draw with a different `x`:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> df = pd.DataFrame({
+		    ...     'sales': [3, 2, 3],
+		    ...     'visits': [20, 42, 28],
+		    ...     'day': [1, 2, 3],
+		    ... })
+		    >>> ax = df.plot.area(x='day')
 	**/
 	public function area(?x:Dynamic, ?y:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -495,7 +550,7 @@ package pandas.plotting._core;
 		In statistics, `kernel density estimation`_ (KDE) is a non-parametric
 		way to estimate the probability density function (PDF) of a random
 		variable. This function uses Gaussian kernels and includes automatic
-		bandwith determination.
+		bandwidth determination.
 		
 		.. _kernel density estimation:
 		    https://en.wikipedia.org/wiki/Kernel_density_estimation
@@ -545,8 +600,8 @@ package pandas.plotting._core;
 		    >>> ax = df.plot.kde()
 		
 		A scalar bandwidth can be specified. Using a small bandwidth value can
-		lead to overfitting, while using a large bandwidth value may result
-		in underfitting:
+		lead to over-fitting, while using a large bandwidth value may result
+		in under-fitting:
 		
 		.. plot::
 		    :context: close-figs
@@ -611,7 +666,7 @@ package pandas.plotting._core;
 		See Also
 		--------
 		DataFrame.plot : Make plots of a DataFrame.
-		matplotlib.pyplot.hexbin : hexagonal binning plot using matplotlib,
+		matplotlib.pyplot.hexbin : Hexagonal binning plot using matplotlib,
 		    the matplotlib function that is used under the hood.
 		
 		Examples
@@ -699,7 +754,7 @@ package pandas.plotting._core;
 		In statistics, `kernel density estimation`_ (KDE) is a non-parametric
 		way to estimate the probability density function (PDF) of a random
 		variable. This function uses Gaussian kernels and includes automatic
-		bandwith determination.
+		bandwidth determination.
 		
 		.. _kernel density estimation:
 		    https://en.wikipedia.org/wiki/Kernel_density_estimation
@@ -749,8 +804,8 @@ package pandas.plotting._core;
 		    >>> ax = df.plot.kde()
 		
 		A scalar bandwidth can be specified. Using a small bandwidth value can
-		lead to overfitting, while using a large bandwidth value may result
-		in underfitting:
+		lead to over-fitting, while using a large bandwidth value may result
+		in under-fitting:
 		
 		.. plot::
 		    :context: close-figs
@@ -914,7 +969,7 @@ package pandas.plotting._core;
 		
 		    - A sequence of color strings referred to by name, RGB or RGBA
 		      code, which will be used for each point's color recursively. For
-		      intance ['green','yellow'] all points will be filled in green or
+		      instance ['green','yellow'] all points will be filled in green or
 		      yellow, alternatively.
 		
 		    - A column name or position whose values will be used to color the
@@ -929,7 +984,7 @@ package pandas.plotting._core;
 		
 		See Also
 		--------
-		matplotlib.pyplot.scatter : scatter plot using multiple input data
+		matplotlib.pyplot.scatter : Scatter plot using multiple input data
 		    formats.
 		
 		Examples

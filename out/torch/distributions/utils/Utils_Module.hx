@@ -10,14 +10,7 @@ package torch.distributions.utils;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Given a list of tensor sizes, returns the size of the resulting broadcasted
-		tensor.
-		
-		Args:
-		    shapes (list of torch.Size): list of tensor sizes
-	**/
-	static public function _broadcast_shape(shapes:Dynamic):Dynamic;
+	static public function _default_promotion(v:Dynamic):Dynamic;
 	/**
 		Return floating point info about a `Tensor`:
 		- `.eps` is the smallest number that can be added to 1 without being lost.
@@ -30,6 +23,7 @@ package torch.distributions.utils;
 		    _Finfo: a `namedtuple` with fields `.eps` and `.tiny`.
 	**/
 	static public function _finfo(tensor:Dynamic):Dynamic;
+	static public function _standard_normal(shape:Dynamic, dtype:Dynamic, device:Dynamic):Dynamic;
 	/**
 		Sum out ``dim`` many rightmost dimensions of a given tensor.
 		
@@ -39,20 +33,12 @@ package torch.distributions.utils;
 	**/
 	static public function _sum_rightmost(value:Dynamic, dim:Dynamic):Dynamic;
 	/**
-		Given a batch of matrices, returns the lower triangular part of each matrix, with
-		the other entries set to 0. The argument `diagonal` has the same meaning as in
-		`torch.tril`.
-	**/
-	static public function batch_tril(bmat:Dynamic, ?diagonal:Dynamic):Dynamic;
-	/**
 		Given a list of values (possibly containing numbers), returns a list where each
 		value is broadcasted based on the following rules:
-		  - `torch.*Tensor` instances are broadcasted as per the `broadcasting rules
-		    <http://pytorch.org/docs/master/notes/broadcasting.html>`_
+		  - `torch.*Tensor` instances are broadcasted as per :ref:`_broadcasting-semantics`.
 		  - numbers.Number instances (scalars) are upcast to tensors having
 		    the same size and type as the first tensor passed to `values`.  If all the
-		    values are scalars, then they are upcasted to Tensors having size
-		    `(1,)`.
+		    values are scalars, then they are upcasted to scalar Tensors.
 		
 		Args:
 		    values (list of `numbers.Number` or `torch.*Tensor`)

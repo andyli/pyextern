@@ -114,15 +114,15 @@ package matplotlib.backends.backend_ps;
 	public function copy_properties(gc:Dynamic):Dynamic;
 	/**
 		Return the alpha value used for blending - not supported on
-		all backends
+		all backends.
 	**/
 	public function get_alpha():Dynamic;
 	/**
-		Return true if the object should try to do antialiased rendering
+		Return whether the object should try to do antialiased rendering.
 	**/
 	public function get_antialiased():Dynamic;
 	/**
-		Return the capstyle as a string in ('butt', 'round', 'projecting')
+		Return the capstyle as a string in ('butt', 'round', 'projecting').
 	**/
 	public function get_capstyle():Dynamic;
 	/**
@@ -132,8 +132,7 @@ package matplotlib.backends.backend_ps;
 	**/
 	public function get_clip_path():Dynamic;
 	/**
-		Return the clip rectangle as a :class:`~matplotlib.transforms.Bbox`
-		instance
+		Return the clip rectangle as a `~matplotlib.transforms.Bbox` instance.
 	**/
 	public function get_clip_rectangle():Dynamic;
 	/**
@@ -159,35 +158,35 @@ package matplotlib.backends.backend_ps;
 	**/
 	public function get_gid():Dynamic;
 	/**
-		Gets the current hatch style
+		Get the current hatch style.
 	**/
 	public function get_hatch():Dynamic;
 	/**
-		Gets the color to use for hatching.
+		Get the hatch color.
 	**/
 	public function get_hatch_color():Dynamic;
 	/**
-		Gets the linewidth to use for hatching.
+		Get the hatch linewidth.
 	**/
 	public function get_hatch_linewidth():Dynamic;
 	/**
-		Returns a Path for the current hatch.
+		Return a `Path` for the current hatch.
 	**/
 	public function get_hatch_path(?density:Dynamic):Dynamic;
 	/**
-		Return the line join style as one of ('miter', 'round', 'bevel')
+		Return the line join style as one of ('miter', 'round', 'bevel').
 	**/
 	public function get_joinstyle():Dynamic;
 	/**
-		Return the line width in points as a scalar
+		Return the line width in points.
 	**/
 	public function get_linewidth():Dynamic;
 	/**
-		returns a tuple of three or four floats from 0-1.
+		Return a tuple of three or four floats from 0-1.
 	**/
 	public function get_rgb():Dynamic;
 	/**
-		Returns the sketch parameters for the artist.
+		Return the sketch parameters for the artist.
 		
 		Returns
 		-------
@@ -195,39 +194,36 @@ package matplotlib.backends.backend_ps;
 		
 		    A 3-tuple with the following elements:
 		
-		      * `scale`: The amplitude of the wiggle perpendicular to the
-		        source line.
-		
-		      * `length`: The length of the wiggle along the line.
-		
-		      * `randomness`: The scale factor by which the length is
-		        shrunken or expanded.
+		    * `scale`: The amplitude of the wiggle perpendicular to the
+		      source line.
+		    * `length`: The length of the wiggle along the line.
+		    * `randomness`: The scale factor by which the length is
+		      shrunken or expanded.
 		
 		    May return `None` if no sketch parameters were set.
 	**/
 	public function get_sketch_params():Dynamic;
 	/**
-		returns the snap setting which may be:
+		Returns the snap setting, which can be:
 		
-		  * True: snap vertices to the nearest pixel center
-		
-		  * False: leave vertices as-is
-		
-		  * None: (auto) If the path contains only rectilinear line
-		    segments, round to the nearest pixel center
+		* True: snap vertices to the nearest pixel center
+		* False: leave vertices as-is
+		* None: (auto) If the path contains only rectilinear line segments,
+		  round to the nearest pixel center
 	**/
 	public function get_snap():Dynamic;
 	/**
-		returns a url if one is set, None otherwise
+		Return a url if one is set, None otherwise.
 	**/
 	public function get_url():Dynamic;
 	/**
 		Restore the graphics context from the stack - needed only
-		for backends that save graphics contexts on a stack
+		for backends that save graphics contexts on a stack.
 	**/
 	public function restore():Dynamic;
 	/**
 		Set the alpha value used for blending - not supported on all backends.
+		
 		If ``alpha=None`` (the default), the alpha components of the
 		foreground and fill colors will be used to set their respective
 		transparencies (where applicable); otherwise, ``alpha`` will override
@@ -235,11 +231,11 @@ package matplotlib.backends.backend_ps;
 	**/
 	public function set_alpha(alpha:Dynamic):Dynamic;
 	/**
-		True if object should be drawn with antialiased rendering
+		Set whether object should be drawn with antialiased rendering.
 	**/
 	public function set_antialiased(b:Dynamic):Dynamic;
 	/**
-		Set the capstyle as a string in ('butt', 'round', 'projecting')
+		Set the capstyle to be one of ('butt', 'round', 'projecting').
 	**/
 	public function set_capstyle(cs:Dynamic):Dynamic;
 	/**
@@ -265,67 +261,72 @@ package matplotlib.backends.backend_ps;
 	**/
 	public function set_dashes(dash_offset:Dynamic, dash_list:Dynamic):Dynamic;
 	/**
-		Set the foreground color.  fg can be a MATLAB format string, a
-		html hex color string, an rgb or rgba unit tuple, or a float between 0
-		and 1.  In the latter case, grayscale is used.
-		
-		If you know fg is rgba, set ``isRGBA=True`` for efficiency.
-	**/
-	public function set_foreground(fg:Dynamic, ?isRGBA:Dynamic):Dynamic;
-	/**
-		Sets the id.
-	**/
-	public function set_gid(id:Dynamic):Dynamic;
-	/**
-		Sets the hatch style for filling
-	**/
-	public function set_hatch(hatch:Dynamic):Dynamic;
-	/**
-		sets the color to use for hatching.
-	**/
-	public function set_hatch_color(hatch_color:Dynamic):Dynamic;
-	/**
-		Set the join style to be one of ('miter', 'round', 'bevel')
-	**/
-	public function set_joinstyle(js:Dynamic):Dynamic;
-	/**
-		Set the linewidth in points
-	**/
-	public function set_linewidth(w:Dynamic):Dynamic;
-	/**
-		Sets the sketch parameters.
+		Set the foreground color.
 		
 		Parameters
 		----------
+		fg : color
+		isRGBA : bool
+		    If *fg* is known to be an ``(r, g, b, a)`` tuple, *isRGBA* can be
+		    set to True to improve performance.
+	**/
+	public function set_foreground(fg:Dynamic, ?isRGBA:Dynamic):Dynamic;
+	/**
+		Set the id.
+	**/
+	public function set_gid(id:Dynamic):Dynamic;
+	/**
+		Set the hatch style (for fills).
+	**/
+	public function set_hatch(hatch:Dynamic):Dynamic;
+	/**
+		Set the hatch color.
+	**/
+	public function set_hatch_color(hatch_color:Dynamic):Dynamic;
+	/**
+		Set the join style to be one of ('miter', 'round', 'bevel').
+	**/
+	public function set_joinstyle(js:Dynamic):Dynamic;
+	/**
+		Set the linewidth in points.
+	**/
+	public function set_linewidth(w:Dynamic):Dynamic;
+	/**
+		Set the sketch parameters.
 		
+		Parameters
+		----------
 		scale : float, optional
-		    The amplitude of the wiggle perpendicular to the source
-		    line, in pixels.  If scale is `None`, or not provided, no
-		    sketch filter will be provided.
-		
+		    The amplitude of the wiggle perpendicular to the source line, in
+		    pixels.  If scale is `None`, or not provided, no sketch filter will
+		    be provided.
 		length : float, optional
-		     The length of the wiggle along the line, in pixels
-		     (default 128)
-		
+		     The length of the wiggle along the line, in pixels (default 128).
 		randomness : float, optional
-		    The scale factor by which the length is shrunken or
-		    expanded (default 16)
+		    The scale factor by which the length is shrunken or expanded
+		    (default 16).
 	**/
 	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
 	/**
-		Sets the snap setting which may be:
+		Set the snap setting which may be:
 		
-		  * True: snap vertices to the nearest pixel center
-		
-		  * False: leave vertices as-is
-		
-		  * None: (auto) If the path contains only rectilinear line
-		    segments, round to the nearest pixel center
+		* True: snap vertices to the nearest pixel center
+		* False: leave vertices as-is
+		* None: (auto) If the path contains only rectilinear line segments,
+		  round to the nearest pixel center
 	**/
 	public function set_snap(snap:Dynamic):Dynamic;
 	/**
-		Sets the url for links in compatible backends
+		Set the url for links in compatible backends.
 	**/
 	public function set_url(url:Dynamic):Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	public function shouldstroke():Dynamic;
 }

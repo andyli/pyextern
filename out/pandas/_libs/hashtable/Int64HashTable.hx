@@ -109,6 +109,65 @@ package pandas._libs.hashtable;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Calculate unique values and labels (no sorting!)
+		
+		Parameters
+		----------
+		values : ndarray[int64]
+		    Array of values of which unique will be calculated
+		uniques : Int64Vector
+		    Vector into which uniques will be written
+		count_prior : Py_ssize_t, default 0
+		    Number of existing entries in uniques
+		na_sentinel : Py_ssize_t, default -1
+		    Sentinel value used for all NA-values in inverse
+		na_value : object, default None
+		    Value to identify as missing. If na_value is None, then
+		    any value "val" satisfying val != val is considered missing.
+		    If na_value is not None, then _additionally_, any value "val"
+		    satisfying val == na_value is considered missing.
+		ignore_na : boolean, default False
+		    Whether NA-values should be ignored for calculating the uniques. If
+		    True, the labels corresponding to missing values will be set to
+		    na_sentinel.
+		return_inverse : boolean, default False
+		    Whether the mapping of the original array values to their location
+		    in the vector of uniques should be returned.
+		
+		Returns
+		-------
+		uniques : ndarray[int64]
+		    Unique values of input, not sorted
+		labels : ndarray[int64] (if return_inverse=True)
+		    The labels from values to uniques
+	**/
+	public function _unique(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Calculate unique values and labels (no sorting!)
+		
+		Missing values are not included in the "uniques" for this method.
+		The labels for any missing values will be set to "na_sentinel"
+		
+		Parameters
+		----------
+		values : ndarray[int64]
+		    Array of values of which unique will be calculated
+		na_sentinel : Py_ssize_t, default -1
+		    Sentinel value used for all NA-values in inverse
+		na_value : object, default None
+		    Value to identify as missing. If na_value is None, then
+		    any value "val" satisfying val != val is considered missing.
+		    If na_value is not None, then _additionally_, any value "val"
+		    satisfying val == na_value is considered missing.
+		
+		Returns
+		-------
+		uniques : ndarray[int64]
+		    Unique values of input, not sorted
+		labels : ndarray[int64]
+		    The labels from values to uniques
+	**/
 	public function factorize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function get_item(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function get_labels(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -121,6 +180,23 @@ package pandas._libs.hashtable;
 		return the size of my table in bytes 
 	**/
 	public function sizeof(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Calculate unique values and labels (no sorting!)
+		
+		Parameters
+		----------
+		values : ndarray[int64]
+		    Array of values of which unique will be calculated
+		return_inverse : boolean, default False
+		    Whether the mapping of the original array values to their location
+		    in the vector of uniques should be returned.
+		
+		Returns
+		-------
+		uniques : ndarray[int64]
+		    Unique values of input, not sorted
+		labels : ndarray[int64] (if return_inverse)
+		    The labels from values to uniques
+	**/
 	public function unique(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function unique_memview(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

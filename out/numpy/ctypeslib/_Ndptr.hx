@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package numpy.ctypeslib;
 @:pythonImport("numpy.ctypeslib", "_ndptr") extern class _Ndptr {
-	public var __array_interface__ : Dynamic;
 	/**
 		self != 0
 	**/
@@ -126,12 +125,6 @@ package numpy.ctypeslib;
 		whether the object owns the memory or not
 	**/
 	public var _b_needsfree_ : Dynamic;
-	/**
-		This method is called when this class is used as the .restype
-		attribute for a shared-library function.   It constructs a numpy
-		array from a void pointer.
-	**/
-	public function _check_retval_():Dynamic;
 	/**
 		internal objects tree (NEVER CHANGE THIS OBJECT!)
 	**/

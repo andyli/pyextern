@@ -10,39 +10,31 @@ package pandas.core.panel;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Ensure that we have an index from some index-like object
+		Makes sure that time and panels are conformable.
+	**/
+	static public function _ensure_like_indices(time:Dynamic, panels:Dynamic):Dynamic;
+	/**
+		Extract combined index: return intersection or union (depending on the
+		value of "intersect") of indexes on given axis, or None if all objects
+		lack indexes (e.g. they are numpy arrays).
 		
 		Parameters
 		----------
-		index : sequence
-		    An Index or other sequence
-		copy : bool
+		objs : list of objects
+		    Each object will only be considered if it has a _get_axis
+		    attribute.
+		intersect : bool, default False
+		    If True, calculate the intersection between indexes. Otherwise,
+		    calculate the union.
+		axis : {0 or 'index', 1 or 'outer'}, default 0
+		    The axis to extract indexes from.
+		sort : bool, default True
+		    Whether the result index should come out sorted or not.
 		
 		Returns
 		-------
-		index : Index or MultiIndex
-		
-		Examples
-		--------
-		>>> _ensure_index(['a', 'b'])
-		Index(['a', 'b'], dtype='object')
-		
-		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
-		Index([('a', 'a'), ('b', 'c')], dtype='object')
-		
-		>>> _ensure_index([['a', 'a'], ['b', 'c']])
-		MultiIndex(levels=[['a'], ['b', 'c']],
-		           labels=[[0, 0], [0, 1]])
-		
-		See Also
-		--------
-		_ensure_index_from_sequences
+		Index
 	**/
-	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
-	/**
-		Makes sure that time and panels are conformable
-	**/
-	static public function _ensure_like_indices(time:Dynamic, panels:Dynamic):Dynamic;
 	static public function _get_objs_combined_axis(objs:Dynamic, ?intersect:Dynamic, ?axis:Dynamic, ?sort:Dynamic):Dynamic;
 	static public var _shared_doc_kwargs : Dynamic;
 	static public var _shared_docs : Dynamic;
@@ -64,7 +56,7 @@ package pandas.core.panel;
 		[array(['A', 'A', 'B', 'B', 'C', 'C'], dtype='|S1'),
 		array([1, 2, 1, 2, 1, 2])]
 		
-		See also
+		See Also
 		--------
 		itertools.product : Cartesian product of input iterables.  Equivalent to
 		    nested for-loops.
@@ -88,7 +80,99 @@ package pandas.core.panel;
 	static public function cast_scalar_to_array(shape:Dynamic, value:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function create_block_manager_from_arrays(arrays:Dynamic, names:Dynamic, axes:Dynamic):Dynamic;
 	static public function create_block_manager_from_blocks(blocks:Dynamic, axes:Dynamic):Dynamic;
+	/**
+		Decorator to deprecate a keyword argument of a function.
+		
+		Parameters
+		----------
+		old_arg_name : str
+		    Name of argument in function to deprecate
+		new_arg_name : str or None
+		    Name of preferred argument in function. Use None to raise warning that
+		    ``old_arg_name`` keyword is deprecated.
+		mapping : dict or callable
+		    If mapping is present, use it to translate old arguments to
+		    new arguments. A callable must do its own value checking;
+		    values not found in a dict will be forwarded unchanged.
+		
+		Examples
+		--------
+		The following deprecates 'cols', using 'columns' instead
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name='columns')
+		... def f(columns=''):
+		...     print(columns)
+		...
+		>>> f(columns='should work ok')
+		should work ok
+		
+		>>> f(cols='should raise warning')
+		FutureWarning: cols is deprecated, use columns instead
+		  warnings.warn(msg, FutureWarning)
+		should raise warning
+		
+		>>> f(cols='should error', columns="can't pass do both")
+		TypeError: Can only specify 'cols' or 'columns', not both
+		
+		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
+		... def f(new=False):
+		...     print('yes!' if new else 'no!')
+		...
+		>>> f(old='yes')
+		FutureWarning: old='yes' is deprecated, use new=True instead
+		  warnings.warn(msg, FutureWarning)
+		yes!
+		
+		To raise a warning that a keyword will be removed entirely in the future
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
+		... def f(cols='', another_param=''):
+		...     print(cols)
+		...
+		>>> f(cols='should raise warning')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+		>>> f(another_param='should not raise warning')
+		should not raise warning
+		
+		>>> f(cols='should raise warning', another_param='')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+	**/
+	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Ensure that we have an index from some index-like object.
+		
+		Parameters
+		----------
+		index : sequence
+		    An Index or other sequence
+		copy : bool
+		
+		Returns
+		-------
+		index : Index or MultiIndex
+		
+		Examples
+		--------
+		>>> ensure_index(['a', 'b'])
+		Index(['a', 'b'], dtype='object')
+		
+		>>> ensure_index([('a', 'a'),  ('b', 'c')])
+		Index([('a', 'a'), ('b', 'c')], dtype='object')
+		
+		>>> ensure_index([['a', 'a'], ['b', 'c']])
+		MultiIndex(levels=[['a'], ['b', 'c']],
+		           codes=[[0, 0], [0, 1]])
+		
+		See Also
+		--------
+		ensure_index_from_sequences
+	**/
+	static public function ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		interpret the dtype from a scalar
 		
@@ -111,7 +195,11 @@ package pandas.core.panel;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -130,22 +218,58 @@ package pandas.core.panel;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -153,7 +277,7 @@ package pandas.core.panel;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Examples
 		--------
@@ -173,7 +297,7 @@ package pandas.core.panel;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -191,8 +315,8 @@ package pandas.core.panel;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -245,7 +369,7 @@ package pandas.core.panel;
 	**/
 	static public function notna(obj:Dynamic):Dynamic;
 	/**
-		Returns a multi-index suitable for a panel-like DataFrame
+		Returns a multi-index suitable for a panel-like DataFrame.
 		
 		Parameters
 		----------
@@ -273,7 +397,6 @@ package pandas.core.panel;
 		
 		or
 		
-		>>> import numpy as np
 		>>> years = np.repeat(range(1960,1963), 3)
 		>>> panels = np.tile(['A', 'B', 'C'], 3)
 		>>> panel_idx = panel_index(years, panels)

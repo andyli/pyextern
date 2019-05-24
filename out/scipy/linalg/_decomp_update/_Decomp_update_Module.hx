@@ -16,7 +16,7 @@ package scipy.linalg._decomp_update;
 	**/
 	static public function _form_qTu(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		qr_delete(Q, R, k, int p=1, which='row', overwrite_qr=False, check_finite=True)
+		qr_delete(Q, R, k, int p=1, which=u'row', overwrite_qr=False, check_finite=True)
 		
 		QR downdate on row or column deletions
 		
@@ -124,7 +124,7 @@ package scipy.linalg._decomp_update;
 	**/
 	static public function qr_delete(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		qr_insert(Q, R, u, k, which='row', rcond=None, overwrite_qru=False, check_finite=True)
+		qr_insert(Q, R, u, k, which=u'row', rcond=None, overwrite_qru=False, check_finite=True)
 		
 		QR update on row or column insertions
 		

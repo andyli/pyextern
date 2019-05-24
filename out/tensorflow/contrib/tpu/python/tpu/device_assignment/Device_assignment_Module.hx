@@ -10,13 +10,9 @@ package tensorflow.contrib.tpu.python.tpu.device_assignment;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Returns the device name for the TPU `device` on `task` of `job`.
+		Computes a nested dict which maps task and logical core to replicas.
 	**/
-	static public function _tpu_device_name(job:Dynamic, task:Dynamic, device:Dynamic):Dynamic;
-	/**
-		Returns the device name for the CPU device on `task` of `job`.
-	**/
-	static public function _tpu_host_device_name(job:Dynamic, task:Dynamic):Dynamic;
+	static public function _compute_task_and_cores_to_replicas(core_assignment:Dynamic, topology:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Computes a device_assignment of a computation across a TPU topology.

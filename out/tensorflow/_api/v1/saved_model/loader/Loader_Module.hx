@@ -11,7 +11,11 @@ package tensorflow._api.v1.saved_model.loader;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Loads the model from a SavedModel as specified by tags.
+		Loads the model from a SavedModel as specified by tags. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This function will only be available through the v1 compatibility library as tf.compat.v1.saved_model.loader.load or tf.compat.v1.saved_model.load. There will be a new function for importing SavedModels in Tensorflow 2.0.
 		
 		Args:
 		  sess: The TensorFlow session to restore the variables.

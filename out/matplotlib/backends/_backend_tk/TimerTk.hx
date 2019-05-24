@@ -112,16 +112,12 @@ package matplotlib.backends._backend_tk;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _get_interval():Dynamic;
-	public function _get_single_shot():Dynamic;
 	/**
 		Runs all function that have been registered as callbacks. Functions
 		can return False (or 0) if they should not be called any more. If there
 		are no callbacks, the timer is automatically stopped.
 	**/
 	public function _on_timer():Dynamic;
-	public function _set_interval(interval:Dynamic):Dynamic;
-	public function _set_single_shot(?ss:Dynamic):Dynamic;
 	/**
 		Used to set interval on underlying timer object.
 	**/
@@ -133,21 +129,33 @@ package matplotlib.backends._backend_tk;
 	public function _timer_start():Dynamic;
 	public function _timer_stop():Dynamic;
 	/**
-		Register `func` to be called by timer when the event fires. Any
-		additional arguments provided will be passed to `func`.
+		Register *func* to be called by timer when the event fires. Any
+		additional arguments provided will be passed to *func*.
+		
+		This function returns *func*, which makes it possible to use it as a
+		decorator.
 	**/
 	public function add_callback(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var interval : Dynamic;
 	/**
-		Remove `func` from list of callbacks. `args` and `kwargs` are optional
-		and used to distinguish between copies of the same function registered
-		to be called with different arguments.
+		Remove *func* from list of callbacks.
+		
+		*args* and *kwargs* are optional and used to distinguish between copies
+		of the same function registered to be called with different arguments.
+		This behavior is deprecated.  In the future, `*args, **kwargs` won't be
+		considered anymore; to keep a specific callback removable by itself,
+		pass it to `add_callback` as a `functools.partial` object.
 	**/
 	public function remove_callback(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var single_shot : Dynamic;
 	/**
-		Start the timer object. `interval` is optional and will be used
-		to reset the timer interval first if provided.
+		Start the timer object.
+		
+		Parameters
+		----------
+		interval : int, optional
+		    Timer interval in milliseconds; overrides a previously set interval
+		    if provided.
 	**/
 	public function start(?interval:Dynamic):Dynamic;
 	/**

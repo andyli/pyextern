@@ -636,7 +636,7 @@ package theano.gpuarray.basic_ops;
 		MethodNotDefined
 		    The subclass does not override this method.
 	**/
-	public function perform(node:Dynamic, inputs:Dynamic, output_storage:Dynamic, ?params:Dynamic):Dynamic;
+	public function perform(node:Dynamic, inp:Dynamic, out_:Dynamic):Dynamic;
 	/**
 		Make any special modifications that the Op needs before doing
 		make_thunk().

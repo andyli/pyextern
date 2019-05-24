@@ -115,8 +115,8 @@ package tensorflow.contrib.receptive_field.python.util.receptive_field;
 		Args:
 		  x: An array of input center coordinates with shape `(..., d)`, where `d`
 		    is the number of dimensions of the coordinates.
-		  axis: The dimensions for which to compute the feature coordinates.
-		    If `None` (the default), compute the feature coordinates for all
+		  axis: The dimensions for which to compute the feature coordinates. If
+		    `None` (the default), compute the feature coordinates for all
 		    dimensions.
 		
 		Returns:
@@ -133,8 +133,8 @@ package tensorflow.contrib.receptive_field.python.util.receptive_field;
 		Args:
 		  y: An array of feature coordinates with shape `(..., d)`, where `d` is the
 		    number of dimensions of the coordinates.
-		  axis: The dimensions for which to compute the input center coordinates.
-		    If `None` (the default), compute the input center coordinates for all
+		  axis: The dimensions for which to compute the input center coordinates. If
+		    `None` (the default), compute the input center coordinates for all
 		    dimensions.
 		
 		Returns:

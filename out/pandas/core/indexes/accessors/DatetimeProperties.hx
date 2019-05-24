@@ -129,7 +129,7 @@ package pandas.core.indexes.accessors;
 	public var __weakref__ : Dynamic;
 	static public var _accessors : Dynamic;
 	/**
-		add accessors to cls from the delegate class
+		Add accessors to cls from the delegate class.
 		
 		Parameters
 		----------
@@ -167,7 +167,7 @@ package pandas.core.indexes.accessors;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	/**
-		ceil the data to the specified `freq`.
+		Perform ceil operation on the data to the specified `freq`.
 		
 		Parameters
 		----------
@@ -176,6 +176,35 @@ package pandas.core.indexes.accessors;
 		    frequency like 'S' (second) not 'ME' (month end). See
 		    :ref:`frequency aliases <timeseries.offset_aliases>` for
 		    a list of possible `freq` values.
+		ambiguous : 'infer', bool-ndarray, 'NaT', default 'raise'
+		    Only relevant for DatetimeIndex:
+		
+		    - 'infer' will attempt to infer fall dst-transition hours based on
+		      order
+		    - bool-ndarray where True signifies a DST time, False designates
+		      a non-DST time (note that this flag is only applicable for
+		      ambiguous times)
+		    - 'NaT' will return NaT where there are ambiguous times
+		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous
+		      times
+		
+		    .. versionadded:: 0.24.0
+		
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -216,43 +245,84 @@ package pandas.core.indexes.accessors;
 	**/
 	public var date : Dynamic;
 	/**
-		The days of the datetime
+		The days of the datetime.
 	**/
 	public var day : Dynamic;
 	/**
 		Return the day names of the DateTimeIndex with specified locale.
 		
+		.. versionadded:: 0.23.0
+		
 		Parameters
 		----------
-		locale : string, default None (English locale)
-		    locale determining the language in which to return the day name
+		locale : str, optional
+		    Locale determining the language in which to return the day name.
+		    Default is English locale.
 		
 		Returns
 		-------
-		month_names : Index
-		    Index of day names
+		Index
+		    Index of day names.
 		
-		.. versionadded:: 0.23.0
+		Examples
+		--------
+		>>> idx = pd.date_range(start='2018-01-01', freq='D', periods=3)
+		>>> idx
+		DatetimeIndex(['2018-01-01', '2018-01-02', '2018-01-03'],
+		              dtype='datetime64[ns]', freq='D')
+		>>> idx.day_name()
+		Index(['Monday', 'Tuesday', 'Wednesday'], dtype='object')
 	**/
-	public function day_name(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Index;
+	public function day_name(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		The day of the week with Monday=0, Sunday=6
+		The day of the week with Monday=0, Sunday=6.
+		
+		Return the day of the week. It is assumed the week starts on
+		Monday, which is denoted by 0 and ends on Sunday which is denoted
+		by 6. This method is available on both Series with datetime
+		values (using the `dt` accessor) or DatetimeIndex.
+		
+		Returns
+		-------
+		Series or Index
+		    Containing integers indicating the day number.
+		
+		See Also
+		--------
+		Series.dt.dayofweek : Alias.
+		Series.dt.weekday : Alias.
+		Series.dt.day_name : Returns the name of the day of the week.
+		
+		Examples
+		--------
+		>>> s = pd.date_range('2016-12-31', '2017-01-08', freq='D').to_series()
+		>>> s.dt.dayofweek
+		2016-12-31    5
+		2017-01-01    6
+		2017-01-02    0
+		2017-01-03    1
+		2017-01-04    2
+		2017-01-05    3
+		2017-01-06    4
+		2017-01-07    5
+		2017-01-08    6
+		Freq: D, dtype: int64
 	**/
 	public var dayofweek : Dynamic;
 	/**
-		The ordinal day of the year
+		The ordinal day of the year.
 	**/
 	public var dayofyear : Dynamic;
 	/**
-		The number of days in the month
+		The number of days in the month.
 	**/
 	public var days_in_month : Dynamic;
 	/**
-		The number of days in the month
+		The number of days in the month.
 	**/
 	public var daysinmonth : Dynamic;
 	/**
-		floor the data to the specified `freq`.
+		Perform floor operation on the data to the specified `freq`.
 		
 		Parameters
 		----------
@@ -261,6 +331,35 @@ package pandas.core.indexes.accessors;
 		    frequency like 'S' (second) not 'ME' (month end). See
 		    :ref:`frequency aliases <timeseries.offset_aliases>` for
 		    a list of possible `freq` values.
+		ambiguous : 'infer', bool-ndarray, 'NaT', default 'raise'
+		    Only relevant for DatetimeIndex:
+		
+		    - 'infer' will attempt to infer fall dst-transition hours based on
+		      order
+		    - bool-ndarray where True signifies a DST time, False designates
+		      a non-DST time (note that this flag is only applicable for
+		      ambiguous times)
+		    - 'NaT' will return NaT where there are ambiguous times
+		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous
+		      times
+		
+		    .. versionadded:: 0.24.0
+		
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -297,7 +396,7 @@ package pandas.core.indexes.accessors;
 	public function floor(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var freq : Dynamic;
 	/**
-		The hours of the datetime
+		The hours of the datetime.
 	**/
 	public var hour : Dynamic;
 	/**
@@ -339,43 +438,93 @@ package pandas.core.indexes.accessors;
 	**/
 	public var is_leap_year : Dynamic;
 	/**
-		Indicator for whether the date is the last day of the month.
+		Indicates whether the date is the last day of the month.
 		
 		Returns
 		-------
 		Series or array
-		    For Series, returns a Series with boolean values. For
-		    DatetimeIndex, returns a boolean array.
+		    For Series, returns a Series with boolean values.
+		    For DatetimeIndex, returns a boolean array.
 		
 		See Also
 		--------
-		is_month_start : Indicator for whether the date is the first day
-		    of the month.
+		is_month_start : Return a boolean indicating whether the date
+		    is the first day of the month.
+		is_month_end : Return a boolean indicating whether the date
+		    is the last day of the month.
 		
 		Examples
 		--------
 		This method is available on Series with datetime values under
 		the ``.dt`` accessor, and directly on DatetimeIndex.
 		
-		>>> dates = pd.Series(pd.date_range("2018-02-27", periods=3))
-		>>> dates
+		>>> s = pd.Series(pd.date_range("2018-02-27", periods=3))
+		>>> s
 		0   2018-02-27
 		1   2018-02-28
 		2   2018-03-01
 		dtype: datetime64[ns]
-		>>> dates.dt.is_month_end
+		>>> s.dt.is_month_start
+		0    False
+		1    False
+		2    True
+		dtype: bool
+		>>> s.dt.is_month_end
 		0    False
 		1    True
 		2    False
 		dtype: bool
 		
 		>>> idx = pd.date_range("2018-02-27", periods=3)
+		>>> idx.is_month_start
+		array([False, False, True])
 		>>> idx.is_month_end
-		array([False,  True, False], dtype=bool)
+		array([False, True, False])
 	**/
 	public var is_month_end : Dynamic;
 	/**
-		Logical indicating if first day of month (defined by frequency)
+		Indicates whether the date is the first day of the month.
+		
+		Returns
+		-------
+		Series or array
+		    For Series, returns a Series with boolean values.
+		    For DatetimeIndex, returns a boolean array.
+		
+		See Also
+		--------
+		is_month_start : Return a boolean indicating whether the date
+		    is the first day of the month.
+		is_month_end : Return a boolean indicating whether the date
+		    is the last day of the month.
+		
+		Examples
+		--------
+		This method is available on Series with datetime values under
+		the ``.dt`` accessor, and directly on DatetimeIndex.
+		
+		>>> s = pd.Series(pd.date_range("2018-02-27", periods=3))
+		>>> s
+		0   2018-02-27
+		1   2018-02-28
+		2   2018-03-01
+		dtype: datetime64[ns]
+		>>> s.dt.is_month_start
+		0    False
+		1    False
+		2    True
+		dtype: bool
+		>>> s.dt.is_month_end
+		0    False
+		1    True
+		2    False
+		dtype: bool
+		
+		>>> idx = pd.date_range("2018-02-27", periods=3)
+		>>> idx.is_month_start
+		array([False, False, True])
+		>>> idx.is_month_end
+		array([False, True, False])
 	**/
 	public var is_month_start : Dynamic;
 	/**
@@ -539,50 +688,60 @@ package pandas.core.indexes.accessors;
 	**/
 	public var is_year_start : Dynamic;
 	/**
-		The microseconds of the datetime
+		The microseconds of the datetime.
 	**/
 	public var microsecond : Dynamic;
 	/**
-		The minutes of the datetime
+		The minutes of the datetime.
 	**/
 	public var minute : Dynamic;
 	/**
-		The month as January=1, December=12
+		The month as January=1, December=12. 
 	**/
 	public var month : Dynamic;
 	/**
 		Return the month names of the DateTimeIndex with specified locale.
 		
+		.. versionadded:: 0.23.0
+		
 		Parameters
 		----------
-		locale : string, default None (English locale)
-		    locale determining the language in which to return the month name
+		locale : str, optional
+		    Locale determining the language in which to return the month name.
+		    Default is English locale.
 		
 		Returns
 		-------
-		month_names : Index
-		    Index of month names
+		Index
+		    Index of month names.
 		
-		.. versionadded:: 0.23.0
+		Examples
+		--------
+		>>> idx = pd.date_range(start='2018-01', freq='M', periods=3)
+		>>> idx
+		DatetimeIndex(['2018-01-31', '2018-02-28', '2018-03-31'],
+		              dtype='datetime64[ns]', freq='M')
+		>>> idx.month_name()
+		Index(['January', 'February', 'March'], dtype='object')
 	**/
-	public function month_name(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Index;
+	public function month_name(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		The nanoseconds of the datetime
+		The nanoseconds of the datetime.
 	**/
 	public var nanosecond : Dynamic;
 	/**
 		Convert times to midnight.
 		
-		The time component of the date-timeise converted to midnight i.e.
+		The time component of the date-time is converted to midnight i.e.
 		00:00:00. This is useful in cases, when the time does not matter.
 		Length is unaltered. The timezones are unaffected.
 		
 		This method is available on Series with datetime values under
-		the ``.dt`` accessor, and directly on DatetimeIndex.
+		the ``.dt`` accessor, and directly on Datetime Array/Index.
 		
 		Returns
 		-------
-		DatetimeIndex or Series
+		DatetimeArray, DatetimeIndex or Series
 		    The same type as the original data. Series will have the same
 		    name and index. DatetimeIndex will have the same name.
 		
@@ -594,8 +753,8 @@ package pandas.core.indexes.accessors;
 		
 		Examples
 		--------
-		>>> idx = pd.DatetimeIndex(start='2014-08-01 10:00', freq='H',
-		...                        periods=3, tz='Asia/Calcutta')
+		>>> idx = pd.date_range(start='2014-08-01 10:00', freq='H',
+		...                     periods=3, tz='Asia/Calcutta')
 		>>> idx
 		DatetimeIndex(['2014-08-01 10:00:00+05:30',
 		               '2014-08-01 11:00:00+05:30',
@@ -609,11 +768,11 @@ package pandas.core.indexes.accessors;
 	**/
 	public function normalize(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		The quarter of the date
+		The quarter of the date.
 	**/
 	public var quarter : Dynamic;
 	/**
-		round the data to the specified `freq`.
+		Perform round operation on the data to the specified `freq`.
 		
 		Parameters
 		----------
@@ -622,6 +781,35 @@ package pandas.core.indexes.accessors;
 		    frequency like 'S' (second) not 'ME' (month end). See
 		    :ref:`frequency aliases <timeseries.offset_aliases>` for
 		    a list of possible `freq` values.
+		ambiguous : 'infer', bool-ndarray, 'NaT', default 'raise'
+		    Only relevant for DatetimeIndex:
+		
+		    - 'infer' will attempt to infer fall dst-transition hours based on
+		      order
+		    - bool-ndarray where True signifies a DST time, False designates
+		      a non-DST time (note that this flag is only applicable for
+		      ambiguous times)
+		    - 'NaT' will return NaT where there are ambiguous times
+		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous
+		      times
+		
+		    .. versionadded:: 0.24.0
+		
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -657,7 +845,7 @@ package pandas.core.indexes.accessors;
 	**/
 	public function round(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		The seconds of the datetime
+		The seconds of the datetime.
 	**/
 	public var second : Dynamic;
 	/**
@@ -665,7 +853,8 @@ package pandas.core.indexes.accessors;
 		
 		Return an Index of formatted strings specified by date_format, which
 		supports the same string format as the python standard library. Details
-		of the string format can be found in `python string format doc <https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior>`__
+		of the string format can be found in `python string format
+		doc <https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior>`__
 		
 		Parameters
 		----------
@@ -679,7 +868,7 @@ package pandas.core.indexes.accessors;
 		
 		See Also
 		--------
-		pandas.to_datetime : Convert the given argument to datetime
+		to_datetime : Convert the given argument to datetime.
 		DatetimeIndex.normalize : Return DatetimeIndex with times to midnight.
 		DatetimeIndex.round : Round the DatetimeIndex to the specified freq.
 		DatetimeIndex.floor : Floor the DatetimeIndex to the specified freq.
@@ -699,9 +888,14 @@ package pandas.core.indexes.accessors;
 	**/
 	public var time : Dynamic;
 	/**
-		Cast to PeriodIndex at a particular frequency.
+		Returns numpy array of datetime.time also containing timezone
+		information. The time part of the Timestamps.
+	**/
+	public var timetz : Dynamic;
+	/**
+		Cast to PeriodArray/Index at a particular frequency.
 		
-		Converts DatetimeIndex to PeriodIndex.
+		Converts DatetimeArray/Index to PeriodArray/Index.
 		
 		Parameters
 		----------
@@ -711,13 +905,18 @@ package pandas.core.indexes.accessors;
 		
 		Returns
 		-------
-		PeriodIndex
+		PeriodArray/Index
 		
 		Raises
 		------
 		ValueError
-		    When converting a DatetimeIndex with non-regular values, so that a
-		    frequency cannot be inferred.
+		    When converting a DatetimeArray/Index with non-regular values,
+		    so that a frequency cannot be inferred.
+		
+		See Also
+		--------
+		PeriodIndex: Immutable ndarray holding ordinal values.
+		DatetimeIndex.to_pydatetime: Return DatetimeIndex as object.
 		
 		Examples
 		--------
@@ -735,15 +934,10 @@ package pandas.core.indexes.accessors;
 		>>> idx.to_period()
 		PeriodIndex(['2017-01-01', '2017-01-02'],
 		            dtype='period[D]', freq='D')
-		
-		See also
-		--------
-		pandas.PeriodIndex: Immutable ndarray holding ordinal values
-		pandas.DatetimeIndex.to_pydatetime: Return DatetimeIndex as object
 	**/
 	public function to_period(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return the data as an array of native Python datetime objects
+		Return the data as an array of native Python datetime objects.
 		
 		Timezone information is retained if present.
 		
@@ -786,29 +980,37 @@ package pandas.core.indexes.accessors;
 		       datetime.datetime(2018, 3, 10, 0, 0)], dtype=object)
 	**/
 	public function to_pydatetime():Dynamic;
+	/**
+		Return timezone, if any.
+		
+		Returns
+		-------
+		datetime.tzinfo, pytz.tzinfo.BaseTZInfo, dateutil.tz.tz.tzfile, or None
+		    Returns None when the array is tz-naive.
+	**/
 	public var tz : Dynamic;
 	/**
-		Convert tz-aware DatetimeIndex from one time zone to another.
+		Convert tz-aware Datetime Array/Index from one time zone to another.
 		
 		Parameters
 		----------
 		tz : string, pytz.timezone, dateutil.tz.tzfile or None
 		    Time zone for time. Corresponding timestamps would be converted
-		    to this time zone of the DatetimeIndex. A `tz` of None will
+		    to this time zone of the Datetime Array/Index. A `tz` of None will
 		    convert to UTC and remove the timezone information.
 		
 		Returns
 		-------
-		normalized : DatetimeIndex
+		normalized : same type as self
 		
 		Raises
 		------
 		TypeError
-		    If DatetimeIndex is tz-naive.
+		    If Datetime Array/Index is tz-naive.
 		
 		See Also
 		--------
-		DatetimeIndex.tz : A timezone that has a variable offset from UTC
+		DatetimeIndex.tz : A timezone that has a variable offset from UTC.
 		DatetimeIndex.tz_localize : Localize tz-naive DatetimeIndex to a
 		    given time zone, or remove timezone from a tz-aware DatetimeIndex.
 		
@@ -817,8 +1019,8 @@ package pandas.core.indexes.accessors;
 		With the `tz` parameter, we can change the DatetimeIndex
 		to other time zones:
 		
-		>>> dti = pd.DatetimeIndex(start='2014-08-01 09:00',
-		...                        freq='H', periods=3, tz='Europe/Berlin')
+		>>> dti = pd.date_range(start='2014-08-01 09:00',
+		...                     freq='H', periods=3, tz='Europe/Berlin')
 		
 		>>> dti
 		DatetimeIndex(['2014-08-01 09:00:00+02:00',
@@ -835,8 +1037,8 @@ package pandas.core.indexes.accessors;
 		With the ``tz=None``, we can remove the timezone (after converting
 		to UTC if necessary):
 		
-		>>> dti = pd.DatetimeIndex(start='2014-08-01 09:00',freq='H',
-		...                        periods=3, tz='Europe/Berlin')
+		>>> dti = pd.date_range(start='2014-08-01 09:00',freq='H',
+		...                     periods=3, tz='Europe/Berlin')
 		
 		>>> dti
 		DatetimeIndex(['2014-08-01 09:00:00+02:00',
@@ -850,12 +1052,13 @@ package pandas.core.indexes.accessors;
 		               '2014-08-01 09:00:00'],
 		                dtype='datetime64[ns]', freq='H')
 	**/
-	public function tz_convert(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
+	public function tz_convert(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Localize tz-naive DatetimeIndex to tz-aware DatetimeIndex.
+		Localize tz-naive Datetime Array/Index to tz-aware
+		Datetime Array/Index.
 		
-		This method takes a time zone (tz) naive DatetimeIndex object and
-		makes this time zone aware. It does not move the time to another
+		This method takes a time zone (tz) naive Datetime Array/Index object
+		and makes this time zone aware. It does not move the time to another
 		time zone.
 		Time zone localization helps to switch from time zone aware to time
 		zone unaware objects.
@@ -865,7 +1068,14 @@ package pandas.core.indexes.accessors;
 		tz : string, pytz.timezone, dateutil.tz.tzfile or None
 		    Time zone to convert timestamps to. Passing ``None`` will
 		    remove the time zone information preserving local time.
-		ambiguous : str {'infer', 'NaT', 'raise'} or bool array, default 'raise'
+		ambiguous : 'infer', 'NaT', bool array, default 'raise'
+		    When clocks moved backward due to DST, ambiguous times may arise.
+		    For example in Central European Time (UTC+01), when going from
+		    03:00 DST to 02:00 non-DST, 02:30:00 local time occurs both at
+		    00:30:00 UTC and at 01:30:00 UTC. In such a situation, the
+		    `ambiguous` parameter dictates how ambiguous times should be
+		    handled.
+		
 		    - 'infer' will attempt to infer fall dst-transition hours based on
 		      order
 		    - bool-ndarray where True signifies a DST time, False signifies a
@@ -874,24 +1084,42 @@ package pandas.core.indexes.accessors;
 		    - 'NaT' will return NaT where there are ambiguous times
 		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous
 		      times
-		errors : {'raise', 'coerce'}, default 'raise'
-		    - 'raise' will raise a NonExistentTimeError if a timestamp is not
-		       valid in the specified time zone (e.g. due to a transition from
-		       or to DST time)
-		    - 'coerce' will return NaT if the timestamp can not be converted
-		      to the specified time zone
 		
-		    .. versionadded:: 0.19.0
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
+		
+		errors : {'raise', 'coerce'}, default None
+		
+		    - 'raise' will raise a NonExistentTimeError if a timestamp is not
+		      valid in the specified time zone (e.g. due to a transition from
+		      or to DST time). Use ``nonexistent='raise'`` instead.
+		    - 'coerce' will return NaT if the timestamp can not be converted
+		      to the specified time zone. Use ``nonexistent='NaT'`` instead.
+		
+		    .. deprecated:: 0.24.0
 		
 		Returns
 		-------
-		DatetimeIndex
-		    Index converted to the specified time zone.
+		result : same type as self
+		    Array/Index converted to the specified time zone.
 		
 		Raises
 		------
 		TypeError
-		    If the DatetimeIndex is tz-aware and tz is not None.
+		    If the Datetime Array/Index is tz-aware and tz is not None.
 		
 		See Also
 		--------
@@ -922,14 +1150,97 @@ package pandas.core.indexes.accessors;
 		DatetimeIndex(['2018-03-01 09:00:00', '2018-03-02 09:00:00',
 		               '2018-03-03 09:00:00'],
 		              dtype='datetime64[ns]', freq='D')
+		
+		Be careful with DST changes. When there is sequential data, pandas can
+		infer the DST time:
+		>>> s = pd.to_datetime(pd.Series([
+		... '2018-10-28 01:30:00',
+		... '2018-10-28 02:00:00',
+		... '2018-10-28 02:30:00',
+		... '2018-10-28 02:00:00',
+		... '2018-10-28 02:30:00',
+		... '2018-10-28 03:00:00',
+		... '2018-10-28 03:30:00']))
+		>>> s.dt.tz_localize('CET', ambiguous='infer')
+		2018-10-28 01:30:00+02:00    0
+		2018-10-28 02:00:00+02:00    1
+		2018-10-28 02:30:00+02:00    2
+		2018-10-28 02:00:00+01:00    3
+		2018-10-28 02:30:00+01:00    4
+		2018-10-28 03:00:00+01:00    5
+		2018-10-28 03:30:00+01:00    6
+		dtype: int64
+		
+		In some cases, inferring the DST is impossible. In such cases, you can
+		pass an ndarray to the ambiguous parameter to set the DST explicitly
+		
+		>>> s = pd.to_datetime(pd.Series([
+		... '2018-10-28 01:20:00',
+		... '2018-10-28 02:36:00',
+		... '2018-10-28 03:46:00']))
+		>>> s.dt.tz_localize('CET', ambiguous=np.array([True, True, False]))
+		0   2018-10-28 01:20:00+02:00
+		1   2018-10-28 02:36:00+02:00
+		2   2018-10-28 03:46:00+01:00
+		dtype: datetime64[ns, CET]
+		
+		If the DST transition causes nonexistent times, you can shift these
+		dates forward or backwards with a timedelta object or `'shift_forward'`
+		or `'shift_backwards'`.
+		>>> s = pd.to_datetime(pd.Series([
+		... '2015-03-29 02:30:00',
+		... '2015-03-29 03:30:00']))
+		>>> s.dt.tz_localize('Europe/Warsaw', nonexistent='shift_forward')
+		0   2015-03-29 03:00:00+02:00
+		1   2015-03-29 03:30:00+02:00
+		dtype: datetime64[ns, 'Europe/Warsaw']
+		>>> s.dt.tz_localize('Europe/Warsaw', nonexistent='shift_backward')
+		0   2015-03-29 01:59:59.999999999+01:00
+		1   2015-03-29 03:30:00+02:00
+		dtype: datetime64[ns, 'Europe/Warsaw']
+		>>> s.dt.tz_localize('Europe/Warsaw', nonexistent=pd.Timedelta('1H'))
+		0   2015-03-29 03:30:00+02:00
+		1   2015-03-29 03:30:00+02:00
+		dtype: datetime64[ns, 'Europe/Warsaw']
 	**/
 	public function tz_localize(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		The week ordinal of the year
+		The week ordinal of the year.
 	**/
 	public var week : Dynamic;
 	/**
-		The day of the week with Monday=0, Sunday=6
+		The day of the week with Monday=0, Sunday=6.
+		
+		Return the day of the week. It is assumed the week starts on
+		Monday, which is denoted by 0 and ends on Sunday which is denoted
+		by 6. This method is available on both Series with datetime
+		values (using the `dt` accessor) or DatetimeIndex.
+		
+		Returns
+		-------
+		Series or Index
+		    Containing integers indicating the day number.
+		
+		See Also
+		--------
+		Series.dt.dayofweek : Alias.
+		Series.dt.weekday : Alias.
+		Series.dt.day_name : Returns the name of the day of the week.
+		
+		Examples
+		--------
+		>>> s = pd.date_range('2016-12-31', '2017-01-08', freq='D').to_series()
+		>>> s.dt.dayofweek
+		2016-12-31    5
+		2017-01-01    6
+		2017-01-02    0
+		2017-01-03    1
+		2017-01-04    2
+		2017-01-05    3
+		2017-01-06    4
+		2017-01-07    5
+		2017-01-08    6
+		Freq: D, dtype: int64
 	**/
 	public var weekday : Dynamic;
 	/**
@@ -939,11 +1250,11 @@ package pandas.core.indexes.accessors;
 	**/
 	public var weekday_name : Dynamic;
 	/**
-		The week ordinal of the year
+		The week ordinal of the year.
 	**/
 	public var weekofyear : Dynamic;
 	/**
-		The year of the datetime
+		The year of the datetime.
 	**/
 	public var year : Dynamic;
 }

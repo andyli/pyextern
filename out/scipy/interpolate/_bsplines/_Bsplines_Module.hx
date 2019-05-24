@@ -30,6 +30,7 @@ package scipy.interpolate._bsplines;
 		cf de Boor, XIII(12).
 	**/
 	static public function _not_a_knot(x:Dynamic, k:Dynamic):Dynamic;
+	static public function _process_deriv_spec(deriv:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Solve the linear equations ``A x = b``, given the Cholesky factorization of
@@ -113,6 +114,11 @@ package scipy.interpolate._bsplines;
 		-------
 		c : (u + 1, M) ndarray
 		    Cholesky factorization of a, in the same banded format as ab
+		    
+		See also
+		--------
+		cho_solve_banded : Solve a linear set equations, given the Cholesky factorization
+		            of a banded hermitian.
 		
 		Examples
 		--------
@@ -221,9 +227,9 @@ package scipy.interpolate._bsplines;
 		    Alternatively, the following string aliases are recognized:
 		
 		    * ``"clamped"``: The first derivatives at the ends are zero. This is
-		       equivalent to ``bc_type=((1, 0.0), (1, 0.0))``.
+		       equivalent to ``bc_type=([(1, 0.0)], [(1, 0.0)])``.
 		    * ``"natural"``: The second derivatives at ends are zero. This is
-		      equivalent to ``bc_type=((2, 0.0), (2, 0.0))``.
+		      equivalent to ``bc_type=([(2, 0.0)], [(2, 0.0)])``.
 		    * ``"not-a-knot"`` (default): The first and second segments are the same
 		      polynomial. This is equivalent to having ``bc_type=None``.
 		

@@ -2,14 +2,10 @@
 package tensorflow.core.protobuf.rewriter_config_pb2;
 @:pythonImport("tensorflow.core.protobuf.rewriter_config_pb2", "RewriterConfig") extern class RewriterConfig {
 	static public var AGGRESSIVE : Dynamic;
-	static public var ARITHMETIC_OPTIMIZATION_FIELD_NUMBER : Dynamic;
-	static public var AUTO_PARALLEL_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CONSTANT_FOLDING_FIELD_NUMBER : Dynamic;
-	static public var CUSTOM_OPTIMIZERS_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -30,14 +26,10 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 		A ProtocolMessage
 	**/
 	public function CustomGraphOptimizer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEBUG_STRIPPER_FIELD_NUMBER : Dynamic;
 	static public var DEFAULT : Dynamic;
 	static public var DEFAULT_MEM_OPT : Dynamic;
 	static public var DEFAULT_NUM_ITERS : Dynamic;
-	static public var DEPENDENCY_OPTIMIZATION_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DISABLE_META_OPTIMIZER_FIELD_NUMBER : Dynamic;
-	static public var DISABLE_MODEL_PRUNING_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -46,7 +38,6 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FUNCTION_OPTIMIZATION_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -68,17 +59,11 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LAYOUT_OPTIMIZER_FIELD_NUMBER : Dynamic;
-	static public var LOOP_OPTIMIZATION_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var MANUAL : Dynamic;
-	static public var MEMORY_OPTIMIZATION_FIELD_NUMBER : Dynamic;
-	static public var MEMORY_OPTIMIZER_TARGET_NODE_NAME_SCOPE_FIELD_NUMBER : Dynamic;
-	static public var META_OPTIMIZER_ITERATIONS_FIELD_NUMBER : Dynamic;
-	static public var MIN_GRAPH_NODES_FIELD_NUMBER : Dynamic;
 	static public var MemOptType : Dynamic;
 	/**
 		Merges a protocol message into the current message.
@@ -93,22 +78,16 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 	static public var OFF : Dynamic;
 	static public var ON : Dynamic;
 	static public var ONE : Dynamic;
-	static public var OPTIMIZERS_FIELD_NUMBER : Dynamic;
-	static public var PIN_TO_HOST_OPTIMIZATION_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var RECOMPUTATION_HEURISTICS : Dynamic;
-	static public var REMAPPING_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var SCHEDULING_HEURISTICS : Dynamic;
-	static public var SCOPED_ALLOCATOR_OPTIMIZATION_FIELD_NUMBER : Dynamic;
-	static public var SCOPED_ALLOCATOR_OPTS_FIELD_NUMBER : Dynamic;
-	static public var SHAPE_OPTIMIZATION_FIELD_NUMBER : Dynamic;
 	static public var SWAPPING_HEURISTICS : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
@@ -124,6 +103,10 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var TWO : Dynamic;
 	static public var Toggle : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -289,4 +272,96 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.arithmetic_optimization
+	**/
+	public var arithmetic_optimization : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.auto_parallel
+	**/
+	public var auto_parallel : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.constant_folding
+	**/
+	public var constant_folding : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.custom_optimizers
+	**/
+	public var custom_optimizers : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.debug_stripper
+	**/
+	public var debug_stripper : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.dependency_optimization
+	**/
+	public var dependency_optimization : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.disable_meta_optimizer
+	**/
+	public var disable_meta_optimizer : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.disable_model_pruning
+	**/
+	public var disable_model_pruning : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.fail_on_optimizer_errors
+	**/
+	public var fail_on_optimizer_errors : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.function_optimization
+	**/
+	public var function_optimization : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.layout_optimizer
+	**/
+	public var layout_optimizer : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.loop_optimization
+	**/
+	public var loop_optimization : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.memory_optimization
+	**/
+	public var memory_optimization : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.memory_optimizer_target_node_name_scope
+	**/
+	public var memory_optimizer_target_node_name_scope : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.meta_optimizer_iterations
+	**/
+	public var meta_optimizer_iterations : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.meta_optimizer_timeout_ms
+	**/
+	public var meta_optimizer_timeout_ms : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.min_graph_nodes
+	**/
+	public var min_graph_nodes : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.optimizers
+	**/
+	public var optimizers : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.pin_to_host_optimization
+	**/
+	public var pin_to_host_optimization : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.remapping
+	**/
+	public var remapping : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.scoped_allocator_optimization
+	**/
+	public var scoped_allocator_optimization : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.scoped_allocator_opts
+	**/
+	public var scoped_allocator_opts : Dynamic;
+	/**
+		Field tensorflow.RewriterConfig.shape_optimization
+	**/
+	public var shape_optimization : Dynamic;
 }

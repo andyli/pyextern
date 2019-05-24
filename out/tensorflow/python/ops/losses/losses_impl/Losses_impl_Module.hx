@@ -59,23 +59,6 @@ package tensorflow.python.ops.losses.losses_impl;
 	**/
 	static public function _remove_squeezable_dimensions(labels:Dynamic, predictions:Dynamic, ?weights:Dynamic, ?expected_rank_diff:Dynamic):Dynamic;
 	/**
-		Computes a safe divide which returns 0 if the denominator is zero.
-		
-		Note that the function contains an additional conditional check that is
-		necessary for avoiding situations where the loss is zero causing NaNs to
-		creep into the gradient computation.
-		
-		Args:
-		  numerator: An arbitrary `Tensor`.
-		  denominator: `Tensor` whose shape matches `numerator` and whose values are
-		    assumed to be non-negative.
-		  name: An optional name for the returned op.
-		
-		Returns:
-		  The element-wise value of the numerator divided by the denominator.
-	**/
-	static public function _safe_div(numerator:Dynamic, denominator:Dynamic, ?name:Dynamic):Dynamic;
-	/**
 		Computes a safe mean of the losses.
 		
 		Args:
@@ -161,7 +144,7 @@ package tensorflow.python.ops.losses.losses_impl;
 	/**
 		Adds a cosine-distance loss to the training procedure. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(dim)`. They will be removed in a future version.
 		Instructions for updating:
 		dim is deprecated, use axis instead
 		

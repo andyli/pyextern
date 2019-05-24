@@ -54,8 +54,6 @@ package tensorflow.contrib.boosted_trees.proto.quantiles_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAX_RANK_FIELD_NUMBER : Dynamic;
-	static public var MIN_RANK_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -84,8 +82,10 @@ package tensorflow.contrib.boosted_trees.proto.quantiles_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var VALUE_FIELD_NUMBER : Dynamic;
-	static public var WEIGHT_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.contrib.boosted_trees.proto.quantiles_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field boosted_trees.QuantileEntry.max_rank
+	**/
+	public var max_rank : Dynamic;
+	/**
+		Field boosted_trees.QuantileEntry.min_rank
+	**/
+	public var min_rank : Dynamic;
+	/**
+		Field boosted_trees.QuantileEntry.value
+	**/
+	public var value : Dynamic;
+	/**
+		Field boosted_trees.QuantileEntry.weight
+	**/
+	public var weight : Dynamic;
 }

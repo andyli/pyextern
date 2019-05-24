@@ -12,7 +12,6 @@ package matplotlib.compat.subprocess;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
 	/**
 		Run command with arguments and return its output.
 		
@@ -74,17 +73,17 @@ package matplotlib.compat.subprocess;
 		    If True, uses a PendingDeprecationWarning instead of a
 		    DeprecationWarning.  Cannot be used together with *removal*.
 		
-		removal : str, optional
-		    The expected removal version.  With the default (an empty string), a
-		    removal version is automatically computed from *since*.  Set to other
-		    Falsy values to not schedule a removal date.  Cannot be used together
-		    with *pending*.
-		
 		obj_type : str, optional
 		    The object type being deprecated.
 		
 		addendum : str, optional
 		    Additional text appended directly to the final message.
+		
+		removal : str, optional
+		    The expected removal version.  With the default (an empty string), a
+		    removal version is automatically computed from *since*.  Set to other
+		    Falsy values to not schedule a removal date.  Cannot be used together
+		    with *pending*.
 		
 		Examples
 		--------

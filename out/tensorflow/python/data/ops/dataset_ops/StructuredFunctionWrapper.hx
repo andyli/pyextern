@@ -54,17 +54,20 @@ package tensorflow.python.data.ops.dataset_ops;
 		    arguments.
 		  input_types: (Optional.) A nested structure of `tf.DType`. If given, this
 		    argument defines the element types and structure for `func` arguments.
+		  input_structure: (Optional.) A `Structure` object. If given, this argument
+		    defines the element types and structure for `func` arguments.
 		  add_to_graph: (Optional.) If `True`, the function will be added to the
 		    default graph.
-		  experimental_nested_dataset_support: (Optional.) If `True`, the function
-		    will support `tf.data.Dataset` objects as arguments and return values.
+		  defun_kwargs: (Optional.) A dictionary mapping string argument names to
+		    values. If supplied, will be passed to `function.Defun()` as keyword
+		    arguments.
 		
 		Raises:
 		  ValueError: If an invalid combination of `dataset`, `input_classes`,
 		    `input_shapes`, and `input_types` is passed.
 	**/
 	@:native("__init__")
-	public function ___init__(func:Dynamic, transformation_name:Dynamic, ?dataset:Dynamic, ?input_classes:Dynamic, ?input_shapes:Dynamic, ?input_types:Dynamic, ?add_to_graph:Dynamic, ?experimental_nested_dataset_support:Dynamic):Dynamic;
+	public function ___init__(func:Dynamic, transformation_name:Dynamic, ?dataset:Dynamic, ?input_classes:Dynamic, ?input_shapes:Dynamic, ?input_types:Dynamic, ?input_structure:Dynamic, ?add_to_graph:Dynamic, ?defun_kwargs:Dynamic):Dynamic;
 	/**
 		Creates a new `StructuredFunctionWrapper` for the given function.
 		
@@ -82,16 +85,19 @@ package tensorflow.python.data.ops.dataset_ops;
 		    arguments.
 		  input_types: (Optional.) A nested structure of `tf.DType`. If given, this
 		    argument defines the element types and structure for `func` arguments.
+		  input_structure: (Optional.) A `Structure` object. If given, this argument
+		    defines the element types and structure for `func` arguments.
 		  add_to_graph: (Optional.) If `True`, the function will be added to the
 		    default graph.
-		  experimental_nested_dataset_support: (Optional.) If `True`, the function
-		    will support `tf.data.Dataset` objects as arguments and return values.
+		  defun_kwargs: (Optional.) A dictionary mapping string argument names to
+		    values. If supplied, will be passed to `function.Defun()` as keyword
+		    arguments.
 		
 		Raises:
 		  ValueError: If an invalid combination of `dataset`, `input_classes`,
 		    `input_shapes`, and `input_types` is passed.
 	**/
-	public function new(func:Dynamic, transformation_name:Dynamic, ?dataset:Dynamic, ?input_classes:Dynamic, ?input_shapes:Dynamic, ?input_types:Dynamic, ?add_to_graph:Dynamic, ?experimental_nested_dataset_support:Dynamic):Void;
+	public function new(func:Dynamic, transformation_name:Dynamic, ?dataset:Dynamic, ?input_classes:Dynamic, ?input_shapes:Dynamic, ?input_types:Dynamic, ?input_structure:Dynamic, ?add_to_graph:Dynamic, ?defun_kwargs:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -154,13 +160,10 @@ package tensorflow.python.data.ops.dataset_ops;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	/**
-		Returns a flat list of `tf.DType` for the input element structure.
-	**/
-	public function _defun_args():Dynamic;
 	@:native("function")
 	public var _function : Dynamic;
 	public var output_classes : Dynamic;
 	public var output_shapes : Dynamic;
+	public var output_structure : Dynamic;
 	public var output_types : Dynamic;
 }

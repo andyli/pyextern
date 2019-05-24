@@ -61,11 +61,11 @@ package scipy.stats.kde;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(dataset:Dynamic, ?bw_method:Dynamic):Dynamic;
+	public function ___init__(dataset:Dynamic, ?bw_method:Dynamic, ?weights:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(dataset:Dynamic, ?bw_method:Dynamic):Void;
+	public function new(dataset:Dynamic, ?bw_method:Dynamic, ?weights:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -247,6 +247,7 @@ package scipy.stats.kde;
 		Evaluate the log of the estimated pdf on a provided set of points.
 	**/
 	public function logpdf(x:Dynamic):Dynamic;
+	public var neff : Dynamic;
 	/**
 		Evaluate the estimated pdf on a provided set of points.
 		
@@ -263,7 +264,8 @@ package scipy.stats.kde;
 		----------
 		size : int, optional
 		    The number of samples to draw.  If not provided, then the size is
-		    the same as the underlying dataset.
+		    the same as the effective number of samples in the underlying
+		    dataset.
 		
 		Returns
 		-------
@@ -322,5 +324,14 @@ package scipy.stats.kde;
 		>>> plt.show()
 	**/
 	public function set_bandwidth(?bw_method:Dynamic):Dynamic;
-	public function silverman_factor():Dynamic;
+	/**
+		Compute the Silverman factor.
+		
+		Returns
+		-------
+		s : float
+		    The silverman factor.
+	**/
+	public function silverman_factor():Float;
+	public var weights : Dynamic;
 }

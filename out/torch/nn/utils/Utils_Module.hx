@@ -86,8 +86,8 @@ package torch.nn.utils;
 		Applies spectral normalization to a parameter in the given module.
 		
 		.. math::
-		     \mathbf{W} &= \dfrac{\mathbf{W}}{\sigma(\mathbf{W})} \\
-		     \sigma(\mathbf{W}) &= \max_{\mathbf{h}: \mathbf{h} \ne 0} \dfrac{\|\mathbf{W} \mathbf{h}\|_2}{\|\mathbf{h}\|_2}
+		     \mathbf{W} = \dfrac{\mathbf{W}}{\sigma(\mathbf{W})} \\
+		     \sigma(\mathbf{W}) = \max_{\mathbf{h}: \mathbf{h} \ne 0} \dfrac{\|\mathbf{W} \mathbf{h}\|_2}{\|\mathbf{h}\|_2}
 		
 		Spectral normalization stabilizes the training of discriminators (critics)
 		in Generaive Adversarial Networks (GANs) by rescaling the weight tensor

@@ -141,7 +141,7 @@ package scipy.optimize._trustregion_constr.tr_interior_point;
 	/**
 		Returns scaled gradient.
 		
-		Return scalled gradient:
+		Return scaled gradient:
 		    gradient = [             grad(x)             ]
 		               [ -barrier_parameter*ones(n_ineq) ]
 		and scaled Jacobian Matrix:

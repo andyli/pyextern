@@ -9,6 +9,7 @@ package matplotlib.backend_managers;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _log : Dynamic;
 	/**
 		return a list
 	**/

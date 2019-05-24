@@ -21,7 +21,7 @@ package tensorflow.contrib.framework.python.ops.variables;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.assert_global_step
 	**/
@@ -142,7 +142,7 @@ package tensorflow.contrib.framework.python.ops.variables;
 	/**
 		Create global step tensor in graph. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.create_global_step
 		
@@ -230,7 +230,7 @@ package tensorflow.contrib.framework.python.ops.variables;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.get_global_step
 	**/
@@ -260,7 +260,7 @@ package tensorflow.contrib.framework.python.ops.variables;
 	/**
 		Returns and create (if necessary) the global step tensor. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.get_or_create_global_step
 		

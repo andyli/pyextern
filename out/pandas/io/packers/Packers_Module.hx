@@ -181,6 +181,38 @@ package pandas.io.packers;
 	**/
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
+		Check whether an array-like or dtype is of a DatetimeTZDtype dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of
+		          a DatetimeTZDtype dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64tz_dtype(object)
+		False
+		>>> is_datetime64tz_dtype([1, 2, 3])
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3]))  # tz-naive
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+		
+		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
+		>>> s = pd.Series([], dtype=dtype)
+		>>> is_datetime64tz_dtype(dtype)
+		True
+		>>> is_datetime64tz_dtype(s)
+		True
+	**/
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Check whether an array-like or dtype is of the object dtype.
 		
 		Parameters
@@ -254,6 +286,10 @@ package pandas.io.packers;
 		Returns
 		-------
 		np.dtype or a pandas dtype
+		
+		Raises
+		------
+		TypeError if not a dtype
 	**/
 	static public function pandas_dtype(dtype:Dynamic):Dynamic;
 	/**
@@ -360,13 +396,13 @@ package pandas.io.packers;
 		Parameters
 		----------
 		path_or_buf : string File path, BytesIO like or string
-		encoding: Encoding for decoding msgpack str type
+		encoding : Encoding for decoding msgpack str type
 		iterator : boolean, if True, return an iterator to the unpacker
 		           (default is False)
 		
 		Returns
 		-------
-		obj : type of object stored in file
+		obj : same type as object stored in file
 	**/
 	static public function read_msgpack(path_or_buf:Dynamic, ?encoding:Dynamic, ?iterator:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -380,7 +416,7 @@ package pandas.io.packers;
 		path_or_buf : string File path, buffer-like, or None
 		              if None, return generated string
 		args : an object or objects to serialize
-		encoding: encoding for unicode objects
+		encoding : encoding for unicode objects
 		append : boolean whether to append to an existing msgpack
 		         (default is False)
 		compress : type of compressor (zlib or blosc), default to None (no

@@ -41,6 +41,13 @@ package tensorflow.python.platform.benchmark;
 	static public function _run_benchmarks(regex:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
+		Returns a tf.ConfigProto for disabling the dependency optimizer.
+		
+		Returns:
+		  A TensorFlow ConfigProto object.
+	**/
+	static public function benchmark_config():Dynamic;
+	/**
 		Run benchmarks as declared in argv.
 		
 		Args:

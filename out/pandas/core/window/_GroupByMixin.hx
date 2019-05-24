@@ -109,17 +109,16 @@ package pandas.core.window;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		dispatch to apply; we are stripping all of the _apply kwargs and
-		performing the original function call on the grouped object
+		Dispatch to apply; we are stripping all of the _apply kwargs and
+		performing the original function call on the grouped object.
 	**/
 	public function _apply(func:Dynamic, name:Dynamic, ?window:Dynamic, ?center:Dynamic, ?check_minp:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		dispatch to apply 
+		Dispatch to apply.
 	**/
 	static public function _dispatch(name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		sub-classes to define
-		return a sliced object
+		Sub-classes to define. Return a sliced object.
 		
 		Parameters
 		----------

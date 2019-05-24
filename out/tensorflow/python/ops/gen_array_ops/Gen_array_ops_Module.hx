@@ -565,6 +565,7 @@ package tensorflow.python.ops.gen_array_ops;
 		  A mutable `Tensor`. Has the same type as `input`.
 	**/
 	static public function debug_gradient_ref_identity(input:Dynamic, ?name:Dynamic):Dynamic;
+	static public function debug_gradient_ref_identity_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Makes a copy of `x`.
 		
@@ -717,7 +718,7 @@ package tensorflow.python.ops.gen_array_ops;
 		In 'MIN_COMBINED' mode, each value of the tensor will undergo the following:
 		
 		```
-		if T == qint8, in[i] += (range(T) + 1)/ 2.0
+		if T == qint8: in[i] += (range(T) + 1)/ 2.0
 		out[i] = min_range + (in[i]* (max_range - min_range) / range(T))
 		```
 		here `range(T) = numeric_limits<T>::max() - numeric_limits<T>::min()`
@@ -1050,31 +1051,29 @@ package tensorflow.python.ops.gen_array_ops;
 	**/
 	static public function extract_image_patches_eager_fallback(images:Dynamic, ksizes:Dynamic, strides:Dynamic, rates:Dynamic, padding:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Extract `patches` from `input` and put them in the "depth" output
-		dimension. 3D extension of `extract_image_patches`.
+		Extract `patches` from `input` and put them in the "depth" output dimension. 3D extension of `extract_image_patches`.
 		
-		  Args:
-		    input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
-		      5-D Tensor with shape `[batch, in_planes, in_rows, in_cols, depth]`.
-		    ksizes: A list of `ints` that has length `>= 5`.
-		      The size of the sliding window for each dimension of `input`.
-		    strides: A list of `ints` that has length `>= 5`.
-		      1-D of length 5. How far the centers of two consecutive patches are in
-		      `input`. Must be: `[1, stride_planes, stride_rows, stride_cols, 1]`.
-		    padding: A `string` from: `"SAME", "VALID"`.
-		      The type of padding algorithm to use.
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
+		    5-D Tensor with shape `[batch, in_planes, in_rows, in_cols, depth]`.
+		  ksizes: A list of `ints` that has length `>= 5`.
+		    The size of the sliding window for each dimension of `input`.
+		  strides: A list of `ints` that has length `>= 5`.
+		    1-D of length 5. How far the centers of two consecutive patches are in
+		    `input`. Must be: `[1, stride_planes, stride_rows, stride_cols, 1]`.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
 		
-		      We specify the size-related attributes as:
+		    We specify the size-related attributes as:
 		
-		      ```python
-		            ksizes = [1, ksize_planes, ksize_rows, ksize_cols, 1]
-		            strides = [1, stride_planes, strides_rows, strides_cols, 1]
-		      ```
-		    name: A name for the operation (optional).
+		    ```python
+		          ksizes = [1, ksize_planes, ksize_rows, ksize_cols, 1]
+		          strides = [1, stride_planes, strides_rows, strides_cols, 1]
+		    ```
+		  name: A name for the operation (optional).
 		
-		  Returns:
-		    A `Tensor`. Has the same type as `input`.
-		  
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function extract_volume_patches(input:Dynamic, ksizes:Dynamic, strides:Dynamic, padding:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -2093,7 +2092,6 @@ package tensorflow.python.ops.gen_array_ops;
 		=========
 		
 		Suppose that
-		
 		```
 		  indices = [0, 2, -1, 1]
 		  depth = 3
@@ -2103,16 +2101,15 @@ package tensorflow.python.ops.gen_array_ops;
 		```
 		
 		Then output is `[4 x 3]`:
-		
-		    ```output =
-		      [5.0 0.0 0.0]  // one_hot(0)
-		      [0.0 0.0 5.0]  // one_hot(2)
-		      [0.0 0.0 0.0]  // one_hot(-1)
-		      [0.0 5.0 0.0]  // one_hot(1)
-		    ```
+		```
+		output =
+		  [5.0 0.0 0.0]  // one_hot(0)
+		  [0.0 0.0 5.0]  // one_hot(2)
+		  [0.0 0.0 0.0]  // one_hot(-1)
+		  [0.0 5.0 0.0]  // one_hot(1)
+		```
 		
 		Suppose that
-		
 		```
 		  indices = [0, 2, -1, 1]
 		  depth = 3
@@ -2122,19 +2119,19 @@ package tensorflow.python.ops.gen_array_ops;
 		```
 		
 		Then output is `[3 x 4]`:
+		```
+		output =
+		  [0.0 3.0 3.0 3.0]
+		  [3.0 3.0 3.0 0.0]
+		  [3.0 3.0 3.0 3.0]
+		  [3.0 0.0 3.0 3.0]
+		//  ^                one_hot(0)
+		//      ^            one_hot(2)
+		//          ^        one_hot(-1)
+		//              ^    one_hot(1)
+		```
 		
-		    ```output =
-		      [0.0 3.0 3.0 3.0]
-		      [3.0 3.0 3.0 0.0]
-		      [3.0 3.0 3.0 3.0]
-		      [3.0 0.0 3.0 3.0]
-		    //  ^                one_hot(0)
-		    //      ^            one_hot(2)
-		    //          ^        one_hot(-1)
-		    //              ^    one_hot(1)
-		    ```
 		Suppose that
-		
 		```
 		  indices = [[0, 2], [1, -1]]
 		  depth = 3
@@ -2144,15 +2141,16 @@ package tensorflow.python.ops.gen_array_ops;
 		```
 		
 		Then output is `[2 x 2 x 3]`:
-		
-		    ```output =
-		      [
-		        [1.0, 0.0, 0.0]  // one_hot(0)
-		        [0.0, 0.0, 1.0]  // one_hot(2)
-		      ][
-		        [0.0, 1.0, 0.0]  // one_hot(1)
-		        [0.0, 0.0, 0.0]  // one_hot(-1)
-		      ]```
+		```
+		output =
+		  [
+		    [1.0, 0.0, 0.0]  // one_hot(0)
+		    [0.0, 0.0, 1.0]  // one_hot(2)
+		  ][
+		    [0.0, 1.0, 0.0]  // one_hot(1)
+		    [0.0, 0.0, 0.0]  // one_hot(-1)
+		  ]
+		```
 		
 		Args:
 		  indices: A `Tensor`. Must be one of the following types: `uint8`, `int32`, `int64`.
@@ -2519,6 +2517,8 @@ package tensorflow.python.ops.gen_array_ops;
 		
 		output = round(clamp(value, input_min, input_max) * scale_factor) / scale_factor.
 		
+		The above round function rounds the value based on the given round_mode.
+		
 		Args:
 		  input: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`.
 		    Tensor to quantize and then dequantize.
@@ -2537,17 +2537,25 @@ package tensorflow.python.ops.gen_array_ops;
 		    The bitwidth of the quantization.
 		  range_given: An optional `bool`. Defaults to `False`.
 		    Whether the range is given or should be determined from the `input` tensor.
+		  round_mode: An optional `string` from: `"HALF_TO_EVEN", "HALF_UP"`. Defaults to `"HALF_TO_EVEN"`.
+		    The 'round_mode' attribute controls which rounding tie-breaking algorithm is
+		    used when rounding float values to their quantized equivalents. The following
+		    rounding modes are currently supported:
+		
+		    *   HALF_TO_EVEN: this is the default round_mode.
+		    *   HALF_UP: round towards positive. In this mode 7.5 rounds up to 8 and -7.5
+		        rounds up to -7.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `input`.
 	**/
-	static public function quantize_and_dequantize_v2(input:Dynamic, input_min:Dynamic, input_max:Dynamic, ?signed_input:Dynamic, ?num_bits:Dynamic, ?range_given:Dynamic, ?name:Dynamic):Dynamic;
+	static public function quantize_and_dequantize_v2(input:Dynamic, input_min:Dynamic, input_max:Dynamic, ?signed_input:Dynamic, ?num_bits:Dynamic, ?range_given:Dynamic, ?round_mode:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function quantize_and_dequantize_v2
 	**/
-	static public function quantize_and_dequantize_v2_eager_fallback(input:Dynamic, input_min:Dynamic, input_max:Dynamic, ?signed_input:Dynamic, ?num_bits:Dynamic, ?range_given:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function quantize_and_dequantize_v2_eager_fallback(input:Dynamic, input_min:Dynamic, input_max:Dynamic, ?signed_input:Dynamic, ?num_bits:Dynamic, ?range_given:Dynamic, ?round_mode:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Quantizes then dequantizes a tensor.
 		
@@ -2585,7 +2593,7 @@ package tensorflow.python.ops.gen_array_ops;
 		
 		```
 		out[i] = (in[i] - min_range) * range(T) / (max_range - min_range)
-		if T == qint8, out[i] -= (range(T) + 1) / 2.0
+		if T == qint8: out[i] -= (range(T) + 1) / 2.0
 		```
 		
 		here `range(T) = numeric_limits<T>::max() - numeric_limits<T>::min()`
@@ -2831,6 +2839,7 @@ package tensorflow.python.ops.gen_array_ops;
 		  A mutable `Tensor`. Has the same type as `input`.
 	**/
 	static public function ref_identity(input:Dynamic, ?name:Dynamic):Dynamic;
+	static public function ref_identity_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Reshapes a tensor.
 		
@@ -3152,6 +3161,10 @@ package tensorflow.python.ops.gen_array_ops;
 		slices within a tensor (initially zero for numeric, empty for string) of
 		the given `shape` according to indices.  This operator is the inverse of the
 		`tf.gather_nd` operator which extracts values or slices from a given tensor.
+		
+		This operation is similar to tensor_scatter_add, except that the tensor is
+		zero-initialized. Calling `tf.scatter_nd(indices, values, shape)` is identical
+		to `tensor_scatter_add(tf.zeros(shape, values.dtype), indices, values)`
 		
 		If `indices` contains duplicates, then their updates are accumulated (summed).
 		
@@ -4028,6 +4041,7 @@ package tensorflow.python.ops.gen_array_ops;
 		  A mutable `Tensor`. Has the same type as `ref`.
 	**/
 	static public function strided_slice_assign(ref:Dynamic, begin:Dynamic, end:Dynamic, strides:Dynamic, value:Dynamic, ?begin_mask:Dynamic, ?end_mask:Dynamic, ?ellipsis_mask:Dynamic, ?new_axis_mask:Dynamic, ?shrink_axis_mask:Dynamic, ?name:Dynamic):Dynamic;
+	static public function strided_slice_assign_eager_fallback(ref:Dynamic, begin:Dynamic, end:Dynamic, strides:Dynamic, value:Dynamic, ?begin_mask:Dynamic, ?end_mask:Dynamic, ?ellipsis_mask:Dynamic, ?new_axis_mask:Dynamic, ?shrink_axis_mask:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function strided_slice
@@ -4067,6 +4081,272 @@ package tensorflow.python.ops.gen_array_ops;
 		This is for function strided_slice_grad
 	**/
 	static public function strided_slice_grad_eager_fallback(shape:Dynamic, begin:Dynamic, end:Dynamic, strides:Dynamic, dy:Dynamic, ?begin_mask:Dynamic, ?end_mask:Dynamic, ?ellipsis_mask:Dynamic, ?new_axis_mask:Dynamic, ?shrink_axis_mask:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Adds sparse `updates` to an existing tensor according to `indices`.
+		
+		This operation creates a new tensor by adding sparse `updates` to the passed
+		in `tensor`.
+		This operation is very similar to `tf.scatter_nd_add`, except that the updates
+		are added onto an existing tensor (as opposed to a variable). If the memory
+		for the existing tensor cannot be re-used, a copy is made and updated.
+		
+		`indices` is an integer tensor containing indices into a new tensor of shape
+		`shape`.  The last dimension of `indices` can be at most the rank of `shape`:
+		
+		    indices.shape[-1] <= shape.rank
+		
+		The last dimension of `indices` corresponds to indices into elements
+		(if `indices.shape[-1] = shape.rank`) or slices
+		(if `indices.shape[-1] < shape.rank`) along dimension `indices.shape[-1]` of
+		`shape`.  `updates` is a tensor with shape
+		
+		    indices.shape[:-1] + shape[indices.shape[-1]:]
+		
+		The simplest form of tensor_scatter_add is to add individual elements to a
+		tensor by index. For example, say we want to add 4 elements in a rank-1
+		tensor with 8 elements.
+		
+		In Python, this scatter add operation would look like this:
+		
+		```python
+		    indices = tf.constant([[4], [3], [1], [7]])
+		    updates = tf.constant([9, 10, 11, 12])
+		    tensor = tf.ones([8], dtype=tf.int32)
+		    updated = tf.tensor_scatter_add(tensor, indices, updates)
+		    with tf.Session() as sess:
+		      print(sess.run(scatter))
+		```
+		
+		The resulting tensor would look like this:
+		
+		    [1, 12, 1, 11, 10, 1, 1, 13]
+		
+		We can also, insert entire slices of a higher rank tensor all at once. For
+		example, if we wanted to insert two slices in the first dimension of a
+		rank-3 tensor with two matrices of new values.
+		
+		In Python, this scatter add operation would look like this:
+		
+		```python
+		    indices = tf.constant([[0], [2]])
+		    updates = tf.constant([[[5, 5, 5, 5], [6, 6, 6, 6],
+		                            [7, 7, 7, 7], [8, 8, 8, 8]],
+		                           [[5, 5, 5, 5], [6, 6, 6, 6],
+		                            [7, 7, 7, 7], [8, 8, 8, 8]]])
+		    tensor = tf.ones([4, 4, 4])
+		    updated = tf.tensor_scatter_add(tensor, indices, updates)
+		    with tf.Session() as sess:
+		      print(sess.run(scatter))
+		```
+		
+		The resulting tensor would look like this:
+		
+		    [[[6, 6, 6, 6], [7, 7, 7, 7], [8, 8, 8, 8], [9, 9, 9, 9]],
+		     [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]],
+		     [[6, 6, 6, 6], [7, 7, 7, 7], [8, 8, 8, 8], [9, 9, 9, 9]],
+		     [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]]
+		
+		Note that on CPU, if an out of bound index is found, an error is returned.
+		On GPU, if an out of bound index is found, the index is ignored.
+		
+		Args:
+		  tensor: A `Tensor`. Tensor to copy/update.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    Index tensor.
+		  updates: A `Tensor`. Must have the same type as `tensor`.
+		    Updates to scatter into output.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `tensor`.
+	**/
+	static public function tensor_scatter_add(tensor:Dynamic, indices:Dynamic, updates:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function tensor_scatter_add
+	**/
+	static public function tensor_scatter_add_eager_fallback(tensor:Dynamic, indices:Dynamic, updates:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Subtracts sparse `updates` from an existing tensor according to `indices`.
+		
+		This operation creates a new tensor by subtracting sparse `updates` from the
+		passed in `tensor`.
+		This operation is very similar to `tf.scatter_nd_sub`, except that the updates
+		are subtracted from an existing tensor (as opposed to a variable). If the memory
+		for the existing tensor cannot be re-used, a copy is made and updated.
+		
+		`indices` is an integer tensor containing indices into a new tensor of shape
+		`shape`.  The last dimension of `indices` can be at most the rank of `shape`:
+		
+		    indices.shape[-1] <= shape.rank
+		
+		The last dimension of `indices` corresponds to indices into elements
+		(if `indices.shape[-1] = shape.rank`) or slices
+		(if `indices.shape[-1] < shape.rank`) along dimension `indices.shape[-1]` of
+		`shape`.  `updates` is a tensor with shape
+		
+		    indices.shape[:-1] + shape[indices.shape[-1]:]
+		
+		The simplest form of tensor_scatter_sub is to subtract individual elements
+		from a tensor by index. For example, say we want to insert 4 scattered elements
+		in a rank-1 tensor with 8 elements.
+		
+		In Python, this scatter subtract operation would look like this:
+		
+		```python
+		    indices = tf.constant([[4], [3], [1], [7]])
+		    updates = tf.constant([9, 10, 11, 12])
+		    tensor = tf.ones([8], dtype=tf.int32)
+		    updated = tf.tensor_scatter_sub(tensor, indices, updates)
+		    with tf.Session() as sess:
+		      print(sess.run(scatter))
+		```
+		
+		The resulting tensor would look like this:
+		
+		    [1, -10, 1, -9, -8, 1, 1, -11]
+		
+		We can also, insert entire slices of a higher rank tensor all at once. For
+		example, if we wanted to insert two slices in the first dimension of a
+		rank-3 tensor with two matrices of new values.
+		
+		In Python, this scatter add operation would look like this:
+		
+		```python
+		    indices = tf.constant([[0], [2]])
+		    updates = tf.constant([[[5, 5, 5, 5], [6, 6, 6, 6],
+		                            [7, 7, 7, 7], [8, 8, 8, 8]],
+		                           [[5, 5, 5, 5], [6, 6, 6, 6],
+		                            [7, 7, 7, 7], [8, 8, 8, 8]]])
+		    tensor = tf.ones([4, 4, 4])
+		    updated = tf.tensor_scatter_sub(tensor, indices, updates)
+		    with tf.Session() as sess:
+		      print(sess.run(scatter))
+		```
+		
+		The resulting tensor would look like this:
+		
+		    [[[-4, -4, -4, -4], [-5, -5, -5, -5], [-6, -6, -6, -6], [-7, -7, -7, -7]],
+		     [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]],
+		     [[-4, -4, -4, -4], [-5, -5, -5, -5], [-6, -6, -6, -6], [-7, -7, -7, -7]],
+		     [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]]
+		
+		Note that on CPU, if an out of bound index is found, an error is returned.
+		On GPU, if an out of bound index is found, the index is ignored.
+		
+		Args:
+		  tensor: A `Tensor`. Tensor to copy/update.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    Index tensor.
+		  updates: A `Tensor`. Must have the same type as `tensor`.
+		    Updates to scatter into output.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `tensor`.
+	**/
+	static public function tensor_scatter_sub(tensor:Dynamic, indices:Dynamic, updates:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function tensor_scatter_sub
+	**/
+	static public function tensor_scatter_sub_eager_fallback(tensor:Dynamic, indices:Dynamic, updates:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Scatter `updates` into an existing tensor according to `indices`.
+		
+		This operation creates a new tensor by applying sparse `updates` to the passed
+		in `tensor`.
+		This operation is very similar to `tf.scatter_nd`, except that the updates are
+		scattered onto an existing tensor (as opposed to a zero-tensor). If the memory
+		for the existing tensor cannot be re-used, a copy is made and updated.
+		
+		If `indices` contains duplicates, then their updates are accumulated (summed).
+		
+		**WARNING**: The order in which updates are applied is nondeterministic, so the
+		output will be nondeterministic if `indices` contains duplicates -- because
+		of some numerical approximation issues, numbers summed in different order
+		may yield different results.
+		
+		`indices` is an integer tensor containing indices into a new tensor of shape
+		`shape`.  The last dimension of `indices` can be at most the rank of `shape`:
+		
+		    indices.shape[-1] <= shape.rank
+		
+		The last dimension of `indices` corresponds to indices into elements
+		(if `indices.shape[-1] = shape.rank`) or slices
+		(if `indices.shape[-1] < shape.rank`) along dimension `indices.shape[-1]` of
+		`shape`.  `updates` is a tensor with shape
+		
+		    indices.shape[:-1] + shape[indices.shape[-1]:]
+		
+		The simplest form of scatter is to insert individual elements in a tensor by
+		index. For example, say we want to insert 4 scattered elements in a rank-1
+		tensor with 8 elements.
+		
+		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
+		<img style="width:100%" src="https://www.tensorflow.org/images/ScatterNd1.png" alt>
+		</div>
+		
+		In Python, this scatter operation would look like this:
+		
+		```python
+		    indices = tf.constant([[4], [3], [1], [7]])
+		    updates = tf.constant([9, 10, 11, 12])
+		    tensor = tf.ones([8], dtype=tf.int32)
+		    updated = tf.tensor_scatter_update(tensor, indices, updates)
+		    with tf.Session() as sess:
+		      print(sess.run(scatter))
+		```
+		
+		The resulting tensor would look like this:
+		
+		    [1, 11, 1, 10, 9, 1, 1, 12]
+		
+		We can also, insert entire slices of a higher rank tensor all at once. For
+		example, if we wanted to insert two slices in the first dimension of a
+		rank-3 tensor with two matrices of new values.
+		
+		In Python, this scatter operation would look like this:
+		
+		```python
+		    indices = tf.constant([[0], [2]])
+		    updates = tf.constant([[[5, 5, 5, 5], [6, 6, 6, 6],
+		                            [7, 7, 7, 7], [8, 8, 8, 8]],
+		                           [[5, 5, 5, 5], [6, 6, 6, 6],
+		                            [7, 7, 7, 7], [8, 8, 8, 8]]])
+		    tensor = tf.ones([4, 4, 4])
+		    updated = tf.tensor_scatter_update(tensor, indices, updates)
+		    with tf.Session() as sess:
+		      print(sess.run(scatter))
+		```
+		
+		The resulting tensor would look like this:
+		
+		    [[[5, 5, 5, 5], [6, 6, 6, 6], [7, 7, 7, 7], [8, 8, 8, 8]],
+		     [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]],
+		     [[5, 5, 5, 5], [6, 6, 6, 6], [7, 7, 7, 7], [8, 8, 8, 8]],
+		     [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]]
+		
+		Note that on CPU, if an out of bound index is found, an error is returned.
+		On GPU, if an out of bound index is found, the index is ignored.
+		
+		Args:
+		  tensor: A `Tensor`. Tensor to copy/update.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    Index tensor.
+		  updates: A `Tensor`. Must have the same type as `tensor`.
+		    Updates to scatter into output.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `tensor`.
+	**/
+	static public function tensor_scatter_update(tensor:Dynamic, indices:Dynamic, updates:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function tensor_scatter_update
+	**/
+	static public function tensor_scatter_update_eager_fallback(tensor:Dynamic, indices:Dynamic, updates:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Constructs a tensor by tiling a given tensor.

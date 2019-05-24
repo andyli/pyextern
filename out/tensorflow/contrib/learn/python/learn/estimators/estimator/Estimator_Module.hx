@@ -189,7 +189,7 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 	/**
 		Creates `FeatureColumn` objects for inputs defined by input `x`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please specify feature columns explicitly.
 		
@@ -206,7 +206,7 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 	/**
 		Creates `FeatureColumn` objects for inputs defined by `input_fn`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please specify feature columns explicitly.
 		

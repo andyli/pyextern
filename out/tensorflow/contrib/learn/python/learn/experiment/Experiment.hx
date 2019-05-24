@@ -40,7 +40,7 @@ package tensorflow.contrib.learn.python.learn.experiment;
 	/**
 		Constructor for `Experiment`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.estimator.train_and_evaluate. You will also have to convert to a tf.estimator.Estimator.
 		
@@ -118,7 +118,7 @@ package tensorflow.contrib.learn.python.learn.experiment;
 	/**
 		Constructor for `Experiment`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.estimator.train_and_evaluate. You will also have to convert to a tf.estimator.Estimator.
 		
@@ -319,7 +319,7 @@ package tensorflow.contrib.learn.python.learn.experiment;
 	/**
 		Interleaves training and evaluation. (experimental)
 		
-		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
+		Warning: THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
 		
 		The frequency of evaluation is controlled by the `train_steps_per_iteration`
 		(via constructor). The model will be first trained for
@@ -399,7 +399,7 @@ package tensorflow.contrib.learn.python.learn.experiment;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-10-23.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-10-23.
 		Instructions for updating:
 		local_run will be renamed to train_and_evaluate and the new default behavior will be to run evaluation every time there is a new checkpoint.
 	**/

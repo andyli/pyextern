@@ -110,6 +110,8 @@ package tensorflow.python.ops.summary_ops_v2;
 	public var __weakref__ : Dynamic;
 	public function _close():Dynamic;
 	public function _flush():Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Enables summary writing within a `with` block.
 	**/

@@ -108,6 +108,8 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _estimator_api_names : Dynamic;
+	static public var _estimator_api_names_v1 : Dynamic;
 	public function _log_and_record(elapsed_steps:Dynamic, elapsed_time:Dynamic, global_step:Dynamic):Dynamic;
 	public function _set_steps_per_run(steps_per_run:Dynamic):Dynamic;
 	static public var _tf_api_names : Dynamic;

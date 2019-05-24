@@ -41,7 +41,7 @@ package tensorflow.contrib.learn.python.learn.estimators.run_config;
 	/**
 		Constructor. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		When switching to tf.estimator.Estimator, use tf.estimator.RunConfig instead.
 		
@@ -97,7 +97,7 @@ package tensorflow.contrib.learn.python.learn.estimators.run_config;
 	/**
 		Constructor. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		When switching to tf.estimator.Estimator, use tf.estimator.RunConfig instead.
 		
@@ -387,7 +387,7 @@ package tensorflow.contrib.learn.python.learn.estimators.run_config;
 	/**
 		Generates a 'Unique Identifier' based on all internal fields. (experimental)
 		
-		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
+		Warning: THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
 		
 		Caller should use the uid string to check `RunConfig` instance integrity
 		in one session use, but should not rely on the implementation details, which

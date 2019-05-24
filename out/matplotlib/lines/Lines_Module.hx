@@ -27,6 +27,7 @@ package matplotlib.lines;
 		    
 	**/
 	static public function _get_dash_pattern(style:Dynamic):Dynamic;
+	static public var _log : Dynamic;
 	/**
 		Helper function that sorts out how to deal the input
 		`markevery` and returns the points where markers should be drawn.
@@ -51,19 +52,14 @@ package matplotlib.lines;
 	static public function allow_rasterization(draw:Dynamic):Dynamic;
 	static public var drawStyles : Dynamic;
 	static public var fillStyles : Dynamic;
-	/**
-		return true if *obj* is iterable
-	**/
-	static public function iterable(obj:Dynamic):Dynamic;
 	static public var lineMarkers : Dynamic;
 	static public var lineStyles : Dynamic;
 	static public var ls_mapper : Dynamic;
 	static public var ls_mapper_r : Dynamic;
 	static public var rcParams : Dynamic;
 	/**
-		Determine if any line segments are within radius of a
-		point. Returns the list of line segments that are within that
-		radius.
+		Return the indices of the segments in the polyline with coordinates (*cx*,
+		*cy*) that are within a distance *radius* of the point (*x*, *y*).
 	**/
 	static public function segment_hits(cx:Dynamic, cy:Dynamic, x:Dynamic, y:Dynamic, radius:Dynamic):Dynamic;
 }

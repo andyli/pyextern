@@ -18,6 +18,10 @@ package scipy.integrate.quadrature;
 	**/
 	static public function _cached_roots_legendre(n:Dynamic):Dynamic;
 	/**
+		Based on http://stackoverflow.com/a/6528148/190597 (Glenn Maynard)
+	**/
+	static public function _copy_func(f:Dynamic):Dynamic;
+	/**
 		Perform part of the trapezoidal rule to integrate a function.
 		Assume that we had called difftrap with all lower powers-of-2
 		starting with 1.  Calling difftrap only returns the summation
@@ -132,6 +136,24 @@ package scipy.integrate.quadrature;
 		cumtrapz : cumulative integration for sampled data
 		ode : ODE integrator
 		odeint : ODE integrator
+		
+		Examples
+		--------
+		>>> from scipy import integrate
+		>>> f = lambda x: x**8
+		>>> integrate.fixed_quad(f, 0.0, 1.0, n=4)
+		(0.1110884353741496, None)
+		>>> integrate.fixed_quad(f, 0.0, 1.0, n=5)
+		(0.11111111111111102, None)
+		>>> print(1/9.0)  # analytical result
+		0.1111111111111111
+		
+		>>> integrate.fixed_quad(np.cos, 0.0, np.pi/2, n=4)
+		(0.9999999771971152, None)
+		>>> integrate.fixed_quad(np.cos, 0.0, np.pi/2, n=5)
+		(1.000000000039565, None)
+		>>> np.sin(np.pi/2)-np.sin(0)  # analytical result
+		1.0
 	**/
 	static public function fixed_quad(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?n:Dynamic):Float;
 	/**
@@ -196,6 +218,30 @@ package scipy.integrate.quadrature;
 		B : float
 		    Error coefficient.
 		
+		Examples
+		--------
+		Compute the integral of sin(x) in [0, :math:`\pi`]:
+		
+		>>> from scipy.integrate import newton_cotes
+		>>> def f(x):
+		...     return np.sin(x)
+		>>> a = 0
+		>>> b = np.pi
+		>>> exact = 2
+		>>> for N in [2, 4, 6, 8, 10]:
+		...     x = np.linspace(a, b, N + 1)
+		...     an, B = newton_cotes(N, 1)
+		...     dx = (b - a) / N
+		...     quad = dx * np.sum(an * f(x))
+		...     error = abs(quad - exact)
+		...     print('{:2d}  {:10.9f}  {:.5e}'.format(N, quad, error))
+		...
+		 2   2.094395102   9.43951e-02
+		 4   1.998570732   1.42927e-03
+		 6   2.000017814   1.78136e-05
+		 8   1.999999835   1.64725e-07
+		10   2.000000001   1.14677e-09
+		
 		Notes
 		-----
 		Normally, the Newton-Cotes rules are used on smaller integration
@@ -249,6 +295,20 @@ package scipy.integrate.quadrature;
 		cumtrapz: cumulative integration for sampled data
 		ode: ODE integrator
 		odeint: ODE integrator
+		
+		Examples
+		--------
+		>>> from scipy import integrate
+		>>> f = lambda x: x**8
+		>>> integrate.quadrature(f, 0.0, 1.0)
+		(0.11111111111111106, 4.163336342344337e-17)
+		>>> print(1/9.0)  # analytical result
+		0.1111111111111111
+		
+		>>> integrate.quadrature(np.cos, 0.0, np.pi/2)
+		(0.9999999999999536, 3.9611425250996035e-11)
+		>>> np.sin(np.pi/2)-np.sin(0)  # analytical result
+		1.0
 	**/
 	static public function quadrature(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?vec_func:Dynamic, ?miniter:Dynamic):Float;
 	/**
@@ -299,13 +359,13 @@ package scipy.integrate.quadrature;
 		-0.742561336672229
 		
 		>>> integrate.romb(y, show=True)
-		Richardson Extrapolation Table for Romberg Integration       
+		Richardson Extrapolation Table for Romberg Integration
 		====================================================================
-		-0.81576 
-		4.63862  6.45674 
-		-1.10581 -3.02062 -3.65245 
-		-2.57379 -3.06311 -3.06595 -3.05664 
-		-1.34093 -0.92997 -0.78776 -0.75160 -0.74256 
+		-0.81576
+		4.63862  6.45674
+		-1.10581 -3.02062 -3.65245
+		-2.57379 -3.06311 -3.06595 -3.05664
+		-1.34093 -0.92997 -0.78776 -0.75160 -0.74256
 		====================================================================
 		-0.742561336672229
 	**/
@@ -364,7 +424,7 @@ package scipy.integrate.quadrature;
 		
 		References
 		----------
-		.. [1] 'Romberg's method' http://en.wikipedia.org/wiki/Romberg%27s_method
+		.. [1] 'Romberg's method' https://en.wikipedia.org/wiki/Romberg%27s_method
 		
 		Examples
 		--------
@@ -518,7 +578,7 @@ package scipy.integrate.quadrature;
 		
 		See Also
 		--------
-		sum, cumsum
+		numpy.cumsum
 		
 		Notes
 		-----
@@ -531,10 +591,10 @@ package scipy.integrate.quadrature;
 		
 		References
 		----------
-		.. [1] Wikipedia page: http://en.wikipedia.org/wiki/Trapezoidal_rule
+		.. [1] Wikipedia page: https://en.wikipedia.org/wiki/Trapezoidal_rule
 		
 		.. [2] Illustration image:
-		       http://en.wikipedia.org/wiki/File:Composite_trapezoidal_rule_illustration.png
+		       https://en.wikipedia.org/wiki/File:Composite_trapezoidal_rule_illustration.png
 		
 		Examples
 		--------

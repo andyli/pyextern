@@ -3,6 +3,7 @@ package scipy.optimize._differentialevolution;
 @:pythonImport("scipy.optimize._differentialevolution", "DifferentialEvolutionSolver") extern class DifferentialEvolutionSolver {
 	static public var _DifferentialEvolutionSolver__init_error_msg : Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __del__():Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -14,10 +15,12 @@ package scipy.optimize._differentialevolution;
 	**/
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
+	public function __enter__():Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
+	public function __exit__(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -42,11 +45,11 @@ package scipy.optimize._differentialevolution;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?strategy:Dynamic, ?maxiter:Dynamic, ?popsize:Dynamic, ?tol:Dynamic, ?mutation:Dynamic, ?recombination:Dynamic, ?seed:Dynamic, ?maxfun:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?polish:Dynamic, ?init:Dynamic, ?atol:Dynamic):Dynamic;
+	public function ___init__(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?strategy:Dynamic, ?maxiter:Dynamic, ?popsize:Dynamic, ?tol:Dynamic, ?mutation:Dynamic, ?recombination:Dynamic, ?seed:Dynamic, ?maxfun:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?polish:Dynamic, ?init:Dynamic, ?atol:Dynamic, ?updating:Dynamic, ?workers:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?strategy:Dynamic, ?maxiter:Dynamic, ?popsize:Dynamic, ?tol:Dynamic, ?mutation:Dynamic, ?recombination:Dynamic, ?seed:Dynamic, ?maxfun:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?polish:Dynamic, ?init:Dynamic, ?atol:Dynamic):Void;
+	public function new(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?strategy:Dynamic, ?maxiter:Dynamic, ?popsize:Dynamic, ?tol:Dynamic, ?mutation:Dynamic, ?recombination:Dynamic, ?seed:Dynamic, ?maxfun:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?polish:Dynamic, ?init:Dynamic, ?atol:Dynamic, ?updating:Dynamic, ?workers:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -132,23 +135,36 @@ package scipy.optimize._differentialevolution;
 	static public var _binomial : Dynamic;
 	/**
 		Calculate the energies of all the population members at the same time.
-		Puts the best member in first place. Useful if the population has just
-		been initialised.
+		
+		Parameters
+		----------
+		population : ndarray
+		    An array of parameter vectors normalised to [0, 1] using lower
+		    and upper limits. Has shape ``(np.size(population, 0), len(x))``.
+		
+		Returns
+		-------
+		energies : ndarray
+		    An array of energies corresponding to each population member. If
+		    maxfun will be exceeded during this call, then the number of
+		    function evaluations will be reduced and energies will be
+		    right-padded with np.inf. Has shape ``(np.size(population, 0),)``
 	**/
-	public function _calculate_population_energies():Dynamic;
+	public function _calculate_population_energies(population:Dynamic):Dynamic;
 	/**
 		currenttobest1bin, currenttobest1exp
 	**/
 	public function _currenttobest1(candidate:Dynamic, samples:Dynamic):Dynamic;
 	/**
-		make sure the parameters lie between the limits
+		Make sure the parameters lie between the limits.
 	**/
 	public function _ensure_constraint(trial:Dynamic):Dynamic;
 	static public var _exponential : Dynamic;
 	/**
-		create a trial vector based on a mutation strategy
+		Create a trial vector based on a mutation strategy.
 	**/
 	public function _mutate(candidate:Dynamic):Dynamic;
+	public function _promote_lowest_energy():Dynamic;
 	/**
 		rand1bin, rand1exp
 	**/
@@ -162,7 +178,7 @@ package scipy.optimize._differentialevolution;
 	**/
 	public function _randtobest1(samples:Dynamic):Dynamic;
 	/**
-		scale from a number between 0 and 1 to parameters.
+		Scale from a number between 0 and 1 to parameters.
 	**/
 	public function _scale_parameters(trial:Dynamic):Dynamic;
 	/**
@@ -171,9 +187,13 @@ package scipy.optimize._differentialevolution;
 	**/
 	public function _select_samples(candidate:Dynamic, number_samples:Dynamic):Dynamic;
 	/**
-		scale from parameters to a number between 0 and 1.
+		Scale from parameters to a number between 0 and 1.
 	**/
 	public function _unscale_parameters(parameters:Dynamic):Dynamic;
+	/**
+		Return True if the solver has converged.
+	**/
+	public function converged():Dynamic;
 	/**
 		The standard deviation of the population energies divided by their
 		mean.
@@ -187,7 +207,7 @@ package scipy.optimize._differentialevolution;
 		init : np.ndarray
 		    Array specifying subset of the initial population. The array should
 		    have shape (M, len(x)), where len(x) is the number of parameters.
-		    The population is clipped to the lower and upper `bounds`.
+		    The population is clipped to the lower and upper bounds.
 	**/
 	public function init_population_array(init:Dynamic):Dynamic;
 	/**
@@ -229,11 +249,6 @@ package scipy.optimize._differentialevolution;
 	public function solve():Dynamic;
 	/**
 		The best solution from the solver
-		
-		Returns
-		-------
-		x : ndarray
-		    The best solution from the solver.
 	**/
 	public var x : Dynamic;
 }

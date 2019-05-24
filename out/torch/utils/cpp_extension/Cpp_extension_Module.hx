@@ -3,6 +3,7 @@ package torch.utils.cpp_extension;
 @:pythonImport("torch.utils.cpp_extension") extern class Cpp_extension_Module {
 	static public var ABI_INCOMPATIBILITY_WARNING : Dynamic;
 	static public var BUILT_FROM_SOURCE_VERSION_PATTERN : Dynamic;
+	static public var COMMON_NVCC_FLAGS : Dynamic;
 	/**
 		Creates a :class:`setuptools.Extension` for CUDA/C++.
 		
@@ -16,7 +17,7 @@ package torch.utils.cpp_extension;
 		
 		Example:
 		    >>> from setuptools import setup
-		    >>> from torch.utils.cpp_extension import BuildExtension, CppExtension
+		    >>> from torch.utils.cpp_extension import BuildExtension, CUDAExtension
 		    >>> setup(
 		            name='cuda_extension',
 		            ext_modules=[
@@ -32,6 +33,7 @@ package torch.utils.cpp_extension;
 	**/
 	static public function CUDAExtension(name:Dynamic, sources:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var CUDA_HOME : Dynamic;
+	static public var CUDNN_HOME : Dynamic;
 	/**
 		Creates a :class:`setuptools.Extension` for C++.
 		
@@ -57,8 +59,11 @@ package torch.utils.cpp_extension;
 		            })
 	**/
 	static public function CppExtension(name:Dynamic, sources:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var IS_WINDOWS : Dynamic;
+	static public var JIT_EXTENSION_VERSIONER : Dynamic;
 	static public var MINIMUM_GCC_VERSION : Dynamic;
 	static public var MINIMUM_MSVC_VERSION : Dynamic;
+	static public var WRONG_COMPILER_WARNING : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -67,15 +72,17 @@ package torch.utils.cpp_extension;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _build_extension_module(name:Dynamic, build_directory:Dynamic):Dynamic;
+	static public function _accepted_compilers_for_platform():Dynamic;
+	static public function _build_extension_module(name:Dynamic, build_directory:Dynamic, verbose:Dynamic):Dynamic;
 	/**
 		Finds the CUDA install path.
 	**/
 	static public function _find_cuda_home():Dynamic;
 	static public function _get_build_directory(name:Dynamic, verbose:Dynamic):Dynamic;
-	static public function _import_module_from_library(module_name:Dynamic, path:Dynamic):Dynamic;
+	static public function _import_module_from_library(module_name:Dynamic, path:Dynamic, is_python_module:Dynamic):Dynamic;
+	static public function _is_binary_build():Dynamic;
 	static public function _is_cuda_file(path:Dynamic):Dynamic;
-	static public function _jit_compile(name:Dynamic, sources:Dynamic, extra_cflags:Dynamic, extra_cuda_cflags:Dynamic, extra_ldflags:Dynamic, extra_include_paths:Dynamic, build_directory:Dynamic, verbose:Dynamic, ?with_cuda:Dynamic):Dynamic;
+	static public function _jit_compile(name:Dynamic, sources:Dynamic, extra_cflags:Dynamic, extra_cuda_cflags:Dynamic, extra_ldflags:Dynamic, extra_include_paths:Dynamic, build_directory:Dynamic, verbose:Dynamic, with_cuda:Dynamic, is_python_module:Dynamic):Dynamic;
 	/**
 		Joins paths with CUDA_HOME, or raises an error if it CUDA_HOME is not set.
 		
@@ -84,7 +91,9 @@ package torch.utils.cpp_extension;
 	**/
 	static public function _join_cuda_home(?paths:python.VarArgs<Dynamic>):Dynamic;
 	static public function _prepare_ldflags(extra_ldflags:Dynamic, with_cuda:Dynamic, verbose:Dynamic):Dynamic;
-	static public function _write_ninja_file(path:Dynamic, name:Dynamic, sources:Dynamic, extra_cflags:Dynamic, extra_cuda_cflags:Dynamic, extra_ldflags:Dynamic, extra_include_paths:Dynamic, ?with_cuda:Dynamic):Dynamic;
+	static public function _write_ninja_file(path:Dynamic, name:Dynamic, sources:Dynamic, extra_cflags:Dynamic, extra_cuda_cflags:Dynamic, extra_ldflags:Dynamic, extra_include_paths:Dynamic, with_cuda:Dynamic):Dynamic;
+	static public function _write_ninja_file_and_build(name:Dynamic, sources:Dynamic, extra_cflags:Dynamic, extra_cuda_cflags:Dynamic, extra_ldflags:Dynamic, extra_include_paths:Dynamic, build_directory:Dynamic, verbose:Dynamic, with_cuda:Dynamic):Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Verifies that the given compiler is ABI-compatible with PyTorch.
 		
@@ -98,6 +107,27 @@ package torch.utils.cpp_extension;
 	**/
 	static public function check_compiler_abi_compatibility(compiler:Dynamic):Dynamic;
 	/**
+		Verifies that the compiler is the expected one for the current platform.
+		
+		Arguments:
+		    compiler (str): The compiler executable to check.
+		
+		Returns:
+		    True if the compiler is gcc/g++ on Linux or clang/clang++ on macOS,
+		    and always True for Windows.
+	**/
+	static public function check_compiler_ok_for_platform(compiler:Dynamic):Dynamic;
+	static public var division : Dynamic;
+	/**
+		Returns the path to the root folder under which extensions will built.
+		
+		For each extension module built, there will be one folder underneath the
+		folder returned by this function. For example, if ``p`` is the path
+		returned by this function and ``ext`` the name of an extension, the build
+		folder for the extension will be ``p/ext``.
+	**/
+	static public function get_default_build_root():Dynamic;
+	/**
 		Get the include paths required to build a C++ or CUDA extension.
 		
 		Args:
@@ -107,7 +137,6 @@ package torch.utils.cpp_extension;
 		    A list of include path strings.
 	**/
 	static public function include_paths(?cuda:Dynamic):Dynamic;
-	static public function is_binary_build():Dynamic;
 	/**
 		Get the library paths required to build a C++ or CUDA extension.
 		
@@ -170,9 +199,15 @@ package torch.utils.cpp_extension;
 		        automatically determined based on the existence of ``.cu`` or
 		        ``.cuh`` in ``sources``. Set it to `True`` to force CUDA headers
 		        and libraries to be included.
+		    is_python_module: If ``True`` (default), imports the produced shared
+		        library as a Python module. If ``False``, loads it into the process
+		        as a plain dynamic library.
 		
 		Returns:
-		    The loaded PyTorch extension as a Python module.
+		    If ``is_python_module`` is ``True``, returns the loaded PyTorch
+		    extension as a Python module. If ``is_python_module`` is ``False``
+		    returns nothing (the shared library is loaded into the process as a side
+		    effect).
 		
 		Example:
 		    >>> from torch.utils.cpp_extension import load
@@ -182,7 +217,7 @@ package torch.utils.cpp_extension;
 		            extra_cflags=['-O2'],
 		            verbose=True)
 	**/
-	static public function load(name:Dynamic, sources:Dynamic, ?extra_cflags:Dynamic, ?extra_cuda_cflags:Dynamic, ?extra_ldflags:Dynamic, ?extra_include_paths:Dynamic, ?build_directory:Dynamic, ?verbose:Dynamic, ?with_cuda:Dynamic):Dynamic;
+	static public function load(name:Dynamic, sources:Dynamic, ?extra_cflags:Dynamic, ?extra_cuda_cflags:Dynamic, ?extra_ldflags:Dynamic, ?extra_include_paths:Dynamic, ?build_directory:Dynamic, ?verbose:Dynamic, ?with_cuda:Dynamic, ?is_python_module:Dynamic):Dynamic;
 	/**
 		Loads a PyTorch C++ extension just-in-time (JIT) from string sources.
 		
@@ -199,7 +234,7 @@ package torch.utils.cpp_extension;
 		the necessary header includes, as well as the (pybind11) binding code. More
 		precisely, strings passed to ``cpp_sources`` are first concatenated into a
 		single ``.cpp`` file. This file is then prepended with ``#include
-		<torch/torch.h>``.
+		<torch/extension.h>``.
 		
 		Furthermore, if the ``functions`` argument is supplied, bindings will be
 		automatically generated for each function specified. ``functions`` can
@@ -208,13 +243,13 @@ package torch.utils.cpp_extension;
 		as its docstring.
 		
 		The sources in ``cuda_sources`` are concatenated into a separate ``.cu``
-		file and  prepended with ``ATen/ATen.h``, ``cuda.h`` and ``cuda_runtime.h``
-		includes. The ``.cpp`` and ``.cu`` files are compiled separately, but
-		ultimately linked into a single library. Note that no bindings are
-		generated for functions in ``cuda_sources`` per  se. To bind to a CUDA
-		kernel, you must create a C++ function that calls it, and either declare or
-		define this C++ function in one of the ``cpp_sources`` (and include its
-		name in ``functions``).
+		file and  prepended with ``torch/types.h``, ``cuda.h`` and
+		``cuda_runtime.h`` includes. The ``.cpp`` and ``.cu`` files are compiled
+		separately, but ultimately linked into a single library. Note that no
+		bindings are generated for functions in ``cuda_sources`` per  se. To bind
+		to a CUDA kernel, you must create a C++ function that calls it, and either
+		declare or define this C++ function in one of the ``cpp_sources`` (and
+		include its name in ``functions``).
 		
 		See :func:`load` for a description of arguments omitted below.
 		
@@ -241,7 +276,9 @@ package torch.utils.cpp_extension;
 		                             cpp_sources=[source],
 		                             functions=['sin_add'])
 	**/
-	static public function load_inline(name:Dynamic, cpp_sources:Dynamic, ?cuda_sources:Dynamic, ?functions:Dynamic, ?extra_cflags:Dynamic, ?extra_cuda_cflags:Dynamic, ?extra_ldflags:Dynamic, ?extra_include_paths:Dynamic, ?build_directory:Dynamic, ?verbose:Dynamic, ?with_cuda:Dynamic):Dynamic;
+	static public function load_inline(name:Dynamic, cpp_sources:Dynamic, ?cuda_sources:Dynamic, ?functions:Dynamic, ?extra_cflags:Dynamic, ?extra_cuda_cflags:Dynamic, ?extra_ldflags:Dynamic, ?extra_include_paths:Dynamic, ?build_directory:Dynamic, ?verbose:Dynamic, ?with_cuda:Dynamic, ?is_python_module:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
+	static public var unicode_literals : Dynamic;
 	/**
 		Returns ``True`` if the `ninja <https://ninja-build.org/>`_ build system is
 		available on the system.

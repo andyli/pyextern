@@ -157,7 +157,7 @@ package pandas.io.pytables;
 		----------
 		key : object
 		value : {Series, DataFrame, Panel}
-		format: 'table' is the default
+		format : 'table' is the default
 		    table(t) : table format
 		               Write as a PyTables Table structure which may perform
 		               worse but allow more flexible operations like searching
@@ -261,7 +261,7 @@ package pandas.io.pytables;
 		
 		Returns
 		-------
-		obj : type of object stored in file
+		obj : same type as object stored in file
 	**/
 	public function get(key:Dynamic):Dynamic;
 	/**
@@ -278,7 +278,7 @@ package pandas.io.pytables;
 	**/
 	public function groups():Dynamic;
 	/**
-		print detailed information on the store
+		Print detailed information on the store.
 		
 		.. versionadded:: 0.21.0
 	**/
@@ -430,4 +430,33 @@ package pandas.io.pytables;
 		    is part of a data block)
 	**/
 	public function select_column(key:Dynamic, column:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Walk the pytables group hierarchy for pandas objects
+		
+		This generator will yield the group path, subgroups and pandas object
+		names for each group.
+		Any non-pandas PyTables objects that are not a group will be ignored.
+		
+		The `where` group itself is listed first (preorder), then each of its
+		child groups (following an alphanumerical order) is also traversed,
+		following the same procedure.
+		
+		.. versionadded:: 0.24.0
+		
+		Parameters
+		----------
+		where : str, optional
+		    Group where to start walking.
+		    If not supplied, the root group is used.
+		
+		Yields
+		------
+		path : str
+		    Full path to a group (without trailing '/')
+		groups : list of str
+		    names of the groups contained in `path`
+		leaves : list of str
+		    names of the pandas objects contained in `path`
+	**/
+	public function walk(?where:Dynamic):Dynamic;
 }

@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.tpu.python.tpu.session_support;
 @:pythonImport("tensorflow.contrib.tpu.python.tpu.session_support") extern class Session_support_Module {
+	static public var _WATCHDOG : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -9,6 +10,7 @@ package tensorflow.contrib.tpu.python.tpu.session_support;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _clone_session(session:Dynamic, ?graph:Dynamic):Dynamic;
 	/**
 		Return a heartbeat op or None if heartbeats are not supported by device.
 	**/
@@ -20,4 +22,8 @@ package tensorflow.contrib.tpu.python.tpu.session_support;
 	static public function all_worker_devices(session:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Start global worker watchdog to shutdown workers on coordinator exit.
+	**/
+	static public function start_worker_watchdog(session:Dynamic, ?devices:Dynamic, ?ping_interval:Dynamic, ?shutdown_timeout:Dynamic):Dynamic;
 }

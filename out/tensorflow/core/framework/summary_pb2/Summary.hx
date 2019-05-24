@@ -90,7 +90,10 @@ package tensorflow.core.framework.summary_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var VALUE_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -262,4 +265,8 @@ package tensorflow.core.framework.summary_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.Summary.value
+	**/
+	public var value : Dynamic;
 }

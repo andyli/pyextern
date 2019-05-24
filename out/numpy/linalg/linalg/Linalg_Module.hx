@@ -21,11 +21,12 @@ package numpy.linalg.linalg;
 	static public function _assertNoEmpty2d(?arrays:python.VarArgs<Dynamic>):Dynamic;
 	static public function _assertRank2(?arrays:python.VarArgs<Dynamic>):Dynamic;
 	static public function _assertRankAtLeast2(?arrays:python.VarArgs<Dynamic>):Dynamic;
-	static public function _assertSquareness(?arrays:python.VarArgs<Dynamic>):Dynamic;
 	static public function _commonType(?arrays:python.VarArgs<Dynamic>):Dynamic;
 	static public function _complexType(t:Dynamic, ?_default:Dynamic):Dynamic;
 	static public var _complex_types_map : Dynamic;
+	static public function _cond_dispatcher(x:Dynamic, ?p:Dynamic):Dynamic;
 	static public function _convertarray(a:Dynamic):Dynamic;
+	static public function _eigvalsh_dispatcher(a:Dynamic, ?UPLO:Dynamic):Dynamic;
 	/**
 		_fastCopyAndTranspose(a)
 	**/
@@ -37,7 +38,10 @@ package numpy.linalg.linalg;
 	**/
 	static public function _linalgRealType(t:Dynamic):Dynamic;
 	static public var _linalg_error_extobj : Dynamic;
+	static public function _lstsq_dispatcher(a:Dynamic, b:Dynamic, ?rcond:Dynamic):Dynamic;
 	static public function _makearray(a:Dynamic):Dynamic;
+	static public function _matrix_power_dispatcher(a:Dynamic, n:Dynamic):Dynamic;
+	static public function _matrix_rank_dispatcher(M:Dynamic, ?tol:Dynamic, ?hermitian:Dynamic):Dynamic;
 	/**
 		Actually do the multiplication with the given order.
 	**/
@@ -88,6 +92,10 @@ package numpy.linalg.linalg;
 		    is `numpy.amin` or `numpy.amax` or `numpy.sum`.
 	**/
 	static public function _multi_svd_norm(x:Dynamic, row_axis:Dynamic, col_axis:Dynamic, op:Dynamic):Dynamic;
+	static public function _multidot_dispatcher(arrays:Dynamic):Dynamic;
+	static public function _norm_dispatcher(x:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function _pinv_dispatcher(a:Dynamic, ?rcond:Dynamic):Dynamic;
+	static public function _qr_dispatcher(a:Dynamic, ?mode:Dynamic):Dynamic;
 	static public function _raise_linalgerror_eigenvalues_nonconvergence(err:Dynamic, flag:Dynamic):Dynamic;
 	static public function _raise_linalgerror_lstsq(err:Dynamic, flag:Dynamic):Dynamic;
 	static public function _raise_linalgerror_nonposdef(err:Dynamic, flag:Dynamic):Dynamic;
@@ -95,7 +103,12 @@ package numpy.linalg.linalg;
 	static public function _raise_linalgerror_svd_nonconvergence(err:Dynamic, flag:Dynamic):Dynamic;
 	static public function _realType(t:Dynamic, ?_default:Dynamic):Dynamic;
 	static public var _real_types_map : Dynamic;
+	static public function _solve_dispatcher(a:Dynamic, b:Dynamic):Dynamic;
+	static public function _svd_dispatcher(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic):Dynamic;
+	static public function _tensorinv_dispatcher(a:Dynamic, ?ind:Dynamic):Dynamic;
+	static public function _tensorsolve_dispatcher(a:Dynamic, b:Dynamic, ?axes:Dynamic):Dynamic;
 	static public function _to_native_byte_order(?arrays:python.VarArgs<Dynamic>):Dynamic;
+	static public function _unary_dispatcher(a:Dynamic):Dynamic;
 	/**
 		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -590,6 +603,7 @@ package numpy.linalg.linalg;
 		        [3, 4]])
 	**/
 	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	/**
 		Convert the input to an ndarray, but pass ndarray subclasses through.
 		
@@ -1164,11 +1178,11 @@ package numpy.linalg.linalg;
 		--------
 		eigvals : eigenvalues of a non-symmetric array.
 		
-		eigh : eigenvalues and eigenvectors of a symmetric or Hermitian
-		       (conjugate symmetric) array.
+		eigh : eigenvalues and eigenvectors of a real symmetric or complex 
+		       Hermitian (conjugate symmetric) array.
 		
-		eigvalsh : eigenvalues of a symmetric or Hermitian (conjugate symmetric)
-		           array.
+		eigvalsh : eigenvalues of a real symmetric or complex Hermitian
+		           (conjugate symmetric) array.
 		
 		Notes
 		-----
@@ -1250,7 +1264,8 @@ package numpy.linalg.linalg;
 	**/
 	static public function eig(a:Dynamic):Dynamic;
 	/**
-		Return the eigenvalues and eigenvectors of a Hermitian or symmetric matrix.
+		Return the eigenvalues and eigenvectors of a complex Hermitian
+		(conjugate symmetric) or a real symmetric matrix.
 		
 		Returns two objects, a 1-D array containing the eigenvalues of `a`, and
 		a 2-D square array or matrix (depending on the input type) of the
@@ -1259,7 +1274,7 @@ package numpy.linalg.linalg;
 		Parameters
 		----------
 		a : (..., M, M) array
-		    Hermitian/Symmetric matrices whose eigenvalues and
+		    Hermitian or real symmetric matrices whose eigenvalues and
 		    eigenvectors are to be computed.
 		UPLO : {'L', 'U'}, optional
 		    Specifies whether the calculation is done with the lower triangular
@@ -1286,7 +1301,8 @@ package numpy.linalg.linalg;
 		
 		See Also
 		--------
-		eigvalsh : eigenvalues of symmetric or Hermitian arrays.
+		eigvalsh : eigenvalues of real symmetric or complex Hermitian
+		           (conjugate symmetric) arrays.
 		eig : eigenvalues and right eigenvectors for non-symmetric arrays.
 		eigvals : eigenvalues of non-symmetric arrays.
 		
@@ -1387,8 +1403,10 @@ package numpy.linalg.linalg;
 		See Also
 		--------
 		eig : eigenvalues and right eigenvectors of general arrays
-		eigvalsh : eigenvalues of symmetric or Hermitian arrays.
-		eigh : eigenvalues and eigenvectors of symmetric/Hermitian arrays.
+		eigvalsh : eigenvalues of real symmetric or complex Hermitian 
+		           (conjugate symmetric) arrays.
+		eigh : eigenvalues and eigenvectors of real symmetric or complex
+		       Hermitian (conjugate symmetric) arrays.
 		
 		Notes
 		-----
@@ -1428,7 +1446,7 @@ package numpy.linalg.linalg;
 	**/
 	static public function eigvals(a:Dynamic):Dynamic;
 	/**
-		Compute the eigenvalues of a Hermitian or real symmetric matrix.
+		Compute the eigenvalues of a complex Hermitian or real symmetric matrix.
 		
 		Main difference from eigh: the eigenvectors are not computed.
 		
@@ -1458,7 +1476,8 @@ package numpy.linalg.linalg;
 		
 		See Also
 		--------
-		eigh : eigenvalues and eigenvectors of symmetric/Hermitian arrays.
+		eigh : eigenvalues and eigenvectors of real symmetric or complex Hermitian
+		       (conjugate symmetric) arrays.
 		eigvals : eigenvalues of general real or complex arrays.
 		eig : eigenvalues and right eigenvectors of general real or complex
 		      arrays.
@@ -1977,9 +1996,48 @@ package numpy.linalg.linalg;
 	**/
 	static public function lstsq(a:Dynamic, b:Dynamic, ?rcond:Dynamic):Dynamic;
 	/**
-		matmul(a, b, out=None)
+		matmul(x1, x2, /, out=None, *, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Matrix product of two arrays.
+		
+		Parameters
+		----------
+		x1, x2 : array_like
+		    Input arrays, scalars not allowed.
+		out : ndarray, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that matches the signature `(n,k),(k,m)->(n,m)`. If not
+		    provided or `None`, a freshly-allocated array is returned.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		    ..versionadded:: 1.16
+		      Now handles ufunc kwargs
+		
+		Returns
+		-------
+		y : ndarray
+		    The matrix product of the inputs.
+		    This is a scalar only when both x1, x2 are 1-d vectors.
+		
+		Raises
+		------
+		ValueError
+		    If the last dimension of `a` is not the same size as
+		    the second-to-last dimension of `b`.
+		
+		    If a scalar value is passed in.
+		
+		See Also
+		--------
+		vdot : Complex-conjugating dot product.
+		tensordot : Sum products over arbitrary axes.
+		einsum : Einstein summation convention.
+		dot : alternative matrix product with different broadcasting rules.
+		
+		Notes
+		-----
 		
 		The behavior depends on the arguments in the following way.
 		
@@ -1994,61 +2052,20 @@ package numpy.linalg.linalg;
 		  appending a 1 to its dimensions. After matrix multiplication
 		  the appended 1 is removed.
 		
-		Multiplication by a scalar is not allowed, use ``*`` instead. Note that
-		multiplying a stack of matrices with a vector will result in a stack of
-		vectors, but matmul will not recognize it as such.
+		``matmul`` differs from ``dot`` in two important ways:
 		
-		``matmul`` differs from ``dot`` in two important ways.
-		
-		- Multiplication by scalars is not allowed.
+		- Multiplication by scalars is not allowed, use ``*`` instead.
 		- Stacks of matrices are broadcast together as if the matrices
-		  were elements.
+		  were elements, respecting the signature ``(n,k),(k,m)->(n,m)``:
 		
-		.. warning::
-		   This function is preliminary and included in NumPy 1.10.0 for testing
-		   and documentation. Its semantics will not change, but the number and
-		   order of the optional arguments will.
+		  >>> a = np.ones([9, 5, 7, 4])
+		  >>> c = np.ones([9, 5, 4, 3])
+		  >>> np.dot(a, c).shape
+		  (9, 5, 7, 9, 5, 3)
+		  >>> np.matmul(a, c).shape
+		  (9, 5, 7, 3)
+		  >>> # n is 7, k is 4, m is 3
 		
-		.. versionadded:: 1.10.0
-		
-		Parameters
-		----------
-		a : array_like
-		    First argument.
-		b : array_like
-		    Second argument.
-		out : ndarray, optional
-		    Output argument. This must have the exact kind that would be returned
-		    if it was not used. In particular, it must have the right type, must be
-		    C-contiguous, and its dtype must be the dtype that would be returned
-		    for `dot(a,b)`. This is a performance feature. Therefore, if these
-		    conditions are not met, an exception is raised, instead of attempting
-		    to be flexible.
-		
-		Returns
-		-------
-		output : ndarray
-		    Returns the dot product of `a` and `b`.  If `a` and `b` are both
-		    1-D arrays then a scalar is returned; otherwise an array is
-		    returned.  If `out` is given, then it is returned.
-		
-		Raises
-		------
-		ValueError
-		    If the last dimension of `a` is not the same size as
-		    the second-to-last dimension of `b`.
-		
-		    If scalar value is passed.
-		
-		See Also
-		--------
-		vdot : Complex-conjugating dot product.
-		tensordot : Sum products over arbitrary axes.
-		einsum : Einstein summation convention.
-		dot : alternative matrix product with different broadcasting rules.
-		
-		Notes
-		-----
 		The matmul function implements the semantics of the `@` operator introduced
 		in Python 3.5 following PEP465.
 		
@@ -2056,16 +2073,19 @@ package numpy.linalg.linalg;
 		--------
 		For 2-D arrays it is the matrix product:
 		
-		>>> a = [[1, 0], [0, 1]]
-		>>> b = [[4, 1], [2, 2]]
+		>>> a = np.array([[1, 0],
+		...               [0, 1]])
+		>>> b = np.array([[4, 1],
+		...               [2, 2]]
 		>>> np.matmul(a, b)
 		array([[4, 1],
 		       [2, 2]])
 		
 		For 2-D mixed with 1-D, the result is the usual.
 		
-		>>> a = [[1, 0], [0, 1]]
-		>>> b = [1, 2]
+		>>> a = np.array([[1, 0],
+		...               [0, 1]]
+		>>> b = np.array([1, 2])
 		>>> np.matmul(a, b)
 		array([1, 2])
 		>>> np.matmul(b, a)
@@ -2074,13 +2094,13 @@ package numpy.linalg.linalg;
 		
 		Broadcasting is conventional for stacks of arrays
 		
-		>>> a = np.arange(2*2*4).reshape((2,2,4))
-		>>> b = np.arange(2*2*4).reshape((2,4,2))
+		>>> a = np.arange(2 * 2 * 4).reshape((2, 2, 4))
+		>>> b = np.arange(2 * 2 * 4).reshape((2, 4, 2))
 		>>> np.matmul(a,b).shape
 		(2, 2, 2)
-		>>> np.matmul(a,b)[0,1,1]
+		>>> np.matmul(a, b)[0, 1, 1]
 		98
-		>>> sum(a[0,1,:] * b[0,:,1])
+		>>> sum(a[0, 1, :] * b[0 , :, 1])
 		98
 		
 		Vector, vector returns the scalar inner product, but neither argument
@@ -2094,7 +2114,9 @@ package numpy.linalg.linalg;
 		>>> np.matmul([1,2], 3)
 		Traceback (most recent call last):
 		...
-		ValueError: Scalar operands are not allowed, use '*' instead
+		ValueError: matmul: Input operand 1 does not have enough dimensions ...
+		
+		.. versionadded:: 1.10.0
 	**/
 	static public function matmul(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2229,7 +2251,7 @@ package numpy.linalg.linalg;
 		References
 		----------
 		.. [1] MATLAB reference documention, "Rank"
-		       http://www.mathworks.com/help/techdoc/ref/rank.html
+		       https://www.mathworks.com/help/techdoc/ref/rank.html
 		.. [2] W. H. Press, S. A. Teukolsky, W. T. Vetterling and B. P. Flannery,
 		       "Numerical Recipes (3rd edition)", Cambridge University Press, 2007,
 		       page 795.
@@ -2333,7 +2355,7 @@ package numpy.linalg.linalg;
 		----------
 		
 		.. [1] Cormen, "Introduction to Algorithms", Chapter 15.2, p. 370-378
-		.. [2] http://en.wikipedia.org/wiki/Matrix_chain_multiplication
+		.. [2] https://en.wikipedia.org/wiki/Matrix_chain_multiplication
 		
 		Examples
 		--------
@@ -2395,8 +2417,7 @@ package numpy.linalg.linalg;
 		Returns
 		-------
 		y : ndarray
-		    The product of `x1` and `x2`, element-wise. Returns a scalar if
-		    both `x1` and `x2` are scalars.
+		    The product of `x1` and `x2`, element-wise.
 		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
@@ -2736,7 +2757,7 @@ package numpy.linalg.linalg;
 		dorgqr, and zungqr.
 		
 		For more information on the qr factorization, see for example:
-		http://en.wikipedia.org/wiki/QR_factorization
+		https://en.wikipedia.org/wiki/QR_factorization
 		
 		Subclasses of `ndarray` are preserved except for the 'raw' mode. So if
 		`a` is of type `matrix`, all the return values will be matrices too.
@@ -2796,6 +2817,18 @@ package numpy.linalg.linalg;
 		array([  1.1e-16,   1.0e+00])
 	**/
 	static public function qr(a:Dynamic, ?mode:Dynamic):Dynamic;
+	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
 	/**
 		Compute the sign and (natural) logarithm of the determinant of an array.
 		

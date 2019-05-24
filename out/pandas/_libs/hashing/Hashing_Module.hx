@@ -6,6 +6,7 @@ package pandas._libs.hashing;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	/**
@@ -25,5 +26,4 @@ package pandas._libs.hashing;
 		mixed array types will raise TypeError
 	**/
 	static public function hash_object_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function siphash(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

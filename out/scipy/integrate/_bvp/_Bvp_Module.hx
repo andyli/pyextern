@@ -437,7 +437,7 @@ package scipy.integrate._bvp;
 	static public function prepare_sys(n:Dynamic, m:Dynamic, k:Dynamic, fun:Dynamic, bc:Dynamic, fun_jac:Dynamic, bc_jac:Dynamic, x:Dynamic, h:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function print_iteration_header():Dynamic;
-	static public function print_iteration_progress(iteration:Dynamic, residual:Dynamic, total_nodes:Dynamic, nodes_added:Dynamic):Dynamic;
+	static public function print_iteration_progress(iteration:Dynamic, residual:Dynamic, bc_residual:Dynamic, total_nodes:Dynamic, nodes_added:Dynamic):Dynamic;
 	/**
 		Solve a boundary-value problem for a system of ODEs.
 		
@@ -545,6 +545,11 @@ package scipy.integrate._bvp;
 		        * 0 (default) : work silently.
 		        * 1 : display a termination report.
 		        * 2 : display progress during iterations.
+		bc_tol : float, optional
+		    Desired absolute tolerance for the boundary condition residuals: `bc` 
+		    value should satisfy ``abs(bc) < bc_tol`` component-wise. 
+		    Equals to `tol` by default. Up to 10 iterations are allowed to achieve this
+		    tolerance.
 		
 		Returns
 		-------
@@ -720,7 +725,7 @@ package scipy.integrate._bvp;
 		>>> plt.ylabel("y")
 		>>> plt.show()
 	**/
-	static public function solve_bvp(fun:Dynamic, bc:Dynamic, x:Dynamic, y:Dynamic, ?p:Dynamic, ?S:Dynamic, ?fun_jac:Dynamic, ?bc_jac:Dynamic, ?tol:Dynamic, ?max_nodes:Dynamic, ?verbose:Dynamic):Dynamic;
+	static public function solve_bvp(fun:Dynamic, bc:Dynamic, x:Dynamic, y:Dynamic, ?p:Dynamic, ?S:Dynamic, ?fun_jac:Dynamic, ?bc_jac:Dynamic, ?tol:Dynamic, ?max_nodes:Dynamic, ?verbose:Dynamic, ?bc_tol:Dynamic):Dynamic;
 	/**
 		Solve the nonlinear collocation system by a Newton method.
 		
@@ -763,6 +768,8 @@ package scipy.integrate._bvp;
 		    singular term. If None, the singular term is assumed to be absent.
 		bvp_tol : float
 		    Tolerance to which we want to solve a BVP.
+		bc_tol : float
+		    Tolerance to which we want to satisfy the boundary conditions.
 		
 		Returns
 		-------
@@ -779,7 +786,7 @@ package scipy.integrate._bvp;
 		.. [1]  U. Ascher, R. Mattheij and R. Russell "Numerical Solution of
 		   Boundary Value Problems for Ordinary Differential Equations"
 	**/
-	static public function solve_newton(n:Dynamic, m:Dynamic, h:Dynamic, col_fun:Dynamic, bc:Dynamic, jac:Dynamic, y:Dynamic, p:Dynamic, B:Dynamic, bvp_tol:Dynamic):Dynamic;
+	static public function solve_newton(n:Dynamic, m:Dynamic, h:Dynamic, col_fun:Dynamic, bc:Dynamic, jac:Dynamic, y:Dynamic, p:Dynamic, B:Dynamic, bvp_tol:Dynamic, bc_tol:Dynamic):Dynamic;
 	/**
 		Compute the LU decomposition of a sparse, square matrix.
 		

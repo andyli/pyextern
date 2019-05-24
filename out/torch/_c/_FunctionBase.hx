@@ -104,7 +104,6 @@ package torch._c;
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _do_backward(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _do_forward(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public var _is_tracing : Dynamic;
 	public function _register_hook_dict(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function apply(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var dirty_tensors : Dynamic;

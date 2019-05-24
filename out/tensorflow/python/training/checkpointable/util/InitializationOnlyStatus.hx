@@ -117,6 +117,10 @@ package tensorflow.python.training.checkpointable.util;
 	**/
 	public function assert_existing_objects_matched():Dynamic;
 	/**
+		Assertion for consistency with `CheckpointLoadStatus`. Always fails.
+	**/
+	public function assert_nontrivial_match():Dynamic;
+	/**
 		Runs initialization ops for variables.
 		
 		Objects which would be saved by `Saver.save` will be initialized, unless

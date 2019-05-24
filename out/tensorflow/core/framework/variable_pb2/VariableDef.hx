@@ -46,9 +46,6 @@ package tensorflow.core.framework.variable_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INITIALIZER_NAME_FIELD_NUMBER : Dynamic;
-	static public var INITIAL_VALUE_NAME_FIELD_NUMBER : Dynamic;
-	static public var IS_RESOURCE_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -73,8 +70,6 @@ package tensorflow.core.framework.variable_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SAVE_SLICE_INFO_DEF_FIELD_NUMBER : Dynamic;
-	static public var SNAPSHOT_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -87,8 +82,10 @@ package tensorflow.core.framework.variable_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TRAINABLE_FIELD_NUMBER : Dynamic;
-	static public var VARIABLE_NAME_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -254,4 +251,32 @@ package tensorflow.core.framework.variable_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.VariableDef.initial_value_name
+	**/
+	public var initial_value_name : Dynamic;
+	/**
+		Field tensorflow.VariableDef.initializer_name
+	**/
+	public var initializer_name : Dynamic;
+	/**
+		Field tensorflow.VariableDef.is_resource
+	**/
+	public var is_resource : Dynamic;
+	/**
+		Field tensorflow.VariableDef.save_slice_info_def
+	**/
+	public var save_slice_info_def : Dynamic;
+	/**
+		Field tensorflow.VariableDef.snapshot_name
+	**/
+	public var snapshot_name : Dynamic;
+	/**
+		Field tensorflow.VariableDef.trainable
+	**/
+	public var trainable : Dynamic;
+	/**
+		Field tensorflow.VariableDef.variable_name
+	**/
+	public var variable_name : Dynamic;
 }

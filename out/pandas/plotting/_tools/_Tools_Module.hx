@@ -110,7 +110,11 @@ package pandas.plotting._tools;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -129,17 +133,21 @@ package pandas.plotting._tools;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Helper function to convert DataFrame and Series to matplotlib.table
 		
 		Parameters
 		----------
-		`ax`: Matplotlib axes object
-		`data`: DataFrame or Series
+		ax : Matplotlib axes object
+		data : DataFrame or Series
 		    data for table contents
-		`kwargs`: keywords, optional
+		kwargs : keywords, optional
 		    keyword arguments which passed to matplotlib.table.table.
 		    If `rowLabels` or `colLabels` is not specified, data index or column
 		    name will be used.

@@ -43,14 +43,14 @@ package matplotlib.ticker;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Keyword args:
-		
-		*nbins*
+		Parameters
+		----------
+		nbins : int or 'auto', optional, default: 10
 		    Maximum number of intervals; one less than max number of
 		    ticks.  If the string `'auto'`, the number of bins will be
 		    automatically determined based on the length of the axis.
 		
-		*steps*
+		steps : array-like, optional
 		    Sequence of nice numbers starting with 1 and ending with 10;
 		    e.g., [1, 2, 4, 5, 10], where the values are acceptable
 		    tick multiples.  i.e. for the example, 20, 40, 60 would be
@@ -58,17 +58,15 @@ package matplotlib.ticker;
 		    they are multiples of 2.  However, 30, 60, 90 would not
 		    be allowed because 3 does not appear in the list of steps.
 		
-		*integer*
+		integer : bool, optional, default: False
 		    If True, ticks will take only integer values, provided
 		    at least `min_n_ticks` integers are found within the
 		    view limits.
 		
-		*symmetric*
-		    If True, autoscaling will result in a range symmetric
-		    about zero.
+		symmetric : bool, optional, default: False
+		    If True, autoscaling will result in a range symmetric about zero.
 		
-		*prune*
-		    ['lower' | 'upper' | 'both' | None]
+		prune : {'lower', 'upper', 'both', None}, optional, default: None
 		    Remove edge ticks -- useful for stacked or ganged plots where
 		    the upper tick of one axes overlaps with the lower tick of the
 		    axes above it, primarily when :rc:`axes.autolimit_mode` is
@@ -77,21 +75,21 @@ package matplotlib.ticker;
 		    removed.  If ``prune == 'both'``, the largest and smallest ticks
 		    will be removed.  If ``prune == None``, no ticks will be removed.
 		
-		*min_n_ticks*
-		    Relax `nbins` and `integer` constraints if necessary to
-		    obtain this minimum number of ticks.
+		min_n_ticks : int, optional, default: 2
+		    Relax *nbins* and *integer* constraints if necessary to obtain
+		    this minimum number of ticks.
 	**/
 	@:native("__init__")
 	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Keyword args:
-		
-		*nbins*
+		Parameters
+		----------
+		nbins : int or 'auto', optional, default: 10
 		    Maximum number of intervals; one less than max number of
 		    ticks.  If the string `'auto'`, the number of bins will be
 		    automatically determined based on the length of the axis.
 		
-		*steps*
+		steps : array-like, optional
 		    Sequence of nice numbers starting with 1 and ending with 10;
 		    e.g., [1, 2, 4, 5, 10], where the values are acceptable
 		    tick multiples.  i.e. for the example, 20, 40, 60 would be
@@ -99,17 +97,15 @@ package matplotlib.ticker;
 		    they are multiples of 2.  However, 30, 60, 90 would not
 		    be allowed because 3 does not appear in the list of steps.
 		
-		*integer*
+		integer : bool, optional, default: False
 		    If True, ticks will take only integer values, provided
 		    at least `min_n_ticks` integers are found within the
 		    view limits.
 		
-		*symmetric*
-		    If True, autoscaling will result in a range symmetric
-		    about zero.
+		symmetric : bool, optional, default: False
+		    If True, autoscaling will result in a range symmetric about zero.
 		
-		*prune*
-		    ['lower' | 'upper' | 'both' | None]
+		prune : {'lower', 'upper', 'both', None}, optional, default: None
 		    Remove edge ticks -- useful for stacked or ganged plots where
 		    the upper tick of one axes overlaps with the lower tick of the
 		    axes above it, primarily when :rc:`axes.autolimit_mode` is
@@ -118,9 +114,9 @@ package matplotlib.ticker;
 		    removed.  If ``prune == 'both'``, the largest and smallest ticks
 		    will be removed.  If ``prune == None``, no ticks will be removed.
 		
-		*min_n_ticks*
-		    Relax `nbins` and `integer` constraints if necessary to
-		    obtain this minimum number of ticks.
+		min_n_ticks : int, optional, default: 2
+		    Relax *nbins* and *integer* constraints if necessary to obtain
+		    this minimum number of ticks.
 	**/
 	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
@@ -202,6 +198,10 @@ package matplotlib.ticker;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var default_params : Dynamic;
 	/**
+		Modify the endpoints of a range as needed to avoid singularities.
+	**/
+	public function nonsingular(v0:Dynamic, v1:Dynamic):Dynamic;
+	/**
 		Pan numticks (can be positive or negative)
 	**/
 	public function pan(numsteps:Dynamic):Dynamic;
@@ -218,7 +218,22 @@ package matplotlib.ticker;
 	public function set_bounds(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function set_data_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
-		Set parameters within this locator.
+		Set parameters for this locator.
+		
+		Parameters
+		----------
+		nbins : int or 'auto', optional
+		    see `.MaxNLocator`
+		steps : array-like, optional
+		    see `.MaxNLocator`
+		integer : bool, optional
+		    see `.MaxNLocator`
+		symmetric : bool, optional
+		    see `.MaxNLocator`
+		prune : {'lower', 'upper', 'both', None}, optional
+		    see `.MaxNLocator`
+		min_n_ticks : int, optional
+		    see `.MaxNLocator`
 	**/
 	public function set_params(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
@@ -237,10 +252,9 @@ package matplotlib.ticker;
 	**/
 	public function tick_values(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
-		select a scale for the range from vmin to vmax
+		Select a scale for the range from vmin to vmax.
 		
-		Normally this method is overridden by subclasses to
-		change locator behaviour.
+		Subclasses should override this method to change locator behaviour.
 	**/
 	public function view_limits(dmin:Dynamic, dmax:Dynamic):Dynamic;
 	/**

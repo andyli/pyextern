@@ -186,6 +186,17 @@ package pandas.io.sql;
 		    Optional specifying the datatype for columns. The SQL type should
 		    be a string. If all columns are of the same type, one single value
 		    can be used.
+		method : {None, 'multi', callable}, default None
+		    Controls the SQL insertion clause used:
+		
+		    * None : Uses standard SQL ``INSERT`` clause (one per row).
+		    * 'multi': Pass multiple values in a single ``INSERT`` clause.
+		    * callable with signature ``(pd_table, conn, keys, data_iter)``.
+		
+		    Details and a sample callable implementation can be found in the
+		    section :ref:`insert method <io.sql.method>`.
+		
+		    .. versionadded:: 0.24.0
 	**/
-	public function to_sql(frame:Dynamic, name:Dynamic, ?if_exists:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?schema:Dynamic, ?chunksize:Dynamic, ?dtype:Dynamic):Dynamic;
+	public function to_sql(frame:Dynamic, name:Dynamic, ?if_exists:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?schema:Dynamic, ?chunksize:Dynamic, ?dtype:Dynamic, ?method:Dynamic):Dynamic;
 }

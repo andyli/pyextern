@@ -2,7 +2,6 @@
 package tensorflow.contrib.tpu.proto.tpu_embedding_configuration_pb2;
 @:pythonImport("tensorflow.contrib.tpu.proto.tpu_embedding_configuration_pb2", "TPUEmbeddingConfiguration") extern class TPUEmbeddingConfiguration {
 	static public var BACKWARD_PASS_ONLY : Dynamic;
-	static public var BATCH_SIZE_PER_TENSOR_CORE_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -59,7 +58,6 @@ package tensorflow.contrib.tpu.proto.tpu_embedding_configuration_pb2;
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var MOD : Dynamic;
-	static public var MODE_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -69,10 +67,6 @@ package tensorflow.contrib.tpu.proto.tpu_embedding_configuration_pb2;
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var Mode : Dynamic;
-	static public var NUM_HOSTS_FIELD_NUMBER : Dynamic;
-	static public var NUM_TENSOR_CORES_FIELD_NUMBER : Dynamic;
-	static public var OUTPUT_LAYOUT_FIELD_NUMBER : Dynamic;
-	static public var PIPELINE_EXECUTION_WITH_TENSOR_CORE_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -81,7 +75,6 @@ package tensorflow.contrib.tpu.proto.tpu_embedding_configuration_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SHARDING_STRATEGY_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -95,13 +88,16 @@ package tensorflow.contrib.tpu.proto.tpu_embedding_configuration_pb2;
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var ShardingStrategy : Dynamic;
-	static public var TABLE_DESCRIPTOR_FIELD_NUMBER : Dynamic;
 	static public var TRAINING : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
 	public function TableDescriptor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var UNSPECIFIED : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -267,4 +263,36 @@ package tensorflow.contrib.tpu.proto.tpu_embedding_configuration_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tpu.TPUEmbeddingConfiguration.batch_size_per_tensor_core
+	**/
+	public var batch_size_per_tensor_core : Dynamic;
+	/**
+		Field tensorflow.tpu.TPUEmbeddingConfiguration.mode
+	**/
+	public var mode : Dynamic;
+	/**
+		Field tensorflow.tpu.TPUEmbeddingConfiguration.num_hosts
+	**/
+	public var num_hosts : Dynamic;
+	/**
+		Field tensorflow.tpu.TPUEmbeddingConfiguration.num_tensor_cores
+	**/
+	public var num_tensor_cores : Dynamic;
+	/**
+		Field tensorflow.tpu.TPUEmbeddingConfiguration.output_layout
+	**/
+	public var output_layout : Dynamic;
+	/**
+		Field tensorflow.tpu.TPUEmbeddingConfiguration.pipeline_execution_with_tensor_core
+	**/
+	public var pipeline_execution_with_tensor_core : Dynamic;
+	/**
+		Field tensorflow.tpu.TPUEmbeddingConfiguration.sharding_strategy
+	**/
+	public var sharding_strategy : Dynamic;
+	/**
+		Field tensorflow.tpu.TPUEmbeddingConfiguration.table_descriptor
+	**/
+	public var table_descriptor : Dynamic;
 }

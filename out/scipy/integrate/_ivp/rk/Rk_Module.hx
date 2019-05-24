@@ -108,6 +108,10 @@ package scipy.integrate._ivp.rk;
 	**/
 	static public function select_initial_step(fun:Dynamic, t0:Dynamic, y0:Dynamic, f0:Dynamic, direction:Dynamic, order:Dynamic, rtol:Dynamic, atol:Dynamic):Float;
 	/**
+		Assert that first_step is valid and return it.
+	**/
+	static public function validate_first_step(first_step:Dynamic, t0:Dynamic, t_bound:Dynamic):Dynamic;
+	/**
 		Assert that max_Step is valid and return it.
 	**/
 	static public function validate_max_step(max_step:Dynamic):Dynamic;

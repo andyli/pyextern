@@ -15,10 +15,6 @@ package torch.autograd.profiler;
 	**/
 	static public function build_table(events:Dynamic, ?sort_by:Dynamic, ?header:Dynamic):Dynamic;
 	/**
-		Demangle a C++ identifier using c++filt
-	**/
-	static public function demangle(name:Dynamic):Dynamic;
-	/**
 		Defines how to format time in FunctionEvent
 	**/
 	static public function format_time(time_us:Dynamic):Dynamic;

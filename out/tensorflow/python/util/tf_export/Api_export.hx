@@ -149,6 +149,22 @@ package tensorflow.python.util.tf_export;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		Validate you are exporting symbols under an allowed package.
+		
+		We need to ensure things exported by tf_export, estimator_export, etc.
+		export symbols under disjoint top-level package names.
+		
+		For TensorFlow, we check that it does not export anything under subpackage
+		names used by components (estimator, keras, etc.).
+		
+		For each component, we check that it exports everything under its own
+		subpackage.
+		
+		Raises:
+		  InvalidSymbolNameError: If you try to export symbol under disallowed name.
+	**/
+	public function _validate_symbol_names():Dynamic;
+	/**
 		Store export information for constants/string literals.
 		
 		Export information is stored in the module where constants/string literals

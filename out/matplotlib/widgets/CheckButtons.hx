@@ -172,9 +172,9 @@ package matplotlib.widgets;
 	**/
 	public function ignore(event:Dynamic):Dynamic;
 	/**
-		When the button is clicked, call *func* with button label
+		Connect the callback function *func* to button click events.
 		
-		A connection id is returned which can be used to disconnect
+		Returns a connection id, which can be used to disconnect the callback.
 	**/
 	public function on_clicked(func:Dynamic):Dynamic;
 	/**

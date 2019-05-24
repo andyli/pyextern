@@ -135,7 +135,6 @@ package pandas.io.stata;
 		convert_strl variable
 	**/
 	public function _convert_strls(data:Dynamic):Dynamic;
-	static public var _default_encoding : Dynamic;
 	static public var _max_string_length : Dynamic;
 	public function _null_terminate(s:Dynamic, ?as_string:Dynamic):Dynamic;
 	/**

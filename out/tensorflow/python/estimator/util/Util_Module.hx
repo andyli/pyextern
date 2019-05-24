@@ -2,6 +2,7 @@
 package tensorflow.python.estimator.util;
 @:pythonImport("tensorflow.python.estimator.util") extern class Util_Module {
 	static public var MAX_DIRECTORY_CREATION_ATTEMPTS : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

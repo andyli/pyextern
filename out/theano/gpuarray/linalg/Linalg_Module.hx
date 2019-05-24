@@ -57,6 +57,8 @@ package theano.gpuarray.linalg;
 	**/
 	static public function gpu_qr(a:Dynamic, ?complete:Dynamic):Dynamic;
 	static public function gpu_solve(A:Dynamic, b:Dynamic, ?A_structure:Dynamic, ?trans:Dynamic):Dynamic;
+	static public function gpu_solve_lower_triangular(A:Dynamic, b:Dynamic, ?trans:Dynamic):Dynamic;
+	static public function gpu_solve_upper_triangular(A:Dynamic, b:Dynamic, ?trans:Dynamic):Dynamic;
 	/**
 		This function performs the SVD on GPU.
 		

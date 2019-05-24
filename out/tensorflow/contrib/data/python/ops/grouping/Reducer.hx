@@ -40,7 +40,7 @@ package tensorflow.contrib.data.python.ops.grouping;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.Reducer(...)`.
 	**/
@@ -49,7 +49,7 @@ package tensorflow.contrib.data.python.ops.grouping;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.Reducer(...)`.
 	**/

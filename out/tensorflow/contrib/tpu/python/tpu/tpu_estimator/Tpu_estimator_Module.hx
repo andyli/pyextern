@@ -32,7 +32,7 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		
 		Args:
 		  export_output: an `ExportOutput` object such as `ClassificationOutput`,
-		          `RegressionOutput`, or `PredictOutput`.
+		    `RegressionOutput`, or `PredictOutput`.
 		  tensors: a list of `Tensors` used to construct a new `export_output`.
 		
 		Returns:
@@ -82,7 +82,8 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		
 		Args:
 		  export_output: an `ExportOutput` object such as `ClassificationOutput`,
-		          `RegressionOutput`, or `PredictOutput`.
+		    `RegressionOutput`, or `PredictOutput`.
+		
 		Returns:
 		  a list of tensors used in export_output.
 		
@@ -100,19 +101,36 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		Returns an op to increase the eval step for TPU evaluation.
 		
 		Args:
-		  iterations_per_loop: Tensor. The number of eval steps running in TPU
-		      system before returning to CPU host for each `Session.run`.
+		  iterations_per_loop: Tensor. The number of eval steps running in TPU system
+		    before returning to CPU host for each `Session.run`.
 		
 		Returns:
 		  An operation
 	**/
 	static public function _increase_eval_step_op(iterations_per_loop:Dynamic):Dynamic;
-	static public function _is_tpu_tensor(tensor:Dynamic):Dynamic;
+	/**
+		A Python 2 and 3 compatible util to check whether `obj` is iterable.
+	**/
+	static public function _is_iterable(obj:Dynamic):Dynamic;
 	/**
 		Executes `model_fn_wrapper` multiple times on all TPU shards.
 	**/
 	static public function _predict_on_tpu_system(ctx:Dynamic, model_fn_wrapper:Dynamic, dequeue_fn:Dynamic):Dynamic;
-	static public function _sync_variables_ops():Dynamic;
+	/**
+		Create varriables synchronization ops.
+		
+		Gets the variables back from TPU nodes. This means the variables updated
+		by TPU will now be *synced* to host memory.
+		In BROADCAST mode, we skip this sync since the variables are ususally too
+		big to transmit via RPC.
+		
+		Args:
+		  ctx: A `_InternalTPUContext` instance with mode.
+		
+		Returns:
+		  A list of sync ops.
+	**/
+	static public function _sync_variables_ops(ctx:Dynamic):Dynamic;
 	/**
 		Executes `model_fn_wrapper` multiple times on all TPU shards.
 	**/
@@ -142,8 +160,8 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		  estimator: `Estimator` with which model has been trained.
 		  export_dir_base: A string containing a directory in which to create
 		    timestamped subdirectories containing exported SavedModels.
-		  serving_input_receiver_fn: A function that takes no argument and
-		    returns a `ServingInputReceiver` or `TensorServingInputReceiver`.
+		  serving_input_receiver_fn: A function that takes no argument and returns a
+		    `ServingInputReceiver` or `TensorServingInputReceiver`.
 		  assets_extra: A dict specifying how to populate the assets.extra directory
 		    within the exported SavedModel, or `None` if no extra assets are needed.
 		  as_text: whether to write the SavedModel proto in text format.

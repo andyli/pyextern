@@ -8,7 +8,6 @@ package pandas._libs.lib;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
-	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	/**
@@ -16,17 +15,95 @@ package pandas._libs.lib;
 		taking into account nan positions 
 	**/
 	static public function array_equivalent_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Converts a 1D array of date-like values to a numpy array of either:
+		    1) datetime64[ns] data
+		    2) datetime.datetime objects, if OutOfBoundsDatetime or TypeError
+		       is encountered
+		
+		Also returns a pytz.FixedOffset if an array of strings with the same
+		timezone offset is passed and utc=True is not passed. Otherwise, None
+		is returned
+		
+		Handles datetime.date, datetime.datetime, np.datetime64 objects, numeric,
+		strings
+		
+		Parameters
+		----------
+		values : ndarray of object
+		     date-like objects to convert
+		errors : str, default 'raise'
+		     error behavior when parsing
+		dayfirst : bool, default False
+		     dayfirst parsing behavior when encountering datetime strings
+		yearfirst : bool, default False
+		     yearfirst parsing behavior when encountering datetime strings
+		utc : bool, default None
+		     indicator whether the dates should be UTC
+		require_iso8601 : bool, default False
+		     indicator whether the datetime string should be iso8601
+		
+		Returns
+		-------
+		tuple (ndarray, tzoffset)
+	**/
 	static public function array_to_datetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function astype_intsafe(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Convert all elements in an array to string.
+		
+		Parameters
+		----------
+		arr : ndarray
+		    The array whose elements we are casting.
+		skipna : bool, default False
+		    Whether or not to coerce nulls to their stringified form
+		    (e.g. NaN becomes 'nan').
+		
+		Returns
+		-------
+		casted_arr : ndarray
+		    A new array with the input array's elements casted.
+	**/
 	static public function astype_str(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Convert all elements in an array to unicode.
+		
+		Parameters
+		----------
+		arr : ndarray
+		    The array whose elements we are casting.
+		skipna : bool, default False
+		    Whether or not to coerce nulls to their stringified form
+		    (e.g. NaN becomes 'nan').
+		
+		Returns
+		-------
+		casted_arr : ndarray
+		    A new array with the input array's elements casted.
+	**/
 	static public function astype_unicode(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Utility used in pandas.core.index._ensure_index
+		Utility used in pandas.core.index.ensure_index
 	**/
 	static public function clean_index_list(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function count_level_2d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function dicts_to_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function fast_multiget(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Generate a list of unique values from a list of arrays.
+		
+		Parameters
+		----------
+		list : array-like
+		    A list of array-like objects
+		sort : boolean
+		    Whether or not to sort the resulting unique list
+		
+		Returns
+		-------
+		unique_list : list of unique values
+	**/
 	static public function fast_unique_multiple(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function fast_unique_multiple_list(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -73,7 +150,6 @@ package pandas._libs.lib;
 	static public function get_reverse_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function has_infs_f4(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function has_infs_f8(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var iNaT : Dynamic;
 	static public function indices_fast(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		infer if we have a datetime or timedelta array
@@ -102,8 +178,7 @@ package pandas._libs.lib;
 		----------
 		value : scalar, list, ndarray, or pandas type
 		skipna : bool, default False
-		    Ignore NaN values when inferring the type. The default of ``False``
-		    will be deprecated in a later version of pandas.
+		    Ignore NaN values when inferring the type.
 		
 		    .. versionadded:: 0.21.0
 		
@@ -220,23 +295,53 @@ package pandas._libs.lib;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_string_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_time_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_timedelta64_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_timedelta_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		infer with timedeltas and/or nat/none 
 	**/

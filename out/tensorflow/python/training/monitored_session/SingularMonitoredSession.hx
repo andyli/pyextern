@@ -159,6 +159,15 @@ package tensorflow.python.training.monitored_session;
 	public function _is_closed():Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Return underlying tf.Session object.
+		
+		Warning: accessing the returned object in user code is likely to cause races
+		or "flaky tests".
+		
+		Returns:
+		  A tf.Session object.
+	**/
 	public function _tf_sess():Dynamic;
 	public function close():Dynamic;
 	/**

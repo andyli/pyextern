@@ -196,6 +196,21 @@ package matplotlib.animation;
 		   on to the `savefig` command which is called repeatedly to
 		   save the individual frames.
 		
+		progress_callback : function, optional
+		    A callback function that will be called for every frame to notify
+		    the saving progress. It must have the signature ::
+		
+		        def func(current_frame: int, total_frames: int) -> Any
+		
+		    where *current_frame* is the current frame number and
+		    *total_frames* is the total number of frames to be saved.
+		    *total_frames* is set to None, if the total number of frames can
+		    not be determined. Return values may exist but are ignored.
+		
+		    Example code to write the progress to stdout::
+		
+		        progress_callback =                    lambda i, n: print(f'Saving frame {i} of {n}')
+		
 		Notes
 		-----
 		*fps*, *codec*, *bitrate*, *extra_args* and *metadata* are used to
@@ -203,7 +218,7 @@ package matplotlib.animation;
 		*writer* is a string.  If they are passed as non-*None* and *writer*
 		is a `.MovieWriter`, a `RuntimeError` will be raised.
 	**/
-	public function save(filename:Dynamic, ?writer:Dynamic, ?fps:Dynamic, ?dpi:Dynamic, ?codec:Dynamic, ?bitrate:Dynamic, ?extra_args:Dynamic, ?metadata:Dynamic, ?extra_anim:Dynamic, ?savefig_kwargs:Dynamic):Dynamic;
+	public function save(filename:Dynamic, ?writer:Dynamic, ?fps:Dynamic, ?dpi:Dynamic, ?codec:Dynamic, ?bitrate:Dynamic, ?extra_args:Dynamic, ?metadata:Dynamic, ?extra_anim:Dynamic, ?savefig_kwargs:Dynamic, ?progress_callback:Dynamic):Dynamic;
 	/**
 		Convert the animation to an HTML5 ``<video>`` tag.
 		

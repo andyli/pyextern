@@ -41,11 +41,11 @@ package tensorflow.python.keras.utils.data_utils;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(generator:Dynamic, ?use_multiprocessing:Dynamic, ?wait_time:Dynamic, ?seed:Dynamic):Dynamic;
+	public function ___init__(sequence:Dynamic, ?use_multiprocessing:Dynamic, ?random_seed:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(generator:Dynamic, ?use_multiprocessing:Dynamic, ?wait_time:Dynamic, ?seed:Dynamic):Void;
+	public function new(sequence:Dynamic, ?use_multiprocessing:Dynamic, ?random_seed:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -108,7 +108,24 @@ package tensorflow.python.keras.utils.data_utils;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _data_generator_task():Dynamic;
+	/**
+		Gets the Pool initializer for multiprocessing.
+		
+		Arguments:
+		  workers: Number of works.
+		
+		Returns:
+		    A Function to initialize the pool
+	**/
+	public function _get_executor_init(workers:Dynamic):Dynamic;
+	/**
+		Submits request to the executor and queue the `Future` objects.
+	**/
+	public function _run():Dynamic;
+	/**
+		Sends current Iterable to all workers.
+	**/
+	public function _send_sequence():Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
 	/**
@@ -124,12 +141,12 @@ package tensorflow.python.keras.utils.data_utils;
 	public function get():Dynamic;
 	public function is_running():Dynamic;
 	/**
-		Kicks off threads which add data from the generator into the queue.
+		Starts the handler's workers.
 		
 		Arguments:
-		    workers: number of worker threads
+		    workers: Number of workers.
 		    max_queue_size: queue size
-		        (when full, threads could block on `put()`)
+		        (when full, workers could block on `put()`)
 	**/
 	public function start(?workers:Dynamic, ?max_queue_size:Dynamic):Dynamic;
 	/**
@@ -138,7 +155,7 @@ package tensorflow.python.keras.utils.data_utils;
 		Should be called by the same thread which called `start()`.
 		
 		Arguments:
-		    timeout: maximum time to wait on `thread.join()`.
+		    timeout: maximum time to wait on `thread.join()`
 	**/
 	public function stop(?timeout:Dynamic):Dynamic;
 }

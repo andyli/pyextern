@@ -204,7 +204,7 @@ package theano.tensor.nnet.sigm;
 		               (scrabble, 'x'))
 		    
 		
-		This instance does: Elemwise{log,no_inplace}(Elemwise{sub,no_inplace}(y subject to <function _is_1 at 0x13d66af28>, sigmoid(x))) -> Elemwise{neg,no_inplace}(softplus(x))
+		This instance does: Elemwise{log,no_inplace}(Elemwise{sub,no_inplace}(y subject to <function _is_1 at 0x7f2876a60620>, sigmoid(x))) -> Elemwise{neg,no_inplace}(softplus(x))
 	**/
 	static public var log1msigm_to_softplus : Dynamic;
 	/**

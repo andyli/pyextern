@@ -100,6 +100,13 @@ package tensorflow.python.tools.saved_model_cli;
 	static public function _show_tag_sets(saved_model_dir:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
+		Function triggered by 'convert tensorrt' command.
+		
+		Args:
+		  args: A namespace parsed from command line.
+	**/
+	static public function convert_with_tensorrt(args:Dynamic):Dynamic;
+	/**
 		Creates a parser that parse the command line arguments.
 		
 		Returns:

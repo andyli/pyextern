@@ -74,6 +74,7 @@ package scipy.spatial.ckdtree;
 		helper for pickle
 	**/
 	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_cython__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -87,6 +88,7 @@ package scipy.spatial.ckdtree;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	public function __setstate__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __setstate_cython__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -145,17 +147,18 @@ package scipy.spatial.ckdtree;
 		    The other tree to draw points from, can be the same tree as self.
 		r : float or one-dimensional array of floats
 		    The radius to produce a count for. Multiple radii are searched with
-		    a single tree traversal. 
-		    If the count is non-cumulative(``cumulative=False``), ``r`` defines 
+		    a single tree traversal.
+		    If the count is non-cumulative(``cumulative=False``), ``r`` defines
 		    the edges of the bins, and must be non-decreasing.
-		p : float, optional 
-		    1<=p<=infinity. 
+		p : float, optional
+		    1<=p<=infinity.
 		    Which Minkowski p-norm to use.
 		    Default 2.0.
+		    A finite large p may cause a ValueError if overflow can occur.
 		weights : tuple, array_like, or None, optional
 		    If None, the pair-counting is unweighted.
 		    If given as a tuple, weights[0] is the weights of points in ``self``, and
-		    weights[1] is the weights of points in ``other``; either can be None to 
+		    weights[1] is the weights of points in ``other``; either can be None to
 		    indicate the points are unweighted.
 		    If given as an array_like, weights is the weights of points in ``self``
 		    and ``other``. For this to make sense, ``self`` and ``other`` must be the
@@ -262,18 +265,19 @@ package scipy.spatial.ckdtree;
 		x : array_like, last dimension self.m
 		    An array of points to query.
 		k : list of integer or integer
-		    The list of k-th nearest neighbors to return. If k is an 
+		    The list of k-th nearest neighbors to return. If k is an
 		    integer it is treated as a list of [1, ... k] (range(1, k+1)).
 		    Note that the counting starts from 1.
 		eps : non-negative float
-		    Return approximate nearest neighbors; the k-th returned value 
-		    is guaranteed to be no further than (1+eps) times the 
+		    Return approximate nearest neighbors; the k-th returned value
+		    is guaranteed to be no further than (1+eps) times the
 		    distance to the real k-th nearest neighbor.
 		p : float, 1<=p<=infinity
-		    Which Minkowski p-norm to use. 
+		    Which Minkowski p-norm to use.
 		    1 is the sum-of-absolute-values "Manhattan" distance
 		    2 is the usual Euclidean distance
 		    infinity is the maximum-coordinate-difference distance
+		    A finite large p may cause a ValueError if overflow can occur.
 		distance_upper_bound : nonnegative float
 		    Return only neighbors within this distance.  This is used to prune
 		    tree searches, so if you are doing a series of nearest-neighbor
@@ -282,11 +286,11 @@ package scipy.spatial.ckdtree;
 		n_jobs : int, optional
 		    Number of jobs to schedule for parallel processing. If -1 is given
 		    all processors are used. Default: 1.
-		                
+		
 		Returns
 		-------
 		d : array of floats
-		    The distances to the nearest neighbors. 
+		    The distances to the nearest neighbors.
 		    If ``x`` has shape ``tuple+(self.m,)``, then ``d`` has shape ``tuple+(k,)``.
 		    When k == 1, the last dimension of the output is squeezed.
 		    Missing neighbors are indicated with infinite distances.
@@ -302,7 +306,7 @@ package scipy.spatial.ckdtree;
 		box.
 		
 		When the input k is a list, a query for arange(max(k)) is performed, but
-		only columns that store the requested values of k are preserved. This is 
+		only columns that store the requested values of k are preserved. This is
 		implemented in a manner that reduces memory usage.
 		
 		Examples
@@ -361,10 +365,11 @@ package scipy.spatial.ckdtree;
 		----------
 		x : array_like, shape tuple + (self.m,)
 		    The point or points to search for neighbors of.
-		r : positive float
-		    The radius of points to return.
+		r : array_like, float
+		    The radius of points to return, shall broadcast to the length of x.
 		p : float, optional
 		    Which Minkowski p-norm to use.  Should be in the range [1, inf].
+		    A finite large p may cause a ValueError if overflow can occur.
 		eps : nonnegative float, optional
 		    Approximate search. Branches of the tree are not explored if their
 		    nearest points are further than ``r / (1 + eps)``, and branches are
@@ -373,6 +378,17 @@ package scipy.spatial.ckdtree;
 		n_jobs : int, optional
 		    Number of jobs to schedule for parallel processing. If -1 is given
 		    all processors are used. Default: 1.
+		return_sorted : bool, optional
+		    Sorts returned indicies if True and does not sort them if False. If
+		    None, does not sort single point queries, but does sort
+		    multi-point queries which was the behavior before this option
+		    was added.
+		
+		    .. versionadded:: 1.2.0
+		return_length: bool, optional
+		    Return the number of points inside the radius instead of a list
+		    of the indices.
+		    .. versionadded:: 1.3.0
 		
 		Returns
 		-------
@@ -411,6 +427,7 @@ package scipy.spatial.ckdtree;
 		p : float, optional
 		    Which Minkowski norm to use.  `p` has to meet the condition
 		    ``1 <= p <= infinity``.
+		    A finite large p may cause a ValueError if overflow can occur.
 		eps : float, optional
 		    Approximate search.  Branches of the tree are not explored
 		    if their nearest points are further than ``r/(1+eps)``, and
@@ -436,6 +453,7 @@ package scipy.spatial.ckdtree;
 		p : float, optional
 		    Which Minkowski norm to use.  ``p`` has to meet the condition
 		    ``1 <= p <= infinity``.
+		    A finite large p may cause a ValueError if overflow can occur.
 		eps : float, optional
 		    Approximate search.  Branches of the tree are not explored
 		    if their nearest points are further than ``r/(1+eps)``, and
@@ -448,7 +466,7 @@ package scipy.spatial.ckdtree;
 		-------
 		results : set or ndarray
 		    Set of pairs ``(i,j)``, with ``i < j``, for which the corresponding
-		    positions are close. If output_type is 'ndarray', an ndarry is 
+		    positions are close. If output_type is 'ndarray', an ndarry is
 		    returned instead of a set.
 	**/
 	public function query_pairs(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -468,7 +486,8 @@ package scipy.spatial.ckdtree;
 		max_distance : positive float
 		
 		p : float, 1<=p<=infinity
-		    Which Minkowski p-norm to use. 
+		    Which Minkowski p-norm to use.
+		    A finite large p may cause a ValueError if overflow can occur.
 		
 		output_type : string, optional
 		    Which container to use for output data. Options: 'dok_matrix',
@@ -477,7 +496,7 @@ package scipy.spatial.ckdtree;
 		Returns
 		-------
 		result : dok_matrix, coo_matrix, dict or ndarray
-		    Sparse matrix representing the results in "dictionary of keys" 
+		    Sparse matrix representing the results in "dictionary of keys"
 		    format. If a dict is returned the keys are (i,j) tuples of indices.
 		    If output_type is 'ndarray' a record array with fields 'i', 'j',
 		    and 'k' is returned,

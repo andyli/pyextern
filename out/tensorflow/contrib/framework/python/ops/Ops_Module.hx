@@ -72,13 +72,13 @@ package tensorflow.contrib.framework.python.ops;
 		Args:
 		  values: 1-D or higher numeric `Tensor`.
 		  axis: The axis along which to sort. The default is -1, which sorts the last
-		      axis.
+		    axis.
 		  direction: The direction in which to sort the values (`'ASCENDING'` or
-		      `'DESCENDING'`).
+		    `'DESCENDING'`).
 		  stable: If True, equal elements in the original tensor will not be
-		      re-ordered in the returned order. Unstable sort is not yet implemented,
-		      but will eventually be the default for performance reasons. If you
-		      require a stable order, pass `stable=True` for forwards compatibility.
+		    re-ordered in the returned order. Unstable sort is not yet implemented,
+		    but will eventually be the default for performance reasons. If you require
+		    a stable order, pass `stable=True` for forwards compatibility.
 		  name: Optional name for the operation.
 		
 		Returns:
@@ -92,7 +92,7 @@ package tensorflow.contrib.framework.python.ops;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.assert_global_step
 	**/
@@ -203,7 +203,7 @@ package tensorflow.contrib.framework.python.ops;
 	/**
 		Create global step tensor in graph. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.create_global_step
 		
@@ -259,7 +259,7 @@ package tensorflow.contrib.framework.python.ops;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.get_global_step
 	**/
@@ -332,7 +332,7 @@ package tensorflow.contrib.framework.python.ops;
 	/**
 		Returns and create (if necessary) the global step tensor. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.get_or_create_global_step
 		
@@ -852,9 +852,9 @@ package tensorflow.contrib.framework.python.ops;
 		Args:
 		  values: 1-D or higher numeric `Tensor`.
 		  axis: The axis along which to sort. The default is -1, which sorts the last
-		      axis.
+		    axis.
 		  direction: The direction in which to sort the values (`'ASCENDING'` or
-		      `'DESCENDING'`).
+		    `'DESCENDING'`).
 		  name: Optional name for the operation.
 		
 		Returns:

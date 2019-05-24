@@ -12,9 +12,9 @@ package tensorflow.python.data.experimental.ops.enumerate_ops;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
-		A transformation that enumerate the elements of a dataset.
+		A transformation that enumerates the elements of a dataset.
 		
-		It is Similar to python's `enumerate`.
+		It is similar to python's `enumerate`.
 		For example:
 		
 		```python
@@ -30,8 +30,8 @@ package tensorflow.python.data.experimental.ops.enumerate_ops;
 		```
 		
 		Args:
-		  start: A `tf.int64` scalar `tf.Tensor`, representing the start
-		    value for enumeration.
+		  start: A `tf.int64` scalar `tf.Tensor`, representing the start value for
+		    enumeration.
 		
 		Returns:
 		  A `Dataset` transformation function, which can be passed to

@@ -134,6 +134,10 @@ package matplotlib.colorbar;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var default_params : Dynamic;
 	/**
+		Modify the endpoints of a range as needed to avoid singularities.
+	**/
+	public function nonsingular(v0:Dynamic, v1:Dynamic):Dynamic;
+	/**
 		Pan numticks (can be positive or negative)
 	**/
 	public function pan(numsteps:Dynamic):Dynamic;
@@ -150,7 +154,22 @@ package matplotlib.colorbar;
 	public function set_bounds(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function set_data_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
-		Set parameters within this locator.
+		Set parameters for this locator.
+		
+		Parameters
+		----------
+		nbins : int or 'auto', optional
+		    see `.MaxNLocator`
+		steps : array-like, optional
+		    see `.MaxNLocator`
+		integer : bool, optional
+		    see `.MaxNLocator`
+		symmetric : bool, optional
+		    see `.MaxNLocator`
+		prune : {'lower', 'upper', 'both', None}, optional
+		    see `.MaxNLocator`
+		min_n_ticks : int, optional
+		    see `.MaxNLocator`
 	**/
 	public function set_params(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
@@ -169,10 +188,9 @@ package matplotlib.colorbar;
 	**/
 	public function tick_values(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
-		select a scale for the range from vmin to vmax
+		Select a scale for the range from vmin to vmax.
 		
-		Normally this method is overridden by subclasses to
-		change locator behaviour.
+		Subclasses should override this method to change locator behaviour.
 	**/
 	public function view_limits(dmin:Dynamic, dmax:Dynamic):Dynamic;
 	/**

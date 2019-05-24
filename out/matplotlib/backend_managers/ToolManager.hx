@@ -110,13 +110,13 @@ package matplotlib.backend_managers;
 	public var __weakref__ : Dynamic;
 	public function _get_cls_to_instantiate(callback_class:Dynamic):Dynamic;
 	/**
-		Toggle tools, need to untoggle prior to using other Toggle tool
-		Called from trigger_tool
+		Toggle tools, need to untoggle prior to using other Toggle tool.
+		Called from trigger_tool.
 		
 		Parameters
 		----------
-		tool: Tool object
-		sender: object
+		tool : Tool object
+		sender : object
 		    Object that wishes to trigger the tool
 		canvasevent : Event
 		    Original Canvas event or None
@@ -128,26 +128,24 @@ package matplotlib.backend_managers;
 	public function _remove_keys(name:Dynamic):Dynamic;
 	public function _tool_added_event(tool:Dynamic):Dynamic;
 	/**
-		Trigger on a tool
-		
-		Method to actually trigger the tool
+		Actually trigger a tool.
 	**/
 	public function _trigger_tool(name:Dynamic, ?sender:Dynamic, ?canvasevent:Dynamic, ?data:Dynamic):Dynamic;
 	/**
-		Currently toggled tools
+		Currently toggled tools.
 	**/
 	public var active_toggle : Dynamic;
 	/**
-		Add *tool* to `ToolManager`
+		Add *tool* to `ToolManager`.
 		
-		If successful adds a new event `tool_trigger_name` where **name** is
-		the **name** of the tool, this event is fired everytime
-		the tool is triggered.
+		If successful, adds a new event ``tool_trigger_{name}`` where
+		``{name}`` is the *name* of the tool; the event is fired everytime the
+		tool is triggered.
 		
 		Parameters
 		----------
 		name : str
-		    Name of the tool, treated as the ID, has to be unique
+		    Name of the tool, treated as the ID, has to be unique.
 		tool : class_like, i.e. str or type
 		    Reference to find the class of the Tool to added.
 		
@@ -161,15 +159,15 @@ package matplotlib.backend_managers;
 	**/
 	public function add_tool(name:Dynamic, tool:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Canvas managed by FigureManager
+		Canvas managed by FigureManager.
 	**/
 	public var canvas : Dynamic;
 	/**
-		Figure that holds the canvas
+		Figure that holds the canvas.
 	**/
 	public var figure : Dynamic;
 	/**
-		Return the tool object, also accepts the actual tool for convenience
+		Return the tool object, also accepts the actual tool for convenience.
 		
 		Parameters
 		----------
@@ -180,7 +178,7 @@ package matplotlib.backend_managers;
 	**/
 	public function get_tool(name:Dynamic, ?warn:Dynamic):Dynamic;
 	/**
-		Get the keymap associated with the specified tool
+		Get the keymap associated with the specified tool.
 		
 		Parameters
 		----------
@@ -193,11 +191,11 @@ package matplotlib.backend_managers;
 	**/
 	public function get_tool_keymap(name:Dynamic):Dynamic;
 	/**
-		Emit a `ToolManagerMessageEvent`
+		Emit a `ToolManagerMessageEvent`.
 	**/
 	public function message_event(message:Dynamic, ?sender:Dynamic):Dynamic;
 	/**
-		Remove tool from `ToolManager`
+		Remove tool named *name*.
 		
 		Parameters
 		----------
@@ -240,28 +238,27 @@ package matplotlib.backend_managers;
 	**/
 	public function toolmanager_connect(s:Dynamic, func:Dynamic):Dynamic;
 	/**
-		Disconnect callback id *cid*
+		Disconnect callback id *cid*.
 		
 		Example usage::
 		
-		    cid = toolmanager.toolmanager_connect('tool_trigger_zoom',
-		                                          on_press)
+		    cid = toolmanager.toolmanager_connect('tool_trigger_zoom', onpress)
 		    #...later
 		    toolmanager.toolmanager_disconnect(cid)
 	**/
 	public function toolmanager_disconnect(cid:Dynamic):Dynamic;
 	/**
-		Return the tools controlled by `ToolManager`
+		A dict mapping tool name -> controlled tool.
 	**/
 	public var tools : Dynamic;
 	/**
-		Trigger a tool and emit the tool_trigger_[name] event
+		Trigger a tool and emit the ``tool_trigger_{name}`` event.
 		
 		Parameters
 		----------
 		name : string
 		    Name of the tool
-		sender: object
+		sender : object
 		    Object that wishes to trigger the tool
 		canvasevent : Event
 		    Original Canvas event or None
@@ -270,7 +267,7 @@ package matplotlib.backend_managers;
 	**/
 	public function trigger_tool(name:Dynamic, ?sender:Dynamic, ?canvasevent:Dynamic, ?data:Dynamic):Dynamic;
 	/**
-		Set the keymap to associate with the specified tool
+		Set the keymap to associate with the specified tool.
 		
 		Parameters
 		----------

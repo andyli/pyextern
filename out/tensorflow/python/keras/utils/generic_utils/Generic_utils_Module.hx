@@ -12,6 +12,10 @@ package tensorflow.python.keras.utils.generic_utils;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
+		Returns the class name and config for a serialized keras object.
+	**/
+	static public function class_and_config_for_serialized_keras_object(config:Dynamic, ?module_objects:Dynamic, ?custom_objects:Dynamic, ?printable_module_name:Dynamic):Dynamic;
+	/**
 		Provides a scope that changes to `_GLOBAL_CUSTOM_OBJECTS` cannot escape.
 		
 		Convenience wrapper for `CustomObjectScope`.
@@ -112,6 +116,10 @@ package tensorflow.python.keras.utils.generic_utils;
 	**/
 	static public function object_list_uid(object_list:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Returns the serialization of the class with the given config.
+	**/
+	static public function serialize_keras_class_and_config(cls_name:Dynamic, cls_config:Dynamic):Dynamic;
 	static public function serialize_keras_object(instance:Dynamic):Dynamic;
 	/**
 		Slice an array or list of arrays.

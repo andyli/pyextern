@@ -104,7 +104,7 @@ package torch._c;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		executors(self: torch._C.Code) -> iterator
+		grad_executors(self: torch._C.Code) -> iterator
 	**/
-	public function executors(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function grad_executors(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

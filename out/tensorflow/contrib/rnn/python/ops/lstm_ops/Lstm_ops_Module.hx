@@ -22,7 +22,7 @@ package tensorflow.contrib.rnn.python.ops.lstm_ops;
 		
 		Args:
 		  seq_len_max: A `Tensor` of type `int64`.
-		  x: A list of at least 1 `Tensor` objects of the same type in: `float32`.
+		  x: A list of at least 1 `Tensor` objects of the same type.
 		  w: A `Tensor`. Must have the same type as `x`.
 		  b: A `Tensor`. Must have the same type as `x`.
 		  cs_prev: A `Tensor`. Must have the same type as `x`.

@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package numpy.random.info;
 @:pythonImport("numpy.random.info") extern class Info_Module {
-	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

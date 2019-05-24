@@ -114,7 +114,6 @@ package torch.nn.modules.adaptive;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _all_buffers(?memo:Dynamic):Dynamic;
 	public function _apply(fn:Dynamic):Dynamic;
 	/**
 		Given input tensor, and output of `self.head`,
@@ -126,10 +125,10 @@ package torch.nn.modules.adaptive;
 		Copies parameters and buffers from :attr:`state_dict` into only
 		this module, but not its descendants. This is called on every submodule
 		in :meth:`~torch.nn.Module.load_state_dict`. Metadata saved for this
-		module in input :attr:`state_dict` is provided as :attr`metadata`.
-		For state dicts without meta data, :attr`metadata` is empty.
+		module in input :attr:`state_dict` is provided as :attr`local_metadata`.
+		For state dicts without metadata, :attr`local_metadata` is empty.
 		Subclasses can achieve class-specific backward compatible loading using
-		the version number at `metadata.get("version", None)`.
+		the version number at `local_metadata.get("version", None)`.
 		
 		.. note::
 		    :attr:`state_dict` is not the same object as the input
@@ -141,7 +140,7 @@ package torch.nn.modules.adaptive;
 		        persistent buffers.
 		    prefix (str): the prefix for parameters and buffers used in this
 		        module
-		    metadata (dict): a dict containing the metadata for this moodule.
+		    local_metadata (dict): a dict containing the metadata for this moodule.
 		        See
 		    strict (bool): whether to strictly enforce that the keys in
 		        :attr:`state_dict` with :attr:`prefix` match the names of
@@ -154,7 +153,26 @@ package torch.nn.modules.adaptive;
 		        list, and will be reported together in
 		        :meth:`~torch.nn.Module.load_state_dict`
 	**/
-	public function _load_from_state_dict(state_dict:Dynamic, prefix:Dynamic, metadata:Dynamic, strict:Dynamic, missing_keys:Dynamic, unexpected_keys:Dynamic, error_msgs:Dynamic):Dynamic;
+	public function _load_from_state_dict(state_dict:Dynamic, prefix:Dynamic, local_metadata:Dynamic, strict:Dynamic, missing_keys:Dynamic, unexpected_keys:Dynamic, error_msgs:Dynamic):Dynamic;
+	/**
+		Helper method for yielding various names + members of modules.
+	**/
+	public function _named_members(get_members_fn:Dynamic, ?prefix:Dynamic, ?recurse:Dynamic):Dynamic;
+	/**
+		These hooks will be called with arguments: `state_dict`, `prefix`,
+		`local_metadata`, `strict`, `missing_keys`, `unexpected_keys`,
+		`error_msgs`, before loading `state_dict` into `self`. These arguments
+		are exactly the same as those of `_load_from_state_dict`.
+	**/
+	public function _register_load_state_dict_pre_hook(hook:Dynamic):Dynamic;
+	/**
+		These hooks will be called with arguments: `self`, `state_dict`,
+		`prefix`, `local_metadata`, after the `state_dict` of `self` is set.
+		Note that only parameters and buffers of `self` or its children are
+		guaranteed to exist in `state_dict`. The hooks may modify `state_dict`
+		inplace or return a new one.
+	**/
+	public function _register_state_dict_hook(hook:Dynamic):Dynamic;
 	public function _slow_forward(?input:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _tracing_name(tracing_state:Dynamic):Dynamic;
 	static public var _version : Dynamic;
@@ -208,6 +226,25 @@ package torch.nn.modules.adaptive;
 		    )
 	**/
 	public function apply(fn:Dynamic):Dynamic;
+	/**
+		Returns an iterator over module buffers.
+		
+		Args:
+		    recurse (bool): if True, then yields buffers of this module
+		        and all submodules. Otherwise, yields only buffers that
+		        are direct members of this module.
+		
+		Yields:
+		    torch.Tensor: module buffer
+		
+		Example::
+		
+		    >>> for buf in model.buffers():
+		    >>>     print(type(buf.data), buf.size())
+		    <class 'torch.FloatTensor'> (20L,)
+		    <class 'torch.FloatTensor'> (20L, 1L, 5L, 5L)
+	**/
+	public function buffers(?recurse:Dynamic):Dynamic;
 	/**
 		Returns an iterator over immediate children modules.
 		
@@ -343,6 +380,26 @@ package torch.nn.modules.adaptive;
 	**/
 	public function modules():Dynamic;
 	/**
+		Returns an iterator over module buffers, yielding both the
+		name of the buffer as well as the buffer itself.
+		
+		Args:
+		    prefix (str): prefix to prepend to all buffer names.
+		    recurse (bool): if True, then yields buffers of this module
+		        and all submodules. Otherwise, yields only buffers that
+		        are direct members of this module.
+		
+		Yields:
+		    (string, torch.Tensor): Tuple containing the name and buffer
+		
+		Example::
+		
+		    >>> for name, buf in self.named_buffers():
+		    >>>    if name in ['running_var']:
+		    >>>        print(buf.size())
+	**/
+	public function named_buffers(?prefix:Dynamic, ?recurse:Dynamic):Dynamic;
+	/**
 		Returns an iterator over immediate children modules, yielding both
 		the name of the module as well as the module itself.
 		
@@ -383,7 +440,13 @@ package torch.nn.modules.adaptive;
 	public function named_modules(?memo:Dynamic, ?prefix:Dynamic):Dynamic;
 	/**
 		Returns an iterator over module parameters, yielding both the
-		name of the parameter as well as the parameter itself
+		name of the parameter as well as the parameter itself.
+		
+		Args:
+		    prefix (str): prefix to prepend to all parameter names.
+		    recurse (bool): if True, then yields parameters of this module
+		        and all submodules. Otherwise, yields only parameters that
+		        are direct members of this module.
 		
 		Yields:
 		    (string, Parameter): Tuple containing the name and parameter
@@ -394,11 +457,16 @@ package torch.nn.modules.adaptive;
 		    >>>    if name in ['bias']:
 		    >>>        print(param.size())
 	**/
-	public function named_parameters(?memo:Dynamic, ?prefix:Dynamic):Dynamic;
+	public function named_parameters(?prefix:Dynamic, ?recurse:Dynamic):Dynamic;
 	/**
 		Returns an iterator over module parameters.
 		
 		This is typically passed to an optimizer.
+		
+		Args:
+		    recurse (bool): if True, then yields parameters of this module
+		        and all submodules. Otherwise, yields only parameters that
+		        are direct members of this module.
 		
 		Yields:
 		    Parameter: module parameter
@@ -410,7 +478,7 @@ package torch.nn.modules.adaptive;
 		    <class 'torch.FloatTensor'> (20L,)
 		    <class 'torch.FloatTensor'> (20L, 1L, 5L, 5L)
 	**/
-	public function parameters():Dynamic;
+	public function parameters(?recurse:Dynamic):Dynamic;
 	/**
 		This is equivalent to `self.log_pob(input).argmax(dim=1)`,
 		but is more efficient in some cases.
@@ -444,6 +512,15 @@ package torch.nn.modules.adaptive;
 		    :class:`torch.utils.hooks.RemovableHandle`:
 		        a handle that can be used to remove the added hook by calling
 		        ``handle.remove()``
+		
+		.. warning ::
+		
+		    The current implementation will not have the presented behavior
+		    for complex :class:`Module` that perform many operations.
+		    In some failure cases, :attr:`grad_input` and :attr:`grad_output` will only
+		    contain the gradients for a subset of the inputs and outputs.
+		    For such :class:`Module`, you should use :func:`torch.Tensor.register_hook`
+		    directly on a specific input or output to get the required gradients.
 	**/
 	public function register_backward_hook(hook:Dynamic):Dynamic;
 	/**

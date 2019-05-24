@@ -2,7 +2,17 @@
 package pandas.core.indexes.frozen;
 @:pythonImport("pandas.core.indexes.frozen", "FrozenList") extern class FrozenList {
 	/**
-		Return self+value.
+		Returns a FrozenList with other concatenated to the end of self.
+		
+		Parameters
+		----------
+		other : array-like
+		    The array-like whose elements we are concatenating.
+		
+		Returns
+		-------
+		diff : FrozenList
+		    The collection difference between self and other.
 	**/
 	public function __add__(other:Dynamic):Dynamic;
 	/**
@@ -66,11 +76,21 @@ package pandas.core.indexes.frozen;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Return self+value.
+		Returns a FrozenList with other concatenated to the end of self.
+		
+		Parameters
+		----------
+		other : array-like
+		    The array-like whose elements we are concatenating.
+		
+		Returns
+		-------
+		diff : FrozenList
+		    The collection difference between self and other.
 	**/
 	public function __iadd__(other:Dynamic):Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __imul__(other:Dynamic):Dynamic;
 	/**
@@ -107,7 +127,7 @@ package pandas.core.indexes.frozen;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(other:Dynamic):Dynamic;
 	/**
@@ -142,7 +162,7 @@ package pandas.core.indexes.frozen;
 	**/
 	public function __reversed__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**
@@ -228,6 +248,20 @@ package pandas.core.indexes.frozen;
 	**/
 	public function count(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Returns a FrozenList with elements from other removed from self.
+		
+		Parameters
+		----------
+		other : array-like
+		    The array-like whose elements we are removing self.
+		
+		Returns
+		-------
+		diff : FrozenList
+		    The collection difference between self and other.
+	**/
+	public function difference(other:Dynamic):Dynamic;
+	/**
 		This method will not function because object is immutable.
 	**/
 	public function extend(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -256,4 +290,18 @@ package pandas.core.indexes.frozen;
 		This method will not function because object is immutable.
 	**/
 	public function sort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Returns a FrozenList with other concatenated to the end of self.
+		
+		Parameters
+		----------
+		other : array-like
+		    The array-like whose elements we are concatenating.
+		
+		Returns
+		-------
+		diff : FrozenList
+		    The collection difference between self and other.
+	**/
+	public function union(other:Dynamic):Dynamic;
 }

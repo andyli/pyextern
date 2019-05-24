@@ -10,12 +10,6 @@ package torch.distributions.constraints;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Given a batch of matrices, returns the lower triangular part of each matrix, with
-		the other entries set to 0. The argument `diagonal` has the same meaning as in
-		`torch.tril`.
-	**/
-	static public function batch_tril(bmat:Dynamic, ?diagonal:Dynamic):Dynamic;
 	static public var boolean : Dynamic;
 	static public var dependent : Dynamic;
 	static public function is_dependent(constraint:Dynamic):Dynamic;

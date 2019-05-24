@@ -25,6 +25,7 @@ package matplotlib.backends.backend_mixed;
 		Return self>=value.
 	**/
 	public function __ge__(value:Dynamic):Dynamic;
+	public function __getattr__(attr:Dynamic):Dynamic;
 	/**
 		Return getattr(self, name).
 	**/
@@ -152,8 +153,6 @@ package matplotlib.backends.backend_mixed;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public var _methods : Dynamic;
-	public function _set_current_renderer(renderer:Dynamic):Dynamic;
 	/**
 		Enter "raster" mode.  All subsequent drawing commands (until
 		stop_rasterizing is called) will be drawn with the raster

@@ -9,7 +9,6 @@ package pandas.core.dtypes.api;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function is_any_int_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check if the object is array-like.
 		
@@ -18,7 +17,7 @@ package pandas.core.dtypes.api;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -52,6 +51,11 @@ package pandas.core.dtypes.api;
 		-------
 		boolean : Whether or not the array or dtype is of a boolean dtype.
 		
+		Notes
+		-----
+		An ExtensionArray is considered boolean when the ``_is_boolean``
+		attribute is set to True.
+		
 		Examples
 		--------
 		>>> is_bool_dtype(str)
@@ -67,6 +71,10 @@ package pandas.core.dtypes.api;
 		>>> is_bool_dtype(pd.Series([1, 2]))
 		False
 		>>> is_bool_dtype(np.array([True, False]))
+		True
+		>>> is_bool_dtype(pd.Categorical([True, False]))
+		True
+		>>> is_bool_dtype(pd.SparseArray([True, False]))
 		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -286,6 +294,8 @@ package pandas.core.dtypes.api;
 		Check whether an array-like is a datetime array-like with a timezone
 		component in its dtype.
 		
+		.. deprecated:: 0.24.0
+		
 		Parameters
 		----------
 		arr : array-like
@@ -324,7 +334,7 @@ package pandas.core.dtypes.api;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -337,6 +347,10 @@ package pandas.core.dtypes.api;
 		True
 		>>> is_dict_like([1, 2, 3])
 		False
+		>>> is_dict_like(dict)
+		False
+		>>> is_dict_like(dict())
+		True
 	**/
 	static public function is_dict_like(obj:Dynamic):Bool;
 	/**
@@ -365,6 +379,51 @@ package pandas.core.dtypes.api;
 		False
 	**/
 	static public function is_dtype_equal(source:Dynamic, target:Dynamic):Dynamic;
+	/**
+		Check if an object is a pandas extension array type.
+		
+		See the :ref:`Use Guide <extending.extension-types>` for more.
+		
+		Parameters
+		----------
+		arr_or_dtype : object
+		    For array-like input, the ``.dtype`` attribute will
+		    be extracted.
+		
+		Returns
+		-------
+		bool
+		    Whether the `arr_or_dtype` is an extension array type.
+		
+		Notes
+		-----
+		This checks whether an object implements the pandas extension
+		array interface. In pandas, this includes:
+		
+		* Categorical
+		* Sparse
+		* Interval
+		* Period
+		* DatetimeArray
+		* TimedeltaArray
+		
+		Third-party libraries may implement arrays or types satisfying
+		this interface as well.
+		
+		Examples
+		--------
+		>>> from pandas.api.types import is_extension_array_dtype
+		>>> arr = pd.Categorical(['a', 'b'])
+		>>> is_extension_array_dtype(arr)
+		True
+		>>> is_extension_array_dtype(arr.dtype)
+		True
+		
+		>>> arr = np.array(['a', 'b'])
+		>>> is_extension_array_dtype(arr.dtype)
+		False
+	**/
+	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check whether an array-like is of a pandas extension class instance.
 		
@@ -428,7 +487,7 @@ package pandas.core.dtypes.api;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -447,6 +506,8 @@ package pandas.core.dtypes.api;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a float dtype.
+		
+		This function is internal and should not be exposed in the public API.
 		
 		Parameters
 		----------
@@ -473,7 +534,6 @@ package pandas.core.dtypes.api;
 		True
 	**/
 	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function is_floating_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Return True if hash(obj) will succeed, False otherwise.
 		
@@ -518,6 +578,12 @@ package pandas.core.dtypes.api;
 		False
 		>>> is_int64_dtype(np.int64)
 		True
+		>>> is_int64_dtype('int8')
+		False
+		>>> is_int64_dtype('Int8')
+		False
+		>>> is_int64_dtype(pd.Int64Dtype)
+		True
 		>>> is_int64_dtype(float)
 		False
 		>>> is_int64_dtype(np.uint64)  # unsigned
@@ -538,6 +604,11 @@ package pandas.core.dtypes.api;
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
 		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -557,6 +628,12 @@ package pandas.core.dtypes.api;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -610,7 +687,7 @@ package pandas.core.dtypes.api;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -639,7 +716,11 @@ package pandas.core.dtypes.api;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -658,14 +739,18 @@ package pandas.core.dtypes.api;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Check if the object is a named tuple.
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -700,7 +785,7 @@ package pandas.core.dtypes.api;
 		
 		See Also
 		--------
-		pandas.api.types.is_integer: checks a subgroup of numbers
+		pandas.api.types.is_integer: Checks a subgroup of numbers.
 		
 		Examples
 		--------
@@ -785,6 +870,8 @@ package pandas.core.dtypes.api;
 	/**
 		Check whether an array-like is a periodical index.
 		
+		.. deprecated:: 0.24.0
+		
 		Parameters
 		----------
 		arr : array-like
@@ -835,7 +922,7 @@ package pandas.core.dtypes.api;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -855,7 +942,7 @@ package pandas.core.dtypes.api;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -873,24 +960,60 @@ package pandas.core.dtypes.api;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_sequence(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a signed integer dtype.
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
 		
 		Parameters
 		----------
@@ -912,6 +1035,12 @@ package pandas.core.dtypes.api;
 		False
 		>>> is_signed_integer_dtype(np.uint64)  # unsigned
 		False
+		>>> is_signed_integer_dtype('int8')
+		True
+		>>> is_signed_integer_dtype('Int8')
+		True
+		>>> is_signed_dtype(pd.Int8Dtype)
+		True
 		>>> is_signed_integer_dtype(np.datetime64)
 		False
 		>>> is_signed_integer_dtype(np.timedelta64)
@@ -929,32 +1058,59 @@ package pandas.core.dtypes.api;
 	**/
 	static public function is_signed_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Check whether an array-like is a pandas sparse array.
+		Check whether an array-like is a 1-D pandas sparse array.
+		
+		Check that the one-dimensional array-like is a pandas sparse array.
+		Returns True if it is a pandas sparse array, not another type of
+		sparse array.
 		
 		Parameters
 		----------
 		arr : array-like
-		    The array-like to check.
+		    Array-like to check.
 		
 		Returns
 		-------
-		boolean : Whether or not the array-like is a pandas sparse array.
+		bool
+		    Whether or not the array-like is a pandas sparse array.
+		
+		See Also
+		--------
+		DataFrame.to_sparse : Convert DataFrame to a SparseDataFrame.
+		Series.to_sparse : Convert Series to SparseSeries.
+		Series.to_dense : Return dense representation of a Series.
 		
 		Examples
 		--------
-		>>> is_sparse(np.array([1, 2, 3]))
-		False
-		>>> is_sparse(pd.SparseArray([1, 2, 3]))
+		Returns `True` if the parameter is a 1-D pandas sparse array.
+		
+		>>> is_sparse(pd.SparseArray([0, 0, 1, 0]))
 		True
-		>>> is_sparse(pd.SparseSeries([1, 2, 3]))
+		>>> is_sparse(pd.SparseSeries([0, 0, 1, 0]))
 		True
 		
-		This function checks only for pandas sparse array instances, so
-		sparse arrays from other libraries will return False.
+		Returns `False` if the parameter is not sparse.
+		
+		>>> is_sparse(np.array([0, 0, 1, 0]))
+		False
+		>>> is_sparse(pd.Series([0, 1, 0, 0]))
+		False
+		
+		Returns `False` if the parameter is not a pandas sparse array.
 		
 		>>> from scipy.sparse import bsr_matrix
-		>>> is_sparse(bsr_matrix([1, 2, 3]))
+		>>> is_sparse(bsr_matrix([0, 1, 0, 0]))
 		False
+		
+		Returns `False` if the parameter has more than one dimension.
+		
+		>>> df = pd.SparseDataFrame([389., 24., 80.5, np.nan],
+		                            columns=['max_speed'],
+		                            index=['falcon', 'parrot', 'lion', 'monkey'])
+		>>> is_sparse(df)
+		False
+		>>> is_sparse(df.max_speed)
+		True
 	**/
 	static public function is_sparse(arr:Dynamic):Dynamic;
 	/**
@@ -1042,6 +1198,11 @@ package pandas.core.dtypes.api;
 	/**
 		Check whether the provided array or dtype is of an unsigned integer dtype.
 		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.UInt64Dtype) are also
+		   considered as integer by this function.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -1061,6 +1222,12 @@ package pandas.core.dtypes.api;
 		>>> is_unsigned_integer_dtype(float)
 		False
 		>>> is_unsigned_integer_dtype(np.uint64)
+		True
+		>>> is_unsigned_integer_dtype('uint8')
+		True
+		>>> is_unsigned_integer_dtype('UInt8')
+		True
+		>>> is_unsigned_integer_dtype(pd.UInt8Dtype)
 		True
 		>>> is_unsigned_integer_dtype(np.array(['a', 'b']))
 		False
@@ -1082,6 +1249,10 @@ package pandas.core.dtypes.api;
 		Returns
 		-------
 		np.dtype or a pandas dtype
+		
+		Raises
+		------
+		TypeError if not a dtype
 	**/
 	static public function pandas_dtype(dtype:Dynamic):Dynamic;
 }

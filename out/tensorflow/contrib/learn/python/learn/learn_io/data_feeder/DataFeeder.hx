@@ -40,7 +40,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	/**
 		Initializes a DataFeeder instance. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tensorflow/transform or tf.data.
 		
@@ -77,7 +77,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	/**
 		Initializes a DataFeeder instance. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tensorflow/transform or tf.data.
 		

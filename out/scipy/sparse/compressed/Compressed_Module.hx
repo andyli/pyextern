@@ -10,6 +10,7 @@ package scipy.sparse.compressed;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _process_slice(sl:Dynamic, num:Dynamic):Dynamic;
 	/**
 		Return an array equivalent to the input array. If the input
 		array is a view of a much larger array, copy its contents to a
@@ -17,10 +18,18 @@ package scipy.sparse.compressed;
 	**/
 	static public function _prune_array(array:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	static public function asmatrix(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Imitate numpy.matrix handling of shape arguments
 	**/
 	static public function check_shape(args:Dynamic, ?current_shape:Dynamic):Dynamic;
+	static public function csr_column_index1(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function csr_column_index2(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function csr_row_index(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function csr_row_slice(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function csr_sample_offsets(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function csr_sample_values(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function csr_todense(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Down-cast index array to np.intp dtype if it is of a larger dtype.
@@ -29,6 +38,7 @@ package scipy.sparse.compressed;
 		intp.
 	**/
 	static public function downcast_intp_index(arr:Dynamic):Dynamic;
+	static public function get_csr_submatrix(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Based on input (integer) arrays `a`, determine a suitable index data
 		type that can hold the data in the arrays.
@@ -62,6 +72,11 @@ package scipy.sparse.compressed;
 	**/
 	static public function getdtype(dtype:Dynamic, ?a:Dynamic, ?_default:Dynamic):Dynamic;
 	static public function isdense(x:Dynamic):Dynamic;
+	/**
+		Is x appropriate as an index into a sparse matrix? Returns True
+		if it can be cast safely to a machine int.
+	**/
+	static public function isintlike(x:Dynamic):Dynamic;
 	/**
 		Is x either a scalar, an array scalar, or a 0-dim array?
 	**/
@@ -100,6 +115,7 @@ package scipy.sparse.compressed;
 		False
 	**/
 	static public function isspmatrix(x:Dynamic):Dynamic;
+	static public function matrix(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	static public function to_native(A:Dynamic):Dynamic;
 	/**

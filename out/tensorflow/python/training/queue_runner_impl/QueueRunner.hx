@@ -40,7 +40,7 @@ package tensorflow.python.training.queue_runner_impl;
 	/**
 		Create a QueueRunner. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		To construct input pipelines, use the `tf.data` module.
 		
@@ -80,7 +80,7 @@ package tensorflow.python.training.queue_runner_impl;
 	/**
 		Create a QueueRunner. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		To construct input pipelines, use the `tf.data` module.
 		

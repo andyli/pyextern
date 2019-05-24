@@ -107,17 +107,17 @@ package pandas.plotting._misc;
 		class_column : Name of the column containing class names
 		ax : matplotlib axes object, default None
 		samples : Number of points to plot in each curve
-		color: list or tuple, optional
+		color : list or tuple, optional
 		    Colors to use for the different classes
 		colormap : str or matplotlib colormap object, default None
 		    Colormap to select colors from. If string, load colormap with that name
 		    from matplotlib.
-		kwds: keywords
+		kwds : keywords
 		    Options to pass to matplotlib plotting method
 		
 		Returns
 		-------
-		ax: Matplotlib axis object
+		ax : Matplotlib axis object
 	**/
 	static public function andrews_curves(frame:Dynamic, class_column:Dynamic, ?ax:Dynamic, ?samples:Dynamic, ?color:Dynamic, ?colormap:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -176,9 +176,8 @@ package pandas.plotting._misc;
 		.. plot::
 		        :context: close-figs
 		
-		        >>> import numpy as np
 		        >>> s = pd.Series(np.random.uniform(size=100))
-		        >>> fig = pd.plotting.bootstrap_plot(s)
+		        >>> fig = pd.plotting.bootstrap_plot(s)  # doctest: +SKIP
 	**/
 	static public function bootstrap_plot(series:Dynamic, ?fig:Dynamic, ?size:Dynamic, ?samples:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -224,7 +223,6 @@ package pandas.plotting._misc;
 		  warnings.warn(msg, FutureWarning)
 		yes!
 		
-		
 		To raise a warning that a keyword will be removed entirely in the future
 		
 		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
@@ -250,10 +248,10 @@ package pandas.plotting._misc;
 		
 		Parameters
 		----------
-		series: Time series
-		lag: lag of the scatter plot, default 1
-		ax: Matplotlib axis object, optional
-		kwds: Matplotlib scatter method keyword arguments, optional
+		series : Time series
+		lag : lag of the scatter plot, default 1
+		ax : Matplotlib axis object, optional
+		kwds : Matplotlib scatter method keyword arguments, optional
 		
 		Returns
 		-------
@@ -265,7 +263,7 @@ package pandas.plotting._misc;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -283,8 +281,8 @@ package pandas.plotting._misc;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -341,31 +339,31 @@ package pandas.plotting._misc;
 		
 		Parameters
 		----------
-		frame: DataFrame
-		class_column: str
+		frame : DataFrame
+		class_column : str
 		    Column name containing class names
-		cols: list, optional
+		cols : list, optional
 		    A list of column names to use
-		ax: matplotlib.axis, optional
+		ax : matplotlib.axis, optional
 		    matplotlib axis object
-		color: list or tuple, optional
+		color : list or tuple, optional
 		    Colors to use for the different classes
-		use_columns: bool, optional
+		use_columns : bool, optional
 		    If true, columns will be used as xticks
-		xticks: list or tuple, optional
+		xticks : list or tuple, optional
 		    A list of values to use for xticks
-		colormap: str or matplotlib colormap, default None
+		colormap : str or matplotlib colormap, default None
 		    Colormap to use for line colors.
-		axvlines: bool, optional
+		axvlines : bool, optional
 		    If true, vertical lines will be added at each xtick
-		axvlines_kwds: keywords, optional
+		axvlines_kwds : keywords, optional
 		    Options to be passed to axvline method for vertical lines
-		sort_labels: bool, False
+		sort_labels : bool, False
 		    Sort class_column labels, useful when assigning colors
 		
 		    .. versionadded:: 0.20.0
 		
-		kwds: keywords
+		kwds : keywords
 		    Options to pass to matplotlib plotting method
 		
 		Returns
@@ -374,13 +372,12 @@ package pandas.plotting._misc;
 		
 		Examples
 		--------
-		>>> from pandas import read_csv
-		>>> from pandas.tools.plotting import parallel_coordinates
 		>>> from matplotlib import pyplot as plt
-		>>> df = read_csv('https://raw.github.com/pandas-dev/pandas/master'
-		                  '/pandas/tests/data/iris.csv')
-		>>> parallel_coordinates(df, 'Name', color=('#556270',
-		                         '#4ECDC4', '#C7F464'))
+		>>> df = pd.read_csv('https://raw.github.com/pandas-dev/pandas/master'
+		                    '/pandas/tests/data/iris.csv')
+		>>> pd.plotting.parallel_coordinates(
+		        df, 'Name',
+		        color=('#556270', '#4ECDC4', '#C7F464'))
 		>>> plt.show()
 	**/
 	static public function parallel_coordinates(frame:Dynamic, class_column:Dynamic, ?cols:Dynamic, ?ax:Dynamic, ?color:Dynamic, ?use_columns:Dynamic, ?xticks:Dynamic, ?colormap:Dynamic, ?axvlines:Dynamic, ?axvlines_kwds:Dynamic, ?sort_labels:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
@@ -448,7 +445,7 @@ package pandas.plotting._misc;
 		
 		See Also
 		--------
-		pandas.plotting.andrews_curves : Plot clustering visualization
+		pandas.plotting.andrews_curves : Plot clustering visualization.
 		
 		Examples
 		--------
@@ -469,7 +466,7 @@ package pandas.plotting._misc;
 		    ...                      'versicolor', 'setosa', 'virginica',
 		    ...                      'setosa']
 		    ...     })
-		    >>> rad_viz = pd.plotting.radviz(df, 'Category')
+		    >>> rad_viz = pd.plotting.radviz(df, 'Category')  # doctest: +SKIP
 	**/
 	static public function radviz(frame:Dynamic, class_column:Dynamic, ?ax:Dynamic, ?color:Dynamic, ?colormap:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -504,7 +501,7 @@ package pandas.plotting._misc;
 		
 		Examples
 		--------
-		>>> df = DataFrame(np.random.randn(1000, 4), columns=['A','B','C','D'])
+		>>> df = pd.DataFrame(np.random.randn(1000, 4), columns=['A','B','C','D'])
 		>>> scatter_matrix(df, alpha=0.2)
 	**/
 	static public function scatter_matrix(frame:Dynamic, ?alpha:Dynamic, ?figsize:Dynamic, ?ax:Dynamic, ?grid:Dynamic, ?diagonal:Dynamic, ?marker:Dynamic, ?density_kwds:Dynamic, ?hist_kwds:Dynamic, ?range_padding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;

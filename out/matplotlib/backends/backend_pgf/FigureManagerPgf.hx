@@ -108,6 +108,10 @@ package matplotlib.backends.backend_pgf;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		The default Matplotlib button actions for extra mouse buttons.
+	**/
+	public function button_press(event:Dynamic):Dynamic;
 	public function destroy():Dynamic;
 	public function full_screen_toggle():Dynamic;
 	/**
@@ -138,11 +142,4 @@ package matplotlib.backends.backend_pgf;
 		optional warning.
 	**/
 	public function show():Dynamic;
-	/**
-		.. deprecated:: 2.2
-		    The show_popup function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
-		
-		Display message in a popup -- GUI only.
-	**/
-	public function show_popup(msg:Dynamic):Dynamic;
 }

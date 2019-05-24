@@ -41,11 +41,11 @@ package tensorflow.python.keras.callbacks;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?log_dir:Dynamic, ?histogram_freq:Dynamic, ?batch_size:Dynamic, ?write_graph:Dynamic, ?write_grads:Dynamic, ?write_images:Dynamic, ?embeddings_freq:Dynamic, ?embeddings_layer_names:Dynamic, ?embeddings_metadata:Dynamic, ?embeddings_data:Dynamic):Dynamic;
+	public function ___init__(?log_dir:Dynamic, ?histogram_freq:Dynamic, ?batch_size:Dynamic, ?write_graph:Dynamic, ?write_grads:Dynamic, ?write_images:Dynamic, ?embeddings_freq:Dynamic, ?embeddings_layer_names:Dynamic, ?embeddings_metadata:Dynamic, ?embeddings_data:Dynamic, ?update_freq:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?log_dir:Dynamic, ?histogram_freq:Dynamic, ?batch_size:Dynamic, ?write_graph:Dynamic, ?write_grads:Dynamic, ?write_images:Dynamic, ?embeddings_freq:Dynamic, ?embeddings_layer_names:Dynamic, ?embeddings_metadata:Dynamic, ?embeddings_data:Dynamic):Void;
+	public function new(?log_dir:Dynamic, ?histogram_freq:Dynamic, ?batch_size:Dynamic, ?write_graph:Dynamic, ?write_grads:Dynamic, ?write_images:Dynamic, ?embeddings_freq:Dynamic, ?embeddings_layer_names:Dynamic, ?embeddings_metadata:Dynamic, ?embeddings_data:Dynamic, ?update_freq:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -134,16 +134,15 @@ package tensorflow.python.keras.callbacks;
 	**/
 	public function on_batch_end(batch:Dynamic, ?logs:Dynamic):Dynamic;
 	/**
-		Add histogram op to Model test_function callbacks, reset batch count.
+		Add histogram op to Model eval_function callbacks, reset batch count.
 	**/
 	public function on_epoch_begin(epoch:Dynamic, ?logs:Dynamic):Dynamic;
 	/**
 		Checks if summary ops should run next epoch, logs scalar summaries.
 	**/
 	public function on_epoch_end(epoch:Dynamic, ?logs:Dynamic):Dynamic;
-	/**
-		Checks if histogram summaries can be run.
-	**/
+	public function on_train_batch_begin(batch:Dynamic, ?logs:Dynamic):Dynamic;
+	public function on_train_batch_end(batch:Dynamic, ?logs:Dynamic):Dynamic;
 	public function on_train_begin(?logs:Dynamic):Dynamic;
 	public function on_train_end(?logs:Dynamic):Dynamic;
 	/**

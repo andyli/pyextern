@@ -5,8 +5,6 @@ package tensorflow.core.debug.debug_service_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CALL_KEY_FIELD_NUMBER : Dynamic;
-	static public var CALL_TYPE_FIELD_NUMBER : Dynamic;
 	static public var CallType : Dynamic;
 	/**
 		Clears the message.
@@ -43,8 +41,6 @@ package tensorflow.core.debug.debug_service_pb2;
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var GRAPH_EXECUTION : Dynamic;
-	static public var GRAPH_TRACEBACK_FIELD_NUMBER : Dynamic;
-	static public var GRAPH_VERSION_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -69,8 +65,6 @@ package tensorflow.core.debug.debug_service_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ORIGIN_ID_TO_STRING_FIELD_NUMBER : Dynamic;
-	static public var ORIGIN_STACK_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -96,6 +90,10 @@ package tensorflow.core.debug.debug_service_pb2;
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var UNSPECIFIED : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -261,4 +259,28 @@ package tensorflow.core.debug.debug_service_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.CallTraceback.call_key
+	**/
+	public var call_key : Dynamic;
+	/**
+		Field tensorflow.CallTraceback.call_type
+	**/
+	public var call_type : Dynamic;
+	/**
+		Field tensorflow.CallTraceback.graph_traceback
+	**/
+	public var graph_traceback : Dynamic;
+	/**
+		Field tensorflow.CallTraceback.graph_version
+	**/
+	public var graph_version : Dynamic;
+	/**
+		Field tensorflow.CallTraceback.origin_id_to_string
+	**/
+	public var origin_id_to_string : Dynamic;
+	/**
+		Field tensorflow.CallTraceback.origin_stack
+	**/
+	public var origin_stack : Dynamic;
 }

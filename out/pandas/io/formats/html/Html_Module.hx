@@ -10,16 +10,18 @@ package pandas.io.formats.html;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Appends lines to a buffer.
+		Check to see if a URL has a valid protocol.
 		
 		Parameters
 		----------
-		buf
-		    The buffer to write to
-		lines
-		    The lines to append.
+		url : str or unicode
+		
+		Returns
+		-------
+		isurl : bool
+		    If `url` has a valid protocol return True otherwise False.
 	**/
-	static public function buffer_put_lines(buf:Dynamic, lines:Dynamic):Dynamic;
+	static public function _is_url(url:Dynamic):Bool;
 	/**
 		Remove any common leading whitespace from every line in `text`.
 		
@@ -134,7 +136,7 @@ package pandas.io.formats.html;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
+		    [default: ANSI_X3.4-1968] [currently: ANSI_X3.4-1968]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -406,8 +408,6 @@ package pandas.io.formats.html;
 	**/
 	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	static public function single_column_table(column:Dynamic, ?align:Dynamic, ?style:Dynamic):Dynamic;
-	static public function single_row_table(row:Dynamic):Dynamic;
 	static public function u(s:Dynamic):Dynamic;
 	/**
 		Return a Unicode string of one character with ordinal i; 0 <= i <= 0x10ffff.

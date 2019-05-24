@@ -14,37 +14,6 @@ package pandas.core.sparse.series;
 		Use the defaults given in the SparseSeries constructor.
 	**/
 	static public function _coo_to_sparse_series(A:Dynamic, ?dense_index:Dynamic):Dynamic;
-	/**
-		Ensure that we have an index from some index-like object
-		
-		Parameters
-		----------
-		index : sequence
-		    An Index or other sequence
-		copy : bool
-		
-		Returns
-		-------
-		index : Index or MultiIndex
-		
-		Examples
-		--------
-		>>> _ensure_index(['a', 'b'])
-		Index(['a', 'b'], dtype='object')
-		
-		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
-		Index([('a', 'a'), ('b', 'c')], dtype='object')
-		
-		>>> _ensure_index([['a', 'a'], ['b', 'c']])
-		MultiIndex(levels=[['a'], ['b', 'c']],
-		           labels=[[0, 0], [0, 1]])
-		
-		See Also
-		--------
-		_ensure_index_from_sequences
-	**/
-	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
-	static public function _make_index(length:Dynamic, indices:Dynamic, kind:Dynamic):Dynamic;
 	static public var _shared_doc_kwargs : Dynamic;
 	/**
 		Convert a SparseSeries to a scipy.sparse.coo_matrix using index
@@ -52,10 +21,59 @@ package pandas.core.sparse.series;
 		labels respectively. Returns the sparse_matrix, row and column labels.
 	**/
 	static public function _sparse_series_to_coo(ss:Dynamic, ?row_levels:Dynamic, ?column_levels:Dynamic, ?sort_labels:Dynamic):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -73,8 +91,8 @@ package pandas.core.sparse.series;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -127,23 +145,9 @@ package pandas.core.sparse.series;
 	**/
 	static public function isna(obj:Dynamic):Dynamic;
 	/**
-		Convert ndarray to sparse format
-		
-		Parameters
-		----------
-		arr : ndarray
-		kind : {'block', 'integer'}
-		fill_value : NaN or another value
-		
-		Returns
-		-------
-		(sparse_values, index) : (ndarray, SparseIndex)
-	**/
-	static public function make_sparse(arr:Dynamic, ?kind:Dynamic, ?fill_value:Dynamic):Dynamic;
-	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -161,8 +165,8 @@ package pandas.core.sparse.series;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		

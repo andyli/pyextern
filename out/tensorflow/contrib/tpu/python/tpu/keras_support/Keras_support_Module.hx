@@ -13,7 +13,7 @@ package tensorflow.contrib.tpu.python.tpu.keras_support;
 	/**
 		Returns a cloned optimizer with the provided optimizer.config or config.
 	**/
-	static public function _clone_optimizer(optimizer:Dynamic, ?config:Dynamic):Dynamic;
+	static public function _clone_optimizer(optimizer:Dynamic, ?config:Dynamic, ?worker_name:Dynamic):Dynamic;
 	/**
 		Concatenate `tensor` across cores.
 		
@@ -158,7 +158,7 @@ package tensorflow.contrib.tpu.python.tpu.keras_support;
 	/**
 		Copy `model` along with weights to the TPU. (experimental)
 		
-		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
+		Warning: THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
 		
 		Returns a TPU model.
 		

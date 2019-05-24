@@ -3,7 +3,14 @@ package scipy.optimize.zeros;
 @:pythonImport("scipy.optimize.zeros") extern class Zeros_Module {
 	static public var CONVERGED : Dynamic;
 	static public var CONVERR : Dynamic;
+	static public var INPROGRESS : Dynamic;
 	static public var SIGNERR : Dynamic;
+	static public var VALUEERR : Dynamic;
+	static public var _ECONVERGED : Dynamic;
+	static public var _ECONVERR : Dynamic;
+	static public var _EINPROGRESS : Dynamic;
+	static public var _ESIGNERR : Dynamic;
+	static public var _EVALUEERR : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -13,12 +20,67 @@ package scipy.optimize.zeros;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		A vectorized version of Newton, Halley, and secant methods for arrays.
+		
+		Do not use this method directly. This method is called from `newton`
+		when ``np.size(x0) > 1`` is ``True``. For docstring, see `newton`.
+	**/
+	static public function _array_newton(func:Dynamic, x0:Dynamic, fprime:Dynamic, args:Dynamic, tol:Dynamic, maxiter:Dynamic, fprime2:Dynamic, full_output:Dynamic):Dynamic;
+	/**
+		Return a matrix of divided differences for the xvals, fvals pairs
+		
+		DD[i, j] = f[x_{i-j}, ..., x_i] for 0 <= j <= i
+		
+		If full is False, just return the main diagonal(or last row):
+		  f[a], f[a, b] and f[a, b, c].
+		If forward is False, return f[c], f[b, c], f[a, b, c].
+	**/
+	static public function _compute_divided_differences(xvals:Dynamic, fvals:Dynamic, ?N:Dynamic, ?full:Dynamic, ?forward:Dynamic):Dynamic;
+	/**
+		Compute p(x) for the polynomial passing through the specified locations.
+		
+		Use Neville's algorithm to compute p(x) where p is the minimal degree
+		polynomial passing through the points xvals, fvals
+	**/
+	static public function _interpolated_poly(xvals:Dynamic, fvals:Dynamic, x:Dynamic):Dynamic;
+	/**
+		Inverse cubic interpolation f-values -> x-values
+		
+		Given four points (fa, a), (fb, b), (fc, c), (fd, d) with
+		fa, fb, fc, fd all distinct, find poly IP(y) through the 4 points
+		and compute x=IP(0).
+	**/
+	static public function _inverse_poly_zero(a:Dynamic, b:Dynamic, c:Dynamic, d:Dynamic, fa:Dynamic, fb:Dynamic, fc:Dynamic, fd:Dynamic):Dynamic;
 	static public var _iter : Dynamic;
+	/**
+		Apply Newton-Raphson like steps, using divided differences to approximate f'
+		
+		ab is a real interval [a, b] containing a root,
+		fab holds the real values of f(a), f(b)
+		d is a real number outside [ab, b]
+		k is the number of steps to apply
+	**/
+	static public function _newton_quadratic(ab:Dynamic, fab:Dynamic, d:Dynamic, fd:Dynamic, k:Dynamic):Dynamic;
+	static public function _notclose(fs:Dynamic, ?rtol:Dynamic, ?atol:Dynamic):Dynamic;
+	/**
+		Select from a tuple of (root, funccalls, iterations, flag)
+	**/
+	static public function _results_select(full_output:Dynamic, r:Dynamic):Dynamic;
 	static public var _rtol : Dynamic;
+	/**
+		Perform a secant step, taking a little care
+	**/
+	static public function _secant(xvals:Dynamic, fvals:Dynamic):Dynamic;
+	/**
+		Update a bracket given (c, fc), return the discarded endpoints.
+	**/
+	static public function _update_bracket(ab:Dynamic, fab:Dynamic, c:Dynamic, fc:Dynamic):Dynamic;
+	static public function _within_tolerance(x:Dynamic, y:Dynamic, rtol:Dynamic, atol:Dynamic):Dynamic;
 	static public var _xtol : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Find root of a function within an interval.
+		Find root of a function within an interval using bisection.
 		
 		Basic bisection routine to find a zero of the function `f` between the
 		arguments `a` and `b`. `f(a)` and `f(b)` cannot have the same signs.
@@ -29,9 +91,9 @@ package scipy.optimize.zeros;
 		f : function
 		    Python function returning a number.  `f` must be continuous, and
 		    f(a) and f(b) must have opposite signs.
-		a : number
+		a : scalar
 		    One end of the bracketing interval [a,b].
-		b : number
+		b : scalar
 		    The other end of the bracketing interval [a,b].
 		xtol : number, optional
 		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
@@ -42,7 +104,7 @@ package scipy.optimize.zeros;
 		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
 		    parameter cannot be smaller than its default value of
 		    ``4*np.finfo(float).eps``.
-		maxiter : number, optional
+		maxiter : int, optional
 		    if convergence is not achieved in `maxiter` iterations, an error is
 		    raised.  Must be >= 0.
 		args : tuple, optional
@@ -54,12 +116,14 @@ package scipy.optimize.zeros;
 		    a `RootResults` object.
 		disp : bool, optional
 		    If True, raise RuntimeError if the algorithm didn't converge.
+		    Otherwise the convergence status is recorded in a `RootResults`
+		    return object.
 		
 		Returns
 		-------
 		x0 : float
 		    Zero of `f` between `a` and `b`.
-		r : RootResults (present if ``full_output = True``)
+		r : `RootResults` (present if ``full_output = True``)
 		    Object containing information about the convergence.  In particular,
 		    ``r.converged`` is True if the routine converged.
 		
@@ -87,7 +151,8 @@ package scipy.optimize.zeros;
 	**/
 	static public function bisect(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	/**
-		Find root of f in [a,b].
+		Find a root of a function in a bracketing interval using Brent's
+		method with hyperbolic extrapolation.
 		
 		A variation on the classic Brent routine to find a zero of the function f
 		between the arguments a and b that uses hyperbolic extrapolation instead of
@@ -102,9 +167,9 @@ package scipy.optimize.zeros;
 		f : function
 		    Python function returning a number.  f must be continuous, and f(a) and
 		    f(b) must have opposite signs.
-		a : number
+		a : scalar
 		    One end of the bracketing interval [a,b].
-		b : number
+		b : scalar
 		    The other end of the bracketing interval [a,b].
 		xtol : number, optional
 		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
@@ -119,8 +184,8 @@ package scipy.optimize.zeros;
 		    ``4*np.finfo(float).eps``. As with `brentq`, for nice functions
 		    the method will often satisfy the above condition with
 		    ``xtol/2`` and ``rtol/2``.
-		maxiter : number, optional
-		    if convergence is not achieved in maxiter iterations, an error is
+		maxiter : int, optional
+		    if convergence is not achieved in `maxiter` iterations, an error is
 		    raised.  Must be >= 0.
 		args : tuple, optional
 		    containing extra arguments for the function `f`.
@@ -128,15 +193,17 @@ package scipy.optimize.zeros;
 		full_output : bool, optional
 		    If `full_output` is False, the root is returned.  If `full_output` is
 		    True, the return value is ``(x, r)``, where `x` is the root, and `r` is
-		    a RootResults object.
+		    a `RootResults` object.
 		disp : bool, optional
 		    If True, raise RuntimeError if the algorithm didn't converge.
+		    Otherwise the convergence status is recorded in any `RootResults`
+		    return object.
 		
 		Returns
 		-------
 		x0 : float
 		    Zero of `f` between `a` and `b`.
-		r : RootResults (present if ``full_output = True``)
+		r : `RootResults` (present if ``full_output = True``)
 		    Object containing information about the convergence.  In particular,
 		    ``r.converged`` is True if the routine converged.
 		
@@ -188,7 +255,7 @@ package scipy.optimize.zeros;
 		
 		[Brent1973]_ provides the classic description of the algorithm.  Another
 		description can be found in a recent edition of Numerical Recipes, including
-		[PressEtal1992]_.  Another description is at
+		[PressEtal1992]_.  A third description is at
 		http://mathworld.wolfram.com/BrentsMethod.html.  It should be easy to
 		understand the algorithm just by reading our code.  Our code diverges a bit
 		from standard presentations: we choose a different formula for the
@@ -200,9 +267,9 @@ package scipy.optimize.zeros;
 		    Python function returning a number.  The function :math:`f`
 		    must be continuous, and :math:`f(a)` and :math:`f(b)` must
 		    have opposite signs.
-		a : number
+		a : scalar
 		    One end of the bracketing interval :math:`[a, b]`.
-		b : number
+		b : scalar
 		    The other end of the bracketing interval :math:`[a, b]`.
 		xtol : number, optional
 		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
@@ -217,8 +284,8 @@ package scipy.optimize.zeros;
 		    ``4*np.finfo(float).eps``. For nice functions, Brent's
 		    method will often satisfy the above condition with ``xtol/2``
 		    and ``rtol/2``. [Brent1973]_
-		maxiter : number, optional
-		    if convergence is not achieved in maxiter iterations, an error is
+		maxiter : int, optional
+		    if convergence is not achieved in `maxiter` iterations, an error is
 		    raised.  Must be >= 0.
 		args : tuple, optional
 		    containing extra arguments for the function `f`.
@@ -226,20 +293,26 @@ package scipy.optimize.zeros;
 		full_output : bool, optional
 		    If `full_output` is False, the root is returned.  If `full_output` is
 		    True, the return value is ``(x, r)``, where `x` is the root, and `r` is
-		    a RootResults object.
+		    a `RootResults` object.
 		disp : bool, optional
 		    If True, raise RuntimeError if the algorithm didn't converge.
+		    Otherwise the convergence status is recorded in any `RootResults`
+		    return object.
 		
 		Returns
 		-------
 		x0 : float
 		    Zero of `f` between `a` and `b`.
-		r : RootResults (present if ``full_output = True``)
+		r : `RootResults` (present if ``full_output = True``)
 		    Object containing information about the convergence.  In particular,
 		    ``r.converged`` is True if the routine converged.
 		
-		See Also
-		--------
+		Notes
+		-----
+		`f` must be continuous.  f(a) and f(b) must have opposite signs.
+		
+		Related functions fall into several classes:
+		
 		multivariate local optimizers
 		  `fmin`, `fmin_powell`, `fmin_cg`, `fmin_bfgs`, `fmin_ncg`
 		nonlinear least squares minimizer
@@ -257,9 +330,18 @@ package scipy.optimize.zeros;
 		scalar fixed-point finder
 		  `fixed_point`
 		
-		Notes
-		-----
-		`f` must be continuous.  f(a) and f(b) must have opposite signs.
+		References
+		----------
+		.. [Brent1973]
+		   Brent, R. P.,
+		   *Algorithms for Minimization Without Derivatives*.
+		   Englewood Cliffs, NJ: Prentice-Hall, 1973. Ch. 3-4.
+		
+		.. [PressEtal1992]
+		   Press, W. H.; Flannery, B. P.; Teukolsky, S. A.; and Vetterling, W. T.
+		   *Numerical Recipes in FORTRAN: The Art of Scientific Computing*, 2nd ed.
+		   Cambridge, England: Cambridge University Press, pp. 352-355, 1992.
+		   Section 9.3:  "Van Wijngaarden-Dekker-Brent Method."
 		
 		Examples
 		--------
@@ -275,89 +357,149 @@ package scipy.optimize.zeros;
 		>>> root = optimize.brentq(f, 0, 2)
 		>>> root
 		1.0
-		
-		References
-		----------
-		.. [Brent1973]
-		   Brent, R. P.,
-		   *Algorithms for Minimization Without Derivatives*.
-		   Englewood Cliffs, NJ: Prentice-Hall, 1973. Ch. 3-4.
-		
-		.. [PressEtal1992]
-		   Press, W. H.; Flannery, B. P.; Teukolsky, S. A.; and Vetterling, W. T.
-		   *Numerical Recipes in FORTRAN: The Art of Scientific Computing*, 2nd ed.
-		   Cambridge, England: Cambridge University Press, pp. 352-355, 1992.
-		   Section 9.3:  "Van Wijngaarden-Dekker-Brent Method."
 	**/
 	static public function brentq(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	static public var division : Dynamic;
 	static public var flag_map : Dynamic;
 	/**
-		Find a zero using the Newton-Raphson or secant method.
+		Returns a new subclass of tuple with named fields.
+		
+		>>> Point = namedtuple('Point', ['x', 'y'])
+		>>> Point.__doc__                   # docstring for the new class
+		'Point(x, y)'
+		>>> p = Point(11, y=22)             # instantiate with positional args or keywords
+		>>> p[0] + p[1]                     # indexable like a plain tuple
+		33
+		>>> x, y = p                        # unpack like a regular tuple
+		>>> x, y
+		(11, 22)
+		>>> p.x + p.y                       # fields also accessible by name
+		33
+		>>> d = p._asdict()                 # convert to a dictionary
+		>>> d['x']
+		11
+		>>> Point(**d)                      # convert from a dictionary
+		Point(x=11, y=22)
+		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
+		Point(x=100, y=22)
+	**/
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
+	/**
+		Find a zero of a real or complex function using the Newton-Raphson
+		(or secant or Halley's) method.
 		
 		Find a zero of the function `func` given a nearby starting point `x0`.
 		The Newton-Raphson method is used if the derivative `fprime` of `func`
 		is provided, otherwise the secant method is used.  If the second order
-		derivative `fprime2` of `func` is provided, then Halley's method is used.
+		derivative `fprime2` of `func` is also provided, then Halley's method is
+		used.
+		
+		If `x0` is a sequence with more than one item, then `newton` returns an
+		array, and `func` must be vectorized and return a sequence or array of the
+		same shape as its first argument. If `fprime` or `fprime2` is given then
+		its return must also have the same shape.
 		
 		Parameters
 		----------
-		func : function
+		func : callable
 		    The function whose zero is wanted. It must be a function of a
-		    single variable of the form f(x,a,b,c...), where a,b,c... are extra
-		    arguments that can be passed in the `args` parameter.
-		x0 : float
+		    single variable of the form ``f(x,a,b,c...)``, where ``a,b,c...``
+		    are extra arguments that can be passed in the `args` parameter.
+		x0 : float, sequence, or ndarray
 		    An initial estimate of the zero that should be somewhere near the
-		    actual zero.
-		fprime : function, optional
+		    actual zero. If not scalar, then `func` must be vectorized and return
+		    a sequence or array of the same shape as its first argument.
+		fprime : callable, optional
 		    The derivative of the function when available and convenient. If it
 		    is None (default), then the secant method is used.
 		args : tuple, optional
 		    Extra arguments to be used in the function call.
 		tol : float, optional
-		    The allowable error of the zero value.
+		    The allowable error of the zero value.  If `func` is complex-valued,
+		    a larger `tol` is recommended as both the real and imaginary parts
+		    of `x` contribute to ``|x - x0|``.
 		maxiter : int, optional
 		    Maximum number of iterations.
-		fprime2 : function, optional
+		fprime2 : callable, optional
 		    The second order derivative of the function when available and
 		    convenient. If it is None (default), then the normal Newton-Raphson
 		    or the secant method is used. If it is not None, then Halley's method
 		    is used.
+		x1 : float, optional
+		    Another estimate of the zero that should be somewhere near the
+		    actual zero.  Used if `fprime` is not provided.
+		rtol : float, optional
+		    Tolerance (relative) for termination.
+		full_output : bool, optional
+		    If `full_output` is False (default), the root is returned.
+		    If True and `x0` is scalar, the return value is ``(x, r)``, where ``x``
+		    is the root and ``r`` is a `RootResults` object.
+		    If True and `x0` is non-scalar, the return value is ``(x, converged,
+		    zero_der)`` (see Returns section for details).
+		disp : bool, optional
+		    If True, raise a RuntimeError if the algorithm didn't converge, with
+		    the error message containing the number of iterations and current
+		    function value.  Otherwise the convergence status is recorded in a
+		    `RootResults` return object.
+		    Ignored if `x0` is not scalar.
+		    *Note: this has little to do with displaying, however
+		    the `disp` keyword cannot be renamed for backwards compatibility.*
 		
 		Returns
 		-------
-		zero : float
+		root : float, sequence, or ndarray
 		    Estimated location where function is zero.
+		r : `RootResults`, optional
+		    Present if ``full_output=True`` and `x0` is scalar.
+		    Object containing information about the convergence.  In particular,
+		    ``r.converged`` is True if the routine converged.
+		converged : ndarray of bool, optional
+		    Present if ``full_output=True`` and `x0` is non-scalar.
+		    For vector functions, indicates which elements converged successfully.
+		zero_der : ndarray of bool, optional
+		    Present if ``full_output=True`` and `x0` is non-scalar.
+		    For vector functions, indicates which elements had a zero derivative.
 		
 		See Also
 		--------
 		brentq, brenth, ridder, bisect
-		fsolve : find zeroes in n dimensions.
+		fsolve : find zeros in n dimensions.
 		
 		Notes
 		-----
 		The convergence rate of the Newton-Raphson method is quadratic,
 		the Halley method is cubic, and the secant method is
 		sub-quadratic.  This means that if the function is well behaved
-		the actual error in the estimated zero is approximately the square
-		(cube for Halley) of the requested tolerance up to roundoff
-		error. However, the stopping criterion used here is the step size
-		and there is no guarantee that a zero has been found. Consequently
-		the result should be verified. Safer algorithms are brentq,
-		brenth, ridder, and bisect, but they all require that the root
-		first be bracketed in an interval where the function changes
-		sign. The brentq algorithm is recommended for general use in one
-		dimensional problems when such an interval has been found.
+		the actual error in the estimated zero after the n-th iteration
+		is approximately the square (cube for Halley) of the error
+		after the (n-1)-th step.  However, the stopping criterion used
+		here is the step size and there is no guarantee that a zero
+		has been found. Consequently the result should be verified.
+		Safer algorithms are brentq, brenth, ridder, and bisect,
+		but they all require that the root first be bracketed in an
+		interval where the function changes sign. The brentq algorithm
+		is recommended for general use in one dimensional problems
+		when such an interval has been found.
+		
+		When `newton` is used with arrays, it is best suited for the following
+		types of problems:
+		
+		* The initial guesses, `x0`, are all relatively the same distance from
+		  the roots.
+		* Some or all of the extra arguments, `args`, are also arrays so that a
+		  class of similar problems can be solved together.
+		* The size of the initial guesses, `x0`, is larger than O(100) elements.
+		  Otherwise, a naive loop may perform as well or better than a vector.
 		
 		Examples
 		--------
+		>>> from scipy import optimize
+		>>> import matplotlib.pyplot as plt
 		
 		>>> def f(x):
 		...     return (x**3 - 1)  # only one real root at x = 1
 		
-		>>> from scipy import optimize
-		
-		``fprime`` not provided, use secant method
+		``fprime`` is not provided, use the secant method:
 		
 		>>> root = optimize.newton(f, 1.5)
 		>>> root
@@ -366,33 +508,62 @@ package scipy.optimize.zeros;
 		>>> root
 		1.0000000000000016
 		
-		Only ``fprime`` provided, use Newton Raphson method
+		Only ``fprime`` is provided, use the Newton-Raphson method:
 		
 		>>> root = optimize.newton(f, 1.5, fprime=lambda x: 3 * x**2)
 		>>> root
 		1.0
 		
-		Both ``fprime2`` and ``fprime`` provided, use Halley's method
+		Both ``fprime2`` and ``fprime`` are provided, use Halley's method:
 		
 		>>> root = optimize.newton(f, 1.5, fprime=lambda x: 3 * x**2,
 		...                        fprime2=lambda x: 6 * x)
 		>>> root
 		1.0
+		
+		When we want to find zeros for a set of related starting values and/or
+		function parameters, we can provide both of those as an array of inputs:
+		
+		>>> f = lambda x, a: x**3 - a
+		>>> fder = lambda x, a: 3 * x**2
+		>>> np.random.seed(4321)
+		>>> x = np.random.randn(100)
+		>>> a = np.arange(-50, 50)
+		>>> vec_res = optimize.newton(f, x, fprime=fder, args=(a, ))
+		
+		The above is the equivalent of solving for each value in ``(x, a)``
+		separately in a for-loop, just faster:
+		
+		>>> loop_res = [optimize.newton(f, x0, fprime=fder, args=(a0,))
+		...             for x0, a0 in zip(x, a)]
+		>>> np.allclose(vec_res, loop_res)
+		True
+		
+		Plot the results found for all values of ``a``:
+		
+		>>> analytical_result = np.sign(a) * np.abs(a)**(1/3)
+		>>> fig = plt.figure()
+		>>> ax = fig.add_subplot(111)
+		>>> ax.plot(a, analytical_result, 'o')
+		>>> ax.plot(a, vec_res, '.')
+		>>> ax.set_xlabel('$a$')
+		>>> ax.set_ylabel('$x$ where $f(x, a)=0$')
+		>>> plt.show()
 	**/
-	static public function newton(func:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?fprime2:Dynamic):Float;
+	static public function newton(func:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?fprime2:Dynamic, ?x1:Dynamic, ?rtol:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function results_c(full_output:Dynamic, r:Dynamic):Dynamic;
 	/**
-		Find a root of a function in an interval.
+		Find a root of a function in an interval using Ridder's method.
 		
 		Parameters
 		----------
 		f : function
 		    Python function returning a number.  f must be continuous, and f(a) and
 		    f(b) must have opposite signs.
-		a : number
+		a : scalar
 		    One end of the bracketing interval [a,b].
-		b : number
+		b : scalar
 		    The other end of the bracketing interval [a,b].
 		xtol : number, optional
 		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
@@ -403,8 +574,8 @@ package scipy.optimize.zeros;
 		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
 		    parameter cannot be smaller than its default value of
 		    ``4*np.finfo(float).eps``.
-		maxiter : number, optional
-		    if convergence is not achieved in maxiter iterations, an error is
+		maxiter : int, optional
+		    if convergence is not achieved in `maxiter` iterations, an error is
 		    raised.  Must be >= 0.
 		args : tuple, optional
 		    containing extra arguments for the function `f`.
@@ -412,15 +583,17 @@ package scipy.optimize.zeros;
 		full_output : bool, optional
 		    If `full_output` is False, the root is returned.  If `full_output` is
 		    True, the return value is ``(x, r)``, where `x` is the root, and `r` is
-		    a RootResults object.
+		    a `RootResults` object.
 		disp : bool, optional
 		    If True, raise RuntimeError if the algorithm didn't converge.
+		    Otherwise the convergence status is recorded in any `RootResults`
+		    return object.
 		
 		Returns
 		-------
 		x0 : float
 		    Zero of `f` between `a` and `b`.
-		r : RootResults (present if ``full_output = True``)
+		r : `RootResults` (present if ``full_output = True``)
 		    Object containing information about the convergence.
 		    In particular, ``r.converged`` is True if the routine converged.
 		
@@ -440,6 +613,13 @@ package scipy.optimize.zeros;
 		The routine used here diverges slightly from standard presentations in
 		order to be a bit more careful of tolerance.
 		
+		References
+		----------
+		.. [Ridders1979]
+		   Ridders, C. F. J. "A New Algorithm for Computing a
+		   Single Root of a Real Continuous Function."
+		   IEEE Trans. Circuits Systems 26, 979-980, 1979.
+		
 		Examples
 		--------
 		
@@ -455,120 +635,110 @@ package scipy.optimize.zeros;
 		>>> root = optimize.ridder(f, -2, 0)
 		>>> root
 		-1.0
-		
-		References
-		----------
-		.. [Ridders1979]
-		   Ridders, C. F. J. "A New Algorithm for Computing a
-		   Single Root of a Real Continuous Function."
-		   IEEE Trans. Circuits Systems 26, 979-980, 1979.
 	**/
 	static public function ridder(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	/**
-		sign(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		Find a zero using TOMS Algorithm 748 method.
 		
-		Returns an element-wise indication of the sign of a number.
+		Implements the Algorithm 748 method of Alefeld, Potro and Shi to find a
+		zero of the function `f` on the interval `[a , b]`, where `f(a)` and
+		`f(b)` must have opposite signs.
 		
-		The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.  nan
-		is returned for nan inputs.
-		
-		For complex inputs, the `sign` function returns
-		``sign(x.real) + 0j if x.real != 0 else sign(x.imag) + 0j``.
-		
-		complex(nan, 0) is returned for complex nan inputs.
+		It uses a mixture of inverse cubic interpolation and
+		"Newton-quadratic" steps. [APS1995].
 		
 		Parameters
 		----------
-		x : array_like
-		    Input values.
-		out : ndarray, None, or tuple of ndarray and None, optional
-		    A location into which the result is stored. If provided, it must have
-		    a shape that the inputs broadcast to. If not provided or `None`,
-		    a freshly-allocated array is returned. A tuple (possible only as a
-		    keyword argument) must have length equal to the number of outputs.
-		where : array_like, optional
-		    Values of True indicate to calculate the ufunc at that position, values
-		    of False indicate to leave the value in the output alone.
-		**kwargs
-		    For other keyword-only arguments, see the
-		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		f : function
+		    Python function returning a scalar.  The function :math:`f`
+		    must be continuous, and :math:`f(a)` and :math:`f(b)`
+		    have opposite signs.
+		a : scalar,
+		    lower boundary of the search interval
+		b : scalar,
+		    upper boundary of the search interval
+		args : tuple, optional
+		    containing extra arguments for the function `f`.
+		    `f` is called by ``f(x, *args)``.
+		k : int, optional
+		    The number of Newton quadratic steps to perform each
+		    iteration. ``k>=1``.
+		xtol : scalar, optional
+		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
+		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
+		    parameter must be nonnegative.
+		rtol : scalar, optional
+		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
+		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root.
+		maxiter : int, optional
+		    if convergence is not achieved in `maxiter` iterations, an error is
+		    raised.  Must be >= 0.
+		full_output : bool, optional
+		    If `full_output` is False, the root is returned.  If `full_output` is
+		    True, the return value is ``(x, r)``, where `x` is the root, and `r` is
+		    a `RootResults` object.
+		disp : bool, optional
+		    If True, raise RuntimeError if the algorithm didn't converge.
+		    Otherwise the convergence status is recorded in the `RootResults`
+		    return object.
 		
 		Returns
 		-------
-		y : ndarray
-		    The sign of `x`.
-		    This is a scalar if `x` is a scalar.
-		
-		Notes
-		-----
-		There is more than one definition of sign in common use for complex
-		numbers.  The definition used here is equivalent to :math:`x/\sqrt{x*x}`
-		which is different from a common alternative, :math:`x/|x|`.
-		
-		Examples
-		--------
-		>>> np.sign([-5., 4.5])
-		array([-1.,  1.])
-		>>> np.sign(0)
-		0
-		>>> np.sign(5-2j)
-		(1+0j)
-	**/
-	static public function sign(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
-		
-		Return the non-negative square-root of an array, element-wise.
-		
-		Parameters
-		----------
-		x : array_like
-		    The values whose square-roots are required.
-		out : ndarray, None, or tuple of ndarray and None, optional
-		    A location into which the result is stored. If provided, it must have
-		    a shape that the inputs broadcast to. If not provided or `None`,
-		    a freshly-allocated array is returned. A tuple (possible only as a
-		    keyword argument) must have length equal to the number of outputs.
-		where : array_like, optional
-		    Values of True indicate to calculate the ufunc at that position, values
-		    of False indicate to leave the value in the output alone.
-		**kwargs
-		    For other keyword-only arguments, see the
-		    :ref:`ufunc docs <ufuncs.kwargs>`.
-		
-		Returns
-		-------
-		y : ndarray
-		    An array of the same shape as `x`, containing the positive
-		    square-root of each element in `x`.  If any element in `x` is
-		    complex, a complex array is returned (and the square-roots of
-		    negative reals are calculated).  If all of the elements in `x`
-		    are real, so is `y`, with negative elements returning ``nan``.
-		    If `out` was provided, `y` is a reference to it.
-		    This is a scalar if `x` is a scalar.
+		x0 : float
+		    Approximate Zero of `f`
+		r : `RootResults` (present if ``full_output = True``)
+		    Object containing information about the convergence.  In particular,
+		    ``r.converged`` is True if the routine converged.
 		
 		See Also
 		--------
-		lib.scimath.sqrt
-		    A version which returns complex numbers when given negative reals.
+		brentq, brenth, ridder, bisect, newton
+		fsolve : find zeroes in n dimensions.
 		
 		Notes
 		-----
-		*sqrt* has--consistent with common convention--as its branch cut the
-		real "interval" [`-inf`, 0), and is continuous from above on it.
-		A branch cut is a curve in the complex plane across which a given
-		complex function fails to be continuous.
+		`f` must be continuous.
+		Algorithm 748 with ``k=2`` is asymptotically the most efficient
+		algorithm known for finding roots of a four times continuously
+		differentiable function.
+		In contrast with Brent's algorithm, which may only decrease the length of
+		the enclosing bracket on the last step, Algorithm 748 decreases it each
+		iteration with the same asymptotic efficiency as it finds the root.
+		
+		For easy statement of efficiency indices, assume that `f` has 4
+		continuouous deriviatives.
+		For ``k=1``, the convergence order is at least 2.7, and with about
+		asymptotically 2 function evaluations per iteration, the efficiency
+		index is approximately 1.65.
+		For ``k=2``, the order is about 4.6 with asymptotically 3 function
+		evaluations per iteration, and the efficiency index 1.66.
+		For higher values of `k`, the efficiency index approaches
+		the `k`-th root of ``(3k-2)``, hence ``k=1`` or ``k=2`` are
+		usually appropriate.
+		
+		References
+		----------
+		.. [APS1995]
+		   Alefeld, G. E. and Potra, F. A. and Shi, Yixun,
+		   *Algorithm 748: Enclosing Zeros of Continuous Functions*,
+		   ACM Trans. Math. Softw. Volume 221(1995)
+		   doi = {10.1145/210089.210111}
 		
 		Examples
 		--------
-		>>> np.sqrt([1,4,9])
-		array([ 1.,  2.,  3.])
+		>>> def f(x):
+		...     return (x**3 - 1)  # only one real root at x = 1
 		
-		>>> np.sqrt([4, -1, -3+4J])
-		array([ 2.+0.j,  0.+1.j,  1.+2.j])
-		
-		>>> np.sqrt([4, -1, numpy.inf])
-		array([  2.,  NaN,  Inf])
+		>>> from scipy import optimize
+		>>> root, results = optimize.toms748(f, 0, 2, full_output=True)
+		>>> root
+		1.0
+		>>> results
+		      converged: True
+		           flag: 'converged'
+		 function_calls: 11
+		     iterations: 5
+		           root: 1.0
 	**/
-	static public function sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function toms748(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?k:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 }

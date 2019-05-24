@@ -30,7 +30,6 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FEATURES_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -83,7 +82,10 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var WEIGHTS_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -249,4 +251,12 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.decision_trees.ObliqueFeatures.features
+	**/
+	public var features : Dynamic;
+	/**
+		Field tensorflow.decision_trees.ObliqueFeatures.weights
+	**/
+	public var weights : Dynamic;
 }

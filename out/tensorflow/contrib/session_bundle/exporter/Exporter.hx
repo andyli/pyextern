@@ -115,7 +115,7 @@ package tensorflow.contrib.session_bundle.exporter;
 	/**
 		Exports the model. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
 		No longer supported. Switch to SavedModel immediately.
 		
@@ -139,7 +139,7 @@ package tensorflow.contrib.session_bundle.exporter;
 	/**
 		Initialization. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
 		No longer supported. Switch to SavedModel immediately.
 		

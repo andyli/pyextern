@@ -43,12 +43,12 @@ package torch.utils.cpp_extension;
 		vars(self) with any keyword parameters.
 	**/
 	@:native("__init__")
-	public function ___init__(dist:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Construct the command for dist, updating
 		vars(self) with any keyword parameters.
 	**/
-	public function new(dist:Dynamic, ?kw:python.KwArgs<Dynamic>):Void;
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -111,6 +111,7 @@ package torch.utils.cpp_extension;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _add_compile_flag(extension:Dynamic, flag:Dynamic):Dynamic;
 	public function _add_gnu_abi_flag_if_binary(extension:Dynamic):Dynamic;
 	public function _build_ext__get_output_extensions():Dynamic;
 	public function _build_ext__get_stubs_outputs():Dynamic;
@@ -210,7 +211,7 @@ package torch.utils.cpp_extension;
 		of the file from which it will be loaded (eg. "foo/bar.so", or
 		"foo\bar.pyd").
 	**/
-	public function get_ext_filename(fullname:Dynamic):Dynamic;
+	public function get_ext_filename(ext_name:Dynamic):Dynamic;
 	/**
 		Returns the fullname of a given extension name.
 		
@@ -321,5 +322,10 @@ package torch.utils.cpp_extension;
 	public function swig_sources(sources:Dynamic, extension:Dynamic):Dynamic;
 	static public var user_options : Dynamic;
 	public function warn(msg:Dynamic):Dynamic;
+	/**
+		Returns an alternative constructor that extends any original keyword
+		arguments to the original constructor with the given options.
+	**/
+	static public function with_options(?options:python.KwArgs<Dynamic>):Dynamic;
 	public function write_stub(output_dir:Dynamic, ext:Dynamic, ?compile:Dynamic):Dynamic;
 }

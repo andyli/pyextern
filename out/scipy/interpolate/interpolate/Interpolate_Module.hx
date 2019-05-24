@@ -19,12 +19,6 @@ package scipy.interpolate.interpolate;
 	**/
 	static public function _do_extrapolate(fill_value:Dynamic):Dynamic;
 	/**
-		Similar to numpy.dot, but sum over last axis of a and 1st axis of b
-	**/
-	static public function _dot0(a:Dynamic, b:Dynamic):Dynamic;
-	static public function _find_smoothest(xk:Dynamic, yk:Dynamic, order:Dynamic, ?conds:Dynamic, ?B:Dynamic):Dynamic;
-	static public function _find_user(xk:Dynamic, yk:Dynamic, order:Dynamic, conds:Dynamic, B:Dynamic):Dynamic;
-	/**
 		Convert a tuple of coordinate arrays to a (..., ndim)-shaped array.
 	**/
 	static public function _ndim_coords_from_arrays(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -329,89 +323,6 @@ package scipy.interpolate.interpolate;
 	**/
 	static public function comb(N:Dynamic, k:Dynamic, ?exact:Dynamic, ?repetition:Dynamic):Dynamic;
 	static public var division : Dynamic;
-	/**
-		dot(a, b, out=None)
-		
-		Dot product of two arrays. Specifically,
-		
-		- If both `a` and `b` are 1-D arrays, it is inner product of vectors
-		  (without complex conjugation).
-		
-		- If both `a` and `b` are 2-D arrays, it is matrix multiplication,
-		  but using :func:`matmul` or ``a @ b`` is preferred.
-		
-		- If either `a` or `b` is 0-D (scalar), it is equivalent to :func:`multiply`
-		  and using ``numpy.multiply(a, b)`` or ``a * b`` is preferred.
-		
-		- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over
-		  the last axis of `a` and `b`.
-		
-		- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a
-		  sum product over the last axis of `a` and the second-to-last axis of `b`::
-		
-		    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])
-		
-		Parameters
-		----------
-		a : array_like
-		    First argument.
-		b : array_like
-		    Second argument.
-		out : ndarray, optional
-		    Output argument. This must have the exact kind that would be returned
-		    if it was not used. In particular, it must have the right type, must be
-		    C-contiguous, and its dtype must be the dtype that would be returned
-		    for `dot(a,b)`. This is a performance feature. Therefore, if these
-		    conditions are not met, an exception is raised, instead of attempting
-		    to be flexible.
-		
-		Returns
-		-------
-		output : ndarray
-		    Returns the dot product of `a` and `b`.  If `a` and `b` are both
-		    scalars or both 1-D arrays then a scalar is returned; otherwise
-		    an array is returned.
-		    If `out` is given, then it is returned.
-		
-		Raises
-		------
-		ValueError
-		    If the last dimension of `a` is not the same size as
-		    the second-to-last dimension of `b`.
-		
-		See Also
-		--------
-		vdot : Complex-conjugating dot product.
-		tensordot : Sum products over arbitrary axes.
-		einsum : Einstein summation convention.
-		matmul : '@' operator as method with out parameter.
-		
-		Examples
-		--------
-		>>> np.dot(3, 4)
-		12
-		
-		Neither argument is complex-conjugated:
-		
-		>>> np.dot([2j, 3j], [2j, 3j])
-		(-13+0j)
-		
-		For 2-D arrays it is the matrix product:
-		
-		>>> a = [[1, 0], [0, 1]]
-		>>> b = [[4, 1], [2, 2]]
-		>>> np.dot(a, b)
-		array([[4, 1],
-		       [2, 2]])
-		
-		>>> a = np.arange(3*4*5*6).reshape((3,4,5,6))
-		>>> b = np.arange(3*4*5*6)[::-1].reshape((5,4,6,3))
-		>>> np.dot(a, b)[2,3,2,1,2,2]
-		499128
-		>>> sum(a[2,3,2,:] * b[1,2,:,2])
-		499128
-	**/
-	static public function dot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var integer_types : Dynamic;
 	/**
 		Multidimensional interpolation on regular grids.
@@ -540,9 +451,9 @@ package scipy.interpolate.interpolate;
 		    Alternatively, the following string aliases are recognized:
 		
 		    * ``"clamped"``: The first derivatives at the ends are zero. This is
-		       equivalent to ``bc_type=((1, 0.0), (1, 0.0))``.
+		       equivalent to ``bc_type=([(1, 0.0)], [(1, 0.0)])``.
 		    * ``"natural"``: The second derivatives at ends are zero. This is
-		      equivalent to ``bc_type=((2, 0.0), (2, 0.0))``.
+		      equivalent to ``bc_type=([(2, 0.0)], [(2, 0.0)])``.
 		    * ``"not-a-knot"`` (default): The first and second segments are the same
 		      polynomial. This is equivalent to having ``bc_type=None``.
 		
@@ -795,115 +706,6 @@ package scipy.interpolate.interpolate;
 		array([0, 5, 1, 2])
 	**/
 	static public function searchsorted(a:Dynamic, v:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
-	/**
-		`spleval` is deprecated!
-		spleval is deprecated in scipy 0.19.0, use BSpline instead.
-		
-		
-		    Evaluate a fixed spline represented by the given tuple at the new x-values
-		
-		    The `xj` values are the interior knot points.  The approximation
-		    region is `xj[0]` to `xj[-1]`.  If N+1 is the length of `xj`, then `cvals`
-		    should have length N+k where `k` is the order of the spline.
-		
-		    Parameters
-		    ----------
-		    (xj, cvals, k) : tuple
-		        Parameters that define the fixed spline
-		    xj : array_like
-		        Interior knot points
-		    cvals : array_like
-		        Curvature
-		    k : int
-		        Order of the spline
-		    xnew : array_like
-		        Locations to calculate spline
-		    deriv : int
-		        Deriv
-		
-		    Returns
-		    -------
-		    spleval : ndarray
-		        If `cvals` represents more than one curve (`cvals.ndim` > 1) and/or
-		        `xnew` is N-d, then the result is `xnew.shape` + `cvals.shape[1:]`
-		        providing the interpolation of multiple curves.
-		
-		    Notes
-		    -----
-		    Internally, an additional `k`-1 knot points are added on either side of
-		    the spline.
-		
-		    
-	**/
-	static public function spleval(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`spline` is deprecated!
-		spline is deprecated in scipy 0.19.0, use Bspline class instead.
-		
-		
-		    Interpolate a curve at new points using a spline fit
-		
-		    Parameters
-		    ----------
-		    xk, yk : array_like
-		        The x and y values that define the curve.
-		    xnew : array_like
-		        The x values where spline should estimate the y values.
-		    order : int
-		        Default is 3.
-		    kind : string
-		        One of {'smoothest'}
-		    conds : Don't know
-		        Don't know
-		
-		    Returns
-		    -------
-		    spline : ndarray
-		        An array of y values; the spline evaluated at the positions `xnew`.
-		
-		    
-	**/
-	static public function spline(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`splmake` is deprecated!
-		splmake is deprecated in scipy 0.19.0, use make_interp_spline instead.
-		
-		
-		    Return a representation of a spline given data-points at internal knots
-		
-		    Parameters
-		    ----------
-		    xk : array_like
-		        The input array of x values of rank 1
-		    yk : array_like
-		        The input array of y values of rank N. `yk` can be an N-d array to
-		        represent more than one curve, through the same `xk` points. The first
-		        dimension is assumed to be the interpolating dimension and is the same
-		        length of `xk`.
-		    order : int, optional
-		        Order of the spline
-		    kind : str, optional
-		        Can be 'smoothest', 'not_a_knot', 'fixed', 'clamped', 'natural',
-		        'periodic', 'symmetric', 'user', 'mixed' and it is ignored if order < 2
-		    conds : optional
-		        Conds
-		
-		    Returns
-		    -------
-		    splmake : tuple
-		        Return a (`xk`, `cvals`, `k`) representation of a spline given
-		        data-points where the (internal) knots are at the data-points.
-		
-		    
-	**/
-	static public function splmake(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`spltopp` is deprecated!
-		spltopp is deprecated in scipy 0.19.0, use PPoly.from_spline instead.
-		
-		Return a piece-wise polynomial object from a fixed-spline tuple.
-	**/
-	static public function spltopp(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var string_types : Dynamic;
 	/**
 		Permute the dimensions of an array.

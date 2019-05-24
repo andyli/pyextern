@@ -153,6 +153,11 @@ package tensorflow.python.training.saver;
 		@compatibility(eager)
 		When eager execution is enabled, `var_list` must specify a `list` or `dict`
 		of variables to save. Otherwise, a `RuntimeError` will be raised.
+		
+		Although Saver works in some cases when executing eagerly, it is
+		fragile. Please switch to `tf.train.Checkpoint` or
+		`tf.keras.Model.save_weights`, which perform a more robust object-based
+		saving. These APIs will load checkpoints written by `Saver`.
 		@end_compatibility
 	**/
 	@:native("__init__")
@@ -245,6 +250,11 @@ package tensorflow.python.training.saver;
 		@compatibility(eager)
 		When eager execution is enabled, `var_list` must specify a `list` or `dict`
 		of variables to save. Otherwise, a `RuntimeError` will be raised.
+		
+		Although Saver works in some cases when executing eagerly, it is
+		fragile. Please switch to `tf.train.Checkpoint` or
+		`tf.keras.Model.save_weights`, which perform a more robust object-based
+		saving. These APIs will load checkpoints written by `Saver`.
 		@end_compatibility
 	**/
 	public function new(?var_list:Dynamic, ?reshape:Dynamic, ?sharded:Dynamic, ?max_to_keep:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?name:Dynamic, ?restore_sequentially:Dynamic, ?saver_def:Dynamic, ?builder:Dynamic, ?defer_build:Dynamic, ?allow_empty:Dynamic, ?write_version:Dynamic, ?pad_step_number:Dynamic, ?save_relative_paths:Dynamic, ?filename:Dynamic):Void;

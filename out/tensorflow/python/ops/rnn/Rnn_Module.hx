@@ -198,7 +198,11 @@ package tensorflow.python.ops.rnn;
 	static public function _transpose_batch_time(x:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Creates a dynamic version of bidirectional recurrent neural network.
+		Creates a dynamic version of bidirectional recurrent neural network. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use `keras.layers.Bidirectional(keras.layers.RNN(cell))`, which is equivalent to this API
 		
 		Takes input and builds independent forward and backward RNNs. The input_size
 		of forward and backward cell must match. The initial state for both directions
@@ -275,7 +279,11 @@ package tensorflow.python.ops.rnn;
 	static public function bidirectional_dynamic_rnn(cell_fw:Dynamic, cell_bw:Dynamic, inputs:Dynamic, ?sequence_length:Dynamic, ?initial_state_fw:Dynamic, ?initial_state_bw:Dynamic, ?dtype:Dynamic, ?parallel_iterations:Dynamic, ?swap_memory:Dynamic, ?time_major:Dynamic, ?scope:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Creates a recurrent neural network specified by RNNCell `cell`.
+		Creates a recurrent neural network specified by RNNCell `cell`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use `keras.layers.RNN(cell)`, which is equivalent to this API
 		
 		Performs fully dynamic unrolling of `inputs`.
 		
@@ -557,7 +565,11 @@ package tensorflow.python.ops.rnn;
 	**/
 	static public function raw_rnn(cell:Dynamic, loop_fn:Dynamic, ?parallel_iterations:Dynamic, ?swap_memory:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Creates a bidirectional recurrent neural network.
+		Creates a bidirectional recurrent neural network. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use `keras.layers.Bidirectional(keras.layers.RNN(cell, unroll=True))`, which is equivalent to this API
 		
 		Similar to the unidirectional case above (rnn) but takes input and builds
 		independent forward and backward RNNs with the final forward and backward
@@ -600,7 +612,11 @@ package tensorflow.python.ops.rnn;
 	**/
 	static public function static_bidirectional_rnn(cell_fw:Dynamic, cell_bw:Dynamic, inputs:Dynamic, ?initial_state_fw:Dynamic, ?initial_state_bw:Dynamic, ?dtype:Dynamic, ?sequence_length:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Creates a recurrent neural network specified by RNNCell `cell`.
+		Creates a recurrent neural network specified by RNNCell `cell`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use `keras.layers.RNN(cell, unroll=True)`, which is equivalent to this API
 		
 		The simplest form of RNN network generated is:
 		

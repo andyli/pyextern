@@ -165,7 +165,8 @@ package theano.tensor.nlinalg;
 	**/
 	static public function _get_test_value(v:Dynamic):Dynamic;
 	/**
-		Return the eigenvalues and eigenvectors of a Hermitian or symmetric matrix.
+		Return the eigenvalues and eigenvectors of a complex Hermitian
+		(conjugate symmetric) or a real symmetric matrix.
 		
 		Returns two objects, a 1-D array containing the eigenvalues of `a`, and
 		a 2-D square array or matrix (depending on the input type) of the
@@ -174,7 +175,7 @@ package theano.tensor.nlinalg;
 		Parameters
 		----------
 		a : (..., M, M) array
-		    Hermitian/Symmetric matrices whose eigenvalues and
+		    Hermitian or real symmetric matrices whose eigenvalues and
 		    eigenvectors are to be computed.
 		UPLO : {'L', 'U'}, optional
 		    Specifies whether the calculation is done with the lower triangular
@@ -201,7 +202,8 @@ package theano.tensor.nlinalg;
 		
 		See Also
 		--------
-		eigvalsh : eigenvalues of symmetric or Hermitian arrays.
+		eigvalsh : eigenvalues of real symmetric or complex Hermitian
+		           (conjugate symmetric) arrays.
 		eig : eigenvalues and right eigenvectors for non-symmetric arrays.
 		eigvals : eigenvalues of non-symmetric arrays.
 		

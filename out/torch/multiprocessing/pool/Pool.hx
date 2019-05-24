@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package torch.multiprocessing.pool;
 @:pythonImport("torch.multiprocessing.pool", "Pool") extern class Pool {
-	public function Process(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function Process(ctx:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -112,20 +112,26 @@ package torch.multiprocessing.pool;
 	**/
 	public var __weakref__ : Dynamic;
 	static public function _get_tasks(func:Dynamic, it:Dynamic, size:Dynamic):Dynamic;
+	/**
+		Provides a generator of tasks for imap and imap_unordered with
+		appropriate handling for iterables which throw exceptions during
+		iteration.
+	**/
+	public function _guarded_task_generation(result_job:Dynamic, func:Dynamic, iterable:Dynamic):Dynamic;
 	static public function _handle_results(outqueue:Dynamic, get:Dynamic, cache:Dynamic):Dynamic;
 	static public function _handle_tasks(taskqueue:Dynamic, put:Dynamic, outqueue:Dynamic, pool:Dynamic, cache:Dynamic):Dynamic;
-	static public function _handle_workers(pool:Dynamic):Dynamic;
+	static public function _handle_workers(cache:Dynamic, taskqueue:Dynamic, ctx:Dynamic, Process:Dynamic, processes:Dynamic, pool:Dynamic, inqueue:Dynamic, outqueue:Dynamic, initializer:Dynamic, initargs:Dynamic, maxtasksperchild:Dynamic, wrap_exception:Dynamic):Dynamic;
 	static public function _help_stuff_finish(inqueue:Dynamic, task_handler:Dynamic, size:Dynamic):Dynamic;
 	/**
 		Cleanup after any worker processes which have exited due to reaching
 		their specified lifetime.  Returns True if any workers were cleaned up.
 	**/
-	public function _join_exited_workers():Dynamic;
+	static public function _join_exited_workers(pool:Dynamic):Dynamic;
 	/**
 		Clean up any exited workers and start replacements for them.
 		        
 	**/
-	public function _maintain_pool():Dynamic;
+	static public function _maintain_pool(ctx:Dynamic, Process:Dynamic, processes:Dynamic, pool:Dynamic, inqueue:Dynamic, outqueue:Dynamic, initializer:Dynamic, initargs:Dynamic, maxtasksperchild:Dynamic, wrap_exception:Dynamic):Dynamic;
 	/**
 		Helper function to implement map, starmap and their async counterparts.
 	**/
@@ -135,6 +141,11 @@ package torch.multiprocessing.pool;
 		for use after reaping workers which have exited.
 	**/
 	public function _repopulate_pool():Dynamic;
+	/**
+		Bring the number of pool processes up to the specified number,
+		for use after reaping workers which have exited.
+	**/
+	static public function _repopulate_pool_static(ctx:Dynamic, Process:Dynamic, processes:Dynamic, pool:Dynamic, inqueue:Dynamic, outqueue:Dynamic, initializer:Dynamic, initargs:Dynamic, maxtasksperchild:Dynamic, wrap_exception:Dynamic):Dynamic;
 	public function _setup_queues():Dynamic;
 	static public function _terminate_pool(taskqueue:Dynamic, inqueue:Dynamic, outqueue:Dynamic, pool:Dynamic, worker_handler:Dynamic, task_handler:Dynamic, result_handler:Dynamic, cache:Dynamic):Dynamic;
 	static public var _wrap_exception : Dynamic;

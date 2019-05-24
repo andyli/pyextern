@@ -2486,6 +2486,147 @@ package theano.tensor.basic;
 	**/
 	static public function gamma(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Regularized lower gamma function
+		
+		Generalizes a scalar op to tensors.
+		
+		All the inputs must have the same number of dimensions. When the
+		Op is performed, for each dimension, each input's size for that
+		dimension must be the same. As a special case, it can also be 1
+		but only if the input's broadcastable flag is True for that
+		dimension. In that case, the tensor is (virtually) replicated
+		along that dimension to match the size of the others.
+		
+		The dtypes of the outputs mirror those of the scalar Op that is
+		being generalized to tensors. In particular, if the calculations
+		for an output are done inplace on an input, the output type must
+		be the same as the corresponding input type (see the doc of
+		scalar.ScalarOp to get help about controlling the output type)
+		
+		Parameters
+		----------
+		scalar_op
+		    An instance of a subclass of scalar.ScalarOp which works uniquely
+		    on scalars.
+		inplace_pattern
+		    A dictionary that maps the index of an output to the
+		    index of an input so the output is calculated inplace using
+		    the input's storage. (Just like destroymap, but without the lists.)
+		nfunc_spec
+		    Either None or a tuple of three elements,
+		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
+		    implements this operation, takes nin inputs and nout outputs.
+		    Note that nin cannot always be inferred from the scalar op's
+		    own nin field because that value is sometimes 0 (meaning a
+		    variable number of inputs), whereas the numpy function may
+		    not have varargs.
+		
+		Note
+		----
+		| Elemwise(add) represents + on tensors (x + y)
+		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
+		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
+		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
+		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
+		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
+		| Elemwise(log)(rand(3, 4, 5))
+	**/
+	static public function gammainc(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Regularized upper gamma function
+		
+		Generalizes a scalar op to tensors.
+		
+		All the inputs must have the same number of dimensions. When the
+		Op is performed, for each dimension, each input's size for that
+		dimension must be the same. As a special case, it can also be 1
+		but only if the input's broadcastable flag is True for that
+		dimension. In that case, the tensor is (virtually) replicated
+		along that dimension to match the size of the others.
+		
+		The dtypes of the outputs mirror those of the scalar Op that is
+		being generalized to tensors. In particular, if the calculations
+		for an output are done inplace on an input, the output type must
+		be the same as the corresponding input type (see the doc of
+		scalar.ScalarOp to get help about controlling the output type)
+		
+		Parameters
+		----------
+		scalar_op
+		    An instance of a subclass of scalar.ScalarOp which works uniquely
+		    on scalars.
+		inplace_pattern
+		    A dictionary that maps the index of an output to the
+		    index of an input so the output is calculated inplace using
+		    the input's storage. (Just like destroymap, but without the lists.)
+		nfunc_spec
+		    Either None or a tuple of three elements,
+		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
+		    implements this operation, takes nin inputs and nout outputs.
+		    Note that nin cannot always be inferred from the scalar op's
+		    own nin field because that value is sometimes 0 (meaning a
+		    variable number of inputs), whereas the numpy function may
+		    not have varargs.
+		
+		Note
+		----
+		| Elemwise(add) represents + on tensors (x + y)
+		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
+		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
+		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
+		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
+		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
+		| Elemwise(log)(rand(3, 4, 5))
+	**/
+	static public function gammaincc(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Lower incomplete gamma function.
+		
+		Generalizes a scalar op to tensors.
+		
+		All the inputs must have the same number of dimensions. When the
+		Op is performed, for each dimension, each input's size for that
+		dimension must be the same. As a special case, it can also be 1
+		but only if the input's broadcastable flag is True for that
+		dimension. In that case, the tensor is (virtually) replicated
+		along that dimension to match the size of the others.
+		
+		The dtypes of the outputs mirror those of the scalar Op that is
+		being generalized to tensors. In particular, if the calculations
+		for an output are done inplace on an input, the output type must
+		be the same as the corresponding input type (see the doc of
+		scalar.ScalarOp to get help about controlling the output type)
+		
+		Parameters
+		----------
+		scalar_op
+		    An instance of a subclass of scalar.ScalarOp which works uniquely
+		    on scalars.
+		inplace_pattern
+		    A dictionary that maps the index of an output to the
+		    index of an input so the output is calculated inplace using
+		    the input's storage. (Just like destroymap, but without the lists.)
+		nfunc_spec
+		    Either None or a tuple of three elements,
+		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
+		    implements this operation, takes nin inputs and nout outputs.
+		    Note that nin cannot always be inferred from the scalar op's
+		    own nin field because that value is sometimes 0 (meaning a
+		    variable number of inputs), whereas the numpy function may
+		    not have varargs.
+		
+		Note
+		----
+		| Elemwise(add) represents + on tensors (x + y)
+		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
+		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
+		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
+		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
+		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
+		| Elemwise(log)(rand(3, 4, 5))
+	**/
+	static public function gammal(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		log gamma function
 		
 		Generalizes a scalar op to tensors.
@@ -2532,6 +2673,53 @@ package theano.tensor.basic;
 		| Elemwise(log)(rand(3, 4, 5))
 	**/
 	static public function gammaln(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Upper incomplete gamma function.
+		
+		Generalizes a scalar op to tensors.
+		
+		All the inputs must have the same number of dimensions. When the
+		Op is performed, for each dimension, each input's size for that
+		dimension must be the same. As a special case, it can also be 1
+		but only if the input's broadcastable flag is True for that
+		dimension. In that case, the tensor is (virtually) replicated
+		along that dimension to match the size of the others.
+		
+		The dtypes of the outputs mirror those of the scalar Op that is
+		being generalized to tensors. In particular, if the calculations
+		for an output are done inplace on an input, the output type must
+		be the same as the corresponding input type (see the doc of
+		scalar.ScalarOp to get help about controlling the output type)
+		
+		Parameters
+		----------
+		scalar_op
+		    An instance of a subclass of scalar.ScalarOp which works uniquely
+		    on scalars.
+		inplace_pattern
+		    A dictionary that maps the index of an output to the
+		    index of an input so the output is calculated inplace using
+		    the input's storage. (Just like destroymap, but without the lists.)
+		nfunc_spec
+		    Either None or a tuple of three elements,
+		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
+		    implements this operation, takes nin inputs and nout outputs.
+		    Note that nin cannot always be inferred from the scalar op's
+		    own nin field because that value is sometimes 0 (meaning a
+		    variable number of inputs), whereas the numpy function may
+		    not have varargs.
+		
+		Note
+		----
+		| Elemwise(add) represents + on tensors (x + y)
+		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
+		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
+		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
+		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
+		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
+		| Elemwise(log)(rand(3, 4, 5))
+	**/
+	static public function gammau(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		a >= b
 		

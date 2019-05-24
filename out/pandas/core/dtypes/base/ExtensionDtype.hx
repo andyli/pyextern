@@ -16,10 +16,12 @@ package pandas.core.dtypes.base;
 	/**
 		Check whether 'other' is equal to self.
 		
-		By default, 'other' is considered equal if
+		By default, 'other' is considered equal if either
 		
 		* it's a string matching 'self.name'.
-		* it's an instance of this type.
+		* it's an instance of this type and all of the
+		  the attributes in ``self._metadata`` are equal between
+		  `self` and `other`.
 		
 		Parameters
 		----------
@@ -46,7 +48,10 @@ package pandas.core.dtypes.base;
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
-	static public var __hash__ : Dynamic;
+	/**
+		Return hash(self).
+	**/
+	public function __hash__():Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
@@ -118,6 +123,38 @@ package pandas.core.dtypes.base;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Whether this dtype should be considered boolean.
+		
+		By default, ExtensionDtypes are assumed to be non-numeric.
+		Setting this to True will affect the behavior of several places,
+		e.g.
+		
+		* is_bool
+		* boolean indexing
+		
+		Returns
+		-------
+		bool
+	**/
+	public var _is_boolean : Dynamic;
+	/**
+		Whether columns with this dtype should be considered numeric.
+		
+		By default ExtensionDtypes are assumed to be non-numeric.
+		They'll be excluded from operations that exclude non-numeric
+		columns, like (groupby) reductions, plotting, etc.
+	**/
+	public var _is_numeric : Dynamic;
+	static public var _metadata : Dynamic;
+	/**
+		Return the array type associated with this dtype
+		
+		Returns
+		-------
+		type
+	**/
+	static public function construct_array_type():Dynamic;
 	/**
 		Attempt to construct this type from a string.
 		
@@ -202,7 +239,9 @@ package pandas.core.dtypes.base;
 		The scalar type for the array, e.g. ``int``
 		
 		It's expected ``ExtensionArray[item]`` returns an instance
-		of ``ExtensionDtype.type`` for scalar ``item``.
+		of ``ExtensionDtype.type`` for scalar ``item``, assuming
+		that value is valid (not NA). NA values do not need to be
+		instances of `type`.
 	**/
 	public var type : Dynamic;
 }

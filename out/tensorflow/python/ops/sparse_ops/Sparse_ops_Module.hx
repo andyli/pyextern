@@ -2,6 +2,7 @@
 package tensorflow.python.ops.sparse_ops;
 @:pythonImport("tensorflow.python.ops.sparse_ops") extern class Sparse_ops_Module {
 	static public var _DEFAULT_HASH_KEY : Dynamic;
+	static public var _UNARY_OPS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -448,6 +449,20 @@ package tensorflow.python.ops.sparse_ops;
 	**/
 	static public function deserialize_sparse_eager_fallback(serialized_sparse:Dynamic, dtype:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Get canonical name for the API symbol.
+		
+		Args:
+		  symbol: API function or class.
+		  api_name: API name (tensorflow or estimator).
+		  add_prefix_to_v1_names: Specifies whether a name available only in V1
+		    should be prefixed with compat.v1.
+		
+		Returns:
+		  Canonical name for the API symbol (for e.g. initializers.zeros) if
+		  canonical name could be determined. Otherwise, returns None.
+	**/
+	static public function get_canonical_name_for_symbol(symbol:Dynamic, ?api_name:Dynamic, ?add_prefix_to_v1_names:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Serialize `N`-minibatch `SparseTensor` into an `[N, 3]` `Tensor`.
@@ -480,6 +495,31 @@ package tensorflow.python.ops.sparse_ops;
 	**/
 	static public function serialize_many_sparse_eager_fallback(sparse_indices:Dynamic, sparse_values:Dynamic, sparse_shape:Dynamic, ?out_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		Serialize `N`-minibatch `SparseTensor` into an `[N, 3]` `Tensor`.
+		
+		The `SparseTensor` must have rank `R` greater than 1, and the first dimension
+		is treated as the minibatch dimension.  Elements of the `SparseTensor`
+		must be sorted in increasing order of this first dimension.  The serialized
+		`SparseTensor` objects going into each row of the output `Tensor` will have
+		rank `R-1`.
+		
+		The minibatch size `N` is extracted from `sparse_shape[0]`.
+		
+		Args:
+		  sp_input: The input rank `R` `SparseTensor`.
+		  out_type: The `dtype` to use for serialization.
+		  name: A name prefix for the returned tensors (optional).
+		
+		Returns:
+		  A matrix (2-D `Tensor`) with `N` rows and `3` columns. Each column
+		  represents serialized `SparseTensor`'s indices, values, and shape
+		  (respectively).
+		
+		Raises:
+		  TypeError: If `sp_input` is not a `SparseTensor`.
+	**/
+	static public function serialize_many_sparse_v2(sp_input:Dynamic, ?out_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Serialize a `SparseTensor` into a 3-vector (1-D `Tensor`) object.
 		
 		Args:
@@ -501,7 +541,27 @@ package tensorflow.python.ops.sparse_ops;
 	**/
 	static public function serialize_sparse_eager_fallback(sparse_indices:Dynamic, sparse_values:Dynamic, sparse_shape:Dynamic, ?out_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Adds two tensors, at least one of each is a `SparseTensor`.
+		Serialize a `SparseTensor` into a 3-vector (1-D `Tensor`) object.
+		
+		Args:
+		  sp_input: The input `SparseTensor`.
+		  out_type: The `dtype` to use for serialization.
+		  name: A name prefix for the returned tensors (optional).
+		
+		Returns:
+		  A 3-vector (1-D `Tensor`), with each column representing the serialized
+		  `SparseTensor`'s indices, values, and shape (respectively).
+		
+		Raises:
+		  TypeError: If `sp_input` is not a `SparseTensor`.
+	**/
+	static public function serialize_sparse_v2(sp_input:Dynamic, ?out_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Adds two tensors, at least one of each is a `SparseTensor`. (deprecated arguments)
+		
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(thresh)`. They will be removed in a future version.
+		Instructions for updating:
+		thresh is deprecated, use threshold instead
 		
 		If one `SparseTensor` and one `Tensor` are passed in, returns a `Tensor`.  If
 		both arguments are `SparseTensor`s, this returns a `SparseTensor`.  The order
@@ -538,12 +598,14 @@ package tensorflow.python.ops.sparse_ops;
 		
 		Args:
 		  a: The first operand; `SparseTensor` or `Tensor`.
-		  b: The second operand; `SparseTensor` or `Tensor`.  At least one operand
+		  b: The second operand; `SparseTensor` or `Tensor`. At least one operand
 		    must be sparse.
-		  thresh: A 0-D `Tensor`.  The magnitude threshold that determines if an
-		  output value/index pair takes space.  Its dtype should match that of the
-		  values if they are real; if the latter are complex64/complex128, then the
-		  dtype should be float32/float64, correspondingly.
+		  threshold: An optional 0-D `Tensor` (defaults to `0`). The magnitude
+		    threshold that determines if an output value/index pair takes space. Its
+		    dtype should match that of the values if they are real; if the latter are
+		    complex64/complex128, then the dtype should be float32/float64,
+		    correspondingly.
+		  thresh: Deprecated alias for `threshold`.
 		
 		Returns:
 		  A `SparseTensor` or a `Tensor`, representing the sum.
@@ -551,7 +613,7 @@ package tensorflow.python.ops.sparse_ops;
 		Raises:
 		  TypeError: If both `a` and `b` are `Tensor`s.  Use `tf.add()` instead.
 	**/
-	static public function sparse_add(a:Dynamic, b:Dynamic, ?thresh:Dynamic):Dynamic;
+	static public function sparse_add(a:Dynamic, b:Dynamic, ?threshold:Dynamic, ?thresh:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function sparse_add
@@ -591,9 +653,62 @@ package tensorflow.python.ops.sparse_ops;
 	**/
 	static public function sparse_add_grad_eager_fallback(backprop_val_grad:Dynamic, a_indices:Dynamic, b_indices:Dynamic, sum_indices:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		Adds two tensors, at least one of each is a `SparseTensor`.
+		
+		If one `SparseTensor` and one `Tensor` are passed in, returns a `Tensor`.  If
+		both arguments are `SparseTensor`s, this returns a `SparseTensor`.  The order
+		of arguments does not matter.  Use vanilla `tf.add()` for adding two dense
+		`Tensor`s.
+		
+		The shapes of the two operands must match: broadcasting is not supported.
+		
+		The indices of any input `SparseTensor` are assumed ordered in standard
+		lexicographic order.  If this is not the case, before this step run
+		`SparseReorder` to restore index ordering.
+		
+		If both arguments are sparse, we perform "clipping" as follows.  By default,
+		if two values sum to zero at some index, the output `SparseTensor` would still
+		include that particular location in its index, storing a zero in the
+		corresponding value slot.  To override this, callers can specify `threshold`,
+		indicating that if the sum has a magnitude strictly smaller than `threshold`,
+		its corresponding value and index would then not be included.  In particular,
+		`threshold == 0.0` (default) means everything is kept and actual thresholding
+		happens only for a positive value.
+		
+		For example, suppose the logical sum of two sparse operands is (densified):
+		
+		    [       2]
+		    [.1     0]
+		    [ 6   -.2]
+		
+		Then,
+		
+		    * `threshold == 0` (the default): all 5 index/value pairs will be
+		        returned.
+		    * `threshold == 0.11`: only .1 and 0 will vanish, and the remaining three
+		        index/value pairs will be returned.
+		    * `threshold == 0.21`: .1, 0, and -.2 will vanish.
+		
+		Args:
+		  a: The first operand; `SparseTensor` or `Tensor`.
+		  b: The second operand; `SparseTensor` or `Tensor`. At least one operand
+		    must be sparse.
+		  threshold: A 0-D `Tensor`. The magnitude threshold that determines if an
+		    output value/index pair takes space. Its dtype should match that of the
+		    values if they are real; if the latter are complex64/complex128, then the
+		    dtype should be float32/float64, correspondingly.
+		
+		Returns:
+		  A `SparseTensor` or a `Tensor`, representing the sum.
+		
+		Raises:
+		  TypeError: If both `a` and `b` are `Tensor`s.  Use `tf.add()` instead.
+	**/
+	static public function sparse_add_v2(a:Dynamic, b:Dynamic, ?threshold:Dynamic):Dynamic;
+	/**
 		Concatenates a list of `SparseTensor` along the specified dimension. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(concat_dim)`. They will be removed in a future version.
 		Instructions for updating:
 		concat_dim is deprecated, use axis instead
 		
@@ -696,6 +811,107 @@ package tensorflow.python.ops.sparse_ops;
 		This is for function sparse_concat
 	**/
 	static public function sparse_concat_eager_fallback(indices:Dynamic, values:Dynamic, shapes:Dynamic, concat_dim:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Concatenates a list of `SparseTensor` along the specified dimension. (deprecated arguments)
+		
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(concat_dim)`. They will be removed in a future version.
+		Instructions for updating:
+		concat_dim is deprecated, use axis instead
+		
+		Concatenation is with respect to the dense versions of each sparse input.
+		It is assumed that each inputs is a `SparseTensor` whose elements are ordered
+		along increasing dimension number.
+		
+		If expand_nonconcat_dim is False, all inputs' shapes must match, except for
+		the concat dimension. If expand_nonconcat_dim is True, then inputs' shapes are
+		allowed to vary among all inputs.
+		
+		The `indices`, `values`, and `shapes` lists must have the same length.
+		
+		If expand_nonconcat_dim is False, then the output shape is identical to the
+		inputs', except along the concat dimension, where it is the sum of the inputs'
+		sizes along that dimension.
+		
+		If expand_nonconcat_dim is True, then the output shape along the non-concat
+		dimensions will be expand to be the largest among all inputs, and it is the
+		sum of the inputs sizes along the concat dimension.
+		
+		The output elements will be resorted to preserve the sort order along
+		increasing dimension number.
+		
+		This op runs in `O(M log M)` time, where `M` is the total number of non-empty
+		values across all inputs. This is due to the need for an internal sort in
+		order to concatenate efficiently across an arbitrary dimension.
+		
+		For example, if `axis = 1` and the inputs are
+		
+		    sp_inputs[0]: shape = [2, 3]
+		    [0, 2]: "a"
+		    [1, 0]: "b"
+		    [1, 1]: "c"
+		
+		    sp_inputs[1]: shape = [2, 4]
+		    [0, 1]: "d"
+		    [0, 2]: "e"
+		
+		then the output will be
+		
+		    shape = [2, 7]
+		    [0, 2]: "a"
+		    [0, 4]: "d"
+		    [0, 5]: "e"
+		    [1, 0]: "b"
+		    [1, 1]: "c"
+		
+		Graphically this is equivalent to doing
+		
+		    [    a] concat [  d e  ] = [    a   d e  ]
+		    [b c  ]        [       ]   [b c          ]
+		
+		Another example, if 'axis = 1' and the inputs are
+		
+		    sp_inputs[0]: shape = [3, 3]
+		    [0, 2]: "a"
+		    [1, 0]: "b"
+		    [2, 1]: "c"
+		
+		    sp_inputs[1]: shape = [2, 4]
+		    [0, 1]: "d"
+		    [0, 2]: "e"
+		
+		if expand_nonconcat_dim = False, this will result in an error. But if
+		expand_nonconcat_dim = True, this will result in:
+		
+		    shape = [3, 7]
+		    [0, 2]: "a"
+		    [0, 4]: "d"
+		    [0, 5]: "e"
+		    [1, 0]: "b"
+		    [2, 1]: "c"
+		
+		Graphically this is equivalent to doing
+		
+		    [    a] concat [  d e  ] = [    a   d e  ]
+		    [b    ]        [       ]   [b            ]
+		    [  c  ]                    [  c          ]
+		
+		
+		Args:
+		  axis: Dimension to concatenate along. Must be in range [-rank, rank),
+		    where rank is the number of dimensions in each input `SparseTensor`.
+		  sp_inputs: List of `SparseTensor` to concatenate.
+		  name: A name prefix for the returned tensors (optional).
+		  expand_nonconcat_dim: Whether to allow the expansion in the non-concat
+		    dimensions. Defaulted to False.
+		  concat_dim: The old (deprecated) name for axis.
+		
+		Returns:
+		  A `SparseTensor` with the concatenated output.
+		
+		Raises:
+		  TypeError: If `sp_inputs` is not a list of `SparseTensor`.
+	**/
+	static public function sparse_concat_v2(axis:Dynamic, sp_inputs:Dynamic, ?expand_nonconcat_dims:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Generates sparse cross from a list of sparse and dense tensors.
 		
@@ -992,7 +1208,11 @@ package tensorflow.python.ops.sparse_ops;
 	**/
 	static public function sparse_maximum(sp_a:Dynamic, sp_b:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Combines a batch of feature ids and values into a single `SparseTensor`.
+		Combines a batch of feature ids and values into a single `SparseTensor`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		No similar op available at this time.
 		
 		The most common use case for this function occurs when feature ids and
 		their corresponding values are stored in `Example` protos on disk.
@@ -1108,11 +1328,15 @@ package tensorflow.python.ops.sparse_ops;
 	**/
 	static public function sparse_minimum(sp_a:Dynamic, sp_b:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the max of elements across dimensions of a SparseTensor. (deprecated arguments)
+		Computes the max of elements across dimensions of a SparseTensor. (deprecated arguments) (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		keep_dims is deprecated, use keepdims instead
+		
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(reduction_axes)`. They will be removed in a future version.
+		Instructions for updating:
+		reduction_axes is deprecated, use axis instead
 		
 		This Op takes a SparseTensor and is the sparse counterpart to
 		`tf.reduce_max()`.  In particular, this Op also returns a dense `Tensor`
@@ -1158,7 +1382,7 @@ package tensorflow.python.ops.sparse_ops;
 		  axis: The dimensions to reduce; list or scalar. If `None` (the
 		    default), reduces all dimensions.
 		  keepdims: If true, retain reduced dimensions with length 1.
-		  reduction_axes: Deprecated name of axis.
+		  reduction_axes: Deprecated name of `axis`.
 		  keep_dims:  Deprecated alias for `keepdims`.
 		
 		Returns:
@@ -1173,7 +1397,7 @@ package tensorflow.python.ops.sparse_ops;
 	/**
 		Computes the max of elements across dimensions of a SparseTensor. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		keep_dims is deprecated, use keepdims instead
 		
@@ -1211,11 +1435,72 @@ package tensorflow.python.ops.sparse_ops;
 	**/
 	static public function sparse_reduce_max_sparse_eager_fallback(input_indices:Dynamic, input_values:Dynamic, input_shape:Dynamic, reduction_axes:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Computes the sum of elements across dimensions of a SparseTensor. (deprecated arguments)
+		Computes the max of elements across dimensions of a SparseTensor.
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		This Op takes a SparseTensor and is the sparse counterpart to
+		`tf.reduce_max()`.  In particular, this Op also returns a dense `Tensor`
+		if `output_is_sparse` is `False`, or a `SparseTensor` if `output_is_sparse`
+		is `True`.
+		
+		Note: A gradient is not defined for this function, so it can't be used
+		in training models that need gradient descent.
+		
+		Reduces `sp_input` along the dimensions given in `axis`.  Unless
+		`keepdims` is true, the rank of the tensor is reduced by 1 for each entry in
+		`axis`. If `keepdims` is true, the reduced dimensions are retained
+		with length 1.
+		
+		If `axis` has no entries, all dimensions are reduced, and a tensor
+		with a single element is returned.  Additionally, the axes can be negative,
+		similar to the indexing rules in Python.
+		
+		The values not defined in `sp_input` don't participate in the reduce max,
+		as opposed to be implicitly assumed 0 -- hence it can return negative values
+		for sparse `axis`. But, in case there are no values in
+		`axis`, it will reduce to 0. See second example below.
+		
+		For example:
+		
+		```python
+		# 'x' represents [[1, ?, 2]
+		#                 [?, 3, ?]]
+		# where ? is implicitly-zero.
+		tf.sparse.reduce_max(x) ==> 3
+		tf.sparse.reduce_max(x, 0) ==> [1, 3, 2]
+		tf.sparse.reduce_max(x, 1) ==> [2, 3]  # Can also use -1 as the axis.
+		tf.sparse.reduce_max(x, 1, keepdims=True) ==> [[2], [3]]
+		tf.sparse.reduce_max(x, [0, 1]) ==> 3
+		
+		# 'y' represents [[-7, ?]
+		#                 [ 4, 3]
+		#                 [ ?, ?]
+		tf.sparse.reduce_max(x, 1) ==> [-7, 4, 0]
+		```
+		
+		Args:
+		  sp_input: The SparseTensor to reduce. Should have numeric type.
+		  axis: The dimensions to reduce; list or scalar. If `None` (the
+		    default), reduces all dimensions.
+		  keepdims: If true, retain reduced dimensions with length 1.
+		  output_is_sparse: If true, returns a `SparseTensor` instead of a dense
+		    `Tensor` (the default).
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The reduced Tensor or the reduced SparseTensor if `output_is_sparse` is
+		  True.
+	**/
+	static public function sparse_reduce_max_v2(sp_input:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?output_is_sparse:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the sum of elements across dimensions of a SparseTensor. (deprecated arguments) (deprecated arguments)
+		
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		keep_dims is deprecated, use keepdims instead
+		
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(reduction_axes)`. They will be removed in a future version.
+		Instructions for updating:
+		reduction_axes is deprecated, use axis instead
 		
 		This Op takes a SparseTensor and is the sparse counterpart to
 		`tf.reduce_sum()`.  In particular, this Op also returns a dense `Tensor`
@@ -1248,7 +1533,7 @@ package tensorflow.python.ops.sparse_ops;
 		  axis: The dimensions to reduce; list or scalar. If `None` (the
 		    default), reduces all dimensions.
 		  keepdims: If true, retain reduced dimensions with length 1.
-		  reduction_axes: Deprecated name of axis.
+		  reduction_axes: Deprecated name of `axis`.
 		  keep_dims: Deprecated alias for `keepdims`.
 		
 		Returns:
@@ -1263,7 +1548,7 @@ package tensorflow.python.ops.sparse_ops;
 	/**
 		Computes the sum of elements across dimensions of a SparseTensor. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		keep_dims is deprecated, use keepdims instead
 		
@@ -1300,6 +1585,52 @@ package tensorflow.python.ops.sparse_ops;
 		This is for function sparse_reduce_sum_sparse
 	**/
 	static public function sparse_reduce_sum_sparse_eager_fallback(input_indices:Dynamic, input_values:Dynamic, input_shape:Dynamic, reduction_axes:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the sum of elements across dimensions of a SparseTensor.
+		
+		This Op takes a SparseTensor and is the sparse counterpart to
+		`tf.reduce_sum()`.  In particular, this Op also returns a dense `Tensor`
+		if `output_is_sparse` is `False`, or a `SparseTensor` if `output_is_sparse`
+		is `True`.
+		
+		Note: if `output_is_sparse` is True, a gradient is not defined for this
+		function, so it can't be used in training models that need gradient descent.
+		
+		Reduces `sp_input` along the dimensions given in `axis`.  Unless `keepdims` is
+		true, the rank of the tensor is reduced by 1 for each entry in `axis`. If
+		`keepdims` is true, the reduced dimensions are retained with length 1.
+		
+		If `axis` has no entries, all dimensions are reduced, and a tensor
+		with a single element is returned.  Additionally, the axes can be negative,
+		similar to the indexing rules in Python.
+		
+		For example:
+		
+		```python
+		# 'x' represents [[1, ?, 1]
+		#                 [?, 1, ?]]
+		# where ? is implicitly-zero.
+		tf.sparse.reduce_sum(x) ==> 3
+		tf.sparse.reduce_sum(x, 0) ==> [1, 1, 1]
+		tf.sparse.reduce_sum(x, 1) ==> [2, 1]  # Can also use -1 as the axis.
+		tf.sparse.reduce_sum(x, 1, keepdims=True) ==> [[2], [1]]
+		tf.sparse.reduce_sum(x, [0, 1]) ==> 3
+		```
+		
+		Args:
+		  sp_input: The SparseTensor to reduce. Should have numeric type.
+		  axis: The dimensions to reduce; list or scalar. If `None` (the
+		    default), reduces all dimensions.
+		  keepdims: If true, retain reduced dimensions with length 1.
+		  output_is_sparse: If true, returns a `SparseTensor` instead of a dense
+		    `Tensor` (the default).
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The reduced Tensor or the reduced SparseTensor if `output_is_sparse` is
+		  True.
+	**/
+	static public function sparse_reduce_sum_v2(sp_input:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?output_is_sparse:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Reorders a `SparseTensor` into the canonical, row-major ordering.
 		
@@ -1667,7 +1998,7 @@ package tensorflow.python.ops.sparse_ops;
 	/**
 		Split a `SparseTensor` into `num_split` tensors along `axis`. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(split_dim)`. They will be removed in a future version.
 		Instructions for updating:
 		split_dim is deprecated, use axis instead
 		
@@ -1711,6 +2042,41 @@ package tensorflow.python.ops.sparse_ops;
 		This is for function sparse_split
 	**/
 	static public function sparse_split_eager_fallback(split_dim:Dynamic, indices:Dynamic, values:Dynamic, shape:Dynamic, num_split:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Split a `SparseTensor` into `num_split` tensors along `axis`.
+		
+		If the `sp_input.dense_shape[axis]` is not an integer multiple of `num_split`
+		each slice starting from 0:`shape[axis] % num_split` gets extra one
+		dimension. For example, if `axis = 1` and `num_split = 2` and the
+		input is:
+		
+		    input_tensor = shape = [2, 7]
+		    [    a   d e  ]
+		    [b c          ]
+		
+		Graphically the output tensors are:
+		
+		    output_tensor[0] =
+		    [    a ]
+		    [b c   ]
+		
+		    output_tensor[1] =
+		    [ d e  ]
+		    [      ]
+		
+		Args:
+		  sp_input: The `SparseTensor` to split.
+		  num_split: A Python integer. The number of ways to split.
+		  axis: A 0-D `int32` `Tensor`. The dimension along which to split.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  `num_split` `SparseTensor` objects resulting from splitting `value`.
+		
+		Raises:
+		  TypeError: If `sp_input` is not a `SparseTensor`.
+	**/
+	static public function sparse_split_v2(?sp_input:Dynamic, ?num_split:Dynamic, ?axis:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Adds up a `SparseTensor` and a dense `Tensor`, producing a dense `Tensor`.
 		
@@ -2014,7 +2380,7 @@ package tensorflow.python.ops.sparse_ops;
 	/**
 		Converts a sparse representation into a dense tensor. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Create a `tf.sparse.SparseTensor` and use `tf.sparse.to_dense` instead.
 		
@@ -2224,4 +2590,23 @@ package tensorflow.python.ops.sparse_ops;
 	**/
 	static public function take_many_sparse_from_tensors_map_eager_fallback(sparse_handles:Dynamic, dtype:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Computes the Bessel i1e function of `x` element-wise.
+		
+		Exponentially scaled modified Bessel function of order 0 defined as
+		`bessel_i1e(x) = exp(-abs(x)) bessel_i1(x)`.
+		
+		This function is faster and numerically stabler than `bessel_i1(x)`.
+		
+		Args:
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.bessel_i1e(x.values, ...), x.dense_shape)`
+	**/
+	static public function unary_op(x:Dynamic, ?name:Dynamic):Dynamic;
 }

@@ -41,11 +41,11 @@ package tensorflow.python.keras.utils.generic_utils;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(target:Dynamic, ?width:Dynamic, ?verbose:Dynamic, ?interval:Dynamic, ?stateful_metrics:Dynamic):Dynamic;
+	public function ___init__(target:Dynamic, ?width:Dynamic, ?verbose:Dynamic, ?interval:Dynamic, ?stateful_metrics:Dynamic, ?unit_name:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(target:Dynamic, ?width:Dynamic, ?verbose:Dynamic, ?interval:Dynamic, ?stateful_metrics:Dynamic):Void;
+	public function new(target:Dynamic, ?width:Dynamic, ?verbose:Dynamic, ?interval:Dynamic, ?stateful_metrics:Dynamic, ?unit_name:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		

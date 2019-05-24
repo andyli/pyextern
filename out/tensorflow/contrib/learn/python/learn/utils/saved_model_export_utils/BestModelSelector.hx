@@ -40,7 +40,7 @@ package tensorflow.contrib.learn.python.learn.utils.saved_model_export_utils;
 	/**
 		Constructor of this class. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 		
@@ -54,7 +54,7 @@ package tensorflow.contrib.learn.python.learn.utils.saved_model_export_utils;
 	/**
 		Constructor of this class. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 		

@@ -116,7 +116,8 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		Validates that the features and labels for the model function are valid.
 		
 		A valid features/labels object is the one with:
-		- Type: Tensor or a dictionary of Tensors
+		- Type: A tensor or any nested structure of tensors supported by TF nest,
+		    namely nested dictionary, tuple, namedtuple, or sequence of tensors.
 		- Static shape if is_export_mode is False.
 		
 		Args:

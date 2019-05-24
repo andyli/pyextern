@@ -143,15 +143,28 @@ package pandas.io.sql;
 	**/
 	public function _dir_deletions():Dynamic;
 	public function _execute_create():Dynamic;
+	/**
+		Execute SQL statement inserting data
+		
+		Parameters
+		----------
+		conn : sqlalchemy.engine.Engine or sqlalchemy.engine.Connection
+		keys : list of str
+		   Column names
+		data_iter : generator of list
+		   Each item contains a list of values to be inserted
+	**/
 	public function _execute_insert(conn:Dynamic, keys:Dynamic, data_iter:Dynamic):Dynamic;
+	/**
+		Alternative to _execute_insert for DBs support multivalue INSERT.
+		
+		Note: multi-value insert is usually faster for analytics DBs
+		and tables containing a few columns
+		but performance degrades quickly with increase of columns.
+	**/
+	public function _execute_insert_multi(conn:Dynamic, keys:Dynamic, data_iter:Dynamic):Dynamic;
 	public function _get_column_names_and_types(dtype_mapper:Dynamic):Dynamic;
 	public function _get_dtype(sqltype:Dynamic):Dynamic;
-	/**
-		Infer datatype of the Series col.  In case the dtype of col is 'object'
-		and it contains NA values, this infers the datatype of the not-NA
-		values.  Needed for inserting typed data containing NULLs, GH8778.
-	**/
-	public function _get_notna_col_dtype(col:Dynamic):Dynamic;
 	/**
 		Make the DataFrame's column types align with the SQL table
 		column types.
@@ -176,9 +189,8 @@ package pandas.io.sql;
 	public function _sqlalchemy_type(col:Dynamic):Dynamic;
 	public function create():Dynamic;
 	public function exists():Dynamic;
-	public function insert(?chunksize:Dynamic):Dynamic;
+	public function insert(?chunksize:Dynamic, ?method:Dynamic):Dynamic;
 	public function insert_data():Dynamic;
-	public function insert_statement():Dynamic;
 	public function read(?coerce_float:Dynamic, ?parse_dates:Dynamic, ?columns:Dynamic, ?chunksize:Dynamic):Dynamic;
 	public function sql_schema():Dynamic;
 }

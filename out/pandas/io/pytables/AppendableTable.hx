@@ -263,7 +263,7 @@ package pandas.io.pytables;
 		return a single column from the table, generally only indexables
 		are interesting
 	**/
-	public function read_column(column:Dynamic, ?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function read_column(column:Dynamic, ?where:Dynamic, ?start:Dynamic, ?stop:Dynamic):Dynamic;
 	/**
 		select coordinates (row numbers) from a table; return the
 		coordinates object

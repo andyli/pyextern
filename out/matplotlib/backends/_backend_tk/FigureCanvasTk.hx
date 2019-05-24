@@ -108,6 +108,7 @@ package matplotlib.backends._backend_tk;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public function _fix_ipython_backend2gui():Dynamic;
 	public function _get_key(event:Dynamic):Dynamic;
 	/**
 		Return a canvas suitable for saving figures to a specified file format.
@@ -175,7 +176,15 @@ package matplotlib.backends._backend_tk;
 	**/
 	public function draw_event(renderer:Dynamic):Dynamic;
 	/**
-		update drawing area only if idle
+		Request a widget redraw once control returns to the GUI event loop.
+		
+		Even if multiple calls to `draw_idle` occur before control returns
+		to the GUI event loop, the figure will only be rendered once.
+		
+		Notes
+		-----
+		Backends may choose to override the method and implement their own
+		strategy to prevent multiple renderings.
 	**/
 	public function draw_idle():Dynamic;
 	/**
@@ -245,6 +254,21 @@ package matplotlib.backends._backend_tk;
 		another axes.
 	**/
 	public function grab_mouse(ax:Dynamic):Dynamic;
+	/**
+		Check if a point is in an axes.
+		
+		Parameters
+		----------
+		xy : tuple or list
+		    (x,y) coordinates.
+		    x position - pixels from left of canvas.
+		    y position - pixels from bottom of canvas.
+		
+		Returns
+		-------
+		axes: topmost axes containing the point, or None if no axes.
+	**/
+	public function inaxes(xy:Dynamic):Dynamic;
 	/**
 		Returns whether the renderer is in the process of saving
 		to a file, rather than rendering for an on-screen buffer.
@@ -349,30 +373,29 @@ package matplotlib.backends._backend_tk;
 	**/
 	public function mpl_disconnect(cid:Dynamic):Dynamic;
 	/**
-		Creates a new backend-specific subclass of :class:`backend_bases.Timer`.
-		This is useful for getting periodic events through the backend's native
-		event loop. Implemented only for backends with GUIs.
+		Creates a new backend-specific subclass of
+		:class:`backend_bases.Timer`. This is useful for getting periodic
+		events through the backend's native event loop. Implemented only for
+		backends with GUIs.
 		
 		Other Parameters
 		----------------
 		interval : scalar
 		    Timer interval in milliseconds
-		callbacks : list
+		
+		callbacks : List[Tuple[callable, Tuple, Dict]]
 		    Sequence of (func, args, kwargs) where ``func(*args, **kwargs)``
 		    will be executed by the timer every *interval*.
+		
+		    callbacks which return ``False`` or ``0`` will be removed from the
+		    timer.
+		
+		Examples
+		--------
+		
+		>>> timer = fig.canvas.new_timer(callbacks=[(f1, (1, ), {'a': 3}),])
 	**/
 	public function new_timer(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		.. deprecated:: 2.2
-		    The onRemove function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
-		
-		Mouse event processor which removes the top artist
-		under the cursor.  Connect this to the 'mouse_press_event'
-		using::
-		
-		    canvas.mpl_connect('mouse_press_event',canvas.onRemove)
-	**/
-	public function onRemove(ev:Dynamic):Dynamic;
 	public function pick(mouseevent:Dynamic):Dynamic;
 	/**
 		This method will be called by artists who are picked and will
@@ -396,10 +419,10 @@ package matplotlib.backends._backend_tk;
 		dpi : scalar, optional
 		    the dots per inch to save the figure in; if None, use savefig.dpi
 		
-		facecolor : color spec or None, optional
+		facecolor : color or None, optional
 		    the facecolor of the figure; if None, defaults to savefig.facecolor
 		
-		edgecolor : color spec or None, optional
+		edgecolor : color or None, optional
 		    the edgecolor of the figure; if None, defaults to savefig.edgecolor
 		
 		format : str, optional

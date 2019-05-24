@@ -5,7 +5,6 @@ package tensorflow.core.framework.reader_base_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CURRENT_WORK_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -63,7 +62,6 @@ package tensorflow.core.framework.reader_base_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NUM_RECORDS_PRODUCED_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -84,8 +82,10 @@ package tensorflow.core.framework.reader_base_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var WORK_FINISHED_FIELD_NUMBER : Dynamic;
-	static public var WORK_STARTED_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.core.framework.reader_base_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.ReaderBaseState.current_work
+	**/
+	public var current_work : Dynamic;
+	/**
+		Field tensorflow.ReaderBaseState.num_records_produced
+	**/
+	public var num_records_produced : Dynamic;
+	/**
+		Field tensorflow.ReaderBaseState.work_finished
+	**/
+	public var work_finished : Dynamic;
+	/**
+		Field tensorflow.ReaderBaseState.work_started
+	**/
+	public var work_started : Dynamic;
 }

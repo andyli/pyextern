@@ -33,6 +33,36 @@ package scipy.fftpack.basic;
 	**/
 	static public function _fix_shape(x:Dynamic, n:Dynamic, axis:Dynamic):Dynamic;
 	/**
+		Handle and sort shape and axes arguments for n-dimensional transforms.
+		
+		This is identical to `_init_nd_shape_and_axes`, except the axes are
+		returned in sorted order and the shape is reordered to match.
+		
+		Parameters
+		----------
+		x : array_like
+		    The input array.
+		shape : int or array_like of ints or None
+		    The shape of the result.  If both `shape` and `axes` (see below) are
+		    None, `shape` is ``x.shape``; if `shape` is None but `axes` is
+		    not None, then `shape` is ``scipy.take(x.shape, axes, axis=0)``.
+		    If `shape` is -1, the size of the corresponding dimension of `x` is
+		    used.
+		axes : int or array_like of ints or None
+		    Axes along which the calculation is computed.
+		    The default is over all axes.
+		    Negative indices are automatically converted to their positive
+		    counterpart.
+		
+		Returns
+		-------
+		shape : array
+		    The shape of the result. It is a 1D integer array.
+		axes : array
+		    The shape of the result. It is a 1D integer array.
+	**/
+	static public function _init_nd_shape_and_axes_sorted(x:Dynamic, shape:Dynamic, axes:Dynamic):Array<Dynamic>;
+	/**
 		Is the size of FFT such that FFTPACK can handle it in single precision
 		with sufficient accuracy?
 		
@@ -149,16 +179,19 @@ package scipy.fftpack.basic;
 		----------
 		x : array_like
 		    The (n-dimensional) array to transform.
-		shape : tuple of ints, optional
+		shape : int or array_like of ints or None, optional
 		    The shape of the result.  If both `shape` and `axes` (see below) are
 		    None, `shape` is ``x.shape``; if `shape` is None but `axes` is
 		    not None, then `shape` is ``scipy.take(x.shape, axes, axis=0)``.
 		    If ``shape[i] > x.shape[i]``, the i-th dimension is padded with zeros.
 		    If ``shape[i] < x.shape[i]``, the i-th dimension is truncated to
 		    length ``shape[i]``.
-		axes : array_like of ints, optional
+		    If any element of `shape` is -1, the size of the corresponding
+		    dimension of `x` is used.
+		axes : int or array_like of ints or None, optional
 		    The axes of `x` (`y` if `shape` is not None) along which the
 		    transform is applied.
+		    The default is over all axes.
 		overwrite_x : bool, optional
 		    If True, the contents of `x` can be destroyed.  Default is False.
 		
@@ -255,8 +288,9 @@ package scipy.fftpack.basic;
 	**/
 	static public function ifft2(x:Dynamic, ?shape:Dynamic, ?axes:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	/**
-		Return inverse multi-dimensional discrete Fourier transform of
-		arbitrary type sequence x.
+		Return inverse multi-dimensional discrete Fourier transform.
+		
+		The sequence can be of an arbitrary type.
 		
 		The returned array contains::
 		
@@ -334,6 +368,15 @@ package scipy.fftpack.basic;
 		
 		To process (conjugate-symmetric) frequency-domain data with a complex
 		datatype, consider using the related function `numpy.fft.irfft`.
+		
+		Examples
+		--------
+		>>> from scipy.fftpack import rfft, irfft
+		>>> a = [1.0, 2.0, 3.0, 4.0, 5.0]
+		>>> irfft(a)
+		array([ 2.6       , -3.16405192,  1.24398433, -1.14955713,  1.46962473])
+		>>> irfft(rfft(a))
+		array([1., 2., 3., 4., 5.])
 	**/
 	static public function irfft(x:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	static public function istype(arr:Dynamic, typeclass:Dynamic):Dynamic;

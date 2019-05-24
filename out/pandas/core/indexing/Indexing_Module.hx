@@ -11,29 +11,12 @@ package pandas.core.indexing;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		infer the fill value for the nan/NaT from the provided
 		scalar/ndarray/list-like if we are a NaT, return the correct dtyped
 		element to provide proper block construction
 	**/
 	static public function _infer_fill_value(val:Dynamic):Dynamic;
-	/**
-		Check if the exception raised is an unorderable exception.
-		
-		The error message differs for 3 <= PY <= 3.5 and PY >= 3.6, so
-		we need to condition based on Python version.
-		
-		Parameters
-		----------
-		e : Exception or sub-class
-		    The exception object to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the exception raised is an unorderable exception.
-	**/
-	static public function _is_unorderable_exception(e:Dynamic):Dynamic;
 	/**
 		want nice defaults for background_gradient that don't break
 		with non-numeric data. But if slice_ is passed go with that.
@@ -75,7 +58,7 @@ package pandas.core.indexing;
 	**/
 	static public function check_setitem_lengths(indexer:Dynamic, value:Dynamic, values:Dynamic):Dynamic;
 	/**
-		create a filtered indexer that doesn't have any missing indexers 
+		create a filtered indexer that doesn't have any missing indexers
 	**/
 	static public function convert_from_missing_indexer_tuple(indexer:Dynamic, axes:Dynamic):Dynamic;
 	/**
@@ -85,9 +68,9 @@ package pandas.core.indexing;
 	static public function convert_missing_indexer(indexer:Dynamic):Dynamic;
 	/**
 		if we are index sliceable, then return my slicer, otherwise return None
-		    
 	**/
 	static public function convert_to_index_sliceable(obj:Dynamic, key:Dynamic):Dynamic;
+	static public function ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function get_indexers_list():Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -95,6 +78,11 @@ package pandas.core.indexing;
 		Check whether the provided array or dtype is of an integer dtype.
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
 		
 		Parameters
 		----------
@@ -115,6 +103,12 @@ package pandas.core.indexing;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -138,7 +132,7 @@ package pandas.core.indexing;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -168,7 +162,11 @@ package pandas.core.indexing;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -187,24 +185,60 @@ package pandas.core.indexing;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	static public function is_list_like_indexer(key:Dynamic):Dynamic;
 	static public function is_nested_tuple(tup:Dynamic, labels:Dynamic):Dynamic;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -213,7 +247,7 @@ package pandas.core.indexing;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -231,38 +265,65 @@ package pandas.core.indexing;
 	**/
 	static public function is_sequence(obj:Dynamic):Bool;
 	/**
-		Check whether an array-like is a pandas sparse array.
+		Check whether an array-like is a 1-D pandas sparse array.
+		
+		Check that the one-dimensional array-like is a pandas sparse array.
+		Returns True if it is a pandas sparse array, not another type of
+		sparse array.
 		
 		Parameters
 		----------
 		arr : array-like
-		    The array-like to check.
+		    Array-like to check.
 		
 		Returns
 		-------
-		boolean : Whether or not the array-like is a pandas sparse array.
+		bool
+		    Whether or not the array-like is a pandas sparse array.
+		
+		See Also
+		--------
+		DataFrame.to_sparse : Convert DataFrame to a SparseDataFrame.
+		Series.to_sparse : Convert Series to SparseSeries.
+		Series.to_dense : Return dense representation of a Series.
 		
 		Examples
 		--------
-		>>> is_sparse(np.array([1, 2, 3]))
-		False
-		>>> is_sparse(pd.SparseArray([1, 2, 3]))
+		Returns `True` if the parameter is a 1-D pandas sparse array.
+		
+		>>> is_sparse(pd.SparseArray([0, 0, 1, 0]))
 		True
-		>>> is_sparse(pd.SparseSeries([1, 2, 3]))
+		>>> is_sparse(pd.SparseSeries([0, 0, 1, 0]))
 		True
 		
-		This function checks only for pandas sparse array instances, so
-		sparse arrays from other libraries will return False.
+		Returns `False` if the parameter is not sparse.
+		
+		>>> is_sparse(np.array([0, 0, 1, 0]))
+		False
+		>>> is_sparse(pd.Series([0, 1, 0, 0]))
+		False
+		
+		Returns `False` if the parameter is not a pandas sparse array.
 		
 		>>> from scipy.sparse import bsr_matrix
-		>>> is_sparse(bsr_matrix([1, 2, 3]))
+		>>> is_sparse(bsr_matrix([0, 1, 0, 0]))
 		False
+		
+		Returns `False` if the parameter has more than one dimension.
+		
+		>>> df = pd.SparseDataFrame([389., 24., 80.5, np.nan],
+		                            columns=['max_speed'],
+		                            index=['falcon', 'parrot', 'lion', 'monkey'])
+		>>> is_sparse(df)
+		False
+		>>> is_sparse(df.max_speed)
+		True
 	**/
 	static public function is_sparse(arr:Dynamic):Dynamic;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -280,8 +341,8 @@ package pandas.core.indexing;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -335,7 +396,6 @@ package pandas.core.indexing;
 	static public function isna(obj:Dynamic):Dynamic;
 	/**
 		return the length of a single non-tuple indexer which could be a slice
-		    
 	**/
 	static public function length_of_indexer(indexer:Dynamic, ?target:Dynamic):Dynamic;
 	/**

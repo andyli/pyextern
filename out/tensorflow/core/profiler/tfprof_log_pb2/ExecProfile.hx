@@ -1,9 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.profiler.tfprof_log_pb2;
 @:pythonImport("tensorflow.core.profiler.tfprof_log_pb2", "ExecProfile") extern class ExecProfile {
-	static public var ACCELERATOR_EXECS_FIELD_NUMBER : Dynamic;
-	static public var ALLOCATIONS_FIELD_NUMBER : Dynamic;
-	static public var ALL_START_MICROS_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -12,7 +9,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CPU_EXECS_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -34,7 +30,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 	**/
 	public function CpuExecsEntry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DEVICES_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -63,12 +58,10 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LATEST_END_MICROS_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MEMORY_EXECS_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -81,7 +74,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var RUN_COUNT_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -98,6 +90,10 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -263,4 +259,36 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecProfile.accelerator_execs
+	**/
+	public var accelerator_execs : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecProfile.all_start_micros
+	**/
+	public var all_start_micros : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecProfile.allocations
+	**/
+	public var allocations : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecProfile.cpu_execs
+	**/
+	public var cpu_execs : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecProfile.devices
+	**/
+	public var devices : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecProfile.latest_end_micros
+	**/
+	public var latest_end_micros : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecProfile.memory_execs
+	**/
+	public var memory_execs : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecProfile.run_count
+	**/
+	public var run_count : Dynamic;
 }

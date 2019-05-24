@@ -129,7 +129,7 @@ package pandas.core.indexes.accessors;
 	public var __weakref__ : Dynamic;
 	static public var _accessors : Dynamic;
 	/**
-		add accessors to cls from the delegate class
+		Add accessors to cls from the delegate class.
 		
 		Parameters
 		----------

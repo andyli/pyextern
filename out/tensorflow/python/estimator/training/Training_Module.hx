@@ -4,6 +4,7 @@ package tensorflow.python.estimator.training;
 	static public var _DELAY_SECS_PER_WORKER : Dynamic;
 	static public var _ENVIRONMENT_GOOGLE_VALUE : Dynamic;
 	static public var _ENVIRONMENT_KEY : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var _MAX_DELAY_SECS : Dynamic;
 	static public var _TF_CONFIG_ENV : Dynamic;
 	static public var _TRAINER_JOBS : Dynamic;

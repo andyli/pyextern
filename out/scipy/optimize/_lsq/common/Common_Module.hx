@@ -606,8 +606,7 @@ package scipy.optimize._lsq.common;
 		Delta : float
 		    New radius.
 		ratio : float
-		    Ratio between actual and predicted reductions. Zero if predicted
-		    reduction is zero.
+		    Ratio between actual and predicted reductions.
 	**/
 	static public function update_tr_radius(Delta:Dynamic, actual_reduction:Dynamic, predicted_reduction:Dynamic, step_norm:Dynamic, bound_hit:Dynamic):Float;
 }

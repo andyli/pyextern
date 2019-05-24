@@ -5,7 +5,6 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CONST_NODE_INFO_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -23,7 +22,6 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DESTINATION_FIELD_NUMBER : Dynamic;
 	static public var Destination : Dynamic;
 	/**
 		Discards the unknown fields.
@@ -41,8 +39,6 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GRAPH_INPUT_NODE_INFO_FIELD_NUMBER : Dynamic;
-	static public var GRAPH_OUTPUT_NODE_INFO_FIELD_NUMBER : Dynamic;
 	static public var HEXAGON : Dynamic;
 	/**
 		Checks if a message field is set.
@@ -68,9 +64,6 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NODE_INFO_FIELD_NUMBER : Dynamic;
-	static public var NODE_INPUT_INFO_FIELD_NUMBER : Dynamic;
-	static public var NODE_OUTPUT_INFO_FIELD_NUMBER : Dynamic;
 	static public var NOP : Dynamic;
 	/**
 		Parses a serialized message into the current message.
@@ -92,6 +85,10 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -257,4 +254,32 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.GraphTransferInfo.const_node_info
+	**/
+	public var const_node_info : Dynamic;
+	/**
+		Field tensorflow.GraphTransferInfo.destination
+	**/
+	public var destination : Dynamic;
+	/**
+		Field tensorflow.GraphTransferInfo.graph_input_node_info
+	**/
+	public var graph_input_node_info : Dynamic;
+	/**
+		Field tensorflow.GraphTransferInfo.graph_output_node_info
+	**/
+	public var graph_output_node_info : Dynamic;
+	/**
+		Field tensorflow.GraphTransferInfo.node_info
+	**/
+	public var node_info : Dynamic;
+	/**
+		Field tensorflow.GraphTransferInfo.node_input_info
+	**/
+	public var node_input_info : Dynamic;
+	/**
+		Field tensorflow.GraphTransferInfo.node_output_info
+	**/
+	public var node_output_info : Dynamic;
 }

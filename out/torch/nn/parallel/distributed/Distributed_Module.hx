@@ -10,47 +10,24 @@ package torch.nn.parallel.distributed;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Flatten dense tensors into a contiguous 1D buffer. Assume tensors are of
-		same dense type.
-		
-		Since inputs are dense, the resulting tensor will be a concatenated 1D
-		buffer. Element-wise operation on this buffer will be equivalent to
-		operating individually.
-		
-		Arguments:
-		    tensors (Iterable[Tensor]): dense tensors to flatten.
-		
-		Returns:
-		    A contiguous 1D buffer containing input tensors.
+		Getting the default process group created by init_process_group
 	**/
-	static public function _flatten_dense_tensors(tensors:Dynamic):Dynamic;
+	static public function _get_default_group():Dynamic;
 	/**
-		Group tensors into chunks. This generator yields a chunk at each time,
-		each containing tensors of same type up to certain byte limit in total size.
+		Gets the device index from :attr:`device`, which can be a torch.device
+		object, a Python integer, or ``None``.
 		
-		Args:
-		    tensors (Sequence): A sequence of tensors to be separated into chunks.
-		    size_limit (int): The limit of each chunk in bytes.
+		If :attr:`device` is a torch.device object, returns the device index if it
+		is a CUDA device. Note that for CUDA device without sepecified index, i.e.,
+		``torch.devie('cuda')``, this will return the current default CUDA device if
+		:attr:`optional` is ``True``.
 		
-		Yields:
-		    Blocks of tensors of same type and within size_limit. The yielded
-		    tensors are only ordered as the original sequence within its types.
+		If :attr:`device` is a Python interger, it is returned as is.
+		
+		If :attr:`device` is ``None``, this will return the current default CUDA
+		device if :attr:`optional` is ``True``.
 	**/
-	static public function _take_tensors(tensors:Dynamic, size_limit:Dynamic):Dynamic;
-	/**
-		View a flat buffer using the sizes of tensors. Assume that tensors are of
-		same dense type, and that flat is given by _flatten_dense_tensors.
-		
-		Arguments:
-		    flat (Tensor): flattened dense tensors to unflatten.
-		    tensors (Iterable[Tensor]): dense tensors whose sizes will be used to
-		      unflatten flat.
-		
-		Returns:
-		    Unflattened dense tensors with sizes same as tensors and values from
-		    flat.
-	**/
-	static public function _unflatten_dense_tensors(flat:Dynamic, tensors:Dynamic):Dynamic;
+	static public function _get_device_index(device:Dynamic, ?optional:Dynamic):Dynamic;
 	/**
 		Broadcasts a sequence tensors to the specified GPUs.
 		Small tensors are first coalesced into a buffer to reduce the number
@@ -77,6 +54,11 @@ package torch.nn.parallel.distributed;
 		Applies each `module` in :attr:`modules` in parallel on arguments
 		contained in :attr:`inputs` (positional) and :attr:`kwargs_tup` (keyword)
 		on each of :attr:`devices`.
+		
+		Args:
+		    modules (Module): modules to be parallelized
+		    inputs (tensor): inputs to the modules
+		    devices (list of int or torch.device): CUDA devices
 		
 		:attr:`modules`, :attr:`inputs`, :attr:`kwargs_tup` (if given), and
 		:attr:`devices` (if given) should all have same length. Moreover, each

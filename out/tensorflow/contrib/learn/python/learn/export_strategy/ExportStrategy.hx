@@ -87,7 +87,7 @@ package tensorflow.contrib.learn.python.learn.export_strategy;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -97,7 +97,7 @@ package tensorflow.contrib.learn.python.learn.export_strategy;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.estimator.train_and_evaluate, and use tf.estimator.Exporter.
 	**/
@@ -115,7 +115,7 @@ package tensorflow.contrib.learn.python.learn.export_strategy;
 	**/
 	public function __repr__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**

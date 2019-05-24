@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.profiler.profile_pb2;
 @:pythonImport("tensorflow.core.profiler.profile_pb2", "Location") extern class Location {
-	static public var ADDRESS_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -47,17 +46,14 @@ package tensorflow.core.profiler.profile_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ID_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LINE_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAPPING_ID_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -86,6 +82,10 @@ package tensorflow.core.profiler.profile_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.core.profiler.profile_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Location.address
+	**/
+	public var address : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Location.id
+	**/
+	public var id : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Location.line
+	**/
+	public var line : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Location.mapping_id
+	**/
+	public var mapping_id : Dynamic;
 }

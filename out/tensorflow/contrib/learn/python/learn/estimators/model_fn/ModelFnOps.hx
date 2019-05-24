@@ -87,7 +87,7 @@ package tensorflow.contrib.learn.python.learn.estimators.model_fn;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -97,7 +97,7 @@ package tensorflow.contrib.learn.python.learn.estimators.model_fn;
 	/**
 		Creates a validated `ModelFnOps` instance. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		When switching to tf.estimator.Estimator, use tf.estimator.EstimatorSpec. You can use the `estimator_spec` method to create an equivalent one.
 		
@@ -160,7 +160,7 @@ package tensorflow.contrib.learn.python.learn.estimators.model_fn;
 	**/
 	public function __repr__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**

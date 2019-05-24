@@ -474,6 +474,18 @@ package numpy.lib.utils;
 	**/
 	static public function safe_eval(source:Dynamic):Dynamic;
 	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
+	/**
 		Print or write to a file the source code for a NumPy object.
 		
 		The source code is only returned for objects written in Python. Many

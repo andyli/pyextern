@@ -1,6 +1,9 @@
 /* This file is generated, do not edit! */
 package pandas.core.arrays.categorical;
 @:pythonImport("pandas.core.arrays.categorical", "Categorical") extern class Categorical {
+	/**
+		Return transposed numpy array.
+	**/
 	public var T : Dynamic;
 	/**
 		The numpy array interface.
@@ -23,6 +26,10 @@ package pandas.core.arrays.categorical;
 	public function __bytes__():Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Returns True if `key` is in this Categorical.
+	**/
+	public function __contains__(key:Dynamic):Dynamic;
+	/**
 		Implement delattr(self, name).
 	**/
 	public function __delattr__(name:Dynamic):Dynamic;
@@ -44,7 +51,7 @@ package pandas.core.arrays.categorical;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	/**
-		Return an item. 
+		Return an item.
 	**/
 	public function __getitem__(key:Dynamic):Dynamic;
 	public function __gt__(other:Dynamic):Dynamic;
@@ -136,7 +143,7 @@ package pandas.core.arrays.categorical;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Unicode representation. 
+		Unicode representation.
 	**/
 	public function __unicode__():Dynamic;
 	/**
@@ -153,36 +160,6 @@ package pandas.core.arrays.categorical;
 	**/
 	public var _can_hold_na : Dynamic;
 	static public var _codes : Dynamic;
-	/**
-		Code the categories to ensure we can groupby for categoricals.
-		
-		If observed=True, we return a new Categorical with the observed
-		categories only.
-		
-		If sort=False, return a copy of self, coded with categories as
-		returned by .unique(), followed by any categories not appearing in
-		the data. If sort=True, return self.
-		
-		This method is needed solely to ensure the categorical index of the
-		GroupBy result has categories in the order of appearance in the data
-		(GH-8868).
-		
-		Parameters
-		----------
-		sort : boolean
-		    The value of the sort parameter groupby was called with.
-		observed : boolean
-		    Account only for the observed values
-		
-		Returns
-		-------
-		Categorical
-		    If sort=False, the new categories are set to the order of
-		    appearance in codes (unless ordered=True, in which case the
-		    original order is preserved), followed by any unrepresented
-		    categories in the original order.
-	**/
-	public function _codes_for_groupby(sort:Dynamic, observed:Dynamic):Dynamic;
 	/**
 		Concatenate multiple array
 		
@@ -210,7 +187,35 @@ package pandas.core.arrays.categorical;
 	public function _dir_deletions():Dynamic;
 	static public var _dtype : Dynamic;
 	/**
+		Formatting function for scalar values.
+		
+		This is used in the default '__repr__'. The returned formatting
+		function receives instances of your scalar type.
+		
+		Parameters
+		----------
+		boxed: bool, default False
+		    An indicated for whether or not your array is being printed
+		    within a Series, DataFrame, or Index (True), or just by
+		    itself (False). This may be useful if you want scalar values
+		    to appear differently within a Series versus on its own (e.g.
+		    quoted or not).
+		
+		Returns
+		-------
+		Callable[[Any], str]
+		    A callable that gets instances of the scalar type and
+		    returns a string. By default, :func:`repr` is used
+		    when ``boxed=False`` and :func:`str` is used when
+		    ``boxed=True``.
+	**/
+	public function _formatter(?boxed:Dynamic):Dynamic;
+	/**
 		An array of values to be printed in, e.g. the Series repr
+		
+		.. deprecated:: 0.24.0
+		
+		   Use :meth:`ExtensionArray._formatter` instead.
 	**/
 	public function _formatting_values():Dynamic;
 	/**
@@ -230,7 +235,7 @@ package pandas.core.arrays.categorical;
 	**/
 	static public function _from_factorized(uniques:Dynamic, original:Dynamic):Dynamic;
 	/**
-		Construct a Categorical from inferred values
+		Construct a Categorical from inferred values.
 		
 		For inferred categories (`dtype` is None) the categories are sorted.
 		For explicit `dtype`, the `inferred_categories` are cast to the
@@ -238,16 +243,18 @@ package pandas.core.arrays.categorical;
 		
 		Parameters
 		----------
-		
 		inferred_categories : Index
 		inferred_codes : Index
 		dtype : CategoricalDtype or 'category'
+		true_values : list, optional
+		    If none are provided, the default ones are
+		    "True", "TRUE", and "true."
 		
 		Returns
 		-------
 		Categorical
 	**/
-	static public function _from_inferred_categories(inferred_categories:Dynamic, inferred_codes:Dynamic, dtype:Dynamic):Dynamic;
+	static public function _from_inferred_categories(inferred_categories:Dynamic, inferred_codes:Dynamic, dtype:Dynamic, ?true_values:Dynamic):Dynamic;
 	/**
 		Construct a new ExtensionArray from a sequence of scalars.
 		
@@ -256,11 +263,38 @@ package pandas.core.arrays.categorical;
 		scalars : Sequence
 		    Each element will be an instance of the scalar type for this
 		    array, ``cls.dtype.type``.
+		dtype : dtype, optional
+		    Construct for this particular dtype. This should be a Dtype
+		    compatible with the ExtensionArray.
+		copy : boolean, default False
+		    If True, copy the underlying data.
+		
 		Returns
 		-------
 		ExtensionArray
 	**/
-	static public function _from_sequence(scalars:Dynamic):Dynamic;
+	static public function _from_sequence(scalars:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		Construct a new ExtensionArray from a sequence of strings.
+		
+		.. versionadded:: 0.24.0
+		
+		Parameters
+		----------
+		strings : Sequence
+		    Each element will be an instance of the scalar type for this
+		    array, ``cls.dtype.type``.
+		dtype : dtype, optional
+		    Construct for this particular dtype. This should be a Dtype
+		    compatible with the ExtensionArray.
+		copy : boolean, default False
+		    If True, copy the underlying data.
+		
+		Returns
+		-------
+		ExtensionArray
+	**/
+	static public function _from_sequence_of_strings(strings:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Get the codes.
 		
@@ -272,7 +306,7 @@ package pandas.core.arrays.categorical;
 	public function _get_codes():Dynamic;
 	public function _get_repr(?length:Dynamic, ?na_rep:Dynamic, ?footer:Dynamic):Dynamic;
 	/**
-		return an indexer coerced to the codes dtype 
+		return an indexer coerced to the codes dtype
 	**/
 	public function _maybe_coerce_indexer(indexer:Dynamic):Dynamic;
 	/**
@@ -285,11 +319,31 @@ package pandas.core.arrays.categorical;
 	**/
 	public var _ndarray_values : Dynamic;
 	/**
-		perform the reduction type operation 
+		Return a scalar result of performing the reduction operation.
+		
+		Parameters
+		----------
+		name : str
+		    Name of the function, supported values are:
+		    { any, all, min, max, sum, mean, median, prod,
+		    std, var, sem, kurt, skew }.
+		skipna : bool, default True
+		    If True, skip NaN values.
+		**kwargs
+		    Additional keyword arguments passed to the reduction function.
+		    Currently, `ddof` is the only supported kwarg.
+		
+		Returns
+		-------
+		scalar
+		
+		Raises
+		------
+		TypeError : subclass does not define reductions
 	**/
-	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function _reduce(name:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return the base repr for the categories 
+		return the base repr for the categories
 	**/
 	public function _repr_categories():Dynamic;
 	/**
@@ -340,7 +394,7 @@ package pandas.core.arrays.categorical;
 		
 		Examples
 		--------
-		>>> c = Categorical(['a', 'b'])
+		>>> c = pd.Categorical(['a', 'b'])
 		>>> c
 		[a, b]
 		Categories (2, object): [a, b]
@@ -409,6 +463,11 @@ package pandas.core.arrays.categorical;
 		    as NA in the factorization routines, so it will be coded as
 		    `na_sentinal` and not included in `uniques`. By default,
 		    ``np.nan`` is used.
+		
+		Notes
+		-----
+		The values returned by this method are also used in
+		:func:`pandas.util.hash_pandas_object`.
 	**/
 	public function _values_for_factorize():Dynamic;
 	/**
@@ -428,12 +487,6 @@ package pandas.core.arrays.categorical;
 		`new_categories` will be included at the last/highest place in the
 		categories and will be unused directly after this call.
 		
-		Raises
-		------
-		ValueError
-		    If the new categories include old categories or do not validate as
-		    categories
-		
 		Parameters
 		----------
 		new_categories : category or list-like of category
@@ -446,7 +499,13 @@ package pandas.core.arrays.categorical;
 		-------
 		cat : Categorical with new categories added or None if inplace.
 		
-		See also
+		Raises
+		------
+		ValueError
+		    If the new categories include old categories or do not validate as
+		    categories
+		
+		See Also
 		--------
 		rename_categories
 		reorder_categories
@@ -456,7 +515,7 @@ package pandas.core.arrays.categorical;
 	**/
 	public function add_categories(new_categories:Dynamic, ?inplace:Dynamic):Dynamic;
 	/**
-		Return the indicies that would sort the Categorical.
+		Return the indices that would sort the Categorical.
 		
 		Parameters
 		----------
@@ -472,7 +531,7 @@ package pandas.core.arrays.categorical;
 		-------
 		argsorted : numpy array
 		
-		See also
+		See Also
 		--------
 		numpy.ndarray.argsort
 		
@@ -497,7 +556,7 @@ package pandas.core.arrays.categorical;
 	**/
 	public function argsort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Sets the Categorical to be ordered
+		Set the Categorical to be ordered.
 		
 		Parameters
 		----------
@@ -507,7 +566,7 @@ package pandas.core.arrays.categorical;
 	**/
 	public function as_ordered(?inplace:Dynamic):Dynamic;
 	/**
-		Sets the Categorical to be unordered
+		Set the Categorical to be unordered.
 		
 		Parameters
 		----------
@@ -531,7 +590,7 @@ package pandas.core.arrays.categorical;
 	**/
 	public function astype(dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
-		compat, we are always our own object 
+		compat, we are always our own object
 	**/
 	public var base : Dynamic;
 	/**
@@ -552,7 +611,7 @@ package pandas.core.arrays.categorical;
 		    If the new categories do not validate as categories or if the
 		    number of new categories is unequal the number of old categories
 		
-		See also
+		See Also
 		--------
 		rename_categories
 		reorder_categories
@@ -577,7 +636,7 @@ package pandas.core.arrays.categorical;
 	**/
 	public var codes : Dynamic;
 	/**
-		Copy constructor. 
+		Copy constructor.
 	**/
 	public function copy():Dynamic;
 	/**
@@ -676,11 +735,11 @@ package pandas.core.arrays.categorical;
 	**/
 	public function fillna(?value:Dynamic, ?method:Dynamic, ?limit:Dynamic):Dynamic;
 	/**
-		Make a Categorical type from codes and categories arrays.
+		Make a Categorical type from codes and categories or dtype.
 		
-		This constructor is useful if you already have codes and categories and
-		so do not need the (computation intensive) factorization step, which is
-		usually done on the constructor.
+		This constructor is useful if you already have codes and
+		categories/dtype and so do not need the (computation intensive)
+		factorization step, which is usually done on the constructor.
 		
 		If your data does not follow this convention, please use the normal
 		constructor.
@@ -689,15 +748,32 @@ package pandas.core.arrays.categorical;
 		----------
 		codes : array-like, integers
 		    An integer array, where each integer points to a category in
-		    categories or -1 for NaN
-		categories : index-like
+		    categories or dtype.categories, or else is -1 for NaN
+		categories : index-like, optional
 		    The categories for the categorical. Items need to be unique.
-		ordered : boolean, (default False)
-		    Whether or not this categorical is treated as a ordered
-		    categorical. If not given, the resulting categorical will be
-		    unordered.
+		    If the categories are not given here, then they must be provided
+		    in `dtype`.
+		ordered : bool, optional
+		    Whether or not this categorical is treated as an ordered
+		    categorical. If not given here or in `dtype`, the resulting
+		    categorical will be unordered.
+		dtype : CategoricalDtype or the string "category", optional
+		    If :class:`CategoricalDtype`, cannot be used together with
+		    `categories` or `ordered`.
+		
+		    .. versionadded:: 0.24.0
+		
+		       When `dtype` is provided, neither `categories` nor `ordered`
+		       should be provided.
+		
+		Examples
+		--------
+		>>> dtype = pd.CategoricalDtype(['a', 'b'], ordered=True)
+		>>> pd.Categorical.from_codes(codes=[0, 1, 0, 1], dtype=dtype)
+		[a, b, a, b]
+		Categories (2, object): [a < b]
 	**/
-	static public function from_codes(codes:Dynamic, categories:Dynamic, ?ordered:Dynamic):Dynamic;
+	static public function from_codes(codes:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Return the values.
 		
@@ -748,7 +824,7 @@ package pandas.core.arrays.categorical;
 		
 		See Also
 		--------
-		pandas.Series.isin : equivalent method on Series
+		pandas.Series.isin : Equivalent method on Series.
 		
 		Examples
 		--------
@@ -774,11 +850,11 @@ package pandas.core.arrays.categorical;
 		-------
 		a boolean array of whether my values are null
 		
-		See also
+		See Also
 		--------
-		isna : top-level isna
-		isnull : alias of isna
-		Categorical.notna : boolean inverse of Categorical.isna
+		isna : Top-level isna.
+		isnull : Alias of isna.
+		Categorical.notna : Boolean inverse of Categorical.isna.
 	**/
 	public function isna():Dynamic;
 	/**
@@ -790,15 +866,15 @@ package pandas.core.arrays.categorical;
 		-------
 		a boolean array of whether my values are null
 		
-		See also
+		See Also
 		--------
-		isna : top-level isna
-		isnull : alias of isna
-		Categorical.notna : boolean inverse of Categorical.isna
+		isna : Top-level isna.
+		isnull : Alias of isna.
+		Categorical.notna : Boolean inverse of Categorical.isna.
 	**/
 	public function isnull():Dynamic;
 	/**
-		return the size of a single category 
+		return the size of a single category
 	**/
 	public var itemsize : Dynamic;
 	/**
@@ -807,7 +883,7 @@ package pandas.core.arrays.categorical;
 		Maps the categories to new categories. If the mapping correspondence is
 		one-to-one the result is a :class:`~pandas.Categorical` which has the
 		same order property as the original, otherwise a :class:`~pandas.Index`
-		is returned.
+		is returned. NaN values are unaffected.
 		
 		If a `dict` or :class:`~pandas.Series` is used any unmapped category is
 		mapped to `NaN`. Note that if this happens an :class:`~pandas.Index`
@@ -928,19 +1004,24 @@ package pandas.core.arrays.categorical;
 		
 		Always returns `Categorical` even if only one value.
 		
+		Parameters
+		----------
+		dropna : boolean, default True
+		    Don't consider counts of NaN/NaT.
+		
+		    .. versionadded:: 0.24.0
+		
 		Returns
 		-------
 		modes : `Categorical` (sorted)
 	**/
-	public function mode():Dynamic;
+	public function mode(?dropna:Dynamic):Dynamic;
 	/**
 		The number of bytes needed to store this object in memory.
-		
-		        
 	**/
 	public var nbytes : Dynamic;
 	/**
-		Number of dimensions of the Categorical 
+		Number of dimensions of the Categorical
 	**/
 	public var ndim : Dynamic;
 	/**
@@ -953,11 +1034,11 @@ package pandas.core.arrays.categorical;
 		-------
 		a boolean array of whether my values are not null
 		
-		See also
+		See Also
 		--------
-		notna : top-level notna
-		notnull : alias of notna
-		Categorical.isna : boolean inverse of Categorical.notna
+		notna : Top-level notna.
+		notnull : Alias of notna.
+		Categorical.isna : Boolean inverse of Categorical.notna.
 	**/
 	public function notna():Dynamic;
 	/**
@@ -970,15 +1051,15 @@ package pandas.core.arrays.categorical;
 		-------
 		a boolean array of whether my values are not null
 		
-		See also
+		See Also
 		--------
-		notna : top-level notna
-		notnull : alias of notna
-		Categorical.isna : boolean inverse of Categorical.notna
+		notna : Top-level notna.
+		notnull : Alias of notna.
+		Categorical.isna : Boolean inverse of Categorical.notna.
 	**/
 	public function notnull():Dynamic;
 	/**
-		Whether the categories have an ordered relationship
+		Whether the categories have an ordered relationship.
 	**/
 	public var ordered : Dynamic;
 	/**
@@ -1001,11 +1082,6 @@ package pandas.core.arrays.categorical;
 		`removals` must be included in the old categories. Values which were in
 		the removed categories will be set to NaN
 		
-		Raises
-		------
-		ValueError
-		    If the removals are not contained in the categories
-		
 		Parameters
 		----------
 		removals : category or list of categories
@@ -1018,7 +1094,12 @@ package pandas.core.arrays.categorical;
 		-------
 		cat : Categorical with removed categories or None if inplace.
 		
-		See also
+		Raises
+		------
+		ValueError
+		    If the removals are not contained in the categories
+		
+		See Also
 		--------
 		rename_categories
 		reorder_categories
@@ -1040,7 +1121,7 @@ package pandas.core.arrays.categorical;
 		-------
 		cat : Categorical with unused categories dropped or None if inplace.
 		
-		See also
+		See Also
 		--------
 		rename_categories
 		reorder_categories
@@ -1051,12 +1132,6 @@ package pandas.core.arrays.categorical;
 	public function remove_unused_categories(?inplace:Dynamic):Dynamic;
 	/**
 		Renames categories.
-		
-		Raises
-		------
-		ValueError
-		    If new categories are list-like and do not have the same number of
-		    items than the current categories or do not validate as categories
 		
 		Parameters
 		----------
@@ -1092,7 +1167,13 @@ package pandas.core.arrays.categorical;
 		   With ``inplace=False``, the new categorical is returned.
 		   With ``inplace=True``, there is no return value.
 		
-		See also
+		Raises
+		------
+		ValueError
+		    If new categories are list-like and do not have the same number of
+		    items than the current categories or do not validate as categories
+		
+		See Also
 		--------
 		reorder_categories
 		add_categories
@@ -1102,7 +1183,7 @@ package pandas.core.arrays.categorical;
 		
 		Examples
 		--------
-		>>> c = Categorical(['a', 'a', 'b'])
+		>>> c = pd.Categorical(['a', 'a', 'b'])
 		>>> c.rename_categories([0, 1])
 		[0, 0, 1]
 		Categories (2, int64): [0, 1]
@@ -1127,12 +1208,6 @@ package pandas.core.arrays.categorical;
 		`new_categories` need to include all old categories and no new category
 		items.
 		
-		Raises
-		------
-		ValueError
-		    If the new categories do not contain all old category items or any
-		    new ones
-		
 		Parameters
 		----------
 		new_categories : Index-like
@@ -1148,7 +1223,13 @@ package pandas.core.arrays.categorical;
 		-------
 		cat : Categorical with reordered categories or None if inplace.
 		
-		See also
+		Raises
+		------
+		ValueError
+		    If the new categories do not contain all old category items or any
+		    new ones
+		
+		See Also
 		--------
 		rename_categories
 		add_categories
@@ -1160,11 +1241,45 @@ package pandas.core.arrays.categorical;
 	/**
 		Repeat elements of a Categorical.
 		
-		See also
+		Returns a new Categorical where each element of the current Categorical
+		is repeated consecutively a given number of times.
+		
+		Parameters
+		----------
+		repeats : int or array of ints
+		    The number of repetitions for each element. This should be a
+		    non-negative integer. Repeating 0 times will return an empty
+		    Categorical.
+		axis : None
+		    Must be ``None``. Has no effect but is accepted for compatibility
+		    with numpy.
+		
+		Returns
+		-------
+		repeated_array : Categorical
+		    Newly created Categorical with repeated elements.
+		
+		See Also
 		--------
-		numpy.ndarray.repeat
+		Series.repeat : Equivalent function for Series.
+		Index.repeat : Equivalent function for Index.
+		numpy.repeat : Similar method for :class:`numpy.ndarray`.
+		ExtensionArray.take : Take arbitrary positions.
+		
+		Examples
+		--------
+		>>> cat = pd.Categorical(['a', 'b', 'c'])
+		>>> cat
+		[a, b, c]
+		Categories (3, object): [a, b, c]
+		>>> cat.repeat(2)
+		[a, a, b, b, c, c]
+		Categories (3, object): [a, b, c]
+		>>> cat.repeat([1, 2, 3])
+		[a, b, b, c, c, c]
+		Categories (3, object): [a, b, c]
 	**/
-	public function repeat(repeats:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function repeat(repeats:Dynamic, ?axis:Dynamic):pandas.Categorical;
 	/**
 		Find indices where elements should be inserted to maintain order.
 		
@@ -1186,8 +1301,14 @@ package pandas.core.arrays.categorical;
 		
 		Returns
 		-------
-		indices : array of ints
-		    Array of insertion points with the same shape as `value`.
+		int or array of int
+		    A scalar or array of insertion points with the
+		    same shape as `value`.
+		
+		    .. versionchanged :: 0.24.0
+		        If `value` is a scalar, an int is now always returned.
+		        Previously, scalar inputs returned an 1-item array for
+		        :class:`Series` and :class:`Categorical`.
 		
 		See Also
 		--------
@@ -1208,7 +1329,7 @@ package pandas.core.arrays.categorical;
 		dtype: int64
 		
 		>>> x.searchsorted(4)
-		array([3])
+		3
 		
 		>>> x.searchsorted([0, 4])
 		array([0, 3])
@@ -1225,7 +1346,7 @@ package pandas.core.arrays.categorical;
 		Categories (4, object): [apple < bread < cheese < milk]
 		
 		>>> x.searchsorted('bread')
-		array([1])     # Note: an array, not a scalar
+		1
 		
 		>>> x.searchsorted(['bread'], side='right')
 		array([3])
@@ -1250,11 +1371,6 @@ package pandas.core.arrays.categorical;
 		dtypes on python3, which does not considers a S1 string equal to a
 		single char python string.
 		
-		Raises
-		------
-		ValueError
-		    If new_categories does not validate as categories
-		
 		Parameters
 		----------
 		new_categories : Index-like
@@ -1273,7 +1389,12 @@ package pandas.core.arrays.categorical;
 		-------
 		cat : Categorical with reordered categories or None if inplace.
 		
-		See also
+		Raises
+		------
+		ValueError
+		    If new_categories does not validate as categories
+		
+		See Also
 		--------
 		rename_categories
 		reorder_categories
@@ -1311,14 +1432,18 @@ package pandas.core.arrays.categorical;
 		----------
 		periods : int
 		    Number of periods to move, can be positive or negative
+		fill_value : object, optional
+		    The scalar value to use for newly introduced missing values.
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
 		shifted : Categorical
 	**/
-	public function shift(periods:Dynamic):pandas.Categorical;
+	public function shift(periods:Dynamic, ?fill_value:Dynamic):pandas.Categorical;
 	/**
-		return the len of myself 
+		return the len of myself
 	**/
 	public var size : Dynamic;
 	/**
@@ -1400,8 +1525,10 @@ package pandas.core.arrays.categorical;
 		
 		Parameters
 		----------
-		indexer : sequence of integers
-		allow_fill : bool, default None.
+		indexer : sequence of int
+		    The indices in `self` to take. The meaning of negative values in
+		    `indexer` depends on the value of `allow_fill`.
+		allow_fill : bool, default None
 		    How to handle negative values in `indexer`.
 		
 		    * False: negative values in `indices` indicate positional indices
@@ -1418,11 +1545,52 @@ package pandas.core.arrays.categorical;
 		       default is ``True``. In the future, this will change to
 		       ``False``.
 		
+		fill_value : object
+		    The value to use for `indices` that are missing (-1), when
+		    ``allow_fill=True``. This should be the category, i.e. a value
+		    in ``self.categories``, not a code.
+		
 		Returns
 		-------
 		Categorical
 		    This Categorical will have the same categories and ordered as
 		    `self`.
+		
+		See Also
+		--------
+		Series.take : Similar method for Series.
+		numpy.ndarray.take : Similar method for NumPy arrays.
+		
+		Examples
+		--------
+		>>> cat = pd.Categorical(['a', 'a', 'b'])
+		>>> cat
+		[a, a, b]
+		Categories (2, object): [a, b]
+		
+		Specify ``allow_fill==False`` to have negative indices mean indexing
+		from the right.
+		
+		>>> cat.take([0, -1, -2], allow_fill=False)
+		[a, b, a]
+		Categories (2, object): [a, b]
+		
+		With ``allow_fill=True``, indices equal to ``-1`` mean "missing"
+		values that should be filled with the `fill_value`, which is
+		``np.nan`` by default.
+		
+		>>> cat.take([0, -1, -1], allow_fill=True)
+		[a, NaN, NaN]
+		Categories (2, object): [a, b]
+		
+		The fill value can be specified.
+		
+		>>> cat.take([0, -1, -1], allow_fill=True, fill_value='a')
+		[a, a, a]
+		Categories (3, object): [a, b]
+		
+		Specifying a fill value that's not in ``self.categories``
+		will raise a ``TypeError``.
 	**/
 	public function take(indexer:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
@@ -1430,8 +1598,10 @@ package pandas.core.arrays.categorical;
 		
 		Parameters
 		----------
-		indexer : sequence of integers
-		allow_fill : bool, default None.
+		indexer : sequence of int
+		    The indices in `self` to take. The meaning of negative values in
+		    `indexer` depends on the value of `allow_fill`.
+		allow_fill : bool, default None
 		    How to handle negative values in `indexer`.
 		
 		    * False: negative values in `indices` indicate positional indices
@@ -1448,11 +1618,52 @@ package pandas.core.arrays.categorical;
 		       default is ``True``. In the future, this will change to
 		       ``False``.
 		
+		fill_value : object
+		    The value to use for `indices` that are missing (-1), when
+		    ``allow_fill=True``. This should be the category, i.e. a value
+		    in ``self.categories``, not a code.
+		
 		Returns
 		-------
 		Categorical
 		    This Categorical will have the same categories and ordered as
 		    `self`.
+		
+		See Also
+		--------
+		Series.take : Similar method for Series.
+		numpy.ndarray.take : Similar method for NumPy arrays.
+		
+		Examples
+		--------
+		>>> cat = pd.Categorical(['a', 'a', 'b'])
+		>>> cat
+		[a, a, b]
+		Categories (2, object): [a, b]
+		
+		Specify ``allow_fill==False`` to have negative indices mean indexing
+		from the right.
+		
+		>>> cat.take([0, -1, -2], allow_fill=False)
+		[a, b, a]
+		Categories (2, object): [a, b]
+		
+		With ``allow_fill=True``, indices equal to ``-1`` mean "missing"
+		values that should be filled with the `fill_value`, which is
+		``np.nan`` by default.
+		
+		>>> cat.take([0, -1, -1], allow_fill=True)
+		[a, NaN, NaN]
+		Categories (2, object): [a, b]
+		
+		The fill value can be specified.
+		
+		>>> cat.take([0, -1, -1], allow_fill=True, fill_value='a')
+		[a, a, a]
+		Categories (3, object): [a, b]
+		
+		Specifying a fill value that's not in ``self.categories``
+		will raise a ``TypeError``.
 	**/
 	public function take_nd(indexer:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
@@ -1465,6 +1676,14 @@ package pandas.core.arrays.categorical;
 		dense : array
 	**/
 	public function to_dense():Array<Dynamic>;
+	/**
+		Return a list of the values.
+		
+		These are each a scalar type, which is a Python scalar
+		(for str, int, float) or a pandas scalar
+		(for Timestamp/Timedelta/Interval/Period)
+	**/
+	public function to_list():Dynamic;
 	/**
 		Return a list of the values.
 		

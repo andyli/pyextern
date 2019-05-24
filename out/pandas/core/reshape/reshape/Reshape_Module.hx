@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.reshape.reshape;
 @:pythonImport("pandas.core.reshape.reshape") extern class Reshape_Module {
+	static public var PY2 : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -9,7 +10,6 @@ package pandas.core.reshape.reshape;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Factorize an input `values` into `categories` and `codes`. Preserves
 		categorical dtype in `categories`.
@@ -30,22 +30,56 @@ package pandas.core.reshape.reshape;
 	static public function _factorize_from_iterable(values:Dynamic):Dynamic;
 	static public function _get_dummies_1d(data:Dynamic, prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
-		Produce 'pivot' table based on 3 columns of this DataFrame.
-		Uses unique values from index / columns and fills with values.
+		Re-orders the values when stacking multiple extension-arrays.
+		
+		The indirect stacking method used for EAs requires a followup
+		take to get the order correct.
 		
 		Parameters
 		----------
-		index : string or object
-		    Column name to use to make new frame's index
-		columns : string or object
-		    Column name to use to make new frame's columns
-		values : string or object
-		    Column name to use for populating new frame's values
+		arr : ExtensionArray
+		n_rows, n_columns : int
+		    The number of rows and columns in the original DataFrame.
 		
-		Could benefit from some Cython here.
+		Returns
+		-------
+		taken : ExtensionArray
+		    The original `arr` with elements re-ordered appropriately
+		
+		Examples
+		--------
+		>>> arr = np.array(['a', 'b', 'c', 'd', 'e', 'f'])
+		>>> _reorder_for_extension_array_stack(arr, 2, 3)
+		array(['a', 'c', 'e', 'b', 'd', 'f'], dtype='<U1')
+		
+		>>> _reorder_for_extension_array_stack(arr, 3, 2)
+		array(['a', 'd', 'b', 'e', 'c', 'f'], dtype='<U1')
 	**/
-	static public function _slow_pivot(index:Dynamic, columns:Dynamic, values:Dynamic):Dynamic;
+	static public function _reorder_for_extension_array_stack(arr:Dynamic, n_rows:Dynamic, n_columns:Dynamic):Dynamic;
 	static public function _stack_multi_columns(frame:Dynamic, ?level_num:Dynamic, ?dropna:Dynamic):Dynamic;
+	/**
+		Unstack an ExtensionArray-backed Series.
+		
+		The ExtensionDtype is preserved.
+		
+		Parameters
+		----------
+		series : Series
+		    A Series with an ExtensionArray for values
+		level : Any
+		    The level name or number.
+		fill_value : Any
+		    The user-level (not physical storage) fill value to use for
+		    missing values introduced by the reshape. Passed to
+		    ``series.values.take``.
+		
+		Returns
+		-------
+		DataFrame
+		    Each column of the DataFrame will have the same dtype as
+		    the input Series.
+	**/
+	static public function _unstack_extension_series(series:Dynamic, level:Dynamic, fill_value:Dynamic):Dynamic;
 	static public function _unstack_frame(obj:Dynamic, level:Dynamic, ?fill_value:Dynamic):Dynamic;
 	static public function _unstack_multiple(data:Dynamic, clocs:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
@@ -63,6 +97,49 @@ package pandas.core.reshape.reshape;
 		    if nulls are excluded; i.e. -1 labels are passed through
 	**/
 	static public function decons_obs_group_ids(comp_ids:Dynamic, obs_ids:Dynamic, shape:Dynamic, labels:Dynamic, xnull:Dynamic):Dynamic;
+	static public function ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Extract the ndarray or ExtensionArray from a Series or Index.
+		
+		For all other types, `obj` is just returned as is.
+		
+		Parameters
+		----------
+		obj : object
+		    For Series / Index, the underlying ExtensionArray is unboxed.
+		    For Numpy-backed ExtensionArrays, the ndarray is extracted.
+		
+		extract_numpy : bool, default False
+		    Whether to extract the ndarray from a PandasArray
+		
+		Returns
+		-------
+		arr : object
+		
+		Examples
+		--------
+		>>> extract_array(pd.Series(['a', 'b', 'c'], dtype='category'))
+		[a, b, c]
+		Categories (3, object): [a, b, c]
+		
+		Other objects like lists, arrays, and DataFrames are just passed through.
+		
+		>>> extract_array([1, 2, 3])
+		[1, 2, 3]
+		
+		For an ndarray-backed Series / Index a PandasArray is returned.
+		
+		>>> extract_array(pd.Series([1, 2, 3]))
+		<PandasArray>
+		[1, 2, 3]
+		Length: 3, dtype: int64
+		
+		To extract all the way down to the ndarray, pass ``extract_numpy=True``.
+		
+		>>> extract_array(pd.Series([1, 2, 3]), extract_numpy=True)
+		array([1, 2, 3])
+	**/
+	static public function extract_array(obj:Dynamic, ?extract_numpy:Dynamic):Dynamic;
 	/**
 		Group_index is offsets into cartesian product of all possible labels. This
 		space can be huge, so this function compresses it, by computing offsets
@@ -99,9 +176,8 @@ package pandas.core.reshape.reshape;
 		    If `columns` is None then all the columns with
 		    `object` or `category` dtype will be converted.
 		sparse : bool, default False
-		    Whether the dummy columns should be sparse or not.  Returns
-		    SparseDataFrame if `data` is a Series or if all columns are included.
-		    Otherwise returns a DataFrame with some SparseBlocks.
+		    Whether the dummy-encoded columns should be be backed by
+		    a :class:`SparseArray` (True) or a regular NumPy array (False).
 		drop_first : bool, default False
 		    Whether to get k-1 dummies out of k categorical levels by removing the
 		    first level.
@@ -115,11 +191,14 @@ package pandas.core.reshape.reshape;
 		
 		Returns
 		-------
-		dummies : DataFrame or SparseDataFrame
+		dummies : DataFrame
+		
+		See Also
+		--------
+		Series.str.get_dummies
 		
 		Examples
 		--------
-		>>> import pandas as pd
 		>>> s = pd.Series(list('abca'))
 		
 		>>> pd.get_dummies(s)
@@ -173,12 +252,8 @@ package pandas.core.reshape.reshape;
 		0  1.0  0.0  0.0
 		1  0.0  1.0  0.0
 		2  0.0  0.0  1.0
-		
-		See Also
-		--------
-		Series.str.get_dummies
 	**/
-	static public function get_dummies(data:Dynamic, ?prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?columns:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_dummies(data:Dynamic, ?prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?columns:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic, ?dtype:Dynamic):pandas.DataFrame;
 	/**
 		For the particular label_list, gets the offsets into the hypothetical list
 		representing the totally ordered cartesian product of all possible label
@@ -218,6 +293,11 @@ package pandas.core.reshape.reshape;
 		-------
 		boolean : Whether or not the array or dtype is of a boolean dtype.
 		
+		Notes
+		-----
+		An ExtensionArray is considered boolean when the ``_is_boolean``
+		attribute is set to True.
+		
 		Examples
 		--------
 		>>> is_bool_dtype(str)
@@ -234,8 +314,107 @@ package pandas.core.reshape.reshape;
 		False
 		>>> is_bool_dtype(np.array([True, False]))
 		True
+		>>> is_bool_dtype(pd.Categorical([True, False]))
+		True
+		>>> is_bool_dtype(pd.SparseArray([True, False]))
+		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check if an object is a pandas extension array type.
+		
+		See the :ref:`Use Guide <extending.extension-types>` for more.
+		
+		Parameters
+		----------
+		arr_or_dtype : object
+		    For array-like input, the ``.dtype`` attribute will
+		    be extracted.
+		
+		Returns
+		-------
+		bool
+		    Whether the `arr_or_dtype` is an extension array type.
+		
+		Notes
+		-----
+		This checks whether an object implements the pandas extension
+		array interface. In pandas, this includes:
+		
+		* Categorical
+		* Sparse
+		* Interval
+		* Period
+		* DatetimeArray
+		* TimedeltaArray
+		
+		Third-party libraries may implement arrays or types satisfying
+		this interface as well.
+		
+		Examples
+		--------
+		>>> from pandas.api.types import is_extension_array_dtype
+		>>> arr = pd.Categorical(['a', 'b'])
+		>>> is_extension_array_dtype(arr)
+		True
+		>>> is_extension_array_dtype(arr.dtype)
+		True
+		
+		>>> arr = np.array(['a', 'b'])
+		>>> is_extension_array_dtype(arr.dtype)
+		False
+	**/
+	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether the provided array or dtype is of an integer dtype.
+		
+		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of an integer dtype
+		          and not an instance of timedelta64.
+		
+		Examples
+		--------
+		>>> is_integer_dtype(str)
+		False
+		>>> is_integer_dtype(int)
+		True
+		>>> is_integer_dtype(float)
+		False
+		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
+		True
+		>>> is_integer_dtype(np.datetime64)
+		False
+		>>> is_integer_dtype(np.timedelta64)
+		False
+		>>> is_integer_dtype(np.array(['a', 'b']))
+		False
+		>>> is_integer_dtype(pd.Series([1, 2]))
+		True
+		>>> is_integer_dtype(np.array([], dtype=np.timedelta64))
+		False
+		>>> is_integer_dtype(pd.Index([1, 2.]))  # float
+		False
+	**/
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check if the object is list-like.
 		
@@ -246,7 +425,11 @@ package pandas.core.reshape.reshape;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -265,8 +448,12 @@ package pandas.core.reshape.reshape;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Check whether an array-like or dtype is of the object dtype.
 		
@@ -293,35 +480,6 @@ package pandas.core.reshape.reshape;
 		False
 	**/
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
-	/**
-		Check whether an array-like is a pandas sparse array.
-		
-		Parameters
-		----------
-		arr : array-like
-		    The array-like to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array-like is a pandas sparse array.
-		
-		Examples
-		--------
-		>>> is_sparse(np.array([1, 2, 3]))
-		False
-		>>> is_sparse(pd.SparseArray([1, 2, 3]))
-		True
-		>>> is_sparse(pd.SparseSeries([1, 2, 3]))
-		True
-		
-		This function checks only for pandas sparse array instances, so
-		sparse arrays from other libraries will return False.
-		
-		>>> from scipy.sparse import bsr_matrix
-		>>> is_sparse(bsr_matrix([1, 2, 3]))
-		False
-	**/
-	static public function is_sparse(arr:Dynamic):Dynamic;
 	/**
 		Construct 1-0 dummy variables corresponding to designated axis
 		labels
@@ -380,7 +538,7 @@ package pandas.core.reshape.reshape;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -398,8 +556,8 @@ package pandas.core.reshape.reshape;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -452,37 +610,6 @@ package pandas.core.reshape.reshape;
 	**/
 	static public function notna(obj:Dynamic):Dynamic;
 	/**
-		See DataFrame.pivot
-	**/
-	static public function pivot(self:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?values:Dynamic):Dynamic;
-	/**
-		Produce 'pivot' table based on 3 columns of this DataFrame.
-		Uses unique values from index / columns and fills with values.
-		
-		Parameters
-		----------
-		index : ndarray
-		    Labels to use to make new frame's index
-		columns : ndarray
-		    Labels to use to make new frame's columns
-		values : ndarray
-		    Values to use for populating new frame's values
-		
-		Notes
-		-----
-		Obviously, all 3 of the input arguments must have the same length
-		
-		Returns
-		-------
-		DataFrame
-		
-		See also
-		--------
-		DataFrame.pivot_table : generalization of pivot that can handle
-		    duplicate values for one index/column pair
-	**/
-	static public function pivot_simple(index:Dynamic, columns:Dynamic, values:Dynamic):Dynamic;
-	/**
 		Convert DataFrame to Series with multi-level Index. Columns become the
 		second level of the resulting hierarchical index
 		
@@ -492,5 +619,6 @@ package pandas.core.reshape.reshape;
 	**/
 	static public function stack(frame:Dynamic, ?level:Dynamic, ?dropna:Dynamic):pandas.Series;
 	static public function stack_multiple(frame:Dynamic, level:Dynamic, ?dropna:Dynamic):Dynamic;
+	static public function u(s:Dynamic):Dynamic;
 	static public function unstack(obj:Dynamic, level:Dynamic, ?fill_value:Dynamic):Dynamic;
 }

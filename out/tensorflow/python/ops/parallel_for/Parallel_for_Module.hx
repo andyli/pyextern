@@ -26,6 +26,8 @@ package tensorflow.python.ops.parallel_for;
 		  inp: A tensor with shape [b, x1, ..., x_m]
 		  use_pfor: If true, uses pfor for computing the Jacobian. Else uses a
 		    tf.while_loop.
+		  parallel_iterations: A knob to control how many iterations and dispatched in
+		    parallel. This knob can be used to control the total memory usage.
 		
 		Returns:
 		  A tensor `t` with shape [b, y_1, ..., y_n, x1, ..., x_m] where `t[i, ...]`
@@ -35,7 +37,7 @@ package tensorflow.python.ops.parallel_for;
 		Raises:
 		  ValueError: if first dimension of `output` and `inp` do not match.
 	**/
-	static public function batch_jacobian(output:Dynamic, inp:Dynamic, ?use_pfor:Dynamic):Dynamic;
+	static public function batch_jacobian(output:Dynamic, inp:Dynamic, ?use_pfor:Dynamic, ?parallel_iterations:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Runs `loop_fn` `iters` times and stacks the outputs.
@@ -50,12 +52,14 @@ package tensorflow.python.ops.parallel_for;
 		    objects. The shape of these outputs should not depend on the input.
 		  loop_fn_dtypes: dtypes for the outputs of loop_fn.
 		  iters: Number of iterations for which to run loop_fn.
+		  parallel_iterations: The number of iterations that can be dispatched in
+		    parallel. This knob can be used to control the total memory usage.
 		
 		Returns:
 		  Returns a nested structure of stacked output tensor objects with the same
 		  nested structure as the output of `loop_fn`.
 	**/
-	static public function for_loop(loop_fn:Dynamic, loop_fn_dtypes:Dynamic, iters:Dynamic):Dynamic;
+	static public function for_loop(loop_fn:Dynamic, loop_fn_dtypes:Dynamic, iters:Dynamic, ?parallel_iterations:Dynamic):Dynamic;
 	/**
 		Computes jacobian of `output` w.r.t. `inputs`.
 		
@@ -64,6 +68,8 @@ package tensorflow.python.ops.parallel_for;
 		  inputs: A tensor or a nested structure of tensor objects.
 		  use_pfor: If true, uses pfor for computing the jacobian. Else uses
 		    tf.while_loop.
+		  parallel_iterations: A knob to control how many iterations and dispatched in
+		    parallel. This knob can be used to control the total memory usage.
 		
 		Returns:
 		  A tensor or a nested strucutre of tensors with the same structure as
@@ -72,7 +78,7 @@ package tensorflow.python.ops.parallel_for;
 		  shape [x_1, ..., x_m], the corresponding jacobian has shape
 		  [y_1, ..., y_n, x_1, ..., x_m].
 	**/
-	static public function jacobian(output:Dynamic, inputs:Dynamic, ?use_pfor:Dynamic):Dynamic;
+	static public function jacobian(output:Dynamic, inputs:Dynamic, ?use_pfor:Dynamic, ?parallel_iterations:Dynamic):Dynamic;
 	/**
 		Equivalent to running `loop_fn` `iters` times and stacking the outputs.
 		
@@ -93,8 +99,8 @@ package tensorflow.python.ops.parallel_for;
 		    reads, etc).
 		  - Conversion works only on a limited set of kernels for which a converter
 		    has been registered.
-		  - loop_fn cannot currently contain control flow operations like
-		    tf.while_loop or tf.cond.
+		  - loop_fn has limited support for control flow operations. tf.cond in
+		    particular is not supported.
 		  - `loop_fn` should return nested structure of Tensors or Operations. However
 		    if an Operation is returned, it should have zero outputs.
 		  - The shape and dtype of `loop_fn` outputs should not depend on the input
@@ -103,13 +109,22 @@ package tensorflow.python.ops.parallel_for;
 		Args:
 		  loop_fn: A function that takes an int32 scalar tf.Tensor object representing
 		    the iteration number, and returns a possibly nested structure of Tensor or
-		    Operation objects.
+		    Operation objects. Note that if setting `parallel_iterations` argument to
+		    something other than None, `loop_fn` may be called more than once during
+		    graph construction. So it may need to avoid mutating global state.
 		  iters: Number of iterations for which to run loop_fn.
+		  parallel_iterations: A knob to control how many iterations are vectorized
+		    and dispatched in parallel. The default value of None corresponds to
+		    vectorizing all the iterations.  If `parallel_iterations` is smaller than
+		    `iters`, then chunks of at most that many iterations are dispatched in
+		    sequence. This knob can be used to control the total memory usage.
 		
 		Returns:
 		  Returns a nested structure of stacked tensor objects with the same nested
 		  structure as the output of `loop_fn`.
+		Raises:
+		  ValueError: If parallel_iterations is not None and not an integer > 1.
 	**/
-	static public function pfor(loop_fn:Dynamic, iters:Dynamic):Dynamic;
+	static public function pfor(loop_fn:Dynamic, iters:Dynamic, ?parallel_iterations:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

@@ -16,34 +16,22 @@ package matplotlib.axes._base;
 	static public function _check_1d(x:Dynamic):Dynamic;
 	static public var _log : Dynamic;
 	/**
-		Process a MATLAB style color/line style format string.  Return a
-		(*linestyle*, *color*) tuple as a result of the processing.  Default
-		values are ('-', 'b').  Example format strings include:
+		Convert a MATLAB style color/line style format string to a (*linestyle*,
+		*marker*, *color*) tuple.
+		
+		Example format strings include:
 		
 		* 'ko': black circles
 		* '.b': blue dots
 		* 'r--': red dashed lines
 		* 'C2--': the third color in the color cycle, dashed lines
 		
-		.. seealso::
-		
-		    :func:`~matplotlib.Line2D.lineStyles` and
-		    :attr:`~matplotlib.colors.cnames`
-		        for all possible styles and color format string.
+		See Also
+		--------
+		matplotlib.Line2D.lineStyles, matplotlib.colors.cnames
+		    All possible styles and color format strings.
 	**/
 	static public function _process_plot_format(fmt:Dynamic):Dynamic;
-	/**
-		Parses the string argument as a boolean
-	**/
-	static public function _string_to_bool(s:Dynamic):Dynamic;
-	/**
-		Decorator for Artist.draw method. Provides routines
-		that run before and after the draw call. The before and after functions
-		are useful for changing artist-dependent renderer attributes or making
-		other setup function calls, such as starting and flushing a mixed-mode
-		renderer.
-	**/
-	static public function allow_rasterization(draw:Dynamic):Dynamic;
 	/**
 		Creates a `~cycler.Cycler` object much like :func:`cycler.cycler`,
 		but includes input validation.
@@ -96,6 +84,14 @@ package matplotlib.axes._base;
 		...            marker=['o', '+', 'x'])
 	**/
 	static public function cycler(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	static public function get_label(y:Dynamic, default_name:Dynamic):Dynamic;
 	/**
 		A helper function to get the index of an input to plot
@@ -118,10 +114,6 @@ package matplotlib.axes._base;
 		   The x and y values to plot.
 	**/
 	static public function index_of(y:Dynamic):Dynamic;
-	/**
-		return true if *obj* is iterable
-	**/
-	static public function iterable(obj:Dynamic):Dynamic;
 	static public var rcParams : Dynamic;
 	static public function validate_axisbelow(s:Dynamic):Dynamic;
 }

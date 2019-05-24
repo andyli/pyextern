@@ -14,7 +14,7 @@ package tensorflow.contrib.learn.python.learn.utils;
 	/**
 		Build an input_fn appropriate for serving, expecting feature Tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.estimator.export.build_raw_serving_input_receiver_fn.
 		
@@ -34,7 +34,7 @@ package tensorflow.contrib.learn.python.learn.utils;
 	/**
 		Build an input_fn appropriate for serving, expecting fed tf.Examples. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.estimator.export.build_parsing_serving_input_receiver_fn.
 		
@@ -56,7 +56,7 @@ package tensorflow.contrib.learn.python.learn.utils;
 	/**
 		Deprecated, please use Estimator.export_savedmodel(). (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-23.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-23.
 		Instructions for updating:
 		Please use Estimator.export_savedmodel() instead.
 	**/
@@ -64,7 +64,7 @@ package tensorflow.contrib.learn.python.learn.utils;
 	/**
 		Create an ExportStrategy for use with Experiment. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 		

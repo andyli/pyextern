@@ -30,7 +30,6 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FILL_WITH_CONSTANT_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -67,7 +66,6 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -88,7 +86,10 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var USER_DEFINED_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -258,4 +259,16 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tpu.StateVariableSpecification.fill_with_constant
+	**/
+	public var fill_with_constant : Dynamic;
+	/**
+		Field tensorflow.tpu.StateVariableSpecification.name
+	**/
+	public var name : Dynamic;
+	/**
+		Field tensorflow.tpu.StateVariableSpecification.user_defined
+	**/
+	public var user_defined : Dynamic;
 }

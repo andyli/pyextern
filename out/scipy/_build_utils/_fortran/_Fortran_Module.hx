@@ -16,17 +16,9 @@ package scipy._build_utils._fortran;
 	**/
 	static public function get_g77_abi_wrappers(info:Dynamic):Dynamic;
 	/**
-		Returns source file needed to correct SGEMV 
-	**/
-	static public function get_sgemv_fix(info:Dynamic):Dynamic;
-	/**
 		Returns True if g77 ABI wrapper must be used.
 	**/
 	static public function needs_g77_abi_wrapper(info:Dynamic):Dynamic;
-	/**
-		Returns True if SGEMV must be fixed.
-	**/
-	static public function needs_sgemv_fix(info:Dynamic):Dynamic;
 	/**
 		Return true if 'source' exists and is more recently modified than
 		'target', or if 'source' exists and 'target' doesn't.  Return false if
@@ -59,7 +51,5 @@ package scipy._build_utils._fortran;
 		starting at zero and ending at ``num_subroutines_in_file - 1``.
 	**/
 	static public function split_fortran_files(source_dir:Dynamic, ?subroutines:Dynamic):Dynamic;
-	static public function uses_accelerate(info:Dynamic):Dynamic;
 	static public function uses_mkl(info:Dynamic):Dynamic;
-	static public function uses_veclib(info:Dynamic):Dynamic;
 }

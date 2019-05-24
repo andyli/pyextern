@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package pandas.core.computation.api;
 @:pythonImport("pandas.core.computation.api") extern class Api_Module {
-	static public function Expr(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -101,6 +100,11 @@ package pandas.core.computation.api;
 		    - Item assignment is provided and `inplace=False`, but the `target`
 		      does not support the `.copy()` method
 		
+		See Also
+		--------
+		pandas.DataFrame.query
+		pandas.DataFrame.eval
+		
 		Notes
 		-----
 		The ``dtype`` of any objects involved in an arithmetic ``%`` operation are
@@ -108,11 +112,6 @@ package pandas.core.computation.api;
 		
 		See the :ref:`enhancing performance <enhancingperf.eval>` documentation for
 		more details.
-		
-		See Also
-		--------
-		pandas.DataFrame.query
-		pandas.DataFrame.eval
 	**/
 	static public function eval(expr:Dynamic, ?parser:Dynamic, ?engine:Dynamic, ?truediv:Dynamic, ?local_dict:Dynamic, ?global_dict:Dynamic, ?resolvers:Dynamic, ?level:Dynamic, ?target:Dynamic, ?inplace:Dynamic):Dynamic;
 }

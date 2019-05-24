@@ -60,7 +60,7 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	/**
 		Creates a `Head` for binary classification with SVMs. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.contrib.estimator.*_head.
 		
@@ -88,7 +88,7 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	/**
 		Creates `FeatureColumn` objects for inputs defined by input `x`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please specify feature columns explicitly.
 		
@@ -105,7 +105,7 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	/**
 		Creates `FeatureColumn` objects for inputs defined by `input_fn`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please specify feature columns explicitly.
 		
@@ -125,7 +125,7 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	/**
 		Creates a Head that contains only loss terms. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.contrib.estimator.*_head.
 		
@@ -144,7 +144,7 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	/**
 		Creates a `Head` for multi class single label classification. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.contrib.estimator.*_head.
 		
@@ -190,7 +190,7 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	/**
 		Creates a MultiHead stemming from same logits/hidden layer. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.contrib.estimator.*_head.
 		
@@ -209,7 +209,7 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	/**
 		Creates a Head for multi label classification. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.contrib.estimator.*_head.
 		
@@ -251,7 +251,7 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use 'lambda _: tf.no_op()'.
 	**/
@@ -259,7 +259,7 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	/**
 		Creates a `Head` for poisson regression. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.contrib.estimator.*_head.
 		
@@ -287,7 +287,7 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	/**
 		Creates a `Head` for linear regression. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.contrib.estimator.*_head.
 		

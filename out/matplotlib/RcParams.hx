@@ -16,7 +16,7 @@ package matplotlib;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __contains__(key:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -177,40 +177,10 @@ package matplotlib;
 		D.keys() -> a set-like object providing a view on D's keys
 	**/
 	public function keys():Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The msg_backend_obsolete function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		\ 
-	**/
 	public var msg_backend_obsolete : Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The msg_depr function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		\ 
-	**/
 	public var msg_depr : Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The msg_depr_ignore function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		\ 
-	**/
 	public var msg_depr_ignore : Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The msg_depr_set function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		\ 
-	**/
 	public var msg_depr_set : Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The msg_obsolete function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		\ 
-	**/
 	public var msg_obsolete : Dynamic;
 	/**
 		D.pop(k[,d]) -> v, remove specified key and return the corresponding value.

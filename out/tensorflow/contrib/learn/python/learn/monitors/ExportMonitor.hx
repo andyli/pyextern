@@ -40,7 +40,7 @@ package tensorflow.contrib.learn.python.learn.monitors;
 	/**
 		Initializes ExportMonitor. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
 		Instructions for updating:
 		ExportMonitor is deprecated. Please pass an ExportStrategy to Experiment instead.
 		
@@ -71,7 +71,7 @@ package tensorflow.contrib.learn.python.learn.monitors;
 	/**
 		Initializes ExportMonitor. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
 		Instructions for updating:
 		ExportMonitor is deprecated. Please pass an ExportStrategy to Experiment instead.
 		

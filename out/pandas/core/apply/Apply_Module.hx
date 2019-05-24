@@ -14,6 +14,30 @@ package pandas.core.apply;
 	**/
 	static public function frame_apply(obj:Dynamic, func:Dynamic, ?axis:Dynamic, ?broadcast:Dynamic, ?raw:Dynamic, ?reduce:Dynamic, ?result_type:Dynamic, ?ignore_failures:Dynamic, ?args:Dynamic, ?kwds:Dynamic):Dynamic;
 	/**
+		Check if the object is dict-like.
+		
+		Parameters
+		----------
+		obj : The object to check
+		
+		Returns
+		-------
+		is_dict_like : bool
+		    Whether `obj` has dict-like properties.
+		
+		Examples
+		--------
+		>>> is_dict_like({1: 2})
+		True
+		>>> is_dict_like([1, 2, 3])
+		False
+		>>> is_dict_like(dict)
+		False
+		>>> is_dict_like(dict())
+		True
+	**/
+	static public function is_dict_like(obj:Dynamic):Bool;
+	/**
 		Check whether an array-like is of a pandas extension class instance.
 		
 		Extension classes include categoricals, pandas sparse objects (i.e.
@@ -63,12 +87,51 @@ package pandas.core.apply;
 	**/
 	static public function is_extension_type(arr:Dynamic):Dynamic;
 	/**
+		Check if the object is list-like.
+		
+		Objects that are considered list-like are for example Python
+		lists, tuples, sets, NumPy arrays, and Pandas Series.
+		
+		Strings and datetime objects, however, are not considered list-like.
+		
+		Parameters
+		----------
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
+		
+		Returns
+		-------
+		is_list_like : bool
+		    Whether `obj` has list-like properties.
+		
+		Examples
+		--------
+		>>> is_list_like([1, 2, 3])
+		True
+		>>> is_list_like({1, 2, 3})
+		True
+		>>> is_list_like(datetime(2017, 1, 1))
+		False
+		>>> is_list_like("foo")
+		False
+		>>> is_list_like(1)
+		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
+	**/
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
+	/**
 		Check if the object is a sequence of objects.
 		String types are not included as sequences here.
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------

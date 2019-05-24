@@ -138,6 +138,16 @@ package tensorflow.contrib.fused_conv.python.ops.fused_conv2d_bias_activation_be
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
 	public function benchmark_fused_conv2d_bias_activation():Dynamic;
+	/**
+		Evaluates tensors and returns numpy values.
+		
+		Args:
+		  tensors: A Tensor or a nested list/tuple of Tensors.
+		
+		Returns:
+		  tensors numpy values.
+	**/
+	public function evaluate(tensors:Dynamic):Dynamic;
 	static public function is_abstract():Dynamic;
 	/**
 		Report a benchmark.

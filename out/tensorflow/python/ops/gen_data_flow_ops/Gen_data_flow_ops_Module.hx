@@ -27,6 +27,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function _stack(elem_type:Dynamic, ?stack_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function _stack_eager_fallback(elem_type:Dynamic, ?stack_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public var _tensor_array_concat_outputs : Dynamic;
 	static public var _tensor_array_concat_v2_outputs : Dynamic;
 	static public var _tensor_array_concat_v3_outputs : Dynamic;
@@ -50,6 +51,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  The created Operation.
 	**/
 	static public function accumulator_apply_gradient(handle:Dynamic, local_step:Dynamic, gradient:Dynamic, ?name:Dynamic):Dynamic;
+	static public function accumulator_apply_gradient_eager_fallback(handle:Dynamic, local_step:Dynamic, gradient:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Returns the number of gradients aggregated in the given accumulators.
 		
@@ -61,6 +63,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `int32`.
 	**/
 	static public function accumulator_num_accumulated(handle:Dynamic, ?name:Dynamic):Dynamic;
+	static public function accumulator_num_accumulated_eager_fallback(handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Updates the accumulator with a new value for global_step.
 		
@@ -77,6 +80,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  The created Operation.
 	**/
 	static public function accumulator_set_global_step(handle:Dynamic, new_global_step:Dynamic, ?name:Dynamic):Dynamic;
+	static public function accumulator_set_global_step_eager_fallback(handle:Dynamic, new_global_step:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Extracts the average gradient in the given ConditionalAccumulator.
 		
@@ -99,6 +103,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `dtype`.
 	**/
 	static public function accumulator_take_gradient(handle:Dynamic, num_required:Dynamic, dtype:Dynamic, ?name:Dynamic):Dynamic;
+	static public function accumulator_take_gradient_eager_fallback(handle:Dynamic, num_required:Dynamic, dtype:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Defines a barrier that persists across different graph executions.
 		
@@ -155,6 +160,8 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  The created Operation.
 	**/
 	static public function barrier_close(handle:Dynamic, ?cancel_pending_enqueues:Dynamic, ?name:Dynamic):Dynamic;
+	static public function barrier_close_eager_fallback(handle:Dynamic, ?cancel_pending_enqueues:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function barrier_eager_fallback(component_types:Dynamic, ?shapes:Dynamic, ?capacity:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes the number of incomplete elements in the given barrier.
 		
@@ -166,6 +173,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `int32`.
 	**/
 	static public function barrier_incomplete_size(handle:Dynamic, ?name:Dynamic):Dynamic;
+	static public function barrier_incomplete_size_eager_fallback(handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		For each key, assigns the respective value to the specified component.
 		
@@ -189,6 +197,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  The created Operation.
 	**/
 	static public function barrier_insert_many(handle:Dynamic, keys:Dynamic, values:Dynamic, component_index:Dynamic, ?name:Dynamic):Dynamic;
+	static public function barrier_insert_many_eager_fallback(handle:Dynamic, keys:Dynamic, values:Dynamic, component_index:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes the number of complete elements in the given barrier.
 		
@@ -200,6 +209,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `int32`.
 	**/
 	static public function barrier_ready_size(handle:Dynamic, ?name:Dynamic):Dynamic;
+	static public function barrier_ready_size_eager_fallback(handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Takes the given number of completed elements from a barrier.
 		
@@ -236,6 +246,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  values: A list of `Tensor` objects of type `component_types`.
 	**/
 	static public function barrier_take_many(handle:Dynamic, num_elements:Dynamic, component_types:Dynamic, ?allow_small_batch:Dynamic, ?wait_for_incomplete:Dynamic, ?timeout_ms:Dynamic, ?name:Dynamic):Dynamic;
+	static public function barrier_take_many_eager_fallback(handle:Dynamic, num_elements:Dynamic, component_types:Dynamic, ?allow_small_batch:Dynamic, ?wait_for_incomplete:Dynamic, ?timeout_ms:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		A conditional accumulator for aggregating gradients.
 		
@@ -264,6 +275,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function conditional_accumulator(dtype:Dynamic, shape:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?reduction_type:Dynamic, ?name:Dynamic):Dynamic;
+	static public function conditional_accumulator_eager_fallback(dtype:Dynamic, shape:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?reduction_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Delete the tensor specified by its handle in the session.
 		
@@ -447,6 +459,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function fake_queue(resource:Dynamic, ?name:Dynamic):Dynamic;
+	static public function fake_queue_eager_fallback(resource:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		A queue that produces elements in first-in first-out order.
 		
@@ -473,6 +486,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function fifo_queue(component_types:Dynamic, ?shapes:Dynamic, ?capacity:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function fifo_queue_eager_fallback(component_types:Dynamic, ?shapes:Dynamic, ?capacity:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		A queue that produces elements in first-in first-out order.
 		
@@ -923,6 +937,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function padding_fifo_queue(component_types:Dynamic, ?shapes:Dynamic, ?capacity:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function padding_fifo_queue_eager_fallback(component_types:Dynamic, ?shapes:Dynamic, ?capacity:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		A queue that produces elements in first-in first-out order.
 		
@@ -1073,6 +1088,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function priority_queue(shapes:Dynamic, ?component_types:Dynamic, ?capacity:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function priority_queue_eager_fallback(shapes:Dynamic, ?component_types:Dynamic, ?capacity:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		A queue that produces elements sorted by the first component value.
 		
@@ -1130,6 +1146,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  The created Operation.
 	**/
 	static public function queue_close(handle:Dynamic, ?cancel_pending_enqueues:Dynamic, ?name:Dynamic):Dynamic;
+	static public function queue_close_eager_fallback(handle:Dynamic, ?cancel_pending_enqueues:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Closes the given queue.
 		
@@ -1179,6 +1196,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A list of `Tensor` objects of type `component_types`.
 	**/
 	static public function queue_dequeue(handle:Dynamic, component_types:Dynamic, ?timeout_ms:Dynamic, ?name:Dynamic):Dynamic;
+	static public function queue_dequeue_eager_fallback(handle:Dynamic, component_types:Dynamic, ?timeout_ms:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Dequeues `n` tuples of one or more tensors from the given queue.
 		
@@ -1211,6 +1229,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A list of `Tensor` objects of type `component_types`.
 	**/
 	static public function queue_dequeue_many(handle:Dynamic, n:Dynamic, component_types:Dynamic, ?timeout_ms:Dynamic, ?name:Dynamic):Dynamic;
+	static public function queue_dequeue_many_eager_fallback(handle:Dynamic, n:Dynamic, component_types:Dynamic, ?timeout_ms:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Dequeues `n` tuples of one or more tensors from the given queue.
 		
@@ -1284,6 +1303,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A list of `Tensor` objects of type `component_types`.
 	**/
 	static public function queue_dequeue_up_to(handle:Dynamic, n:Dynamic, component_types:Dynamic, ?timeout_ms:Dynamic, ?name:Dynamic):Dynamic;
+	static public function queue_dequeue_up_to_eager_fallback(handle:Dynamic, n:Dynamic, component_types:Dynamic, ?timeout_ms:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Dequeues `n` tuples of one or more tensors from the given queue.
 		
@@ -1377,6 +1397,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  The created Operation.
 	**/
 	static public function queue_enqueue(handle:Dynamic, components:Dynamic, ?timeout_ms:Dynamic, ?name:Dynamic):Dynamic;
+	static public function queue_enqueue_eager_fallback(handle:Dynamic, components:Dynamic, ?timeout_ms:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Enqueues zero or more tuples of one or more tensors in the given queue.
 		
@@ -1405,6 +1426,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  The created Operation.
 	**/
 	static public function queue_enqueue_many(handle:Dynamic, components:Dynamic, ?timeout_ms:Dynamic, ?name:Dynamic):Dynamic;
+	static public function queue_enqueue_many_eager_fallback(handle:Dynamic, components:Dynamic, ?timeout_ms:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Enqueues zero or more tuples of one or more tensors in the given queue.
 		
@@ -1480,6 +1502,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `bool`.
 	**/
 	static public function queue_is_closed(handle:Dynamic, ?name:Dynamic):Dynamic;
+	static public function queue_is_closed_eager_fallback(handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Returns true if queue is closed.
 		
@@ -1510,6 +1533,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `int32`.
 	**/
 	static public function queue_size(handle:Dynamic, ?name:Dynamic):Dynamic;
+	static public function queue_size_eager_fallback(handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes the number of elements in the given queue.
 		
@@ -1561,6 +1585,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function random_shuffle_queue(component_types:Dynamic, ?shapes:Dynamic, ?capacity:Dynamic, ?min_after_dequeue:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function random_shuffle_queue_eager_fallback(component_types:Dynamic, ?shapes:Dynamic, ?capacity:Dynamic, ?min_after_dequeue:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		A queue that randomizes the order of elements.
 		
@@ -1658,6 +1683,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  The created Operation.
 	**/
 	static public function sparse_accumulator_apply_gradient(handle:Dynamic, local_step:Dynamic, gradient_indices:Dynamic, gradient_values:Dynamic, gradient_shape:Dynamic, has_known_shape:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sparse_accumulator_apply_gradient_eager_fallback(handle:Dynamic, local_step:Dynamic, gradient_indices:Dynamic, gradient_values:Dynamic, gradient_shape:Dynamic, has_known_shape:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Extracts the average sparse gradient in a SparseConditionalAccumulator.
 		
@@ -1686,6 +1712,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  shape: A `Tensor` of type `int64`.
 	**/
 	static public function sparse_accumulator_take_gradient(handle:Dynamic, num_required:Dynamic, dtype:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sparse_accumulator_take_gradient_eager_fallback(handle:Dynamic, num_required:Dynamic, dtype:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		A conditional accumulator for aggregating sparse gradients.
 		
@@ -1713,6 +1740,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function sparse_conditional_accumulator(dtype:Dynamic, shape:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?reduction_type:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sparse_conditional_accumulator_eager_fallback(dtype:Dynamic, shape:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?reduction_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Deprecated, use StackCloseV2.
 		
@@ -1724,6 +1752,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  The created Operation.
 	**/
 	static public function stack_close(handle:Dynamic, ?name:Dynamic):Dynamic;
+	static public function stack_close_eager_fallback(handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Delete the stack from its resource container.
 		
@@ -1752,6 +1781,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `elem_type`.
 	**/
 	static public function stack_pop(handle:Dynamic, elem_type:Dynamic, ?name:Dynamic):Dynamic;
+	static public function stack_pop_eager_fallback(handle:Dynamic, elem_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Pop the element at the top of the stack.
 		
@@ -1782,6 +1812,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor`. Has the same type as `elem`.
 	**/
 	static public function stack_push(handle:Dynamic, elem:Dynamic, ?swap_memory:Dynamic, ?name:Dynamic):Dynamic;
+	static public function stack_push_eager_fallback(handle:Dynamic, elem:Dynamic, ?swap_memory:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Push an element onto the stack.
 		
@@ -1946,6 +1977,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  The created Operation.
 	**/
 	static public function tensor_array_close(handle:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tensor_array_close_eager_fallback(handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Deprecated. Use TensorArrayCloseV3
 		
@@ -1999,6 +2031,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  lengths: A `Tensor` of type `int64`.
 	**/
 	static public function tensor_array_concat(handle:Dynamic, flow_in:Dynamic, dtype:Dynamic, ?element_shape_except0:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tensor_array_concat_eager_fallback(handle:Dynamic, flow_in:Dynamic, dtype:Dynamic, ?element_shape_except0:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Deprecated. Use TensorArrayConcatV3
 		
@@ -2060,6 +2093,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		This is for function tensor_array_concat_v3
 	**/
 	static public function tensor_array_concat_v3_eager_fallback(handle:Dynamic, flow_in:Dynamic, dtype:Dynamic, ?element_shape_except0:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function tensor_array_eager_fallback(size:Dynamic, dtype:Dynamic, ?dynamic_size:Dynamic, ?clear_after_read:Dynamic, ?tensor_array_name:Dynamic, ?element_shape:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		TODO: add doc.
 		
@@ -2075,6 +2109,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `dtype`.
 	**/
 	static public function tensor_array_gather(handle:Dynamic, indices:Dynamic, flow_in:Dynamic, dtype:Dynamic, ?element_shape:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tensor_array_gather_eager_fallback(handle:Dynamic, indices:Dynamic, flow_in:Dynamic, dtype:Dynamic, ?element_shape:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Deprecated. Use TensorArrayGatherV3
 		
@@ -2135,6 +2170,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function tensor_array_grad(handle:Dynamic, flow_in:Dynamic, source:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tensor_array_grad_eager_fallback(handle:Dynamic, flow_in:Dynamic, source:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Deprecated. Use TensorArrayGradV3
 		
@@ -2263,6 +2299,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `dtype`.
 	**/
 	static public function tensor_array_pack(handle:Dynamic, flow_in:Dynamic, dtype:Dynamic, ?element_shape:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tensor_array_pack_eager_fallback(handle:Dynamic, flow_in:Dynamic, dtype:Dynamic, ?element_shape:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		TODO: add doc.
 		
@@ -2277,6 +2314,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `dtype`.
 	**/
 	static public function tensor_array_read(handle:Dynamic, index:Dynamic, flow_in:Dynamic, dtype:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tensor_array_read_eager_fallback(handle:Dynamic, index:Dynamic, flow_in:Dynamic, dtype:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Deprecated. Use TensorArrayReadV3
 		
@@ -2330,6 +2368,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `float32`.
 	**/
 	static public function tensor_array_scatter(handle:Dynamic, indices:Dynamic, value:Dynamic, flow_in:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tensor_array_scatter_eager_fallback(handle:Dynamic, indices:Dynamic, value:Dynamic, flow_in:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Deprecated. Use TensorArrayScatterV3
 		
@@ -2384,6 +2423,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `int32`.
 	**/
 	static public function tensor_array_size(handle:Dynamic, flow_in:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tensor_array_size_eager_fallback(handle:Dynamic, flow_in:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Deprecated. Use TensorArraySizeV3
 		
@@ -2434,6 +2474,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `float32`.
 	**/
 	static public function tensor_array_split(handle:Dynamic, value:Dynamic, lengths:Dynamic, flow_in:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tensor_array_split_eager_fallback(handle:Dynamic, value:Dynamic, lengths:Dynamic, flow_in:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Deprecated. Use TensorArraySplitV3
 		
@@ -2506,6 +2547,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `float32`.
 	**/
 	static public function tensor_array_unpack(handle:Dynamic, value:Dynamic, flow_in:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tensor_array_unpack_eager_fallback(handle:Dynamic, value:Dynamic, flow_in:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Deprecated. Use TensorArrayV3
 		
@@ -2585,6 +2627,7 @@ package tensorflow.python.ops.gen_data_flow_ops;
 		  A `Tensor` of type `float32`.
 	**/
 	static public function tensor_array_write(handle:Dynamic, index:Dynamic, value:Dynamic, flow_in:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tensor_array_write_eager_fallback(handle:Dynamic, index:Dynamic, value:Dynamic, flow_in:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Deprecated. Use TensorArrayGradV3
 		

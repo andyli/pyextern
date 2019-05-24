@@ -2,6 +2,7 @@
 package pandas._libs.parsers;
 @:pythonImport("pandas._libs.parsers") extern class Parsers_Module {
 	static public var DEFAULT_CHUNKSIZE : Dynamic;
+	static public var ENOENT : Dynamic;
 	static public var QUOTE_MINIMAL : Dynamic;
 	static public var QUOTE_NONE : Dynamic;
 	static public var QUOTE_NONNUMERIC : Dynamic;
@@ -34,6 +35,11 @@ package pandas._libs.parsers;
 		-------
 		boolean : Whether or not the array or dtype is of a boolean dtype.
 		
+		Notes
+		-----
+		An ExtensionArray is considered boolean when the ``_is_boolean``
+		attribute is set to True.
+		
 		Examples
 		--------
 		>>> is_bool_dtype(str)
@@ -49,6 +55,10 @@ package pandas._libs.parsers;
 		>>> is_bool_dtype(pd.Series([1, 2]))
 		False
 		>>> is_bool_dtype(np.array([True, False]))
+		True
+		>>> is_bool_dtype(pd.Categorical([True, False]))
+		True
+		>>> is_bool_dtype(pd.SparseArray([True, False]))
 		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -107,7 +117,54 @@ package pandas._libs.parsers;
 	**/
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
+		Check if an object is a pandas extension array type.
+		
+		See the :ref:`Use Guide <extending.extension-types>` for more.
+		
+		Parameters
+		----------
+		arr_or_dtype : object
+		    For array-like input, the ``.dtype`` attribute will
+		    be extracted.
+		
+		Returns
+		-------
+		bool
+		    Whether the `arr_or_dtype` is an extension array type.
+		
+		Notes
+		-----
+		This checks whether an object implements the pandas extension
+		array interface. In pandas, this includes:
+		
+		* Categorical
+		* Sparse
+		* Interval
+		* Period
+		* DatetimeArray
+		* TimedeltaArray
+		
+		Third-party libraries may implement arrays or types satisfying
+		this interface as well.
+		
+		Examples
+		--------
+		>>> from pandas.api.types import is_extension_array_dtype
+		>>> arr = pd.Categorical(['a', 'b'])
+		>>> is_extension_array_dtype(arr)
+		True
+		>>> is_extension_array_dtype(arr.dtype)
+		True
+		
+		>>> arr = np.array(['a', 'b'])
+		>>> is_extension_array_dtype(arr.dtype)
+		False
+	**/
+	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Check whether the provided array or dtype is of a float dtype.
+		
+		This function is internal and should not be exposed in the public API.
 		
 		Parameters
 		----------
@@ -139,6 +196,11 @@ package pandas._libs.parsers;
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
 		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -158,6 +220,12 @@ package pandas._libs.parsers;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -210,6 +278,10 @@ package pandas._libs.parsers;
 		Returns
 		-------
 		np.dtype or a pandas dtype
+		
+		Raises
+		------
+		TypeError if not a dtype
 	**/
 	static public function pandas_dtype(dtype:Dynamic):Dynamic;
 	/**
@@ -236,7 +308,7 @@ package pandas._libs.parsers;
 		sort_categories : boolean, default False
 		    If true, resulting categories will be lexsorted, otherwise
 		    they will be ordered as they appear in the data.
-		ignore_order: boolean, default False
+		ignore_order : boolean, default False
 		    If true, the ordered attribute of the Categoricals will be ignored.
 		    Results in an unordered categorical.
 		

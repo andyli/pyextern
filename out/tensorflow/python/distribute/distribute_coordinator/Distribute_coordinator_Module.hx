@@ -32,7 +32,7 @@ package tensorflow.python.distribute.distribute_coordinator;
 	/**
 		Runs a single worker by calling `worker_fn` under context.
 	**/
-	static public function _run_single_worker(worker_fn:Dynamic, strategy:Dynamic, cluster_spec:Dynamic, task_type:Dynamic, task_id:Dynamic, session_config:Dynamic, ?rpc_layer:Dynamic, ?worker_barrier:Dynamic):Dynamic;
+	static public function _run_single_worker(worker_fn:Dynamic, strategy:Dynamic, cluster_spec:Dynamic, task_type:Dynamic, task_id:Dynamic, session_config:Dynamic, ?rpc_layer:Dynamic, ?worker_barrier:Dynamic, ?coord:Dynamic):Dynamic;
 	/**
 		Runs a standard server.
 	**/
@@ -77,10 +77,10 @@ package tensorflow.python.distribute.distribute_coordinator;
 		The `strategy` object is expected to be a DistributionStrategy object which
 		has implemented methods needed by distributed coordinator such as
 		`configure(session_config, cluster_spec, task_type, task_id)` which configures
-		the strategy object for a specific task and `should_init` property which
-		instructs the distribute coordinator whether to run init ops for a task. The
-		distribute coordinator will make a copy of the `strategy` object, call its
-		`configure` method and pass it to `worker_fn` as an argument.
+		the strategy object for a specific task and `experimental_should_init`
+		property which instructs the distribute coordinator whether to run init ops
+		for a task. The distribute coordinator will make a copy of the `strategy`
+		object, call its `configure` method and pass it to `worker_fn` as an argument.
 		
 		The `worker_fn` defines the training logic and is called under a its own
 		worker context which can be accessed to via `get_current_worker_context`. A
@@ -150,6 +150,10 @@ package tensorflow.python.distribute.distribute_coordinator;
 		Raises:
 		  ValueError: if `cluster_spec` is supplied but not a dict or a ClusterDef or
 		    a ClusterSpec.
+		
+		Returns:
+		  In the client job, return the value returned by `worker_fn` if
+		  it is in-graph replication; return None otherwise.
 	**/
 	static public function run_distribute_coordinator(worker_fn:Dynamic, strategy:Dynamic, ?eval_fn:Dynamic, ?eval_strategy:Dynamic, ?mode:Dynamic, ?cluster_spec:Dynamic, ?task_type:Dynamic, ?task_id:Dynamic, ?session_config:Dynamic, ?rpc_layer:Dynamic):Dynamic;
 	/**

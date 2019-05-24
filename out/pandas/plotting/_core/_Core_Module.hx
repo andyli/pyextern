@@ -25,9 +25,7 @@ package pandas.plotting._core;
 	static public function _handle_shared_axes(axarr:Dynamic, nplots:Dynamic, naxes:Dynamic, nrows:Dynamic, ncols:Dynamic, sharex:Dynamic, sharey:Dynamic):Dynamic;
 	static public var _kde_docstring : Dynamic;
 	static public var _klasses : Dynamic;
-	static public function _mpl_ge_1_3_1():Dynamic;
-	static public function _mpl_ge_1_5_0():Dynamic;
-	static public function _mpl_ge_2_0_0():Dynamic;
+	static public function _mpl_ge_3_0_0():Dynamic;
 	static public function _plot(data:Dynamic, ?x:Dynamic, ?y:Dynamic, ?subplots:Dynamic, ?ax:Dynamic, ?kind:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _plot_klass : Dynamic;
 	static public function _raise_if_no_mpl():Dynamic;
@@ -141,7 +139,7 @@ package pandas.plotting._core;
 		    Tick label font size in points or as a string (e.g., `large`).
 		rot : int or float, default 0
 		    The rotation angle of labels (in degrees)
-		    with respect to the screen coordinate sytem.
+		    with respect to the screen coordinate system.
 		grid : boolean, default True
 		    Setting this to True will show the grid.
 		figsize : A tuple (width, height) in inches
@@ -173,7 +171,7 @@ package pandas.plotting._core;
 		
 		    * 'axes' : object of class matplotlib.axes.Axes
 		    * 'dict' : dict of matplotlib.lines.Line2D objects
-		    * 'both' : a nametuple with strucure (ax, lines)
+		    * 'both' : a namedtuple with structure (ax, lines)
 		
 		    For data grouped with ``by``:
 		
@@ -302,7 +300,7 @@ package pandas.plotting._core;
 		    Tick label font size in points or as a string (e.g., `large`).
 		rot : int or float, default 0
 		    The rotation angle of labels (in degrees)
-		    with respect to the screen coordinate sytem.
+		    with respect to the screen coordinate system.
 		grid : boolean, default True
 		    Setting this to True will show the grid.
 		figsize : A tuple (width, height) in inches
@@ -334,7 +332,7 @@ package pandas.plotting._core;
 		
 		    * 'axes' : object of class matplotlib.axes.Axes
 		    * 'dict' : dict of matplotlib.lines.Line2D objects
-		    * 'both' : a nametuple with strucure (ax, lines)
+		    * 'both' : a namedtuple with structure (ax, lines)
 		
 		    For data grouped with ``by``:
 		
@@ -452,6 +450,14 @@ package pandas.plotting._core;
 		figsize : A tuple (width, height) in inches
 		layout : tuple (optional)
 		    (rows, columns) for the layout of the plot
+		sharex : bool, default False
+		    Whether x-axes will be shared among subplots
+		
+		    .. versionadded:: 0.23.1
+		sharey : bool, default True
+		    Whether y-axes will be shared among subplots
+		
+		    .. versionadded:: 0.23.1
 		`**kwds` : Keyword Arguments
 		    All other plotting keyword arguments to be passed to
 		    matplotlib's boxplot function
@@ -463,14 +469,11 @@ package pandas.plotting._core;
 		
 		Examples
 		--------
-		>>> import pandas
-		>>> import numpy as np
 		>>> import itertools
-		>>>
 		>>> tuples = [t for t in itertools.product(range(1000), range(4))]
-		>>> index = pandas.MultiIndex.from_tuples(tuples, names=['lvl0', 'lvl1'])
+		>>> index = pd.MultiIndex.from_tuples(tuples, names=['lvl0', 'lvl1'])
 		>>> data = np.random.randn(len(index),4)
-		>>> df = pandas.DataFrame(data, columns=list('ABCD'), index=index)
+		>>> df = pd.DataFrame(data, columns=list('ABCD'), index=index)
 		>>>
 		>>> grouped = df.groupby(level='lvl1')
 		>>> boxplot_frame_groupby(grouped)
@@ -478,7 +481,7 @@ package pandas.plotting._core;
 		>>> grouped = df.unstack(level='lvl1').groupby(level=0, axis=1)
 		>>> boxplot_frame_groupby(grouped, subplots=False)
 	**/
-	static public function boxplot_frame_groupby(grouped:Dynamic, ?subplots:Dynamic, ?column:Dynamic, ?fontsize:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?ax:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function boxplot_frame_groupby(grouped:Dynamic, ?subplots:Dynamic, ?column:Dynamic, ?fontsize:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?ax:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var df_ax : Dynamic;
 	static public var df_coord : Dynamic;
 	static public var df_kind : Dynamic;
@@ -570,7 +573,7 @@ package pandas.plotting._core;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
+		    [default: ANSI_X3.4-1968] [currently: ANSI_X3.4-1968]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -819,22 +822,22 @@ package pandas.plotting._core;
 		
 		Parameters
 		----------
-		data: Series/DataFrame
-		column: object, optional
-		by: object, optional
-		ax: axes, optional
-		bins: int, default 50
-		figsize: tuple, optional
-		layout: optional
-		sharex: boolean, default False
-		sharey: boolean, default False
-		rot: int, default 90
-		grid: bool, default True
-		kwargs: dict, keyword arguments passed to matplotlib.Axes.hist
+		data : Series/DataFrame
+		column : object, optional
+		by : object, optional
+		ax : axes, optional
+		bins : int, default 50
+		figsize : tuple, optional
+		layout : optional
+		sharex : boolean, default False
+		sharey : boolean, default False
+		rot : int, default 90
+		grid : bool, default True
+		kwargs : dict, keyword arguments passed to matplotlib.Axes.hist
 		
 		Returns
 		-------
-		axes: collection of Matplotlib Axes
+		axes : collection of Matplotlib Axes
 	**/
 	static public function grouped_hist(data:Dynamic, ?column:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?bins:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?xlabelsize:Dynamic, ?xrot:Dynamic, ?ylabelsize:Dynamic, ?yrot:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -916,7 +919,7 @@ package pandas.plotting._core;
 	**/
 	static public function hist_frame(data:Dynamic, ?column:Dynamic, ?by:Dynamic, ?grid:Dynamic, ?xlabelsize:Dynamic, ?xrot:Dynamic, ?ylabelsize:Dynamic, ?yrot:Dynamic, ?ax:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?bins:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Draw histogram of the input series using matplotlib
+		Draw histogram of the input series using matplotlib.
 		
 		Parameters
 		----------
@@ -941,7 +944,7 @@ package pandas.plotting._core;
 		    bin edges are calculated and returned. If bins is a sequence, gives
 		    bin edges, including left edge of first bin and right edge of last
 		    bin. In this case, bins is returned unmodified.
-		bins: integer, default 10
+		bins : integer, default 10
 		    Number of histogram bins to be used
 		`**kwds` : keywords
 		    To be passed to the actual plotting function
@@ -978,7 +981,7 @@ package pandas.plotting._core;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -1007,7 +1010,11 @@ package pandas.plotting._core;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -1026,8 +1033,12 @@ package pandas.plotting._core;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Check if the object is a number.
 		
@@ -1045,7 +1056,7 @@ package pandas.plotting._core;
 		
 		See Also
 		--------
-		pandas.api.types.is_integer: checks a subgroup of numbers
+		pandas.api.types.is_integer: Checks a subgroup of numbers.
 		
 		Examples
 		--------
@@ -1068,7 +1079,7 @@ package pandas.plotting._core;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -1086,8 +1097,8 @@ package pandas.plotting._core;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -1166,7 +1177,7 @@ package pandas.plotting._core;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -1184,8 +1195,8 @@ package pandas.plotting._core;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -1509,10 +1520,10 @@ package pandas.plotting._core;
 		
 		Parameters
 		----------
-		`ax`: Matplotlib axes object
-		`data`: DataFrame or Series
+		ax : Matplotlib axes object
+		data : DataFrame or Series
 		    data for table contents
-		`kwargs`: keywords, optional
+		kwargs : keywords, optional
 		    keyword arguments which passed to matplotlib.table.table.
 		    If `rowLabels` or `colLabels` is not specified, data index or column
 		    name will be used.

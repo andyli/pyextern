@@ -38,7 +38,6 @@ package tensorflow.contrib.boosted_trees.proto.tree_config_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GAIN_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -63,8 +62,6 @@ package tensorflow.contrib.boosted_trees.proto.tree_config_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ORIGINAL_LEAF_FIELD_NUMBER : Dynamic;
-	static public var ORIGINAL_OBLIVIOUS_LEAVES_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -85,6 +82,10 @@ package tensorflow.contrib.boosted_trees.proto.tree_config_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -250,4 +251,16 @@ package tensorflow.contrib.boosted_trees.proto.tree_config_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.trees.TreeNodeMetadata.gain
+	**/
+	public var gain : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.trees.TreeNodeMetadata.original_leaf
+	**/
+	public var original_leaf : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.trees.TreeNodeMetadata.original_oblivious_leaves
+	**/
+	public var original_oblivious_leaves : Dynamic;
 }

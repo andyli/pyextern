@@ -1,21 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.compiler.xla.service.hlo_pb2;
 @:pythonImport("tensorflow.compiler.xla.service.hlo_pb2", "HloInstructionProto") extern class HloInstructionProto {
-	static public var ALL_REDUCE_ID_FIELD_NUMBER : Dynamic;
-	static public var BACKEND_CONFIG_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CALLED_COMPUTATION_IDS_FIELD_NUMBER : Dynamic;
-	static public var CHANNEL_ID_FIELD_NUMBER : Dynamic;
-	static public var CHANNEL_NAME_FIELD_NUMBER : Dynamic;
-	static public var CONTROL_PREDECESSOR_IDS_FIELD_NUMBER : Dynamic;
-	static public var CONVOLUTION_DIMENSION_NUMBERS_FIELD_NUMBER : Dynamic;
-	static public var COST_ESTIMATE_NS_FIELD_NUMBER : Dynamic;
-	static public var CROSS_REPLICA_SUM_BARRIER_FIELD_NUMBER : Dynamic;
-	static public var CUSTOM_CALL_OPAQUE_FIELD_NUMBER : Dynamic;
-	static public var CUSTOM_CALL_TARGET_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -33,25 +22,14 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DIMENSIONS_FIELD_NUMBER : Dynamic;
-	static public var DISTRIBUTION_FIELD_NUMBER : Dynamic;
-	static public var DOT_DIMENSION_NUMBERS_FIELD_NUMBER : Dynamic;
-	static public var DYNAMIC_SLICE_SIZES_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EPSILON_FIELD_NUMBER : Dynamic;
-	static public var EXPONENT_BITS_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FEATURE_GROUP_COUNT_FIELD_NUMBER : Dynamic;
-	static public var FEATURE_INDEX_FIELD_NUMBER : Dynamic;
-	static public var FFT_LENGTH_FIELD_NUMBER : Dynamic;
-	static public var FFT_TYPE_FIELD_NUMBER : Dynamic;
-	static public var FUSION_KIND_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -60,8 +38,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GATHER_DIMENSION_NUMBERS_FIELD_NUMBER : Dynamic;
-	static public var GATHER_SLICE_SIZES_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -70,20 +46,14 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ID_FIELD_NUMBER : Dynamic;
-	static public var INFEED_CONFIG_FIELD_NUMBER : Dynamic;
-	static public var IS_HOST_TRANSFER_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LITERAL_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MANTISSA_BITS_FIELD_NUMBER : Dynamic;
-	static public var METADATA_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -92,28 +62,14 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NAME_FIELD_NUMBER : Dynamic;
-	static public var OPCODE_FIELD_NUMBER : Dynamic;
-	static public var OPERAND_IDS_FIELD_NUMBER : Dynamic;
-	static public var OUTFEED_CONFIG_FIELD_NUMBER : Dynamic;
-	static public var OUTFEED_SHAPE_FIELD_NUMBER : Dynamic;
-	static public var PADDING_CONFIG_FIELD_NUMBER : Dynamic;
-	static public var PARAMETER_NUMBER_FIELD_NUMBER : Dynamic;
-	static public var PRECISION_CONFIG_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var REPLICA_GROUPS_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SCATTER_DIMENSION_NUMBERS_FIELD_NUMBER : Dynamic;
-	static public var SHAPE_FIELD_NUMBER : Dynamic;
-	static public var SHARDING_FIELD_NUMBER : Dynamic;
-	static public var SLICE_DIMENSIONS_FIELD_NUMBER : Dynamic;
-	static public var SOURCE_TARGET_PAIRS_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -130,8 +86,10 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		A ProtocolMessage
 	**/
 	public function SliceDimensions(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TUPLE_INDEX_FIELD_NUMBER : Dynamic;
-	static public var WINDOW_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -297,4 +255,204 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.HloInstructionProto.all_reduce_id
+	**/
+	public var all_reduce_id : Dynamic;
+	/**
+		Field xla.HloInstructionProto.backend_config
+	**/
+	public var backend_config : Dynamic;
+	/**
+		Field xla.HloInstructionProto.called_computation_ids
+	**/
+	public var called_computation_ids : Dynamic;
+	/**
+		Field xla.HloInstructionProto.channel_id
+	**/
+	public var channel_id : Dynamic;
+	/**
+		Field xla.HloInstructionProto.channel_name
+	**/
+	public var channel_name : Dynamic;
+	/**
+		Field xla.HloInstructionProto.constrain_layout
+	**/
+	public var constrain_layout : Dynamic;
+	/**
+		Field xla.HloInstructionProto.control_predecessor_ids
+	**/
+	public var control_predecessor_ids : Dynamic;
+	/**
+		Field xla.HloInstructionProto.convolution_dimension_numbers
+	**/
+	public var convolution_dimension_numbers : Dynamic;
+	/**
+		Field xla.HloInstructionProto.cost_estimate_ns
+	**/
+	public var cost_estimate_ns : Dynamic;
+	/**
+		Field xla.HloInstructionProto.cross_replica_sum_barrier
+	**/
+	public var cross_replica_sum_barrier : Dynamic;
+	/**
+		Field xla.HloInstructionProto.custom_call_opaque
+	**/
+	public var custom_call_opaque : Dynamic;
+	/**
+		Field xla.HloInstructionProto.custom_call_target
+	**/
+	public var custom_call_target : Dynamic;
+	/**
+		Field xla.HloInstructionProto.dimensions
+	**/
+	public var dimensions : Dynamic;
+	/**
+		Field xla.HloInstructionProto.distribution
+	**/
+	public var distribution : Dynamic;
+	/**
+		Field xla.HloInstructionProto.domain_entry_sharding
+	**/
+	public var domain_entry_sharding : Dynamic;
+	/**
+		Field xla.HloInstructionProto.domain_exit_sharding
+	**/
+	public var domain_exit_sharding : Dynamic;
+	/**
+		Field xla.HloInstructionProto.dot_dimension_numbers
+	**/
+	public var dot_dimension_numbers : Dynamic;
+	/**
+		Field xla.HloInstructionProto.dynamic_slice_sizes
+	**/
+	public var dynamic_slice_sizes : Dynamic;
+	/**
+		Field xla.HloInstructionProto.epsilon
+	**/
+	public var epsilon : Dynamic;
+	/**
+		Field xla.HloInstructionProto.exponent_bits
+	**/
+	public var exponent_bits : Dynamic;
+	/**
+		Field xla.HloInstructionProto.feature_group_count
+	**/
+	public var feature_group_count : Dynamic;
+	/**
+		Field xla.HloInstructionProto.feature_index
+	**/
+	public var feature_index : Dynamic;
+	/**
+		Field xla.HloInstructionProto.fft_length
+	**/
+	public var fft_length : Dynamic;
+	/**
+		Field xla.HloInstructionProto.fft_type
+	**/
+	public var fft_type : Dynamic;
+	/**
+		Field xla.HloInstructionProto.fusion_kind
+	**/
+	public var fusion_kind : Dynamic;
+	/**
+		Field xla.HloInstructionProto.gather_dimension_numbers
+	**/
+	public var gather_dimension_numbers : Dynamic;
+	/**
+		Field xla.HloInstructionProto.gather_slice_sizes
+	**/
+	public var gather_slice_sizes : Dynamic;
+	/**
+		Field xla.HloInstructionProto.id
+	**/
+	public var id : Dynamic;
+	/**
+		Field xla.HloInstructionProto.infeed_config
+	**/
+	public var infeed_config : Dynamic;
+	/**
+		Field xla.HloInstructionProto.is_host_transfer
+	**/
+	public var is_host_transfer : Dynamic;
+	/**
+		Field xla.HloInstructionProto.literal
+	**/
+	public var literal : Dynamic;
+	/**
+		Field xla.HloInstructionProto.mantissa_bits
+	**/
+	public var mantissa_bits : Dynamic;
+	/**
+		Field xla.HloInstructionProto.metadata
+	**/
+	public var metadata : Dynamic;
+	/**
+		Field xla.HloInstructionProto.name
+	**/
+	public var name : Dynamic;
+	/**
+		Field xla.HloInstructionProto.opcode
+	**/
+	public var opcode : Dynamic;
+	/**
+		Field xla.HloInstructionProto.operand_ids
+	**/
+	public var operand_ids : Dynamic;
+	/**
+		Field xla.HloInstructionProto.operand_shapes_with_layout
+	**/
+	public var operand_shapes_with_layout : Dynamic;
+	/**
+		Field xla.HloInstructionProto.outfeed_config
+	**/
+	public var outfeed_config : Dynamic;
+	/**
+		Field xla.HloInstructionProto.outfeed_shape
+	**/
+	public var outfeed_shape : Dynamic;
+	/**
+		Field xla.HloInstructionProto.padding_config
+	**/
+	public var padding_config : Dynamic;
+	/**
+		Field xla.HloInstructionProto.parameter_number
+	**/
+	public var parameter_number : Dynamic;
+	/**
+		Field xla.HloInstructionProto.precision_config
+	**/
+	public var precision_config : Dynamic;
+	/**
+		Field xla.HloInstructionProto.replica_groups
+	**/
+	public var replica_groups : Dynamic;
+	/**
+		Field xla.HloInstructionProto.scatter_dimension_numbers
+	**/
+	public var scatter_dimension_numbers : Dynamic;
+	/**
+		Field xla.HloInstructionProto.shape
+	**/
+	public var shape : Dynamic;
+	/**
+		Field xla.HloInstructionProto.sharding
+	**/
+	public var sharding : Dynamic;
+	/**
+		Field xla.HloInstructionProto.slice_dimensions
+	**/
+	public var slice_dimensions : Dynamic;
+	/**
+		Field xla.HloInstructionProto.source_target_pairs
+	**/
+	public var source_target_pairs : Dynamic;
+	/**
+		Field xla.HloInstructionProto.tuple_index
+	**/
+	public var tuple_index : Dynamic;
+	/**
+		Field xla.HloInstructionProto.window
+	**/
+	public var window : Dynamic;
 }

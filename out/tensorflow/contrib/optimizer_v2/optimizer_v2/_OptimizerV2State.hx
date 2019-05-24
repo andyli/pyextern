@@ -131,8 +131,8 @@ package tensorflow.contrib.optimizer_v2.optimizer_v2;
 		    indicating the slot variable `Checkpointable` object to be restored.
 		  slot_name: The name of this `Optimizer`'s slot to restore into.
 		  variable: The variable object this slot is being created for.
-		  optional_op_name: Name to use when scoping the Variable that
-		    needs to be created for the slot.
+		  optional_op_name: Name to use when scoping the Variable that needs to be
+		    created for the slot.
 	**/
 	public function _create_or_restore_slot_variable(slot_variable_position:Dynamic, slot_name:Dynamic, variable:Dynamic, ?optional_op_name:Dynamic):Dynamic;
 	/**
@@ -169,8 +169,8 @@ package tensorflow.contrib.optimizer_v2.optimizer_v2;
 		  var: A `Variable` object.
 		  val: A `Tensor`.  The initial value of the slot.
 		  slot_name: Name for the slot.
-		  optional_op_name: Name to use when scoping the Variable that
-		    needs to be created for the slot.
+		  optional_op_name: Name to use when scoping the Variable that needs to be
+		    created for the slot.
 		
 		Returns:
 		  A `Variable` object.
@@ -185,8 +185,8 @@ package tensorflow.contrib.optimizer_v2.optimizer_v2;
 		  shape: Shape of the initial value of the slot.
 		  dtype: Type of the value of the slot.
 		  slot_name: Name for the slot.
-		  optional_op_name: Name to use when scoping the Variable that
-		    needs to be created for the slot.
+		  optional_op_name: Name to use when scoping the Variable that needs to be
+		    created for the slot.
 		
 		Returns:
 		  A `Variable` object.
@@ -233,8 +233,8 @@ package tensorflow.contrib.optimizer_v2.optimizer_v2;
 		Args:
 		  var: A `Variable` object.
 		  slot_name: Name for the slot.
-		  optional_op_name: Name to use when scoping the Variable that
-		    needs to be created for the slot.
+		  optional_op_name: Name to use when scoping the Variable that needs to be
+		    created for the slot.
 		
 		Returns:
 		  A `Variable` object.

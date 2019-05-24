@@ -54,13 +54,11 @@ package tensorflow.core.util.event_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LEVEL_FIELD_NUMBER : Dynamic;
 	static public var Level : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MESSAGE_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -90,6 +88,10 @@ package tensorflow.core.util.event_pb2;
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var UNKNOWN : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var WARN : Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
@@ -258,4 +260,12 @@ package tensorflow.core.util.event_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.LogMessage.level
+	**/
+	public var level : Dynamic;
+	/**
+		Field tensorflow.LogMessage.message
+	**/
+	public var message : Dynamic;
 }

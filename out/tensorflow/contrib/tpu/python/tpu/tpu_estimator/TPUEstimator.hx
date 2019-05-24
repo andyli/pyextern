@@ -42,8 +42,9 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		
 		Args:
 		  model_fn: Model function as required by `Estimator` which returns
-		  EstimatorSpec or TPUEstimatorSpec. `training_hooks`, 'evaluation_hooks',
-		  and `prediction_hooks` must not capure any TPU Tensor inside the model_fn.
+		    EstimatorSpec or TPUEstimatorSpec. `training_hooks`, 'evaluation_hooks',
+		    and `prediction_hooks` must not capure any TPU Tensor inside the
+		    model_fn.
 		  model_dir: Directory to save model parameters, graph and etc. This can
 		    also be used to load checkpoints from the directory into a estimator to
 		    continue training a previously saved model. If `None`, the model_dir in
@@ -54,19 +55,18 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		    `input_fn` and `model_fn`.  Keys are names of parameters, values are
 		    basic python types. There are reserved keys for `TPUEstimator`,
 		    including 'batch_size'.
-		  use_tpu: A bool indicating whether TPU support is enabled. Currently,
-		    - TPU training and evaluation respect this bit, but eval_on_tpu can
-		      override execution of eval. See below.
-		    - Predict still happens on CPU.
+		  use_tpu: A bool indicating whether TPU support is enabled. Currently, -
+		    TPU training and evaluation respect this bit, but eval_on_tpu can
+		    override execution of eval. See below. - Predict still happens on CPU.
 		  train_batch_size: An int representing the global training batch size.
 		    TPUEstimator transforms this global batch size to a per-shard batch
 		    size, as params['batch_size'], when calling `input_fn` and `model_fn`.
-		    Cannot be `None` if `use_tpu` is `True`.
-		    Must be divisible by total number of replicas.
-		  eval_batch_size: An int representing evaluation batch size.
-		    Must be divisible by total number of replicas.
-		  predict_batch_size: An int representing the prediction batch size.
-		    Must be divisible by total number of replicas.
+		    Cannot be `None` if `use_tpu` is `True`. Must be divisible by total
+		    number of replicas.
+		  eval_batch_size: An int representing evaluation batch size. Must be
+		    divisible by total number of replicas.
+		  predict_batch_size: An int representing the prediction batch size. Must be
+		    divisible by total number of replicas.
 		  batch_axis: A python tuple of int values describing how each tensor
 		    produced by the Estimator `input_fn` should be split across the TPU
 		    compute shards. For example, if your input_fn produced (images, labels)
@@ -82,11 +82,10 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		  export_to_tpu: If True, `export_savedmodel()` exports a metagraph for
 		    serving on TPU besides the one on CPU.
 		  warm_start_from: Optional string filepath to a checkpoint or SavedModel to
-		                   warm-start from, or a `tf.estimator.WarmStartSettings`
-		                   object to fully configure warm-starting.  If the string
-		                   filepath is provided instead of a `WarmStartSettings`,
-		                   then all variables are warm-started, and it is assumed
-		                   that vocabularies and Tensor names are unchanged.
+		    warm-start from, or a `tf.estimator.WarmStartSettings` object to fully
+		    configure warm-starting.  If the string filepath is provided instead of
+		    a `WarmStartSettings`, then all variables are warm-started, and it is
+		    assumed that vocabularies and Tensor names are unchanged.
 		
 		Raises:
 		  ValueError: `params` has reserved keys already.
@@ -98,8 +97,9 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		
 		Args:
 		  model_fn: Model function as required by `Estimator` which returns
-		  EstimatorSpec or TPUEstimatorSpec. `training_hooks`, 'evaluation_hooks',
-		  and `prediction_hooks` must not capure any TPU Tensor inside the model_fn.
+		    EstimatorSpec or TPUEstimatorSpec. `training_hooks`, 'evaluation_hooks',
+		    and `prediction_hooks` must not capure any TPU Tensor inside the
+		    model_fn.
 		  model_dir: Directory to save model parameters, graph and etc. This can
 		    also be used to load checkpoints from the directory into a estimator to
 		    continue training a previously saved model. If `None`, the model_dir in
@@ -110,19 +110,18 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		    `input_fn` and `model_fn`.  Keys are names of parameters, values are
 		    basic python types. There are reserved keys for `TPUEstimator`,
 		    including 'batch_size'.
-		  use_tpu: A bool indicating whether TPU support is enabled. Currently,
-		    - TPU training and evaluation respect this bit, but eval_on_tpu can
-		      override execution of eval. See below.
-		    - Predict still happens on CPU.
+		  use_tpu: A bool indicating whether TPU support is enabled. Currently, -
+		    TPU training and evaluation respect this bit, but eval_on_tpu can
+		    override execution of eval. See below. - Predict still happens on CPU.
 		  train_batch_size: An int representing the global training batch size.
 		    TPUEstimator transforms this global batch size to a per-shard batch
 		    size, as params['batch_size'], when calling `input_fn` and `model_fn`.
-		    Cannot be `None` if `use_tpu` is `True`.
-		    Must be divisible by total number of replicas.
-		  eval_batch_size: An int representing evaluation batch size.
-		    Must be divisible by total number of replicas.
-		  predict_batch_size: An int representing the prediction batch size.
-		    Must be divisible by total number of replicas.
+		    Cannot be `None` if `use_tpu` is `True`. Must be divisible by total
+		    number of replicas.
+		  eval_batch_size: An int representing evaluation batch size. Must be
+		    divisible by total number of replicas.
+		  predict_batch_size: An int representing the prediction batch size. Must be
+		    divisible by total number of replicas.
 		  batch_axis: A python tuple of int values describing how each tensor
 		    produced by the Estimator `input_fn` should be split across the TPU
 		    compute shards. For example, if your input_fn produced (images, labels)
@@ -138,11 +137,10 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		  export_to_tpu: If True, `export_savedmodel()` exports a metagraph for
 		    serving on TPU besides the one on CPU.
 		  warm_start_from: Optional string filepath to a checkpoint or SavedModel to
-		                   warm-start from, or a `tf.estimator.WarmStartSettings`
-		                   object to fully configure warm-starting.  If the string
-		                   filepath is provided instead of a `WarmStartSettings`,
-		                   then all variables are warm-started, and it is assumed
-		                   that vocabularies and Tensor names are unchanged.
+		    warm-start from, or a `tf.estimator.WarmStartSettings` object to fully
+		    configure warm-starting.  If the string filepath is provided instead of
+		    a `WarmStartSettings`, then all variables are warm-started, and it is
+		    assumed that vocabularies and Tensor names are unchanged.
 		
 		Raises:
 		  ValueError: `params` has reserved keys already.
@@ -211,6 +209,14 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		The method that does evaluation actually.
+	**/
+	public function _actual_eval(input_fn:Dynamic, ?strategy:Dynamic, ?steps:Dynamic, ?hooks:Dynamic, ?checkpoint_path:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		That method that does actual training with distribution strategy.
+	**/
+	public function _actual_train_model_distributed(strategy:Dynamic, input_fn:Dynamic, hooks:Dynamic, saving_listeners:Dynamic):Dynamic;
+	/**
 		Loads variables and adds them along with a `tf.MetaGraphDef` for saving.
 		
 		Args:
@@ -222,10 +228,6 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		    `InputReceiver`.
 		  checkpoint_path: The checkpoint path to export.  If `None` (the default),
 		    the most recent checkpoint found within the model directory is chosen.
-		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
-		    removed from the `NodeDef`s. For a detailed guide, see [Stripping
-		    Default-Valued
-		    Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
 		  save_variables: bool, whether variables should be saved. If `False`, just
 		    the `tf.MetaGraphDef` will be saved. Note that `save_variables` should
 		    only be `True` for the first call to this function, and the
@@ -239,7 +241,7 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		Raises:
 		  ValueError: if `save_variables` is `True` and `check_variable` is `False`.
 	**/
-	public function _add_meta_graph_for_mode(builder:Dynamic, input_receiver_fn_map:Dynamic, checkpoint_path:Dynamic, strip_default_attrs:Dynamic, ?save_variables:Dynamic, ?mode:Dynamic, ?export_tags:Dynamic, ?check_variables:Dynamic):Dynamic;
+	public function _add_meta_graph_for_mode(builder:Dynamic, input_receiver_fn_map:Dynamic, checkpoint_path:Dynamic, ?save_variables:Dynamic, ?mode:Dynamic, ?export_tags:Dynamic, ?check_variables:Dynamic):Dynamic;
 	/**
 		Asserts members of `Estimator` are not overridden.
 	**/
@@ -249,6 +251,10 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 	**/
 	public function _augment_model_fn(model_fn:Dynamic, batch_axis:Dynamic):Dynamic;
 	/**
+		For v1, add in the strip_default_attrs arg.
+	**/
+	public function _call_add_meta_graph_and_variables(save_variables:Dynamic, builder:Dynamic, session:Dynamic, kwargs:Dynamic):Dynamic;
+	/**
 		Calls the input function.
 		
 		Args:
@@ -256,9 +262,9 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		  mode: ModeKeys
 		
 		Returns:
-		  Either features or (features, labels) where features and labels are:
-		    features - `Tensor` or dictionary of string feature name to `Tensor`.
-		    labels - `Tensor` or dictionary of `Tensor` with labels.
+		  In TPU mode, returns an input_fn to be called later in model_fn.
+		  Otherwise, calls the input_fn and returns either fatures or
+		    (features, labels).
 		
 		Raises:
 		  ValueError: if input_fn takes invalid arguments or does not have `params`.
@@ -352,115 +358,6 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 	**/
 	public function _evaluate_run(checkpoint_path:Dynamic, scaffold:Dynamic, update_op:Dynamic, eval_dict:Dynamic, all_hooks:Dynamic, output_dir:Dynamic):Dynamic;
 	/**
-		Exports a `SavedModel` containing `tf.MetaGraphDefs` for each requested mode.
-		
-		See `tf.contrib.estimator.export_all_saved_models` for the currently
-		exposed version of this function.
-		
-		For each mode passed in via the `input_receiver_fn_map`,
-		this method builds a new graph by calling the `input_receiver_fn` to obtain
-		feature and label `Tensor`s. Next, this method calls the `Estimator`'s
-		`model_fn` in the passed mode to generate the model graph based on
-		those features and labels, and restores the given checkpoint
-		(or, lacking that, the most recent checkpoint) into the graph.
-		Only one of the modes is used for saving variables to the `SavedModel`
-		(order of preference: `tf.estimator.ModeKeys.TRAIN`,
-		`tf.estimator.ModeKeys.EVAL`, then
-		`tf.estimator.ModeKeys.PREDICT`), such that up to three
-		`tf.MetaGraphDefs` are saved with a single set of variables in a single
-		`SavedModel` directory.
-		
-		For the variables and `tf.MetaGraphDefs`, a timestamped export directory
-		below
-		`export_dir_base`, and writes a `SavedModel` into it containing
-		the `tf.MetaGraphDef` for the given mode and its associated signatures.
-		
-		For prediction, the exported `MetaGraphDef` will provide one `SignatureDef`
-		for each element of the `export_outputs` dict returned from the `model_fn`,
-		named using the same keys.  One of these keys is always
-		`tf.saved_model.signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY`,
-		indicating which
-		signature will be served when a serving request does not specify one.
-		For each signature, the outputs are provided by the corresponding
-		`tf.estimator.export.ExportOutput`s, and the inputs are always the input
-		receivers provided by
-		the `serving_input_receiver_fn`.
-		
-		For training and evaluation, the `train_op` is stored in an extra
-		collection,
-		and loss, metrics, and predictions are included in a `SignatureDef` for the
-		mode in question.
-		
-		Extra assets may be written into the `SavedModel` via the `assets_extra`
-		argument.  This should be a dict, where each key gives a destination path
-		(including the filename) relative to the assets.extra directory.  The
-		corresponding value gives the full path of the source file to be copied.
-		For example, the simple case of copying a single file without renaming it
-		is specified as `{'my_asset_file.txt': '/path/to/my_asset_file.txt'}`.
-		
-		Args:
-		  export_dir_base: A string containing a directory in which to create
-		    timestamped subdirectories containing exported `SavedModel`s.
-		  input_receiver_fn_map: dict of `tf.estimator.ModeKeys` to
-		    `input_receiver_fn` mappings, where the `input_receiver_fn` is a
-		    function that takes no arguments and returns the appropriate subclass of
-		    `InputReceiver`.
-		  assets_extra: A dict specifying how to populate the assets.extra directory
-		    within the exported `SavedModel`, or `None` if no extra assets are
-		    needed.
-		  as_text: whether to write the `SavedModel` proto in text format.
-		  checkpoint_path: The checkpoint path to export.  If `None` (the default),
-		    the most recent checkpoint found within the model directory is chosen.
-		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
-		    removed from the `NodeDef`s. For a detailed guide, see [Stripping
-		    Default-Valued
-		    Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
-		
-		Returns:
-		  A dict of `tf.estimator.ModeKeys` value to string path for each exported
-		  directory.
-		
-		Raises:
-		  ValueError: if any `input_receiver_fn` is `None`, no `export_outputs`
-		    are provided, or no checkpoint can be found.
-	**/
-	public function _export_all_saved_models(export_dir_base:Dynamic, input_receiver_fn_map:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic, ?strip_default_attrs:Dynamic):Dynamic;
-	/**
-		Exports a single train/eval/predict graph as a `SavedModel`.
-		
-		This method is a wrapper for `_export_all_saved_models`, and wraps a raw
-		`input_receiver_fn` in a dictionary to pass in to that function.
-		See `_export_all_saved_models` for full docs.
-		
-		See `tf.contrib.estimator.export_saved_model_for_mode` for the currently
-		exposed version of this function.
-		
-		Args:
-		  export_dir_base: A string containing a directory in which to create
-		    timestamped subdirectories containing exported `SavedModel`s.
-		  input_receiver_fn: a function that takes no argument and returns the
-		    appropriate subclass of `InputReceiver`.
-		  assets_extra: A dict specifying how to populate the assets.extra directory
-		    within the exported `SavedModel`, or `None` if no extra assets are
-		    needed.
-		  as_text: whether to write the `SavedModel` proto in text format.
-		  checkpoint_path: The checkpoint path to export.  If `None` (the default),
-		    the most recent checkpoint found within the model directory is chosen.
-		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
-		    removed from the `NodeDef`s. For a detailed guide, see [Stripping
-		    Default-Valued
-		    Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
-		  mode: `tf.estimator.ModeKeys` value indicating with mode will be exported.
-		
-		Returns:
-		  The string path to the exported directory.
-		
-		Raises:
-		  ValueError: if `input_receiver_fn` is `None`, no `export_outputs`
-		    are provided, or no checkpoint can be found.
-	**/
-	public function _export_saved_model_for_mode(export_dir_base:Dynamic, input_receiver_fn:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic, ?strip_default_attrs:Dynamic, ?mode:Dynamic):Dynamic;
-	/**
 		Extracts batch length of predictions.
 	**/
 	public function _extract_batch_length(preds_evaluated:Dynamic):Dynamic;
@@ -478,6 +375,7 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 	public function _get_features_from_input_fn(input_fn:Dynamic, mode:Dynamic):Dynamic;
 	public function _get_iterator_from_input_fn(input_fn:Dynamic, mode:Dynamic, ?distribution:Dynamic):Dynamic;
 	public function _maybe_warm_start(checkpoint_path:Dynamic):Dynamic;
+	static public var _strip_default_attrs : Dynamic;
 	public function _train_model(input_fn:Dynamic, hooks:Dynamic, saving_listeners:Dynamic):Dynamic;
 	/**
 		Initiate training with `input_fn`, without `DistributionStrategies`.
@@ -587,6 +485,133 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 	**/
 	public function evaluate(input_fn:Dynamic, ?steps:Dynamic, ?hooks:Dynamic, ?checkpoint_path:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Exports a `SavedModel` with `tf.MetaGraphDefs` for each requested mode.
+		
+		For each mode passed in via the `input_receiver_fn_map`,
+		this method builds a new graph by calling the `input_receiver_fn` to obtain
+		feature and label `Tensor`s. Next, this method calls the `Estimator`'s
+		`model_fn` in the passed mode to generate the model graph based on
+		those features and labels, and restores the given checkpoint
+		(or, lacking that, the most recent checkpoint) into the graph.
+		Only one of the modes is used for saving variables to the `SavedModel`
+		(order of preference: `tf.estimator.ModeKeys.TRAIN`,
+		`tf.estimator.ModeKeys.EVAL`, then
+		`tf.estimator.ModeKeys.PREDICT`), such that up to three
+		`tf.MetaGraphDefs` are saved with a single set of variables in a single
+		`SavedModel` directory.
+		
+		For the variables and `tf.MetaGraphDefs`, a timestamped export directory
+		below
+		`export_dir_base`, and writes a `SavedModel` into it containing
+		the `tf.MetaGraphDef` for the given mode and its associated signatures.
+		
+		For prediction, the exported `MetaGraphDef` will provide one `SignatureDef`
+		for each element of the `export_outputs` dict returned from the `model_fn`,
+		named using the same keys.  One of these keys is always
+		`tf.saved_model.signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY`,
+		indicating which
+		signature will be served when a serving request does not specify one.
+		For each signature, the outputs are provided by the corresponding
+		`tf.estimator.export.ExportOutput`s, and the inputs are always the input
+		receivers provided by
+		the `serving_input_receiver_fn`.
+		
+		For training and evaluation, the `train_op` is stored in an extra
+		collection,
+		and loss, metrics, and predictions are included in a `SignatureDef` for the
+		mode in question.
+		
+		Extra assets may be written into the `SavedModel` via the `assets_extra`
+		argument.  This should be a dict, where each key gives a destination path
+		(including the filename) relative to the assets.extra directory.  The
+		corresponding value gives the full path of the source file to be copied.
+		For example, the simple case of copying a single file without renaming it
+		is specified as `{'my_asset_file.txt': '/path/to/my_asset_file.txt'}`.
+		
+		Args:
+		  export_dir_base: A string containing a directory in which to create
+		    timestamped subdirectories containing exported `SavedModel`s.
+		  input_receiver_fn_map: dict of `tf.estimator.ModeKeys` to
+		    `input_receiver_fn` mappings, where the `input_receiver_fn` is a
+		    function that takes no arguments and returns the appropriate subclass of
+		    `InputReceiver`.
+		  assets_extra: A dict specifying how to populate the assets.extra directory
+		    within the exported `SavedModel`, or `None` if no extra assets are
+		    needed.
+		  as_text: whether to write the `SavedModel` proto in text format.
+		  checkpoint_path: The checkpoint path to export.  If `None` (the default),
+		    the most recent checkpoint found within the model directory is chosen.
+		
+		Returns:
+		  The string path to the exported directory.
+		
+		Raises:
+		  ValueError: if any `input_receiver_fn` is `None`, no `export_outputs`
+		    are provided, or no checkpoint can be found.
+	**/
+	public function experimental_export_all_saved_models(export_dir_base:Dynamic, input_receiver_fn_map:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic):Dynamic;
+	/**
+		Exports inference graph as a `SavedModel` into the given dir.
+		
+		For a detailed guide, see
+		[Using SavedModel with Estimators](https://tensorflow.org/guide/saved_model#using_savedmodel_with_estimators).
+		
+		This method builds a new graph by first calling the
+		`serving_input_receiver_fn` to obtain feature `Tensor`s, and then calling
+		this `Estimator`'s `model_fn` to generate the model graph based on those
+		features. It restores the given checkpoint (or, lacking that, the most
+		recent checkpoint) into this graph in a fresh session.  Finally it creates
+		a timestamped export directory below the given `export_dir_base`, and writes
+		a `SavedModel` into it containing a single `tf.MetaGraphDef` saved from this
+		session.
+		
+		The exported `MetaGraphDef` will provide one `SignatureDef` for each
+		element of the `export_outputs` dict returned from the `model_fn`, named
+		using
+		the same keys.  One of these keys is always
+		`tf.saved_model.signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY`,
+		indicating which
+		signature will be served when a serving request does not specify one.
+		For each signature, the outputs are provided by the corresponding
+		`tf.estimator.export.ExportOutput`s, and the inputs are always the input
+		receivers provided by
+		the `serving_input_receiver_fn`.
+		
+		Extra assets may be written into the `SavedModel` via the `assets_extra`
+		argument.  This should be a dict, where each key gives a destination path
+		(including the filename) relative to the assets.extra directory.  The
+		corresponding value gives the full path of the source file to be copied.
+		For example, the simple case of copying a single file without renaming it
+		is specified as `{'my_asset_file.txt': '/path/to/my_asset_file.txt'}`.
+		
+		The experimental_mode parameter can be used to export a single
+		train/eval/predict graph as a `SavedModel`.
+		See `experimental_export_all_saved_models` for full docs.
+		
+		Args:
+		  export_dir_base: A string containing a directory in which to create
+		    timestamped subdirectories containing exported `SavedModel`s.
+		  serving_input_receiver_fn: A function that takes no argument and returns a
+		    `tf.estimator.export.ServingInputReceiver` or
+		    `tf.estimator.export.TensorServingInputReceiver`.
+		  assets_extra: A dict specifying how to populate the assets.extra directory
+		    within the exported `SavedModel`, or `None` if no extra assets are
+		    needed.
+		  as_text: whether to write the `SavedModel` proto in text format.
+		  checkpoint_path: The checkpoint path to export.  If `None` (the default),
+		    the most recent checkpoint found within the model directory is chosen.
+		  experimental_mode: `tf.estimator.ModeKeys` value indicating with mode
+		    will be exported. Note that this feature is experimental.
+		
+		Returns:
+		  The string path to the exported directory.
+		
+		Raises:
+		  ValueError: if no `serving_input_receiver_fn` is provided, no
+		  `export_outputs` are provided, or no checkpoint can be found.
+	**/
+	public function export_saved_model(export_dir_base:Dynamic, serving_input_receiver_fn:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic, ?experimental_mode:Dynamic):Dynamic;
+	/**
 		Exports inference graph as a `SavedModel` into the given dir.
 		
 		For a detailed guide, see
@@ -632,6 +657,10 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		  as_text: whether to write the `SavedModel` proto in text format.
 		  checkpoint_path: The checkpoint path to export.  If `None` (the default),
 		    the most recent checkpoint found within the model directory is chosen.
+		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
+		    removed from the `NodeDef`s. For a detailed guide, see [Stripping
+		    Default-Valued Attributes](
+		    https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
 		
 		Returns:
 		  The string path to the exported directory.
@@ -639,24 +668,6 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		Raises:
 		  ValueError: if no `serving_input_receiver_fn` is provided, no
 		  `export_outputs` are provided, or no checkpoint can be found.
-	**/
-	public function export_saved_model(export_dir_base:Dynamic, serving_input_receiver_fn:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic):Dynamic;
-	/**
-		Exports inference graph as a `SavedModel` into the given dir.
-		
-		Note that `export_to_savedmodel` will be renamed to `export_saved_model`
-		in TensorFlow 2.0. At that time, `export_to_savedmodel` without the
-		additional underscore will be available only through tf.compat.v1.
-		
-		Please see `tf.estimator.Estimator.export_saved_model` for more information.
-		
-		There is one additional arg versus the new method:
-		  strip_default_attrs: This parameter is going away in TF 2.0, and
-		    the new behavior will automatically strip all default attributes.
-		    Boolean. If `True`, default-valued attributes will be
-		    removed from the `NodeDef`s. For a detailed guide, see [Stripping
-		    Default-Valued Attributes](
-		    https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
 	**/
 	public function export_savedmodel(export_dir_base:Dynamic, serving_input_receiver_fn:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic, ?strip_default_attrs:Dynamic):Dynamic;
 	/**

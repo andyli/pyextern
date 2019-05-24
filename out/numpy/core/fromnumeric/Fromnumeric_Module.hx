@@ -10,6 +10,22 @@ package numpy.core.fromnumeric;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _alen_dispathcer(a:Dynamic):Dynamic;
+	static public function _all_dispatcher(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function _amax_dispatcher(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
+	static public function _amin_dispatcher(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
+	static public function _any_dispatcher(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function _argmax_dispatcher(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
+	static public function _argmin_dispatcher(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
+	static public function _argpartition_dispatcher(a:Dynamic, kth:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	static public function _argsort_dispatcher(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	static public function _around_dispatcher(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):Dynamic;
+	static public function _choose_dispatcher(a:Dynamic, choices:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function _clip_dispatcher(a:Dynamic, a_min:Dynamic, a_max:Dynamic, ?out:Dynamic):Dynamic;
+	static public function _compress_dispatcher(condition:Dynamic, a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
+	static public function _cumprod_dispatcher(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	static public function _cumsum_dispatcher(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	static public function _diagonal_dispatcher(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic):Dynamic;
 	/**
 		Return the string representation of a scalar dtype.
 		
@@ -51,6 +67,23 @@ package numpy.core.fromnumeric;
 		'O'
 	**/
 	static public function _dt_(sctype:Dynamic):String;
+	static public function _mean_dispatcher(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function _ndim_dispatcher(a:Dynamic):Dynamic;
+	static public function _nonzero_dispatcher(a:Dynamic):Dynamic;
+	static public function _partition_dispatcher(a:Dynamic, kth:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	static public function _prod_dispatcher(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
+	static public function _ptp_dispatcher(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function _put_dispatcher(a:Dynamic, ind:Dynamic, v:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function _ravel_dispatcher(a:Dynamic, ?order:Dynamic):Dynamic;
+	static public function _repeat_dispatcher(a:Dynamic, repeats:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _reshape_dispatcher(a:Dynamic, newshape:Dynamic, ?order:Dynamic):Dynamic;
+	static public function _resize_dispatcher(a:Dynamic, new_shape:Dynamic):Dynamic;
+	static public function _searchsorted_dispatcher(a:Dynamic, v:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
+	static public function _shape_dispatcher(a:Dynamic):Dynamic;
+	static public function _size_dispatcher(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _sort_dispatcher(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	static public function _squeeze_dispatcher(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _std_dispatcher(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?ddof:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		Return the sum of a 'start' value (default: 0) plus an iterable of numbers
 		
@@ -59,6 +92,12 @@ package numpy.core.fromnumeric;
 		reject non-numeric types.
 	**/
 	static public function _sum_(iterable:Dynamic, ?start:Dynamic):Dynamic;
+	static public function _sum_dispatcher(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
+	static public function _swapaxes_dispatcher(a:Dynamic, axis1:Dynamic, axis2:Dynamic):Dynamic;
+	static public function _take_dispatcher(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function _trace_dispatcher(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	static public function _transpose_dispatcher(a:Dynamic, ?axes:Dynamic):Dynamic;
+	static public function _var_dispatcher(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?ddof:Dynamic, ?keepdims:Dynamic):Dynamic;
 	static public function _wrapfunc(obj:Dynamic, method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function _wrapit(obj:Dynamic, method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function _wrapreduction(obj:Dynamic, ufunc:Dynamic, method:Dynamic, axis:Dynamic, dtype:Dynamic, out:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -491,10 +530,10 @@ package numpy.core.fromnumeric;
 		
 		Examples
 		--------
-		>>> a = np.arange(6).reshape(2,3)
+		>>> a = np.arange(6).reshape(2,3) + 10
 		>>> a
-		array([[0, 1, 2],
-		       [3, 4, 5]])
+		array([[10, 11, 12],
+		       [13, 14, 15]])
 		>>> np.argmax(a)
 		5
 		>>> np.argmax(a, axis=0)
@@ -508,7 +547,7 @@ package numpy.core.fromnumeric;
 		>>> ind
 		(1, 2)
 		>>> a[ind]
-		5
+		15
 		
 		>>> b = np.arange(6)
 		>>> b[1] = 5
@@ -551,10 +590,10 @@ package numpy.core.fromnumeric;
 		
 		Examples
 		--------
-		>>> a = np.arange(6).reshape(2,3)
+		>>> a = np.arange(6).reshape(2,3) + 10
 		>>> a
-		array([[0, 1, 2],
-		       [3, 4, 5]])
+		array([[10, 11, 12],
+		       [13, 14, 15]])
 		>>> np.argmin(a)
 		0
 		>>> np.argmin(a, axis=0)
@@ -568,12 +607,12 @@ package numpy.core.fromnumeric;
 		>>> ind
 		(0, 0)
 		>>> a[ind]
-		0
+		10
 		
-		>>> b = np.arange(6)
-		>>> b[4] = 0
+		>>> b = np.arange(6) + 10
+		>>> b[4] = 10
 		>>> b
-		array([0, 1, 2, 3, 0, 5])
+		array([10, 11, 12, 13, 10, 15])
 		>>> np.argmin(b)  # Only the first occurrence is returned.
 		0
 	**/
@@ -777,11 +816,11 @@ package numpy.core.fromnumeric;
 		
 		References
 		----------
-		.. [1] "Lecture Notes on the Status of  IEEE 754", William Kahan,
-		       http://www.cs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF
+		.. [1] "Lecture Notes on the Status of IEEE 754", William Kahan,
+		       https://people.eecs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF
 		.. [2] "How Futile are Mindless Assessments of
 		       Roundoff in Floating-Point Computation?", William Kahan,
-		       http://www.cs.berkeley.edu/~wkahan/Mindless.pdf
+		       https://people.eecs.berkeley.edu/~wkahan/Mindless.pdf
 		
 		Examples
 		--------
@@ -909,6 +948,7 @@ package numpy.core.fromnumeric;
 		        [3, 4]])
 	**/
 	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	/**
 		Convert the input to an ndarray, but pass ndarray subclasses through.
 		
@@ -1292,6 +1332,7 @@ package numpy.core.fromnumeric;
 		hstack : Stack arrays in sequence horizontally (column wise)
 		vstack : Stack arrays in sequence vertically (row wise)
 		dstack : Stack arrays in sequence depth wise (along third dimension)
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -1321,19 +1362,19 @@ package numpy.core.fromnumeric;
 		>>> a[1] = np.ma.masked
 		>>> b = np.arange(2, 5)
 		>>> a
-		masked_array(data = [0 -- 2],
-		             mask = [False  True False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2],
+		             mask=[False,  True, False],
+		       fill_value=999999)
 		>>> b
 		array([2, 3, 4])
 		>>> np.concatenate([a, b])
-		masked_array(data = [0 1 2 2 3 4],
-		             mask = False,
-		       fill_value = 999999)
+		masked_array(data=[0, 1, 2, 2, 3, 4],
+		             mask=False,
+		       fill_value=999999)
 		>>> np.ma.concatenate([a, b])
-		masked_array(data = [0 -- 2 2 3 4],
-		             mask = [False  True False False False False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2, 2, 3, 4],
+		             mask=[False,  True, False, False, False, False],
+		       fill_value=999999)
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1733,16 +1774,16 @@ package numpy.core.fromnumeric;
 		
 		Examples
 		--------
-		>>> x = np.array([[1,0,0], [0,2,0], [1,1,0]])
+		>>> x = np.array([[3, 0, 0], [0, 4, 0], [5, 6, 0]])
 		>>> x
-		array([[1, 0, 0],
-		       [0, 2, 0],
-		       [1, 1, 0]])
+		array([[3, 0, 0],
+		       [0, 4, 0],
+		       [5, 6, 0]])
 		>>> np.nonzero(x)
 		(array([0, 1, 2, 2]), array([0, 1, 0, 1]))
 		
 		>>> x[np.nonzero(x)]
-		array([1, 2, 1, 1])
+		array([3, 4, 5, 6])
 		>>> np.transpose(np.nonzero(x))
 		array([[0, 0],
 		       [1, 1],
@@ -1754,7 +1795,7 @@ package numpy.core.fromnumeric;
 		boolean array and since False is interpreted as 0, np.nonzero(a > 3)
 		yields the indices of the `a` where the condition is true.
 		
-		>>> a = np.array([[1,2,3],[4,5,6],[7,8,9]])
+		>>> a = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 		>>> a > 3
 		array([[False, False, False],
 		       [ True,  True,  True],
@@ -1762,7 +1803,14 @@ package numpy.core.fromnumeric;
 		>>> np.nonzero(a > 3)
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 		
-		The ``nonzero`` method of the boolean array can also be called.
+		Using this result to index `a` is equivalent to using the mask directly:
+		
+		>>> a[np.nonzero(a > 3)]
+		array([4, 5, 6, 7, 8, 9])
+		>>> a[a > 3]  # prefer this spelling
+		array([4, 5, 6, 7, 8, 9])
+		
+		``nonzero`` can also be called as a method of the array.
 		
 		>>> (a > 3).nonzero()
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
@@ -2344,6 +2392,16 @@ package numpy.core.fromnumeric;
 		--------
 		ndarray.resize : resize an array in-place.
 		
+		Notes
+		-----
+		Warning: This functionality does **not** consider axes separately,
+		i.e. it does not apply interpolation/extrapolation.
+		It fills the return array with the required number of elements, taken
+		from `a` as they are laid out in memory, disregarding strides and axes.
+		(This is in case the new shape is smaller. For larger, see above.)
+		This functionality is therefore not suitable to resize images,
+		or data where each axis represents a separate and distinct entity.
+		
 		Examples
 		--------
 		>>> a=np.array([[0,1],[2,3]])
@@ -2360,11 +2418,9 @@ package numpy.core.fromnumeric;
 	/**
 		Round an array to the given number of decimals.
 		
-		Refer to `around` for full documentation.
-		
 		See Also
 		--------
-		around : equivalent function
+		around : equivalent function; see for details.
 	**/
 	static public function round_(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):Dynamic;
 	/**

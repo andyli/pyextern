@@ -5,6 +5,7 @@ package tensorflow.python.keras.backend;
 	static public var _DUMMY_EAGER_GRAPH : Dynamic;
 	static public var _EPSILON : Dynamic;
 	static public var _FLOATX : Dynamic;
+	static public var _GRAPH : Dynamic;
 	static public var _GRAPH_LEARNING_PHASES : Dynamic;
 	static public var _GRAPH_TF_OPTIMIZERS : Dynamic;
 	static public var _GRAPH_VARIABLES : Dynamic;
@@ -72,6 +73,10 @@ package tensorflow.python.keras.backend;
 	**/
 	static public function _get_current_tf_device():Dynamic;
 	/**
+		Returns the session object for the current thread.
+	**/
+	static public function _get_session():Dynamic;
+	/**
 		Returns variables corresponding to the given graph for initialization.
 	**/
 	static public function _get_variables(?graph:Dynamic):Dynamic;
@@ -125,11 +130,15 @@ package tensorflow.python.keras.backend;
 		Arguments:
 		    x: input tensor.
 		    data_format: string, `"channels_last"` or `"channels_first"`.
+		    force_transpose: Boolean. If True, the input will always be transposed
+		        from NCHW to NHWC if `data_format` is `"channels_first"`.
+		        If False, the transposition only occurs on CPU (GPU ops are
+		        assumed to support NCHW).
 		
 		Returns:
 		    A tensor.
 	**/
-	static public function _preprocess_conv2d_input(x:Dynamic, data_format:Dynamic):Dynamic;
+	static public function _preprocess_conv2d_input(x:Dynamic, data_format:Dynamic, ?force_transpose:Dynamic):Dynamic;
 	/**
 		Transpose and cast the input before the conv3d.
 		
@@ -338,6 +347,9 @@ package tensorflow.python.keras.backend;
 		
 		Returns:
 		    A list of Numpy arrays.
+		
+		Raises:
+		    RuntimeError: If this method is called inside defun.
 	**/
 	static public function batch_get_value(tensors:Dynamic):Dynamic;
 	/**
@@ -352,12 +364,14 @@ package tensorflow.python.keras.backend;
 		    var: Variance of batch.
 		    beta: Tensor with which to center the input.
 		    gamma: Tensor by which to scale the input.
+		    axis: Integer, the axis that should be normalized.
+		        (typically the features axis).
 		    epsilon: Fuzz factor.
 		
 		Returns:
 		    A tensor.
 	**/
-	static public function batch_normalization(x:Dynamic, mean:Dynamic, _var:Dynamic, beta:Dynamic, gamma:Dynamic, ?epsilon:Dynamic):Dynamic;
+	static public function batch_normalization(x:Dynamic, mean:Dynamic, _var:Dynamic, beta:Dynamic, gamma:Dynamic, ?axis:Dynamic, ?epsilon:Dynamic):Dynamic;
 	/**
 		Sets the values of many tensor variables at once.
 		
@@ -572,6 +586,7 @@ package tensorflow.python.keras.backend;
 		    data_format: string, `"channels_last"` or `"channels_first"`.
 		        Whether to use Theano or TensorFlow/CNTK data format
 		        for inputs/kernels/outputs.
+		    dilation_rate: Tuple of 2 integers.
 		
 		Returns:
 		    A tensor, result of transposed 2D convolution.
@@ -580,7 +595,7 @@ package tensorflow.python.keras.backend;
 		    ValueError: if `data_format` is neither `channels_last` or
 		    `channels_first`.
 	**/
-	static public function conv2d_transpose(x:Dynamic, kernel:Dynamic, output_shape:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic):Dynamic;
+	static public function conv2d_transpose(x:Dynamic, kernel:Dynamic, output_shape:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic):Dynamic;
 	/**
 		3D convolution.
 		
@@ -999,16 +1014,17 @@ package tensorflow.python.keras.backend;
 		    inputs: List of placeholder tensors.
 		    outputs: List of output tensors.
 		    updates: List of update ops.
+		    name: String, name of function.
 		    **kwargs: Passed to `tf.Session.run`.
 		
 		Returns:
 		    Output values as Numpy arrays.
 		
 		Raises:
-		    ValueError: if invalid kwargs are passed in.
+		    ValueError: if invalid kwargs are passed in or if in eager execution.
 	**/
 	@:native("function")
-	static public function _function(inputs:Dynamic, outputs:Dynamic, ?updates:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _function(inputs:Dynamic, outputs:Dynamic, ?updates:Dynamic, ?name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Retrieves the elements of indices `indices` in the tensor `reference`.
 		
@@ -1021,6 +1037,7 @@ package tensorflow.python.keras.backend;
 	**/
 	static public function gather(reference:Dynamic, indices:Dynamic):Dynamic;
 	static public function get_default_session_config():Dynamic;
+	static public function get_graph():Dynamic;
 	/**
 		Returns the TF session to be used by the backend.
 		
@@ -1065,6 +1082,9 @@ package tensorflow.python.keras.backend;
 		
 		Returns:
 		    A Numpy array.
+		
+		Raises:
+		    RuntimeError: If this method is called inside defun.
 	**/
 	static public function get_value(x:Dynamic):Dynamic;
 	/**
@@ -1228,6 +1248,8 @@ package tensorflow.python.keras.backend;
 		
 		Examples:
 		```python
+		    >>> import tensorflow as tf
+		    >>> import numpy
 		    >>> from keras import backend as K
 		    >>> from keras.layers import Input, Dense
 		    >>> np_var = numpy.array([1, 2])
@@ -1702,6 +1724,9 @@ package tensorflow.python.keras.backend;
 		    sparse: Boolean, whether the placeholder should have a sparse type.
 		    name: Optional name string for the placeholder.
 		
+		Raises:
+		    ValueError: If called with eager execution.
+		
 		Returns:
 		    Tensor instance (with Keras metadata included).
 		
@@ -1985,15 +2010,16 @@ package tensorflow.python.keras.backend;
 		    height_factor: Positive integer.
 		    width_factor: Positive integer.
 		    data_format: One of `"channels_first"`, `"channels_last"`.
+		    interpolation: A string, one of `nearest` or `bilinear`.
 		
 		Returns:
 		    A tensor.
 		
 		Raises:
-		    ValueError: if `data_format` is neither
-		        `channels_last` or `channels_first`.
+		    ValueError: in case of incorrect value for
+		      `data_format` or `interpolation`.
 	**/
-	static public function resize_images(x:Dynamic, height_factor:Dynamic, width_factor:Dynamic, data_format:Dynamic):Dynamic;
+	static public function resize_images(x:Dynamic, height_factor:Dynamic, width_factor:Dynamic, data_format:Dynamic, ?interpolation:Dynamic):Dynamic;
 	/**
 		Resizes the volume contained in a 5D tensor.
 		
@@ -2041,11 +2067,13 @@ package tensorflow.python.keras.backend;
 		                as 'states'. The first state in the list must be the
 		                output tensor at the previous timestep.
 		    inputs: Tensor of temporal data of shape `(samples, time, ...)`
-		        (at least 3D).
-		    initial_states: Tensor with shape `(samples, output_dim)`
-		        (no time dimension),
-		        containing the initial values for the states used in
-		        the step function.
+		        (at least 3D), or nested tensors, and each of which has shape
+		        `(samples, time, ...)`.
+		    initial_states: Tensor with shape `(samples, state_size)`
+		        (no time dimension), containing the initial values for the states used
+		        in the step function. In the case that state_size is in a nested
+		        shape, the shape of initial_states will also follow the nested
+		        structure.
 		    go_backwards: Boolean. If True, do the iteration over the time
 		        dimension in reverse order and return the reversed sequence.
 		    mask: Binary tensor with shape `(samples, time, 1)`,
@@ -2053,7 +2081,16 @@ package tensorflow.python.keras.backend;
 		    constants: List of constant values passed at each step.
 		    unroll: Whether to unroll the RNN or to use a symbolic `while_loop`.
 		    input_length: If specified, assume time dimension is of this length.
-		
+		    time_major: Boolean. If true, the inputs and outputs will be in shape
+		        `(timesteps, batch, ...)`, whereas in the False case, it will be
+		        `(batch, timesteps, ...)`. Using `time_major = True` is a bit more
+		        efficient because it avoids transposes at the beginning and end of the
+		        RNN calculation. However, most TensorFlow data is batch-major, so by
+		        default this function accepts input and emits output in batch-major
+		        form.
+		    zero_output_for_mask: Boolean. If True, the output for masked timestep
+		        will be zeros, whereas in the False case, output from previous
+		        timestep is returned.
 		Returns:
 		    A tuple, `(last_output, outputs, new_states)`.
 		        last_output: the latest output of the rnn, of shape `(samples, ...)`
@@ -2070,7 +2107,7 @@ package tensorflow.python.keras.backend;
 		    ValueError: if `mask` is provided (not `None`) but states is not provided
 		        (`len(states)` == 0).
 	**/
-	static public function rnn(step_function:Dynamic, inputs:Dynamic, initial_states:Dynamic, ?go_backwards:Dynamic, ?mask:Dynamic, ?constants:Dynamic, ?unroll:Dynamic, ?input_length:Dynamic):Dynamic;
+	static public function rnn(step_function:Dynamic, inputs:Dynamic, initial_states:Dynamic, ?go_backwards:Dynamic, ?mask:Dynamic, ?constants:Dynamic, ?unroll:Dynamic, ?input_length:Dynamic, ?time_major:Dynamic, ?zero_output_for_mask:Dynamic):Dynamic;
 	/**
 		Element-wise rounding to the closest integer.
 		
@@ -2464,6 +2501,7 @@ package tensorflow.python.keras.backend;
 	**/
 	@:native("switch")
 	static public function _switch(condition:Dynamic, then_expression:Dynamic, else_expression:Dynamic):Dynamic;
+	static public function symbolic_learning_phase():Dynamic;
 	/**
 		Element-wise tanh.
 		
@@ -2634,6 +2672,7 @@ package tensorflow.python.keras.backend;
 		
 		Examples:
 		```python
+		    >>> import numpy as np
 		    >>> from keras import backend as K
 		    >>> val = np.array([[1, 2], [3, 4]])
 		    >>> kvar = K.variable(value=val, dtype='float64', name='example_var')

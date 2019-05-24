@@ -2,6 +2,7 @@
 package tensorflow.python.estimator.inputs.queues.feeding_functions;
 @:pythonImport("tensorflow.python.estimator.inputs.queues.feeding_functions") extern class Feeding_functions_Module {
 	static public var HAS_PANDAS : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

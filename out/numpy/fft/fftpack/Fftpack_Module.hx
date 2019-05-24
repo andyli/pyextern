@@ -12,6 +12,8 @@ package numpy.fft.fftpack;
 	static public var __spec__ : Dynamic;
 	static public function _cook_nd_args(a:Dynamic, ?s:Dynamic, ?axes:Dynamic, ?invreal:Dynamic):Dynamic;
 	static public var _fft_cache : Dynamic;
+	static public function _fft_dispatcher(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic):Dynamic;
+	static public function _fftn_dispatcher(a:Dynamic, ?s:Dynamic, ?axes:Dynamic, ?norm:Dynamic):Dynamic;
 	static public function _raw_fft(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?init_function:Dynamic, ?work_function:Dynamic, ?fft_cache:Dynamic):Dynamic;
 	static public function _raw_fftnd(a:Dynamic, ?s:Dynamic, ?axes:Dynamic, ?_function:Dynamic, ?norm:Dynamic):Dynamic;
 	static public var _real_fft_cache : Dynamic;
@@ -129,6 +131,7 @@ package numpy.fft.fftpack;
 		        [3, 4]])
 	**/
 	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	/**
 		Convert the input to an array.
 		
@@ -1077,6 +1080,56 @@ package numpy.fft.fftpack;
 		        [ 1.,  1.]]])
 	**/
 	static public function irfftn(a:Dynamic, ?s:Dynamic, ?axes:Dynamic, ?norm:Dynamic):numpy.Ndarray;
+	/**
+		normalize_axis_index(axis, ndim, msg_prefix=None)
+		
+		Normalizes an axis index, `axis`, such that is a valid positive index into
+		the shape of array with `ndim` dimensions. Raises an AxisError with an
+		appropriate message if this is not possible.
+		
+		Used internally by all axis-checking logic.
+		
+		.. versionadded:: 1.13.0
+		
+		Parameters
+		----------
+		axis : int
+		    The un-normalized index of the axis. Can be negative
+		ndim : int
+		    The number of dimensions of the array that `axis` should be normalized
+		    against
+		msg_prefix : str
+		    A prefix to put before the message, typically the name of the argument
+		
+		Returns
+		-------
+		normalized_axis : int
+		    The normalized axis index, such that `0 <= normalized_axis < ndim`
+		
+		Raises
+		------
+		AxisError
+		    If the axis index is invalid, when `-ndim <= axis < ndim` is false.
+		
+		Examples
+		--------
+		>>> normalize_axis_index(0, ndim=3)
+		0
+		>>> normalize_axis_index(1, ndim=3)
+		1
+		>>> normalize_axis_index(-1, ndim=3)
+		2
+		
+		>>> normalize_axis_index(3, ndim=3)
+		Traceback (most recent call last):
+		...
+		AxisError: axis 3 is out of bounds for array of dimension 3
+		>>> normalize_axis_index(-4, ndim=3, msg_prefix='axes_arg')
+		Traceback (most recent call last):
+		...
+		AxisError: axes_arg: axis -4 is out of bounds for array of dimension 3
+	**/
+	static public function normalize_axis_index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Compute the one-dimensional discrete Fourier Transform for real input.

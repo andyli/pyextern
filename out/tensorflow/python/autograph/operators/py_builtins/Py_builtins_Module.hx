@@ -24,6 +24,9 @@ package tensorflow.python.autograph.operators.py_builtins;
 		Overload of print_ as a py_func implementation.
 	**/
 	static public function _tf_py_func_print(objects:Dynamic, kwargs:Dynamic):Dynamic;
+	/**
+		Overload of range_ that generates a TF range tensor.
+	**/
 	static public function _tf_range(start_or_stop:Dynamic, stop:Dynamic, step:Dynamic):Dynamic;
 	static public function _tf_tensor_array_len(s:Dynamic):Dynamic;
 	/**

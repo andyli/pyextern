@@ -39,7 +39,7 @@ package tensorflow.contrib.learn.python.learn.utils.saved_model_export_utils;
 	/**
 		Build `SignatureDef`s from all pairs of input and output alternatives. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 	**/
@@ -47,7 +47,7 @@ package tensorflow.contrib.learn.python.learn.utils.saved_model_export_utils;
 	/**
 		Build a SignatureDef using problem type and input and output Tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 		
@@ -106,7 +106,7 @@ package tensorflow.contrib.learn.python.learn.utils.saved_model_export_utils;
 	/**
 		Extend ExportStrategy, calling post_export_fn after export. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 		
@@ -129,7 +129,7 @@ package tensorflow.contrib.learn.python.learn.utils.saved_model_export_utils;
 	/**
 		Deletes older exports, retaining only a given number of the most recent. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 		
@@ -145,7 +145,7 @@ package tensorflow.contrib.learn.python.learn.utils.saved_model_export_utils;
 	/**
 		Obtain all input alternatives using the input_fn output and heuristics. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 	**/
@@ -153,7 +153,7 @@ package tensorflow.contrib.learn.python.learn.utils.saved_model_export_utils;
 	/**
 		Locate the most recent SavedModel export in a directory of many exports. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 		
@@ -171,7 +171,7 @@ package tensorflow.contrib.learn.python.learn.utils.saved_model_export_utils;
 	/**
 		Obtain all output alternatives using the model_fn output and heuristics. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 		
@@ -199,7 +199,7 @@ package tensorflow.contrib.learn.python.learn.utils.saved_model_export_utils;
 	/**
 		Builds a directory name based on the argument but starting with 'temp-'. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 		
@@ -217,7 +217,7 @@ package tensorflow.contrib.learn.python.learn.utils.saved_model_export_utils;
 	/**
 		Builds a path to a new subdirectory within the base directory. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 		
@@ -240,7 +240,7 @@ package tensorflow.contrib.learn.python.learn.utils.saved_model_export_utils;
 	/**
 		Creates an custom ExportStrategy for use with tf.contrib.learn.Experiment. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 		
@@ -275,7 +275,7 @@ package tensorflow.contrib.learn.python.learn.utils.saved_model_export_utils;
 	/**
 		Create an ExportStrategy for use with Experiment. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 		
@@ -308,7 +308,7 @@ package tensorflow.contrib.learn.python.learn.utils.saved_model_export_utils;
 	/**
 		Create an ExportStrategy for use with Experiment, using `FeatureColumn`s. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.estimator.export.build_parsing_serving_input_receiver_fn
 		

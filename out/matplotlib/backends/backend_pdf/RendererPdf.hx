@@ -108,42 +108,35 @@ package matplotlib.backends.backend_pdf;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _afm_font_dir : Dynamic;
 	/**
-		draw the text by converting them to paths using textpath module.
+		Draw the text by converting them to paths using textpath module.
 		
 		Parameters
 		----------
 		prop : `matplotlib.font_manager.FontProperties`
-		  font property
-		
+		    The font property.
 		s : str
-		  text to be converted
-		
+		    The text to be converted.
 		usetex : bool
-		  If True, use matplotlib usetex mode.
-		
-		ismath : bool
-		  If True, use mathtext parser. If "TeX", use *usetex* mode.
+		    Whether to use matplotlib usetex mode.
+		ismath : bool or "TeX"
+		    If True, use mathtext parser. If "TeX", use *usetex* mode.
 	**/
 	public function _draw_text_as_path(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ismath:Dynamic):Dynamic;
 	public function _get_font_afm(prop:Dynamic):Dynamic;
 	public function _get_font_ttf(prop:Dynamic):Dynamic;
 	/**
-		return the text path and transform
+		Return the text path and transform.
 		
 		Parameters
 		----------
 		prop : `matplotlib.font_manager.FontProperties`
-		  font property
-		
+		    The font property.
 		s : str
-		  text to be converted
-		
-		usetex : bool
-		  If True, use matplotlib usetex mode.
-		
-		ismath : bool
-		  If True, use mathtext parser. If "TeX", use *usetex* mode.
+		    The text to be converted.
+		ismath : bool or "TeX"
+		    If True, use mathtext parser. If "TeX", use *usetex* mode.
 	**/
 	public function _get_text_path_transform(x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ismath:Dynamic):Dynamic;
 	/**
@@ -198,11 +191,21 @@ package matplotlib.backends.backend_pdf;
 	**/
 	public function _iter_collection_uses_per_path(paths:Dynamic, all_transforms:Dynamic, offsets:Dynamic, facecolors:Dynamic, edgecolors:Dynamic):Dynamic;
 	public function _setup_textpos(x:Dynamic, y:Dynamic, angle:Dynamic, ?oldx:Dynamic, ?oldy:Dynamic, ?oldangle:Dynamic):Dynamic;
-	static public var afm_font_cache : Dynamic;
+	static public var _use_afm_rc_name : Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
+	public var afm_font_cache : Dynamic;
 	public function check_gc(gc:Dynamic, ?fillcolor:Dynamic):Dynamic;
 	/**
 		Close a grouping element with label *s*
-		Is only currently used by :mod:`~matplotlib.backends.backend_svg`
+		
+		Only used by the SVG renderer.
 	**/
 	public function close_group(s:Dynamic):Dynamic;
 	/**
@@ -328,30 +331,24 @@ package matplotlib.backends.backend_pdf;
 	**/
 	public function draw_tex(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ?ismath:Dynamic, ?mtext:Dynamic):Dynamic;
 	/**
-		Draw the text instance
+		Draw the text instance.
 		
 		Parameters
 		----------
 		gc : `GraphicsContextBase`
-		    the graphics context
-		
+		    The graphics context.
 		x : scalar
-		    the x location of the text in display coords
-		
+		    The x location of the text in display coords.
 		y : scalar
-		    the y location of the text baseline in display coords
-		
+		    The y location of the text baseline in display coords.
 		s : str
-		    the text string
-		
+		    The text string.
 		prop : `matplotlib.font_manager.FontProperties`
-		    font properties
-		
+		    The font properties.
 		angle : scalar
-		    the rotation angle in degrees
-		
+		    The rotation angle in degrees.
 		mtext : `matplotlib.text.Text`
-		    the original text object to be rendered
+		    The original text object to be rendered.
 		
 		Notes
 		-----
@@ -370,13 +367,13 @@ package matplotlib.backends.backend_pdf;
 	public function encode_string(s:Dynamic, fonttype:Dynamic):Dynamic;
 	public function finalize():Dynamic;
 	/**
-		Return true if y small numbers are top for renderer Is used
-		for drawing text (:mod:`matplotlib.text`) and images
-		(:mod:`matplotlib.image`) only
+		Return whether y values increase from top to bottom.
+		
+		Note that this only affects drawing of texts and images.
 	**/
 	public function flipy():Dynamic;
 	/**
-		return the canvas width and height in display coords
+		Return the canvas width and height in display coords.
 	**/
 	public function get_canvas_width_height():Dynamic;
 	/**
@@ -386,7 +383,7 @@ package matplotlib.backends.backend_pdf;
 	**/
 	public function get_image_magnification():Dynamic;
 	/**
-		return the :class:`matplotlib.texmanager.TexManager` instance
+		Return the `.TexManager` instance.
 	**/
 	public function get_texmanager():Dynamic;
 	/**
@@ -397,26 +394,30 @@ package matplotlib.backends.backend_pdf;
 	public function get_text_width_height_descent(s:Dynamic, prop:Dynamic, ismath:Dynamic):Dynamic;
 	public function merge_used_characters(other:Dynamic):Dynamic;
 	/**
-		Return an instance of a :class:`GraphicsContextBase`
+		Return an instance of a `GraphicsContextBase`.
 	**/
 	public function new_gc():Dynamic;
 	/**
-		Open a grouping element with label *s*. If *gid* is given, use
-		*gid* as the id of the group. Is only currently used by
-		:mod:`~matplotlib.backends.backend_svg`.
+		Open a grouping element with label *s* and *gid* (if set) as id.
+		
+		Only used by the SVG renderer.
 	**/
 	public function open_group(s:Dynamic, ?gid:Dynamic):Dynamic;
 	/**
-		return whether to generate a composite image from multiple images on
-		a set of axes
+		Return whether image composition by Matplotlib should be skipped.
+		
+		Raster backends should usually return False (letting the C-level
+		rasterizer take care of image composition); vector backends should
+		usually return ``not rcParams["image.composite_image"]``.
 	**/
 	public function option_image_nocomposite():Dynamic;
 	/**
-		pdf backend support arbitrary scaling of image.
+		Return whether arbitrary affine transformations in :meth:`draw_image`
+		are supported (True for most vector backends).
 	**/
 	public function option_scale_image():Dynamic;
 	/**
-		Convert points to display units
+		Convert points to display units.
 		
 		You need to override this function (unless your backend
 		doesn't have a dpi, e.g., postscript or svg).  Some imaging
@@ -435,31 +436,43 @@ package matplotlib.backends.backend_pdf;
 	**/
 	public function points_to_pixels(points:Dynamic):Dynamic;
 	/**
-		Used in AggRenderer. Switch to a temporary renderer for image
-		filtering effects.
+		Switch to a temporary renderer for image filtering effects.
+		
+		Currently only supported by the agg renderer.
 	**/
 	public function start_filter():Dynamic;
 	/**
-		Used in MixedModeRenderer. Switch to the raster renderer.
+		Switch to the raster renderer.
+		
+		Used by `MixedModeRenderer`.
 	**/
 	public function start_rasterizing():Dynamic;
 	/**
-		Used in AggRenderer. Switch back to the original renderer.
-		The contents of the temporary renderer is processed with the
-		*filter_func* and is drawn on the original renderer as an
-		image.
+		Switch back to the original renderer.  The contents of the temporary
+		renderer is processed with the *filter_func* and is drawn on the
+		original renderer as an image.
+		
+		Currently only supported by the agg renderer.
 	**/
 	public function stop_filter(filter_func:Dynamic):Dynamic;
 	/**
-		Used in MixedModeRenderer. Switch back to the vector renderer
-		and draw the contents of the raster renderer as an image on
-		the vector renderer.
+		Switch back to the vector renderer and draw the contents of the raster
+		renderer as an image on the vector renderer.
+		
+		Used by `MixedModeRenderer`.
 	**/
 	public function stop_rasterizing():Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	public function strip_math(s:Dynamic):Dynamic;
 	/**
-		Keeps track of which characters are required from
-		each font.
+		Keeps track of which characters are required from each font.
 	**/
 	public function track_characters(font:Dynamic, s:Dynamic):Dynamic;
 }

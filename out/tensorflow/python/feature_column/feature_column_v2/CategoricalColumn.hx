@@ -5,7 +5,21 @@ package tensorflow.python.feature_column.feature_column_v2;
 		IdWeightPair(id_tensor, weight_tensor)
 	**/
 	static public function IdWeightPair(id_tensor:Dynamic, weight_tensor:Dynamic):Dynamic;
-	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var __abstractmethods__ : Dynamic;
+	/**
+		Metaclass for defining Abstract Base Classes (ABCs).
+		
+		Use this metaclass to create an ABC.  An ABC can be subclassed
+		directly, and then acts as a mix-in class.  You can also register
+		unrelated concrete classes (even built-in classes) and unrelated
+		ABCs as 'virtual subclasses' -- these and their descendants will
+		be considered subclasses of the registering ABC by the built-in
+		issubclass() function, but the registering ABC won't show up in
+		their MRO (Method Resolution Order) nor will method
+		implementations defined by the registering ABC be callable (not
+		even via super()).
+	**/
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -65,20 +79,6 @@ package tensorflow.python.feature_column.feature_column_v2;
 		Return self<value.
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
-	/**
-		Metaclass for defining Abstract Base Classes (ABCs).
-		
-		Use this metaclass to create an ABC.  An ABC can be subclassed
-		directly, and then acts as a mix-in class.  You can also register
-		unrelated concrete classes (even built-in classes) and unrelated
-		ABCs as 'virtual subclasses' -- these and their descendants will
-		be considered subclasses of the registering ABC by the built-in
-		issubclass() function, but the registering ABC won't show up in
-		their MRO (Method Resolution Order) nor will method
-		implementations defined by the registering ABC be callable (not
-		even via super()).
-	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -126,6 +126,95 @@ package tensorflow.python.feature_column.feature_column_v2;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _abc_cache : Dynamic;
+	static public var _abc_negative_cache : Dynamic;
+	static public var _abc_negative_cache_version : Dynamic;
+	static public var _abc_registry : Dynamic;
+	/**
+		Creates a FeatureColumn from its config.
+		
+		This method should be the reverse of `_get_config`, capable of instantiating
+		the same FeatureColumn from the config dictionary. See `_get_config` for an
+		example of common (de)serialization practices followed in this file.
+		
+		TODO(b/118939620): This is a private method until consensus is reached on
+		supporting object deserialization deduping within Keras.
+		
+		Args:
+		  config: A Dict config acquired with `_get_config`.
+		  custom_objects: Optional dictionary mapping names (strings) to custom
+		    classes or functions to be considered during deserialization.
+		  columns_by_name: A Dict[String, FeatureColumn] of existing columns in
+		    order to avoid duplication. Should be passed to any calls to
+		    deserialize_feature_column().
+		
+		Returns:
+		  A FeatureColumn for the input config.
+	**/
+	static public function _from_config(config:Dynamic, ?custom_objects:Dynamic, ?columns_by_name:Dynamic):Dynamic;
+	/**
+		Returns the config of the feature column.
+		
+		A FeatureColumn config is a Python dictionary (serializable) containing the
+		configuration of a FeatureColumn. The same FeatureColumn can be
+		reinstantiated later from this configuration.
+		
+		The config of a feature column does not include information about feature
+		columns depending on it nor the FeatureColumn class name.
+		
+		Example with (de)serialization practices followed in this file:
+		```python
+		class SerializationExampleFeatureColumn(
+		    FeatureColumn, collections.namedtuple(
+		        'SerializationExampleFeatureColumn',
+		        ('dimension', 'parent', 'dtype', 'normalizer_fn'))):
+		
+		  def _get_config(self):
+		    # Create a dict from the namedtuple.
+		    # Python attribute literals can be directly copied from / to the config.
+		    # For example 'dimension', assuming it is an integer literal.
+		    config = dict(zip(self._fields, self))
+		
+		    # (De)serialization of parent FeatureColumns should use the provided
+		    # (de)serialize_feature_column() methods that take care of de-duping.
+		    config['parent'] = serialize_feature_column(self.parent)
+		
+		    # Many objects provide custom (de)serialization e.g: for tf.DType
+		    # tf.DType.name, tf.as_dtype() can be used.
+		    config['dtype'] = self.dtype.name
+		
+		    # Non-trivial dependencies should be Keras-(de)serializable.
+		    config['normalizer_fn'] = utils.serialize_keras_object(
+		        self.normalizer_fn)
+		
+		    return config
+		
+		  @classmethod
+		  def _from_config(cls, config, custom_objects=None, columns_by_name=None):
+		    # This should do the inverse transform from `_get_config` and construct
+		    # the namedtuple.
+		    kwargs = config.copy()
+		    kwargs['parent'] = deserialize_feature_column(
+		        config['parent'], custom_objects, columns_by_name)
+		    kwargs['dtype'] = dtypes.as_dtype(config['dtype'])
+		    kwargs['normalizer_fn'] = utils.deserialize_keras_object(
+		      config['normalizer_fn'], custom_objects=custom_objects)
+		    return cls(**kwargs)
+		
+		```
+		Returns:
+		  A serializable Dict that can be used to deserialize the object with
+		  from_config.
+	**/
+	public function _get_config():Dynamic;
+	/**
+		Returns whether this FeatureColumn is fully conformant to the new API.
+		
+		This is needed for composition type cases where an EmbeddingColumn etc.
+		might take in old categorical columns as input and then we want to use the
+		old API.
+	**/
+	public var _is_v2_column : Dynamic;
 	/**
 		Uses the `state_manager` to create state for the FeatureColumn.
 		
@@ -162,6 +251,18 @@ package tensorflow.python.feature_column.feature_column_v2;
 		Returns number of buckets in this sparse feature.
 	**/
 	public var num_buckets : Dynamic;
+	/**
+		Returns a list of immediate raw feature and FeatureColumn dependencies.
+		
+		For example:
+		# For the following feature columns
+		a = numeric_column('f1')
+		c = crossed_column(a, 'f2')
+		# The expected parents are:
+		a.parents = ['f1']
+		c.parents = [a, 'f2']
+	**/
+	public var parents : Dynamic;
 	/**
 		Returns a `tf.Example` parsing spec as dict.
 		

@@ -17,72 +17,6 @@ package pandas.core.tools.timedeltas;
 		Convert a list of objects to a timedelta index object.
 	**/
 	static public function _convert_listlike(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic, ?name:Dynamic):Dynamic;
-	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _unit_map : Dynamic;
-	/**
-		provide validation / translation for timedelta short units 
-	**/
-	static public function _validate_timedelta_unit(arg:Dynamic):Dynamic;
-	/**
-		Convert an ndarray to an array of timedeltas. If errors == 'coerce',
-		coerce non-convertible objects to NaT. Otherwise, raise.
-	**/
-	static public function array_to_timedelta64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Convert an incoming object to a timedelta64 if possible
-		
-		Handle these types of objects:
-		    - timedelta/Timedelta
-		    - timedelta64
-		    - an offset
-		    - np.int64 (with unit providing a possible modifier)
-		    - None/NaT
-		
-		Return an ns based int64
-		
-		# kludgy here until we have a timedelta scalar
-		# handle the numpy < 1.7 case
-	**/
-	static public function convert_to_timedelta64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Check whether the provided array or dtype is of an integer dtype.
-		
-		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
-		
-		Parameters
-		----------
-		arr_or_dtype : array-like
-		    The array or dtype to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array or dtype is of an integer dtype
-		          and not an instance of timedelta64.
-		
-		Examples
-		--------
-		>>> is_integer_dtype(str)
-		False
-		>>> is_integer_dtype(int)
-		True
-		>>> is_integer_dtype(float)
-		False
-		>>> is_integer_dtype(np.uint64)
-		True
-		>>> is_integer_dtype(np.datetime64)
-		False
-		>>> is_integer_dtype(np.timedelta64)
-		False
-		>>> is_integer_dtype(np.array(['a', 'b']))
-		False
-		>>> is_integer_dtype(pd.Series([1, 2]))
-		True
-		>>> is_integer_dtype(np.array([], dtype=np.timedelta64))
-		False
-		>>> is_integer_dtype(pd.Index([1, 2.]))  # float
-		False
-	**/
-	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check if the object is list-like.
 		
@@ -93,7 +27,11 @@ package pandas.core.tools.timedeltas;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -112,55 +50,85 @@ package pandas.core.tools.timedeltas;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
-		Check whether an array-like or dtype is of the timedelta64 dtype.
-		
 		Parameters
 		----------
-		arr_or_dtype : array-like
-		    The array-like or dtype to check.
+		unit : an unit string
+	**/
+	static public function parse_timedelta_unit(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parameters
+		----------
+		array : list-like
+		copy : bool, default False
+		unit : str, default "ns"
+		    The timedelta unit to treat integers as multiples of.
+		errors : {"raise", "coerce", "ignore"}, default "raise"
+		    How to handle elements that cannot be converted to timedelta64[ns].
+		    See ``pandas.to_timedelta`` for details.
 		
 		Returns
 		-------
-		boolean : Whether or not the array-like or dtype is
-		          of the timedelta64 dtype.
+		converted : numpy.ndarray
+		    The sequence converted to a numpy array with dtype ``timedelta64[ns]``.
+		inferred_freq : Tick or None
+		    The inferred frequency of the sequence.
 		
-		Examples
-		--------
-		>>> is_timedelta64_dtype(object)
-		False
-		>>> is_timedelta64_dtype(np.timedelta64)
-		True
-		>>> is_timedelta64_dtype([1, 2, 3])
-		False
-		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
-		True
-		>>> is_timedelta64_dtype('0 days')
-		False
+		Raises
+		------
+		ValueError : Data cannot be converted to timedelta64[ns].
+		
+		Notes
+		-----
+		Unlike `pandas.to_timedelta`, if setting ``errors=ignore`` will not cause
+		errors to be ignored; they are caught and subsequently ignored at a
+		higher level.
 	**/
-	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function sequence_to_td64ns(data:Dynamic, ?copy:Dynamic, ?unit:Dynamic, ?errors:Dynamic):Dynamic;
 	/**
-		Convert argument to timedelta
+		Convert argument to timedelta.
+		
+		Timedeltas are absolute differences in times, expressed in difference
+		units (e.g. days, hours, minutes, seconds). This method converts
+		an argument from a recognized timedelta format / value into
+		a Timedelta type.
 		
 		Parameters
 		----------
-		arg : string, timedelta, list, tuple, 1-d array, or Series
-		unit : unit of the arg (D,h,m,s,ms,us,ns) denote the unit, which is an
-		    integer/float number
-		box : boolean, default True
-		    - If True returns a Timedelta/TimedeltaIndex of the results
-		    - if False returns a np.timedelta64 or ndarray of values of dtype
-		      timedelta64[ns]
+		arg : str, timedelta, list-like or Series
+		    The data to be converted to timedelta.
+		unit : str, default 'ns'
+		    Denotes the unit of the arg. Possible values:
+		    ('Y', 'M', 'W', 'D', 'days', 'day', 'hours', hour', 'hr',
+		    'h', 'm', 'minute', 'min', 'minutes', 'T', 'S', 'seconds',
+		    'sec', 'second', 'ms', 'milliseconds', 'millisecond',
+		    'milli', 'millis', 'L', 'us', 'microseconds', 'microsecond',
+		    'micro', 'micros', 'U', 'ns', 'nanoseconds', 'nano', 'nanos',
+		    'nanosecond', 'N').
+		box : bool, default True
+		    - If True returns a Timedelta/TimedeltaIndex of the results.
+		    - If False returns a numpy.timedelta64 or numpy.darray of
+		      values of dtype timedelta64[ns].
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
-		    - If 'raise', then invalid parsing will raise an exception
-		    - If 'coerce', then invalid parsing will be set as NaT
-		    - If 'ignore', then invalid parsing will return the input
+		    - If 'raise', then invalid parsing will raise an exception.
+		    - If 'coerce', then invalid parsing will be set as NaT.
+		    - If 'ignore', then invalid parsing will return the input.
 		
 		Returns
 		-------
-		ret : timedelta64/arrays of timedelta64 if parsing succeeded
+		timedelta64 or numpy.array of timedelta64
+		    Output type returned if parsing succeeded.
+		
+		See Also
+		--------
+		DataFrame.astype : Cast argument to a specified dtype.
+		to_datetime : Convert argument to datetime.
 		
 		Examples
 		--------
@@ -188,10 +156,10 @@ package pandas.core.tools.timedeltas;
 		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
 		               dtype='timedelta64[ns]', freq=None)
 		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_datetime : Convert argument to datetime.
+		Returning an ndarray by using the 'box' keyword argument:
+		
+		>>> pd.to_timedelta(np.arange(5), box=False)
+		array([0, 1, 2, 3, 4], dtype='timedelta64[ns]')
 	**/
 	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
 }

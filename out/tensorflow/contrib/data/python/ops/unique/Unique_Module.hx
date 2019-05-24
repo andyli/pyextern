@@ -15,7 +15,7 @@ package tensorflow.contrib.data.python.ops.unique;
 	/**
 		Creates a `Dataset` from another `Dataset`, discarding duplicates. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.unique()`.
 		

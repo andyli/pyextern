@@ -12,6 +12,8 @@ package scipy.sparse.sputils;
 	static public var __spec__ : Dynamic;
 	static public var _upcast_memo : Dynamic;
 	static public var absolute_import : Dynamic;
+	static public function asmatrix(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function bmat(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Unpack keyword arguments for reshape function.
 		
@@ -83,6 +85,7 @@ package scipy.sparse.sputils;
 		If nonneg, also checks that the dimensions are non-negative.
 	**/
 	static public function isshape(x:Dynamic, ?nonneg:Dynamic):Dynamic;
+	static public function matrix(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	static public var supported_dtypes : Dynamic;
 	static public function to_native(A:Dynamic):Dynamic;

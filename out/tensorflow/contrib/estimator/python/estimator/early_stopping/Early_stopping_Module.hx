@@ -2,6 +2,7 @@
 package tensorflow.contrib.estimator.python.estimator.early_stopping;
 @:pythonImport("tensorflow.contrib.estimator.python.estimator.early_stopping") extern class Early_stopping_Module {
 	static public var _EVENT_FILE_GLOB_PATTERN : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

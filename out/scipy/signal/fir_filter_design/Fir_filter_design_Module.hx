@@ -241,25 +241,29 @@ package scipy.signal.fir_filter_design;
 		----------
 		numtaps : int
 		    Length of the filter (number of coefficients, i.e. the filter
-		    order + 1).  `numtaps` must be even if a passband includes the
+		    order + 1).  `numtaps` must be odd if a passband includes the
 		    Nyquist frequency.
 		cutoff : float or 1D array_like
-		    Cutoff frequency of filter (expressed in the same units as `nyq`)
+		    Cutoff frequency of filter (expressed in the same units as `fs`)
 		    OR an array of cutoff frequencies (that is, band edges). In the
 		    latter case, the frequencies in `cutoff` should be positive and
-		    monotonically increasing between 0 and `nyq`.  The values 0 and
-		    `nyq` must not be included in `cutoff`.
+		    monotonically increasing between 0 and `fs/2`.  The values 0 and
+		    `fs/2` must not be included in `cutoff`.
 		width : float or None, optional
 		    If `width` is not None, then assume it is the approximate width
-		    of the transition region (expressed in the same units as `nyq`)
+		    of the transition region (expressed in the same units as `fs`)
 		    for use in Kaiser FIR filter design.  In this case, the `window`
 		    argument is ignored.
 		window : string or tuple of string and parameter values, optional
 		    Desired window to use. See `scipy.signal.get_window` for a list
 		    of windows and required parameters.
-		pass_zero : bool, optional
+		pass_zero : {True, False, 'bandpass', 'lowpass', 'highpass', 'bandstop'}, optional
 		    If True, the gain at the frequency 0 (i.e. the "DC gain") is 1.
-		    Otherwise the DC gain is 0.
+		    If False, the DC gain is 0. Can also be a string argument for the
+		    desired filter type (equivalent to ``btype`` in IIR design functions).
+		
+		    .. versionadded:: 1.3.0
+		       Support for string arguments.
 		scale : bool, optional
 		    Set to True to scale the coefficients so that the frequency
 		    response is exactly unity at a certain frequency.
@@ -267,8 +271,8 @@ package scipy.signal.fir_filter_design;
 		
 		    - 0 (DC) if the first passband starts at 0 (i.e. pass_zero
 		      is True)
-		    - `nyq` (the Nyquist frequency) if the first passband ends at
-		      `nyq` (i.e the filter is a single band highpass filter);
+		    - `fs/2` (the Nyquist frequency) if the first passband ends at
+		      `fs/2` (i.e the filter is a single band highpass filter);
 		      center of first passband otherwise
 		
 		nyq : float, optional
@@ -841,6 +845,114 @@ package scipy.signal.fir_filter_design;
 	**/
 	static public function log(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Compute least-squares solution to equation Ax = b.
+		
+		Compute a vector x such that the 2-norm ``|b - A x|`` is minimized.
+		
+		Parameters
+		----------
+		a : (M, N) array_like
+		    Left hand side array
+		b : (M,) or (M, K) array_like
+		    Right hand side array
+		cond : float, optional
+		    Cutoff for 'small' singular values; used to determine effective
+		    rank of a. Singular values smaller than
+		    ``rcond * largest_singular_value`` are considered zero.
+		overwrite_a : bool, optional
+		    Discard data in `a` (may enhance performance). Default is False.
+		overwrite_b : bool, optional
+		    Discard data in `b` (may enhance performance). Default is False.
+		check_finite : bool, optional
+		    Whether to check that the input matrices contain only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		lapack_driver : str, optional
+		    Which LAPACK driver is used to solve the least-squares problem.
+		    Options are ``'gelsd'``, ``'gelsy'``, ``'gelss'``. Default
+		    (``'gelsd'``) is a good choice.  However, ``'gelsy'`` can be slightly
+		    faster on many problems.  ``'gelss'`` was used historically.  It is
+		    generally slow but uses less memory.
+		
+		    .. versionadded:: 0.17.0
+		
+		Returns
+		-------
+		x : (N,) or (N, K) ndarray
+		    Least-squares solution.  Return shape matches shape of `b`.
+		residues : (K,) ndarray or float
+		    Square of the 2-norm for each column in ``b - a x``, if ``M > N`` and
+		    ``ndim(A) == n`` (returns a scalar if b is 1-D). Otherwise a
+		    (0,)-shaped array is returned.
+		rank : int
+		    Effective rank of `a`.
+		s : (min(M, N),) ndarray or None
+		    Singular values of `a`. The condition number of a is
+		    ``abs(s[0] / s[-1])``.
+		
+		Raises
+		------
+		LinAlgError
+		    If computation does not converge.
+		
+		ValueError
+		    When parameters are not compatible.
+		
+		See Also
+		--------
+		scipy.optimize.nnls : linear least squares with non-negativity constraint
+		
+		Notes
+		-----
+		When ``'gelsy'`` is used as a driver, `residues` is set to a (0,)-shaped
+		array and `s` is always ``None``.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lstsq
+		>>> import matplotlib.pyplot as plt
+		
+		Suppose we have the following data:
+		
+		>>> x = np.array([1, 2.5, 3.5, 4, 5, 7, 8.5])
+		>>> y = np.array([0.3, 1.1, 1.5, 2.0, 3.2, 6.6, 8.6])
+		
+		We want to fit a quadratic polynomial of the form ``y = a + b*x**2``
+		to this data.  We first form the "design matrix" M, with a constant
+		column of 1s and a column containing ``x**2``:
+		
+		>>> M = x[:, np.newaxis]**[0, 2]
+		>>> M
+		array([[  1.  ,   1.  ],
+		       [  1.  ,   6.25],
+		       [  1.  ,  12.25],
+		       [  1.  ,  16.  ],
+		       [  1.  ,  25.  ],
+		       [  1.  ,  49.  ],
+		       [  1.  ,  72.25]])
+		
+		We want to find the least-squares solution to ``M.dot(p) = y``,
+		where ``p`` is a vector with length 2 that holds the parameters
+		``a`` and ``b``.
+		
+		>>> p, res, rnk, s = lstsq(M, y)
+		>>> p
+		array([ 0.20925829,  0.12013861])
+		
+		Plot the data and the fitted curve.
+		
+		>>> plt.plot(x, y, 'o', label='data')
+		>>> xx = np.linspace(0, 9, 101)
+		>>> yy = p[0] + p[1]*xx**2
+		>>> plt.plot(xx, yy, label='least squares fit, $y = a + bx^2$')
+		>>> plt.xlabel('x')
+		>>> plt.ylabel('y')
+		>>> plt.legend(framealpha=1, shadow=True)
+		>>> plt.grid(alpha=0.25)
+		>>> plt.show()
+	**/
+	static public function lstsq(a:Dynamic, b:Dynamic, ?cond:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):Dynamic;
+	/**
 		Convert a linear-phase FIR filter to minimum phase
 		
 		Parameters
@@ -963,50 +1075,6 @@ package scipy.signal.fir_filter_design;
 		       Upper Saddle River, N.J.: Prentice Hall, 1999.
 	**/
 	static public function minimum_phase(h:Dynamic, ?method:Dynamic, ?n_fft:Dynamic):Array<Dynamic>;
-	/**
-		Compute the (Moore-Penrose) pseudo-inverse of a matrix.
-		
-		Calculate a generalized inverse of a matrix using a least-squares
-		solver.
-		
-		Parameters
-		----------
-		a : (M, N) array_like
-		    Matrix to be pseudo-inverted.
-		cond, rcond : float, optional
-		    Cutoff for 'small' singular values in the least-squares solver.
-		    Singular values smaller than ``rcond * largest_singular_value``
-		    are considered zero.
-		return_rank : bool, optional
-		    if True, return the effective rank of the matrix
-		check_finite : bool, optional
-		    Whether to check that the input matrix contains only finite numbers.
-		    Disabling may give a performance gain, but may result in problems
-		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
-		
-		Returns
-		-------
-		B : (N, M) ndarray
-		    The pseudo-inverse of matrix `a`.
-		rank : int
-		    The effective rank of the matrix.  Returned if return_rank == True
-		
-		Raises
-		------
-		LinAlgError
-		    If computation does not converge.
-		
-		Examples
-		--------
-		>>> from scipy import linalg
-		>>> a = np.random.randn(9, 6)
-		>>> B = linalg.pinv(a)
-		>>> np.allclose(a, np.dot(a, np.dot(B, a)))
-		True
-		>>> np.allclose(B, np.dot(B, np.dot(a, B)))
-		True
-	**/
-	static public function pinv(a:Dynamic, ?cond:Dynamic, ?rcond:Dynamic, ?return_rank:Dynamic, ?check_finite:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Calculate the minimax optimal filter using the Remez exchange algorithm.
@@ -1078,21 +1146,80 @@ package scipy.signal.fir_filter_design;
 		
 		Examples
 		--------
-		For a signal sampled at 100 Hz, we want to construct a filter with a
-		passband at 20-40 Hz, and stop bands at 0-10 Hz and 45-50 Hz. Note that
-		this means that the behavior in the frequency ranges between those bands
-		is unspecified and may overshoot.
+		In these examples `remez` gets used creating a bandpass, bandstop, lowpass
+		and highpass filter.  The used parameters are the filter order, an array
+		with according frequency boundaries, the desired attenuation values and the
+		sampling frequency.  Using `freqz` the corresponding frequency response
+		gets calculated and plotted.
 		
 		>>> from scipy import signal
-		>>> fs = 100
-		>>> bpass = signal.remez(72, [0, 10, 20, 40, 45, 50], [0, 1, 0], fs=fs)
-		>>> freq, response = signal.freqz(bpass)
-		
 		>>> import matplotlib.pyplot as plt
-		>>> plt.semilogy(0.5*fs*freq/np.pi, np.abs(response), 'b-')
-		>>> plt.grid(alpha=0.25)
-		>>> plt.xlabel('Frequency (Hz)')
-		>>> plt.ylabel('Gain')
+		
+		>>> def plot_response(fs, w, h, title):
+		...     "Utility function to plot response functions"
+		...     fig = plt.figure()
+		...     ax = fig.add_subplot(111)
+		...     ax.plot(0.5*fs*w/np.pi, 20*np.log10(np.abs(h)))
+		...     ax.set_ylim(-40, 5)
+		...     ax.set_xlim(0, 0.5*fs)
+		...     ax.grid(True)
+		...     ax.set_xlabel('Frequency (Hz)')
+		...     ax.set_ylabel('Gain (dB)')
+		...     ax.set_title(title)
+		
+		This example shows a steep low pass transition according to the small
+		transition width and high filter order:
+		
+		>>> fs = 22050.0       # Sample rate, Hz
+		>>> cutoff = 8000.0    # Desired cutoff frequency, Hz
+		>>> trans_width = 100  # Width of transition from pass band to stop band, Hz
+		>>> numtaps = 400      # Size of the FIR filter.
+		>>> taps = signal.remez(numtaps, [0, cutoff, cutoff + trans_width, 0.5*fs], [1, 0], Hz=fs)
+		>>> w, h = signal.freqz(taps, [1], worN=2000)
+		>>> plot_response(fs, w, h, "Low-pass Filter")
+		
+		This example shows a high pass filter:
+		
+		>>> fs = 22050.0       # Sample rate, Hz
+		>>> cutoff = 2000.0    # Desired cutoff frequency, Hz
+		>>> trans_width = 250  # Width of transition from pass band to stop band, Hz
+		>>> numtaps = 125      # Size of the FIR filter.
+		>>> taps = signal.remez(numtaps, [0, cutoff - trans_width, cutoff, 0.5*fs],
+		...                     [0, 1], Hz=fs)
+		>>> w, h = signal.freqz(taps, [1], worN=2000)
+		>>> plot_response(fs, w, h, "High-pass Filter")
+		
+		For a signal sampled with 22 kHz a bandpass filter with a pass band of 2-5
+		kHz gets calculated using the Remez algorithm.  The transition width is 260
+		Hz and the filter order 10:
+		
+		>>> fs = 22000.0         # Sample rate, Hz
+		>>> band = [2000, 5000]  # Desired pass band, Hz
+		>>> trans_width = 260    # Width of transition from pass band to stop band, Hz
+		>>> numtaps = 10        # Size of the FIR filter.
+		>>> edges = [0, band[0] - trans_width, band[0], band[1],
+		...          band[1] + trans_width, 0.5*fs]
+		>>> taps = signal.remez(numtaps, edges, [0, 1, 0], Hz=fs)
+		>>> w, h = signal.freqz(taps, [1], worN=2000)
+		>>> plot_response(fs, w, h, "Band-pass Filter")
+		
+		It can be seen that for this bandpass filter, the low order leads to higher
+		ripple and less steep transitions.  There is very low attenuation in the
+		stop band and little overshoot in the pass band.  Of course the desired
+		gain can be better approximated with a higher filter order.
+		
+		The next example shows a bandstop filter. Because of the high filter order
+		the transition is quite steep:
+		
+		>>> fs = 20000.0         # Sample rate, Hz
+		>>> band = [6000, 8000]  # Desired stop band, Hz
+		>>> trans_width = 200    # Width of transition from pass band to stop band, Hz
+		>>> numtaps = 175        # Size of the FIR filter.
+		>>> edges = [0, band[0] - trans_width, band[0], band[1], band[1] + trans_width, 0.5*fs]
+		>>> taps = signal.remez(numtaps, edges, [1, 0, 1], Hz=fs)
+		>>> w, h = signal.freqz(taps, [1], worN=2000)
+		>>> plot_response(fs, w, h, "Band-stop Filter")
+		
 		>>> plt.show()
 	**/
 	static public function remez(numtaps:Dynamic, bands:Dynamic, desired:Dynamic, ?weight:Dynamic, ?Hz:Dynamic, ?type:Dynamic, ?maxiter:Dynamic, ?grid_density:Dynamic, ?fs:Dynamic):Dynamic;
@@ -1130,10 +1257,11 @@ package scipy.signal.fir_filter_design;
 		.. [1] Weisstein, Eric W. "Sinc Function." From MathWorld--A Wolfram Web
 		       Resource. http://mathworld.wolfram.com/SincFunction.html
 		.. [2] Wikipedia, "Sinc function",
-		       http://en.wikipedia.org/wiki/Sinc_function
+		       https://en.wikipedia.org/wiki/Sinc_function
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> x = np.linspace(-4, 4, 41)
 		>>> np.sinc(x)
 		array([ -3.89804309e-17,  -4.92362781e-02,  -8.40918587e-02,
@@ -1169,6 +1297,98 @@ package scipy.signal.fir_filter_design;
 		<matplotlib.image.AxesImage object at 0x...>
 	**/
 	static public function sinc(x:Dynamic):Dynamic;
+	/**
+		Solves the linear equation set ``a * x = b`` for the unknown ``x``
+		for square ``a`` matrix.
+		
+		If the data matrix is known to be a particular type then supplying the
+		corresponding string to ``assume_a`` key chooses the dedicated solver.
+		The available options are
+		
+		===================  ========
+		 generic matrix       'gen'
+		 symmetric            'sym'
+		 hermitian            'her'
+		 positive definite    'pos'
+		===================  ========
+		
+		If omitted, ``'gen'`` is the default structure.
+		
+		The datatype of the arrays define which solver is called regardless
+		of the values. In other words, even when the complex array entries have
+		precisely zero imaginary parts, the complex solver will be called based
+		on the data type of the array.
+		
+		Parameters
+		----------
+		a : (N, N) array_like
+		    Square input data
+		b : (N, NRHS) array_like
+		    Input data for the right hand side.
+		sym_pos : bool, optional
+		    Assume `a` is symmetric and positive definite. This key is deprecated
+		    and assume_a = 'pos' keyword is recommended instead. The functionality
+		    is the same. It will be removed in the future.
+		lower : bool, optional
+		    If True, only the data contained in the lower triangle of `a`. Default
+		    is to use upper triangle. (ignored for ``'gen'``)
+		overwrite_a : bool, optional
+		    Allow overwriting data in `a` (may enhance performance).
+		    Default is False.
+		overwrite_b : bool, optional
+		    Allow overwriting data in `b` (may enhance performance).
+		    Default is False.
+		check_finite : bool, optional
+		    Whether to check that the input matrices contain only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		assume_a : str, optional
+		    Valid entries are explained above.
+		transposed: bool, optional
+		    If True, ``a^T x = b`` for real matrices, raises `NotImplementedError`
+		    for complex matrices (only for True).
+		
+		Returns
+		-------
+		x : (N, NRHS) ndarray
+		    The solution array.
+		
+		Raises
+		------
+		ValueError
+		    If size mismatches detected or input a is not square.
+		LinAlgError
+		    If the matrix is singular.
+		LinAlgWarning
+		    If an ill-conditioned input a is detected.
+		NotImplementedError
+		    If transposed is True and input a is a complex matrix.
+		
+		Examples
+		--------
+		Given `a` and `b`, solve for `x`:
+		
+		>>> a = np.array([[3, 2, 0], [1, -1, 0], [0, 5, 1]])
+		>>> b = np.array([2, 4, -1])
+		>>> from scipy import linalg
+		>>> x = linalg.solve(a, b)
+		>>> x
+		array([ 2., -2.,  9.])
+		>>> np.dot(a, x) == b
+		array([ True,  True,  True], dtype=bool)
+		
+		Notes
+		-----
+		If the input b matrix is a 1D array with N elements, when supplied
+		together with an NxN input a, it is assumed as a valid column vector
+		despite the apparent size mismatch. This is compatible with the
+		numpy.dot() behavior and the returned result is still 1D array.
+		
+		The generic, symmetric, hermitian and positive definite solutions are
+		obtained via calling ?GESV, ?SYSV, ?HESV, and ?POSV routines of
+		LAPACK respectively.
+	**/
+	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic, ?assume_a:Dynamic, ?transposed:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 	/**
 		Construct a Toeplitz matrix.

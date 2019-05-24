@@ -11,6 +11,8 @@ package torch.utils.model_zoo;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _download_url_to_file(url:Dynamic, dst:Dynamic, hash_prefix:Dynamic, progress:Dynamic):Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
 	/**
 		Loads the Torch serialized object at the given URL.
 		
@@ -34,7 +36,9 @@ package torch.utils.model_zoo;
 		    >>> state_dict = torch.utils.model_zoo.load_url('https://s3.amazonaws.com/pytorch/models/resnet18-5c106cde.pth')
 	**/
 	static public function load_url(url:Dynamic, ?model_dir:Dynamic, ?map_location:Dynamic, ?progress:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	static public var requests_available : Dynamic;
+	static public var unicode_literals : Dynamic;
 	/**
 		Open the URL url, which can be either a string or a Request object.
 		

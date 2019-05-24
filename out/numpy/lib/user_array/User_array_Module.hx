@@ -117,11 +117,10 @@ package numpy.lib.user_array;
 		Values are generated within the half-open interval ``[start, stop)``
 		(in other words, the interval including `start` but excluding `stop`).
 		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
+		`range` function, but returns an ndarray rather than a list.
 		
 		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
+		be consistent.  It is better to use `numpy.linspace` for these cases.
 		
 		Parameters
 		----------
@@ -790,7 +789,7 @@ package numpy.lib.user_array;
 		References
 		----------
 		.. [1] Wikipedia, "Two's complement",
-		    http://en.wikipedia.org/wiki/Two's_complement
+		    https://en.wikipedia.org/wiki/Two's_complement
 		
 		Examples
 		--------
@@ -983,8 +982,7 @@ package numpy.lib.user_array;
 		Returns
 		-------
 		y : ndarray
-		    The product of `x1` and `x2`, element-wise. Returns a scalar if
-		    both `x1` and `x2` are scalars.
+		    The product of `x1` and `x2`, element-wise.
 		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes

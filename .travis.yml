@@ -9,7 +9,7 @@ env:
   - REQUIREMENTS="--file requirements-externs.txt"  OUTDIR=out     GENLIBS=docutils,pkgutil,inspect,importlib,textwrap,numpy,scipy,pandas,matplotlib,seaborn,tensorflow,theano,keras
   - REQUIREMENTS="--file requirements-selenium.txt" OUTDIR=out     GENLIBS=selenium
   - REQUIREMENTS="--file requirements-pytorch.txt"  OUTDIR=out     GENLIBS=torch
-  - REQUIREMENTS="--file requirements-qt.txt"       OUTDIR=out     GENLIBS=PyQt5 #,PySide2 # got errors about PySide2/support/signature/loader.py
+  - REQUIREMENTS="--file requirements-qt.txt"       OUTDIR=out     GENLIBS=PyQt5,PyQt5.QtGui,PyQt5.QtWebKit #,PySide2 # got errors about PySide2/support/signature/loader.py
 
 sudo: required
 dist: xenial

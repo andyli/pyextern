@@ -161,7 +161,8 @@ package tensorflow.contrib.tpu.python.tpu.tpu_feed;
 		
 		Args:
 		  tensor: Input tensor for partitioning.
-		  dims: A list of integer describes how to partition the input tensor.
+		  dims: 1-D np.array of the list of integer describes how to partition the
+		    input tensor.
 		
 		Raises:
 		  ValueError: If the tensor can't be partitioned by dims or the

@@ -133,5 +133,18 @@ package pandas.io.sas.sas7bdat;
 	public function _read_page_header():Dynamic;
 	public function _read_subheader_signature(offset:Dynamic):Dynamic;
 	public function close():Dynamic;
+	/**
+		Return a numpy int64 array of the column data lengths
+	**/
+	public function column_data_lengths():Dynamic;
+	/**
+		Return a numpy int64 array of the column offsets
+	**/
+	public function column_data_offsets():Dynamic;
+	/**
+		Returns a numpy character array of the column types:
+		s (string) or d (double)
+	**/
+	public function column_types():Dynamic;
 	public function read(?nrows:Dynamic):Dynamic;
 }

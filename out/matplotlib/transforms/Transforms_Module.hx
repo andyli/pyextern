@@ -12,6 +12,26 @@ package matplotlib.transforms;
 	static public var __spec__ : Dynamic;
 	static public function _indent_str(obj:Dynamic):Dynamic;
 	/**
+		Check, inclusively, whether an interval includes a given value, with the
+		interval expanded by a small tolerance to admit floating point errors.
+		
+		Parameters
+		----------
+		interval : sequence of scalar
+		    A 2-length sequence, endpoints that define the interval.
+		val : scalar
+		    Value to check is within interval.
+		rtol : scalar
+		    Tolerance slippage allowed outside of this interval.  Default
+		    1e-10 * (b - a).
+		
+		Returns
+		-------
+		bool
+		    Returns *True* if given *val* is within the *interval* (with tolerance)
+	**/
+	static public function _interval_contains_close(interval:Dynamic, val:Dynamic, ?rtol:Dynamic):Dynamic;
+	/**
 		affine_transform(points, trans)
 	**/
 	static public function affine_transform(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -54,7 +74,7 @@ package matplotlib.transforms;
 		Returns
 		-------
 		bool
-		    Returns true if given val is within the interval.
+		    Returns *True* if given *val* is within the *interval*.
 	**/
 	static public function interval_contains(interval:Dynamic, val:Dynamic):Dynamic;
 	/**

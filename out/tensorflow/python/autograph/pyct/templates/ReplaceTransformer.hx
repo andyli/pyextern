@@ -116,8 +116,6 @@ package tensorflow.python.autograph.pyct.templates;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _check_has_context(node:Dynamic):Dynamic;
-	public function _check_inner_children_have_context(node:Dynamic):Dynamic;
 	/**
 		Prepares a replacement AST that's safe to swap in for a node.
 		
@@ -128,7 +126,6 @@ package tensorflow.python.autograph.pyct.templates;
 		  ast.AST, the replacement AST
 	**/
 	public function _prepare_replacement(replaced:Dynamic, key:Dynamic):Dynamic;
-	public function _set_inner_child_context(node:Dynamic, ctx:Dynamic):Dynamic;
 	/**
 		Called if no explicit visitor function exists for a node.
 	**/

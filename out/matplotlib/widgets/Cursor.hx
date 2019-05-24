@@ -38,16 +38,12 @@ package matplotlib.widgets;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Add a cursor to *ax*.  If ``useblit=True``, use the backend-dependent
-		blitting features for faster updates.  *lineprops* is a dictionary of
-		line properties.
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, ?horizOn:Dynamic, ?vertOn:Dynamic, ?useblit:Dynamic, ?lineprops:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Add a cursor to *ax*.  If ``useblit=True``, use the backend-dependent
-		blitting features for faster updates.  *lineprops* is a dictionary of
-		line properties.
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(ax:Dynamic, ?horizOn:Dynamic, ?vertOn:Dynamic, ?useblit:Dynamic, ?lineprops:python.KwArgs<Dynamic>):Void;
 	/**
@@ -119,7 +115,7 @@ package matplotlib.widgets;
 	**/
 	public var active : Dynamic;
 	/**
-		clear the cursor
+		Internal event handler to clear the cursor.
 	**/
 	public function clear(event:Dynamic):Dynamic;
 	/**
@@ -148,7 +144,7 @@ package matplotlib.widgets;
 	**/
 	public function ignore(event:Dynamic):Dynamic;
 	/**
-		on mouse motion draw the cursor if visible
+		Internal event handler to draw the cursor when the mouse moves.
 	**/
 	public function onmove(event:Dynamic):Dynamic;
 	/**

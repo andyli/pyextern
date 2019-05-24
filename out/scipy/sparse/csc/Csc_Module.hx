@@ -14,6 +14,7 @@ package scipy.sparse.csc;
 	static public var absolute_import : Dynamic;
 	static public function csc_tocsr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
+	static public function expandptr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Based on input (integer) arrays `a`, determine a suitable index data
 		type that can hold the data in the arrays.
@@ -34,11 +35,6 @@ package scipy.sparse.csc;
 		    Suitable index data type (int32 or int64)
 	**/
 	static public function get_index_dtype(?arrays:Dynamic, ?maxval:Dynamic, ?check_contents:Dynamic):Dynamic;
-	/**
-		Is x appropriate as an index into a sparse matrix? Returns True
-		if it can be cast safely to a machine int.
-	**/
-	static public function isintlike(x:Dynamic):Dynamic;
 	/**
 		Is x of csc_matrix type?
 		

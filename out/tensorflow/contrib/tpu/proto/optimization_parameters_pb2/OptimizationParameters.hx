@@ -1,15 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 @:pythonImport("tensorflow.contrib.tpu.proto.optimization_parameters_pb2", "OptimizationParameters") extern class OptimizationParameters {
-	static public var ADADELTA_FIELD_NUMBER : Dynamic;
-	static public var ADAGRAD_FIELD_NUMBER : Dynamic;
-	static public var ADAM_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CENTERED_RMS_PROP_FIELD_NUMBER : Dynamic;
-	static public var CLIPPING_LIMITS_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -35,7 +30,6 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FTRL_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -44,7 +38,6 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GRADIENT_CLIPPING_LIMITS_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -57,13 +50,10 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LEARNING_RATE_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MDL_ADAGRAD_LIGHT_FIELD_NUMBER : Dynamic;
-	static public var MOMENTUM_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -72,17 +62,14 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var PROXIMAL_ADAGRAD_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var RMS_PROP_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var STOCHASTIC_GRADIENT_DESCENT_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -95,7 +82,10 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var USE_GRADIENT_ACCUMULATION_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -261,4 +251,64 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.adadelta
+	**/
+	public var adadelta : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.adagrad
+	**/
+	public var adagrad : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.adam
+	**/
+	public var adam : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.centered_rms_prop
+	**/
+	public var centered_rms_prop : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.clipping_limits
+	**/
+	public var clipping_limits : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.ftrl
+	**/
+	public var ftrl : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.gradient_clipping_limits
+	**/
+	public var gradient_clipping_limits : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.learning_rate
+	**/
+	public var learning_rate : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.mdl_adagrad_light
+	**/
+	public var mdl_adagrad_light : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.momentum
+	**/
+	public var momentum : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.proximal_adagrad
+	**/
+	public var proximal_adagrad : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.rms_prop
+	**/
+	public var rms_prop : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.stochastic_gradient_descent
+	**/
+	public var stochastic_gradient_descent : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.use_gradient_accumulation
+	**/
+	public var use_gradient_accumulation : Dynamic;
+	/**
+		Field tensorflow.tpu.OptimizationParameters.weight_decay_factor
+	**/
+	public var weight_decay_factor : Dynamic;
 }

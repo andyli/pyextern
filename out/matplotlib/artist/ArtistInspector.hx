@@ -126,21 +126,20 @@ package matplotlib.artist;
 	**/
 	public function _replace_path(source_class:Dynamic):Dynamic;
 	/**
-		return 'PROPNAME or alias' if *s* has an alias, else return
-		PROPNAME.
+		Return 'PROPNAME or alias' if *s* has an alias, else return 'PROPNAME'.
 		
 		e.g., for the line markerfacecolor property, which has an
 		alias, return 'markerfacecolor or mfc' and for the transform
-		property, which does not, return 'transform'
+		property, which does not, return 'transform'.
 	**/
 	public function aliased_name(s:Dynamic):Dynamic;
 	/**
-		return 'PROPNAME or alias' if *s* has an alias, else return
-		PROPNAME formatted for ReST
+		Return 'PROPNAME or alias' if *s* has an alias, else return 'PROPNAME',
+		formatted for ReST.
 		
 		e.g., for the line markerfacecolor property, which has an
 		alias, return 'markerfacecolor or mfc' and for the transform
-		property, which does not, return 'transform'
+		property, which does not, return 'transform'.
 	**/
 	public function aliased_name_rest(s:Dynamic, target:Dynamic):Dynamic;
 	/**
@@ -162,17 +161,13 @@ package matplotlib.artist;
 	/**
 		Get the legal arguments for the setter associated with *attr*.
 		
-		This is done by querying the docstring of the function *set_attr*
-		for a line that begins with "ACCEPTS" or ".. ACCEPTS":
-		
-		e.g., for a line linestyle, return
-		"[ ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'steps'`` | ``'None'``
-		]"
+		This is done by querying the docstring of the setter for a line that
+		begins with "ACCEPTS:" or ".. ACCEPTS:", and then by looking for a
+		numpydoc-style documentation for the setter's first argument.
 	**/
 	public function get_valid_values(attr:Dynamic):Dynamic;
 	/**
-		Return *True* if method object *o* is an alias for another
-		function.
+		Return whether method object *o* is an alias for another method.
 	**/
 	public function is_alias(o:Dynamic):Dynamic;
 	/**
@@ -198,7 +193,7 @@ package matplotlib.artist;
 	**/
 	public function pprint_setters_rest(?prop:Dynamic, ?leadingspace:Dynamic):Dynamic;
 	/**
-		return a dictionary mapping property name -> value
+		Return a dictionary mapping property name -> value.
 	**/
 	public function properties():Dynamic;
 }

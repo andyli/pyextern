@@ -38,7 +38,6 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_analysis_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HOST_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -63,7 +62,6 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_analysis_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var PARAMETERS_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -72,12 +70,10 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_analysis_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var REPOSITORY_ROOT_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SESSION_ID_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -90,7 +86,10 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_analysis_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TOOL_NAME_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -256,4 +255,24 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_analysis_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.ProfileSessionDataRequest.host_name
+	**/
+	public var host_name : Dynamic;
+	/**
+		Field tensorflow.ProfileSessionDataRequest.parameters
+	**/
+	public var parameters : Dynamic;
+	/**
+		Field tensorflow.ProfileSessionDataRequest.repository_root
+	**/
+	public var repository_root : Dynamic;
+	/**
+		Field tensorflow.ProfileSessionDataRequest.session_id
+	**/
+	public var session_id : Dynamic;
+	/**
+		Field tensorflow.ProfileSessionDataRequest.tool_name
+	**/
+	public var tool_name : Dynamic;
 }

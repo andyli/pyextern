@@ -13,7 +13,7 @@ package tensorflow._api.v1.train.queue_runner;
 	/**
 		Adds a `QueueRunner` to a collection in the graph. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		To construct input pipelines, use the `tf.data` module.
 		
@@ -33,7 +33,7 @@ package tensorflow._api.v1.train.queue_runner;
 	/**
 		Starts all queue runners collected in the graph. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		To construct input pipelines, use the `tf.data` module.
 		

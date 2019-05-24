@@ -42,11 +42,11 @@ package scipy.integrate._ivp.bdf;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(fun:Dynamic, t0:Dynamic, y0:Dynamic, t_bound:Dynamic, ?max_step:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?jac:Dynamic, ?jac_sparsity:Dynamic, ?vectorized:Dynamic, ?extraneous:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(fun:Dynamic, t0:Dynamic, y0:Dynamic, t_bound:Dynamic, ?max_step:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?jac:Dynamic, ?jac_sparsity:Dynamic, ?vectorized:Dynamic, ?first_step:Dynamic, ?extraneous:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(fun:Dynamic, t0:Dynamic, y0:Dynamic, t_bound:Dynamic, ?max_step:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?jac:Dynamic, ?jac_sparsity:Dynamic, ?vectorized:Dynamic, ?extraneous:python.KwArgs<Dynamic>):Void;
+	public function new(fun:Dynamic, t0:Dynamic, y0:Dynamic, t_bound:Dynamic, ?max_step:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?jac:Dynamic, ?jac_sparsity:Dynamic, ?vectorized:Dynamic, ?first_step:Dynamic, ?extraneous:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		

@@ -54,7 +54,6 @@ package tensorflow.core.framework.tensor_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var METADATA_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -83,8 +82,10 @@ package tensorflow.core.framework.tensor_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TENSORS_FIELD_NUMBER : Dynamic;
-	static public var TYPE_NAME_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -250,4 +251,16 @@ package tensorflow.core.framework.tensor_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.VariantTensorDataProto.metadata
+	**/
+	public var metadata : Dynamic;
+	/**
+		Field tensorflow.VariantTensorDataProto.tensors
+	**/
+	public var tensors : Dynamic;
+	/**
+		Field tensorflow.VariantTensorDataProto.type_name
+	**/
+	public var type_name : Dynamic;
 }

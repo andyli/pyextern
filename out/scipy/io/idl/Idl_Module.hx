@@ -4,6 +4,7 @@ package scipy.io.idl;
 	static public var DTYPE_DICT : Dynamic;
 	static public var RECTYPE_DICT : Dynamic;
 	static public var STRUCT_DICT : Dynamic;
+	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

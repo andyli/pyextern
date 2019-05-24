@@ -386,7 +386,7 @@ package tensorflow.python.ops.template;
 	/**
 		Returns the variable scope object created by this Template. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-21.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-21.
 		Instructions for updating:
 		The .var_scope property is deprecated. Please change your code to use the .variable_scope property
 	**/

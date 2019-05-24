@@ -47,7 +47,7 @@ package tensorflow.contrib.session_bundle.gc;
 	/**
 		Gets a list of Paths in a given directory. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
 		No longer supported. Switch to SavedModel immediately.
 		
@@ -71,7 +71,7 @@ package tensorflow.contrib.session_bundle.gc;
 	/**
 		Creates a filter that keeps the largest n export versions. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
 		No longer supported. Switch to SavedModel immediately.
 		
@@ -85,7 +85,7 @@ package tensorflow.contrib.session_bundle.gc;
 	/**
 		Creates a filter that keeps every export that is a multiple of n. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
 		No longer supported. Switch to SavedModel immediately.
 		
@@ -99,7 +99,7 @@ package tensorflow.contrib.session_bundle.gc;
 	/**
 		Negate a filter. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
 		No longer supported. Switch to SavedModel immediately.
 		
@@ -113,7 +113,7 @@ package tensorflow.contrib.session_bundle.gc;
 	/**
 		Creates a filter that keeps one of every n export versions. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
 		No longer supported. Switch to SavedModel immediately.
 		
@@ -130,7 +130,7 @@ package tensorflow.contrib.session_bundle.gc;
 	/**
 		Creates a filter that keeps the union of two filters. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
 		No longer supported. Switch to SavedModel immediately.
 		

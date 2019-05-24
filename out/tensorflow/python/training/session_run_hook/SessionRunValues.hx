@@ -87,7 +87,7 @@ package tensorflow.python.training.session_run_hook;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -111,7 +111,7 @@ package tensorflow.python.training.session_run_hook;
 	**/
 	public function __repr__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**
@@ -141,6 +141,8 @@ package tensorflow.python.training.session_run_hook;
 		Return a new OrderedDict which maps field names to their values.
 	**/
 	public function _asdict():Dynamic;
+	static public var _estimator_api_names : Dynamic;
+	static public var _estimator_api_names_v1 : Dynamic;
 	static public var _fields : Dynamic;
 	/**
 		Make a new SessionRunValues object from a sequence or iterable

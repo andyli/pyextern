@@ -10,8 +10,8 @@ package tensorflow.contrib.keras.api.keras.losses;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function binary_crossentropy(y_true:Dynamic, y_pred:Dynamic):Dynamic;
-	static public function categorical_crossentropy(y_true:Dynamic, y_pred:Dynamic):Dynamic;
+	static public function binary_crossentropy(y_true:Dynamic, y_pred:Dynamic, ?from_logits:Dynamic):Dynamic;
+	static public function categorical_crossentropy(y_true:Dynamic, y_pred:Dynamic, ?from_logits:Dynamic):Dynamic;
 	static public function categorical_hinge(y_true:Dynamic, y_pred:Dynamic):Dynamic;
 	static public function cosine_proximity(y_true:Dynamic, y_pred:Dynamic):Dynamic;
 	static public function deserialize(name:Dynamic, ?custom_objects:Dynamic):Dynamic;
@@ -40,6 +40,6 @@ package tensorflow.contrib.keras.api.keras.losses;
 	static public function mean_squared_logarithmic_error(y_true:Dynamic, y_pred:Dynamic):Dynamic;
 	static public function poisson(y_true:Dynamic, y_pred:Dynamic):Dynamic;
 	static public function serialize(loss:Dynamic):Dynamic;
-	static public function sparse_categorical_crossentropy(y_true:Dynamic, y_pred:Dynamic):Dynamic;
+	static public function sparse_categorical_crossentropy(y_true:Dynamic, y_pred:Dynamic, ?from_logits:Dynamic):Dynamic;
 	static public function squared_hinge(y_true:Dynamic, y_pred:Dynamic):Dynamic;
 }

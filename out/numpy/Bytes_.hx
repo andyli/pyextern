@@ -148,7 +148,7 @@ package numpy;
 	**/
 	public function __mod__(value:Dynamic):Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -212,7 +212,7 @@ package numpy;
 	**/
 	public function __rmod__(value:Dynamic):Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**
@@ -622,7 +622,11 @@ package numpy;
 	/**
 		B.index(sub[, start[, end]]) -> int
 		
-		Like B.find() but raise ValueError when the subsection is not found.
+		Return the lowest index in B where subsection sub is found,
+		such that sub is contained within B[start,end].  Optional
+		arguments start and end are interpreted as in slice notation.
+		
+		Raises ValueError when the subsection is not found.
 	**/
 	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -952,7 +956,11 @@ package numpy;
 	/**
 		B.rindex(sub[, start[, end]]) -> int
 		
-		Like B.rfind() but raise ValueError when the subsection is not found.
+		Return the highest index in B where subsection sub is found,
+		such that sub is contained within B[start,end].  Optional
+		arguments start and end are interpreted as in slice notation.
+		
+		Raise ValueError when the subsection is not found.
 	**/
 	public function rindex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -977,7 +985,7 @@ package numpy;
 	/**
 		Partition the bytes into three parts using the given separator.
 		
-		This will search for the separator sep in the bytes, starting and the end. If
+		This will search for the separator sep in the bytes, starting at the end. If
 		the separator is found, returns a 3-tuple containing the part before the
 		separator, the separator itself, and the part after it.
 		

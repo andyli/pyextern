@@ -31,7 +31,6 @@ package tensorflow.core.protobuf.saver_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FILENAME_TENSOR_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -52,13 +51,11 @@ package tensorflow.core.protobuf.saver_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var KEEP_CHECKPOINT_EVERY_N_HOURS_FIELD_NUMBER : Dynamic;
 	static public var LEGACY : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAX_TO_KEEP_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -71,13 +68,10 @@ package tensorflow.core.protobuf.saver_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var RESTORE_OP_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SAVE_TENSOR_NAME_FIELD_NUMBER : Dynamic;
-	static public var SHARDED_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -90,9 +84,12 @@ package tensorflow.core.protobuf.saver_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var V1 : Dynamic;
 	static public var V2 : Dynamic;
-	static public var VERSION_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -260,4 +257,32 @@ package tensorflow.core.protobuf.saver_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.SaverDef.filename_tensor_name
+	**/
+	public var filename_tensor_name : Dynamic;
+	/**
+		Field tensorflow.SaverDef.keep_checkpoint_every_n_hours
+	**/
+	public var keep_checkpoint_every_n_hours : Dynamic;
+	/**
+		Field tensorflow.SaverDef.max_to_keep
+	**/
+	public var max_to_keep : Dynamic;
+	/**
+		Field tensorflow.SaverDef.restore_op_name
+	**/
+	public var restore_op_name : Dynamic;
+	/**
+		Field tensorflow.SaverDef.save_tensor_name
+	**/
+	public var save_tensor_name : Dynamic;
+	/**
+		Field tensorflow.SaverDef.sharded
+	**/
+	public var sharded : Dynamic;
+	/**
+		Field tensorflow.SaverDef.version
+	**/
+	public var version : Dynamic;
 }

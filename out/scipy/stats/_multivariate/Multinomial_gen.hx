@@ -178,7 +178,6 @@ package scipy.stats._multivariate;
 		----------
 		x : array_like
 		    Quantiles, with the last axis of `x` denoting the components.
-		    Each quantile must be a symmetric positive definite matrix.
 		n : int
 		    Number of trials
 		p : array_like
@@ -220,7 +219,6 @@ package scipy.stats._multivariate;
 		----------
 		x : array_like
 		    Quantiles, with the last axis of `x` denoting the components.
-		    Each quantile must be a symmetric positive definite matrix.
 		n : int
 		    Number of trials
 		p : array_like

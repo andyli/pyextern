@@ -129,8 +129,8 @@ package tensorflow.contrib.tpu;
 		  estimator: `Estimator` with which model has been trained.
 		  export_dir_base: A string containing a directory in which to create
 		    timestamped subdirectories containing exported SavedModels.
-		  serving_input_receiver_fn: A function that takes no argument and
-		    returns a `ServingInputReceiver` or `TensorServingInputReceiver`.
+		  serving_input_receiver_fn: A function that takes no argument and returns a
+		    `ServingInputReceiver` or `TensorServingInputReceiver`.
 		  assets_extra: A dict specifying how to populate the assets.extra directory
 		    within the exported SavedModel, or `None` if no extra assets are needed.
 		  as_text: whether to write the SavedModel proto in text format.
@@ -232,7 +232,7 @@ package tensorflow.contrib.tpu;
 	/**
 		Copy `model` along with weights to the TPU. (experimental)
 		
-		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
+		Warning: THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
 		
 		Returns a TPU model.
 		
@@ -397,8 +397,8 @@ package tensorflow.contrib.tpu;
 		    `rewrite` is a list of tensors corresponding to the tensors from the
 		    output of `computation`.
 		
-		    All `Operation`s returned from `computation` will be executed when
-		    evaluating any of the returned output tensors.
+		    All `Operation`s constructed during `computation` will be executed when
+		    evaluating any of the returned output tensors, not just the ones returned.
 		  inputs: A list of input tensors or `None` (equivalent to an empty list).
 		  infeed_queue: If not `None`, the `InfeedQueue` from which to append a tuple
 		    of arguments as inputs to `computation`.

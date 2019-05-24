@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package torch.distributed;
 @:pythonImport("torch.distributed") extern class Distributed_Module {
-	static public var _INITIALIZED_MW : Dynamic;
-	static public var _INITIALIZED_PG : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -14,59 +12,20 @@ package torch.distributed;
 	static public var __spec__ : Dynamic;
 	static public var _backend : Dynamic;
 	/**
-		Clear the created distributed group's cached resource
-		
-		Only nccl backend is currently supported
-		
-		Cached resource includes NCCL communicators and CUDA events
-		
-		Arguments:
-		    group (optional): Group of the collective.
-	**/
-	static public function _clear_group_cache(?group:Dynamic):Dynamic;
-	static public function _extend_scope(module:Dynamic):Dynamic;
-	/**
-		Flatten dense tensors into a contiguous 1D buffer. Assume tensors are of
-		same dense type.
-		
-		Since inputs are dense, the resulting tensor will be a concatenated 1D
-		buffer. Element-wise operation on this buffer will be equivalent to
-		operating individually.
-		
-		Arguments:
-		    tensors (Iterable[Tensor]): dense tensors to flatten.
-		
-		Returns:
-		    A contiguous 1D buffer containing input tensors.
-	**/
-	static public function _flatten_dense_tensors(tensors:Dynamic):Dynamic;
-	static public var _initialized : Dynamic;
-	static public function _register_stream(stream:Dynamic):Dynamic;
-	static public var _scope : Dynamic;
-	/**
-		View a flat buffer using the sizes of tensors. Assume that tensors are of
-		same dense type, and that flat is given by _flatten_dense_tensors.
-		
-		Arguments:
-		    flat (Tensor): flattened dense tensors to unflatten.
-		    tensors (Iterable[Tensor]): dense tensors whose sizes will be used to
-		      unflatten flat.
-		
-		Returns:
-		    Unflattened dense tensors with sizes same as tensors and values from
-		    flat.
-	**/
-	static public function _unflatten_dense_tensors(flat:Dynamic, tensors:Dynamic):Dynamic;
-	/**
 		Gathers tensors from the whole group in a list.
 		
 		Arguments:
 		    tensor_list (list[Tensor]): Output list. It should contain
 		        correctly-sized tensors to be used for output of the collective.
 		    tensor (Tensor): Tensor to be broadcast from current process.
-		    group (optional): Group of the collective.
+		    group (ProcessGroup, optional): The process group to work on
+		    async_op (bool, optional): Whether this op should be an async op
+		
+		Returns:
+		    Async work handle, if async_op is set to True.
+		    None, if not async_op or if not part of the group
 	**/
-	static public function all_gather(tensor_list:Dynamic, tensor:Dynamic, ?group:Dynamic):Dynamic;
+	static public function all_gather(tensor_list:Dynamic, tensor:Dynamic, ?group:Dynamic, ?async_op:Dynamic):Dynamic;
 	/**
 		Gathers tensors from the whole group in a list.
 		Each tensor in ``tensor_list`` should reside on a separate GPU
@@ -95,9 +54,15 @@ package torch.distributed;
 		        be broadcast from current process.
 		        Note that ``len(input_tensor_list)`` needs to be the same for
 		        all the distributed processes calling this function.
-		    group (optional): Group of the collective.
+		
+		    group (ProcessGroup, optional): The process group to work on
+		    async_op (bool, optional): Whether this op should be an async op
+		
+		Returns:
+		    Async work handle, if async_op is set to True.
+		    None, if not async_op or if not part of the group
 	**/
-	static public function all_gather_multigpu(output_tensor_lists:Dynamic, input_tensor_list:Dynamic, ?group:Dynamic):Dynamic;
+	static public function all_gather_multigpu(output_tensor_lists:Dynamic, input_tensor_list:Dynamic, ?group:Dynamic, ?async_op:Dynamic):Dynamic;
 	/**
 		Reduces the tensor data across all machines in such a way that all get
 		the final result.
@@ -107,11 +72,17 @@ package torch.distributed;
 		Arguments:
 		    tensor (Tensor): Input and output of the collective. The function
 		        operates in-place.
-		    op (optional): One of the values from ``torch.distributed.reduce_op``
+		    op (optional): One of the values from
+		        ``torch.distributed.ReduceOp``
 		        enum.  Specifies an operation used for element-wise reductions.
-		    group (optional): Group of the collective.
+		    group (ProcessGroup, optional): The process group to work on
+		    async_op (bool, optional): Whether this op should be an async op
+		
+		Returns:
+		    Async work handle, if async_op is set to True.
+		    None, if not async_op or if not part of the group
 	**/
-	static public function all_reduce(tensor:Dynamic, ?op:Dynamic, ?group:Dynamic):Dynamic;
+	static public function all_reduce(tensor:Dynamic, ?op:Dynamic, ?group:Dynamic, ?async_op:Dynamic):Dynamic;
 	/**
 		Reduces the tensor data across all machines in such a way that all get
 		the final result. This function reduces a number of tensors on every node,
@@ -122,7 +93,7 @@ package torch.distributed;
 		After the call, all ``tensor`` in ``tensor_list`` is going to be bitwise
 		identical in all processes.
 		
-		Only nccl backend is currently supported
+		Only nccl and gloo backend is currently supported
 		tensors should only be GPU tensors
 		
 		Arguments:
@@ -131,21 +102,32 @@ package torch.distributed;
 		        each tensor to be a GPU tensor on different GPUs.
 		        You also need to make sure that ``len(tensor_list)`` is the same for
 		        all the distributed processes calling this function.
-		
-		    op (optional): One of the values from ``torch.distributed.reduce_op``
+		    op (optional): One of the values from
+		        ``torch.distributed.ReduceOp``
 		        enum.  Specifies an operation used for element-wise reductions.
-		    group (optional): Group of the collective.
+		    group (ProcessGroup, optional): The process group to work on
+		    async_op (bool, optional): Whether this op should be an async op
+		
+		Returns:
+		    Async work handle, if async_op is set to True.
+		    None, if not async_op or if not part of the group
 	**/
-	static public function all_reduce_multigpu(tensor_list:Dynamic, ?op:Dynamic, ?group:Dynamic):Dynamic;
+	static public function all_reduce_multigpu(tensor_list:Dynamic, ?op:Dynamic, ?group:Dynamic, ?async_op:Dynamic):Dynamic;
 	/**
 		Synchronizes all processes.
 		
-		This collective blocks processes until the whole group enters this function.
+		This collective blocks processes until the whole group enters this function,
+		if async_op is False, or if async work handle is called on wait().
 		
 		Arguments:
-		    group (optional): Group of the collective.
+		    group (ProcessGroup, optional): The process group to work on
+		    async_op (bool, optional): Whether this op should be an async op
+		
+		Returns:
+		    Async work handle, if async_op is set to True.
+		    None, if not async_op or if not part of the group
 	**/
-	static public function barrier(?group:Dynamic):Dynamic;
+	static public function barrier(?group:Dynamic, ?async_op:Dynamic):Dynamic;
 	/**
 		Broadcasts the tensor to the whole group.
 		
@@ -156,9 +138,14 @@ package torch.distributed;
 		    tensor (Tensor): Data to be sent if ``src`` is the rank of current
 		        process, and tensor to be used to save received data otherwise.
 		    src (int): Source rank.
-		    group (optional): Group of the collective.
+		    group (ProcessGroup, optional): The process group to work on
+		    async_op (bool, optional): Whether this op should be an async op
+		
+		Returns:
+		    Async work handle, if async_op is set to True.
+		    None, if not async_op or if not part of the group
 	**/
-	static public function broadcast(tensor:Dynamic, src:Dynamic, ?group:Dynamic):Dynamic;
+	static public function broadcast(tensor:Dynamic, src:Dynamic, ?group:Dynamic, ?async_op:Dynamic):Dynamic;
 	/**
 		Broadcasts the tensor to the whole group with multiple GPU tensors
 		per node.
@@ -167,93 +154,158 @@ package torch.distributed;
 		all processes participating in the collective. each tensor in the list must
 		be on a different GPU
 		
-		Only nccl backend is currently supported
+		Only nccl and gloo backend are currently supported
 		tensors should only be GPU tensors
 		
 		Arguments:
 		    tensor_list (List[Tensor]): Tensors that participate in the collective
-		        operation. if ``src`` is the rank, then the first element of
-		        ``tensor_list`` (``tensor_list[0]``) will be broadcasted to all
-		        other tensors (on different GPUs) in the src process and all tensors
-		        in ``tensor_list`` of other non-src processes. You also need to make
-		        sure that ``len(tensor_list)`` is the same for all the distributed
-		        processes calling this function.
+		        operation. if ``src`` is the rank, then ``src_tensor``th element of
+		        ``tensor_list`` (``tensor_list[src_tensor]``) will be broadcasted
+		        to all other tensors (on different GPUs) in the src process and
+		        all tensors in ``tensor_list`` of other non-src processes.
+		        You also need to make sure that ``len(tensor_list)`` is the same
+		        for all the distributed processes calling this function.
 		
 		    src (int): Source rank.
-		    group (optional): Group of the collective.
+		    group (ProcessGroup, optional): The process group to work on
+		    async_op (bool, optional): Whether this op should be an async op
+		    src_tensor (int, optional): Source tensor rank within ``tensor_list``
+		
+		Returns:
+		    Async work handle, if async_op is set to True.
+		    None, if not async_op or if not part of the group
 	**/
-	static public function broadcast_multigpu(tensor_list:Dynamic, src:Dynamic, ?group:Dynamic):Dynamic;
+	static public function broadcast_multigpu(tensor_list:Dynamic, src:Dynamic, ?group:Dynamic, ?async_op:Dynamic, ?src_tensor:Dynamic):Dynamic;
 	/**
-		Destroy the initialized distributed package
+		Destroy a given process group, and deinitialize the distributed package
+		
+		Arguments:
+		    group (ProcessGroup, optional): The process group to be destroyed, if
+		                                    group.WORLD is given, all process
+		                                    groups including the default one will
+		                                    be destroyed.
 	**/
-	static public function destroy_process_group():Dynamic;
+	static public function destroy_process_group(?group:Dynamic):Dynamic;
 	/**
 		Gathers a list of tensors in a single process.
 		
 		Arguments:
 		    tensor (Tensor): Input tensor.
-		    dst (int): Destination rank. Required in all processes except the one that
-		        is receiveing the data.
 		    gather_list (list[Tensor]): List of appropriately-sized tensors to
 		        use for received data. Required only in the receiving process.
-		    group (optional): Group of the collective.
-	**/
-	static public function gather(tensor:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Returns the rank of current process.
+		    dst (int): Destination rank. Required in all processes except the one
+		        that is receiveing the data.
+		    group (ProcessGroup, optional): The process group to work on
+		    async_op (bool, optional): Whether this op should be an async op
 		
-		Rank is a unique identifier assigned to each process within a distributed
-		group. They are always consecutive integers ranging from 0 to ``world_size``.
+		Returns:
+		    Async work handle, if async_op is set to True.
+		    None, if not async_op or if not part of the group
 	**/
-	static public function get_rank():Dynamic;
+	static public function gather(tensor:Dynamic, gather_list:Dynamic, dst:Dynamic, ?group:Dynamic, ?async_op:Dynamic):Dynamic;
 	/**
-		Returns the number of processes in the distributed group.
-	**/
-	static public function get_world_size():Dynamic;
-	static public function init_master_worker(backend:Dynamic, ?init_method:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Initializes the distributed package.
+		Returns the backend of the given process group.
 		
 		Arguments:
-		    backend (str): Name of the backend to use. Depending on build-time configuration
-		        valid values include: ``tcp``, ``mpi`` and ``gloo``.
-		    init_method (str, optional): URL specifying how to initialize the package.
-		    world_size (int, optional): Number of processes participating in the job.
-		    rank (int, optional): Rank of the current process.
-		    group_name (str, optional): Group name. See description of init methods.
+		    group (ProcessGroup, optional): The process group to work on. The
+		        default is the general main process group. If another specific group
+		        is specified, the calling process must be part of :attr:`group`.
 		
-		To enable ``backend == mpi``, PyTorch needs to built from source on a system that
-		supports MPI.
+		Returns:
+		    The backend of the given process group as a lower case string.
 	**/
-	static public function init_process_group(backend:Dynamic, ?init_method:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function get_backend(?group:Dynamic):Dynamic;
+	/**
+		Returns the rank of currrent process group
+		
+		Rank is a unique identifier assigned to each process within a distributed
+		process group. They are always consecutive integers ranging from 0 to
+		``world_size``.
+		
+		Arguments:
+		    group (ProcessGroup, optional): The process group to work on
+		
+		Returns:
+		    The rank of the process group
+		    -1, if not part of the group
+	**/
+	static public function get_rank(?group:Dynamic):Dynamic;
+	/**
+		Returns the number of processes in the current process group
+		
+		Arguments:
+		    group (ProcessGroup, optional): The process group to work on
+		
+		Returns:
+		    The world size of the process group
+		    -1, if not part of the group
+	**/
+	static public function get_world_size(?group:Dynamic):Dynamic;
+	/**
+		Initializes the default distributed process group, and this will also
+		initialize the distributed package
+		
+		Arguments:
+		    backend (str or Backend): The backend to use. Depending on
+		        build-time configurations, valid values include ``mpi``, ``gloo``,
+		        and ``nccl``. This field should be given as a lowercase string
+		        (e.g., ``"gloo"``), which can also be accessed via
+		        :class:`Backend` attributes (e.g., ``Backend.GLOO``).
+		    init_method (str, optional): URL specifying how to initialize the
+		                                 process group.
+		    world_size (int, optional): Number of processes participating in
+		                                the job.
+		    rank (int, optional): Rank of the current process.
+		    timeout (timedelta, optional): Timeout for operations executed against
+		        the process group. Default value equals 30 minutes.
+		        This is only applicable for the ``gloo`` backend.
+		    group_name (str, optional, deprecated): Group name.
+		
+		To enable ``backend == Backend.MPI``, PyTorch needs to built from source
+		on a system that supports MPI. The same applies to NCCL as well.
+	**/
+	static public function init_process_group(backend:Dynamic, ?init_method:Dynamic, ?timeout:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Receives a tensor asynchronously.
 		
 		Arguments:
 		    tensor (Tensor): Tensor to fill with received data.
 		    src (int): Source rank.
+		    group (ProcessGroup, optional): The process group to work on
+		    tag (int, optional): Tag to match recv with remote send
 		
 		Returns:
 		    A distributed request object.
+		    None, if not part of the group
 	**/
-	static public function irecv(tensor:Dynamic, src:Dynamic):Dynamic;
+	static public function irecv(tensor:Dynamic, src:Dynamic, ?group:Dynamic, ?tag:Dynamic):Dynamic;
 	static public function is_available():Dynamic;
 	/**
-		Checking if the process group has been initialized
-		    
+		Checking if the default process group has been initialized
 	**/
 	static public function is_initialized():Dynamic;
+	/**
+		Checks if MPI is available
+	**/
+	static public function is_mpi_available():Dynamic;
+	/**
+		Checks if NCCL is available
+	**/
+	static public function is_nccl_available():Dynamic;
 	/**
 		Sends a tensor asynchronously.
 		
 		Arguments:
 		    tensor (Tensor): Tensor to send.
 		    dst (int): Destination rank.
+		    group (ProcessGroup, optional): The process group to work on
+		    tag (int, optional): Tag to match send with remote recv
 		
 		Returns:
 		    A distributed request object.
+		    None, if not part of the group
 	**/
-	static public function isend(tensor:Dynamic, dst:Dynamic):Dynamic;
+	static public function isend(tensor:Dynamic, dst:Dynamic, ?group:Dynamic, ?tag:Dynamic):Dynamic;
 	/**
 		Creates a new distributed group.
 		
@@ -264,11 +316,14 @@ package torch.distributed;
 		
 		Arguments:
 		    ranks (list[int]): List of ranks of group members.
+		    timeout (timedelta, optional): Timeout for operations executed against
+		        the process group. Default value equals 30 minutes.
+		        This is only applicable for the ``gloo`` backend.
 		
 		Returns:
 		    A handle of distributed group that can be given to collective calls.
 	**/
-	static public function new_group(?ranks:Dynamic):Dynamic;
+	static public function new_group(?ranks:Dynamic, ?timeout:Dynamic):Dynamic;
 	/**
 		Receives a tensor synchronously.
 		
@@ -276,11 +331,14 @@ package torch.distributed;
 		    tensor (Tensor): Tensor to fill with received data.
 		    src (int, optional): Source rank. Will receive from any
 		        process if unspecified.
+		    group (ProcessGroup, optional): The process group to work on
+		    tag (int, optional): Tag to match recv with remote send
 		
 		Returns:
-		    Sender rank.
+		    Sender rank
+		    -1, if not part of the group
 	**/
-	static public function recv(tensor:Dynamic, ?src:Dynamic):Dynamic;
+	static public function recv(tensor:Dynamic, ?src:Dynamic, ?group:Dynamic, ?tag:Dynamic):Dynamic;
 	/**
 		Reduces the tensor data across all machines.
 		
@@ -290,17 +348,23 @@ package torch.distributed;
 		    tensor (Tensor): Input and output of the collective. The function
 		        operates in-place.
 		    dst (int): Destination rank
-		    op (optional): One of the values from ``torch.distributed.reduce_op``
+		    op (optional): One of the values from
+		        ``torch.distributed.ReduceOp``
 		        enum.  Specifies an operation used for element-wise reductions.
-		    group (optional): Group of the collective.
+		    group (ProcessGroup, optional): The process group to work on
+		    async_op (bool, optional): Whether this op should be an async op
+		
+		Returns:
+		    Async work handle, if async_op is set to True.
+		    None, if not async_op or if not part of the group
 	**/
-	static public function reduce(tensor:Dynamic, dst:Dynamic, ?op:Dynamic, ?group:Dynamic):Dynamic;
+	static public function reduce(tensor:Dynamic, dst:Dynamic, ?op:Dynamic, ?group:Dynamic, ?async_op:Dynamic):Dynamic;
 	/**
 		Reduces the tensor data on multiple GPUs across all machines. Each tensor
 		in ``tensor_list`` should reside on a separate GPU
 		
-		Only the GPU of ``tensor_list[0]`` on the process with rank ``dst`` is
-		going to receive the final result.
+		Only the GPU of ``tensor_list[dst_tensor]`` on the process with rank ``dst``
+		is going to receive the final result.
 		
 		Only nccl backend is currently supported
 		tensors should only be GPU tensors
@@ -310,13 +374,46 @@ package torch.distributed;
 		        collective. The function operates in-place.
 		        You also need to make sure that ``len(tensor_list)`` is the same for
 		        all the distributed processes calling this function.
-		
 		    dst (int): Destination rank
-		    op (optional): One of the values from ``torch.distributed.reduce_op``
+		    op (optional): One of the values from
+		        ``torch.distributed.ReduceOp``
 		        enum.  Specifies an operation used for element-wise reductions.
-		    group (optional): Group of the collective.
+		    group (ProcessGroup, optional): The process group to work on
+		    async_op (bool, optional): Whether this op should be an async op
+		    dst_tensor (int, optional): Destination tensor rank within
+		                                ``tensor_list``
+		
+		Returns:
+		    Async work handle, if async_op is set to True.
+		    None, otherwise
 	**/
-	static public function reduce_multigpu(tensor_list:Dynamic, dst:Dynamic, ?op:Dynamic, ?group:Dynamic):Dynamic;
+	static public function reduce_multigpu(tensor_list:Dynamic, dst:Dynamic, ?op:Dynamic, ?group:Dynamic, ?async_op:Dynamic, ?dst_tensor:Dynamic):Dynamic;
+	static public var reduce_op : Dynamic;
+	/**
+		Registers a new rendezvous handler.
+		
+		Before we can run collective algorithms, participating processes
+		need to find each other and exchange information to be able to
+		communicate. We call this process rendezvous.
+		
+		The outcome of the rendezvous process is a triplet containing a
+		shared key/value store, the rank of the process, and the total
+		number of participating processes.
+		
+		If none of the bundled rendezvous methods apply to your execution
+		environment you can opt to register your own rendezvous handler.
+		Pick a unique name and use the URL scheme to identify it when
+		calling the `rendezvous()` function.
+		
+		Arguments:
+		    scheme (str): URL scheme to identify your rendezvous handler.
+		    handler (function): Handler that is invoked when the
+		        `rendezvous()` function is called with a URL that uses
+		        the corresponding scheme. It must be a generator function
+		        that yields the triplet.
+	**/
+	static public function register_rendezvous_handler(scheme:Dynamic, handler:Dynamic):Dynamic;
+	static public function rendezvous(url:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Scatters a list of tensors to all processes in a group.
 		
@@ -325,19 +422,27 @@ package torch.distributed;
 		
 		Arguments:
 		    tensor (Tensor): Output tensor.
-		    src (int): Source rank. Required in all processes except the one that
-		        is sending the data.
 		    scatter_list (list[Tensor]): List of tensors to scatter. Required only
 		        in the process that is sending the data.
-		    group (optional): Group of the collective.
+		    src (int): Source rank. Required in all processes except the one that
+		        is sending the data.
+		    group (ProcessGroup, optional): The process group to work on
+		    async_op (bool, optional): Whether this op should be an async op
+		
+		Returns:
+		    Async work handle, if async_op is set to True.
+		    None, if not async_op or if not part of the group
 	**/
-	static public function scatter(tensor:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function scatter(tensor:Dynamic, scatter_list:Dynamic, src:Dynamic, ?group:Dynamic, ?async_op:Dynamic):Dynamic;
 	/**
 		Sends a tensor synchronously.
 		
 		Arguments:
 		    tensor (Tensor): Tensor to send.
 		    dst (int): Destination rank.
+		    group (ProcessGroup, optional): The process group to work on
+		    tag (int, optional): Tag to match send with remote recv
 	**/
-	static public function send(tensor:Dynamic, dst:Dynamic):Dynamic;
+	static public function send(tensor:Dynamic, dst:Dynamic, ?group:Dynamic, ?tag:Dynamic):Dynamic;
+	static public var string_classes : Dynamic;
 }

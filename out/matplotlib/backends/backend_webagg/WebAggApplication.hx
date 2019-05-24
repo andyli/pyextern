@@ -6,6 +6,10 @@ package matplotlib.backends.backend_webagg;
 		
 		Subclasses must define at least one of the methods defined in the
 		"Entry points" section below.
+		
+		Applications should not construct `RequestHandler` objects
+		directly and subclasses should not override ``__init__`` (override
+		`~RequestHandler.initialize` instead).
 	**/
 	static public function AllFiguresPage(application:Dynamic, request:Dynamic, ?url_prefix:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -13,6 +17,10 @@ package matplotlib.backends.backend_webagg;
 		
 		Subclasses must define at least one of the methods defined in the
 		"Entry points" section below.
+		
+		Applications should not construct `RequestHandler` objects
+		directly and subclasses should not override ``__init__`` (override
+		`~RequestHandler.initialize` instead).
 	**/
 	static public function Download(application:Dynamic, request:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -20,6 +28,10 @@ package matplotlib.backends.backend_webagg;
 		
 		Subclasses must define at least one of the methods defined in the
 		"Entry points" section below.
+		
+		Applications should not construct `RequestHandler` objects
+		directly and subclasses should not override ``__init__`` (override
+		`~RequestHandler.initialize` instead).
 	**/
 	static public function FavIcon(application:Dynamic, request:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -27,6 +39,10 @@ package matplotlib.backends.backend_webagg;
 		
 		Subclasses must define at least one of the methods defined in the
 		"Entry points" section below.
+		
+		Applications should not construct `RequestHandler` objects
+		directly and subclasses should not override ``__init__`` (override
+		`~RequestHandler.initialize` instead).
 	**/
 	static public function MplJs(application:Dynamic, request:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -34,6 +50,10 @@ package matplotlib.backends.backend_webagg;
 		
 		Subclasses must define at least one of the methods defined in the
 		"Entry points" section below.
+		
+		Applications should not construct `RequestHandler` objects
+		directly and subclasses should not override ``__init__`` (override
+		`~RequestHandler.initialize` instead).
 	**/
 	static public function SingleFigurePage(application:Dynamic, request:Dynamic, ?url_prefix:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

@@ -12,8 +12,42 @@ package numpy.core.function_base;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _geomspace_dispatcher(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?dtype:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function _index_deprecate(i:Dynamic, ?stacklevel:Dynamic):Dynamic;
+	static public function _linspace_dispatcher(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _logspace_dispatcher(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?base:Dynamic, ?dtype:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		add_docstring(obj, docstring)
+		
+		Add a docstring to a built-in obj if possible.
+		If the obj already has a docstring raise a RuntimeError
+		If this routine does not know how to add a docstring to the object
+		raise a TypeError
+	**/
+	static public function add_docstring(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Adds documentation to obj which is in module place.
+		
+		If doc is a string add it to obj as a docstring
+		
+		If doc is a tuple, then the first element is interpreted as
+		   an attribute of obj and the second as the docstring
+		      (method, docstring)
+		
+		If doc is a list, then each element of the list should be a
+		   sequence of length two --> [(method1, docstring1),
+		   (method2, docstring2), ...]
+		
+		This routine never raises an error.
+		
+		This routine cannot modify read-only docstrings, as appear
+		in new-style classes or built-in functions. Because this
+		routine never raises an error the caller must check manually
+		that the docstrings were changed.
+	**/
+	static public function add_newdoc(place:Dynamic, obj:Dynamic, doc:Dynamic):Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	/**
 		Convert the input to an ndarray, but pass ndarray subclasses through.
 		
@@ -70,11 +104,14 @@ package numpy.core.function_base;
 		This is similar to `logspace`, but with endpoints specified directly.
 		Each output sample is a constant multiple of the previous.
 		
+		.. versionchanged:: 1.16.0
+		    Non-scalar `start` and `stop` are now supported.
+		
 		Parameters
 		----------
-		start : scalar
+		start : array_like
 		    The starting value of the sequence.
-		stop : scalar
+		stop : array_like
 		    The final value of the sequence, unless `endpoint` is False.
 		    In that case, ``num + 1`` values are spaced over the
 		    interval in log-space, of which all but the last (a sequence of
@@ -87,6 +124,12 @@ package numpy.core.function_base;
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
+		axis : int, optional
+		    The axis in the result to store the samples.  Relevant only if start
+		    or stop are array-like.  By default (0), the samples will be along a
+		    new axis inserted at the beginning. Use -1 to get an axis at the end.
+		
+		    .. versionadded:: 1.16.0
 		
 		Returns
 		-------
@@ -150,7 +193,7 @@ package numpy.core.function_base;
 		>>> plt.grid(True, color='0.7', linestyle='-', which='both', axis='both')
 		>>> plt.show()
 	**/
-	static public function geomspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
+	static public function geomspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?dtype:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Return evenly spaced numbers over a specified interval.
 		
@@ -159,11 +202,14 @@ package numpy.core.function_base;
 		
 		The endpoint of the interval can optionally be excluded.
 		
+		.. versionchanged:: 1.16.0
+		    Non-scalar `start` and `stop` are now supported.
+		
 		Parameters
 		----------
-		start : scalar
+		start : array_like
 		    The starting value of the sequence.
-		stop : scalar
+		stop : array_like
 		    The end value of the sequence, unless `endpoint` is set to False.
 		    In that case, the sequence consists of all but the last of ``num + 1``
 		    evenly spaced samples, so that `stop` is excluded.  Note that the step
@@ -182,6 +228,13 @@ package numpy.core.function_base;
 		
 		    .. versionadded:: 1.9.0
 		
+		axis : int, optional
+		    The axis in the result to store the samples.  Relevant only if start
+		    or stop are array-like.  By default (0), the samples will be along a
+		    new axis inserted at the beginning. Use -1 to get an axis at the end.
+		
+		    .. versionadded:: 1.16.0
+		
 		Returns
 		-------
 		samples : ndarray
@@ -198,7 +251,10 @@ package numpy.core.function_base;
 		--------
 		arange : Similar to `linspace`, but uses a step size (instead of the
 		         number of samples).
-		logspace : Samples uniformly distributed in log space.
+		geomspace : Similar to `linspace`, but with numbers spaced evenly on a log
+		            scale (a geometric progression).
+		logspace : Similar to `geomspace`, but with the end points specified as
+		           logarithms.
 		
 		Examples
 		--------
@@ -224,7 +280,7 @@ package numpy.core.function_base;
 		(-0.5, 1)
 		>>> plt.show()
 	**/
-	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
+	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Return numbers spaced evenly on a log scale.
 		
@@ -232,11 +288,14 @@ package numpy.core.function_base;
 		(`base` to the power of `start`) and ends with ``base ** stop``
 		(see `endpoint` below).
 		
+		.. versionchanged:: 1.16.0
+		    Non-scalar `start` and `stop` are now supported.
+		
 		Parameters
 		----------
-		start : float
+		start : array_like
 		    ``base ** start`` is the starting value of the sequence.
-		stop : float
+		stop : array_like
 		    ``base ** stop`` is the final value of the sequence, unless `endpoint`
 		    is False.  In that case, ``num + 1`` values are spaced over the
 		    interval in log-space, of which all but the last (a sequence of
@@ -253,6 +312,13 @@ package numpy.core.function_base;
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
+		axis : int, optional
+		    The axis in the result to store the samples.  Relevant only if start
+		    or stop are array-like.  By default (0), the samples will be along a
+		    new axis inserted at the beginning. Use -1 to get an axis at the end.
+		
+		    .. versionadded:: 1.16.0
+		
 		
 		Returns
 		-------
@@ -301,7 +367,37 @@ package numpy.core.function_base;
 		(-0.5, 1)
 		>>> plt.show()
 	**/
-	static public function logspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?base:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
+	static public function logspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?base:Dynamic, ?dtype:Dynamic, ?axis:Dynamic):numpy.Ndarray;
+	/**
+		Return the number of dimensions of an array.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.  If it is not already an ndarray, a conversion is
+		    attempted.
+		
+		Returns
+		-------
+		number_of_dimensions : int
+		    The number of dimensions in `a`.  Scalars are zero-dimensional.
+		
+		See Also
+		--------
+		ndarray.ndim : equivalent method
+		shape : dimensions of array
+		ndarray.shape : dimensions of array
+		
+		Examples
+		--------
+		>>> np.ndim([[1,2,3],[4,5,6]])
+		2
+		>>> np.ndim(np.array([[1,2,3],[4,5,6]]))
+		2
+		>>> np.ndim(1)
+		0
+	**/
+	static public function ndim(a:Dynamic):Int;
 	static public var print_function : Dynamic;
 	/**
 		result_type(*arrays_and_dtypes)

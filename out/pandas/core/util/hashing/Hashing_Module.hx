@@ -156,6 +156,51 @@ package pandas.core.util.hashing;
 	**/
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
+		Check if an object is a pandas extension array type.
+		
+		See the :ref:`Use Guide <extending.extension-types>` for more.
+		
+		Parameters
+		----------
+		arr_or_dtype : object
+		    For array-like input, the ``.dtype`` attribute will
+		    be extracted.
+		
+		Returns
+		-------
+		bool
+		    Whether the `arr_or_dtype` is an extension array type.
+		
+		Notes
+		-----
+		This checks whether an object implements the pandas extension
+		array interface. In pandas, this includes:
+		
+		* Categorical
+		* Sparse
+		* Interval
+		* Period
+		* DatetimeArray
+		* TimedeltaArray
+		
+		Third-party libraries may implement arrays or types satisfying
+		this interface as well.
+		
+		Examples
+		--------
+		>>> from pandas.api.types import is_extension_array_dtype
+		>>> arr = pd.Categorical(['a', 'b'])
+		>>> is_extension_array_dtype(arr)
+		True
+		>>> is_extension_array_dtype(arr.dtype)
+		True
+		
+		>>> arr = np.array(['a', 'b'])
+		>>> is_extension_array_dtype(arr.dtype)
+		False
+	**/
+	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Check if the object is list-like.
 		
 		Objects that are considered list-like are for example Python
@@ -165,7 +210,11 @@ package pandas.core.util.hashing;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -184,12 +233,16 @@ package pandas.core.util.hashing;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -207,8 +260,8 @@ package pandas.core.util.hashing;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		

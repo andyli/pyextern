@@ -114,8 +114,8 @@ package pandas.io.excel;
 		
 		Parameters
 		----------
-		style_dict: style dictionary to convert
-		num_format_str: optional number format string
+		style_dict : style dictionary to convert
+		num_format_str : optional number format string
 	**/
 	static public function convert(style_dict:Dynamic, ?num_format_str:Dynamic):Dynamic;
 }

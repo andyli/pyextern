@@ -365,6 +365,7 @@ package theano.gpuarray.opt;
 	static public var local_gpua_split : Dynamic;
 	static public var local_gpua_subtensor : Dynamic;
 	static public function local_gpua_subtensor_graph(op:Dynamic, context_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
+	static public var local_gpua_tri : Dynamic;
 	static public var local_gpuaalloc : Dynamic;
 	static public var local_gpualloc_memset_0 : Dynamic;
 	static public var local_inplace_gpu_cholesky : Dynamic;

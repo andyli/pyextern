@@ -123,7 +123,6 @@ package tensorflow.contrib.rate.rate;
 		Private method for adding variables to the graph.
 	**/
 	public function _add_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic):Dynamic;
-	public function _safe_div(numerator:Dynamic, denominator:Dynamic, name:Dynamic):Dynamic;
 	/**
 		Method to create variables.
 		

@@ -132,7 +132,7 @@ package tensorflow.python.ops.gen_spectral_ops;
 		
 		Args:
 		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
-		    A complex64 tensor.
+		    A complex tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -147,7 +147,7 @@ package tensorflow.python.ops.gen_spectral_ops;
 		
 		Args:
 		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
-		    A complex64 tensor.
+		    A complex tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -192,7 +192,7 @@ package tensorflow.python.ops.gen_spectral_ops;
 		
 		Args:
 		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
-		    A complex64 tensor.
+		    A complex tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -207,7 +207,7 @@ package tensorflow.python.ops.gen_spectral_ops;
 		
 		Args:
 		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
-		    A complex64 tensor.
+		    A complex tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:

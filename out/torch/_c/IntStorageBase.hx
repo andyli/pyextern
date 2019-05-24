@@ -119,6 +119,7 @@ package torch._c;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var _cdata : Dynamic;
+	static public function _expired(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _free_weak_ref(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_shared_fd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _new_shared_fd(args:haxe.extern.Rest<Dynamic>):Dynamic;

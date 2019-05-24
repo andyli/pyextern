@@ -2,6 +2,7 @@
 package torch.nn.modules.conv;
 @:pythonImport("torch.nn.modules.conv", "_ConvTransposeMixin") extern class _ConvTransposeMixin {
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var __constants__ : Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -108,6 +109,6 @@ package torch.nn.modules.conv;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _output_padding(input:Dynamic, output_size:Dynamic):Dynamic;
+	public function _output_padding(input:Dynamic, output_size:Dynamic, stride:Dynamic, padding:Dynamic, kernel_size:Dynamic):Dynamic;
 	public function forward(input:Dynamic, ?output_size:Dynamic):Dynamic;
 }

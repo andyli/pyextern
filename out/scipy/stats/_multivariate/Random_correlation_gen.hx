@@ -110,12 +110,12 @@ package scipy.stats._multivariate;
 	public var __weakref__ : Dynamic;
 	public function _get_random_state(random_state:Dynamic):Dynamic;
 	/**
-		Computes a 2x2 Givens matrix to put 1's on the diagonal for the input matrix.
+		Computes a 2x2 Givens matrix to put 1's on the diagonal.
 		
 		The input matrix is a 2x2 symmetric matrix M = [ aii aij ; aij ajj ].
 		
-		The output matrix g is a 2x2 anti-symmetric matrix of the form [ c s ; -s c ];
-		the elements c and s are returned.
+		The output matrix g is a 2x2 anti-symmetric matrix of the form
+		[ c s ; -s c ];  the elements c and s are returned.
 		
 		Applying the output matrix to the input matrix (as b=g.T M g)
 		results in a matrix with bii=1, provided tr(M) - det(M) >= 1

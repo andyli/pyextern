@@ -15,7 +15,7 @@ package tensorflow.python.data.experimental.ops.map_defun;
 		Map a function on the list of tensors unpacked from `elems` on dimension 0.
 		
 		Args:
-		  fn: A function (`function.Defun`) that takes a list of tensors and returns
+		  fn: A function (`function.defun`) that takes a list of tensors and returns
 		    another list of tensors. The output list has the same types as
 		    output_dtypes. The elements of the output list have the same dimension 0
 		    as `elems`, and the remaining dimensions correspond to those of

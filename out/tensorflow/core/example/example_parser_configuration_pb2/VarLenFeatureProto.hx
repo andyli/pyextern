@@ -22,7 +22,6 @@ package tensorflow.core.example.example_parser_configuration_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DTYPE_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -47,7 +46,6 @@ package tensorflow.core.example.example_parser_configuration_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INDICES_OUTPUT_TENSOR_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -72,7 +70,6 @@ package tensorflow.core.example.example_parser_configuration_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SHAPES_OUTPUT_TENSOR_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -85,7 +82,10 @@ package tensorflow.core.example.example_parser_configuration_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var VALUES_OUTPUT_TENSOR_NAME_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.core.example.example_parser_configuration_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.VarLenFeatureProto.dtype
+	**/
+	public var dtype : Dynamic;
+	/**
+		Field tensorflow.VarLenFeatureProto.indices_output_tensor_name
+	**/
+	public var indices_output_tensor_name : Dynamic;
+	/**
+		Field tensorflow.VarLenFeatureProto.shapes_output_tensor_name
+	**/
+	public var shapes_output_tensor_name : Dynamic;
+	/**
+		Field tensorflow.VarLenFeatureProto.values_output_tensor_name
+	**/
+	public var values_output_tensor_name : Dynamic;
 }

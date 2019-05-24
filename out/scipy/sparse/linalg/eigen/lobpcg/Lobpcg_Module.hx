@@ -38,16 +38,6 @@ package scipy.sparse.linalg.eigen.lobpcg;
 		    n-by-sizeY matrix of constraints, sizeY < n
 		    The iterations will be performed in the B-orthogonal complement
 		    of the column-space of Y. Y must be full rank.
-		
-		Returns
-		-------
-		w : array
-		    Array of k eigenvalues
-		v : array
-		    An array of k eigenvectors.  V has the same shape as X.
-		
-		Other Parameters
-		----------------
 		tol : scalar, optional
 		    Solver tolerance (stopping criterion)
 		    by default: tol=n*sqrt(eps)
@@ -63,6 +53,17 @@ package scipy.sparse.linalg.eigen.lobpcg;
 		retResidualNormsHistory : boolean, optional
 		    whether to return history of residual norms
 		
+		Returns
+		-------
+		w : array
+		    Array of k eigenvalues
+		v : array
+		    An array of k eigenvectors.  V has the same shape as X.
+		lambdas : list of arrays, optional
+		    The eigenvalue history, if `retLambdaHistory` is True.
+		rnorms : list of arrays, optional
+		    The history of residual norms, if `retResidualNormsHistory` is True.
+		
 		Examples
 		--------
 		
@@ -74,13 +75,13 @@ package scipy.sparse.linalg.eigen.lobpcg;
 		>>> vals = [np.arange(n, dtype=np.float64) + 1]
 		>>> A = spdiags(vals, 0, n, n)
 		>>> A.toarray()
-		array([[   1.,    0.,    0., ...,    0.,    0.,    0.],
-		       [   0.,    2.,    0., ...,    0.,    0.,    0.],
-		       [   0.,    0.,    3., ...,    0.,    0.,    0.],
+		array([[  1.,   0.,   0., ...,   0.,   0.,   0.],
+		       [  0.,   2.,   0., ...,   0.,   0.,   0.],
+		       [  0.,   0.,   3., ...,   0.,   0.,   0.],
 		       ...,
-		       [   0.,    0.,    0., ...,   98.,    0.,    0.],
-		       [   0.,    0.,    0., ...,    0.,   99.,    0.],
-		       [   0.,    0.,    0., ...,    0.,    0.,  100.]])
+		       [  0.,   0.,   0., ...,  98.,   0.,   0.],
+		       [  0.,   0.,   0., ...,   0.,  99.,   0.],
+		       [  0.,   0.,   0., ...,   0.,   0., 100.]])
 		
 		Constraints.
 		
@@ -101,9 +102,9 @@ package scipy.sparse.linalg.eigen.lobpcg;
 		Here, ``invA`` could of course have been used directly as a preconditioner.
 		Let us then solve the problem:
 		
-		>>> eigs, vecs = lobpcg(A, X, Y=Y, M=M, tol=1e-4, maxiter=40, largest=False)
+		>>> eigs, vecs = lobpcg(A, X, Y=Y, M=M, largest=False)
 		>>> eigs
-		array([ 4.,  5.,  6.])
+		array([4., 5., 6.])
 		
 		Note that the vectors passed in Y are the eigenvectors of the 3 smallest
 		eigenvalues. The results returned are orthogonal to those.
@@ -123,27 +124,26 @@ package scipy.sparse.linalg.eigen.lobpcg;
 		code, but rather one should use the "standard" eigensolver,
 		e.g. numpy or scipy function in this case.
 		If one calls the LOBPCG algorithm for 5``m``>``n``,
-		it will most likely break internally, so the code tries to call the standard
-		function instead.
+		it will most likely break internally, so the code tries to call
+		the standard function instead.
 		
 		It is not that n should be large for the LOBPCG to work, but rather the
-		ratio ``n``/``m`` should be large. It you call the LOBPCG code with ``m``=1
-		and ``n``=10, it should work, though ``n`` is small. The method is intended
+		ratio ``n``/``m`` should be large. It you call LOBPCG with ``m``=1
+		and ``n``=10, it works though ``n`` is small. The method is intended
 		for extremely large ``n``/``m``, see e.g., reference [28] in
-		http://arxiv.org/abs/0705.2626
+		https://arxiv.org/abs/0705.2626
 		
 		The convergence speed depends basically on two factors:
 		
-		1.  How well relatively separated the seeking eigenvalues are
-		    from the rest of the eigenvalues.
-		    One can try to vary ``m`` to make this better.
+		1. How well relatively separated the seeking eigenvalues are from the rest
+		   of the eigenvalues. One can try to vary ``m`` to make this better.
 		
-		2.  How well conditioned the problem is. This can be changed by using proper
-		    preconditioning. For example, a rod vibration test problem (under tests
-		    directory) is ill-conditioned for large ``n``, so convergence will be
-		    slow, unless efficient preconditioning is used.
-		    For this specific problem, a good simple preconditioner function would
-		    be a linear solve for A, which is easy to code since A is tridiagonal.
+		2. How well conditioned the problem is. This can be changed by using proper
+		   preconditioning. For example, a rod vibration test problem (under tests
+		   directory) is ill-conditioned for large ``n``, so convergence will be
+		   slow, unless efficient preconditioning is used. For this specific
+		   problem, a good simple preconditioner function would be a linear solve
+		   for A, which is easy to code since A is tridiagonal.
 		
 		*Acknowledgements*
 		
@@ -159,9 +159,9 @@ package scipy.sparse.linalg.eigen.lobpcg;
 		       SIAM Journal on Scientific Computing 23, no. 2,
 		       pp. 517-541. http://dx.doi.org/10.1137/S1064827500366124
 		
-		.. [2] A. V. Knyazev, I. Lashuk, M. E. Argentati, and E. Ovchinnikov (2007),
-		       Block Locally Optimal Preconditioned Eigenvalue Xolvers (BLOPEX)
-		       in hypre and PETSc.  http://arxiv.org/abs/0705.2626
+		.. [2] A. V. Knyazev, I. Lashuk, M. E. Argentati, and E. Ovchinnikov
+		       (2007), Block Locally Optimal Preconditioned Eigenvalue Xolvers
+		       (BLOPEX) in hypre and PETSc. https://arxiv.org/abs/0705.2626
 		
 		.. [3] A. V. Knyazev's C and MATLAB implementations:
 		       https://bitbucket.org/joseroman/blopex

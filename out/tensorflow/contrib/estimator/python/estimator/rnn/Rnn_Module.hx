@@ -5,6 +5,7 @@ package tensorflow.contrib.estimator.python.estimator.rnn;
 	static public var _CELL_TYPES : Dynamic;
 	static public var _DEFAULT_CLIP_NORM : Dynamic;
 	static public var _DEFAULT_LEARNING_RATE : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -68,6 +69,8 @@ package tensorflow.contrib.estimator.python.estimator.rnn;
 		  context_feature_columns: An iterable containing the `FeatureColumn`s
 		    that represent contextual input.
 		  input_layer_partitioner: Partitioner for input layer.
+		  return_sequences: A boolean indicating whether to return the last output
+		    in the output sequence, or the full sequence.
 		
 		Returns:
 		  A logit_fn (see below).
@@ -75,7 +78,7 @@ package tensorflow.contrib.estimator.python.estimator.rnn;
 		Raises:
 		  ValueError: If output_units is not an int.
 	**/
-	static public function _rnn_logit_fn_builder(output_units:Dynamic, rnn_cell_fn:Dynamic, sequence_feature_columns:Dynamic, context_feature_columns:Dynamic, input_layer_partitioner:Dynamic):Dynamic;
+	static public function _rnn_logit_fn_builder(output_units:Dynamic, rnn_cell_fn:Dynamic, sequence_feature_columns:Dynamic, context_feature_columns:Dynamic, input_layer_partitioner:Dynamic, ?return_sequences:Dynamic):Dynamic;
 	/**
 		Recurrent Neural Net model_fn.
 		
@@ -85,13 +88,15 @@ package tensorflow.contrib.estimator.python.estimator.rnn;
 		  labels: `Tensor` of shape [batch_size, 1] or [batch_size] with labels.
 		  mode: Defines whether this is training, evaluation or prediction.
 		    See `ModeKeys`.
-		  head: A `head_lib._Head` instance.
+		  head: A `Head` instance.
 		  rnn_cell_fn: A function with one argument, a `tf.estimator.ModeKeys`, and
 		    returns an object of type `tf.nn.rnn_cell.RNNCell`.
 		  sequence_feature_columns: Iterable containing `FeatureColumn`s that
 		    represent sequential model inputs.
 		  context_feature_columns: Iterable containing `FeatureColumn`s that
 		    represent model inputs not associated with a specific timestep.
+		  return_sequences: A boolean indicating whether to return the last output
+		    in the output sequence, or the full sequence.
 		  optimizer: String, `tf.Optimizer` object, or callable that creates the
 		    optimizer to use for training. If not specified, will use the Adagrad
 		    optimizer with a default learning rate of 0.05 and gradient clip norm of
@@ -106,7 +111,7 @@ package tensorflow.contrib.estimator.python.estimator.rnn;
 		Raises:
 		  ValueError: If mode or optimizer is invalid, or features has the wrong type.
 	**/
-	static public function _rnn_model_fn(features:Dynamic, labels:Dynamic, mode:Dynamic, head:Dynamic, rnn_cell_fn:Dynamic, sequence_feature_columns:Dynamic, context_feature_columns:Dynamic, ?optimizer:Dynamic, ?input_layer_partitioner:Dynamic, ?config:Dynamic):Dynamic;
+	static public function _rnn_model_fn(features:Dynamic, labels:Dynamic, mode:Dynamic, head:Dynamic, rnn_cell_fn:Dynamic, sequence_feature_columns:Dynamic, context_feature_columns:Dynamic, ?return_sequences:Dynamic, ?optimizer:Dynamic, ?input_layer_partitioner:Dynamic, ?config:Dynamic):Dynamic;
 	/**
 		Selects the nth set of activations for each n in `sequence_length`.
 		

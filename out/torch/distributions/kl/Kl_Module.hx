@@ -16,20 +16,40 @@ package torch.distributions.kl;
 	**/
 	static public function _batch_diag(bmat:Dynamic):Dynamic;
 	/**
-		Returns the inverses of a batch of square matrices.
+		Uses "matrix determinant lemma"::
+		    log|W @ W.T + D| = log|C| + log|D|,
+		where :math:`C` is the capacitance matrix :math:`I + W.T @ inv(D) @ W`, to compute
+		the log determinant.
 	**/
-	static public function _batch_inverse(bmat:Dynamic):Dynamic;
+	static public function _batch_lowrank_logdet(W:Dynamic, D:Dynamic, capacitance_tril:Dynamic):Dynamic;
+	/**
+		Uses "Woodbury matrix identity"::
+		    inv(W @ W.T + D) = inv(D) - inv(D) @ W @ inv(C) @ W.T @ inv(D),
+		where :math:`C` is the capacitance matrix :math:`I + W.T @ inv(D) @ W`, to compute the squared
+		Mahalanobis distance :math:`x.T @ inv(W @ W.T + D) @ x`.
+	**/
+	static public function _batch_lowrank_mahalanobis(W:Dynamic, D:Dynamic, x:Dynamic, capacitance_tril:Dynamic):Dynamic;
 	/**
 		Computes the squared Mahalanobis distance :math:`\mathbf{x}^\top\mathbf{M}^{-1}\mathbf{x}`
 		for a factored :math:`\mathbf{M} = \mathbf{L}\mathbf{L}^\top`.
 		
-		Accepts batches for both L and x.
+		Accepts batches for both bL and bx. They are not necessarily assumed to have the same batch
+		shape, but `bL` one should be able to broadcasted to `bx` one.
 	**/
-	static public function _batch_mahalanobis(L:Dynamic, x:Dynamic):Dynamic;
+	static public function _batch_mahalanobis(bL:Dynamic, bx:Dynamic):Dynamic;
 	/**
 		Utility function for calculating the trace of XX^{T} with X having arbitrary trailing batch dimensions
 	**/
 	static public function _batch_trace_XXT(bmat:Dynamic):Dynamic;
+	/**
+		Applies `torch.trtrs` for batches of matrices. `bb` and `bA` should have
+		the same batch shape.
+	**/
+	static public function _batch_trtrs_lower(bb:Dynamic, bA:Dynamic):Dynamic;
+	/**
+		Returns the diagonal matrices of a batch of vectors.
+	**/
+	static public function _batch_vector_diag(bvec:Dynamic):Dynamic;
 	/**
 		Find the most specific approximate match, assuming single inheritance.
 	**/
@@ -69,6 +89,9 @@ package torch.distributions.kl;
 	static public function _kl_laplace_infinity(p:Dynamic, q:Dynamic):Dynamic;
 	static public function _kl_laplace_laplace(p:Dynamic, q:Dynamic):Dynamic;
 	static public function _kl_laplace_normal(p:Dynamic, q:Dynamic):Dynamic;
+	static public function _kl_lowrankmultivariatenormal_lowrankmultivariatenormal(p:Dynamic, q:Dynamic):Dynamic;
+	static public function _kl_lowrankmultivariatenormal_multivariatenormal(p:Dynamic, q:Dynamic):Dynamic;
+	static public function _kl_multivariatenormal_lowrankmultivariatenormal(p:Dynamic, q:Dynamic):Dynamic;
 	static public function _kl_multivariatenormal_multivariatenormal(p:Dynamic, q:Dynamic):Dynamic;
 	static public function _kl_normal_gumbel(p:Dynamic, q:Dynamic):Dynamic;
 	static public function _kl_normal_infinity(p:Dynamic, q:Dynamic):Dynamic;

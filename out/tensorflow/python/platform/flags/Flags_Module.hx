@@ -197,7 +197,11 @@ package tensorflow.python.platform.flags;
 		  parser: ArgumentParser, used to parse the flag arguments.
 		  serializer: ArgumentSerializer, the flag serializer instance.
 		  name: str, the flag name.
-		  default: list|str|None, the default value of the flag.
+		  default: Union[Iterable[T], Text, None], the default value of the flag.
+		      If the value is text, it will be parsed as if it was provided from
+		      the command line. If the value is a non-string iterable, it will be
+		      iterated over to create a shallow copy of the values. If it is None,
+		      it is left as-is.
 		  help: str, the help message.
 		  flag_values: FlagValues, the FlagValues instance with which the flag will
 		      be registered. This should almost never need to be overridden.
@@ -217,7 +221,8 @@ package tensorflow.python.platform.flags;
 		
 		Args:
 		  name: str, the flag name.
-		  default: [str]|str|None, the default value of the flag.
+		  default: Union[Iterable[Text], Text, None], the default value of the flag;
+		      see `DEFINE_multi`.
 		  enum_values: [str], a non-empty list of strings with the possible values for
 		      the flag.
 		  help: str, the help message.
@@ -229,6 +234,30 @@ package tensorflow.python.platform.flags;
 	**/
 	static public function DEFINE_multi_enum(name:Dynamic, _default:Dynamic, enum_values:Dynamic, help:Dynamic, ?flag_values:Dynamic, ?case_sensitive:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Registers a flag whose value can be a list of enum members.
+		
+		Use the flag on the command line multiple times to place multiple
+		enum values into the list.
+		
+		Args:
+		  name: str, the flag name.
+		  default: Union[Iterable[Enum], Iterable[Text], Enum, Text, None], the
+		      default value of the flag; see
+		      `DEFINE_multi`; only differences are documented here. If the value is
+		      a single Enum, it is treated as a single-item list of that Enum value.
+		      If it is an iterable, text values within the iterable will be converted
+		      to the equivalent Enum objects.
+		  enum_class: class, the Enum class with all the possible values for the flag.
+		      help: str, the help message.
+		  flag_values: FlagValues, the FlagValues instance with which the flag will be
+		    registered. This should almost never need to be overridden.
+		  module_name: A string, the name of the Python module declaring this flag. If
+		    not provided, it will be computed using the stack trace of this call.
+		  **args: Dictionary with extra keyword args that are passed to the Flag
+		    __init__.
+	**/
+	static public function DEFINE_multi_enum_class(name:Dynamic, _default:Dynamic, enum_class:Dynamic, help:Dynamic, ?flag_values:Dynamic, ?module_name:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Registers a flag whose value can be a list of arbitrary floats.
 		
 		Use the flag on the command line multiple times to place multiple
@@ -238,7 +267,8 @@ package tensorflow.python.platform.flags;
 		
 		Args:
 		  name: str, the flag name.
-		  default: [float]|str|None, the default value of the flag.
+		  default: Union[Iterable[float], Text, None], the default value of the flag;
+		      see `DEFINE_multi`.
 		  help: str, the help message.
 		  lower_bound: float, min values of the flag.
 		  upper_bound: float, max values of the flag.
@@ -258,7 +288,8 @@ package tensorflow.python.platform.flags;
 		
 		Args:
 		  name: str, the flag name.
-		  default: [int]|str|None, the default value of the flag.
+		  default: Union[Iterable[int], Text, None], the default value of the flag;
+		      see `DEFINE_multi`.
 		  help: str, the help message.
 		  lower_bound: int, min values of the flag.
 		  upper_bound: int, max values of the flag.
@@ -279,7 +310,8 @@ package tensorflow.python.platform.flags;
 		
 		Args:
 		  name: str, the flag name.
-		  default: [str]|str|None, the default value of the flag.
+		  default: Union[Iterable[Text], Text, None], the default value of the flag;
+		      see `DEFINE_multi`.
 		  help: str, the help message.
 		  flag_values: FlagValues, the FlagValues instance with which the flag will
 		      be registered. This should almost never need to be overridden.
@@ -440,6 +472,17 @@ package tensorflow.python.platform.flags;
 	**/
 	static public function get_help_width():Dynamic;
 	/**
+		Ensures that only one flag among flag_names is True.
+		
+		Args:
+		  flag_names: [str], names of the flags.
+		  required: bool. If true, exactly one flag must be True. Otherwise, at most
+		      one flag can be True, and it is valid for all flags to be False.
+		  flag_values: flags.FlagValues, optional FlagValues instance where the flags
+		      are defined.
+	**/
+	static public function mark_bool_flags_as_mutual_exclusive(flag_names:Dynamic, ?required:Dynamic, ?flag_values:Dynamic):Dynamic;
+	/**
 		Ensures that flag is not None during program execution.
 		
 		Registers a flag validator, which will follow usual validator rules.
@@ -466,16 +509,19 @@ package tensorflow.python.platform.flags;
 	**/
 	static public function mark_flag_as_required(flag_name:Dynamic, ?flag_values:Dynamic):Dynamic;
 	/**
-		Ensures that only one flag among flag_names is set.
+		Ensures that only one flag among flag_names is not None.
 		
-		Important note: validator will pass for any non-None value, such as False,
-		0 (zero), '' (empty string) and so on. For multi flags, this means that the
-		default needs to be None not [].
+		Important note: This validator checks if flag values are None, and it does not
+		distinguish between default and explicit values. Therefore, this validator
+		does not make sense when applied to flags with default values other than None,
+		including other false values (e.g. False, 0, '', []). That includes multi
+		flags with a default value of [] instead of None.
 		
 		Args:
 		  flag_names: [str], names of the flags.
-		  required: bool, if set, exactly one of the flags must be set.
-		      Otherwise, it is also valid for none of the flags to be set.
+		  required: bool. If true, exactly one of the flags must have a value other
+		      than None. Otherwise, at most one of the flags can have a value other
+		      than None, and it is valid for all of the flags to be None.
 		  flag_values: flags.FlagValues, optional FlagValues instance where the flags
 		      are defined.
 	**/

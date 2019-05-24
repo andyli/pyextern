@@ -43,7 +43,7 @@ package torch.utils.data.dataset;
 		Example::
 		
 		    >>> torch.randperm(4)
-		    tensor([ 2,  1,  0,  3])
+		    tensor([2, 1, 0, 3])
 	**/
 	static public function randperm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

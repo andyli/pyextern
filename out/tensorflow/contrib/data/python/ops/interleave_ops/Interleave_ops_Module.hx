@@ -13,7 +13,7 @@ package tensorflow.contrib.data.python.ops.interleave_ops;
 	/**
 		Creates a dataset that deterministically chooses elements from `datasets`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.choose_from_datasets(...)`.
 		
@@ -54,7 +54,7 @@ package tensorflow.contrib.data.python.ops.interleave_ops;
 	/**
 		A parallel version of the `Dataset.interleave()` transformation. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.parallel_interleave(...)`.
 		
@@ -104,7 +104,7 @@ package tensorflow.contrib.data.python.ops.interleave_ops;
 	/**
 		Samples elements at random from the datasets in `datasets`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.sample_from_datasets(...)`.
 		
@@ -132,7 +132,7 @@ package tensorflow.contrib.data.python.ops.interleave_ops;
 	/**
 		A non-deterministic version of the `Dataset.interleave()` transformation. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.contrib.data.parallel_interleave(..., sloppy=True)`.
 		

@@ -111,11 +111,11 @@ package pandas.io.json.json;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Combines a list of JSON objects into one JSON object
+		Combines a list of JSON objects into one JSON object.
 	**/
 	public function _combine_lines(lines:Dynamic):Dynamic;
 	/**
-		read_json accepts three input types:
+		The function read_json accepts three input types:
 		    1. filepath (string-like)
 		    2. file-like object (e.g. open file object, StringIO)
 		    3. JSON string
@@ -125,7 +125,7 @@ package pandas.io.json.json;
 	**/
 	public function _get_data_from_filepath(filepath_or_buffer:Dynamic):Dynamic;
 	/**
-		parses a json document into a pandas object
+		Parses a json document into a pandas object.
 	**/
 	public function _get_object_parser(json:Dynamic):Dynamic;
 	/**
@@ -138,11 +138,13 @@ package pandas.io.json.json;
 	public function _preprocess_data(data:Dynamic):Dynamic;
 	/**
 		If we opened a stream earlier, in _get_data_from_filepath, we should
-		close it. If an open stream or file was passed, we leave it open.
+		close it.
+		
+		If an open stream or file was passed, we leave it open.
 	**/
 	public function close():Dynamic;
 	/**
-		Read the whole JSON input into a pandas object
+		Read the whole JSON input into a pandas object.
 	**/
 	public function read():Dynamic;
 }

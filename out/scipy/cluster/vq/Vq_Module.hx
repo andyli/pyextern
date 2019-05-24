@@ -78,6 +78,26 @@ package scipy.cluster.vq;
 	/**
 		Pick k points at random in data (one row = one observation).
 		
+		 Parameters
+		 ----------
+		 data : ndarray
+		     Expect a rank 1 or 2 array. Rank 1 are assumed to describe one
+		     dimensional data, rank 2 multidimensional data, in which case one
+		     row is one observation.
+		 k : int
+		     Number of samples to generate.
+		
+		Returns
+		 -------
+		 x : ndarray
+		     A 'k' by 'N' containing the initial centroids
+		
+		 
+	**/
+	static public function _kpoints(data:Dynamic, k:Dynamic):Dynamic;
+	/**
+		Picks k points in data based on the kmeans++ method
+		
 		Parameters
 		----------
 		data : ndarray
@@ -86,8 +106,19 @@ package scipy.cluster.vq;
 		    row is one observation.
 		k : int
 		    Number of samples to generate.
+		
+		Returns
+		-------
+		init : ndarray
+		    A 'k' by 'N' containing the initial centroids
+		
+		References
+		----------
+		.. [1] D. Arthur and S. Vassilvitskii, "k-means++: the advantages of
+		   careful seeding", Proceedings of the Eighteenth Annual ACM-SIAM Symposium
+		   on Discrete Algorithms, 2007.
 	**/
-	static public function _kpoints(data:Dynamic, k:Dynamic):Dynamic;
+	static public function _kpp(data:Dynamic, k:Dynamic):Dynamic;
 	/**
 		Returns k samples of a random variable which parameters depend on data.
 		
@@ -102,6 +133,11 @@ package scipy.cluster.vq;
 		    row is one observation.
 		k : int
 		    Number of samples to generate.
+		
+		Returns
+		-------
+		x : ndarray
+		    A 'k' by 'N' containing the initial centroids
 	**/
 	static public function _krandinit(data:Dynamic, k:Dynamic):Dynamic;
 	/**
@@ -133,9 +169,9 @@ package scipy.cluster.vq;
 		metric : str or callable, optional
 		    The distance metric to use.  If a string, the distance function can be
 		    'braycurtis', 'canberra', 'chebyshev', 'cityblock', 'correlation',
-		    'cosine', 'dice', 'euclidean', 'hamming', 'jaccard', 'kulsinski',
-		    'mahalanobis', 'matching', 'minkowski', 'rogerstanimoto', 'russellrao',
-		    'seuclidean', 'sokalmichener', 'sokalsneath', 'sqeuclidean',
+		    'cosine', 'dice', 'euclidean', 'hamming', 'jaccard', 'jensenshannon',
+		    'kulsinski', 'mahalanobis', 'matching', 'minkowski', 'rogerstanimoto',
+		    'russellrao', 'seuclidean', 'sokalmichener', 'sokalsneath', 'sqeuclidean',
 		    'wminkowski', 'yule'.
 		*args : tuple. Deprecated.
 		    Additional arguments should be passed as keyword arguments
@@ -408,13 +444,14 @@ package scipy.cluster.vq;
 	/**
 		Performs k-means on a set of observation vectors forming k clusters.
 		
-		The k-means algorithm adjusts the centroids until sufficient
-		progress cannot be made, i.e. the change in distortion since
-		the last iteration is less than some threshold. This yields
+		The k-means algorithm adjusts the classification of the observations
+		into clusters and updates the cluster centroids until the position of
+		the centroids is stable over successive iterations. In this
+		implementation of the algorithm, the stability of the centroids is
+		determined by comparing the absolute value of the change in the average
+		Euclidean distance between the observations and their corresponding
+		centroids against a threshold. This yields
 		a code book mapping centroids to codes and vice versa.
-		
-		Distortion is defined as the sum of the squared differences
-		between the observations and the corresponding centroid.
 		
 		Parameters
 		----------
@@ -459,8 +496,10 @@ package scipy.cluster.vq;
 		   not necessarily the globally minimal distortion.
 		
 		distortion : float
-		   The distortion between the observations passed and the
-		   centroids generated.
+		   The mean (non-squared) Euclidean distance between the observations
+		   passed and the centroids generated. Note the difference to the standard
+		   definition of distortion in the context of the K-means algorithm, which
+		   is the sum of the squared distances.
 		
 		See Also
 		--------
@@ -541,13 +580,16 @@ package scipy.cluster.vq;
 		    (not used yet)
 		minit : str, optional
 		    Method for initialization. Available methods are 'random',
-		    'points', and 'matrix':
+		    'points', '++' and 'matrix':
 		
 		    'random': generate k centroids from a Gaussian with mean and
 		    variance estimated from the data.
 		
 		    'points': choose k observations (rows) at random from data for
 		    the initial centroids.
+		
+		    '++': choose k observations accordingly to the kmeans++ method
+		    (careful seeding)
 		
 		    'matrix': interpret the k parameter as a k by M (or length k
 		    array for one-dimensional data) array of initial centroids.
@@ -572,6 +614,12 @@ package scipy.cluster.vq;
 		label : ndarray
 		    label[i] is the code or index of the centroid the
 		    i'th observation is closest to.
+		
+		References
+		----------
+		.. [1] D. Arthur and S. Vassilvitskii, "k-means++: the advantages of
+		   careful seeding", Proceedings of the Eighteenth Annual ACM-SIAM Symposium
+		   on Discrete Algorithms, 2007.
 	**/
 	static public function kmeans2(data:Dynamic, k:Dynamic, ?iter:Dynamic, ?thresh:Dynamic, ?minit:Dynamic, ?missing:Dynamic, ?check_finite:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

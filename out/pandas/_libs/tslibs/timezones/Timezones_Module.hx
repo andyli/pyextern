@@ -8,6 +8,7 @@ package pandas._libs.tslibs.timezones;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __pyx_capi__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	/**
@@ -29,8 +30,8 @@ package pandas._libs.tslibs.timezones;
 		UJSON/pytables. maybe_get_tz (below) is the inverse of this process.
 	**/
 	static public function get_timezone(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function get_utcoffset(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function infer_tzinfo(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_utc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		(Maybe) Construct a timezone object from a string. If tz is a string, use
 		it to construct a timezone object. Otherwise, just return tz.
@@ -93,5 +94,4 @@ package pandas._libs.tslibs.timezones;
 		dateutil.tz.tz.tzutc
 	**/
 	static public function tz_standardize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function unbox_utcoffsets(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

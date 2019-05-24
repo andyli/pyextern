@@ -285,16 +285,16 @@ package tensorflow.contrib.opt.python.training.moving_average_optimizer;
 	**/
 	public var _deferred_dependencies : Dynamic;
 	/**
-		A version of `apply_gradients` for cross-tower context.
+		A version of `apply_gradients` for cross-replica context.
 		
 		This is a version of `apply_gradients()` for when you are using a
-		`DistributionStrategy` and are in a cross-tower context. If in a
-		tower context, use `apply_gradients()` as normal.
+		`DistributionStrategy` and are in a cross-replica context. If in a
+		replica context, use `apply_gradients()` as normal.
 		
 		Args:
 		  distribution: A `DistributionStrategy` object.
 		  grads_and_vars: List of (gradient, variable) pairs as returned by
-		    `compute_gradients()`, and then aggregated across towers.
+		    `compute_gradients()`, and then aggregated across replicas.
 		  global_step: Optional (mirrored) `Variable` to increment by one
 		    after the variables have been updated.
 		  name: Optional name for the returned operation.  Default to the
@@ -302,10 +302,26 @@ package tensorflow.contrib.opt.python.training.moving_average_optimizer;
 		
 		Returns:
 		  An `Operation` that applies the specified gradients across all
-		  towers. If `global_step` was not None, that operation also
-		  increments `global_step`.
+		  replicas. If `global_step` was not None, that operation also
+		  increments `global_step`
 	**/
 	public function _distributed_apply(distribution:Dynamic, grads_and_vars:Dynamic, ?global_step:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns name of swapped variable for given tensor.
+		
+		Args:
+		  v_name_to_tensor: Mapping from variable names to tensors.
+		  v_name: name of the variable for which swapped variable should be returned
+		  tensor: Tensor which correspond to variable for which swapped variable
+		    should be returned.
+		
+		Returns:
+		  Tensor which correspond to swapped variable.
+		
+		Raises:
+		  ValueError: If swapped variable could not be found in v_name_to_tensor.
+	**/
+	public function _find_swapped_variable(v_name_to_tensor:Dynamic, v_name:Dynamic, tensor:Dynamic):Dynamic;
 	/**
 		Do what is needed to finish the update.
 		
@@ -520,6 +536,7 @@ package tensorflow.contrib.opt.python.training.moving_average_optimizer;
 		Restore a newly created slot variable's value.
 	**/
 	public function _restore_slot_variable(slot_name:Dynamic, variable:Dynamic, slot_variable:Dynamic):Dynamic;
+	static public function _scale_loss(loss_value:Dynamic):Dynamic;
 	/**
 		Restore this object, and either queue its dependencies or defer them.
 	**/

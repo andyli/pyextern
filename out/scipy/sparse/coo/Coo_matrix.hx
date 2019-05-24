@@ -213,7 +213,7 @@ package scipy.sparse.coo;
 		
 		Returns
 		-------
-		ind : np.matrix or int
+		ind : numpy.matrix or int
 		    Indices of maximum elements. If matrix, its size along `axis` is 1.
 	**/
 	public function argmax(?axis:Dynamic, ?out:Dynamic):Dynamic;
@@ -235,24 +235,24 @@ package scipy.sparse.coo;
 		
 		Returns
 		-------
-		 ind : np.matrix or int
+		 ind : numpy.matrix or int
 		    Indices of minimum elements. If matrix, its size along `axis` is 1.
 	**/
 	public function argmin(?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
-		Return this matrix in the passed sparse format.
+		Return this matrix in the passed format.
 		
 		Parameters
 		----------
 		format : {str, None}
-		    The desired sparse matrix format ("csr", "csc", "lil", "dok", ...)
+		    The desired matrix format ("csr", "csc", "lil", "dok", "array", ...)
 		    or None for no conversion.
 		copy : bool, optional
 		    If True, the result is guaranteed to not share data with self.
 		
 		Returns
 		-------
-		A : This matrix in the passed sparse format.
+		A : This matrix in the passed format.
 	**/
 	public function asformat(format:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
@@ -405,7 +405,7 @@ package scipy.sparse.coo;
 		
 		See Also
 		--------
-		np.matrix.getH : NumPy's implementation of `getH` for matrices
+		numpy.matrix.getH : NumPy's implementation of `getH` for matrices
 	**/
 	public function getH():Dynamic;
 	/**
@@ -476,7 +476,7 @@ package scipy.sparse.coo;
 		See Also
 		--------
 		min : The minimum value of a sparse matrix along a given axis.
-		np.matrix.max : NumPy's implementation of 'max' for matrices
+		numpy.matrix.max : NumPy's implementation of 'max' for matrices
 	**/
 	public function max(?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -516,7 +516,7 @@ package scipy.sparse.coo;
 		
 		See Also
 		--------
-		np.matrix.mean : NumPy's implementation of 'mean' for matrices
+		numpy.matrix.mean : NumPy's implementation of 'mean' for matrices
 	**/
 	public function mean(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -545,7 +545,7 @@ package scipy.sparse.coo;
 		See Also
 		--------
 		max : The maximum value of a sparse matrix along a given axis.
-		np.matrix.min : NumPy's implementation of 'min' for matrices
+		numpy.matrix.min : NumPy's implementation of 'min' for matrices
 	**/
 	public function min(?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -624,7 +624,8 @@ package scipy.sparse.coo;
 		
 		See Also
 		--------
-		np.matrix.reshape : NumPy's implementation of 'reshape' for matrices
+		numpy.matrix.reshape : NumPy's implementation of 'reshape' for
+		                       matrices
 	**/
 	public function reshape(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -742,7 +743,7 @@ package scipy.sparse.coo;
 		
 		See Also
 		--------
-		np.matrix.sum : NumPy's implementation of 'sum' for matrices
+		numpy.matrix.sum : NumPy's implementation of 'sum' for matrices
 	**/
 	public function sum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -896,8 +897,8 @@ package scipy.sparse.coo;
 		
 		See Also
 		--------
-		np.matrix.transpose : NumPy's implementation of 'transpose'
-		                      for matrices
+		numpy.matrix.transpose : NumPy's implementation of 'transpose'
+		                         for matrices
 	**/
 	public function transpose(?axes:Dynamic, ?copy:Dynamic):Dynamic;
 	/**

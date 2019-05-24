@@ -77,6 +77,8 @@ package numpy.lib.scimath;
 	**/
 	static public function _fix_real_lt_zero(x:Dynamic):Dynamic;
 	static public var _ln2 : Dynamic;
+	static public function _logn_dispatcher(n:Dynamic, x:Dynamic):Dynamic;
+	static public function _power_dispatcher(x:Dynamic, p:Dynamic):Dynamic;
 	/**
 		Convert its input `arr` to a complex array.
 		
@@ -134,6 +136,7 @@ package numpy.lib.scimath;
 		array([ 1.+0.j,  2.+0.j,  3.+0.j], dtype=complex64)
 	**/
 	static public function _tocomplex(arr:Dynamic):Dynamic;
+	static public function _unary_dispatcher(x:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Test whether any array element along a given axis evaluates to True.
@@ -335,6 +338,38 @@ package numpy.lib.scimath;
 		array([ 0.+0.7854j])
 	**/
 	static public function arctanh(x:Dynamic):Dynamic;
+	/**
+		Decorator for adding dispatch with the __array_function__ protocol.
+		
+		See NEP-18 for example usage.
+		
+		Parameters
+		----------
+		dispatcher : callable
+		    Function that when called like ``dispatcher(*args, **kwargs)`` with
+		    arguments from the NumPy function call returns an iterable of
+		    array-like arguments to check for ``__array_function__``.
+		module : str, optional
+		    __module__ attribute to set on new function, e.g., ``module='numpy'``.
+		    By default, module is copied from the decorated function.
+		verify : bool, optional
+		    If True, verify the that the signature of the dispatcher and decorated
+		    function signatures match exactly: all required and optional arguments
+		    should appear in order with the same names, but the default values for
+		    all optional arguments should be ``None``. Only disable verification
+		    if the dispatcher's signature needs to deviate for some particular
+		    reason, e.g., because the function has a signature like
+		    ``func(*args, **kwargs)``.
+		docs_from_dispatcher : bool, optional
+		    If True, copy docs from the dispatcher function onto the dispatched
+		    function, rather than from the implementation. This is useful for
+		    functions defined in C, which otherwise don't have docstrings.
+		
+		Returns
+		-------
+		Function suitable for decorating the implementation of a NumPy function.
+	**/
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	/**
 		Convert the input to an array.
 		
@@ -567,8 +602,8 @@ package numpy.lib.scimath;
 		
 		Parameters
 		----------
-		n : int
-		   The base in which the log is taken.
+		n : array_like
+		   The integer base(s) in which the log is taken.
 		x : array_like
 		   The value(s) whose log base `n` is (are) required.
 		

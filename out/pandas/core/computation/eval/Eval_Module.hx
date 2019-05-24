@@ -177,6 +177,11 @@ package pandas.core.computation.eval;
 		    - Item assignment is provided and `inplace=False`, but the `target`
 		      does not support the `.copy()` method
 		
+		See Also
+		--------
+		pandas.DataFrame.query
+		pandas.DataFrame.eval
+		
 		Notes
 		-----
 		The ``dtype`` of any objects involved in an arithmetic ``%`` operation are
@@ -184,11 +189,6 @@ package pandas.core.computation.eval;
 		
 		See the :ref:`enhancing performance <enhancingperf.eval>` documentation for
 		more details.
-		
-		See Also
-		--------
-		pandas.DataFrame.query
-		pandas.DataFrame.eval
 	**/
 	static public function eval(expr:Dynamic, ?parser:Dynamic, ?engine:Dynamic, ?truediv:Dynamic, ?local_dict:Dynamic, ?global_dict:Dynamic, ?resolvers:Dynamic, ?level:Dynamic, ?target:Dynamic, ?inplace:Dynamic):Dynamic;
 	/**

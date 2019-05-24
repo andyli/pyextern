@@ -15,7 +15,11 @@ package tensorflow.python.ops.clip_ops;
 	static public function _clip_by_value_grad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Clips tensor values to a maximum average L2-norm.
+		Clips tensor values to a maximum average L2-norm. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		clip_by_average_norm is deprecated in TensorFlow 2.0. Please use clip_by_norm(t, clip_norm * tf.to_float(tf.size(t), name)) instead.
 		
 		Given a tensor `t`, and a maximum clip value `clip_norm`, this operation
 		normalizes `t` so that its average L2-norm is less than or equal to
@@ -108,7 +112,7 @@ package tensorflow.python.ops.clip_ops;
 		an optimizer.
 		
 		Args:
-		  t: A `Tensor`.
+		  t: A `Tensor` or `IndexedSlices`.
 		  clip_norm: A 0-D (scalar) `Tensor` > 0. A maximum clipping value.
 		  axes: A 1-D (vector) `Tensor` of type int32 containing the dimensions
 		    to use for computing the L2-norm. If `None` (the default), uses all
@@ -116,7 +120,7 @@ package tensorflow.python.ops.clip_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A clipped `Tensor`.
+		  A clipped `Tensor` or `IndexedSlices`.
 	**/
 	static public function clip_by_norm(t:Dynamic, clip_norm:Dynamic, ?axes:Dynamic, ?name:Dynamic):Dynamic;
 	/**

@@ -15,9 +15,6 @@ package pandas.tseries.offsets;
 	**/
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
-	/**
-		Return self==value.
-	**/
 	public function __eq__(other:Dynamic):Dynamic;
 	/**
 		default object formatter
@@ -32,12 +29,13 @@ package pandas.tseries.offsets;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	/**
+		Return a pickleable state
+	**/
+	public function __getstate__():Dynamic;
+	/**
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
-	/**
-		Return hash(self).
-	**/
 	public function __hash__():Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
@@ -65,9 +63,6 @@ package pandas.tseries.offsets;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(other:Dynamic):Dynamic;
-	/**
-		Return self!=value.
-	**/
 	public function __ne__(other:Dynamic):Dynamic;
 	public function __neg__():Dynamic;
 	/**
@@ -86,9 +81,6 @@ package pandas.tseries.offsets;
 	public function __repr__():Dynamic;
 	public function __rmul__(other:Dynamic):Dynamic;
 	public function __rsub__(other:Dynamic):Dynamic;
-	/**
-		Implement setattr(self, name, value).
-	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
 		Reconstruct an instance from a pickled state
@@ -119,19 +111,23 @@ package pandas.tseries.offsets;
 	public var __weakref__ : Dynamic;
 	static public var _adjust_dst : Dynamic;
 	static public var _attributes : Dynamic;
-	static public var _cacheable : Dynamic;
 	static public var _day_opt : Dynamic;
 	static public function _from_name(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _get_offset_day(other:Dynamic):Dynamic;
-	static public var _normalize_cache : Dynamic;
 	public var _offset : Dynamic;
 	public function _offset_str():Dynamic;
-	public function _params():Dynamic;
+	/**
+		Returns a tuple containing all of the attributes needed to evaluate
+		equality between two DateOffset objects.
+	**/
+	public var _params : Dynamic;
 	static public var _prefix : Dynamic;
 	public function _repr_attrs():Dynamic;
 	/**
-		roll `other` back to the most recent date that was on a fiscal year
-		end.  Return the date of that year-end, the number of full quarters
+		Roll `other` back to the most recent date that was on a fiscal year
+		end.
+		
+		Return the date of that year-end, the number of full quarters
 		elapsed between that year-end and other, and the remaining Timedelta
 		since the most recent quarter-end.
 		
@@ -147,7 +143,6 @@ package pandas.tseries.offsets;
 		tdelta : Timedelta
 	**/
 	public function _rollback_to_year(other:Dynamic):Dynamic;
-	public function _should_cache():Dynamic;
 	static public var _typ : Dynamic;
 	static public var _use_relativedelta : Dynamic;
 	/**
@@ -171,7 +166,7 @@ package pandas.tseries.offsets;
 	/**
 		Vectorized apply of DateOffset to DatetimeIndex,
 		raises NotImplentedError for offsets without a
-		vectorized implementation
+		vectorized implementation.
 		
 		Parameters
 		----------
@@ -182,6 +177,11 @@ package pandas.tseries.offsets;
 		y : DatetimeIndex
 	**/
 	public function apply_index(other:Dynamic):pandas.DatetimeIndex;
+	/**
+		Returns a copy of the calling offset object with n=1 and all other
+		attributes equal.
+	**/
+	public var base : Dynamic;
 	public function copy():Dynamic;
 	public var freqstr : Dynamic;
 	public function get_weeks(dt:Dynamic):Dynamic;
@@ -192,11 +192,11 @@ package pandas.tseries.offsets;
 	static public var normalize : Dynamic;
 	public function onOffset(dt:Dynamic):Dynamic;
 	/**
-		Roll provided date backward to next offset only if not on offset
+		Roll provided date backward to next offset only if not on offset.
 	**/
 	public function rollback(dt:Dynamic):Dynamic;
 	/**
-		Roll provided date forward to next offset only if not on offset
+		Roll provided date forward to next offset only if not on offset.
 	**/
 	public function rollforward(dt:Dynamic):Dynamic;
 	public var rule_code : Dynamic;

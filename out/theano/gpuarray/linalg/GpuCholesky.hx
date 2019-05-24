@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.gpuarray.linalg;
 @:pythonImport("theano.gpuarray.linalg", "GpuCholesky") extern class GpuCholesky {
-	public function L_op(inputs:Dynamic, outputs:Dynamic, output_grads:Dynamic):Dynamic;
+	public function L_op(inputs:Dynamic, outputs:Dynamic, gradients:Dynamic):Dynamic;
 	/**
 		This method is primarily used by tensor.Rop
 		

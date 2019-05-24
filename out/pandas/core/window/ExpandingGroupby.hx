@@ -120,7 +120,7 @@ package pandas.core.window;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		provide a nice str repr of our rolling object 
+		Provide a nice str repr of our rolling object.
 	**/
 	public function __unicode__():Dynamic;
 	/**
@@ -129,6 +129,8 @@ package pandas.core.window;
 	public var __weakref__ : Dynamic;
 	static public var _accessors : Dynamic;
 	static public var _agg_doc : Dynamic;
+	static public var _agg_examples_doc : Dynamic;
+	static public var _agg_see_also_doc : Dynamic;
 	/**
 		provide an implementation for the aggregators
 		
@@ -150,14 +152,14 @@ package pandas.core.window;
 	public function _aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _aggregate_multiple_funcs(arg:Dynamic, _level:Dynamic, _axis:Dynamic):Dynamic;
 	/**
-		dispatch to apply; we are stripping all of the _apply kwargs and
-		performing the original function call on the grouped object
+		Dispatch to apply; we are stripping all of the _apply kwargs and
+		performing the original function call on the grouped object.
 	**/
 	public function _apply(func:Dynamic, name:Dynamic, ?window:Dynamic, ?center:Dynamic, ?check_minp:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _attributes : Dynamic;
 	static public var _builtin_table : Dynamic;
 	/**
-		center the result in the window 
+		Center the result in the window.
 	**/
 	public function _center_window(result:Dynamic, window:Dynamic):Dynamic;
 	/**
@@ -165,11 +167,11 @@ package pandas.core.window;
 	**/
 	public var _constructor : Dynamic;
 	/**
-		resample according to the how, return a new object 
+		Resample according to the how, return a new object.
 	**/
 	public function _convert_freq():Dynamic;
 	/**
-		split data into blocks & return conformed data 
+		Split data into blocks & return conformed data.
 	**/
 	public function _create_blocks():Dynamic;
 	static public var _cython_table : Dynamic;
@@ -183,21 +185,34 @@ package pandas.core.window;
 	**/
 	public function _dir_deletions():Dynamic;
 	/**
-		dispatch to apply 
+		Dispatch to apply.
 	**/
 	static public function _dispatch(name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return index as ndarrays
+		Return index as ndarrays.
 		
 		Returns
 		-------
 		tuple of (index, index_as_ndarray)
 	**/
 	public function _get_index(?index:Dynamic):Dynamic;
-	public function _get_window(?other:Dynamic):Dynamic;
 	/**
-		sub-classes to define
-		return a sliced object
+		Get the window length over which to perform some operation.
+		
+		Parameters
+		----------
+		other : object, default None
+		    The other object that is involved in the operation.
+		    Such an object is involved for operations like covariance.
+		
+		Returns
+		-------
+		window : int
+		    The window length.
+	**/
+	public function _get_window(?other:Dynamic):Int;
+	/**
+		Sub-classes to define. Return a sliced object.
 		
 		Parameters
 		----------
@@ -216,7 +231,7 @@ package pandas.core.window;
 	**/
 	public function _is_builtin_func(arg:Dynamic):Dynamic;
 	/**
-		if we define an internal function for this argument, return it 
+		if we define an internal function for this argument, return it
 	**/
 	public function _is_cython_func(arg:Dynamic):Dynamic;
 	public var _obj_with_exclusions : Dynamic;
@@ -236,7 +251,7 @@ package pandas.core.window;
 	**/
 	public var _selection_name : Dynamic;
 	/**
-		return a new object with the replacement attributes 
+		return a new object with the replacement attributes
 	**/
 	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -248,11 +263,11 @@ package pandas.core.window;
 	public function _try_aggregate_string_function(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _window_type : Dynamic;
 	/**
-		wrap a single result 
+		Wrap a single result.
 	**/
 	public function _wrap_result(result:Dynamic, ?block:Dynamic, ?obj:Dynamic):Dynamic;
 	/**
-		wrap the results
+		Wrap the results.
 		
 		Parameters
 		----------
@@ -268,18 +283,16 @@ package pandas.core.window;
 		
 		Parameters
 		----------
-		func : function, string, dictionary, or list of string/functions
+		func : function, str, list or dict
 		    Function to use for aggregating the data. If a function, must either
-		    work when passed a Series/DataFrame or when passed to Series/DataFrame.apply. For
-		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
+		    work when passed a Series/Dataframe or when passed to Series/Dataframe.apply.
 		
 		    Accepted combinations are:
 		
-		    - string function name.
-		    - function.
-		    - list of functions.
-		    - dict of column names -> functions (or list of functions).
-		
+		    - function
+		    - string function name
+		    - list of functions and/or function names, e.g. ``[np.sum, 'mean']``
+		    - dict of axis labels -> functions, function names or list of such.
 		
 		*args
 		    Positional arguments to pass to `func`.
@@ -288,13 +301,26 @@ package pandas.core.window;
 		
 		Returns
 		-------
-		aggregated : Series/DataFrame
+		DataFrame, Series or scalar
+		    if DataFrame.agg is called with a single function, returns a Series
+		    if DataFrame.agg is called with several functions, returns a DataFrame
+		    if Series.agg is called with single function, returns a scalar
+		    if Series.agg is called with several functions, returns a Series
+		
+		
+		See Also
+		--------
+		pandas.DataFrame.expanding.aggregate
+		pandas.DataFrame.rolling.aggregate
+		pandas.DataFrame.aggregate
+		
 		
 		Notes
 		-----
 		`agg` is an alias for `aggregate`. Use the alias.
 		
 		A passed user-defined-function will be passed a Series for evaluation.
+		
 		
 		Examples
 		--------
@@ -325,12 +351,6 @@ package pandas.core.window;
 		7  0.680292  0.132049  0.548693
 		8  0.067236  0.948257  0.163353
 		9 -0.286980  0.618493 -0.694496
-		
-		See also
-		--------
-		pandas.DataFrame.expanding.aggregate
-		pandas.DataFrame.rolling.aggregate
-		pandas.DataFrame.aggregate
 	**/
 	public function agg(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -340,18 +360,16 @@ package pandas.core.window;
 		
 		Parameters
 		----------
-		func : function, string, dictionary, or list of string/functions
+		func : function, str, list or dict
 		    Function to use for aggregating the data. If a function, must either
-		    work when passed a Series/DataFrame or when passed to Series/DataFrame.apply. For
-		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
+		    work when passed a Series/Dataframe or when passed to Series/Dataframe.apply.
 		
 		    Accepted combinations are:
 		
-		    - string function name.
-		    - function.
-		    - list of functions.
-		    - dict of column names -> functions (or list of functions).
-		
+		    - function
+		    - string function name
+		    - list of functions and/or function names, e.g. ``[np.sum, 'mean']``
+		    - dict of axis labels -> functions, function names or list of such.
 		
 		*args
 		    Positional arguments to pass to `func`.
@@ -360,13 +378,26 @@ package pandas.core.window;
 		
 		Returns
 		-------
-		aggregated : Series/DataFrame
+		DataFrame, Series or scalar
+		    if DataFrame.agg is called with a single function, returns a Series
+		    if DataFrame.agg is called with several functions, returns a DataFrame
+		    if Series.agg is called with single function, returns a scalar
+		    if Series.agg is called with several functions, returns a Series
+		
+		
+		See Also
+		--------
+		pandas.DataFrame.expanding.aggregate
+		pandas.DataFrame.rolling.aggregate
+		pandas.DataFrame.aggregate
+		
 		
 		Notes
 		-----
 		`agg` is an alias for `aggregate`. Use the alias.
 		
 		A passed user-defined-function will be passed a Series for evaluation.
+		
 		
 		Examples
 		--------
@@ -397,22 +428,16 @@ package pandas.core.window;
 		7  0.680292  0.132049  0.548693
 		8  0.067236  0.948257  0.163353
 		9 -0.286980  0.618493 -0.694496
-		
-		See also
-		--------
-		pandas.DataFrame.expanding.aggregate
-		pandas.DataFrame.rolling.aggregate
-		pandas.DataFrame.aggregate
 	**/
 	public function aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		expanding function apply
+		The expanding function's apply function.
 		
 		Parameters
 		----------
 		func : function
 		    Must produce a single value from an ndarray input if ``raw=True``
-		    or a Series if ``raw=False``
+		    or a Series if ``raw=False``.
 		raw : bool, default None
 		    * ``False`` : passes each row or column as a Series to the
 		      function.
@@ -425,17 +450,18 @@ package pandas.core.window;
 		    not passed. In the future `raw` will default to False.
 		
 		    .. versionadded:: 0.23.0
-		
-		\*args and \*\*kwargs are passed to the function
+		*args, **kwargs
+		    Arguments and keyword arguments to be passed into func.
 		
 		Returns
 		-------
-		same type as input
+		Series or DataFrame
+		    Return type is determined by the caller.
 		
-		See also
+		See Also
 		--------
-		pandas.Series.expanding
-		pandas.DataFrame.expanding
+		Series.expanding : Series expanding.
+		DataFrame.expanding : DataFrame expanding.
 	**/
 	public function apply(func:Dynamic, ?raw:Dynamic, ?args:Dynamic, ?kwargs:Dynamic):Dynamic;
 	public function corr(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -462,12 +488,12 @@ package pandas.core.window;
 		
 		See Also
 		--------
-		Series.expanding : Calling object with Series data
-		DataFrame.expanding : Calling object with DataFrames
-		Series.kurt : Equivalent method for Series
-		DataFrame.kurt : Equivalent method for DataFrame
-		scipy.stats.skew : Third moment of a probability density
-		scipy.stats.kurtosis : Reference SciPy method
+		Series.expanding : Calling object with Series data.
+		DataFrame.expanding : Calling object with DataFrames.
+		Series.kurt : Equivalent method for Series.
+		DataFrame.kurt : Equivalent method for DataFrame.
+		scipy.stats.skew : Third moment of a probability density.
+		scipy.stats.kurtosis : Reference SciPy method.
 		
 		Notes
 		-----
@@ -497,17 +523,22 @@ package pandas.core.window;
 	**/
 	public function kurt(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		expanding maximum
+		Calculate the expanding maximum.
 		
+		Parameters
+		----------
+		*args, **kwargs
+		    Arguments and keyword arguments to be passed into func.
 		
-		Returns
-		-------
-		same type as input
+		        Returns
+		        -------
+		        Series or DataFrame
+		            Return type is determined by the caller.
 		
-		See also
-		--------
-		pandas.Series.expanding
-		pandas.DataFrame.expanding
+		        See Also
+		        --------
+		        Series.expanding : Series expanding.
+		        DataFrame.expanding : DataFrame expanding.
 	**/
 	public function max(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -528,10 +559,10 @@ package pandas.core.window;
 		
 		See Also
 		--------
-		Series.expanding : Calling object with Series data
-		DataFrame.expanding : Calling object with DataFrames
-		Series.mean : Equivalent method for Series
-		DataFrame.mean : Equivalent method for DataFrame
+		Series.expanding : Calling object with Series data.
+		DataFrame.expanding : Calling object with DataFrames.
+		Series.mean : Equivalent method for Series.
+		DataFrame.mean : Equivalent method for DataFrame.
 		
 		Examples
 		--------
@@ -570,10 +601,10 @@ package pandas.core.window;
 		
 		See Also
 		--------
-		Series.expanding : Calling object with Series data
-		DataFrame.expanding : Calling object with DataFrames
-		Series.median : Equivalent method for Series
-		DataFrame.median : Equivalent method for DataFrame
+		Series.expanding : Calling object with Series data.
+		DataFrame.expanding : Calling object with DataFrames.
+		Series.median : Equivalent method for Series.
+		DataFrame.median : Equivalent method for DataFrame.
 		
 		Examples
 		--------
@@ -605,10 +636,10 @@ package pandas.core.window;
 		
 		See Also
 		--------
-		Series.expanding : Calling object with a Series
-		DataFrame.expanding : Calling object with a DataFrame
-		Series.min : Similar method for Series
-		DataFrame.min : Similar method for DataFrame
+		Series.expanding : Calling object with a Series.
+		DataFrame.expanding : Calling object with a DataFrame.
+		Series.min : Similar method for Series.
+		DataFrame.min : Similar method for DataFrame.
 		
 		Examples
 		--------
@@ -626,7 +657,7 @@ package pandas.core.window;
 	public function min(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var ndim : Dynamic;
 	/**
-		expanding quantile.
+		Calculate the expanding quantile.
 		
 		Parameters
 		----------
@@ -654,6 +685,13 @@ package pandas.core.window;
 		    Returned object type is determined by the caller of the expanding
 		    calculation.
 		
+		See Also
+		--------
+		pandas.Series.quantile : Computes value at the given quantile over all data
+		    in Series.
+		pandas.DataFrame.quantile : Computes values at the given quantile over
+		    requested axis in DataFrame.
+		
 		Examples
 		--------
 		>>> s = pd.Series([1, 2, 3, 4])
@@ -670,26 +708,25 @@ package pandas.core.window;
 		2    2.5
 		3    3.5
 		dtype: float64
-		
-		See Also
-		--------
-		pandas.Series.quantile : Computes value at the given quantile over all data
-		    in Series.
-		pandas.DataFrame.quantile : Computes values at the given quantile over
-		    requested axis in DataFrame.
 	**/
 	public function quantile(quantile:Dynamic, ?interpolation:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Unbiased expanding skewness
+		Unbiased expanding skewness.
 		
-		Returns
-		-------
-		same type as input
+		Parameters
+		----------
+		**kwargs
+		    Keyword arguments to be passed into func.
 		
-		See also
-		--------
-		pandas.Series.expanding
-		pandas.DataFrame.expanding
+		        Returns
+		        -------
+		        Series or DataFrame
+		            Return type is determined by the caller.
+		
+		        See Also
+		        --------
+		        Series.expanding : Series expanding.
+		        DataFrame.expanding : DataFrame expanding.
 	**/
 	public function skew(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -713,11 +750,11 @@ package pandas.core.window;
 		
 		See Also
 		--------
-		Series.expanding : Calling object with Series data
-		DataFrame.expanding : Calling object with DataFrames
-		Series.std : Equivalent method for Series
-		DataFrame.std : Equivalent method for DataFrame
-		numpy.std : Equivalent method for Numpy array
+		Series.expanding : Calling object with Series data.
+		DataFrame.expanding : Calling object with DataFrames.
+		Series.std : Equivalent method for Series.
+		DataFrame.std : Equivalent method for DataFrame.
+		numpy.std : Equivalent method for Numpy array.
 		
 		Notes
 		-----
@@ -847,11 +884,11 @@ package pandas.core.window;
 		
 		See Also
 		--------
-		Series.expanding : Calling object with Series data
-		DataFrame.expanding : Calling object with DataFrames
-		Series.var : Equivalent method for Series
-		DataFrame.var : Equivalent method for DataFrame
-		numpy.var : Equivalent method for Numpy array
+		Series.expanding : Calling object with Series data.
+		DataFrame.expanding : Calling object with DataFrames.
+		Series.var : Equivalent method for Series.
+		DataFrame.var : Equivalent method for DataFrame.
+		numpy.var : Equivalent method for Numpy array.
 		
 		Notes
 		-----

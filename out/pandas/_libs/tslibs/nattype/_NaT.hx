@@ -61,6 +61,10 @@ package pandas._libs.tslibs.nattype;
 	**/
 	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		int(self)
+	**/
+	public function __int__():Dynamic;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -185,6 +189,13 @@ package pandas._libs.tslibs.nattype;
 	**/
 	public function fromtimestamp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var hour : Dynamic;
+	public var is_leap_year : Dynamic;
+	public var is_month_end : Dynamic;
+	public var is_month_start : Dynamic;
+	public var is_quarter_end : Dynamic;
+	public var is_quarter_start : Dynamic;
+	public var is_year_end : Dynamic;
+	public var is_year_start : Dynamic;
 	/**
 		Return a 3-tuple containing ISO year, week number, and weekday.
 	**/
@@ -256,6 +267,10 @@ package pandas._libs.tslibs.nattype;
 		Return proleptic Gregorian ordinal.  January 1 of year 1 is day 1.
 	**/
 	public function toordinal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Total duration of timedelta in seconds (to ns precision)
+	**/
+	public function total_seconds(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var tzinfo : Dynamic;
 	/**
 		Return self.tzinfo.tzname(self).

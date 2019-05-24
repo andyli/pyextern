@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.compiler.xla.xla_data_pb2;
 @:pythonImport("tensorflow.compiler.xla.xla_data_pb2", "WindowDimension") extern class WindowDimension {
-	static public var BASE_DILATION_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -63,8 +62,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var PADDING_HIGH_FIELD_NUMBER : Dynamic;
-	static public var PADDING_LOW_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -73,8 +70,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SIZE_FIELD_NUMBER : Dynamic;
-	static public var STRIDE_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -87,8 +82,10 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var WINDOW_DILATION_FIELD_NUMBER : Dynamic;
-	static public var WINDOW_REVERSAL_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -254,4 +251,32 @@ package tensorflow.compiler.xla.xla_data_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.WindowDimension.base_dilation
+	**/
+	public var base_dilation : Dynamic;
+	/**
+		Field xla.WindowDimension.padding_high
+	**/
+	public var padding_high : Dynamic;
+	/**
+		Field xla.WindowDimension.padding_low
+	**/
+	public var padding_low : Dynamic;
+	/**
+		Field xla.WindowDimension.size
+	**/
+	public var size : Dynamic;
+	/**
+		Field xla.WindowDimension.stride
+	**/
+	public var stride : Dynamic;
+	/**
+		Field xla.WindowDimension.window_dilation
+	**/
+	public var window_dilation : Dynamic;
+	/**
+		Field xla.WindowDimension.window_reversal
+	**/
+	public var window_reversal : Dynamic;
 }

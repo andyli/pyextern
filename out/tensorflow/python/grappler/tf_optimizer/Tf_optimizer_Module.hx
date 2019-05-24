@@ -4,7 +4,7 @@ package tensorflow.python.grappler.tf_optimizer;
 	/**
 		Optimize the provided metagraph.
 	**/
-	static public function OptimizeGraph(rewriter_config:Dynamic, metagraph:Dynamic, ?verbose:Dynamic, ?graph_id:Dynamic, ?cluster:Dynamic):Dynamic;
+	static public function OptimizeGraph(config_proto:Dynamic, metagraph:Dynamic, ?verbose:Dynamic, ?graph_id:Dynamic, ?cluster:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

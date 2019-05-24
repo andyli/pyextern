@@ -40,7 +40,7 @@ package tensorflow.contrib.gan.python.estimator.python.head_impl;
 	/**
 		`Head` for GAN training. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.contrib.gan.GANEstimator without explicitly making a GANHead.
 		
@@ -67,7 +67,7 @@ package tensorflow.contrib.gan.python.estimator.python.head_impl;
 	/**
 		`Head` for GAN training. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.contrib.gan.GANEstimator without explicitly making a GANHead.
 		
@@ -118,7 +118,7 @@ package tensorflow.contrib.gan.python.estimator.python.head_impl;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.

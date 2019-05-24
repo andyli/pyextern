@@ -11,7 +11,7 @@ package torch.multiprocessing.reductions;
 	static public var __spec__ : Dynamic;
 	static public function fd_id(fd:Dynamic):Dynamic;
 	static public function init_reductions():Dynamic;
-	static public function rebuild_cuda_tensor(tensor_cls:Dynamic, tensor_size:Dynamic, tensor_stride:Dynamic, tensor_offset:Dynamic, storage_cls:Dynamic, storage_device:Dynamic, storage_handle:Dynamic, storage_size:Dynamic):Dynamic;
+	static public function rebuild_cuda_tensor(tensor_cls:Dynamic, tensor_size:Dynamic, tensor_stride:Dynamic, tensor_offset:Dynamic, storage_cls:Dynamic, storage_device:Dynamic, storage_handle:Dynamic, storage_size_bytes:Dynamic, storage_offset_bytes:Dynamic, requires_grad:Dynamic):Dynamic;
 	static public function rebuild_event(handle:Dynamic):Dynamic;
 	static public function rebuild_storage_empty(cls:Dynamic):Dynamic;
 	static public function rebuild_storage_fd(cls:Dynamic, df:Dynamic, size:Dynamic):Dynamic;

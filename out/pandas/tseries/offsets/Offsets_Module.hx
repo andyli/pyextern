@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.tseries.offsets;
 @:pythonImport("pandas.tseries.offsets") extern class Offsets_Module {
+	static public var NaT : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -11,7 +12,6 @@ package pandas.tseries.offsets;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _delta_to_tick(delta:Dynamic):Dynamic;
-	static public function _determine_offset(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Generate busdaycalendar
 	**/
@@ -61,15 +61,14 @@ package pandas.tseries.offsets;
 	/**
 		Generates a sequence of dates corresponding to the specified time
 		offset. Similar to dateutil.rrule except uses pandas DateOffset
-		objects to represent time increments
+		objects to represent time increments.
 		
 		Parameters
 		----------
 		start : datetime (default None)
 		end : datetime (default None)
-		periods : int, optional
-		time_rule : (legacy) name of DateOffset object to be used, optional
-		    Corresponds with names expected by tseries.frequencies.get_offset
+		periods : int, (default None)
+		offset : DateOffset, (default BDay())
 		
 		Notes
 		-----
@@ -77,13 +76,29 @@ package pandas.tseries.offsets;
 		* At least two of (start, end, periods) must be specified.
 		* If both start and end are specified, the returned dates will
 		satisfy start <= date <= end.
-		* If both time_rule and offset are specified, time_rule supersedes offset.
 		
 		Returns
 		-------
 		dates : generator object
 	**/
-	static public function generate_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?offset:Dynamic, ?time_rule:Dynamic):Dynamic;
+	static public function generate_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?offset:Dynamic):Dynamic;
+	/**
+		Normalize datetime.datetime value to midnight. Returns datetime.date as a
+		datetime.datetime at midnight
+		
+		Parameters
+		----------
+		dt : date, datetime, or Timestamp
+		
+		Returns
+		-------
+		normalized : datetime.datetime or Timestamp
+		
+		Raises
+		------
+		TypeError : if input is not datetime.date, datetime.datetime, or Timestamp
+	**/
+	static public function normalize_date(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var prefix_mapping : Dynamic;
 	/**
 		Possibly increment or decrement the number of periods to shift
@@ -94,9 +109,16 @@ package pandas.tseries.offsets;
 		other : datetime or Timestamp
 		n : number of periods to increment, before adjusting for rolling
 		month : reference month giving the first month of the year
-		day_opt : 'start', 'end'
-		    'start': returns 1
-		    'end': returns last day of the month
+		day_opt : 'start', 'end', 'business_start', 'business_end', or int
+		    The day of the month to compare against that of `other` when
+		    incrementing or decrementing the number of periods:
+		
+		    'start': 1
+		    'end': last day of the month
+		    'business_start': first business day of the month
+		    'business_end': last business day of the month
+		    int: day in the month indicated by `other`, or the last of day
+		        the month if the value exceeds in that month's number of days.
 		
 		Returns
 		-------
@@ -138,22 +160,6 @@ package pandas.tseries.offsets;
 	**/
 	static public function roll_yearday(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Increment the datetime `other` by the given number of days, retaining
-		the time-portion of the datetime.  For tz-naive datetimes this is
-		equivalent to adding a timedelta.  For tz-aware datetimes it is similar to
-		dateutil's relativedelta.__add__, but handles pytz tzinfo objects.
-		
-		Parameters
-		----------
-		other : datetime or Timestamp
-		days : int
-		
-		Returns
-		-------
-		shifted: datetime or Timestamp
-	**/
-	static public function shift_day(other:Dynamic, days:Dynamic):Dynamic;
-	/**
 		Given a datetime (or Timestamp) `stamp`, an integer `months` and an
 		option `day_opt`, return a new datetimelike that many months later,
 		with day determined by `day_opt` using relativedelta semantics.
@@ -164,11 +170,15 @@ package pandas.tseries.offsets;
 		----------
 		stamp : datetime or Timestamp
 		months : int
-		day_opt : None, 'start', 'end', or an integer
+		day_opt : None, 'start', 'end', 'business_start', 'business_end', or int
 		    None: returned datetimelike has the same day as the input, or the
 		          last day of the month if the new month is too short
 		    'start': returned datetimelike has day=1
 		    'end': returned datetimelike has day on the last day of the month
+		    'business_start': returned datetimelike has day on the first
+		        business day of the month
+		    'business_end': returned datetimelike has day on the last
+		        business day of the month
 		    int: returned datetimelike has day equal to day_opt
 		
 		Returns
@@ -207,7 +217,7 @@ package pandas.tseries.offsets;
 		      as dateutil).
 		
 		    Warning: yearfirst=True is not strict, but will prefer to parse
-		    with year first (this is a known bug, based on dateutil beahavior).
+		    with year first (this is a known bug, based on dateutil behavior).
 		
 		    .. versionadded:: 0.16.1
 		
@@ -216,7 +226,7 @@ package pandas.tseries.offsets;
 		    datetime.datetime objects as well).
 		box : boolean, default True
 		
-		    - If True returns a DatetimeIndex
+		    - If True returns a DatetimeIndex or Index-like object
 		    - If False returns ndarray of values.
 		format : string, default None
 		    strftime to parse time, eg "%d/%m/%Y", note that "%f" will parse
@@ -250,8 +260,8 @@ package pandas.tseries.offsets;
 		    .. versionadded:: 0.20.0
 		cache : boolean, default False
 		    If True, use a cache of unique, converted dates to apply the datetime
-		    conversion. May produce sigificant speed-up when parsing duplicate date
-		    strings, especially ones with timezone offsets.
+		    conversion. May produce significant speed-up when parsing duplicate
+		    date strings, especially ones with timezone offsets.
 		
 		    .. versionadded:: 0.23.0
 		
@@ -268,6 +278,11 @@ package pandas.tseries.offsets;
 		    any element of input is before Timestamp.min or after Timestamp.max)
 		    return will have datetime.datetime type (or corresponding
 		    array/Series).
+		
+		See Also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
 		
 		Examples
 		--------
@@ -332,11 +347,6 @@ package pandas.tseries.offsets;
 		0    1960-01-02
 		1    1960-01-03
 		2    1960-01-04
-		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_timedelta : Convert argument to timedelta.
 	**/
 	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 }

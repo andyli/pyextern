@@ -38,8 +38,10 @@ package pandas.io.common;
 		mode : str
 		    mode to open path_or_buf with
 		encoding : str or None
-		compression : str or None
-		    Supported compression protocols are gzip, bz2, zip, and xz
+		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default None
+		    If 'infer' and `filepath_or_buffer` is path-like, then detect
+		    compression from the following extensions: '.gz', '.bz2', '.zip',
+		    or '.xz' (otherwise no compression).
 		memory_map : boolean, default False
 		    See parsers._parser_params for more information.
 		is_text : boolean, default True
@@ -62,10 +64,12 @@ package pandas.io.common;
 		
 		Parameters
 		----------
-		filepath_or_buf :
+		filepath_or_buffer :
 		    a path (str) or buffer
-		compression : str or None
-		    the compression method including None for no compression and 'infer'
+		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}
+		    If 'infer' and `filepath_or_buffer` is path-like, then detect
+		    compression from the following extensions: '.gz', '.bz2', '.zip',
+		    or '.xz' (otherwise no compression).
 		
 		Returns
 		-------
@@ -245,7 +249,7 @@ package pandas.io.common;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -261,6 +265,10 @@ package pandas.io.common;
 		False
 	**/
 	static public function is_file_like(obj:Dynamic):Bool;
+	/**
+		Check for a gcs url
+	**/
+	static public function is_gcs_url(url:Dynamic):Dynamic;
 	/**
 		Check if the object is a number.
 		
@@ -278,7 +286,7 @@ package pandas.io.common;
 		
 		See Also
 		--------
-		pandas.api.types.is_integer: checks a subgroup of numbers
+		pandas.api.types.is_integer: Checks a subgroup of numbers.
 		
 		Examples
 		--------

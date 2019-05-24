@@ -13,7 +13,7 @@ package tensorflow.contrib.learn.python.learn.ops.embeddings_ops;
 	/**
 		Creates an embedding for categorical variable with given number of classes. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
 		Instructions for updating:
 		Use `tf.contrib.layers.embed_sequence` instead.
 		
@@ -68,7 +68,7 @@ package tensorflow.contrib.learn.python.learn.ops.embeddings_ops;
 	/**
 		Provides a N dimensional version of tf.embedding_lookup. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
 		Instructions for updating:
 		Use `tf.embedding_lookup` instead.
 		

@@ -124,7 +124,7 @@ package pandas.core.resample;
 	public function _get_grouper(obj:Dynamic, ?validate:Dynamic):Dynamic;
 	public function _get_period_bins(ax:Dynamic):Dynamic;
 	/**
-		return my resampler or raise if we have an invalid axis
+		Return my resampler or raise if we have an invalid axis.
 		
 		Parameters
 		----------

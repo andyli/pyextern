@@ -10,6 +10,8 @@ package numpy.core.defchararray;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _binary_op_dispatcher(x1:Dynamic, x2:Dynamic):Dynamic;
+	static public function _center_dispatcher(a:Dynamic, width:Dynamic, ?fillchar:Dynamic):Dynamic;
 	/**
 		Helper function for delegating arguments to Python string
 		functions.
@@ -19,6 +21,10 @@ package numpy.core.defchararray;
 		we need to remove all `None` arguments, and those following them.
 	**/
 	static public function _clean_args(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function _code_dispatcher(a:Dynamic, ?encoding:Dynamic, ?errors:Dynamic):Dynamic;
+	static public function _count_dispatcher(a:Dynamic, sub:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
+	static public function _endswith_dispatcher(a:Dynamic, suffix:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
+	static public function _expandtabs_dispatcher(a:Dynamic, ?tabsize:Dynamic):Dynamic;
 	/**
 		Helper function that returns the number of characters per field in
 		a string or unicode array.  This is to abstract out the fact that
@@ -26,15 +32,27 @@ package numpy.core.defchararray;
 	**/
 	static public function _get_num_chars(a:Dynamic):Dynamic;
 	static public var _globalvar : Dynamic;
+	static public function _join_dispatcher(sep:Dynamic, seq:Dynamic):Dynamic;
+	static public function _just_dispatcher(a:Dynamic, width:Dynamic, ?fillchar:Dynamic):Dynamic;
 	/**
 		Return the number of items in a container.
 	**/
 	static public function _len(obj:Dynamic):Dynamic;
+	static public function _mod_dispatcher(a:Dynamic, values:Dynamic):Dynamic;
+	static public function _multiply_dispatcher(a:Dynamic, i:Dynamic):Dynamic;
+	static public function _partition_dispatcher(a:Dynamic, sep:Dynamic):Dynamic;
+	static public function _replace_dispatcher(a:Dynamic, old:Dynamic, _new:Dynamic, ?count:Dynamic):Dynamic;
+	static public function _split_dispatcher(a:Dynamic, ?sep:Dynamic, ?maxsplit:Dynamic):Dynamic;
+	static public function _splitlines_dispatcher(a:Dynamic, ?keepends:Dynamic):Dynamic;
+	static public function _startswith_dispatcher(a:Dynamic, prefix:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
+	static public function _strip_dispatcher(a:Dynamic, ?chars:Dynamic):Dynamic;
 	/**
 		Helper function to cast a result back into a string or unicode array
 		if an object array must be used as an intermediary.
 	**/
 	static public function _to_string_or_unicode_array(result:Dynamic):Dynamic;
+	static public function _translate_dispatcher(a:Dynamic, table:Dynamic, ?deletechars:Dynamic):Dynamic;
+	static public function _unary_op_dispatcher(a:Dynamic):Dynamic;
 	/**
 		Helper function for determining the output type of some string
 		operations.
@@ -44,6 +62,7 @@ package numpy.core.defchararray;
 	**/
 	static public function _use_unicode(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function _vec_string(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _zfill_dispatcher(a:Dynamic, width:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Return element-wise string concatenation for two arrays of str or unicode.
@@ -126,6 +145,7 @@ package numpy.core.defchararray;
 		    discontiguous).
 	**/
 	static public function array(obj:Dynamic, ?itemsize:Dynamic, ?copy:Dynamic, ?unicode:Dynamic, ?order:Dynamic):Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	/**
 		Convert the input to a `chararray`, copying the data only if
 		necessary.
@@ -234,6 +254,40 @@ package numpy.core.defchararray;
 		str.center
 	**/
 	static public function center(a:Dynamic, width:Dynamic, ?fillchar:Dynamic):numpy.Ndarray;
+	/**
+		compare_chararrays(a, b, cmp_op, rstrip)
+		
+		Performs element-wise comparison of two string arrays using the
+		comparison operator specified by `cmp_op`.
+		
+		Parameters
+		----------
+		a, b : array_like
+		    Arrays to be compared.
+		cmp_op : {"<", "<=", "==", ">=", ">", "!="}
+		    Type of comparison.
+		rstrip : Boolean
+		    If True, the spaces at the end of Strings are removed before the comparison.
+		
+		Returns
+		-------
+		out : ndarray
+		    The output array of type Boolean with the same shape as a and b.
+		
+		Raises
+		------
+		ValueError
+		    If `cmp_op` is not valid.
+		TypeError
+		    If at least one of `a` or `b` is a non-string array
+		
+		Examples
+		--------
+		>>> a = np.array(["a", "b", "cde"])
+		>>> b = np.array(["a", "a", "dec"])
+		>>> np.compare_chararrays(a, b, ">", True)
+		array([False,  True, False])
+	**/
 	static public function compare_chararrays(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns an array with the number of non-overlapping occurrences of
@@ -1325,6 +1379,18 @@ package numpy.core.defchararray;
 		    dtype='|S7')
 	**/
 	static public function rstrip(a:Dynamic, ?chars:Dynamic):numpy.Ndarray;
+	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
 	/**
 		For each element in `a`, return a list of the words in the
 		string, using `sep` as the delimiter string.

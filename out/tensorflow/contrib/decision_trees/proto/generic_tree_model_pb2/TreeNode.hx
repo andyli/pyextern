@@ -1,13 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 @:pythonImport("tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2", "TreeNode") extern class TreeNode {
-	static public var ADDITIONAL_DATA_FIELD_NUMBER : Dynamic;
-	static public var BINARY_NODE_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CUSTOM_NODE_TYPE_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -24,7 +21,6 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEPTH_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		Discards the unknown fields.
@@ -54,7 +50,6 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LEAF_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -67,7 +62,6 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NODE_ID_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -76,7 +70,6 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SUBTREE_SIZE_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -89,6 +82,10 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -254,4 +251,32 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.decision_trees.TreeNode.additional_data
+	**/
+	public var additional_data : Dynamic;
+	/**
+		Field tensorflow.decision_trees.TreeNode.binary_node
+	**/
+	public var binary_node : Dynamic;
+	/**
+		Field tensorflow.decision_trees.TreeNode.custom_node_type
+	**/
+	public var custom_node_type : Dynamic;
+	/**
+		Field tensorflow.decision_trees.TreeNode.depth
+	**/
+	public var depth : Dynamic;
+	/**
+		Field tensorflow.decision_trees.TreeNode.leaf
+	**/
+	public var leaf : Dynamic;
+	/**
+		Field tensorflow.decision_trees.TreeNode.node_id
+	**/
+	public var node_id : Dynamic;
+	/**
+		Field tensorflow.decision_trees.TreeNode.subtree_size
+	**/
+	public var subtree_size : Dynamic;
 }

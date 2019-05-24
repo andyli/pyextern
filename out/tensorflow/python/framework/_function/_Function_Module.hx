@@ -53,22 +53,6 @@ package tensorflow.python.framework._function;
 	**/
 	static public function _from_definition(fdef:Dynamic, ?grad_func:Dynamic):Dynamic;
 	/**
-		Creates _DefinedFunctions initialized from a FunctionDefLibrary proto.
-		
-		This method handles assigning the correct gradient functions to each
-		function.
-		
-		Args:
-		  lib: a FunctionDefLibrary
-		
-		Returns:
-		  A list of _DefinedFunctions
-		
-		Raises:
-		  ValueError: `lib` is invalid
-	**/
-	static public function _from_library(lib:Dynamic):Dynamic;
-	/**
 		Creates an AttrValue for a python object.
 	**/
 	static public function _get_experimental_kwarg_as_attr(attr_name:Dynamic, value:Dynamic):Dynamic;
@@ -94,6 +78,22 @@ package tensorflow.python.framework._function;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
+		Creates _DefinedFunctions initialized from a FunctionDefLibrary proto.
+		
+		This method handles assigning the correct gradient functions to each
+		function.
+		
+		Args:
+		  lib: a FunctionDefLibrary
+		
+		Returns:
+		  A list of _DefinedFunctions
+		
+		Raises:
+		  ValueError: `lib` is invalid
+	**/
+	static public function from_library(lib:Dynamic):Dynamic;
+	/**
 		Returns a _FuncGraph generated from `func`.
 		
 		Args:
@@ -111,6 +111,8 @@ package tensorflow.python.framework._function;
 		  collections_ref: A reference to a collections dict the _FuncGraph should
 		    use internally.
 		  arg_shapes: A sequence of the function's argument shapes.
+		  whitelisted_stateful_ops: A set of ops that if stateful we ignore and
+		    re-create.
 		
 		Returns:
 		  A _FuncGraph.
@@ -118,7 +120,7 @@ package tensorflow.python.framework._function;
 		Raises:
 		  ValueError: if func returns None.
 	**/
-	static public function func_graph_from_py_func(func:Dynamic, arg_names:Dynamic, arg_types:Dynamic, ?name:Dynamic, ?capture_by_value:Dynamic, ?device:Dynamic, ?colocation_stack:Dynamic, ?container:Dynamic, ?collections_ref:Dynamic, ?arg_shapes:Dynamic):Dynamic;
+	static public function func_graph_from_py_func(func:Dynamic, arg_names:Dynamic, arg_types:Dynamic, ?name:Dynamic, ?capture_by_value:Dynamic, ?device:Dynamic, ?colocation_stack:Dynamic, ?container:Dynamic, ?collections_ref:Dynamic, ?arg_shapes:Dynamic, ?whitelisted_stateful_ops:Dynamic):Dynamic;
 	/**
 		Converts a SWIG-wrapped TF_Function* to a FunctionDef proto.
 	**/

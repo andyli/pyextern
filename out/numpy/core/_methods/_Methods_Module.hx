@@ -136,7 +136,7 @@ package numpy.core._methods;
 		    to None - otherwise it defaults to ufunc.identity.
 		    If ``None`` is given, the first element of the reduction is used,
 		    and an error is thrown if the reduction is empty.
-		    
+		
 		    .. versionadded:: 1.15.0
 		
 		Returns
@@ -169,7 +169,7 @@ package numpy.core._methods;
 		>>> np.add.reduce(X, 2)
 		array([[ 1,  5],
 		       [ 9, 13]])
-		       
+		
 		You can use the ``initial`` keyword argument to initialize the reduction with a
 		different value.
 		
@@ -252,7 +252,7 @@ package numpy.core._methods;
 		    to None - otherwise it defaults to ufunc.identity.
 		    If ``None`` is given, the first element of the reduction is used,
 		    and an error is thrown if the reduction is empty.
-		    
+		
 		    .. versionadded:: 1.15.0
 		
 		Returns
@@ -285,7 +285,7 @@ package numpy.core._methods;
 		>>> np.add.reduce(X, 2)
 		array([[ 1,  5],
 		       [ 9, 13]])
-		       
+		
 		You can use the ``initial`` keyword argument to initialize the reduction with a
 		different value.
 		
@@ -368,7 +368,7 @@ package numpy.core._methods;
 		    to None - otherwise it defaults to ufunc.identity.
 		    If ``None`` is given, the first element of the reduction is used,
 		    and an error is thrown if the reduction is empty.
-		    
+		
 		    .. versionadded:: 1.15.0
 		
 		Returns
@@ -401,7 +401,7 @@ package numpy.core._methods;
 		>>> np.add.reduce(X, 2)
 		array([[ 1,  5],
 		       [ 9, 13]])
-		       
+		
 		You can use the ``initial`` keyword argument to initialize the reduction with a
 		different value.
 		
@@ -484,7 +484,7 @@ package numpy.core._methods;
 		    to None - otherwise it defaults to ufunc.identity.
 		    If ``None`` is given, the first element of the reduction is used,
 		    and an error is thrown if the reduction is empty.
-		    
+		
 		    .. versionadded:: 1.15.0
 		
 		Returns
@@ -517,7 +517,7 @@ package numpy.core._methods;
 		>>> np.add.reduce(X, 2)
 		array([[ 1,  5],
 		       [ 9, 13]])
-		       
+		
 		You can use the ``initial`` keyword argument to initialize the reduction with a
 		different value.
 		
@@ -600,7 +600,7 @@ package numpy.core._methods;
 		    to None - otherwise it defaults to ufunc.identity.
 		    If ``None`` is given, the first element of the reduction is used,
 		    and an error is thrown if the reduction is empty.
-		    
+		
 		    .. versionadded:: 1.15.0
 		
 		Returns
@@ -633,7 +633,7 @@ package numpy.core._methods;
 		>>> np.add.reduce(X, 2)
 		array([[ 1,  5],
 		       [ 9, 13]])
-		       
+		
 		You can use the ``initial`` keyword argument to initialize the reduction with a
 		different value.
 		
@@ -716,7 +716,7 @@ package numpy.core._methods;
 		    to None - otherwise it defaults to ufunc.identity.
 		    If ``None`` is given, the first element of the reduction is used,
 		    and an error is thrown if the reduction is empty.
-		    
+		
 		    .. versionadded:: 1.15.0
 		
 		Returns
@@ -749,7 +749,7 @@ package numpy.core._methods;
 		>>> np.add.reduce(X, 2)
 		array([[ 1,  5],
 		       [ 9, 13]])
-		       
+		
 		You can use the ``initial`` keyword argument to initialize the reduction with a
 		different value.
 		

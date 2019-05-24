@@ -109,26 +109,99 @@ package numpy.core._internal;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		_as parameter_
+		Overrides the ctypes semi-magic method
+		
+		Enables `c_func(some_array.ctypes)`
 	**/
 	public var _as_parameter_ : Dynamic;
 	/**
-		c-types data
+		A pointer to the memory area of the array as a Python integer.
+		This memory area may contain data that is not aligned, or not in correct
+		byte-order. The memory area may not even be writeable. The array
+		flags and data-type of this array should be respected when passing this
+		attribute to arbitrary C-code to avoid trouble that can include Python
+		crashing. User Beware! The value of this attribute is exactly the same
+		as ``self._array_interface_['data'][0]``.
+		
+		Note that unlike `data_as`, a reference will not be kept to the array:
+		code like ``ctypes.c_void_p((a + b).ctypes.data)`` will result in a
+		pointer to a deallocated array, and should be spelt
+		``(a + b).ctypes.data_as(ctypes.c_void_p)``
 	**/
 	public var data : Dynamic;
+	/**
+		Return the data pointer cast to a particular c-types object.
+		For example, calling ``self._as_parameter_`` is equivalent to
+		``self.data_as(ctypes.c_void_p)``. Perhaps you want to use the data as a
+		pointer to a ctypes array of floating-point data:
+		``self.data_as(ctypes.POINTER(ctypes.c_double))``.
+		
+		The returned pointer will keep a reference to the array.
+	**/
 	public function data_as(obj:Dynamic):Dynamic;
+	/**
+		Overrides the ctypes semi-magic method
+		
+		Enables `c_func(some_array.ctypes)`
+	**/
 	public function get_as_parameter():Dynamic;
+	/**
+		A pointer to the memory area of the array as a Python integer.
+		This memory area may contain data that is not aligned, or not in correct
+		byte-order. The memory area may not even be writeable. The array
+		flags and data-type of this array should be respected when passing this
+		attribute to arbitrary C-code to avoid trouble that can include Python
+		crashing. User Beware! The value of this attribute is exactly the same
+		as ``self._array_interface_['data'][0]``.
+		
+		Note that unlike `data_as`, a reference will not be kept to the array:
+		code like ``ctypes.c_void_p((a + b).ctypes.data)`` will result in a
+		pointer to a deallocated array, and should be spelt
+		``(a + b).ctypes.data_as(ctypes.c_void_p)``
+	**/
 	public function get_data():Dynamic;
+	/**
+		(c_intp*self.ndim): A ctypes array of length self.ndim where
+		the basetype is the C-integer corresponding to ``dtype('p')`` on this
+		platform. This base-type could be `ctypes.c_int`, `ctypes.c_long`, or
+		`ctypes.c_longlong` depending on the platform.
+		The c_intp type is defined accordingly in `numpy.ctypeslib`.
+		The ctypes array contains the shape of the underlying array.
+	**/
 	public function get_shape():Dynamic;
+	/**
+		(c_intp*self.ndim): A ctypes array of length self.ndim where
+		the basetype is the same as for the shape attribute. This ctypes array
+		contains the strides information from the underlying array. This strides
+		information is important for showing how many bytes must be jumped to
+		get to the next element in the array.
+	**/
 	public function get_strides():Dynamic;
 	/**
-		c-types shape
+		(c_intp*self.ndim): A ctypes array of length self.ndim where
+		the basetype is the C-integer corresponding to ``dtype('p')`` on this
+		platform. This base-type could be `ctypes.c_int`, `ctypes.c_long`, or
+		`ctypes.c_longlong` depending on the platform.
+		The c_intp type is defined accordingly in `numpy.ctypeslib`.
+		The ctypes array contains the shape of the underlying array.
 	**/
 	public var shape : Dynamic;
+	/**
+		Return the shape tuple as an array of some other c-types
+		type. For example: ``self.shape_as(ctypes.c_short)``.
+	**/
 	public function shape_as(obj:Dynamic):Dynamic;
 	/**
-		c-types strides
+		(c_intp*self.ndim): A ctypes array of length self.ndim where
+		the basetype is the same as for the shape attribute. This ctypes array
+		contains the strides information from the underlying array. This strides
+		information is important for showing how many bytes must be jumped to
+		get to the next element in the array.
 	**/
 	public var strides : Dynamic;
+	/**
+		Return the strides tuple as an array of some other
+		c-types type. For example: ``self.strides_as(ctypes.c_longlong)``.
+	**/
 	public function strides_as(obj:Dynamic):Dynamic;
 }

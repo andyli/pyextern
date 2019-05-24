@@ -11,7 +11,11 @@ package tensorflow.saved_model.utils;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Utility function to build TensorInfo proto.
+		Utility function to build TensorInfo proto from a Tensor. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This function will only be available through the v1 compatibility library as tf.compat.v1.saved_model.utils.build_tensor_info or tf.compat.v1.saved_model.build_tensor_info.
 		
 		Args:
 		  tensor: Tensor or SparseTensor whose name, dtype and shape are used to
@@ -23,7 +27,11 @@ package tensorflow.saved_model.utils;
 	**/
 	static public function build_tensor_info(tensor:Dynamic):Dynamic;
 	/**
-		Returns the Tensor or SparseTensor described by a TensorInfo proto.
+		Returns the Tensor or SparseTensor described by a TensorInfo proto. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This function will only be available through the v1 compatibility library as tf.compat.v1.saved_model.utils.get_tensor_from_tensor_info or tf.compat.v1.saved_model.get_tensor_from_tensor_info.
 		
 		Args:
 		  tensor_info: A TensorInfo proto describing a Tensor or SparseTensor.

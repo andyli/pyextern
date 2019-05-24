@@ -280,13 +280,11 @@ package tensorflow.contrib.optimizer_v2.adagrad;
 		
 		Args:
 		  var_list: A list of `Variable` objects.
-		  state: An object with these methods:
-		    `create_slot(var, val, slot_name, optional_op_name)`,
-		    `create_slot_with_initializer(`
-		        `var, initializer, shape, dtype, slot_name, optional_op_name)`,
-		    `zeros_slot(var, slot_name, optional_op_name)`,
-		    `create_non_slot_variable(initial_value, name, colocate_with)`,
-		    `get_hyper(name)`
+		  state: An object with these methods: `create_slot(var, val, slot_name,
+		    optional_op_name)`, `create_slot_with_initializer(` `var, initializer,
+		    shape, dtype, slot_name, optional_op_name)`, `zeros_slot(var, slot_name,
+		    optional_op_name)`, `create_non_slot_variable(initial_value, name,
+		    colocate_with)`, `get_hyper(name)`
 	**/
 	public function _create_vars(var_list:Dynamic, state:Dynamic):Dynamic;
 	/**
@@ -483,8 +481,8 @@ package tensorflow.contrib.optimizer_v2.adagrad;
 		
 		Args:
 		  grad: a `Tensor` representing the gradient.
-		  handle: a `Tensor` of dtype `resource` which points to the variable
-		   to be updated.
+		  handle: a `Tensor` of dtype `resource` which points to the variable to be
+		    updated.
 		  state: An object with `get_slot(var, name)`, `get_non_slot(self, name)`,
 		    and `get_hyper(name)` methods.
 		
@@ -502,10 +500,10 @@ package tensorflow.contrib.optimizer_v2.adagrad;
 		
 		Args:
 		  grad: a `Tensor` representing the gradient for the affected indices.
-		  handle: a `Tensor` of dtype `resource` which points to the variable
-		   to be updated.
-		  indices: a `Tensor` of integral type representing the indices for
-		   which the gradient is nonzero. Indices are unique.
+		  handle: a `Tensor` of dtype `resource` which points to the variable to be
+		    updated.
+		  indices: a `Tensor` of integral type representing the indices for which
+		    the gradient is nonzero. Indices are unique.
 		  state: An object with `get_slot(var, name)`, `get_non_slot(self, name)`,
 		    and `get_hyper(name)` methods.
 		
@@ -526,10 +524,10 @@ package tensorflow.contrib.optimizer_v2.adagrad;
 		
 		Args:
 		  grad: a `Tensor` representing the gradient for the affected indices.
-		  handle: a `Tensor` of dtype `resource` which points to the variable
-		   to be updated.
-		  indices: a `Tensor` of integral type representing the indices for
-		   which the gradient is nonzero. Indices may be repeated.
+		  handle: a `Tensor` of dtype `resource` which points to the variable to be
+		    updated.
+		  indices: a `Tensor` of integral type representing the indices for which
+		    the gradient is nonzero. Indices may be repeated.
 		  state: An object with `get_slot(var, name)`, `get_non_slot(self, name)`,
 		    and `get_hyper(name)` methods.
 		
@@ -545,6 +543,10 @@ package tensorflow.contrib.optimizer_v2.adagrad;
 		Restore a newly created slot variable's value.
 	**/
 	public function _restore_slot_variable(slot_name:Dynamic, variable:Dynamic, slot_variable:Dynamic):Dynamic;
+	/**
+		Scale loss for the number of replicas.
+	**/
+	static public function _scale_loss(loss_value:Dynamic, scale_loss_by_num_replicas:Dynamic):Dynamic;
 	public function _set_hyper(name:Dynamic, value:Dynamic):Dynamic;
 	/**
 		Restore this object, and either queue its dependencies or defer them.
@@ -598,10 +600,10 @@ package tensorflow.contrib.optimizer_v2.adagrad;
 		Args:
 		  grads_and_vars: List of (gradient, variable) pairs as returned by
 		    `compute_gradients()`.
-		  global_step: Optional `Variable` to increment by one after the
-		    variables have been updated.
-		  name: Optional name for the returned operation.  Default to the
-		    name passed to the `Optimizer` constructor.
+		  global_step: Optional `Variable` to increment by one after the variables
+		    have been updated.
+		  name: Optional name for the returned operation.  Default to the name
+		    passed to the `Optimizer` constructor.
 		
 		Returns:
 		  An `Operation` that applies the specified gradients. If `global_step`
@@ -622,24 +624,22 @@ package tensorflow.contrib.optimizer_v2.adagrad;
 		given variable.
 		
 		Args:
-		  loss: A Tensor containing the value to minimize or a callable taking
-		    no arguments which returns the value to minimize. When eager execution
-		    is enabled it must be a callable.
+		  loss: A Tensor containing the value to minimize or a callable taking no
+		    arguments which returns the value to minimize. When eager execution is
+		    enabled it must be a callable.
 		  var_list: Optional list or tuple of `tf.Variable` to update to minimize
-		    `loss`.  Defaults to the list of variables collected in the graph
-		    under the key `GraphKeys.TRAINABLE_VARIABLES`.
+		    `loss`.  Defaults to the list of variables collected in the graph under
+		    the key `GraphKeys.TRAINABLE_VARIABLES`.
 		  gate_gradients: How to gate the computation of gradients.  Can be
 		    `GATE_NONE`, `GATE_OP`, or `GATE_GRAPH`.
 		  aggregation_method: Specifies the method used to combine gradient terms.
 		    Valid values are defined in the class `AggregationMethod`.
-		  colocate_gradients_with_ops: If True, try colocating gradients with
-		    the corresponding op.
 		  grad_loss: Optional. A `Tensor` holding the gradient computed for `loss`.
 		  stop_gradients: Optional. A Tensor or list of tensors not to differentiate
 		    through.
-		  scale_loss_by_num_towers: Optional boolean. If true, scale the loss
-		    down by the number of towers. By default, auto-detects whether this
-		    is needed.
+		  scale_loss_by_num_replicas: Optional boolean. If true, scale the loss down
+		    by the number of replicas. By default, auto-detects whether this is
+		    needed.
 		
 		Returns:
 		  A list of (gradient, variable) pairs. Variable is always present, but
@@ -652,11 +652,11 @@ package tensorflow.contrib.optimizer_v2.adagrad;
 		    not callable.
 		
 		@compatibility(eager)
-		When eager execution is enabled, `gate_gradients`, `aggregation_method`,
-		and `colocate_gradients_with_ops` are ignored.
+		When eager execution is enabled, `gate_gradients`, and `aggregation_method`
+		are ignored.
 		@end_compatibility
 	**/
-	public function compute_gradients(loss:Dynamic, ?var_list:Dynamic, ?gate_gradients:Dynamic, ?aggregation_method:Dynamic, ?colocate_gradients_with_ops:Dynamic, ?grad_loss:Dynamic, ?stop_gradients:Dynamic, ?scale_loss_by_num_towers:Dynamic):Dynamic;
+	public function compute_gradients(loss:Dynamic, ?var_list:Dynamic, ?gate_gradients:Dynamic, ?aggregation_method:Dynamic, ?grad_loss:Dynamic, ?stop_gradients:Dynamic, ?scale_loss_by_num_replicas:Dynamic):Dynamic;
 	public function get_name():Dynamic;
 	/**
 		Return a slot named `name` created for `var` by the Optimizer.
@@ -695,24 +695,22 @@ package tensorflow.contrib.optimizer_v2.adagrad;
 		
 		Args:
 		  loss: A `Tensor` containing the value to minimize.
-		  global_step: Optional `Variable` to increment by one after the
-		    variables have been updated.
+		  global_step: Optional `Variable` to increment by one after the variables
+		    have been updated.
 		  var_list: Optional list or tuple of `Variable` objects to update to
-		    minimize `loss`.  Defaults to the list of variables collected in
-		    the graph under the key `GraphKeys.TRAINABLE_VARIABLES`.
+		    minimize `loss`.  Defaults to the list of variables collected in the
+		    graph under the key `GraphKeys.TRAINABLE_VARIABLES`.
 		  gate_gradients: How to gate the computation of gradients.  Can be
 		    `GATE_NONE`, `GATE_OP`, or  `GATE_GRAPH`.
 		  aggregation_method: Specifies the method used to combine gradient terms.
 		    Valid values are defined in the class `AggregationMethod`.
-		  colocate_gradients_with_ops: If True, try colocating gradients with
-		    the corresponding op.
 		  name: Optional name for the returned operation.
 		  grad_loss: Optional. A `Tensor` holding the gradient computed for `loss`.
 		  stop_gradients: Optional. A Tensor or list of tensors not to differentiate
 		    through.
-		  scale_loss_by_num_towers: Optional boolean. If true, scale the loss
-		    down by the number of towers. By default, auto-detects whether this
-		    is needed.
+		  scale_loss_by_num_replicas: Optional boolean. If true, scale the loss down
+		    by the number of replicas. By default, auto-detects whether this is
+		    needed.
 		
 		Returns:
 		  An Operation that updates the variables in `var_list`.  If `global_step`
@@ -728,11 +726,11 @@ package tensorflow.contrib.optimizer_v2.adagrad;
 		Minimization (and gradient computation) is done with respect to the
 		elements of `var_list` if not None, else with respect to any trainable
 		variables created during the execution of the `loss` function.
-		`gate_gradients`, `aggregation_method`, `colocate_gradients_with_ops` and
-		`grad_loss` are ignored when eager execution is enabled.
+		`gate_gradients`, `aggregation_method`, and `grad_loss` are ignored when
+		eager execution is enabled.
 		@end_compatibility
 	**/
-	public function minimize(loss:Dynamic, ?global_step:Dynamic, ?var_list:Dynamic, ?gate_gradients:Dynamic, ?aggregation_method:Dynamic, ?colocate_gradients_with_ops:Dynamic, ?name:Dynamic, ?grad_loss:Dynamic, ?stop_gradients:Dynamic, ?scale_loss_by_num_towers:Dynamic):Dynamic;
+	public function minimize(loss:Dynamic, ?global_step:Dynamic, ?var_list:Dynamic, ?gate_gradients:Dynamic, ?aggregation_method:Dynamic, ?name:Dynamic, ?grad_loss:Dynamic, ?stop_gradients:Dynamic, ?scale_loss_by_num_replicas:Dynamic):Dynamic;
 	/**
 		A list of variables which encode the current state of `Optimizer`.
 		

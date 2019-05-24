@@ -114,7 +114,6 @@ package keras.preprocessing.sequence;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _empty_batch(num_rows:Dynamic):Dynamic;
 	/**
 		Returns the TimeseriesGenerator configuration as Python dictionary.
 		

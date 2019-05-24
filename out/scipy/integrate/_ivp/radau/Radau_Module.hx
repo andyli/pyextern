@@ -434,6 +434,10 @@ package scipy.integrate._ivp.radau;
 	**/
 	static public function splu(A:Dynamic, ?permc_spec:Dynamic, ?diag_pivot_thresh:Dynamic, ?relax:Dynamic, ?panel_size:Dynamic, ?options:Dynamic):Dynamic;
 	/**
+		Assert that first_step is valid and return it.
+	**/
+	static public function validate_first_step(first_step:Dynamic, t0:Dynamic, t_bound:Dynamic):Dynamic;
+	/**
 		Assert that max_Step is valid and return it.
 	**/
 	static public function validate_max_step(max_step:Dynamic):Dynamic;

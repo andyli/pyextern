@@ -11,7 +11,7 @@ package scipy.signal.waveforms;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Calculate the phase used by chirp_phase to generate its output.
+		Calculate the phase used by `chirp` to generate its output.
 		
 		See `chirp` for a description of the arguments.
 	**/
@@ -158,7 +158,7 @@ package scipy.signal.waveforms;
 		        ``f(t) = f1 - (f1 - f0) * (t1 - t)**2 / t1**2``
 		
 		    To use a more general quadratic function, or an arbitrary
-		    polynomial, use the function `scipy.signal.waveforms.sweep_poly`.
+		    polynomial, use the function `scipy.signal.sweep_poly`.
 		
 		logarithmic, log, lo:
 		
@@ -220,7 +220,7 @@ package scipy.signal.waveforms;
 		>>> ff, tt, Sxx = spectrogram(w, fs=fs, noverlap=256, nperseg=512,
 		...                           nfft=2048)
 		>>> plt.pcolormesh(tt, ff[:513], Sxx[:513], cmap='gray_r')
-		>>> plt.title('Quadratic Chirp, f(0)=2500, f(10)=250\n' +
+		>>> plt.title('Quadratic Chirp, f(0)=1500, f(10)=250\n' +
 		...           '(vertex_zero=False)')
 		>>> plt.xlabel('t (sec)')
 		>>> plt.ylabel('Frequency (Hz)')
@@ -303,7 +303,7 @@ package scipy.signal.waveforms;
 		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
@@ -355,7 +355,7 @@ package scipy.signal.waveforms;
 		References
 		----------
 		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
+		       https://en.wikipedia.org/wiki/Exponential_function
 		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
 		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
 		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
@@ -540,7 +540,7 @@ package scipy.signal.waveforms;
 		----------
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+		.. [2] Wikipedia, "Logarithm". https://en.wikipedia.org/wiki/Logarithm
 		
 		Examples
 		--------
@@ -664,7 +664,7 @@ package scipy.signal.waveforms;
 		Parameters
 		----------
 		p : array_like or poly1d
-		    Polynomial to differentiate.
+		    Polynomial to integrate.
 		    A sequence is interpreted as polynomial coefficients, see `poly1d`.
 		m : int, optional
 		    Order of the antiderivative. (Default: 1)
@@ -1086,8 +1086,8 @@ package scipy.signal.waveforms;
 		    all dimensions.  If an int, the impulse will be at `idx` in all
 		    dimensions.
 		dtype : data-type, optional
-		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
-		    `numpy.float64`.
+		    The desired data-type for the array, e.g., ``numpy.int8``.  Default is
+		    ``numpy.float64``.
 		
 		Returns
 		-------

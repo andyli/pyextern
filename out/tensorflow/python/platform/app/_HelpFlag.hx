@@ -4,6 +4,8 @@ package tensorflow.python.platform.app;
 	static public var NAME : Dynamic;
 	static public var SHORT_NAME : Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __copy__():Dynamic;
+	public function __deepcopy__(memo:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -31,6 +33,7 @@ package tensorflow.python.platform.app;
 		Return getattr(self, name).
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
+	public function __getstate__():Dynamic;
 	/**
 		Return a > b.  Computed by @total_ordering from (not a < b) and (a != b).
 	**/
@@ -156,6 +159,10 @@ package tensorflow.python.platform.app;
 		  The parsed value.
 	**/
 	public function _parse(argument:Dynamic):Dynamic;
+	/**
+		Returns the serialized value, for use in an XML help text.
+	**/
+	public function _serialize_value_for_xml(value:Dynamic):Dynamic;
 	/**
 		Changes the default value (and current value too) for this Flag.
 	**/

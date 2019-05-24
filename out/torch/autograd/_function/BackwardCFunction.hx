@@ -111,7 +111,6 @@ package torch.autograd._function;
 	public function _do_backward(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _do_forward(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _is_legacy : Dynamic;
-	public var _is_tracing : Dynamic;
 	static public function _register_hook(backward_hooks:Dynamic, hook:Dynamic):Dynamic;
 	public function _register_hook_dict(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function apply(?args:python.VarArgs<Dynamic>):Dynamic;

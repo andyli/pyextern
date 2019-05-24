@@ -61,6 +61,8 @@ package tensorflow.python.framework._function;
 		    output shapes.
 		  capture_by_value: Boolean (defaults to False). If True, captured values
 		    will be copied into the function body.
+		  whitelisted_stateful_ops: A set of ops that if stateful we ignore and
+		    copy into the function body, when `capture_by_value` is True.
 		  **kwargs: The keyword arguments. **kwargs is passed to every call
 		    site of this function.
 		
@@ -68,7 +70,7 @@ package tensorflow.python.framework._function;
 		  ValueError: The function definition is invalid.
 	**/
 	@:native("__init__")
-	public function ___init__(func:Dynamic, argnames:Dynamic, input_types:Dynamic, ?func_name:Dynamic, ?grad_func:Dynamic, ?python_grad_func:Dynamic, ?out_names:Dynamic, ?shape_func:Dynamic, ?capture_by_value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(func:Dynamic, argnames:Dynamic, input_types:Dynamic, ?func_name:Dynamic, ?grad_func:Dynamic, ?python_grad_func:Dynamic, ?out_names:Dynamic, ?shape_func:Dynamic, ?capture_by_value:Dynamic, ?whitelisted_stateful_ops:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Creates _DefinedFunction.
 		
@@ -89,13 +91,15 @@ package tensorflow.python.framework._function;
 		    output shapes.
 		  capture_by_value: Boolean (defaults to False). If True, captured values
 		    will be copied into the function body.
+		  whitelisted_stateful_ops: A set of ops that if stateful we ignore and
+		    copy into the function body, when `capture_by_value` is True.
 		  **kwargs: The keyword arguments. **kwargs is passed to every call
 		    site of this function.
 		
 		Raises:
 		  ValueError: The function definition is invalid.
 	**/
-	public function new(func:Dynamic, argnames:Dynamic, input_types:Dynamic, ?func_name:Dynamic, ?grad_func:Dynamic, ?python_grad_func:Dynamic, ?out_names:Dynamic, ?shape_func:Dynamic, ?capture_by_value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(func:Dynamic, argnames:Dynamic, input_types:Dynamic, ?func_name:Dynamic, ?grad_func:Dynamic, ?python_grad_func:Dynamic, ?out_names:Dynamic, ?shape_func:Dynamic, ?capture_by_value:Dynamic, ?whitelisted_stateful_ops:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		

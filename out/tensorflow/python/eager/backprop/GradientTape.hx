@@ -144,6 +144,55 @@ package tensorflow.python.eager.backprop;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
 	/**
+		Computes and stacks per-example jacobians.
+		
+		See http://en.wikipedia.org/wiki/jacobian_matrix_and_determinant for the
+		definition of a Jacobian.  This function is essentially an efficient
+		implementation of the following:
+		`tf.stack([self.jacobian(y[i], x[i]) for i in range(x.shape[0])])`.
+		
+		Note that compared to `GradientTape.jacobian` which computes gradient of
+		each output value w.r.t each input value, this function is useful when
+		`target[i,...] is independent of `source[j,...]` for `j != i`. This
+		independence assumption allows more efficient computation as compared to
+		`GradientTape.jacobian`. The output, as well as intermediate activations,
+		are lower dimensional and avoid a bunch of redundant zeros which would
+		result in the jacobian computation given the independence assumption.
+		
+		Example usage:
+		with tf.GradientTape() as g:
+		  x = tf.constant([[1, 2], [3, 4]], dtype=tf.float32)
+		  g.watch(x)
+		  y = x * x
+		batch_jacobian = g.batch_jacobian(y, x)
+		# batch_jacobian is [[[2,  0], [0,  4]], [[6,  0], [0,  8]]]
+		
+		Args:
+		  target: A tensor with rank 2 or higher and with shape [b, y1, ..., y_n].
+		    `target[i,...]` should only depend on `source[i,...]`.
+		  source: A tensor with rank 2 or higher and with shape [b, x1, ..., x_m].
+		  unconnected_gradients: a value which can either hold 'none' or 'zero' and
+		    alters the value which will be returned if the target and sources are
+		    unconnected. The possible values and effects are detailed in
+		    'UnconnectedGradients' and it defaults to 'none'.
+		  parallel_iterations: A knob to control how many iterations are dispatched
+		    in parallel. This knob can be used to control the total memory usage.
+		  experimental_use_pfor: If true, uses pfor for computing the Jacobian. Else
+		    uses a tf.while_loop.
+		
+		Returns:
+		  A tensor `t` with shape [b, y_1, ..., y_n, x1, ..., x_m] where `t[i, ...]`
+		  is the jacobian of `target[i, ...]` w.r.t. `source[i, ...]`, i.e. stacked
+		  per-example jacobians.
+		
+		Raises:
+		  RuntimeError: If called on a non-persistent tape with eager execution
+		    enabled and without enabling experimental_use_pfor.
+		  ValueError: If vectorization of jacobian computation fails or if first
+		    dimension of `target` and `source` do not match.
+	**/
+	public function batch_jacobian(target:Dynamic, source:Dynamic, ?unconnected_gradients:Dynamic, ?parallel_iterations:Dynamic, ?experimental_use_pfor:Dynamic):Dynamic;
+	/**
 		Computes the gradient using operations recorded in context of this tape.
 		
 		Args:
@@ -152,6 +201,10 @@ package tensorflow.python.eager.backprop;
 		    will be differentiated against elements in `sources`.
 		  output_gradients: a list of gradients, one for each element of
 		    target. Defaults to None.
+		  unconnected_gradients: a value which can either hold 'none' or 'zero' and
+		    alters the value which will be returned if the target and sources are
+		    unconnected. The possible values and effects are detailed in
+		    'UnconnectedGradients' and it defaults to 'none'.
 		
 		Returns:
 		  a list or nested structure of Tensors (or IndexedSlices, or None),
@@ -161,8 +214,51 @@ package tensorflow.python.eager.backprop;
 		Raises:
 		  RuntimeError: if called inside the context of the tape, or if called more
 		   than once on a non-persistent tape.
+		  ValueError: if the target is a variable or if unconnected gradients is
+		   called with an unknown value.
 	**/
-	public function gradient(target:Dynamic, sources:Dynamic, ?output_gradients:Dynamic):Dynamic;
+	public function gradient(target:Dynamic, sources:Dynamic, ?output_gradients:Dynamic, ?unconnected_gradients:Dynamic):Dynamic;
+	/**
+		Computes the jacobian using operations recorded in context of this tape.
+		
+		See http://en.wikipedia.org/wiki/jacobian_matrix_and_determinant for the
+		definition of a Jacobian.
+		
+		Example usage:
+		
+		with tf.GradientTape() as g:
+		  x  = tf.constant([1.0, 2.0])
+		  g.watch(x)
+		  y = x * x
+		jacobian = g.jacobian(y, x)
+		# jacobian value is [[2., 0.], [0., 4.]]
+		
+		Args:
+		  target: Tensor to be differentiated.
+		  sources: a list or nested structure of Tensors or Variables. `target`
+		    will be differentiated against elements in `sources`.
+		  unconnected_gradients: a value which can either hold 'none' or 'zero' and
+		    alters the value which will be returned if the target and sources are
+		    unconnected. The possible values and effects are detailed in
+		    'UnconnectedGradients' and it defaults to 'none'.
+		  parallel_iterations: A knob to control how many iterations are dispatched
+		    in parallel. This knob can be used to control the total memory usage.
+		  experimental_use_pfor: If true, vectorizes the jacobian computation. Else
+		    falls back to a sequential while_loop. Vectorization can sometimes fail
+		    or lead to excessive memory usage. This option can be used to disable
+		    vectorization in such cases.
+		
+		Returns:
+		  a list or nested structure of Tensors (or IndexedSlices, or None),
+		  one for each element in `sources`. Returned structure is the same as
+		  the structure of `sources`.
+		
+		Raises:
+		  RuntimeError: If called on a non-persistent tape with eager execution
+		    enabled and without enabling experimental_use_pfor.
+		  ValueError: If vectorization of jacobian computation fails.
+	**/
+	public function jacobian(target:Dynamic, sources:Dynamic, ?unconnected_gradients:Dynamic, ?parallel_iterations:Dynamic, ?experimental_use_pfor:Dynamic):Dynamic;
 	/**
 		Clears all information stored in this tape.
 		

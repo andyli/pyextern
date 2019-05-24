@@ -17,10 +17,6 @@ package matplotlib.text;
 	static public function _get_textbox(text:Dynamic, renderer:Dynamic):Dynamic;
 	static public var _log : Dynamic;
 	/**
-		Return an override dict.  See `~pyplot.text' docstring for info.
-	**/
-	static public function _process_text_args(_override:Dynamic, ?fontdict:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		Temporarily inserts newlines to the text if the wrap option is enabled.
 		    
 	**/

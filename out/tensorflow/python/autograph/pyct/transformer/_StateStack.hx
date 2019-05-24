@@ -54,6 +54,7 @@ package tensorflow.python.autograph.pyct.transformer;
 		overridden to extend subclasses.
 	**/
 	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
 	**/

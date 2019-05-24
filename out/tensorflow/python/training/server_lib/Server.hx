@@ -2,6 +2,7 @@
 package tensorflow.python.training.server_lib;
 @:pythonImport("tensorflow.python.training.server_lib", "Server") extern class Server {
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __del__():Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -164,6 +165,7 @@ package tensorflow.python.training.server_lib;
 	public var __weakref__ : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	static public var _tf_deprecated_api_names : Dynamic;
 	/**
 		Creates a new single-process cluster running on the local host.
 		

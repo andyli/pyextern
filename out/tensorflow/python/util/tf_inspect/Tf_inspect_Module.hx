@@ -9,7 +9,6 @@ package tensorflow.python.util.tf_inspect;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
 	/**
 		Implements `getargspec` for `functools.partial` objects.
 		
@@ -22,6 +21,23 @@ package tensorflow.python.util.tf_inspect;
 		    ArgSpec.
 	**/
 	static public function _get_argspec_for_partial(obj:Dynamic):Dynamic;
+	/**
+		A python3 version of getargspec.
+		
+		Calls `getfullargspec` and assigns args, varargs,
+		varkw, and defaults to a python 2/3 compatible `ArgSpec`.
+		
+		The parameter name 'varkw' is changed to 'keywords' to fit the
+		`ArgSpec` struct.
+		
+		Args:
+		  target: the target object to inspect.
+		
+		Returns:
+		  An ArgSpec with args, varargs, keywords, and defaults parameters
+		  from FullArgSpec.
+	**/
+	static public function _getargspec(target:Dynamic):Dynamic;
 	/**
 		Get the names and default values of a callable object's parameters.
 		
@@ -46,16 +62,18 @@ package tensorflow.python.util.tf_inspect;
 	static public function currentframe():Dynamic;
 	static public var division : Dynamic;
 	/**
-		TFDecorator-aware replacement for inspect.getargspec.
+		TFDecorator-aware replacement for `inspect.getargspec`.
+		
+		Note: `getfullargspec` is recommended as the python 2/3 compatible
+		replacement for this function.
 		
 		Args:
-		  obj: A function, partial function, or callable object, possibly
-		  decorated.
+		  obj: A function, partial function, or callable object, possibly decorated.
 		
 		Returns:
 		  The `ArgSpec` that describes the signature of the outermost decorator that
-		  changes the callable's signature. If the callable is not decorated,
-		  `inspect.getargspec()` will be called directly on the object.
+		  changes the callable's signature, or the `ArgSpec` that describes
+		  the object if not decorated.
 		
 		Raises:
 		  ValueError: When callable's signature can not be expressed with
@@ -145,6 +163,10 @@ package tensorflow.python.util.tf_inspect;
 		TFDecorator-aware replacement for inspect.isclass.
 	**/
 	static public function isclass(object:Dynamic):Dynamic;
+	/**
+		TFDecorator-aware replacement for inspect.ismodule.
+	**/
+	static public function isframe(object:Dynamic):Dynamic;
 	/**
 		TFDecorator-aware replacement for inspect.isfunction.
 	**/

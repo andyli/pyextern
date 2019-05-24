@@ -52,54 +52,20 @@ package tensorflow.python.ops.distributions.gamma;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct Gamma with `concentration` and `rate` parameters.
+		DEPRECATED FUNCTION
 		
-		The parameters `concentration` and `rate` must be shaped in a way that
-		supports broadcasting (e.g. `concentration + rate` is a valid operation).
-		
-		Args:
-		  concentration: Floating point tensor, the concentration params of the
-		    distribution(s). Must contain only positive values.
-		  rate: Floating point tensor, the inverse scale params of the
-		    distribution(s). Must contain only positive values.
-		  validate_args: Python `bool`, default `False`. When `True` distribution
-		    parameters are checked for validity despite possibly degrading runtime
-		    performance. When `False` invalid inputs may silently render incorrect
-		    outputs.
-		  allow_nan_stats: Python `bool`, default `True`. When `True`, statistics
-		    (e.g., mean, mode, variance) use the value "`NaN`" to indicate the
-		    result is undefined. When `False`, an exception is raised if one or
-		    more of the statistic's batch members are undefined.
-		  name: Python `str` name prefixed to Ops created by this class.
-		
-		Raises:
-		  TypeError: if `concentration` and `rate` are different dtypes.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		Use `tfd.Gamma(tf.nn.softplus(concentration), tf.nn.softplus(rate))` instead.
 	**/
 	@:native("__init__")
 	public function ___init__(concentration:Dynamic, rate:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Construct Gamma with `concentration` and `rate` parameters.
+		DEPRECATED FUNCTION
 		
-		The parameters `concentration` and `rate` must be shaped in a way that
-		supports broadcasting (e.g. `concentration + rate` is a valid operation).
-		
-		Args:
-		  concentration: Floating point tensor, the concentration params of the
-		    distribution(s). Must contain only positive values.
-		  rate: Floating point tensor, the inverse scale params of the
-		    distribution(s). Must contain only positive values.
-		  validate_args: Python `bool`, default `False`. When `True` distribution
-		    parameters are checked for validity despite possibly degrading runtime
-		    performance. When `False` invalid inputs may silently render incorrect
-		    outputs.
-		  allow_nan_stats: Python `bool`, default `True`. When `True`, statistics
-		    (e.g., mean, mode, variance) use the value "`NaN`" to indicate the
-		    result is undefined. When `False`, an exception is raised if one or
-		    more of the statistic's batch members are undefined.
-		  name: Python `str` name prefixed to Ops created by this class.
-		
-		Raises:
-		  TypeError: if `concentration` and `rate` are different dtypes.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		Use `tfd.Gamma(tf.nn.softplus(concentration), tf.nn.softplus(rate))` instead.
 	**/
 	public function new(concentration:Dynamic, rate:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Void;
 	/**

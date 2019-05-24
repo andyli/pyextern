@@ -116,6 +116,13 @@ package matplotlib.backend_tools;
 		not all in the same state.
 	**/
 	static public function _get_uniform_grid_state(ticks:Dynamic):Dynamic;
+	/**
+		Return a placeholder object with a single `canvas` attribute.
+		
+		This is useful to reuse the implementations of tools already provided
+		by the classic Toolbars.
+	**/
+	public function _make_classic_style_pseudo_toolbar():Dynamic;
 	public var canvas : Dynamic;
 	static public var default_keymap : Dynamic;
 	static public var description : Dynamic;
@@ -137,7 +144,7 @@ package matplotlib.backend_tools;
 		
 		Parameters
 		----------
-		figure: `Figure`
+		figure : `Figure`
 	**/
 	public function set_figure(figure:Dynamic):Dynamic;
 	public var toolmanager : Dynamic;
@@ -149,11 +156,11 @@ package matplotlib.backend_tools;
 		
 		Parameters
 		----------
-		event: `Event`
+		event : `Event`
 		    The Canvas event that caused this tool to be called
-		sender: object
+		sender : object
 		    Object that requested the tool to be triggered
-		data: object
+		data : object
 		    Extra data
 	**/
 	public function trigger(sender:Dynamic, event:Dynamic, ?data:Dynamic):Dynamic;

@@ -2,6 +2,7 @@
 package tensorflow.contrib.estimator.python.estimator.head;
 @:pythonImport("tensorflow.contrib.estimator.python.estimator.head") extern class Head_Module {
 	static public var _DEFAULT_SERVING_KEY : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -41,7 +42,7 @@ package tensorflow.contrib.estimator.python.estimator.head;
 		
 		```python
 		my_head = tf.contrib.estimator.binary_classification_head()
-		my_estimator = tf.contrib.estimator.DNNEstimator(
+		my_estimator = tf.estimator.DNNEstimator(
 		    head=my_head,
 		    hidden_units=...,
 		    feature_columns=...)
@@ -127,7 +128,7 @@ package tensorflow.contrib.estimator.python.estimator.head;
 		
 		```python
 		my_head = tf.contrib.estimator.logistic_regression_head()
-		my_estimator = tf.contrib.estimator.DNNEstimator(
+		my_estimator = tf.estimator.DNNEstimator(
 		    head=my_head,
 		    hidden_units=...,
 		    feature_columns=...)
@@ -199,7 +200,7 @@ package tensorflow.contrib.estimator.python.estimator.head;
 		
 		```python
 		my_head = tf.contrib.estimator.multi_class_head(n_classes=3)
-		my_estimator = tf.contrib.estimator.DNNEstimator(
+		my_estimator = tf.estimator.DNNEstimator(
 		    head=my_head,
 		    hidden_units=...,
 		    feature_columns=...)
@@ -286,7 +287,7 @@ package tensorflow.contrib.estimator.python.estimator.head;
 		
 		```python
 		my_head = tf.contrib.estimator.multi_label_head(n_classes=3)
-		my_estimator = tf.contrib.estimator.DNNEstimator(
+		my_estimator = tf.estimator.DNNEstimator(
 		    head=my_head,
 		    hidden_units=...,
 		    feature_columns=...)
@@ -370,7 +371,7 @@ package tensorflow.contrib.estimator.python.estimator.head;
 		
 		```python
 		my_head = tf.contrib.estimator.poisson_regression_head()
-		my_estimator = tf.contrib.estimator.DNNEstimator(
+		my_estimator = tf.estimator.DNNEstimator(
 		    head=my_head,
 		    hidden_units=...,
 		    feature_columns=...)
@@ -452,7 +453,7 @@ package tensorflow.contrib.estimator.python.estimator.head;
 		
 		```python
 		my_head = tf.contrib.estimator.regression_head()
-		my_estimator = tf.contrib.estimator.DNNEstimator(
+		my_estimator = tf.estimator.DNNEstimator(
 		    head=my_head,
 		    hidden_units=...,
 		    feature_columns=...)

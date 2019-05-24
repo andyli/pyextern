@@ -9,10 +9,8 @@ package torch.nn.utils.weight_norm;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Computes the norm over all dimensions except dim
-	**/
-	static public function _norm(p:Dynamic, dim:Dynamic):Dynamic;
+	static public function _weight_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function norm_except_dim(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Removes the weight normalization reparameterization from a module.
 		

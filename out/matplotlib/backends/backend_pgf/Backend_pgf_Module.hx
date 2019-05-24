@@ -30,16 +30,14 @@ package matplotlib.backends.backend_pgf;
 	**/
 	static public function get_preamble():Dynamic;
 	/**
-		.. deprecated:: 3.0
-		    The get_texcommand function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		[*Deprecated*] Get chosen TeX system from rc.
 		
-		Get chosen TeX system from rc.
+		Notes
+		-----
+		.. deprecated:: 3.0
+		   
 	**/
 	static public function get_texcommand():Dynamic;
-	/**
-		return true if *obj* looks like a file object with a *write* method
-	**/
-	static public function is_writable_file_like(obj:Dynamic):Dynamic;
 	static public var latex_in_to_pt : Dynamic;
 	static public var latex_pt_to_in : Dynamic;
 	/**

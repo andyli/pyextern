@@ -3,12 +3,17 @@ package matplotlib.font_manager;
 @:pythonImport("matplotlib.font_manager") extern class Font_manager_Module {
 	static public var MSFolders : Dynamic;
 	static public var MSFontDirectories : Dynamic;
+	static public var MSUserFontDirectories : Dynamic;
 	static public var OSXFontDirectories : Dynamic;
 	/**
-		Get list of font files on OS X.
+		[*Deprecated*] Get list of font files on OS X.
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function OSXInstalledFonts(?directories:Dynamic, ?fontext:Dynamic):Dynamic;
-	static public var USE_FONTCONFIG : Dynamic;
 	static public var X11FontDirectories : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -57,6 +62,25 @@ package matplotlib.font_manager;
 	static public function _normalize_font_family(family:Dynamic):Dynamic;
 	static public function _rebuild():Dynamic;
 	/**
+		Searches for fonts in the Windows registry.
+		
+		Parameters
+		----------
+		reg_domain : int
+		    The top level registry domain (e.g. HKEY_LOCAL_MACHINE).
+		
+		base_dir : str
+		    The path to the folder where the font files are usually located (e.g.
+		    C:\Windows\Fonts). If only the filename of the font is stored in the
+		    registry, the absolute path is built relative to this base directory.
+		
+		Returns
+		-------
+		`set`
+		    `pathlib.Path` objects with the absolute path to the font files found.
+	**/
+	static public function _win32RegistryFonts(reg_domain:Dynamic, base_dir:Dynamic):Dynamic;
+	/**
 		Extract information from an AFM font file.
 		
 		Parameters
@@ -70,7 +94,6 @@ package matplotlib.font_manager;
 		    The extracted font properties.
 	**/
 	static public function afmFontProperty(fontpath:Dynamic, font:Dynamic):Dynamic;
-	static public var cachedir : Dynamic;
 	/**
 		A function to create a font lookup list.  The default is to create
 		a list of TrueType fonts.  An AFM font list can optionally be
@@ -85,7 +108,55 @@ package matplotlib.font_manager;
 		AFM fonts as an option.
 	**/
 	static public function findSystemFonts(?fontpaths:Dynamic, ?fontext:Dynamic):Dynamic;
-	static public function findfont(prop:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Find a font that most closely matches the given font properties.
+		
+		Parameters
+		----------
+		prop : str or `~matplotlib.font_manager.FontProperties`
+		    The font properties to search for. This can be either a
+		    `.FontProperties` object or a string defining a
+		    `fontconfig patterns`_.
+		
+		fontext : {'ttf', 'afm'}, optional, default: 'ttf'
+		    The extension of the font file:
+		
+		    - 'ttf': TrueType and OpenType fonts (.ttf, .ttc, .otf)
+		    - 'afm': Adobe Font Metrics (.afm)
+		
+		directory : str, optional
+		    If given, only search this directory and its subdirectories.
+		fallback_to_default : bool
+		    If True, will fallback to the default font family (usually
+		    "DejaVu Sans" or "Helvetica") if the first lookup hard-fails.
+		rebuild_if_missing : bool
+		    Whether to rebuild the font cache and search again if no match
+		    is found.
+		
+		Returns
+		-------
+		fontfile : str
+		    The filename of the best matching font.
+		
+		Notes
+		-----
+		This performs a nearest neighbor search.  Each font is given a
+		similarity score to the target font properties.  The first font with
+		the highest score is returned.  If no matches below a certain
+		threshold are found, the default font (usually DejaVu Sans) is
+		returned.
+		
+		The result is cached, so subsequent lookups don't have to
+		perform the O(n) nearest neighbor search.
+		
+		See the `W3C Cascading Style Sheet, Level 1
+		<http://www.w3.org/TR/1998/REC-CSS2-19980512/>`_ documentation
+		for a description of the font finding algorithm.
+		
+		.. _fontconfig patterns:
+		   https://www.freedesktop.org/software/fontconfig/fontconfig-user.html
+	**/
+	static public function findfont(prop:Dynamic, ?fontext:Dynamic, ?directory:Dynamic, ?fallback_to_default:Dynamic, ?rebuild_if_missing:Dynamic):String;
 	static public var fontManager : Dynamic;
 	static public var font_family_aliases : Dynamic;
 	static public var font_scalings : Dynamic;
@@ -94,13 +165,6 @@ package matplotlib.font_manager;
 		pattern string.
 	**/
 	static public function generate_fontconfig_pattern(d:Dynamic):Dynamic;
-	/**
-		Return the location of the cache directory.
-		
-		The procedure used to find the directory is the same as for
-		_get_config_dir, except using `$XDG_CACHE_HOME`/`~/.cache` instead.
-	**/
-	static public function get_cachedir():Dynamic;
 	static public function get_font(filename:Dynamic, ?hinting_factor:Dynamic):Dynamic;
 	/**
 		List the font filenames known to `fc-list` having the given extension.
@@ -113,9 +177,9 @@ package matplotlib.font_manager;
 	**/
 	static public function get_fontext_synonyms(fontext:Dynamic):Dynamic;
 	/**
-		Returns True if the given font is a Postscript Compact Font Format
-		Font embedded in an OpenType wrapper.  Used by the PostScript and
-		PDF backends that can not subset these fonts.
+		Return whether the given font is a Postscript Compact Font Format Font
+		embedded in an OpenType wrapper.  Used by the PostScript and PDF backends
+		that can not subset these fonts.
 	**/
 	static public function is_opentype_cff_font(filename:Dynamic):Dynamic;
 	/**
@@ -187,14 +251,14 @@ package matplotlib.font_manager;
 		
 		  \\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders\Fonts
 		
-		If the key is not found, $WINDIR/Fonts will be returned.
+		If the key is not found, ``%WINDIR%\Fonts`` will be returned.
 	**/
 	static public function win32FontDirectory():Dynamic;
 	/**
 		Search for fonts in the specified font directory, or use the
-		system directories if none given.  A list of TrueType font
-		filenames are returned by default, or AFM fonts if *fontext* ==
-		'afm'.
+		system directories if none given. Additionally, it is searched for user
+		fonts installed. A list of TrueType font filenames are returned by default,
+		or AFM fonts if *fontext* == 'afm'.
 	**/
 	static public function win32InstalledFonts(?directory:Dynamic, ?fontext:Dynamic):Dynamic;
 }

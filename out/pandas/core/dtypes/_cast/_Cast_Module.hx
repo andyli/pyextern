@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.dtypes._cast;
 @:pythonImport("pandas.core.dtypes.cast") extern class _Cast_Module {
+	static public var NaT : Dynamic;
 	static public var PY3 : Dynamic;
 	static public var _INT64_DTYPE : Dynamic;
 	static public var _NS_DTYPE : Dynamic;
@@ -14,21 +15,29 @@ package pandas.core.dtypes._cast;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _ensure_int16(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ensure_int32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ensure_int8(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _int16_max : Dynamic;
 	static public var _int32_max : Dynamic;
 	static public var _int64_max : Dynamic;
 	static public var _int8_max : Dynamic;
-	static public var _string_dtypes : Dynamic;
 	/**
-		return a view if copy is False, but
-		need to be very careful as the result shape could change! 
+		Cast the elements of an array to a given dtype a nan-safe manner.
+		
+		Parameters
+		----------
+		arr : ndarray
+		dtype : np.dtype
+		copy : bool, default True
+		    If False, a view will be attempted but may fail, if
+		    e.g. the item sizes don't align.
+		skipna: bool, default False
+		    Whether or not we should skip NaN when casting as a string-type.
+		
+		Raises
+		------
+		ValueError
+		    The dtype was a datetime64/timedelta64 dtype, but it had no unit.
 	**/
-	static public function astype_nansafe(arr:Dynamic, dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function astype_nansafe(arr:Dynamic, dtype:Dynamic, ?copy:Dynamic, ?skipna:Dynamic):Dynamic;
 	/**
 		create np.ndarray of specified shape and dtype, filled with values
 		
@@ -109,6 +118,11 @@ package pandas.core.dtypes._cast;
 		1-dimensional numpy array of dtype object
 	**/
 	static public function construct_1d_object_array_from_listlike(values:Dynamic):Dynamic;
+	static public function ensure_int16(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_int32(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_int8(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Find a common data type among the given dtypes.
 		
@@ -200,6 +214,11 @@ package pandas.core.dtypes._cast;
 		-------
 		boolean : Whether or not the array or dtype is of a boolean dtype.
 		
+		Notes
+		-----
+		An ExtensionArray is considered boolean when the ``_is_boolean``
+		attribute is set to True.
+		
 		Examples
 		--------
 		>>> is_bool_dtype(str)
@@ -215,6 +234,10 @@ package pandas.core.dtypes._cast;
 		>>> is_bool_dtype(pd.Series([1, 2]))
 		False
 		>>> is_bool_dtype(np.array([True, False]))
+		True
+		>>> is_bool_dtype(pd.Categorical([True, False]))
+		True
+		>>> is_bool_dtype(pd.SparseArray([True, False]))
 		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -442,43 +465,6 @@ package pandas.core.dtypes._cast;
 	**/
 	static public function is_datetimelike(arr:Dynamic):Dynamic;
 	/**
-		Check whether an array-like is a datetime array-like with a timezone
-		component in its dtype.
-		
-		Parameters
-		----------
-		arr : array-like
-		    The array-like to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array-like is a datetime array-like with
-		          a timezone component in its dtype.
-		
-		Examples
-		--------
-		>>> is_datetimetz([1, 2, 3])
-		False
-		
-		Although the following examples are both DatetimeIndex objects,
-		the first one returns False because it has no timezone component
-		unlike the second one, which returns True.
-		
-		>>> is_datetimetz(pd.DatetimeIndex([1, 2, 3]))
-		False
-		>>> is_datetimetz(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
-		True
-		
-		The object need not be a DatetimeIndex object. It just needs to have
-		a dtype which has a timezone component.
-		
-		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
-		>>> s = pd.Series([], dtype=dtype)
-		>>> is_datetimetz(s)
-		True
-	**/
-	static public function is_datetimetz(arr:Dynamic):Dynamic;
-	/**
 		Check if two dtypes are equal.
 		
 		Parameters
@@ -507,13 +493,18 @@ package pandas.core.dtypes._cast;
 	/**
 		Check if an object is a pandas extension array type.
 		
+		See the :ref:`Use Guide <extending.extension-types>` for more.
+		
 		Parameters
 		----------
 		arr_or_dtype : object
+		    For array-like input, the ``.dtype`` attribute will
+		    be extracted.
 		
 		Returns
 		-------
 		bool
+		    Whether the `arr_or_dtype` is an extension array type.
 		
 		Notes
 		-----
@@ -521,9 +512,27 @@ package pandas.core.dtypes._cast;
 		array interface. In pandas, this includes:
 		
 		* Categorical
+		* Sparse
+		* Interval
+		* Period
+		* DatetimeArray
+		* TimedeltaArray
 		
 		Third-party libraries may implement arrays or types satisfying
 		this interface as well.
+		
+		Examples
+		--------
+		>>> from pandas.api.types import is_extension_array_dtype
+		>>> arr = pd.Categorical(['a', 'b'])
+		>>> is_extension_array_dtype(arr)
+		True
+		>>> is_extension_array_dtype(arr.dtype)
+		True
+		
+		>>> arr = np.array(['a', 'b'])
+		>>> is_extension_array_dtype(arr.dtype)
+		False
 	**/
 	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
@@ -579,6 +588,8 @@ package pandas.core.dtypes._cast;
 	/**
 		Check whether the provided array or dtype is of a float dtype.
 		
+		This function is internal and should not be exposed in the public API.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -610,6 +621,11 @@ package pandas.core.dtypes._cast;
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
 		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -629,6 +645,12 @@ package pandas.core.dtypes._cast;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -654,7 +676,11 @@ package pandas.core.dtypes._cast;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -673,8 +699,12 @@ package pandas.core.dtypes._cast;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		return a boolean if we have a nested object, e.g. a Series with 1 or
 		more Series elements
@@ -711,17 +741,49 @@ package pandas.core.dtypes._cast;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -807,9 +869,53 @@ package pandas.core.dtypes._cast;
 	**/
 	static public function is_timedelta64_ns_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
+		Check whether the provided array or dtype is of an unsigned integer dtype.
+		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.UInt64Dtype) are also
+		   considered as integer by this function.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of an
+		          unsigned integer dtype.
+		
+		Examples
+		--------
+		>>> is_unsigned_integer_dtype(str)
+		False
+		>>> is_unsigned_integer_dtype(int)  # signed
+		False
+		>>> is_unsigned_integer_dtype(float)
+		False
+		>>> is_unsigned_integer_dtype(np.uint64)
+		True
+		>>> is_unsigned_integer_dtype('uint8')
+		True
+		>>> is_unsigned_integer_dtype('UInt8')
+		True
+		>>> is_unsigned_integer_dtype(pd.UInt8Dtype)
+		True
+		>>> is_unsigned_integer_dtype(np.array(['a', 'b']))
+		False
+		>>> is_unsigned_integer_dtype(pd.Series([1, 2]))  # signed
+		False
+		>>> is_unsigned_integer_dtype(pd.Index([1, 2.]))  # float
+		False
+		>>> is_unsigned_integer_dtype(np.array([1, 2], dtype=np.uint32))
+		True
+	**/
+	static public function is_unsigned_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -827,8 +933,8 @@ package pandas.core.dtypes._cast;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -886,6 +992,48 @@ package pandas.core.dtypes._cast;
 		nan to iNaT
 	**/
 	static public function maybe_cast_to_datetime(value:Dynamic, dtype:Dynamic, ?errors:Dynamic):Dynamic;
+	/**
+		Takes any dtype and returns the casted version, raising for when data is
+		incompatible with integer/unsigned integer dtypes.
+		
+		.. versionadded:: 0.24.0
+		
+		Parameters
+		----------
+		arr : array-like
+		    The array to cast.
+		dtype : str, np.dtype
+		    The integer dtype to cast the array to.
+		copy: boolean, default False
+		    Whether to make a copy of the array before returning.
+		
+		Returns
+		-------
+		int_arr : ndarray
+		    An array of integer or unsigned integer dtype
+		
+		Raises
+		------
+		OverflowError : the dtype is incompatible with the data
+		ValueError : loss of precision has occurred during casting
+		
+		Examples
+		--------
+		If you try to coerce negative values to unsigned integers, it raises:
+		
+		>>> Series([-1], dtype="uint64")
+		Traceback (most recent call last):
+		    ...
+		OverflowError: Trying to coerce negative values to unsigned integers
+		
+		Also, if you try to coerce float values to integers, it raises:
+		
+		>>> Series([1, 2, 3.5], dtype="int64")
+		Traceback (most recent call last):
+		    ...
+		ValueError: Trying to coerce float values to integers
+	**/
+	static public function maybe_cast_to_integer_array(arr:Dynamic, dtype:Dynamic, ?copy:Dynamic):numpy.Ndarray;
 	static public function maybe_castable(arr:Dynamic):Dynamic;
 	/**
 		if we have an object dtype, try to coerce dates and/or numbers 
@@ -895,16 +1043,6 @@ package pandas.core.dtypes._cast;
 		try to do platform conversion, allow ndarray or list here 
 	**/
 	static public function maybe_convert_platform(values:Dynamic):Dynamic;
-	/**
-		Convert a python scalar to the appropriate numpy dtype if possible
-		This avoids numpy directly converting according to platform preferences
-	**/
-	static public function maybe_convert_scalar(values:Dynamic):Dynamic;
-	/**
-		Convert string-like and string-like array to convert object dtype.
-		This is to avoid numpy to handle the array as str dtype.
-	**/
-	static public function maybe_convert_string_to_object(values:Dynamic):Dynamic;
 	/**
 		try to cast to the specified dtype (e.g. convert back to bool/int
 		or could be an astype of float64->float32
@@ -985,7 +1123,7 @@ package pandas.core.dtypes._cast;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -1003,8 +1141,8 @@ package pandas.core.dtypes._cast;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -1066,6 +1204,10 @@ package pandas.core.dtypes._cast;
 		Returns
 		-------
 		np.dtype or a pandas dtype
+		
+		Raises
+		------
+		TypeError if not a dtype
 	**/
 	static public function pandas_dtype(dtype:Dynamic):Dynamic;
 	/**
@@ -1073,4 +1215,8 @@ package pandas.core.dtypes._cast;
 	**/
 	static public function soft_convert_objects(values:Dynamic, ?datetime:Dynamic, ?numeric:Dynamic, ?timedelta:Dynamic, ?coerce:Dynamic, ?copy:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
+	/**
+		Convert bytes and non-string into Python 3 str
+	**/
+	static public function to_str(s:Dynamic):Dynamic;
 }

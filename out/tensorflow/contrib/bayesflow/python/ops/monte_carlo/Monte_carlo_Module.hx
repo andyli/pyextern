@@ -13,7 +13,7 @@ package tensorflow.contrib.bayesflow.python.ops.monte_carlo;
 	/**
 		Computes the Monte-Carlo approximation of \\(E_p[f(X)]\\). (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The tf.contrib.bayesflow library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). Use `tfp.monte_carlo.expectation` instead.
 		

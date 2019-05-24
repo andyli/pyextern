@@ -11,8 +11,6 @@ package pandas.core.sorting;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _reorder_by_uniques(uniques:Dynamic, labels:Dynamic):Dynamic;
 	/**
 		Group_index is offsets into cartesian product of all possible labels. This
@@ -30,6 +28,8 @@ package pandas.core.sorting;
 		    if nulls are excluded; i.e. -1 labels are passed through
 	**/
 	static public function decons_obs_group_ids(comp_ids:Dynamic, obs_ids:Dynamic, shape:Dynamic, labels:Dynamic, xnull:Dynamic):Dynamic;
+	static public function ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Group_index is offsets into cartesian product of all possible labels. This
 		space can be huge, so this function compresses it, by computing offsets
@@ -163,7 +163,11 @@ package pandas.core.sorting;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -182,12 +186,16 @@ package pandas.core.sorting;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -205,8 +213,8 @@ package pandas.core.sorting;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		

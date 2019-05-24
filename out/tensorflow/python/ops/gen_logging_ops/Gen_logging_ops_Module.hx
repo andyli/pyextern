@@ -260,7 +260,7 @@ package tensorflow.python.ops.gen_logging_ops;
 		
 		Args:
 		  input: A `Tensor` of type `string`. The string scalar to print.
-		  output_stream: An optional `string` from: `"stdout", "stderr", "log(info)", "log(warning)", "log(error)"`. Defaults to `"stderr"`.
+		  output_stream: An optional `string`. Defaults to `"stderr"`.
 		    A string specifying the output stream or logging level to print to.
 		  name: A name for the operation (optional).
 		

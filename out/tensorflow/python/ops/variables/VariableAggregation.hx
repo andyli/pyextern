@@ -3,7 +3,7 @@ package tensorflow.python.ops.variables;
 @:pythonImport("tensorflow.python.ops.variables", "VariableAggregation") extern class VariableAggregation {
 	static public var MEAN : Dynamic;
 	static public var NONE : Dynamic;
-	static public var ONLY_FIRST_TOWER : Dynamic;
+	static public var ONLY_FIRST_REPLICA : Dynamic;
 	static public var SUM : Dynamic;
 	/**
 		Metaclass for Enum

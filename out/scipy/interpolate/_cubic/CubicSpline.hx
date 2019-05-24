@@ -194,8 +194,8 @@ package scipy.interpolate._cubic;
 		Construct the piecewise polynomial without making checks.
 		
 		Takes the same parameters as the constructor. Input arguments
-		`c` and `x` must be arrays of the correct shape and type.  The
-		`c` array can only be of dtypes float and complex, and `x`
+		``c`` and ``x`` must be arrays of the correct shape and type.  The
+		``c`` array can only be of dtypes float and complex, and ``x``
 		array must have dtype float.
 	**/
 	static public function construct_fast(c:Dynamic, x:Dynamic, ?extrapolate:Dynamic, ?axis:Dynamic):Dynamic;
@@ -231,10 +231,10 @@ package scipy.interpolate._cubic;
 		c : ndarray, size (k, m, ...)
 		    Additional coefficients for polynomials in intervals. Note that
 		    the first additional interval will be formed using one of the
-		    `self.x` end points.
+		    ``self.x`` end points.
 		x : ndarray, size (m,)
 		    Additional breakpoints. Must be sorted in the same order as
-		    `self.x` and either to the right or to the left of the current
+		    ``self.x`` and either to the right or to the left of the current
 		    breakpoints.
 		right
 		    Deprecated argument. Has no effect.

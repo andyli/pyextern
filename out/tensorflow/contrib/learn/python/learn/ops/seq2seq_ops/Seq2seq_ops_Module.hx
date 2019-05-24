@@ -48,7 +48,7 @@ package tensorflow.contrib.learn.python.learn.ops.seq2seq_ops;
 	/**
 		RNN Decoder that creates training and sampling sub-graphs. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.nn/tf.layers directly.
 		
@@ -66,7 +66,7 @@ package tensorflow.contrib.learn.python.learn.ops.seq2seq_ops;
 	/**
 		RNN Sequence to Sequence model. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.nn/tf.layers directly.
 		
@@ -85,7 +85,7 @@ package tensorflow.contrib.learn.python.learn.ops.seq2seq_ops;
 	/**
 		Processes inputs for Sequence to Sequence models. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.nn/tf.layers directly.
 		
@@ -106,7 +106,7 @@ package tensorflow.contrib.learn.python.learn.ops.seq2seq_ops;
 	/**
 		Returns predictions and loss for sequence of predictions. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.nn/tf.layers directly.
 		

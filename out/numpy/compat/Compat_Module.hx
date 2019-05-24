@@ -40,6 +40,8 @@ package numpy.compat;
 	static public var integer_types : Dynamic;
 	/**
 		Check whether obj is a pathlib.Path object.
+		
+		Prefer using `isinstance(obj, os_PathLike)` instead of this function.
 	**/
 	static public function is_pathlib_path(obj:Dynamic):Dynamic;
 	static public function isfileobj(f:Dynamic):Dynamic;
@@ -63,6 +65,14 @@ package numpy.compat;
 	**/
 	static public function npy_load_module(name:Dynamic, fn:Dynamic, ?info:Dynamic):Dynamic;
 	static public function open_latin1(filename:Dynamic, ?mode:Dynamic):Dynamic;
+	/**
+		Return the file system path representation of the object.
+		
+		If the object is str or bytes, then allow it to pass through as-is. If the
+		object defines __fspath__(), then return the result of that method. All other
+		types raise a TypeError.
+	**/
+	static public function os_fspath(path:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function sixu(s:Dynamic):Dynamic;
 	static public var strchar : Dynamic;

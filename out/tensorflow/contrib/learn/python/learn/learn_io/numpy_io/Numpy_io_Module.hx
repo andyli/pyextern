@@ -93,9 +93,9 @@ package tensorflow.contrib.learn.python.learn.learn_io.numpy_io;
 	/**
 		This input_fn diffs from the core version with default `shuffle`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
-		Use tf.estimator.inputs.numpy_input_fn.
+		Use tf.compat.v1.estimator.inputs.numpy_input_fn.
 	**/
 	static public function numpy_input_fn(x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

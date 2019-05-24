@@ -29,11 +29,12 @@ package keras.preprocessing.image;
 		        (one of `{'constant', 'nearest', 'reflect', 'wrap'}`).
 		    cval: Value used for points outside the boundaries
 		        of the input if `mode='constant'`.
+		    order int: order of interpolation
 		
 		# Returns
 		    The transformed version of the input.
 	**/
-	static public function apply_affine_transform(x:Dynamic, ?theta:Dynamic, ?tx:Dynamic, ?ty:Dynamic, ?shear:Dynamic, ?zx:Dynamic, ?zy:Dynamic, ?row_axis:Dynamic, ?col_axis:Dynamic, ?channel_axis:Dynamic, ?fill_mode:Dynamic, ?cval:Dynamic):Dynamic;
+	static public function apply_affine_transform(x:Dynamic, ?theta:Dynamic, ?tx:Dynamic, ?ty:Dynamic, ?shear:Dynamic, ?zx:Dynamic, ?zy:Dynamic, ?row_axis:Dynamic, ?col_axis:Dynamic, ?channel_axis:Dynamic, ?fill_mode:Dynamic, ?cval:Dynamic, ?order:Dynamic):Dynamic;
 	/**
 		Performs a brightness shift.
 		
@@ -102,7 +103,7 @@ package keras.preprocessing.image;
 		
 		# Arguments
 		    path: Path to image file.
-		    color_mode: One of "grayscale", "rbg", "rgba". Default: "rgb".
+		    color_mode: One of "grayscale", "rgb", "rgba". Default: "rgb".
 		        The desired image format.
 		    target_size: Either `None` (default to original size)
 		        or tuple of ints `(img_height, img_width)`.
@@ -163,11 +164,12 @@ package keras.preprocessing.image;
 		        (one of `{'constant', 'nearest', 'reflect', 'wrap'}`).
 		    cval: Value used for points outside the boundaries
 		        of the input if `mode='constant'`.
-		
+		    interpolation_order int: order of spline interpolation.
+		        see `ndimage.interpolation.affine_transform`
 		# Returns
 		    Rotated Numpy image tensor.
 	**/
-	static public function random_rotation(x:Dynamic, rg:Dynamic, ?row_axis:Dynamic, ?col_axis:Dynamic, ?channel_axis:Dynamic, ?fill_mode:Dynamic, ?cval:Dynamic):Dynamic;
+	static public function random_rotation(x:Dynamic, rg:Dynamic, ?row_axis:Dynamic, ?col_axis:Dynamic, ?channel_axis:Dynamic, ?fill_mode:Dynamic, ?cval:Dynamic, ?interpolation_order:Dynamic):Dynamic;
 	/**
 		Performs a random spatial shear of a Numpy image tensor.
 		
@@ -182,11 +184,12 @@ package keras.preprocessing.image;
 		        (one of `{'constant', 'nearest', 'reflect', 'wrap'}`).
 		    cval: Value used for points outside the boundaries
 		        of the input if `mode='constant'`.
-		
+		    interpolation_order int: order of spline interpolation.
+		        see `ndimage.interpolation.affine_transform`
 		# Returns
 		    Sheared Numpy image tensor.
 	**/
-	static public function random_shear(x:Dynamic, intensity:Dynamic, ?row_axis:Dynamic, ?col_axis:Dynamic, ?channel_axis:Dynamic, ?fill_mode:Dynamic, ?cval:Dynamic):Dynamic;
+	static public function random_shear(x:Dynamic, intensity:Dynamic, ?row_axis:Dynamic, ?col_axis:Dynamic, ?channel_axis:Dynamic, ?fill_mode:Dynamic, ?cval:Dynamic, ?interpolation_order:Dynamic):Dynamic;
 	/**
 		Performs a random spatial shift of a Numpy image tensor.
 		
@@ -202,11 +205,12 @@ package keras.preprocessing.image;
 		        (one of `{'constant', 'nearest', 'reflect', 'wrap'}`).
 		    cval: Value used for points outside the boundaries
 		        of the input if `mode='constant'`.
-		
+		    interpolation_order int: order of spline interpolation.
+		        see `ndimage.interpolation.affine_transform`
 		# Returns
 		    Shifted Numpy image tensor.
 	**/
-	static public function random_shift(x:Dynamic, wrg:Dynamic, hrg:Dynamic, ?row_axis:Dynamic, ?col_axis:Dynamic, ?channel_axis:Dynamic, ?fill_mode:Dynamic, ?cval:Dynamic):Dynamic;
+	static public function random_shift(x:Dynamic, wrg:Dynamic, hrg:Dynamic, ?row_axis:Dynamic, ?col_axis:Dynamic, ?channel_axis:Dynamic, ?fill_mode:Dynamic, ?cval:Dynamic, ?interpolation_order:Dynamic):Dynamic;
 	/**
 		Performs a random spatial zoom of a Numpy image tensor.
 		
@@ -221,6 +225,8 @@ package keras.preprocessing.image;
 		        (one of `{'constant', 'nearest', 'reflect', 'wrap'}`).
 		    cval: Value used for points outside the boundaries
 		        of the input if `mode='constant'`.
+		    interpolation_order int: order of spline interpolation.
+		        see `ndimage.interpolation.affine_transform`
 		
 		# Returns
 		    Zoomed Numpy image tensor.
@@ -228,7 +234,7 @@ package keras.preprocessing.image;
 		# Raises
 		    ValueError: if `zoom_range` isn't a tuple.
 	**/
-	static public function random_zoom(x:Dynamic, zoom_range:Dynamic, ?row_axis:Dynamic, ?col_axis:Dynamic, ?channel_axis:Dynamic, ?fill_mode:Dynamic, ?cval:Dynamic):Dynamic;
+	static public function random_zoom(x:Dynamic, zoom_range:Dynamic, ?row_axis:Dynamic, ?col_axis:Dynamic, ?channel_axis:Dynamic, ?fill_mode:Dynamic, ?cval:Dynamic, ?interpolation_order:Dynamic):Dynamic;
 	/**
 		Saves an image stored as a Numpy array to a path or file object.
 		

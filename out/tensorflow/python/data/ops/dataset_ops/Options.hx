@@ -105,21 +105,6 @@ package tensorflow.python.data.ops.dataset_ops;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public var _docstring : Dynamic;
-	static public var _experimental_autotune : Dynamic;
-	static public var _experimental_filter_fusion : Dynamic;
-	static public var _experimental_hoist_random_uniform : Dynamic;
-	static public var _experimental_latency_all_edges : Dynamic;
-	static public var _experimental_map_and_batch_fusion : Dynamic;
-	static public var _experimental_map_and_filter_fusion : Dynamic;
-	static public var _experimental_map_fusion : Dynamic;
-	static public var _experimental_map_parallelization : Dynamic;
-	static public var _experimental_map_vectorization : Dynamic;
-	static public var _experimental_noop_elimination : Dynamic;
-	static public var _experimental_shuffle_and_repeat_fusion : Dynamic;
-	static public function _make_getter(name:Dynamic):Dynamic;
-	static public function _make_setter(name:Dynamic, ty:Dynamic):Dynamic;
-	static public var _name : Dynamic;
 	/**
 		Produces the list of enabled static optimizations.
 	**/
@@ -127,57 +112,29 @@ package tensorflow.python.data.ops.dataset_ops;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
 	/**
-		bool(x) -> bool
-		
-		Returns True when the argument x is true, False otherwise.
-		The builtins True and False are the only two instances of the class bool.
-		The class bool is a subclass of the class int, and cannot be subclassed.
-	**/
-	public function _ty(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Whether to dynamically adjust the values of tunable parameters (e.g. degrees of parallelism).
+		Whether to dynamically adjust the values of tunable parameters (e.g. degrees of parallelism). If None, defaults to True.
 	**/
 	public var experimental_autotune : Dynamic;
 	/**
-		Whether to fuse filter transformations.
+		Whether the outputs need to be produced in deterministic order. If None, defaults to True.
 	**/
-	public var experimental_filter_fusion : Dynamic;
+	public var experimental_deterministic : Dynamic;
 	/**
-		Whether to hoist `tf.random_uniform()` ops out of map transformations.
+		Whether to use NUMA-aware operations. If None, defaults to False.
 	**/
-	public var experimental_hoist_random_uniform : Dynamic;
+	public var experimental_numa_aware : Dynamic;
 	/**
-		Whether to add latency measurements on all edges.
+		The optimization options associated with the dataset. See `tf.data.experimental.OptimizationOptions` for more details.
 	**/
-	public var experimental_latency_all_edges : Dynamic;
+	public var experimental_optimization : Dynamic;
 	/**
-		Whether to fuse map and batch transformations.
+		The statistics options associated with the dataset. See `tf.data.experimental.StatsOptions` for more details.
 	**/
-	public var experimental_map_and_batch_fusion : Dynamic;
+	public var experimental_stats : Dynamic;
 	/**
-		Whether to fuse map and filter transformations.
+		The threading options associated with the dataset. See `tf.data.experimental.ThreadingOptions` for more details.
 	**/
-	public var experimental_map_and_filter_fusion : Dynamic;
-	/**
-		Whether to fuse map transformations.
-	**/
-	public var experimental_map_fusion : Dynamic;
-	/**
-		Whether to parallelize stateless map transformations.
-	**/
-	public var experimental_map_parallelization : Dynamic;
-	/**
-		Whether to vectorize map transformations.
-	**/
-	public var experimental_map_vectorization : Dynamic;
-	/**
-		Whether to eliminate no-op transformations.
-	**/
-	public var experimental_noop_elimination : Dynamic;
-	/**
-		Whether to fuse shuffle and repeat transformations.
-	**/
-	public var experimental_shuffle_and_repeat_fusion : Dynamic;
+	public var experimental_threading : Dynamic;
 	/**
 		Merges itself with the given `tf.data.Options`.
 		

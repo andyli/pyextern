@@ -5,7 +5,6 @@ package tensorflow.contrib.tensor_forest.proto.fertile_stats_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CANDIDATES_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -22,7 +21,6 @@ package tensorflow.contrib.tensor_forest.proto.fertile_stats_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEPTH_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		Discards the unknown fields.
@@ -52,7 +50,6 @@ package tensorflow.contrib.tensor_forest.proto.fertile_stats_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LEAF_STATS_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -65,8 +62,6 @@ package tensorflow.contrib.tensor_forest.proto.fertile_stats_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NODE_ID_FIELD_NUMBER : Dynamic;
-	static public var POST_INIT_LEAF_STATS_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -87,6 +82,10 @@ package tensorflow.contrib.tensor_forest.proto.fertile_stats_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -252,4 +251,24 @@ package tensorflow.contrib.tensor_forest.proto.fertile_stats_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tensorforest.FertileSlot.candidates
+	**/
+	public var candidates : Dynamic;
+	/**
+		Field tensorflow.tensorforest.FertileSlot.depth
+	**/
+	public var depth : Dynamic;
+	/**
+		Field tensorflow.tensorforest.FertileSlot.leaf_stats
+	**/
+	public var leaf_stats : Dynamic;
+	/**
+		Field tensorflow.tensorforest.FertileSlot.node_id
+	**/
+	public var node_id : Dynamic;
+	/**
+		Field tensorflow.tensorforest.FertileSlot.post_init_leaf_stats
+	**/
+	public var post_init_leaf_stats : Dynamic;
 }

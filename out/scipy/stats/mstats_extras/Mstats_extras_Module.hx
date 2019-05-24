@@ -65,11 +65,11 @@ package scipy.stats.mstats_extras;
 		
 		.. math::
 		
-		    f(x, a, b) = \frac{\gamma(a+b) x^{a-1} (1-x)^{b-1}}
-		                      {\gamma(a) \gamma(b)}
+		    f(x, a, b) = \frac{\Gamma(a+b) x^{a-1} (1-x)^{b-1}}
+		                      {\Gamma(a) \Gamma(b)}
 		
-		for :math:`0 < x < 1`, :math:`a > 0`, :math:`b > 0`, where
-		:math:`\gamma(z)` is the gamma function (`scipy.special.gamma`).
+		for :math:`0 <= x <= 1`, :math:`a > 0`, :math:`b > 0`, where
+		:math:`\Gamma` is the gamma function (`scipy.special.gamma`).
 		
 		`beta` takes :math:`a` and :math:`b` as shape parameters.
 		
@@ -412,8 +412,8 @@ package scipy.stats.mstats_extras;
 	/**
 		A normal continuous random variable.
 		
-		The location (loc) keyword specifies the mean.
-		The scale (scale) keyword specifies the standard deviation.
+		The location (``loc``) keyword specifies the mean.
+		The scale (``scale``) keyword specifies the standard deviation.
 		
 		As an instance of the `rv_continuous` class, `norm` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -468,9 +468,7 @@ package scipy.stats.mstats_extras;
 		
 		    f(x) = \frac{\exp(-x^2/2)}{\sqrt{2\pi}}
 		
-		The survival function, ``norm.sf``, is also referred to as the
-		Q-function in some contexts (see, e.g.,
-		`Wikipedia's <https://en.wikipedia.org/wiki/Q-function>`_ definition).
+		for a real number :math:`x`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -539,7 +537,7 @@ package scipy.stats.mstats_extras;
 	**/
 	static public function rsh(data:Dynamic, ?points:Dynamic):Dynamic;
 	/**
-		A Student's T continuous random variable.
+		A Student's t continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `t` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -592,12 +590,14 @@ package scipy.stats.mstats_extras;
 		
 		.. math::
 		
-		    f(x, df) = \frac{\gamma((df+1)/2)}
-		                    {\sqrt{\pi*df} \gamma(df/2) (1+x^2/df)^{(df+1)/2}}
+		    f(x, \nu) = \frac{\Gamma((\nu+1)/2)}
+		                    {\sqrt{\pi \nu} \Gamma(\nu)}
+		                (1+x^2/\nu)^{-(\nu+1)/2}
 		
-		for ``df > 0``.
-		
-		`t` takes ``df`` as a shape parameter.
+		where :math:`x` is a real number and the degrees of freedom parameter
+		:math:`\nu` (denoted ``df`` in the implementation) satisfies
+		:math:`\nu > 0`. :math:`\Gamma` is the gamma function
+		(`scipy.special.gamma`).
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.

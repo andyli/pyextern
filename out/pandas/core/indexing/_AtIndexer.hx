@@ -162,17 +162,69 @@ package pandas.core.indexing;
 		raise AmbiguousIndexError with integer labels?
 		- No, prefer label-based indexing
 	**/
-	public function _convert_to_indexer(obj:Dynamic, ?axis:Dynamic, ?is_setter:Dynamic):Dynamic;
+	public function _convert_to_indexer(obj:Dynamic, ?axis:Dynamic, ?is_setter:Dynamic, ?raise_missing:Dynamic):Dynamic;
 	public function _convert_tuple(key:Dynamic, ?is_setter:Dynamic):Dynamic;
 	/**
 		Mapping key not found.
 	**/
 	public function _exception(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_label(label:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Transform a list-like of keys into a new index and an indexer.
+		
+		Parameters
+		----------
+		key : list-like
+		    Target labels
+		axis: int
+		    Dimension on which the indexing is being made
+		raise_missing: bool
+		    Whether to raise a KeyError if some labels are not found. Will be
+		    removed in the future, and then this method will always behave as
+		    if raise_missing=True.
+		
+		Raises
+		------
+		KeyError
+		    If at least one key was requested but none was found, and
+		    raise_missing=True.
+		
+		Returns
+		-------
+		keyarr: Index
+		    New index (coinciding with 'key' if the axis is unique)
+		values : array-like
+		    An indexer for the return object; -1 denotes keys not found
+	**/
+	public function _get_listlike_indexer(key:Dynamic, axis:Dynamic, ?raise_missing:Dynamic):Dynamic;
 	public function _get_loc(key:Dynamic, ?axis:Dynamic):Dynamic;
 	public function _get_setitem_indexer(key:Dynamic):Dynamic;
 	public function _get_slice_axis(slice_obj:Dynamic, ?axis:Dynamic):Dynamic;
 	public function _getitem_axis(key:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Index current object with an an iterable key (which can be a boolean
+		indexer, or a collection of keys).
+		
+		Parameters
+		----------
+		key : iterable
+		    Target labels, or boolean indexer
+		axis: int, default None
+		    Dimension on which the indexing is being made
+		
+		Raises
+		------
+		KeyError
+		    If no key was found. Will change in the future to raise if not all
+		    keys were found.
+		IndexingError
+		    If the boolean indexer is unalignable with the object being
+		    indexed.
+		
+		Returns
+		-------
+		scalar, DataFrame, or Series: indexed value(s),
+	**/
 	public function _getitem_iterable(key:Dynamic, ?axis:Dynamic):Dynamic;
 	public function _getitem_lowerdim(tup:Dynamic):Dynamic;
 	public function _getitem_nested_tuple(tup:Dynamic):Dynamic;
@@ -190,10 +242,34 @@ package pandas.core.indexing;
 	public function _has_valid_tuple(key:Dynamic):Dynamic;
 	public function _is_nested_tuple_indexer(tup:Dynamic):Dynamic;
 	/**
-		create the reindex map for our objects, raise the _exception if we
-		can't create the indexer
+		Create the indexers for the passed tuple of keys, and execute the take
+		operation. This allows the take operation to be executed all at once -
+		rather than once for each dimension - improving efficiency.
+		
+		Parameters
+		----------
+		tup : tuple
+		    Tuple of indexers, one per axis
+		
+		Returns
+		-------
+		values: same type as the object being indexed
 	**/
 	public function _multi_take(tup:Dynamic):Dynamic;
+	/**
+		Check whether there is the possibility to use ``_multi_take``.
+		Currently the limit is that all axes being indexed must be indexed with
+		list-likes.
+		
+		Parameters
+		----------
+		tup : tuple
+		    Tuple of indexers, one per axis
+		
+		Returns
+		-------
+		boolean: Whether the current indexing can be passed through _multi_take
+	**/
 	public function _multi_take_opportunity(tup:Dynamic):Dynamic;
 	public var _ndim : Dynamic;
 	public function _setitem_with_indexer(indexer:Dynamic, value:Dynamic):Dynamic;
@@ -236,13 +312,18 @@ package pandas.core.indexing;
 		    Indices corresponding to the key (with -1 indicating not found)
 		axis: int
 		    Dimension on which the indexing is being made
+		raise_missing: bool
+		    Whether to raise a KeyError if some labels are not found. Will be
+		    removed in the future, and then this method will always behave as
+		    if raise_missing=True.
 		
 		Raises
 		------
 		KeyError
-		    If at least one key was requested none was found.
+		    If at least one key was requested but none was found, and
+		    raise_missing=True.
 	**/
-	public function _validate_read_indexer(key:Dynamic, indexer:Dynamic, axis:Dynamic):Dynamic;
+	public function _validate_read_indexer(key:Dynamic, indexer:Dynamic, axis:Dynamic, ?raise_missing:Dynamic):Dynamic;
 	static public var axis : Dynamic;
 	public var name : Dynamic;
 	public var ndim : Dynamic;

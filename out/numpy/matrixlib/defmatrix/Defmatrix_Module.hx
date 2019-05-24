@@ -132,6 +132,7 @@ package numpy.matrixlib.defmatrix;
 		hstack : Stack arrays in sequence horizontally (column wise)
 		vstack : Stack arrays in sequence vertically (row wise)
 		dstack : Stack arrays in sequence depth wise (along third dimension)
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -161,19 +162,19 @@ package numpy.matrixlib.defmatrix;
 		>>> a[1] = np.ma.masked
 		>>> b = np.arange(2, 5)
 		>>> a
-		masked_array(data = [0 -- 2],
-		             mask = [False  True False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2],
+		             mask=[False,  True, False],
+		       fill_value=999999)
 		>>> b
 		array([2, 3, 4])
 		>>> np.concatenate([a, b])
-		masked_array(data = [0 1 2 2 3 4],
-		             mask = False,
-		       fill_value = 999999)
+		masked_array(data=[0, 1, 2, 2, 3, 4],
+		             mask=False,
+		       fill_value=999999)
 		>>> np.ma.concatenate([a, b])
-		masked_array(data = [0 -- 2 2 3 4],
-		             mask = [False  True False False False False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2, 2, 3, 4],
+		             mask=[False,  True, False, False, False, False],
+		       fill_value=999999)
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
@@ -190,10 +191,46 @@ package numpy.matrixlib.defmatrix;
 		val : bool
 		    True if `num` is a scalar type, False if it is not.
 		
+		See Also
+		--------
+		ndim : Get the number of dimensions of an array
+		
+		Notes
+		-----
+		In almost all cases ``np.ndim(x) == 0`` should be used instead of this
+		function, as that will also return true for 0d arrays. This is how
+		numpy overloads functions in the style of the ``dx`` arguments to `gradient`
+		and the ``bins`` argument to `histogram`. Some key differences:
+		
+		+--------------------------------------+---------------+-------------------+
+		| x                                    |``isscalar(x)``|``np.ndim(x) == 0``|
+		+======================================+===============+===================+
+		| PEP 3141 numeric objects (including  | ``True``      | ``True``          |
+		| builtins)                            |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| builtin string and buffer objects    | ``True``      | ``True``          |
+		+--------------------------------------+---------------+-------------------+
+		| other builtin objects, like          | ``False``     | ``True``          |
+		| `pathlib.Path`, `Exception`,         |               |                   |
+		| the result of `re.compile`           |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| third-party objects like             | ``False``     | ``True``          |
+		| `matplotlib.figure.Figure`           |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| zero-dimensional numpy arrays        | ``False``     | ``True``          |
+		+--------------------------------------+---------------+-------------------+
+		| other numpy arrays                   | ``False``     | ``False``         |
+		+--------------------------------------+---------------+-------------------+
+		| `list`, `tuple`, and other sequence  | ``False``     | ``False``         |
+		| objects                              |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		
 		Examples
 		--------
 		>>> np.isscalar(3.1)
 		True
+		>>> np.isscalar(np.array(3.1))
+		False
 		>>> np.isscalar([3.1])
 		False
 		>>> np.isscalar(False)
@@ -306,4 +343,16 @@ package numpy.matrixlib.defmatrix;
 	**/
 	static public function matrix_power(a:Dynamic, n:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
 }

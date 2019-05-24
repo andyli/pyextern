@@ -38,28 +38,12 @@ package matplotlib.colorbar;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Parameters
-		----------
-		norm : :class:`matplotlib.colors.Normalize` instance
-		    The normalizing object which scales data, typically into the
-		    interval ``[0, 1]``.
-		    If *None*, *norm* defaults to a *colors.Normalize* object which
-		    initializes its scaling based on the first data processed.
-		cmap : str or :class:`~matplotlib.colors.Colormap` instance
-		    The colormap used to map normalized data values to RGBA colors.
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?alpha:Dynamic, ?values:Dynamic, ?boundaries:Dynamic, ?orientation:Dynamic, ?ticklocation:Dynamic, ?extend:Dynamic, ?spacing:Dynamic, ?ticks:Dynamic, ?format:Dynamic, ?drawedges:Dynamic, ?filled:Dynamic, ?extendfrac:Dynamic, ?extendrect:Dynamic, ?label:Dynamic):Dynamic;
 	/**
-		Parameters
-		----------
-		norm : :class:`matplotlib.colors.Normalize` instance
-		    The normalizing object which scales data, typically into the
-		    interval ``[0, 1]``.
-		    If *None*, *norm* defaults to a *colors.Normalize* object which
-		    initializes its scaling based on the first data processed.
-		cmap : str or :class:`~matplotlib.colors.Colormap` instance
-		    The colormap used to map normalized data values to RGBA colors.
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(ax:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?alpha:Dynamic, ?values:Dynamic, ?boundaries:Dynamic, ?orientation:Dynamic, ?ticklocation:Dynamic, ?extend:Dynamic, ?spacing:Dynamic, ?ticks:Dynamic, ?format:Dynamic, ?drawedges:Dynamic, ?filled:Dynamic, ?extendfrac:Dynamic, ?extendrect:Dynamic, ?label:Dynamic):Void;
 	/**
@@ -130,7 +114,7 @@ package matplotlib.colorbar;
 	**/
 	public function _add_solids(X:Dynamic, Y:Dynamic, C:Dynamic):Dynamic;
 	/**
-		number of boundaries **before** extension of ends
+		Return the number of boundaries excluding end extensions.
 	**/
 	public function _central_N():Dynamic;
 	/**
@@ -142,11 +126,11 @@ package matplotlib.colorbar;
 	**/
 	public function _edges(X:Dynamic, Y:Dynamic):Dynamic;
 	/**
-		Returns whether the lower limit is open ended.
+		Return whether the lower limit is open ended.
 	**/
 	public function _extend_lower():Dynamic;
 	/**
-		Returns whether the uper limit is open ended.
+		Return whether the uper limit is open ended.
 	**/
 	public function _extend_upper():Dynamic;
 	/**
@@ -201,6 +185,12 @@ package matplotlib.colorbar;
 		a proportional colorbar.
 	**/
 	public function _proportional_y():Dynamic;
+	/**
+		Reset the locator et al to defaults.  Any user-hardcoded changes
+		need to be re-entered if this gets called (either at init, or when
+		the mappable normal gets changed: Colorbar.update_normal)
+	**/
+	public function _reset_locator_formatter_scale():Dynamic;
 	public function _set_label():Dynamic;
 	static public var _slice_dict : Dynamic;
 	/**
@@ -219,11 +209,6 @@ package matplotlib.colorbar;
 	**/
 	public function _use_auto_colorbar_locator():Dynamic;
 	/**
-		Add an entry to a dictionary of boolean flags
-		that are set to True when the mappable is changed.
-	**/
-	public function add_checker(checker:Dynamic):Dynamic;
-	/**
 		Draw lines on the colorbar.
 		
 		*colors* and *linewidths* must be scalars or
@@ -233,26 +218,6 @@ package matplotlib.colorbar;
 		removing any previously added lines.
 	**/
 	public function add_lines(levels:Dynamic, colors:Dynamic, linewidths:Dynamic, ?erase:Dynamic):Dynamic;
-	/**
-		Autoscale the scalar limits on the norm instance using the
-		current array
-	**/
-	public function autoscale():Dynamic;
-	/**
-		Autoscale the scalar limits on the norm instance using the
-		current array, changing only limits that are None
-	**/
-	public function autoscale_None():Dynamic;
-	/**
-		Call this whenever the mappable is changed to notify all the
-		callbackSM listeners to the 'changed' signal
-	**/
-	public function changed():Dynamic;
-	/**
-		If mappable has changed since the last check,
-		return True; else return False
-	**/
-	public function check_update(checker:Dynamic):Dynamic;
 	public function config_axis():Dynamic;
 	/**
 		Calculate any free parameters based on the current cmap and norm,
@@ -260,21 +225,36 @@ package matplotlib.colorbar;
 	**/
 	public function draw_all():Dynamic;
 	/**
-		Return the array
-	**/
-	public function get_array():Dynamic;
-	/**
-		return the min, max of the color limits for image scaling
+		[*Deprecated*] return the min, max of the color limits for image scaling
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	public function get_clim():Dynamic;
 	/**
-		return the colormap
+		[*Deprecated*] return the colormap
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	public function get_cmap():Dynamic;
 	/**
-		Return the x ticks as a list of locations
+		Return the x ticks as a list of locations.
 	**/
 	public function get_ticks(?minor:Dynamic):Dynamic;
+	/**
+		Turns off the minor ticks on the colorbar.
+	**/
+	public function minorticks_off():Dynamic;
+	/**
+		Turns on the minor ticks on the colorbar without extruding
+		into the "extend regions".
+	**/
+	public function minorticks_on():Dynamic;
 	static public var n_rasterize : Dynamic;
 	/**
 		Remove this colorbar from the figure
@@ -282,46 +262,44 @@ package matplotlib.colorbar;
 	public function remove():Dynamic;
 	public function set_alpha(alpha:Dynamic):Dynamic;
 	/**
-		Set the image array from numpy array *A*.
+		[*Deprecated*] `.colorbar.Colorbar.set_clim` does nothing; set the limits on
+		the mappable associated with this colorbar.
 		
-		Parameters
-		----------
-		A : ndarray
-	**/
-	public function set_array(A:Dynamic):Dynamic;
-	/**
-		set the norm limits for image scaling; if *vmin* is a length2
-		sequence, interpret it as ``(vmin, vmax)`` which is used to
-		support setp
-		
-		ACCEPTS: a length 2 sequence of floats; may be overridden in methods
-		that have ``vmin`` and ``vmax`` kwargs.
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	public function set_clim(?vmin:Dynamic, ?vmax:Dynamic):Dynamic;
 	/**
-		set the colormap for luminance data
+		[*Deprecated*] `.colorbar.Colorbar.set_cmap` does nothing; set the norm on
+		the mappable associated with this colorbar.
 		
-		Parameters
-		----------
-		cmap : colormap or registered colormap name
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	public function set_cmap(cmap:Dynamic):Dynamic;
 	/**
-		Label the long axis of the colorbar
+		Label the long axis of the colorbar.
 	**/
 	public function set_label(label:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Set the normalization instance.
+		[*Deprecated*] `.colorbar.Colorbar.set_norm` does nothing; set the norm on
+		the mappable associated with this colorbar.
 		
-		Parameters
-		----------
-		norm : `.Normalize`
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	public function set_norm(norm:Dynamic):Dynamic;
 	/**
-		set tick labels. Tick labels are updated immediately unless
-		update_ticks is *False*. To manually update the ticks, call
-		*update_ticks* method explicitly.
+		Set tick labels.
+		
+		Tick labels are updated immediately unless *update_ticks* is *False*,
+		in which case one should call `.update_ticks` explicitly.
 	**/
 	public function set_ticklabels(ticklabels:Dynamic, ?update_ticks:Dynamic):Dynamic;
 	/**
@@ -337,35 +315,6 @@ package matplotlib.colorbar;
 		    use :meth:`update_ticks` to manually update the ticks.
 	**/
 	public function set_ticks(ticks:Dynamic, ?update_ticks:Dynamic):Dynamic;
-	/**
-		Return a normalized rgba array corresponding to *x*.
-		
-		In the normal case, *x* is a 1-D or 2-D sequence of scalars, and
-		the corresponding ndarray of rgba values will be returned,
-		based on the norm and colormap set for this ScalarMappable.
-		
-		There is one special case, for handling images that are already
-		rgb or rgba, such as might have been read from an image file.
-		If *x* is an ndarray with 3 dimensions,
-		and the last dimension is either 3 or 4, then it will be
-		treated as an rgb or rgba array, and no mapping will be done.
-		The array can be uint8, or it can be floating point with
-		values in the 0-1 range; otherwise a ValueError will be raised.
-		If it is a masked array, the mask will be ignored.
-		If the last dimension is 3, the *alpha* kwarg (defaulting to 1)
-		will be used to fill in the transparency.  If the last dimension
-		is 4, the *alpha* kwarg is ignored; it does not
-		replace the pre-existing alpha.  A ValueError will be raised
-		if the third dimension is other than 3 or 4.
-		
-		In either case, if *bytes* is *False* (default), the rgba
-		array will be floats in the 0-1 range; if it is *True*,
-		the returned rgba array will be uint8 in the 0 to 255 range.
-		
-		If norm is False, no normalization of the input data is
-		performed, and it is assumed to be in the range (0-1).
-	**/
-	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
 		Force the update of the ticks and ticklabels. This must be
 		called whenever the tick locator and/or tick formatter changes.

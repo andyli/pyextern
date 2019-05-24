@@ -25,7 +25,6 @@ package pandas._libs.hashtable;
 		----------
 		arr : float64 ndarray
 		values : float64 ndarray
-		hasnans : bint, optional
 		
 		Returns
 		-------
@@ -40,7 +39,6 @@ package pandas._libs.hashtable;
 		----------
 		arr : int64 ndarray
 		values : int64 ndarray
-		hasnans : bint, optional
 		
 		Returns
 		-------
@@ -55,7 +53,6 @@ package pandas._libs.hashtable;
 		----------
 		arr : object ndarray
 		values : object ndarray
-		hasnans : bint, optional
 		
 		Returns
 		-------
@@ -70,17 +67,16 @@ package pandas._libs.hashtable;
 		----------
 		arr : uint64 ndarray
 		values : uint64 ndarray
-		hasnans : bint, optional
 		
 		Returns
 		-------
 		boolean ndarry len of (arr)
 	**/
 	static public function ismember_uint64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function mode_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function mode_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function mode_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function mode_uint64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var nan : Dynamic;
 	/**
 		indices of the first occurrences of the unique labels
 		*excluding* -1. equivalent to:

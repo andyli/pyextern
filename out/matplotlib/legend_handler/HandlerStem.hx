@@ -140,6 +140,11 @@ package matplotlib.legend_handler;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Method to copy properties from a LineCollection (orig_handle) to a
+		Line2D (legend_handle).
+	**/
+	public function _copy_collection_props(legend_handle:Dynamic, orig_handle:Dynamic):Dynamic;
 	public function _default_update_prop(legend_handle:Dynamic, orig_handle:Dynamic):Dynamic;
 	public function _update_prop(legend_handle:Dynamic, orig_handle:Dynamic):Dynamic;
 	public function adjust_drawing_area(legend:Dynamic, orig_handle:Dynamic, xdescent:Dynamic, ydescent:Dynamic, width:Dynamic, height:Dynamic, fontsize:Dynamic):Dynamic;

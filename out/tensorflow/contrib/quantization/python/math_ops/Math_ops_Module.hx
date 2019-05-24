@@ -336,7 +336,7 @@ package tensorflow.contrib.quantization.python.math_ops;
 		    output[..., :, :] = matrix(x[..., :, :]) * matrix(y[..., :, :])
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `complex64`, `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
 		    2-D or higher with shape `[..., r_x, c_x]`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		    2-D or higher with shape `[..., r_y, c_y]`.
@@ -369,6 +369,9 @@ package tensorflow.contrib.quantization.python.math_ops;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.bessel_i0e(x.values, ...), x.dense_shape)`
 	**/
 	static public function bessel_i0e(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -390,6 +393,9 @@ package tensorflow.contrib.quantization.python.math_ops;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.bessel_i1e(x.values, ...), x.dense_shape)`
 	**/
 	static public function bessel_i1e(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -889,6 +895,9 @@ package tensorflow.contrib.quantization.python.math_ops;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.erf(x.values, ...), x.dense_shape)`
 	**/
 	static public function erf(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -960,7 +969,7 @@ package tensorflow.contrib.quantization.python.math_ops;
 	/**
 		Returns x // y element-wise.
 		
-		*NOTE*: `FloorDiv` supports broadcasting. More about broadcasting
+		*NOTE*: `floor_div` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -988,7 +997,7 @@ package tensorflow.contrib.quantization.python.math_ops;
 		true, this follows Python semantics in that the result here is consistent
 		with a flooring divide. E.g. `floor(x / y) * y + mod(x, y) = x`.
 		
-		*NOTE*: `FloorMod` supports broadcasting. More about broadcasting
+		*NOTE*: `floormod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -1441,7 +1450,7 @@ package tensorflow.contrib.quantization.python.math_ops;
 		cublas.
 		
 		Args:
-		  a: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `complex64`, `complex128`.
+		  a: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
 		  b: A `Tensor`. Must have the same type as `a`.
 		  transpose_a: An optional `bool`. Defaults to `False`.
 		    If true, "a" is transposed before multiplication.
@@ -1579,6 +1588,9 @@ package tensorflow.contrib.quantization.python.math_ops;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.negative(x.values, ...), x.dense_shape)`
 	**/
 	static public function neg(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -2323,6 +2335,9 @@ package tensorflow.contrib.quantization.python.math_ops;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.sign(x.values, ...), x.dense_shape)`
 	**/
 	static public function sign(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -2669,6 +2684,9 @@ package tensorflow.contrib.quantization.python.math_ops;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.sqrt(x.values, ...), x.dense_shape)`
 	**/
 	static public function sqrt(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -2707,6 +2725,9 @@ package tensorflow.contrib.quantization.python.math_ops;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.square(x.values, ...), x.dense_shape)`
 	**/
 	static public function square(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -2779,6 +2800,9 @@ package tensorflow.contrib.quantization.python.math_ops;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.tanh(x.values, ...), x.dense_shape)`
 	**/
 	static public function tanh(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -2815,7 +2839,7 @@ package tensorflow.contrib.quantization.python.math_ops;
 		than Python semantics. See `FloorDiv` for a division function that matches
 		Python Semantics.
 		
-		*NOTE*: `TruncateDiv` supports broadcasting. More about broadcasting
+		*NOTE*: `truncatediv` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -2838,7 +2862,7 @@ package tensorflow.contrib.quantization.python.math_ops;
 		the result here is consistent with a truncating divide. E.g. `truncate(x / y) *
 		y + truncate_mod(x, y) = x`.
 		
-		*NOTE*: `TruncateMod` supports broadcasting. More about broadcasting
+		*NOTE*: `truncatemod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:

@@ -11,7 +11,30 @@ package tensorflow.python.compat.compat;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Disables TensorFlow 2.x behaviors.
+		
+		This function can be called at the beginning of the program (before `Tensors`,
+		`Graphs` or other structures have been created, and before devices have been
+		initialized. It switches all global behaviors that are different between
+		TensorFlow 1.x and 2.x to behave as intended for 1.x.
+		
+		User can call this function to disable 2.x behavior during complex migrations.
+	**/
+	static public function disable_v2_behavior():Dynamic;
 	static public var division : Dynamic;
+	/**
+		Enables TensorFlow 2.x behaviors.
+		
+		This function can be called at the beginning of the program (before `Tensors`,
+		`Graphs` or other structures have been created, and before devices have been
+		initialized. It switches all global behaviors that are different between
+		TensorFlow 1.x and 2.x to behave as intended for 2.x.
+		
+		This function is called in the main TensorFlow `__init__.py` file, user should
+		not need to call it, except during complex migrations.
+	**/
+	static public function enable_v2_behavior():Dynamic;
 	/**
 		Context manager for testing forward compatibility of generated graphs.
 		

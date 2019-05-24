@@ -61,7 +61,7 @@ package scipy.signal._savitzky_golay;
 		-----
 		The keyword arguments start, stop and step are used by calling
 		slice(start, stop, step).  This implies axis_slice() does not
-		handle its arguments the exacty the same as indexing.  To select
+		handle its arguments the exactly the same as indexing.  To select
 		a single index k, for example, use
 		    axis_slice(a, start=k, stop=k+1)
 		In this case, the length of the axis 'axis' in the result will
@@ -89,8 +89,8 @@ package scipy.signal._savitzky_golay;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -145,9 +145,9 @@ package scipy.signal._savitzky_golay;
 		Parameters
 		----------
 		a : (M, N) array_like
-		    Left hand side matrix (2-D array).
+		    Left hand side array
 		b : (M,) or (M, K) array_like
-		    Right hand side matrix or vector (1-D or 2-D array).
+		    Right hand side array
 		cond : float, optional
 		    Cutoff for 'small' singular values; used to determine effective
 		    rank of a. Singular values smaller than
@@ -173,16 +173,15 @@ package scipy.signal._savitzky_golay;
 		-------
 		x : (N,) or (N, K) ndarray
 		    Least-squares solution.  Return shape matches shape of `b`.
-		residues : (0,) or () or (K,) ndarray
-		    Sums of residues, squared 2-norm for each column in ``b - a x``.
-		    If rank of matrix a is ``< N`` or ``N > M``, or ``'gelsy'`` is used,
-		    this is a length zero array. If b was 1-D, this is a () shape array
-		    (numpy scalar), otherwise the shape is (K,).
+		residues : (K,) ndarray or float
+		    Square of the 2-norm for each column in ``b - a x``, if ``M > N`` and
+		    ``ndim(A) == n`` (returns a scalar if b is 1-D). Otherwise a
+		    (0,)-shaped array is returned.
 		rank : int
-		    Effective rank of matrix `a`.
-		s : (min(M,N),) ndarray or None
+		    Effective rank of `a`.
+		s : (min(M, N),) ndarray or None
 		    Singular values of `a`. The condition number of a is
-		    ``abs(s[0] / s[-1])``. None is returned when ``'gelsy'`` is used.
+		    ``abs(s[0] / s[-1])``.
 		
 		Raises
 		------
@@ -190,11 +189,16 @@ package scipy.signal._savitzky_golay;
 		    If computation does not converge.
 		
 		ValueError
-		    When parameters are wrong.
+		    When parameters are not compatible.
 		
 		See Also
 		--------
-		optimize.nnls : linear least squares with non-negativity constraint
+		scipy.optimize.nnls : linear least squares with non-negativity constraint
+		
+		Notes
+		-----
+		When ``'gelsy'`` is used as a driver, `residues` is set to a (0,)-shaped
+		array and `s` is always ``None``.
 		
 		Examples
 		--------
@@ -296,8 +300,8 @@ package scipy.signal._savitzky_golay;
 		>>> savgol_coeffs(5, 2)
 		array([-0.08571429,  0.34285714,  0.48571429,  0.34285714, -0.08571429])
 		>>> savgol_coeffs(5, 2, deriv=1)
-		array([  2.00000000e-01,   1.00000000e-01,   2.00607895e-16,
-		        -1.00000000e-01,  -2.00000000e-01])
+		array([ 2.00000000e-01,  1.00000000e-01,  2.07548111e-16, -1.00000000e-01,
+		       -2.00000000e-01])
 		
 		Note that use='dot' simply reverses the coefficients.
 		
@@ -314,7 +318,7 @@ package scipy.signal._savitzky_golay;
 		>>> x = np.array([1, 0, 1, 4, 9])
 		>>> c = savgol_coeffs(5, 2, pos=4, deriv=1, use='dot')
 		>>> c.dot(x)
-		6.0000000000000018
+		6.0
 	**/
 	static public function savgol_coeffs(window_length:Dynamic, polyorder:Dynamic, ?deriv:Dynamic, ?delta:Dynamic, ?pos:Dynamic, ?use:Dynamic):Dynamic;
 	/**
@@ -327,7 +331,7 @@ package scipy.signal._savitzky_golay;
 		----------
 		x : array_like
 		    The data to be filtered.  If `x` is not a single or double precision
-		    floating point array, it will be converted to type `numpy.float64`
+		    floating point array, it will be converted to type ``numpy.float64``
 		    before filtering.
 		window_length : int
 		    The length of the filter window (i.e. the number of coefficients).
@@ -406,7 +410,7 @@ package scipy.signal._savitzky_golay;
 		the defaults for all other parameters.
 		
 		>>> savgol_filter(x, 5, 2)
-		array([ 1.66,  3.17,  3.54,  2.86,  0.66,  0.17,  1.  ,  4.  ,  9.  ])
+		array([1.66, 3.17, 3.54, 2.86, 0.66, 0.17, 1.  , 4.  , 9.  ])
 		
 		Note that the last five values in x are samples of a parabola, so
 		when mode='interp' (the default) is used with polyorder=2, the last
@@ -414,7 +418,7 @@ package scipy.signal._savitzky_golay;
 		`mode='nearest'`:
 		
 		>>> savgol_filter(x, 5, 2, mode='nearest')
-		array([ 1.74,  3.03,  3.54,  2.86,  0.66,  0.17,  1.  ,  4.6 ,  7.97])
+		array([1.74, 3.03, 3.54, 2.86, 0.66, 0.17, 1.  , 4.6 , 7.97])
 	**/
 	static public function savgol_filter(x:Dynamic, window_length:Dynamic, polyorder:Dynamic, ?deriv:Dynamic, ?delta:Dynamic, ?axis:Dynamic, ?mode:Dynamic, ?cval:Dynamic):Dynamic;
 }

@@ -31,10 +31,11 @@ package tensorflow.python.autograph.core.converter;
 		  node: ast.AST
 		  context: converter.EntityContext
 		  is_initial: bool, whether this is the initial analysis done on the input
-		      source code
+		    source code
 		
 		Returns:
 		  ast.AST, same as node, with the static analysis annotations added
 	**/
 	static public function standard_analysis(node:Dynamic, context:Dynamic, ?is_initial:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

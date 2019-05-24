@@ -271,7 +271,7 @@ package tensorflow.contrib.training.python.training.hparam;
 	/**
 		DEPRECATED. Use override_from_dict. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `override_from_dict`.
 	**/

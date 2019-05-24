@@ -57,6 +57,7 @@ package tensorflow.python.autograph.pyct.ast_util;
 	**/
 	static public function copy_clean(node:Dynamic, ?preserve_annos:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	static public function find_matching_definitions(node:Dynamic, f:Dynamic):Dynamic;
 	/**
 		Converts a list of ast.keyword objects to a dict.
 	**/

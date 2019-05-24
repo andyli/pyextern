@@ -120,7 +120,7 @@ package matplotlib.cbook;
 	**/
 	public function clean():Dynamic;
 	/**
-		Returns all of the items joined with *a*, including itself.
+		Return all of the items joined with *a*, including itself.
 	**/
 	public function get_siblings(a:Dynamic):Dynamic;
 	/**
@@ -128,7 +128,7 @@ package matplotlib.cbook;
 	**/
 	public function join(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Returns True if *a* and *b* are members of the same set.
+		Return whether *a* and *b* are members of the same set.
 	**/
 	public function joined(a:Dynamic, b:Dynamic):Dynamic;
 	public function remove(a:Dynamic):Dynamic;

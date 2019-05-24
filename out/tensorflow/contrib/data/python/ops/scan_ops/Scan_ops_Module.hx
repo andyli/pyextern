@@ -15,7 +15,7 @@ package tensorflow.contrib.data.python.ops.scan_ops;
 	/**
 		A transformation that scans a function across an input dataset. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.scan(...)`.
 		

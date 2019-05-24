@@ -88,6 +88,24 @@ package tensorflow.contrib.boosted_trees.python.utils.losses;
 		  update_op: An update operation to update the loss's internal state.
 	**/
 	static public function per_example_maxent_loss(labels:Dynamic, weights:Dynamic, logits:Dynamic, num_classes:Dynamic, ?eps:Dynamic):Dynamic;
+	/**
+		Smoothed loss for quantile regression.
+		
+		The standard quantile regression loss is quantile*(y-y') when y>y' and
+		(quantile-1)*(y-y') otherwise, y' is a prediction, y is a label. The impl
+		below is this loss but squared in the region where the loss value < 1.
+		
+		Args:
+		  labels: Rank 2 (N, D) tensor of per-example labels.
+		  weights: Rank 2 (N, 1) tensor of per-example weights.
+		  predictions: Rank 2 (N, D) tensor of per-example predictions.
+		  quantile: The quantile to use.
+		
+		Returns:
+		  loss: A Rank 2 (N, 1) tensor of per-example quantile loss.
+		  update_op: An update operation to update the loss's internal state.
+	**/
+	static public function per_example_quantile_regression_loss(labels:Dynamic, weights:Dynamic, predictions:Dynamic, quantile:Dynamic):Dynamic;
 	static public function per_example_squared_hinge_loss(labels:Dynamic, weights:Dynamic, predictions:Dynamic):Dynamic;
 	/**
 		Squared loss given labels, example weights and predictions.

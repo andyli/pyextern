@@ -15,7 +15,7 @@ package tensorflow.python.ops.distributions.distribution;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __base__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __base__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __bases__ : Dynamic;
 	static public var __basicsize__ : Dynamic;
 	/**

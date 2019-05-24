@@ -13,7 +13,7 @@ package tensorflow.contrib.data.python.ops.grouping;
 	/**
 		A transformation that buckets elements in a `Dataset` by length. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.bucket_by_sequence_length(...)`.
 		
@@ -57,7 +57,7 @@ package tensorflow.contrib.data.python.ops.grouping;
 	/**
 		A transformation that groups elements and performs a reduction. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.group_by_reducer(...)`.
 		
@@ -83,7 +83,7 @@ package tensorflow.contrib.data.python.ops.grouping;
 	/**
 		A transformation that groups windows of elements by key and reduces them. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.group_by_window(...)`.
 		

@@ -108,16 +108,7 @@ package matplotlib.backends.backend_ps;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	/**
-		executable name of ghostscript.
-	**/
 	public var gs_exe : Dynamic;
-	/**
-		version of ghostscript.
-	**/
 	public var gs_version : Dynamic;
-	/**
-		True if the installed ghostscript supports ps2write device.
-	**/
 	public var supports_ps2write : Dynamic;
 }

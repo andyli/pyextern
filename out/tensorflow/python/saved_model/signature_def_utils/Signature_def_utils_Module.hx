@@ -48,6 +48,36 @@ package tensorflow.python.saved_model.signature_def_utils;
 	**/
 	static public function is_valid_signature(signature_def:Dynamic):Dynamic;
 	/**
+		Load an Op from a SignatureDef created by op_signature_def().
+		
+		Args:
+		  signature_def: a SignatureDef proto
+		  key: string key to op in the SignatureDef outputs.
+		  import_scope: Scope used to import the op
+		
+		Returns:
+		  Op (or possibly Tensor) in the graph with the same name as saved in the
+		    SignatureDef.
+		
+		Raises:
+		  NotFoundError: If the op could not be found in the graph.
+	**/
+	static public function load_op_from_signature_def(signature_def:Dynamic, key:Dynamic, ?import_scope:Dynamic):Dynamic;
+	/**
+		Creates a signature def with the output pointing to an op.
+		
+		Note that op isn't strictly enforced to be an Op object, and may be a Tensor.
+		It is recommended to use the build_signature_def() function for Tensors.
+		
+		Args:
+		  op: An Op (or possibly Tensor).
+		  key: Key to graph element in the SignatureDef outputs.
+		
+		Returns:
+		  A SignatureDef with a single output pointing to the op.
+	**/
+	static public function op_signature_def(op:Dynamic, key:Dynamic):Dynamic;
+	/**
 		Creates prediction signature from given inputs and outputs.
 		
 		This function produces signatures intended for use with the TensorFlow Serving

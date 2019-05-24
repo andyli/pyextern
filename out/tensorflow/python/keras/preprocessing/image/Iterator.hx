@@ -64,10 +64,7 @@ package tensorflow.python.keras.preprocessing.image;
 	**/
 	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Creates an infinite generator that iterate over the Sequence.
-		
-		Yields:
-		  Sequence items.
+		Create a generator that iterate over the Sequence.
 	**/
 	public function __iter__():Dynamic;
 	/**
@@ -147,11 +144,18 @@ package tensorflow.python.keras.preprocessing.image;
 	public function _set_index_array():Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
-	public function common_init(image_data_generator:Dynamic, target_size:Dynamic, color_mode:Dynamic, data_format:Dynamic, save_to_dir:Dynamic, save_prefix:Dynamic, save_format:Dynamic, subset:Dynamic, interpolation:Dynamic):Dynamic;
+	/**
+		For python 2.x.
+		
+		# Returns
+		    The next batch.
+	**/
+	public function next():Dynamic;
 	/**
 		Method called at the end of every epoch.
 		    
 	**/
 	public function on_epoch_end():Dynamic;
 	public function reset():Dynamic;
+	static public var white_list_formats : Dynamic;
 }

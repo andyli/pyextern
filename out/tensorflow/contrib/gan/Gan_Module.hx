@@ -225,6 +225,8 @@ package tensorflow.contrib.gan;
 		  discriminator_optimizer: The optimizer for the discriminator updates.
 		  check_for_unused_update_ops: If `True`, throws an exception if there are
 		    update ops outside of the generator or discriminator scopes.
+		  is_chief: Specifies whether or not the training is being run by the primary
+		    replica during replica training.
 		  **kwargs: Keyword args to pass directly to
 		    `training.create_train_op` for both the generator and
 		    discriminator train op.
@@ -233,9 +235,9 @@ package tensorflow.contrib.gan;
 		  A GANTrainOps tuple of (generator_train_op, discriminator_train_op) that can
 		  be used to train a generator/discriminator pair.
 	**/
-	static public function gan_train_ops(model:Dynamic, loss:Dynamic, generator_optimizer:Dynamic, discriminator_optimizer:Dynamic, ?check_for_unused_update_ops:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function gan_train_ops(model:Dynamic, loss:Dynamic, generator_optimizer:Dynamic, discriminator_optimizer:Dynamic, ?check_for_unused_update_ops:Dynamic, ?is_chief:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Returns a hooks function for sequential GAN training.
+		Returns a hooks function for joint GAN training.
 		
 		When using these train hooks, IT IS RECOMMENDED TO USE `use_locking=True` ON
 		ALL OPTIMIZERS TO AVOID RACE CONDITIONS.

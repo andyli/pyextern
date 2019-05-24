@@ -46,6 +46,7 @@ package theano.configdefaults;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var __warningregistry__ : Dynamic;
 	static public var _logger : Dynamic;
 	static public function _timeout_default():Dynamic;
 	static public var absolute_import : Dynamic;
@@ -116,7 +117,6 @@ package theano.configdefaults;
 		in a tuple.
 	**/
 	static public function output_subprocess_Popen(command:Dynamic, ?params:python.KwArgs<Dynamic>):Dynamic;
-	static public var p_out : Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Return the bit width of Python int (C long int).

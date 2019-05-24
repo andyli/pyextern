@@ -5,7 +5,6 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CONSTANT_VALUE_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -27,7 +26,6 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EXPONENTIAL_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
@@ -52,7 +50,6 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LINEAR_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -85,7 +82,10 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var THRESHOLD_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tensorforest.DepthDependentParam.constant_value
+	**/
+	public var constant_value : Dynamic;
+	/**
+		Field tensorflow.tensorforest.DepthDependentParam.exponential
+	**/
+	public var exponential : Dynamic;
+	/**
+		Field tensorflow.tensorforest.DepthDependentParam.linear
+	**/
+	public var linear : Dynamic;
+	/**
+		Field tensorflow.tensorforest.DepthDependentParam.threshold
+	**/
+	public var threshold : Dynamic;
 }

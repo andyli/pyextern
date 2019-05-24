@@ -49,15 +49,6 @@ package matplotlib.dates;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Assert that datetimes *d1* and *d2* are within *epsilon* microseconds.
-	**/
-	static public function _close_to_dt(d1:Dynamic, d2:Dynamic, ?epsilon:Dynamic):Dynamic;
-	/**
-		Assert that float ordinals *o1* and *o2* are within *epsilon*
-		microseconds.
-	**/
-	static public function _close_to_num(o1:Dynamic, o2:Dynamic, ?epsilon:Dynamic):Dynamic;
-	/**
 		Parse a string in one of the supported formats, using the
 		``parserinfo`` parameters.
 		
@@ -180,7 +171,7 @@ package matplotlib.dates;
 	**/
 	static public function _from_ordinalf_np_vectorized(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Retrieve the preferred timeszone from the rcParams dictionary.
+		Retrieve the preferred timezone from the rcParams dictionary.
 	**/
 	static public function _get_rc_timezone():Dynamic;
 	static public var _log : Dynamic;
@@ -224,8 +215,7 @@ package matplotlib.dates;
 	**/
 	static public function date_ticker_factory(span:Dynamic, ?tz:Dynamic, ?numticks:Dynamic):Dynamic;
 	/**
-		Convert a date string to a datenum using
-		:func:`dateutil.parser.parse`.
+		Convert a date string to a datenum using :func:`dateutil.parser.parse`.
 		
 		Parameters
 		----------
@@ -261,7 +251,12 @@ package matplotlib.dates;
 	**/
 	static public function epoch2num(e:Dynamic):Dynamic;
 	/**
-		Return hours as days.
+		[*Deprecated*] Return hours as days.
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function hours(h:Dynamic):Dynamic;
 	/**
@@ -279,7 +274,12 @@ package matplotlib.dates;
 	**/
 	static public function julian2num(j:Dynamic):Dynamic;
 	/**
-		Return minutes as days.
+		[*Deprecated*] Return minutes as days.
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function minutes(m:Dynamic):Dynamic;
 	/**
@@ -349,11 +349,21 @@ package matplotlib.dates;
 	static public function num2timedelta(x:Dynamic):Dynamic;
 	static public var rcParams : Dynamic;
 	/**
-		Return seconds as days.
+		[*Deprecated*] Return seconds as days.
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function seconds(s:Dynamic):Dynamic;
 	/**
-		Return weeks as days.
+		[*Deprecated*] Return weeks as days.
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function weeks(w:Dynamic):Dynamic;
 }

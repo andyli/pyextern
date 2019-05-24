@@ -135,6 +135,9 @@ package tensorflow.python.eager._function;
 		
 		Returns:
 		  The outputs of the function call.
+		
+		Raises:
+		  ValueError: if the number of arguments is incorrect.
 	**/
 	public function call(ctx:Dynamic, args:Dynamic):Dynamic;
 	public var stateful_ops : Dynamic;

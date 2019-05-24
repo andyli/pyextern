@@ -19,10 +19,10 @@ package pandas.compat.pickle_compat;
 		
 		Parameters
 		----------
-		fh: a filelike object
-		encoding: an optional encoding
-		compat: provide Series compatibility mode, boolean, default False
-		is_verbose: show exception output
+		fh : a filelike object
+		encoding : an optional encoding
+		compat : provide Series compatibility mode, boolean, default False
+		is_verbose : show exception output
 	**/
 	static public function load(fh:Dynamic, ?encoding:Dynamic, ?compat:Dynamic, ?is_verbose:Dynamic):Dynamic;
 	static public function load_newobj(self:Dynamic):Dynamic;

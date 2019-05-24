@@ -5,6 +5,10 @@ package torch.jit.frontend;
 		FalseLiteral(arg0: torch._C._jit_tree_views.SourceRange) -> torch::jit::script::Expr
 	**/
 	static public function FalseLiteral(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		NoneLiteral(arg0: torch._C._jit_tree_views.SourceRange) -> torch::jit::script::Expr
+	**/
+	static public function NoneLiteral(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var PY2 : Dynamic;
 	/**
 		TrueLiteral(arg0: torch._C._jit_tree_views.SourceRange) -> torch::jit::script::Expr
@@ -21,8 +25,9 @@ package torch.jit.frontend;
 	static public var _identifier_chars : Dynamic;
 	static public var _reserved_names : Dynamic;
 	static public var _reserved_prefix : Dynamic;
+	static public function _uses_true_division(fn:Dynamic):Dynamic;
 	static public var _vararg_kwarg_err : Dynamic;
-	static public function build_def(ctx:Dynamic, py_def:Dynamic):Dynamic;
+	static public function build_def(ctx:Dynamic, py_def:Dynamic, type_line:Dynamic, is_method:Dynamic):Dynamic;
 	static public function build_expr(ctx:Dynamic, node:Dynamic):Dynamic;
 	static public function build_param(ctx:Dynamic, py_arg:Dynamic):Dynamic;
 	static public function build_param_list(ctx:Dynamic, py_args:Dynamic):Dynamic;
@@ -44,7 +49,8 @@ package torch.jit.frontend;
 	static public function dedent(text:Dynamic):Dynamic;
 	static public function find_after(ctx:Dynamic, pos:Dynamic, substr:Dynamic, ?offsets:Dynamic):Dynamic;
 	static public function find_before(ctx:Dynamic, pos:Dynamic, substr:Dynamic, ?offsets:Dynamic):Dynamic;
-	static public function get_jit_ast(fn:Dynamic):Dynamic;
+	static public function get_default_args(fn:Dynamic):Dynamic;
+	static public function get_jit_ast(fn:Dynamic, is_method:Dynamic):Dynamic;
 	static public function is_reserved_name(name:Dynamic):Dynamic;
 	/**
 		Returns a new subclass of tuple with named fields.

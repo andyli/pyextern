@@ -104,13 +104,17 @@ package torch._c;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		_export_onnx(self: torch._C.Graph, initializers: List[at::Tensor], onnx_opset_version: int = 0, defer_weight_export: bool = False, operator_export_type: torch._C._onnx.OperatorExportTypes = OperatorExportTypes.ONNX) -> Tuple[bytes, Dict[str, bytes]]
+	**/
+	public function _export_onnx(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		_pretty_print_onnx(self: torch._C.Graph, initializers: List[at::Tensor], onnx_opset_version: int = 0, defer_weight_export: bool = False, operator_export_type: torch._C._onnx.OperatorExportTypes = OperatorExportTypes.ONNX, google_printer: bool = False) -> str
+	**/
+	public function _pretty_print_onnx(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		addInput(self: torch._C.Graph) -> torch::jit::Value
 	**/
 	public function addInput(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		advanceStage(self: torch._C.Graph) -> None
-	**/
-	public function advanceStage(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		appendNode(self: torch._C.Graph, arg0: torch::jit::Node) -> torch::jit::Node
 	**/
@@ -137,21 +141,13 @@ package torch._c;
 	**/
 	public function createClone(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		createConstant(self: torch._C.Graph, arg0: at::Tensor) -> torch::jit::Node
-	**/
-	public function createConstant(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		createFusionGroup(self: torch._C.Graph, arg0: int) -> torch::jit::Node
+		createFusionGroup(self: torch._C.Graph) -> torch::jit::Node
 	**/
 	public function createFusionGroup(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		eraseInput(self: torch._C.Graph, arg0: int) -> None
 	**/
 	public function eraseInput(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		export(self: torch._C.Graph, initializers: List[at::Tensor], onnx_opset_version: int = 0, defer_weight_export: bool = False, operator_export_type: torch._C._onnx.OperatorExportTypes = OperatorExportTypes.ONNX) -> Tuple[bytes, Dict[str, bytes]]
-	**/
-	public function export(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		inputs(self: torch._C.Graph) -> iterator
 	**/
@@ -181,9 +177,9 @@ package torch._c;
 	**/
 	public function prependNode(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		prettyPrintExport(self: torch._C.Graph, initializers: List[at::Tensor], onnx_opset_version: int = 0, defer_weight_export: bool = False, operator_export_type: torch._C._onnx.OperatorExportTypes = OperatorExportTypes.ONNX) -> str
+		pretty_print(self: torch._C.Graph) -> str
 	**/
-	public function prettyPrintExport(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function pretty_print(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		propagate_shapes(self: torch._C.Graph, arg0: List[at::Tensor], arg1: bool) -> None
 	**/
@@ -196,12 +192,4 @@ package torch._c;
 		return_node(self: torch._C.Graph) -> torch::jit::Node
 	**/
 	public function return_node(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		stage(self: torch._C.Graph) -> int
-	**/
-	public function stage(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		wrapPyFuncWithSymbolic(self: torch._C.Graph, arg0: function, arg1: List[torch::jit::Value], arg2: int, arg3: function) -> iterator
-	**/
-	public function wrapPyFuncWithSymbolic(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

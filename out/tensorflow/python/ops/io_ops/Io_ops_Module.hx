@@ -97,6 +97,7 @@ package tensorflow.python.ops.io_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function fixed_length_record_reader(record_bytes:Dynamic, ?header_bytes:Dynamic, ?footer_bytes:Dynamic, ?hop_bytes:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function fixed_length_record_reader_eager_fallback(record_bytes:Dynamic, ?header_bytes:Dynamic, ?footer_bytes:Dynamic, ?hop_bytes:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		A Reader that outputs fixed-length records from a file.
 		
@@ -148,6 +149,7 @@ package tensorflow.python.ops.io_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function identity_reader(?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function identity_reader_eager_fallback(?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		A Reader that outputs the queued work as both the key and value.
 		
@@ -188,6 +190,7 @@ package tensorflow.python.ops.io_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function lmdb_reader(?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function lmdb_reader_eager_fallback(?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Returns the set of files matching one or more glob patterns.
 		
@@ -270,6 +273,7 @@ package tensorflow.python.ops.io_ops;
 		  A `Tensor` of type `int64`.
 	**/
 	static public function reader_num_records_produced(reader_handle:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reader_num_records_produced_eager_fallback(reader_handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Returns the number of records this Reader has produced.
 		
@@ -300,6 +304,7 @@ package tensorflow.python.ops.io_ops;
 		  A `Tensor` of type `int64`.
 	**/
 	static public function reader_num_work_units_completed(reader_handle:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reader_num_work_units_completed_eager_fallback(reader_handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Returns the number of work units this Reader has finished processing.
 		
@@ -336,6 +341,7 @@ package tensorflow.python.ops.io_ops;
 		  value: A `Tensor` of type `string`.
 	**/
 	static public function reader_read(reader_handle:Dynamic, queue_handle:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reader_read_eager_fallback(reader_handle:Dynamic, queue_handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Returns up to `num_records` (key, value) pairs produced by a Reader.
 		
@@ -359,6 +365,7 @@ package tensorflow.python.ops.io_ops;
 		  values: A `Tensor` of type `string`.
 	**/
 	static public function reader_read_up_to(reader_handle:Dynamic, queue_handle:Dynamic, num_records:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reader_read_up_to_eager_fallback(reader_handle:Dynamic, queue_handle:Dynamic, num_records:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Returns up to `num_records` (key, value) pairs produced by a Reader.
 		
@@ -423,6 +430,7 @@ package tensorflow.python.ops.io_ops;
 		  The created Operation.
 	**/
 	static public function reader_reset(reader_handle:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reader_reset_eager_fallback(reader_handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Restore a Reader to its initial clean state.
 		
@@ -456,6 +464,7 @@ package tensorflow.python.ops.io_ops;
 		  The created Operation.
 	**/
 	static public function reader_restore_state(reader_handle:Dynamic, state:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reader_restore_state_eager_fallback(reader_handle:Dynamic, state:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Restore a reader to a previously saved state.
 		
@@ -492,6 +501,7 @@ package tensorflow.python.ops.io_ops;
 		  A `Tensor` of type `string`.
 	**/
 	static public function reader_serialize_state(reader_handle:Dynamic, ?name:Dynamic):Dynamic;
+	static public function reader_serialize_state_eager_fallback(reader_handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Produce a string tensor that encodes the state of a Reader.
 		
@@ -782,6 +792,7 @@ package tensorflow.python.ops.io_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function text_line_reader(?skip_header_lines:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function text_line_reader_eager_fallback(?skip_header_lines:Dynamic, ?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		A Reader that outputs the lines of a file delimited by '\n'.
 		
@@ -823,6 +834,7 @@ package tensorflow.python.ops.io_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function tf_record_reader(?container:Dynamic, ?shared_name:Dynamic, ?compression_type:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tf_record_reader_eager_fallback(?container:Dynamic, ?shared_name:Dynamic, ?compression_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		A Reader that outputs the records from a TensorFlow Records file.
 		
@@ -864,6 +876,7 @@ package tensorflow.python.ops.io_ops;
 		  A `Tensor` of type mutable `string`.
 	**/
 	static public function whole_file_reader(?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function whole_file_reader_eager_fallback(?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		A Reader that outputs the entire contents of a file as a value.
 		

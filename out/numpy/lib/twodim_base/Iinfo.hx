@@ -1,3 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.lib.twodim_base;
-typedef Iinfo = numpy.core.getlimits.Iinfo;
+typedef Iinfo = numpy.Iinfo;

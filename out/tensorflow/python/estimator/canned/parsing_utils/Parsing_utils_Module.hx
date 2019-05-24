@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.estimator.canned.parsing_utils;
 @:pythonImport("tensorflow.python.estimator.canned.parsing_utils") extern class Parsing_utils_Module {
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

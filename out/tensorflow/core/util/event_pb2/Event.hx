@@ -30,7 +30,6 @@ package tensorflow.core.util.event_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FILE_VERSION_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -39,7 +38,6 @@ package tensorflow.core.util.event_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GRAPH_DEF_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -52,12 +50,10 @@ package tensorflow.core.util.event_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LOG_MESSAGE_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var META_GRAPH_DEF_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -74,9 +70,6 @@ package tensorflow.core.util.event_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SESSION_LOG_FIELD_NUMBER : Dynamic;
-	static public var STEP_FIELD_NUMBER : Dynamic;
-	static public var SUMMARY_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -89,8 +82,10 @@ package tensorflow.core.util.event_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TAGGED_RUN_METADATA_FIELD_NUMBER : Dynamic;
-	static public var WALL_TIME_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -258,4 +253,40 @@ package tensorflow.core.util.event_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.Event.file_version
+	**/
+	public var file_version : Dynamic;
+	/**
+		Field tensorflow.Event.graph_def
+	**/
+	public var graph_def : Dynamic;
+	/**
+		Field tensorflow.Event.log_message
+	**/
+	public var log_message : Dynamic;
+	/**
+		Field tensorflow.Event.meta_graph_def
+	**/
+	public var meta_graph_def : Dynamic;
+	/**
+		Field tensorflow.Event.session_log
+	**/
+	public var session_log : Dynamic;
+	/**
+		Field tensorflow.Event.step
+	**/
+	public var step : Dynamic;
+	/**
+		Field tensorflow.Event.summary
+	**/
+	public var summary : Dynamic;
+	/**
+		Field tensorflow.Event.tagged_run_metadata
+	**/
+	public var tagged_run_metadata : Dynamic;
+	/**
+		Field tensorflow.Event.wall_time
+	**/
+	public var wall_time : Dynamic;
 }

@@ -294,11 +294,11 @@ package scipy.stats._discrete_distns;
 		
 		.. math::
 		
-		    f(k) = (1-\exp(-\lambda) \exp(-\lambda k)/(1-\exp(-\lambda N))
+		    f(k) = (1-\exp(-\lambda)) \exp(-\lambda k) / (1-\exp(-\lambda N))
 		
 		for :math:`k = 0,..., N-1`.
 		
-		`boltzmann` takes :math:`\lambda` and :math:`N` as shape parameters.
+		`boltzmann` takes :math:`\lambda > 0` and :math:`N > 0` as shape parameters.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -521,7 +521,7 @@ package scipy.stats._discrete_distns;
 		
 		    f(k) = \tanh(a/2) \exp(-a |k|)
 		
-		for :math:`a > 0`.
+		for integers :math:`k` and :math:`a > 0`.
 		
 		`dlaplace` takes :math:`a` as shape parameter.
 		
@@ -649,7 +649,7 @@ package scipy.stats._discrete_distns;
 		References
 		----------
 		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
+		       https://en.wikipedia.org/wiki/Exponential_function
 		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
 		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
 		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
@@ -861,6 +861,10 @@ package scipy.stats._discrete_distns;
 		To shift distribution use the ``loc`` parameter.
 		Specifically, ``geom.pmf(k, p, loc)`` is identically
 		equivalent to ``geom.pmf(k - loc, p)``.
+		
+		See Also
+		--------
+		planck
 		
 		Examples
 		--------
@@ -1081,7 +1085,7 @@ package scipy.stats._discrete_distns;
 		----------
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+		.. [2] Wikipedia, "Logarithm". https://en.wikipedia.org/wiki/Logarithm
 		
 		Examples
 		--------
@@ -1144,7 +1148,7 @@ package scipy.stats._discrete_distns;
 		----------
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+		.. [2] Wikipedia, "Logarithm". https://en.wikipedia.org/wiki/Logarithm
 		
 		Examples
 		--------
@@ -1304,7 +1308,7 @@ package scipy.stats._discrete_distns;
 		
 		Notes
 		-----
-		Numpy has a logaddexp function which is very similar to `logsumexp`, but
+		NumPy has a logaddexp function which is very similar to `logsumexp`, but
 		only handles two arguments. `logaddexp.reduce` is similar to this
 		function, but may be less stable.
 		
@@ -1500,14 +1504,20 @@ package scipy.stats._discrete_distns;
 		
 		    f(k) = (1-\exp(-\lambda)) \exp(-\lambda k)
 		
-		for :math:`k \lambda \ge 0`.
+		for :math:`k \ge 0` and :math:`\lambda > 0`.
 		
-		`planck` takes :math:`\lambda` as shape parameter.
+		`planck` takes :math:`\lambda` as shape parameter. The Planck distribution
+		can be written as a geometric distribution (`geom`) with
+		:math:`p = 1 - \exp(-\lambda)` shifted by `loc = -1`.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
 		Specifically, ``planck.pmf(k, lambda_, loc)`` is identically
 		equivalent to ``planck.pmf(k - loc, lambda_)``.
+		
+		See Also
+		--------
+		geom
 		
 		Examples
 		--------
@@ -1600,7 +1610,7 @@ package scipy.stats._discrete_distns;
 		
 		.. math::
 		
-		    f(k) = \exp(-\mu) \frac{mu^k}{k!}
+		    f(k) = \exp(-\mu) \frac{\mu^k}{k!}
 		
 		for :math:`k \ge 0`.
 		
@@ -1814,7 +1824,7 @@ package scipy.stats._discrete_distns;
 		>>> np.sinh(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function sinh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1867,8 +1877,8 @@ package scipy.stats._discrete_distns;
 		uncorrelated Poisson random variables.
 		
 		Let :math:`k_1` and :math:`k_2` be two Poisson-distributed r.v. with
-		expected values lam1 and lam2. Then, :math:`k_1 - k_2` follows a Skellam
-		distribution with parameters
+		expected values :math:`\lambda_1` and :math:`\lambda_2`. Then,
+		:math:`k_1 - k_2` follows a Skellam distribution with parameters
 		:math:`\mu_1 = \lambda_1 - \rho \sqrt{\lambda_1 \lambda_2}` and
 		:math:`\mu_2 = \lambda_2 - \rho \sqrt{\lambda_1 \lambda_2}`, where
 		:math:`\rho` is the correlation coefficient between :math:`k_1` and
@@ -1877,7 +1887,7 @@ package scipy.stats._discrete_distns;
 		
 		Parameters :math:`\mu_1` and :math:`\mu_2` must be strictly positive.
 		
-		For details see: http://en.wikipedia.org/wiki/Skellam_distribution
+		For details see: https://en.wikipedia.org/wiki/Skellam_distribution
 		
 		`skellam` takes :math:`\mu_1` and :math:`\mu_2` as shape parameters.
 		
@@ -2024,7 +2034,7 @@ package scipy.stats._discrete_distns;
 		       http://www.math.sfu.ca/~cbm/aands/
 		
 		.. [2] Wikipedia, "Hyperbolic function",
-		       http://en.wikipedia.org/wiki/Hyperbolic_function
+		       https://en.wikipedia.org/wiki/Hyperbolic_function
 		
 		Examples
 		--------
@@ -2041,9 +2051,123 @@ package scipy.stats._discrete_distns;
 		>>> np.tanh(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function tanh(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		A Yule-Simon discrete random variable.
+		
+		As an instance of the `rv_discrete` class, `yulesimon` object inherits from it
+		a collection of generic methods (see below for the full list),
+		and completes them with details specific for this particular distribution.
+		
+		Methods
+		-------
+		rvs(alpha, loc=0, size=1, random_state=None)
+		    Random variates.
+		pmf(k, alpha, loc=0)
+		    Probability mass function.
+		logpmf(k, alpha, loc=0)
+		    Log of the probability mass function.
+		cdf(k, alpha, loc=0)
+		    Cumulative distribution function.
+		logcdf(k, alpha, loc=0)
+		    Log of the cumulative distribution function.
+		sf(k, alpha, loc=0)
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
+		logsf(k, alpha, loc=0)
+		    Log of the survival function.
+		ppf(q, alpha, loc=0)
+		    Percent point function (inverse of ``cdf`` --- percentiles).
+		isf(q, alpha, loc=0)
+		    Inverse survival function (inverse of ``sf``).
+		stats(alpha, loc=0, moments='mv')
+		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
+		entropy(alpha, loc=0)
+		    (Differential) entropy of the RV.
+		expect(func, args=(alpha,), loc=0, lb=None, ub=None, conditional=False)
+		    Expected value of a function (of one argument) with respect to the distribution.
+		median(alpha, loc=0)
+		    Median of the distribution.
+		mean(alpha, loc=0)
+		    Mean of the distribution.
+		var(alpha, loc=0)
+		    Variance of the distribution.
+		std(alpha, loc=0)
+		    Standard deviation of the distribution.
+		interval(alpha, alpha, loc=0)
+		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		
+		The probability mass function for the `yulesimon` is:
+		
+		.. math::
+		
+		    f(k) =  \alpha B(k, \alpha+1)
+		
+		for :math:`k=1,2,3,...`, where :math:`\alpha>0`.
+		Here :math:`B` refers to the `scipy.special.beta` function.
+		
+		The sampling of random variates is based on pg 553, Section 6.3 of [1]_.
+		Our notation maps to the referenced logic via :math:`\alpha=a-1`.
+		
+		For details see the wikipedia entry [2]_.
+		
+		References
+		----------
+		.. [1] Devroye, Luc. "Non-uniform Random Variate Generation",
+		     (1986) Springer, New York.
+		
+		.. [2] https://en.wikipedia.org/wiki/Yule-Simon_distribution
+		
+		The probability mass function above is defined in the "standardized" form.
+		To shift distribution use the ``loc`` parameter.
+		Specifically, ``yulesimon.pmf(k, alpha, loc)`` is identically
+		equivalent to ``yulesimon.pmf(k - loc, alpha)``.
+		
+		Examples
+		--------
+		>>> from scipy.stats import yulesimon
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> alpha = 11
+		>>> mean, var, skew, kurt = yulesimon.stats(alpha, moments='mvsk')
+		
+		Display the probability mass function (``pmf``):
+		
+		>>> x = np.arange(yulesimon.ppf(0.01, alpha),
+		...               yulesimon.ppf(0.99, alpha))
+		>>> ax.plot(x, yulesimon.pmf(x, alpha), 'bo', ms=8, label='yulesimon pmf')
+		>>> ax.vlines(x, 0, yulesimon.pmf(x, alpha), colors='b', lw=5, alpha=0.5)
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pmf``:
+		
+		>>> rv = yulesimon(alpha)
+		>>> ax.vlines(x, 0, rv.pmf(x), colors='k', linestyles='-', lw=1,
+		...         label='frozen pmf')
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> prob = yulesimon.cdf(x, alpha)
+		>>> np.allclose(x, yulesimon.ppf(prob, alpha))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = yulesimon.rvs(alpha, size=1000)
+	**/
+	static public function yulesimon(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Zipf discrete random variable.
 		
@@ -2098,7 +2222,8 @@ package scipy.stats._discrete_distns;
 		
 		for :math:`k \ge 1`.
 		
-		`zipf` takes :math:`a` as shape parameter.
+		`zipf` takes :math:`a` as shape parameter. :math:`\zeta` is the
+		Riemann zeta function (`scipy.special.zeta`)
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.

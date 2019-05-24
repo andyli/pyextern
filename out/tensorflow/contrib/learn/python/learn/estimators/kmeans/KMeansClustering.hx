@@ -17,7 +17,21 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 		interface.
 	**/
 	static public function _Config(?master:Dynamic, ?num_cores:Dynamic, ?log_device_placement:Dynamic, ?gpu_memory_fraction:Dynamic, ?tf_random_seed:Dynamic, ?save_summary_steps:Dynamic, ?save_checkpoints_secs:Dynamic, ?save_checkpoints_steps:Dynamic, ?keep_checkpoint_max:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?log_step_count_steps:Dynamic, ?protocol:Dynamic, ?evaluation_master:Dynamic, ?model_dir:Dynamic, ?session_config:Dynamic):Dynamic;
-	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var __abstractmethods__ : Dynamic;
+	/**
+		Metaclass for defining Abstract Base Classes (ABCs).
+		
+		Use this metaclass to create an ABC.  An ABC can be subclassed
+		directly, and then acts as a mix-in class.  You can also register
+		unrelated concrete classes (even built-in classes) and unrelated
+		ABCs as 'virtual subclasses' -- these and their descendants will
+		be considered subclasses of the registering ABC by the built-in
+		issubclass() function, but the registering ABC won't show up in
+		their MRO (Method Resolution Order) nor will method
+		implementations defined by the registering ABC be callable (not
+		even via super()).
+	**/
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +70,7 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 	/**
 		Creates a model for running KMeans training and inference. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.contrib.factorization.KMeansClustering instead of tf.contrib.learn.KMeansClustering. It has a similar interface, but uses the tf.estimator.Estimator API instead of tf.contrib.learn.Estimator.
 		
@@ -88,7 +102,7 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 	/**
 		Creates a model for running KMeans training and inference. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.contrib.factorization.KMeansClustering instead of tf.contrib.learn.KMeansClustering. It has a similar interface, but uses the tf.estimator.Estimator API instead of tf.contrib.learn.Estimator.
 		
@@ -131,20 +145,6 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 		Return self<value.
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
-	/**
-		Metaclass for defining Abstract Base Classes (ABCs).
-		
-		Use this metaclass to create an ABC.  An ABC can be subclassed
-		directly, and then acts as a mix-in class.  You can also register
-		unrelated concrete classes (even built-in classes) and unrelated
-		ABCs as 'virtual subclasses' -- these and their descendants will
-		be considered subclasses of the registering ABC by the built-in
-		issubclass() function, but the registering ABC won't show up in
-		their MRO (Method Resolution Order) nor will method
-		implementations defined by the registering ABC be callable (not
-		even via super()).
-	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -192,6 +192,10 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _abc_cache : Dynamic;
+	static public var _abc_negative_cache : Dynamic;
+	static public var _abc_negative_cache_version : Dynamic;
+	static public var _abc_registry : Dynamic;
 	/**
 		Calls model function with support of 2, 3 or 4 arguments.
 		
@@ -246,7 +250,7 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 	/**
 		Returns feature parser for given example batch using features info. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-23.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-23.
 		Instructions for updating:
 		The signature of the input_fn accepted by export is changing to be consistent with what's used by tf.Learn Estimator's train/evaluate, which makes this function useless. This will be removed after the deprecation date.
 		
@@ -300,7 +304,7 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 	/**
 		Returns cluster centers. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.contrib.factorization.KMeansClustering instead of tf.contrib.learn.KMeansClustering. It has a similar interface, but uses the tf.estimator.Estimator API instead of tf.contrib.learn.Estimator.
 	**/
@@ -309,7 +313,7 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 	/**
 		See `Evaluable`. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-12-01.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(batch_size, x, y)`. They will be removed after 2016-12-01.
 		Instructions for updating:
 		Estimator is decoupled from Scikit Learn interface by moving into
 		separate class SKCompat. Arguments x, y and batch_size are only
@@ -326,7 +330,7 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 	/**
 		Exports inference graph into given dir. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
 		Instructions for updating:
 		Please use Estimator.export_savedmodel() instead.
 		
@@ -404,7 +408,7 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 	/**
 		See `Trainable`. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-12-01.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(batch_size, x, y)`. They will be removed after 2016-12-01.
 		Instructions for updating:
 		Estimator is decoupled from Scikit Learn interface by moving into
 		separate class SKCompat. Arguments x, y and batch_size are only
@@ -463,7 +467,7 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 	/**
 		Incremental fit on a batch of samples. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-12-01.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(batch_size, x, y)`. They will be removed after 2016-12-01.
 		Instructions for updating:
 		Estimator is decoupled from Scikit Learn interface by moving into
 		separate class SKCompat. Arguments x, y and batch_size are only
@@ -506,7 +510,7 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 	/**
 		Returns predictions for given features. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-12-01.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(as_iterable, batch_size, x)`. They will be removed after 2016-12-01.
 		Instructions for updating:
 		Estimator is decoupled from Scikit Learn interface by moving into
 		separate class SKCompat. Arguments x, y and batch_size are only
@@ -544,7 +548,7 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 	/**
 		Yields predicted cluster indices. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.contrib.factorization.KMeansClustering instead of tf.contrib.learn.KMeansClustering. It has a similar interface, but uses the tf.estimator.Estimator API instead of tf.contrib.learn.Estimator.
 	**/
@@ -552,7 +556,7 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 	/**
 		Predict total sum of distances to nearest clusters. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.contrib.factorization.KMeansClustering instead of tf.contrib.learn.KMeansClustering. It has a similar interface, but uses the tf.estimator.Estimator API instead of tf.contrib.learn.Estimator.
 		
@@ -588,7 +592,7 @@ package tensorflow.contrib.learn.python.learn.estimators.kmeans;
 	/**
 		Transforms each element to distances to cluster centers. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.contrib.factorization.KMeansClustering instead of tf.contrib.learn.KMeansClustering. It has a similar interface, but uses the tf.estimator.Estimator API instead of tf.contrib.learn.Estimator.
 		

@@ -10,6 +10,7 @@ package numpy.fft.helper;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _fftshift_dispatcher(x:Dynamic, ?axes:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		arange([start,] stop[, step,], dtype=None)
@@ -19,11 +20,10 @@ package numpy.fft.helper;
 		Values are generated within the half-open interval ``[start, stop)``
 		(in other words, the interval including `start` but excluding `stop`).
 		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
+		`range` function, but returns an ndarray rather than a list.
 		
 		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
+		be consistent.  It is better to use `numpy.linspace` for these cases.
 		
 		Parameters
 		----------
@@ -71,6 +71,38 @@ package numpy.fft.helper;
 		array([3, 5])
 	**/
 	static public function arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Decorator for adding dispatch with the __array_function__ protocol.
+		
+		See NEP-18 for example usage.
+		
+		Parameters
+		----------
+		dispatcher : callable
+		    Function that when called like ``dispatcher(*args, **kwargs)`` with
+		    arguments from the NumPy function call returns an iterable of
+		    array-like arguments to check for ``__array_function__``.
+		module : str, optional
+		    __module__ attribute to set on new function, e.g., ``module='numpy'``.
+		    By default, module is copied from the decorated function.
+		verify : bool, optional
+		    If True, verify the that the signature of the dispatcher and decorated
+		    function signatures match exactly: all required and optional arguments
+		    should appear in order with the same names, but the default values for
+		    all optional arguments should be ``None``. Only disable verification
+		    if the dispatcher's signature needs to deviate for some particular
+		    reason, e.g., because the function has a signature like
+		    ``func(*args, **kwargs)``.
+		docs_from_dispatcher : bool, optional
+		    If True, copy docs from the dispatcher function onto the dispatched
+		    function, rather than from the implementation. This is useful for
+		    functions defined in C, which otherwise don't have docstrings.
+		
+		Returns
+		-------
+		Function suitable for decorating the implementation of a NumPy function.
+	**/
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	/**
 		Convert the input to an array.
 		
@@ -402,4 +434,16 @@ package numpy.fft.helper;
 		       [9, 5, 6, 7, 8]])
 	**/
 	static public function roll(a:Dynamic, shift:Dynamic, ?axis:Dynamic):numpy.Ndarray;
+	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
 }

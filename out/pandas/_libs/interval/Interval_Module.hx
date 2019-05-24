@@ -36,7 +36,12 @@ package pandas._libs.interval;
 	/**
 		Parameters
 		----------
-		intervals: ndarray object array of Intervals / nulls
+		intervals : ndarray
+		    object array of Intervals / nulls
+		
+		validate_closed: boolean, default True
+		    boolean indicating if all intervals must be closed on the same side.
+		    Mismatching closed will raise if True, else return None for closed.
 		
 		Returns
 		-------
@@ -45,4 +50,12 @@ package pandas._libs.interval;
 		        closed: str)
 	**/
 	static public function intervals_to_interval_bounds(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		le(a, b) -- Same as a<=b.
+	**/
+	static public function le(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		lt(a, b) -- Same as a<b.
+	**/
+	static public function lt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

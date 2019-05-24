@@ -15,7 +15,7 @@ package tensorflow.contrib.integrate.python.ops.odes;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/

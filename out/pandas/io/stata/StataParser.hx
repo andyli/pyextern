@@ -41,11 +41,11 @@ package pandas.io.stata;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(encoding:Dynamic):Dynamic;
+	public function ___init__():Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(encoding:Dynamic):Void;
+	public function new():Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -108,5 +108,4 @@ package pandas.io.stata;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public var _default_encoding : Dynamic;
 }

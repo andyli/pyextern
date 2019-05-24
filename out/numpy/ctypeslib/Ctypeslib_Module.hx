@@ -10,6 +10,10 @@ package numpy.ctypeslib;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _ctype_from_dtype(dtype:Dynamic):Dynamic;
+	static public function _ctype_from_dtype_scalar(dtype:Dynamic):Dynamic;
+	static public function _ctype_from_dtype_structured(dtype:Dynamic):Dynamic;
+	static public function _ctype_from_dtype_subarray(dtype:Dynamic):Dynamic;
 	/**
 		Create an ndarray of the given element type and shape 
 	**/
@@ -18,12 +22,12 @@ package numpy.ctypeslib;
 	static public var _flagnames : Dynamic;
 	static public function _flags_fromnum(num:Dynamic):Dynamic;
 	/**
-		Return a dictionary mapping __array_interface__ formats to ctypes types 
+		Return a dictionary mapping native endian scalar dtype to ctypes types
 	**/
-	static public function _get_typecodes():Dynamic;
+	static public function _get_scalar_type_map():Dynamic;
 	static public function _num_fromflags(flaglist:Dynamic):Dynamic;
 	static public var _pointer_type_cache : Dynamic;
-	static public var _typecodes : Dynamic;
+	static public var _scalar_type_map : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
@@ -152,6 +156,43 @@ package numpy.ctypeslib;
 	**/
 	static public function as_ctypes(obj:Dynamic):Dynamic;
 	/**
+		Convert a dtype into a ctypes type.
+		
+		Parameters
+		----------
+		dtype : dtype
+		    The dtype to convert
+		
+		Returns
+		-------
+		ctype
+		    A ctype scalar, union, array, or struct
+		
+		Raises
+		------
+		NotImplementedError
+		    If the conversion is not possible
+		
+		Notes
+		-----
+		This function does not losslessly round-trip in either direction.
+		
+		``np.dtype(as_ctypes_type(dt))`` will:
+		
+		 - insert padding fields
+		 - reorder fields to be sorted by offset
+		 - discard field titles
+		
+		``as_ctypes_type(np.dtype(ctype))`` will:
+		
+		 - discard the class names of `ctypes.Structure`\ s and
+		   `ctypes.Union`\ s
+		 - convert single-element `ctypes.Union`\ s into single-element
+		   `ctypes.Structure`\ s
+		 - insert padding fields
+	**/
+	static public function as_ctypes_type(dtype:Dynamic):Dynamic;
+	/**
 		`ctypes_load_library` is deprecated, use `load_library` instead!
 		
 		
@@ -224,6 +265,47 @@ package numpy.ctypeslib;
 	**/
 	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	static public var division : Dynamic;
+	/**
+		frombuffer(buffer, dtype=float, count=-1, offset=0)
+		
+		Interpret a buffer as a 1-dimensional array.
+		
+		Parameters
+		----------
+		buffer : buffer_like
+		    An object that exposes the buffer interface.
+		dtype : data-type, optional
+		    Data-type of the returned array; default: float.
+		count : int, optional
+		    Number of items to read. ``-1`` means all data in the buffer.
+		offset : int, optional
+		    Start reading the buffer from this offset (in bytes); default: 0.
+		
+		Notes
+		-----
+		If the buffer has data that is not in machine byte-order, this should
+		be specified as part of the data-type, e.g.::
+		
+		  >>> dt = np.dtype(int)
+		  >>> dt = dt.newbyteorder('>')
+		  >>> np.frombuffer(buf, dtype=dt)
+		
+		The data of the resulting array will not be byteswapped, but will be
+		interpreted correctly.
+		
+		Examples
+		--------
+		>>> s = 'hello world'
+		>>> np.frombuffer(s, dtype='S1', count=5, offset=6)
+		array(['w', 'o', 'r', 'l', 'd'],
+		      dtype='|S1')
+		
+		>>> np.frombuffer(b'\x01\x02', dtype=np.uint8)
+		array([1, 2], dtype=uint8)
+		>>> np.frombuffer(b'\x01\x02\x03\x04\x05', dtype=np.uint8, count=3)
+		array([1, 2, 3], dtype=uint8)
+	**/
+	static public function frombuffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		It is possible to load a library using 
 		>>> lib = ctypes.cdll[<full_path_name>]

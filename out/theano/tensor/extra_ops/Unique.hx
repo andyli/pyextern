@@ -89,11 +89,11 @@ package theano.tensor.extra_ops;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):Dynamic;
+	public function ___init__(?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):Void;
+	public function new(?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic, ?axis:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -135,6 +135,7 @@ package theano.tensor.extra_ops;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(state:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes

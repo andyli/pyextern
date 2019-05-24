@@ -121,6 +121,13 @@ package tensorflow.python.framework.framework_lib;
 	static public var bfloat16_ref : Dynamic;
 	static public var bool : Dynamic;
 	static public var bool_ref : Dynamic;
+	/**
+		DEPRECATED FUNCTION
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Colocations handled automatically by placer.
+	**/
 	static public function colocate_with(op:Dynamic, ?ignore_existing:Dynamic):Dynamic;
 	static public var complex128 : Dynamic;
 	static public var complex128_ref : Dynamic;
@@ -200,11 +207,12 @@ package tensorflow.python.framework.framework_lib;
 		    `preferred_dtype` is not possible, this argument has no effect.
 		
 		Returns:
-		  An `Output` based on `value`.
+		  An `Tensor` based on `value`.
 		
 		Raises:
-		  TypeError: If no conversion function is registered for `value`.
+		  TypeError: If no conversion function is registered for `value` to `dtype`.
 		  RuntimeError: If a registered conversion function returns an invalid value.
+		  ValueError: If the `value` is a tensor not of given `dtype` in graph mode.
 	**/
 	static public function convert_to_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?preferred_dtype:Dynamic):Dynamic;
 	/**
@@ -346,7 +354,7 @@ package tensorflow.python.framework.framework_lib;
 		graph, or for only specific operations.
 		
 		For details on how the graph-level seed interacts with op seeds, see
-		`tf.set_random_seed`.
+		`tf.random.set_random_seed`.
 		
 		Args:
 		  op_seed: integer.
@@ -361,7 +369,7 @@ package tensorflow.python.framework.framework_lib;
 	/**
 		Imports the graph from `graph_def` into the current default `Graph`. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(op_dict)`. They will be removed in a future version.
 		Instructions for updating:
 		Please file an issue at https://github.com/tensorflow/tensorflow/issues if you depend on this feature.
 		
@@ -394,7 +402,8 @@ package tensorflow.python.framework.framework_lib;
 		
 		Returns:
 		  A list of `Operation` and/or `Tensor` objects from the imported graph,
-		  corresponding to the names in `return_elements`.
+		  corresponding to the names in `return_elements`,
+		  and None if `returns_elements` is None.
 		
 		Raises:
 		  TypeError: If `graph_def` is not a `GraphDef` proto,
@@ -414,7 +423,11 @@ package tensorflow.python.framework.framework_lib;
 	static public var int8 : Dynamic;
 	static public var int8_ref : Dynamic;
 	/**
-		Loads a TensorFlow plugin, containing file system implementation.
+		Loads a TensorFlow plugin, containing file system implementation. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.load_library instead.
 		
 		Pass `library_filename` to a platform-specific mechanism for dynamically
 		loading a library. The rules for determining the exact location of the
@@ -497,6 +510,8 @@ package tensorflow.python.framework.framework_lib;
 		  dtype:          Optional tensor_pb2 DataType value.
 		  shape:          List of integers representing the dimensions of tensor.
 		  verify_shape:   Boolean that enables verification of a shape of values.
+		  allow_broadcast:Boolean that enables allowing scalars and 1 length vector
+		      broadcasting. Cannot be true when verify_shape is true.
 		
 		Returns:
 		  A `TensorProto`. Depending on the type, it may contain data in the
@@ -532,7 +547,7 @@ package tensorflow.python.framework.framework_lib;
 		Otherwise, "shape" specifies the tensor's shape and the numpy array
 		can not have more elements than what "shape" specifies.
 	**/
-	static public function make_tensor_proto(values:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?verify_shape:Dynamic):Dynamic;
+	static public function make_tensor_proto(values:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?verify_shape:Dynamic, ?allow_broadcast:Dynamic):Dynamic;
 	static public var np_resource : Dynamic;
 	/**
 		DEPRECATED. Same as name_scope above, just different argument order.
@@ -674,7 +689,7 @@ package tensorflow.python.framework.framework_lib;
 		sessions, set a graph-level seed:
 		
 		```python
-		tf.set_random_seed(1234)
+		tf.random.set_random_seed(1234)
 		a = tf.random_uniform([1])
 		b = tf.random_normal([1])
 		

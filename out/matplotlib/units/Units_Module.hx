@@ -9,10 +9,5 @@ package matplotlib.units;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		return true if *obj* is iterable
-	**/
-	static public function iterable(obj:Dynamic):Dynamic;
 	static public var registry : Dynamic;
-	static public function safe_first_element(obj:Dynamic):Dynamic;
 }

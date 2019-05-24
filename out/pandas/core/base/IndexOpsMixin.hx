@@ -2,7 +2,7 @@
 package pandas.core.base;
 @:pythonImport("pandas.core.base", "IndexOpsMixin") extern class IndexOpsMixin {
 	/**
-		return the transpose, which is by definition self
+		Return the transpose, which is by definition self.
 	**/
 	public var T : Dynamic;
 	static public var __array_priority__ : Dynamic;
@@ -122,6 +122,19 @@ package pandas.core.base;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		Whether the object has a single dtype.
+		
+		By definition, Series and Index are always considered homogeneous.
+		A MultiIndex may or may not be homogeneous, depending on the
+		dtypes of the levels.
+		
+		See Also
+		--------
+		DataFrame._is_homogeneous_type
+		MultiIndex._is_homogeneous_type
+	**/
+	public var _is_homogeneous_type : Dynamic;
+	/**
 		An internal function that maps values using the input
 		correspondence (which can be a dict, Series, or function).
 		
@@ -156,28 +169,102 @@ package pandas.core.base;
 	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	public function _update_inplace(result:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return a ndarray of the maximum argument indexer
+		Return a ndarray of the maximum argument indexer.
 		
-		See also
+		Parameters
+		----------
+		axis : {None}
+		    Dummy argument for consistency with Series
+		skipna : bool, default True
+		
+		See Also
 		--------
 		numpy.ndarray.argmax
 	**/
-	public function argmax(?axis:Dynamic):Dynamic;
+	public function argmax(?axis:Dynamic, ?skipna:Dynamic):Dynamic;
 	/**
-		return a ndarray of the minimum argument indexer
+		Return a ndarray of the minimum argument indexer.
 		
-		See also
+		Parameters
+		----------
+		axis : {None}
+		    Dummy argument for consistency with Series
+		skipna : bool, default True
+		
+		See Also
 		--------
 		numpy.ndarray.argmin
 	**/
-	public function argmin(?axis:Dynamic):Dynamic;
+	public function argmin(?axis:Dynamic, ?skipna:Dynamic):Dynamic;
 	/**
-		return the base object if the memory of the underlying data is
-		shared
+		The ExtensionArray of the data backing this Series or Index.
+		
+		.. versionadded:: 0.24.0
+		
+		Returns
+		-------
+		array : ExtensionArray
+		    An ExtensionArray of the values stored within. For extension
+		    types, this is the actual array. For NumPy native types, this
+		    is a thin (no copy) wrapper around :class:`numpy.ndarray`.
+		
+		    ``.array`` differs ``.values`` which may require converting the
+		    data to a different form.
+		
+		See Also
+		--------
+		Index.to_numpy : Similar method that always returns a NumPy array.
+		Series.to_numpy : Similar method that always returns a NumPy array.
+		
+		Notes
+		-----
+		This table lays out the different array types for each extension
+		dtype within pandas.
+		
+		================== =============================
+		dtype              array type
+		================== =============================
+		category           Categorical
+		period             PeriodArray
+		interval           IntervalArray
+		IntegerNA          IntegerArray
+		datetime64[ns, tz] DatetimeArray
+		================== =============================
+		
+		For any 3rd-party extension types, the array type will be an
+		ExtensionArray.
+		
+		For all remaining dtypes ``.array`` will be a
+		:class:`arrays.NumpyExtensionArray` wrapping the actual ndarray
+		stored within. If you absolutely need a NumPy array (possibly with
+		copying / coercing data), then use :meth:`Series.to_numpy` instead.
+		
+		Examples
+		--------
+		
+		For regular NumPy types like int, and float, a PandasArray
+		is returned.
+		
+		>>> pd.Series([1, 2, 3]).array
+		<PandasArray>
+		[1, 2, 3]
+		Length: 3, dtype: int64
+		
+		For extension types, like Categorical, the actual ExtensionArray
+		is returned
+		
+		>>> ser = pd.Series(pd.Categorical(['a', 'b', 'a']))
+		>>> ser.array
+		[a, b, a]
+		Categories (2, object): [a, b]
+	**/
+	public var array : Dynamic;
+	/**
+		Return the base object if the memory of the underlying data is shared.
 	**/
 	public var base : Dynamic;
 	/**
-		return the data pointer of the underlying data 
+		Return the data pointer of the underlying data.
 	**/
 	public var data : Dynamic;
 	public function drop_duplicates(?keep:Dynamic, ?inplace:Dynamic):Dynamic;
@@ -217,8 +304,8 @@ package pandas.core.base;
 		
 		See Also
 		--------
-		pandas.cut : Discretize continuous-valued array.
-		pandas.unique : Find the unique valuse in an array.
+		cut : Discretize continuous-valued array.
+		unique : Find the unique value in an array.
 		
 		Examples
 		--------
@@ -263,7 +350,7 @@ package pandas.core.base;
 		[a, c]
 		Categories (3, object): [a, b, c]
 		
-		Notice that ``'b'`` is in ``uniques.categories``, desipite not being
+		Notice that ``'b'`` is in ``uniques.categories``, despite not being
 		present in ``cat.values``.
 		
 		For all other pandas objects, an Index of the appropriate type is
@@ -278,16 +365,16 @@ package pandas.core.base;
 	**/
 	public function factorize(?sort:Dynamic, ?na_sentinel:Dynamic):numpy.Ndarray;
 	/**
-		return the ndarray.flags for the underlying data 
+		Return the ndarray.flags for the underlying data.
 	**/
 	public var flags : Dynamic;
 	/**
-		return if I have any nans; enables various perf speedups 
+		Return if I have any nans; enables various perf speedups.
 	**/
 	public var hasnans : Dynamic;
 	/**
 		Return boolean if values in the object are
-		monotonic_increasing
+		monotonic_increasing.
 		
 		.. versionadded:: 0.19.0
 		
@@ -298,7 +385,7 @@ package pandas.core.base;
 	public var is_monotonic : Dynamic;
 	/**
 		Return boolean if values in the object are
-		monotonic_decreasing
+		monotonic_decreasing.
 		
 		.. versionadded:: 0.19.0
 		
@@ -309,7 +396,7 @@ package pandas.core.base;
 	public var is_monotonic_decreasing : Dynamic;
 	/**
 		Return boolean if values in the object are
-		monotonic_increasing
+		monotonic_increasing.
 		
 		.. versionadded:: 0.19.0
 		
@@ -319,7 +406,7 @@ package pandas.core.base;
 	**/
 	public var is_monotonic_increasing : Dynamic;
 	/**
-		Return boolean if values in the object are unique
+		Return boolean if values in the object are unique.
 		
 		Returns
 		-------
@@ -327,16 +414,21 @@ package pandas.core.base;
 	**/
 	public var is_unique : Dynamic;
 	/**
-		return the first element of the underlying data as a python
-		scalar
+		Return the first element of the underlying data as a python scalar.
 	**/
 	public function item():Dynamic;
 	/**
-		return the size of the dtype of the item of the underlying data 
+		Return the size of the dtype of the item of the underlying data.
 	**/
 	public var itemsize : Dynamic;
 	/**
 		Return the maximum value of the Index.
+		
+		Parameters
+		----------
+		axis : int, optional
+		    For compatibility with NumPy. Only 0 or None are allowed.
+		skipna : bool, default True
 		
 		Returns
 		-------
@@ -365,7 +457,7 @@ package pandas.core.base;
 		>>> idx.max()
 		('b', 2)
 	**/
-	public function max():Dynamic;
+	public function max(?axis:Dynamic, ?skipna:Dynamic):Dynamic;
 	/**
 		Memory usage of the values
 		
@@ -379,18 +471,24 @@ package pandas.core.base;
 		-------
 		bytes used
 		
+		See Also
+		--------
+		numpy.ndarray.nbytes
+		
 		Notes
 		-----
 		Memory usage does not include memory consumed by elements that
 		are not components of the array if deep=False or if used on PyPy
-		
-		See Also
-		--------
-		numpy.ndarray.nbytes
 	**/
 	public function memory_usage(?deep:Dynamic):Dynamic;
 	/**
 		Return the minimum value of the Index.
+		
+		Parameters
+		----------
+		axis : {None}
+		    Dummy argument for consistency with Series
+		skipna : bool, default True
 		
 		Returns
 		-------
@@ -419,14 +517,13 @@ package pandas.core.base;
 		>>> idx.min()
 		('a', 1)
 	**/
-	public function min():Dynamic;
+	public function min(?axis:Dynamic, ?skipna:Dynamic):Dynamic;
 	/**
-		return the number of bytes in the underlying data 
+		Return the number of bytes in the underlying data.
 	**/
 	public var nbytes : Dynamic;
 	/**
-		return the number of dimensions of the underlying data,
-		by definition 1
+		Number of dimensions of the underlying data, by definition 1.
 	**/
 	public var ndim : Dynamic;
 	/**
@@ -465,8 +562,14 @@ package pandas.core.base;
 		
 		Returns
 		-------
-		indices : array of ints
-		    Array of insertion points with the same shape as `value`.
+		int or array of int
+		    A scalar or array of insertion points with the
+		    same shape as `value`.
+		
+		    .. versionchanged :: 0.24.0
+		        If `value` is a scalar, an int is now always returned.
+		        Previously, scalar inputs returned an 1-item array for
+		        :class:`Series` and :class:`Categorical`.
 		
 		See Also
 		--------
@@ -487,7 +590,7 @@ package pandas.core.base;
 		dtype: int64
 		
 		>>> x.searchsorted(4)
-		array([3])
+		3
 		
 		>>> x.searchsorted([0, 4])
 		array([0, 3])
@@ -504,22 +607,22 @@ package pandas.core.base;
 		Categories (4, object): [apple < bread < cheese < milk]
 		
 		>>> x.searchsorted('bread')
-		array([1])     # Note: an array, not a scalar
+		1
 		
 		>>> x.searchsorted(['bread'], side='right')
 		array([3])
 	**/
 	public function searchsorted(value:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
-		return a tuple of the shape of the underlying data 
+		Return a tuple of the shape of the underlying data.
 	**/
 	public var shape : Dynamic;
 	/**
-		return the number of elements in the underlying data 
+		Return the number of elements in the underlying data.
 	**/
 	public var size : Dynamic;
 	/**
-		return the strides of the underlying data 
+		Return the strides of the underlying data.
 	**/
 	public var strides : Dynamic;
 	/**
@@ -533,14 +636,111 @@ package pandas.core.base;
 		--------
 		numpy.ndarray.tolist
 	**/
+	public function to_list():Dynamic;
+	/**
+		A NumPy ndarray representing the values in this Series or Index.
+		
+		.. versionadded:: 0.24.0
+		
+		
+		Parameters
+		----------
+		dtype : str or numpy.dtype, optional
+		    The dtype to pass to :meth:`numpy.asarray`
+		copy : bool, default False
+		    Whether to ensure that the returned value is a not a view on
+		    another array. Note that ``copy=False`` does not *ensure* that
+		    ``to_numpy()`` is no-copy. Rather, ``copy=True`` ensure that
+		    a copy is made, even if not strictly necessary.
+		
+		Returns
+		-------
+		numpy.ndarray
+		
+		See Also
+		--------
+		Series.array : Get the actual data stored within.
+		Index.array : Get the actual data stored within.
+		DataFrame.to_numpy : Similar method for DataFrame.
+		
+		Notes
+		-----
+		The returned array will be the same up to equality (values equal
+		in `self` will be equal in the returned array; likewise for values
+		that are not equal). When `self` contains an ExtensionArray, the
+		dtype may be different. For example, for a category-dtype Series,
+		``to_numpy()`` will return a NumPy array and the categorical dtype
+		will be lost.
+		
+		For NumPy dtypes, this will be a reference to the actual data stored
+		in this Series or Index (assuming ``copy=False``). Modifying the result
+		in place will modify the data stored in the Series or Index (not that
+		we recommend doing that).
+		
+		For extension types, ``to_numpy()`` *may* require copying data and
+		coercing the result to a NumPy type (possibly object), which may be
+		expensive. When you need a no-copy reference to the underlying data,
+		:attr:`Series.array` should be used instead.
+		
+		This table lays out the different dtypes and default return types of
+		``to_numpy()`` for various dtypes within pandas.
+		
+		================== ================================
+		dtype              array type
+		================== ================================
+		category[T]        ndarray[T] (same dtype as input)
+		period             ndarray[object] (Periods)
+		interval           ndarray[object] (Intervals)
+		IntegerNA          ndarray[object]
+		datetime64[ns]     datetime64[ns]
+		datetime64[ns, tz] ndarray[object] (Timestamps)
+		================== ================================
+		
+		Examples
+		--------
+		>>> ser = pd.Series(pd.Categorical(['a', 'b', 'a']))
+		>>> ser.to_numpy()
+		array(['a', 'b', 'a'], dtype=object)
+		
+		Specify the `dtype` to control how datetime-aware data is represented.
+		Use ``dtype=object`` to return an ndarray of pandas :class:`Timestamp`
+		objects, each with the correct ``tz``.
+		
+		>>> ser = pd.Series(pd.date_range('2000', periods=2, tz="CET"))
+		>>> ser.to_numpy(dtype=object)
+		array([Timestamp('2000-01-01 00:00:00+0100', tz='CET', freq='D'),
+		       Timestamp('2000-01-02 00:00:00+0100', tz='CET', freq='D')],
+		      dtype=object)
+		
+		Or ``dtype='datetime64[ns]'`` to return an ndarray of native
+		datetime64 values. The values are converted to UTC and the timezone
+		info is dropped.
+		
+		>>> ser.to_numpy(dtype="datetime64[ns]")
+		... # doctest: +ELLIPSIS
+		array(['1999-12-31T23:00:00.000000000', '2000-01-01T23:00:00...'],
+		      dtype='datetime64[ns]')
+	**/
+	public function to_numpy(?dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		Return a list of the values.
+		
+		These are each a scalar type, which is a Python scalar
+		(for str, int, float) or a pandas scalar
+		(for Timestamp/Timedelta/Interval/Period)
+		
+		See Also
+		--------
+		numpy.ndarray.tolist
+	**/
 	public function tolist():Dynamic;
 	/**
-		return the transpose, which is by definition self 
+		Return the transpose, which is by definition self.
 	**/
 	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function unique():Dynamic;
 	/**
-		Returns object containing counts of unique values.
+		Return a Series containing counts of unique values.
 		
 		The resulting object will be in descending order so that the
 		first element is the most frequently-occurring element.
@@ -552,18 +752,69 @@ package pandas.core.base;
 		    If True then the object returned will contain the relative
 		    frequencies of the unique values.
 		sort : boolean, default True
-		    Sort by values
+		    Sort by values.
 		ascending : boolean, default False
-		    Sort in ascending order
+		    Sort in ascending order.
 		bins : integer, optional
 		    Rather than count values, group them into half-open bins,
-		    a convenience for pd.cut, only works with numeric data
+		    a convenience for ``pd.cut``, only works with numeric data.
 		dropna : boolean, default True
 		    Don't include counts of NaN.
 		
 		Returns
 		-------
 		counts : Series
+		
+		See Also
+		--------
+		Series.count: Number of non-NA elements in a Series.
+		DataFrame.count: Number of non-NA elements in a DataFrame.
+		
+		Examples
+		--------
+		>>> index = pd.Index([3, 1, 2, 3, 4, np.nan])
+		>>> index.value_counts()
+		3.0    2
+		4.0    1
+		2.0    1
+		1.0    1
+		dtype: int64
+		
+		With `normalize` set to `True`, returns the relative frequency by
+		dividing all values by the sum of values.
+		
+		>>> s = pd.Series([3, 1, 2, 3, 4, np.nan])
+		>>> s.value_counts(normalize=True)
+		3.0    0.4
+		4.0    0.2
+		2.0    0.2
+		1.0    0.2
+		dtype: float64
+		
+		**bins**
+		
+		Bins can be useful for going from a continuous variable to a
+		categorical variable; instead of counting unique
+		apparitions of values, divide the index in the specified
+		number of half-open bins.
+		
+		>>> s.value_counts(bins=3)
+		(2.0, 3.0]      2
+		(0.996, 2.0]    2
+		(3.0, 4.0]      1
+		dtype: int64
+		
+		**dropna**
+		
+		With `dropna` set to `False` we can also see NaN index values.
+		
+		>>> s.value_counts(dropna=False)
+		3.0    2
+		NaN    1
+		4.0    1
+		2.0    1
+		1.0    1
+		dtype: int64
 	**/
 	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):pandas.Series;
 }

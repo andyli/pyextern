@@ -24,14 +24,35 @@ package tensorflow.contrib.framework.python.framework;
 		  tensors: Tensors of input values. Can include `None` elements, which will be
 		      ignored.
 		  dtype: Expected type.
+		
 		Returns:
 		  Validated type.
+		
 		Raises:
 		  ValueError: if neither `tensors` nor `dtype` is supplied, or result is not
 		      float, or the common type of the inputs is not a floating point type.
 	**/
 	static public function assert_same_float_dtype(?tensors:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public function assert_scalar(tensor:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Asserts that the given `tensor` is a scalar.
+		
+		This function raises `ValueError` unless it can be certain that the given
+		`tensor` is a scalar. `ValueError` is also raised if the shape of `tensor` is
+		unknown.
+		
+		Args:
+		  tensor: A `Tensor`.
+		  name:  A name for this operation. Defaults to "assert_scalar"
+		  message: A string to prefix to the default message.
+		
+		Returns:
+		  The input tensor (potentially converted to a `Tensor`).
+		
+		Raises:
+		  ValueError: If the tensor is not scalar (rank 0), or if its shape is
+		    unknown.
+	**/
+	static public function assert_scalar(tensor:Dynamic, ?name:Dynamic, ?message:Dynamic):Dynamic;
 	/**
 		Assert `tensor` is 0-D, of type `tf.int32` or `tf.int64`.
 		
@@ -308,7 +329,7 @@ package tensorflow.contrib.framework.python.framework;
 		
 		Check whether an object is a tensor. This check is equivalent to calling
 		`isinstance(x, (tf.Tensor, tf.SparseTensor, tf.Variable))` and also checks
-		if all the component variables of a MirroredVariable or a TowerLocalVariable
+		if all the component variables of a MirroredVariable or a ReplicaLocalVariable
 		are tensors.
 		
 		Args:
@@ -373,7 +394,7 @@ package tensorflow.contrib.framework.python.framework;
 	/**
 		Squeeze last dim if ranks of `predictions` and `labels` differ by 1. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to remove_squeezable_dimensions from tf.confusion_matrix. Note that the order of the inputs and outputs of labels and predictions have also been switched.
 		

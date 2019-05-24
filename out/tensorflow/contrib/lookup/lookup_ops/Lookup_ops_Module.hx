@@ -60,7 +60,7 @@ package tensorflow.contrib.lookup.lookup_ops;
 		`[vocabulary size, vocabulary size + num_oov_buckets - 1]`.
 		
 		The underlying table must be initialized by calling
-		`tf.tables_initializer.run()` or `table.init.run()` once.
+		`session.run(tf.tables_initializer)` or `session.run(table.init)` once.
 		
 		To specify multi-column vocabulary files, use key_column_index and
 		value_column_index and delimiter.
@@ -132,7 +132,7 @@ package tensorflow.contrib.lookup.lookup_ops;
 		The bucket ID range is `[mapping size, mapping size + num_oov_buckets - 1]`.
 		
 		The underlying table must be initialized by calling
-		`tf.tables_initializer.run()` or `table.init.run()` once.
+		`session.run(tf.tables_initializer)` or `session.run(table.init)` once.
 		
 		Elements in `mapping` cannot have duplicates, otherwise when executing the
 		table initializer op, it will throw a `FailedPreconditionError`.
@@ -174,7 +174,7 @@ package tensorflow.contrib.lookup.lookup_ops;
 	/**
 		Maps `tensor` of indices into string values based on `mapping`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-01-07.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-01-07.
 		Instructions for updating:
 		This op will be removed after the deprecation date. Please switch to index_to_string_table_from_tensor and call the lookup method of the returned table.
 		
@@ -186,7 +186,7 @@ package tensorflow.contrib.lookup.lookup_ops;
 		(an out-of-vocabulary entry) is assigned the `default_value`
 		
 		The underlying table must be initialized by calling
-		`tf.tables_initializer.run()` once.
+		`session.run(tf.tables_initializer)` once.
 		
 		For example:
 		
@@ -225,7 +225,7 @@ package tensorflow.contrib.lookup.lookup_ops;
 		(an out-of-vocabulary entry) is assigned the `default_value`
 		
 		The underlying table must be initialized by calling
-		`tf.tables_initializer.run()` or `table.init.run()` once.
+		`session.run(tf.tables_initializer)` or `session.run(table.init)` once.
 		
 		To specify multi-column vocabulary files, use key_column_index and
 		value_column_index and delimiter.
@@ -290,7 +290,7 @@ package tensorflow.contrib.lookup.lookup_ops;
 		(an out-of-vocabulary entry) is assigned the `default_value`
 		
 		The underlying table must be initialized by calling
-		`tf.tables_initializer.run()` or `table.init.run()` once.
+		`session.run(tf.tables_initializer)` or `session.run(table.init)` once.
 		
 		Elements in `mapping` cannot have duplicates, otherwise when executing the
 		table initializer op, it will throw a `FailedPreconditionError`.
@@ -327,7 +327,7 @@ package tensorflow.contrib.lookup.lookup_ops;
 	/**
 		Maps `tensor` of strings into `int64` indices based on `mapping`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-01-07.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-01-07.
 		Instructions for updating:
 		This op will be removed after the deprecation date. Please switch to index_table_from_tensor and call the lookup method of the returned table.
 		
@@ -342,7 +342,7 @@ package tensorflow.contrib.lookup.lookup_ops;
 		will throw a FailedPreconditionError.
 		
 		The underlying table must be initialized by calling
-		`tf.tables_initializer.run()` once.
+		`session.run(tf.tables_initializer)` once.
 		
 		For example:
 		
@@ -373,7 +373,7 @@ package tensorflow.contrib.lookup.lookup_ops;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-04-10.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-04-10.
 		Instructions for updating:
 		Use `index_table_from_file`.
 	**/
@@ -381,7 +381,7 @@ package tensorflow.contrib.lookup.lookup_ops;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-04-10.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-04-10.
 		Instructions for updating:
 		Use `index_table_from_tensor`.
 	**/

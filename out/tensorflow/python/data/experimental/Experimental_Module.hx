@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.data.experimental;
 @:pythonImport("tensorflow.python.data.experimental") extern class Experimental_Module {
+	static public var AUTOTUNE : Dynamic;
 	/**
 		Creates a `Dataset` that counts from `start` in steps of size `step`.
 		
@@ -24,6 +25,8 @@ package tensorflow.python.data.experimental;
 		  A `Dataset` of scalar `dtype` elements.
 	**/
 	static public function Counter(?start:Dynamic, ?step:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public var INFINITE_CARDINALITY : Dynamic;
+	static public var UNKNOWN_CARDINALITY : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -72,6 +75,24 @@ package tensorflow.python.data.experimental;
 		  ValueError: if `len(bucket_batch_sizes) != len(bucket_boundaries) + 1`.
 	**/
 	static public function bucket_by_sequence_length(element_length_func:Dynamic, bucket_boundaries:Dynamic, bucket_batch_sizes:Dynamic, ?padded_shapes:Dynamic, ?padding_values:Dynamic, ?pad_to_bucket_boundary:Dynamic, ?no_padding:Dynamic):Dynamic;
+	/**
+		Returns the cardinality of `dataset`, if known.
+		
+		The operation returns the cardinality of `dataset`. The operation may return
+		`tf.data.experimental.INFINITE_CARDINALITY` if `dataset` contains an infinite
+		number of elements or `tf.data.experimental.UNKNOWN_CARDINALITY` if the
+		analysis fails to determine the number of elements in `dataset` (e.g. when the
+		dataset source is a file).
+		
+		Args:
+		  dataset: A `tf.data.Dataset` for which to determine cardinality.
+		
+		Returns:
+		  A scalar `tf.int64` `Tensor` representing the cardinality of `dataset`. If
+		  the cardinality is infinite or unknown, the operation returns the named
+		  constant `INFINITE_CARDINALITY` and `UNKNOWN_CARDINALITY` respectively.
+	**/
+	static public function cardinality(dataset:Dynamic):Dynamic;
 	/**
 		Creates a dataset that deterministically chooses elements from `datasets`.
 		
@@ -165,9 +186,9 @@ package tensorflow.python.data.experimental;
 	**/
 	static public function dense_to_sparse_batch(batch_size:Dynamic, row_shape:Dynamic):Dynamic;
 	/**
-		A transformation that enumerate the elements of a dataset.
+		A transformation that enumerates the elements of a dataset.
 		
-		It is Similar to python's `enumerate`.
+		It is similar to python's `enumerate`.
 		For example:
 		
 		```python
@@ -183,14 +204,69 @@ package tensorflow.python.data.experimental;
 		```
 		
 		Args:
-		  start: A `tf.int64` scalar `tf.Tensor`, representing the start
-		    value for enumeration.
+		  start: A `tf.int64` scalar `tf.Tensor`, representing the start value for
+		    enumeration.
 		
 		Returns:
 		  A `Dataset` transformation function, which can be passed to
 		  `tf.data.Dataset.apply`.
 	**/
 	static public function enumerate_dataset(?start:Dynamic):Dynamic;
+	/**
+		Creates a `Dataset` that includes only 1/`num_shards` of this dataset.
+		
+		This dataset operator is very useful when running distributed training, as
+		it allows each worker to read a unique subset.
+		
+		When reading a single input file, you can skip elements as follows:
+		
+		```python
+		d = tf.data.TFRecordDataset(FLAGS.input_file)
+		d = d.apply(tf.data.experimental.naive_shard(FLAGS.num_workers,
+		                                             FLAGS.worker_index))
+		d = d.repeat(FLAGS.num_epochs)
+		d = d.shuffle(FLAGS.shuffle_buffer_size)
+		d = d.map(parser_fn, num_parallel_calls=FLAGS.num_map_threads)
+		```
+		
+		Important caveats:
+		
+		- Be sure to shard before you use any randomizing operator (such as
+		  shuffle).
+		- Generally it is best if the shard operator is used early in the dataset
+		  pipeline. For example, when reading from a set of TFRecord files, shard
+		  before converting the dataset to input samples. This avoids reading every
+		  file on every worker. The following is an example of an efficient
+		  sharding strategy within a complete pipeline:
+		
+		```python
+		d = Dataset.list_files(FLAGS.pattern)
+		d = d.apply(tf.data.experimental.naive_shard(FLAGS.num_workers,
+		                                             FLAGS.worker_index))
+		d = d.repeat(FLAGS.num_epochs)
+		d = d.shuffle(FLAGS.shuffle_buffer_size)
+		d = d.interleave(tf.data.TFRecordDataset,
+		                 cycle_length=FLAGS.num_readers, block_length=1)
+		d = d.map(parser_fn, num_parallel_calls=FLAGS.num_map_threads)
+		```
+		
+		Args:
+		  num_shards: A `tf.int64` scalar `tf.Tensor`, representing the number of
+		    shards operating in parallel.
+		  shard_index: A `tf.int64` scalar `tf.Tensor`, representing the worker index.
+		
+		Returns:
+		  A `Dataset` transformation function, which can be passed to
+		  `tf.data.Dataset.apply`.
+		
+		Raises:
+		  ValueError: if `num_shards` or `shard_index` are illegal values. Note: error
+		    checking is done on a best-effort basis, and errors aren't guaranteed to
+		    be caught upon dataset creation. (e.g. providing in a placeholder tensor
+		    bypasses the early checking, and will instead result in an error during
+		    a session.run call.)
+	**/
+	static public function filter_for_shard(num_shards:Dynamic, shard_index:Dynamic):Dynamic;
 	/**
 		Returns an `Optional` that contains the next value from the iterator.
 		
@@ -337,96 +413,6 @@ package tensorflow.python.data.experimental;
 		  `tf.data.Dataset.apply`.
 	**/
 	static public function latency_stats(tag:Dynamic):Dynamic;
-	/**
-		Returns a `Dataset` of feature dictionaries from `Example` protos.
-		
-		If label_key argument is provided, returns a `Dataset` of tuple
-		comprising of feature dictionaries and label.
-		
-		Example:
-		
-		```
-		serialized_examples = [
-		  features {
-		    feature { key: "age" value { int64_list { value: [ 0 ] } } }
-		    feature { key: "gender" value { bytes_list { value: [ "f" ] } } }
-		    feature { key: "kws" value { bytes_list { value: [ "code", "art" ] } } }
-		  },
-		  features {
-		    feature { key: "age" value { int64_list { value: [] } } }
-		    feature { key: "gender" value { bytes_list { value: [ "f" ] } } }
-		    feature { key: "kws" value { bytes_list { value: [ "sports" ] } } }
-		  }
-		]
-		```
-		
-		We can use arguments:
-		
-		```
-		features: {
-		  "age": FixedLenFeature([], dtype=tf.int64, default_value=-1),
-		  "gender": FixedLenFeature([], dtype=tf.string),
-		  "kws": VarLenFeature(dtype=tf.string),
-		}
-		```
-		
-		And the expected output is:
-		
-		```python
-		{
-		  "age": [[0], [-1]],
-		  "gender": [["f"], ["f"]],
-		  "kws": SparseTensor(
-		    indices=[[0, 0], [0, 1], [1, 0]],
-		    values=["code", "art", "sports"]
-		    dense_shape=[2, 2]),
-		}
-		```
-		
-		Args:
-		  file_pattern: List of files or patterns of file paths containing
-		    `Example` records. See `tf.gfile.Glob` for pattern rules.
-		  batch_size: An int representing the number of records to combine
-		    in a single batch.
-		  features: A `dict` mapping feature keys to `FixedLenFeature` or
-		    `VarLenFeature` values. See `tf.parse_example`.
-		  reader: A function or class that can be
-		    called with a `filenames` tensor and (optional) `reader_args` and returns
-		    a `Dataset` of `Example` tensors. Defaults to `tf.data.TFRecordDataset`.
-		  label_key: (Optional) A string corresponding to the key labels are stored in
-		    `tf.Examples`. If provided, it must be one of the `features` key,
-		    otherwise results in `ValueError`.
-		  reader_args: Additional arguments to pass to the reader class.
-		  num_epochs: Integer specifying the number of times to read through the
-		    dataset. If None, cycles through the dataset forever. Defaults to `None`.
-		  shuffle: A boolean, indicates whether the input should be shuffled. Defaults
-		    to `True`.
-		  shuffle_buffer_size: Buffer size of the ShuffleDataset. A large capacity
-		    ensures better shuffling but would increase memory usage and startup time.
-		  shuffle_seed: Randomization seed to use for shuffling.
-		  prefetch_buffer_size: Number of feature batches to prefetch in order to
-		    improve performance. Recommended value is the number of batches consumed
-		    per training step. Defaults to auto-tune.
-		  reader_num_threads: Number of threads used to read `Example` records. If >1,
-		    the results will be interleaved.
-		  parser_num_threads: Number of threads to use for parsing `Example` tensors
-		    into a dictionary of `Feature` tensors.
-		  sloppy_ordering: If `True`, reading performance will be improved at
-		    the cost of non-deterministic ordering. If `False`, the order of elements
-		    produced is deterministic prior to shuffling (elements are still
-		    randomized if `shuffle=True`. Note that if the seed is set, then order
-		    of elements after shuffling is deterministic). Defaults to `False`.
-		  drop_final_batch: If `True`, and the batch size does not evenly divide the
-		    input dataset size, the final smaller batch will be dropped. Defaults to
-		    `False`.
-		
-		Returns:
-		  A dataset of `dict` elements, (or a tuple of `dict` elements and label).
-		  Each `dict` maps feature keys to `Tensor` or `SparseTensor` objects.
-		
-		Raises:
-		  ValueError: If `label_key` is not one of the `features` keys.
-	**/
 	static public function make_batched_features_dataset(file_pattern:Dynamic, batch_size:Dynamic, features:Dynamic, ?reader:Dynamic, ?label_key:Dynamic, ?reader_args:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?shuffle_buffer_size:Dynamic, ?shuffle_seed:Dynamic, ?prefetch_buffer_size:Dynamic, ?reader_num_threads:Dynamic, ?parser_num_threads:Dynamic, ?sloppy_ordering:Dynamic, ?drop_final_batch:Dynamic):Dynamic;
 	/**
 		Reads CSV files into a dataset.
@@ -574,9 +560,10 @@ package tensorflow.python.data.experimental;
 		    whether the last batch should be dropped in case its size is smaller than
 		    desired; the default behavior is not to drop the smaller batch.
 		  num_parallel_calls: (Optional.) A `tf.int32` scalar `tf.Tensor`,
-		      representing the number of elements to process in parallel. If not
-		      specified, `batch_size * num_parallel_batches` elements will be
-		      processed in parallel.
+		    representing the number of elements to process in parallel. If not
+		    specified, `batch_size * num_parallel_batches` elements will be processed
+		    in parallel. If the value `tf.data.experimental.AUTOTUNE` is used, then
+		    the number of parallel calls is set dynamically based on available CPU.
 		
 		Returns:
 		  A `Dataset` transformation function, which can be passed to
@@ -741,17 +728,6 @@ package tensorflow.python.data.experimental;
 		  `tf.data.Dataset.apply`.
 	**/
 	static public function scan(initial_state:Dynamic, scan_func:Dynamic):Dynamic;
-	/**
-		Set the given `stats_aggregator` for aggregating the input dataset stats.
-		
-		Args:
-		  stats_aggregator: A `tf.data.experimental.StatsAggregator` object.
-		
-		Returns:
-		  A `Dataset` transformation function, which can be passed to
-		  `tf.data.Dataset.apply`.
-	**/
-	static public function set_stats_aggregator(stats_aggregator:Dynamic):Dynamic;
 	/**
 		Shuffles and repeats a Dataset returning a new permutation for each epoch.
 		

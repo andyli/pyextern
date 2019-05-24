@@ -1,12 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.protobuf.meta_graph_pb2;
 @:pythonImport("tensorflow.core.protobuf.meta_graph_pb2", "MetaGraphDef") extern class MetaGraphDef {
-	static public var ASSET_FILE_DEF_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var COLLECTION_DEF_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -44,7 +42,6 @@ package tensorflow.core.protobuf.meta_graph_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GRAPH_DEF_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -61,7 +58,6 @@ package tensorflow.core.protobuf.meta_graph_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var META_INFO_DEF_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -82,8 +78,6 @@ package tensorflow.core.protobuf.meta_graph_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SAVER_DEF_FIELD_NUMBER : Dynamic;
-	static public var SIGNATURE_DEF_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -100,6 +94,10 @@ package tensorflow.core.protobuf.meta_graph_pb2;
 		A ProtocolMessage
 	**/
 	public function SignatureDefEntry(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -267,4 +265,28 @@ package tensorflow.core.protobuf.meta_graph_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.MetaGraphDef.asset_file_def
+	**/
+	public var asset_file_def : Dynamic;
+	/**
+		Field tensorflow.MetaGraphDef.collection_def
+	**/
+	public var collection_def : Dynamic;
+	/**
+		Field tensorflow.MetaGraphDef.graph_def
+	**/
+	public var graph_def : Dynamic;
+	/**
+		Field tensorflow.MetaGraphDef.meta_info_def
+	**/
+	public var meta_info_def : Dynamic;
+	/**
+		Field tensorflow.MetaGraphDef.saver_def
+	**/
+	public var saver_def : Dynamic;
+	/**
+		Field tensorflow.MetaGraphDef.signature_def
+	**/
+	public var signature_def : Dynamic;
 }

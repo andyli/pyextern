@@ -80,8 +80,10 @@ package scipy.sparse.linalg.isolve.lsqr;
 		Parameters
 		----------
 		A : {sparse matrix, ndarray, LinearOperator}
-		    Representation of an m-by-n matrix.  It is required that
-		    the linear operator can produce ``Ax`` and ``A^T x``.
+		    Representation of an m-by-n matrix.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` and ``A^T x`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : array_like, shape (m,)
 		    Right-hand side vector ``b``.
 		damp : float

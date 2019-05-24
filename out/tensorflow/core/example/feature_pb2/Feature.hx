@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.example.feature_pb2;
 @:pythonImport("tensorflow.core.example.feature_pb2", "Feature") extern class Feature {
-	static public var BYTES_LIST_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -31,7 +30,6 @@ package tensorflow.core.example.feature_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FLOAT_LIST_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -48,7 +46,6 @@ package tensorflow.core.example.feature_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INT64_LIST_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -85,6 +82,10 @@ package tensorflow.core.example.feature_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -252,4 +253,16 @@ package tensorflow.core.example.feature_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.Feature.bytes_list
+	**/
+	public var bytes_list : Dynamic;
+	/**
+		Field tensorflow.Feature.float_list
+	**/
+	public var float_list : Dynamic;
+	/**
+		Field tensorflow.Feature.int64_list
+	**/
+	public var int64_list : Dynamic;
 }

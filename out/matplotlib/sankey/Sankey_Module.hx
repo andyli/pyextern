@@ -17,9 +17,5 @@ package matplotlib.sankey;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	static public var _log : Dynamic;
-	/**
-		return true if *obj* is iterable
-	**/
-	static public function iterable(obj:Dynamic):Dynamic;
 	static public var rcParams : Dynamic;
 }

@@ -1,7 +1,21 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.monitored_session;
 @:pythonImport("tensorflow.python.training.monitored_session", "WorkerSessionCreator") extern class WorkerSessionCreator {
-	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var __abstractmethods__ : Dynamic;
+	/**
+		Metaclass for defining Abstract Base Classes (ABCs).
+		
+		Use this metaclass to create an ABC.  An ABC can be subclassed
+		directly, and then acts as a mix-in class.  You can also register
+		unrelated concrete classes (even built-in classes) and unrelated
+		ABCs as 'virtual subclasses' -- these and their descendants will
+		be considered subclasses of the registering ABC by the built-in
+		issubclass() function, but the registering ABC won't show up in
+		their MRO (Method Resolution Order) nor will method
+		implementations defined by the registering ABC be callable (not
+		even via super()).
+	**/
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -122,6 +136,10 @@ package tensorflow.python.training.monitored_session;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _abc_cache : Dynamic;
+	static public var _abc_negative_cache : Dynamic;
+	static public var _abc_negative_cache_version : Dynamic;
+	static public var _abc_registry : Dynamic;
 	public function _get_session_manager():Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;

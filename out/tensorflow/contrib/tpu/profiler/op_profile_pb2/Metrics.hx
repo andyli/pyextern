@@ -30,7 +30,6 @@ package tensorflow.contrib.tpu.profiler.op_profile_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FLOPS_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -55,7 +54,6 @@ package tensorflow.contrib.tpu.profiler.op_profile_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MEMORY_BANDWIDTH_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -68,9 +66,6 @@ package tensorflow.contrib.tpu.profiler.op_profile_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var RAW_BYTES_ACCESSED_FIELD_NUMBER : Dynamic;
-	static public var RAW_FLOPS_FIELD_NUMBER : Dynamic;
-	static public var RAW_TIME_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -87,7 +82,10 @@ package tensorflow.contrib.tpu.profiler.op_profile_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TIME_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -253,4 +251,28 @@ package tensorflow.contrib.tpu.profiler.op_profile_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tpu.op_profile.Metrics.flops
+	**/
+	public var flops : Dynamic;
+	/**
+		Field tensorflow.tpu.op_profile.Metrics.memory_bandwidth
+	**/
+	public var memory_bandwidth : Dynamic;
+	/**
+		Field tensorflow.tpu.op_profile.Metrics.raw_bytes_accessed
+	**/
+	public var raw_bytes_accessed : Dynamic;
+	/**
+		Field tensorflow.tpu.op_profile.Metrics.raw_flops
+	**/
+	public var raw_flops : Dynamic;
+	/**
+		Field tensorflow.tpu.op_profile.Metrics.raw_time
+	**/
+	public var raw_time : Dynamic;
+	/**
+		Field tensorflow.tpu.op_profile.Metrics.time
+	**/
+	public var time : Dynamic;
 }

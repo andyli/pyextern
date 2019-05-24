@@ -80,17 +80,14 @@ package matplotlib.figure;
 	**/
 	static public function get_projection_names():Dynamic;
 	/**
-		return true if *obj* is iterable
-	**/
-	static public function iterable(obj:Dynamic):Dynamic;
-	/**
-		Handle the args/kwargs to add_axes/add_subplot/gca, returning::
+		[*Deprecated*] 
 		
-		    (axes_proj_class, proj_class_kwargs, proj_stack_key)
-		
-		which can be used for new axes initialization/identification.
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
 	**/
-	static public function process_projection_requirements(figure:Dynamic, ?args:python.VarArgs<Dynamic>, ?polar:Dynamic, ?projection:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function process_projection_requirements(figure:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var rcParams : Dynamic;
 	/**
 		This makes a new class that inherits from `.SubplotBase` and the

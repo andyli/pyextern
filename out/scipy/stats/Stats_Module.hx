@@ -69,7 +69,7 @@ package scipy.stats;
 		    f(x, a) = \frac{1}{x^2 \Phi(a) \sqrt{2\pi}} *
 		              \exp(-\frac{1}{2} (a-1/x)^2)
 		
-		where ``Phi(alpha)`` is the normal CDF, ``x > 0``, and ``a > 0``.
+		where :math:`\Phi` is the normal CDF, :math:`x > 0`, and :math:`a > 0`.
 		
 		`alpha` takes ``a`` as a shape parameter.
 		
@@ -176,7 +176,7 @@ package scipy.stats;
 		
 		References
 		----------
-		.. [1] http://www.itl.nist.gov/div898/handbook/prc/section2/prc213.htm
+		.. [1] https://www.itl.nist.gov/div898/handbook/prc/section2/prc213.htm
 		.. [2] Stephens, M. A. (1974). EDF Statistics for Goodness of Fit and
 		       Some Comparisons, Journal of the American Statistical Association,
 		       Vol. 69, pp. 730-737.
@@ -220,7 +220,8 @@ package scipy.stats;
 		    The critical values for significance levels 25%, 10%, 5%, 2.5%, 1%.
 		significance_level : float
 		    An approximate significance level at which the null hypothesis for the
-		    provided samples can be rejected.
+		    provided samples can be rejected. The value is floored / capped at
+		    1% / 25%.
 		
 		Raises
 		------
@@ -235,7 +236,7 @@ package scipy.stats;
 		
 		Notes
 		-----
-		[1]_ Defines three versions of the k-sample Anderson-Darling test:
+		[1]_ defines three versions of the k-sample Anderson-Darling test:
 		one for continuous distributions and two for discrete
 		distributions, in which ties between samples may occur. The
 		default of this routine is to compute the version based on the
@@ -245,6 +246,12 @@ package scipy.stats;
 		data. According to [1]_, the two discrete test statistics differ
 		only slightly if a few collisions due to round-off errors occur in
 		the test not adjusted for ties between samples.
+		
+		The critical values corresponding to the significance levels from 0.01
+		to 0.25 are taken from [1]_. p-values are floored / capped
+		at 0.1% / 25%. Since the range of critical values might be extended in
+		future releases, it is recommended not to test ``p == 0.25``, but rather
+		``p >= 0.25`` (analogously for the lower bound).
 		
 		.. versionadded:: 0.14.0
 		
@@ -263,24 +270,26 @@ package scipy.stats;
 		distribution can be rejected at the 5% level because the returned
 		test value is greater than the critical value for 5% (1.961) but
 		not at the 2.5% level. The interpolation gives an approximate
-		significance level of 3.1%:
+		significance level of 3.2%:
 		
 		>>> stats.anderson_ksamp([np.random.normal(size=50),
 		... np.random.normal(loc=0.5, size=30)])
 		(2.4615796189876105,
-		  array([ 0.325,  1.226,  1.961,  2.718,  3.752]),
-		  0.03134990135800783)
+		  array([ 0.325,  1.226,  1.961,  2.718,  3.752, 4.592, 6.546]),
+		  0.03176687568842282)
 		
 		
 		The null hypothesis cannot be rejected for three samples from an
-		identical distribution. The approximate p-value (87%) has to be
-		computed by extrapolation and may not be very accurate:
+		identical distribution. The reported p-value (25%) has been capped and
+		may not be very accurate (since it corresponds to the value 0.449
+		whereas the statistic is -0.731):
 		
 		>>> stats.anderson_ksamp([np.random.normal(size=50),
 		... np.random.normal(size=30), np.random.normal(size=20)])
 		(-0.73091722665244196,
-		  array([ 0.44925884,  1.3052767 ,  1.9434184 ,  2.57696569,  3.41634856]),
-		  0.8789283903979661)
+		  array([ 0.44925884,  1.3052767 ,  1.9434184 ,  2.57696569,  3.41634856,
+		  4.07210043, 5.56419101]),
+		  0.25)
 	**/
 	static public function anderson_ksamp(samples:Dynamic, ?midrank:Dynamic):Float;
 	/**
@@ -483,7 +492,7 @@ package scipy.stats;
 		
 		    f(x) = \frac{1}{\pi \sqrt{x (1-x)}}
 		
-		for :math:`0 \le x \le 1`.
+		for :math:`0 < x < 1`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -590,9 +599,9 @@ package scipy.stats;
 		.. math::
 		
 		    f(x, \chi) = \frac{\chi^3}{\sqrt{2\pi} \Psi(\chi)} x \sqrt{1-x^2}
-		                 \exp(- 0.5 \chi^2 (1 - x^2))
+		                 \exp(-\chi^2 (1 - x^2)/2)
 		
-		    where:
+		for :math:`0 < x < 1`, where
 		
 		.. math::
 		
@@ -672,7 +681,8 @@ package scipy.stats;
 		Parameters
 		----------
 		sample1, sample2,... : array_like
-		    arrays of sample data.  May be different lengths.
+		    arrays of sample data.  Only 1d arrays are accepted, they may have
+		    different lengths.
 		
 		Returns
 		-------
@@ -691,11 +701,12 @@ package scipy.stats;
 		Conover et al. (1981) examine many of the existing parametric and
 		nonparametric tests by extensive simulations and they conclude that the
 		tests proposed by Fligner and Killeen (1976) and Levene (1960) appear to be
-		superior in terms of robustness of departures from normality and power [3]_.
+		superior in terms of robustness of departures from normality and power
+		([3]_).
 		
 		References
 		----------
-		.. [1]  http://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm
+		.. [1]  https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm
 		
 		.. [2]  Snedecor, George W. and Cochran, William G. (1989), Statistical
 		          Methods, Eighth Edition, Iowa State University Press.
@@ -754,7 +765,7 @@ package scipy.stats;
 		References
 		----------
 		T.E. Oliphant, "A Bayesian perspective on estimating mean, variance, and
-		standard-deviation from data", http://scholarsarchive.byu.edu/facpub/278,
+		standard-deviation from data", https://scholarsarchive.byu.edu/facpub/278,
 		2006.
 		
 		Examples
@@ -953,11 +964,11 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, a, b) = \frac{\gamma(a+b) x^{a-1} (1-x)^{b-1}}
-		                      {\gamma(a) \gamma(b)}
+		    f(x, a, b) = \frac{\Gamma(a+b) x^{a-1} (1-x)^{b-1}}
+		                      {\Gamma(a) \Gamma(b)}
 		
-		for :math:`0 < x < 1`, :math:`a > 0`, :math:`b > 0`, where
-		:math:`\gamma(z)` is the gamma function (`scipy.special.gamma`).
+		for :math:`0 <= x <= 1`, :math:`a > 0`, :math:`b > 0`, where
+		:math:`\Gamma` is the gamma function (`scipy.special.gamma`).
 		
 		`beta` takes :math:`a` and :math:`b` as shape parameters.
 		
@@ -1067,8 +1078,8 @@ package scipy.stats;
 		
 		    f(x, a, b) = \frac{x^{a-1} (1+x)^{-a-b}}{\beta(a, b)}
 		
-		for ``x > 0``, ``a > 0``, ``b > 0``, where ``beta(a, b)`` is the beta
-		function (see `scipy.special.beta`).
+		for :math:`x >= 0`, :math:`a > 0`, :math:`b > 0`, where
+		:math:`\beta(a, b)` is the beta function (see `scipy.special.beta`).
 		
 		`betaprime` takes ``a`` and ``b`` as shape parameters.
 		
@@ -1145,6 +1156,8 @@ package scipy.stats;
 		
 		      * 'mean' : compute the mean of values for points within each bin.
 		        Empty bins will be represented by NaN.
+		      * 'std' : compute the standard deviation within each bin. This 
+		        is implicitly calculated with ddof=0.
 		      * 'median' : compute the median of values for points within each
 		        bin. Empty bins will be represented by NaN.
 		      * 'count' : compute the count of points within each bin.  This is
@@ -1294,6 +1307,8 @@ package scipy.stats;
 		
 		      * 'mean' : compute the mean of values for points within each bin.
 		        Empty bins will be represented by NaN.
+		      * 'std' : compute the standard deviation within each bin. This 
+		        is implicitly calculated with ddof=0.
 		      * 'median' : compute the median of values for points within each
 		        bin. Empty bins will be represented by NaN.
 		      * 'count' : compute the count of points within each bin.  This is
@@ -1424,9 +1439,9 @@ package scipy.stats;
 		    as an (N,D) array.
 		values : (N,) array_like or list of (N,) array_like
 		    The data on which the statistic will be computed.  This must be
-		    the same shape as `x`, or a list of sequences - each with the same
-		    shape as `x`.  If `values` is such a list, the statistic will be
-		    computed on each independently.
+		    the same shape as `sample`, or a list of sequences - each with the
+		    same shape as `sample`.  If `values` is such a list, the statistic
+		    will be computed on each independently.
 		statistic : string or callable, optional
 		    The statistic to compute (default is 'mean').
 		    The following statistics are available:
@@ -1440,6 +1455,8 @@ package scipy.stats;
 		        referenced.
 		      * 'sum' : compute the sum of values for points within each bin.
 		        This is identical to a weighted histogram.
+		      * 'std' : compute the standard deviation within each bin. This 
+		        is implicitly calculated with ddof=0.
 		      * 'min' : compute the minimum of values for points within each bin.
 		        Empty bins will be represented by NaN.
 		      * 'max' : compute the maximum of values for point within each bin.
@@ -1641,7 +1658,21 @@ package scipy.stats;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Binomial_test
+		.. [1] https://en.wikipedia.org/wiki/Binomial_test
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		
+		A car manufacturer claims that no more than 10% of their cars are unsafe.
+		15 cars are inspected for safety, 3 were found to be unsafe. Test the
+		manufacturer's claim:
+		
+		>>> stats.binom_test(3, n=15, p=0.1, alternative='greater')
+		0.18406106910639114
+		
+		The null hypothesis cannot be rejected at the 5% level of significance
+		because the returned p-value is greater than the critical value of 5%.
 	**/
 	static public function binom_test(x:Dynamic, ?n:Dynamic, ?p:Dynamic, ?alternative:Dynamic):Float;
 	/**
@@ -1694,11 +1725,11 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(k) = (1-\exp(-\lambda) \exp(-\lambda k)/(1-\exp(-\lambda N))
+		    f(k) = (1-\exp(-\lambda)) \exp(-\lambda k) / (1-\exp(-\lambda N))
 		
 		for :math:`k = 0,..., N-1`.
 		
-		`boltzmann` takes :math:`\lambda` and :math:`N` as shape parameters.
+		`boltzmann` takes :math:`\lambda > 0` and :math:`N > 0` as shape parameters.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -1905,7 +1936,7 @@ package scipy.stats;
 		...     ax_inset.plot(osm, osr, 'c.', osm, slope*osm + intercept, 'k-')
 		...     ax_inset.set_xticklabels([])
 		...     ax_inset.set_yticklabels([])
-		...     ax_inset.set_title('$\lambda=%1.2f$' % lmbda)
+		...     ax_inset.set_title(r'$\lambda=%1.2f$' % lmbda)
 		
 		>>> plt.show()
 	**/
@@ -2095,11 +2126,11 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, c) = \frac{c}{k (1+cx)}
+		    f(x, c) = \frac{c}{\log(1+c) (1+cx)}
 		
-		for :math:`0 < x < 1`, :math:`c > 0` and :math:`k = \log(1+c)`.
+		for :math:`0 <= x <= 1` and :math:`c > 0`.
 		
-		`bradford` takes :math:`c` as a shape parameter.
+		`bradford` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -2152,6 +2183,73 @@ package scipy.stats;
 	**/
 	static public function bradford(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Computes the Brunner-Munzel test on samples x and y
+		
+		The Brunner-Munzel test is a nonparametric test of the null hypothesis that
+		when values are taken one by one from each group, the probabilities of
+		getting large values in both groups are equal.
+		Unlike the Wilcoxon-Mann-Whitney's U test, this does not require the
+		assumption of equivariance of two groups. Note that this does not assume
+		the distributions are same. This test works on two independent samples,
+		which may have different sizes.
+		
+		Parameters
+		----------
+		x, y : array_like
+		    Array of samples, should be one-dimensional.
+		alternative :  'less', 'two-sided', or 'greater', optional
+		    Whether to get the p-value for the one-sided hypothesis ('less'
+		    or 'greater') or for the two-sided hypothesis ('two-sided').
+		    Defaults value is 'two-sided' .
+		distribution: 't' or 'normal', optional
+		    Whether to get the p-value by t-distribution or by standard normal
+		    distribution.
+		    Defaults value is 't' .
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
+		
+		Returns
+		-------
+		statistic : float
+		    The Brunner-Munzer W statistic.
+		pvalue : float
+		    p-value assuming an t distribution. One-sided or
+		    two-sided, depending on the choice of `alternative` and `distribution`.
+		
+		See Also
+		--------
+		mannwhitneyu : Mann-Whitney rank test on two samples.
+		
+		Notes
+		-------
+		Brunner and Munzel recommended to estimate the p-value by t-distribution
+		when the size of data is 50 or less. If the size is lower than 10, it would
+		be better to use permuted Brunner Munzel test (see [2]_).
+		
+		References
+		----------
+		.. [1] Brunner, E. and Munzel, U. "The nonparametric Benhrens-Fisher
+		       problem: Asymptotic theory and a small-sample approximation".
+		       Biometrical Journal. Vol. 42(2000): 17-25.
+		.. [2] Neubert, K. and Brunner, E. "A studentized permutation test for the
+		       non-parametric Behrens-Fisher problem". Computational Statistics and
+		       Data Analysis. Vol. 51(2007): 5192-5204.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> x1 = [1,2,1,1,1,1,1,1,1,1,2,4,1,1]
+		>>> x2 = [3,3,4,3,1,2,3,1,1,5,4]
+		>>> w, p_value = stats.brunnermunzel(x1, x2)
+		>>> w
+		3.1374674823029505
+		>>> p_value
+		0.0057862086661515377
+	**/
+	static public function brunnermunzel(x:Dynamic, y:Dynamic, ?alternative:Dynamic, ?distribution:Dynamic, ?nan_policy:Dynamic):Float;
+	/**
 		A Burr (Type III) continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `burr` object inherits from it
@@ -2201,7 +2299,7 @@ package scipy.stats;
 		
 		See Also
 		--------
-		fisk : a special case of either `burr` or ``burr12`` with ``d = 1``
+		fisk : a special case of either `burr` or `burr12` with ``d=1``
 		burr12 : Burr Type XII distribution
 		
 		Notes
@@ -2212,7 +2310,7 @@ package scipy.stats;
 		
 		    f(x, c, d) = c d x^{-c-1} (1+x^{-c})^{-d-1}
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0` and :math:`c, d > 0`.
 		
 		`burr` takes :math:`c` and :math:`d` as shape parameters.
 		
@@ -2324,7 +2422,7 @@ package scipy.stats;
 		
 		See Also
 		--------
-		fisk : a special case of either `burr` or ``burr12`` with ``d = 1``
+		fisk : a special case of either `burr` or `burr12` with ``d=1``
 		burr : Burr Type III distribution
 		
 		Notes
@@ -2335,9 +2433,10 @@ package scipy.stats;
 		
 		    f(x, c, d) = c d x^{c-1} (1+x^c)^{-d-1}
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0` and :math:`c, d > 0`.
 		
-		`burr12` takes :math:`c` and :math:`d` as shape parameters.
+		`burr12` takes ``c`` and ``d`` as shape parameters for :math:`c`
+		and :math:`d`.
 		
 		This is the PDF corresponding to the twelfth CDF given in Burr's list;
 		specifically, it is equation (20) in Burr's paper [1]_.
@@ -2356,7 +2455,7 @@ package scipy.stats;
 		.. [1] Burr, I. W. "Cumulative frequency functions", Annals of
 		   Mathematical Statistics, 13(2), pp 215-232 (1942).
 		
-		.. [2] http://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/b12pdf.htm
+		.. [2] https://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/b12pdf.htm
 		
 		Examples
 		--------
@@ -2452,11 +2551,13 @@ package scipy.stats;
 		
 		Notes
 		-----
-		The probability density function for `cauchy` is:
+		The probability density function for `cauchy` is
 		
 		.. math::
 		
 		    f(x) = \frac{1}{\pi (1 + x^2)}
+		
+		for a real number :math:`x`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -2562,9 +2663,12 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, df) = \frac{x^{df-1} \exp(-x^2/2)}{2^{df/2-1} \gamma(df/2)}
+		    f(x, k) = \frac{1}{2^{k/2-1} \Gamma \left( k/2 \right)}
+		               x^{k-1} \exp \left( -x^2/2 \right)
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0` and :math:`k > 0` (degrees of freedom, denoted ``df``
+		in the implementation). :math:`\Gamma` is the gamma function
+		(`scipy.special.gamma`).
 		
 		Special cases of `chi` are:
 		
@@ -2678,7 +2782,11 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, df) = \frac{1}{(2 \gamma(df/2)} (x/2)^{df/2-1} \exp(-x/2)
+		    f(x, k) = \frac{1}{2^{k/2} \Gamma \left( k/2 \right)}
+		               x^{k/2-1} \exp \left( -x/2 \right)
+		
+		for :math:`x > 0`  and :math:`k > 0` (degrees of freedom, denoted ``df``
+		in the implementation).
 		
 		`chi2` takes ``df`` as a shape parameter.
 		
@@ -2811,9 +2919,10 @@ package scipy.stats;
 		
 		References
 		----------
-		.. [1] "Contingency table", http://en.wikipedia.org/wiki/Contingency_table
+		.. [1] "Contingency table",
+		       https://en.wikipedia.org/wiki/Contingency_table
 		.. [2] "Pearson's chi-squared test",
-		       http://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test
+		       https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test
 		.. [3] Cressie, N. and Read, T. R. C., "Multinomial Goodness-of-Fit
 		       Tests", J. Royal Stat. Soc. Series B, Vol. 46, No. 3 (1984),
 		       pp. 440-464.
@@ -2898,8 +3007,7 @@ package scipy.stats;
 		
 		See Also
 		--------
-		power_divergence
-		mstats.chisquare
+		scipy.stats.power_divergence
 		
 		Notes
 		-----
@@ -2918,8 +3026,9 @@ package scipy.stats;
 		References
 		----------
 		.. [1] Lowry, Richard.  "Concepts and Applications of Inferential
-		       Statistics". Chapter 8. http://faculty.vassar.edu/lowry/ch8pt1.html
-		.. [2] "Chi-squared test", http://en.wikipedia.org/wiki/Chi-squared_test
+		       Statistics". Chapter 8.
+		       https://web.archive.org/web/20171022032306/http://vassarstats.net:80/textbook/ch8pt1.html
+		.. [2] "Chi-squared test", https://en.wikipedia.org/wiki/Chi-squared_test
 		
 		Examples
 		--------
@@ -3078,22 +3187,26 @@ package scipy.stats;
 		----------
 		pvalues : array_like, 1-D
 		    Array of p-values assumed to come from independent tests.
-		method : {'fisher', 'stouffer'}, optional
+		method : {'fisher', 'pearson', 'tippett', 'stouffer', 'mudholkar_george'},
+		optional.
 		    Name of method to use to combine p-values. The following methods are
 		    available:
 		
 		    - "fisher": Fisher's method (Fisher's combined probability test),
-		      the default.
+		      the default, the sum of the logarithm of the p-values.
+		    - "pearson": Pearson's method (similar to Fisher's but uses sum of the
+		      complement of the p-values inside the logarithms).
+		    - "tippett": Tippett's method (minimum of p-values).
 		    - "stouffer": Stouffer's Z-score method.
+		    - "mudholkar_george": the difference of Fisher's and Pearson's methods
+		       divided by 2.
 		weights : array_like, 1-D, optional
 		    Optional array of weights used only for Stouffer's Z-score method.
 		
 		Returns
 		-------
 		statistic: float
-		    The statistic calculated by the specified method:
-		    - "fisher": The chi-squared statistic
-		    - "stouffer": The Z-score
+		    The statistic calculated by the specified method.
 		pval: float
 		    The combined p-value.
 		
@@ -3104,7 +3217,17 @@ package scipy.stats;
 		Stouffer's Z-score method [2]_ uses Z-scores rather than p-values. The
 		advantage of Stouffer's method is that it is straightforward to introduce
 		weights, which can make Stouffer's method more powerful than Fisher's
-		method when the p-values are from studies of different size [3]_ [4]_.
+		method when the p-values are from studies of different size [6]_ [7]_.
+		The Pearson's method uses :math:`log(1-p_i)` inside the sum whereas Fisher's
+		method uses :math:`log(p_i)` [4]_. For Fisher's and Pearson's method, the
+		sum of the logarithms is multiplied by -2 in the implementation. This
+		quantity has a chisquare distribution that determines the p-value. The
+		`mudholkar_george` method is the difference of the Fisher's and Pearson's
+		test statistics, each of which include the -2 factor [4]_. However, the
+		`mudholkar_george` method does not include these -2 factors. The test
+		statistic of `mudholkar_george` is the sum of logisitic random variables and
+		equation 3.6 in [3]_ is used to approximate the p-value based on Student's
+		t-distribution.
 		
 		Fisher's method may be extended to combine p-values from dependent tests
 		[5]_. Extensions such as Brown's method and Kost's method are not currently
@@ -3115,14 +3238,18 @@ package scipy.stats;
 		References
 		----------
 		.. [1] https://en.wikipedia.org/wiki/Fisher%27s_method
-		.. [2] http://en.wikipedia.org/wiki/Fisher's_method#Relation_to_Stouffer.27s_Z-score_method
-		.. [3] Whitlock, M. C. "Combining probability from independent tests: the
+		.. [2] https://en.wikipedia.org/wiki/Fisher%27s_method#Relation_to_Stouffer.27s_Z-score_method
+		.. [3] George, E. O., and G. S. Mudholkar. "On the convolution of logistic
+		       random variables." Metrika 30.1 (1983): 1-13.
+		.. [4] Heard, N. and Rubin-Delanchey, P. "Choosing between methods of
+		       combining p-values."  Biometrika 105.1 (2018): 239-246.
+		.. [5] Whitlock, M. C. "Combining probability from independent tests: the
 		       weighted Z-method is superior to Fisher's approach." Journal of
 		       Evolutionary Biology 18, no. 5 (2005): 1368-1373.
-		.. [4] Zaykin, Dmitri V. "Optimally weighted Z-test is a powerful method
+		.. [6] Zaykin, Dmitri V. "Optimally weighted Z-test is a powerful method
 		       for combining probabilities in meta-analysis." Journal of
 		       Evolutionary Biology 24, no. 8 (2011): 1836-1841.
-		.. [5] https://en.wikipedia.org/wiki/Extensions_of_Fisher%27s_method
+		.. [7] https://en.wikipedia.org/wiki/Extensions_of_Fisher%27s_method
 	**/
 	static public function combine_pvalues(pvalues:Dynamic, ?method:Dynamic, ?weights:Dynamic):Dynamic;
 	/**
@@ -3293,12 +3420,13 @@ package scipy.stats;
 		                        N A (B - x)^{-m}  &\text{for } x \le -\beta
 		                      \end{cases}
 		
-		where :math:`A = (m / |beta|)**n * exp(-beta**2 / 2)`,
-		:math:`B = m/|beta| - |beta|` and :math:`N` is a normalisation constant.
+		where :math:`A = (m / |\beta|)^n  \exp(-\beta^2 / 2)`,
+		:math:`B = m/|\beta| - |\beta|` and :math:`N` is a normalisation constant.
 		
-		`crystalball` takes :math:`\beta` and :math:`m` as shape parameters.
-		:math:`\beta` defines the point where the pdf changes from a power-law to a
-		gaussian distribution :math:`m` is power of the power-law tail.
+		`crystalball` takes :math:`\beta > 0` and :math:`m > 1` as shape
+		parameters.  :math:`\beta` defines the point where the pdf changes
+		from a power-law to a Gaussian distribution.  :math:`m` is the power
+		of the power-law tail.
 		
 		References
 		----------
@@ -3539,11 +3667,12 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, a) = \frac{1}{2\gamma(a)} |x|^{a-1} \exp(-|x|)
+		    f(x, a) = \frac{1}{2\Gamma(a)} |x|^{a-1} \exp(-|x|)
 		
-		for :math:`a > 0`.
+		for a real number :math:`x` and :math:`a > 0`. :math:`\Gamma` is the
+		gamma function (`scipy.special.gamma`).
 		
-		`dgamma` takes :math:`a` as a shape parameter.
+		`dgamma` takes ``a`` as a shape parameter for :math:`a`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -3667,6 +3796,40 @@ package scipy.stats;
 		Note that the dirichlet interface is somewhat inconsistent.
 		The array returned by the rvs function is transposed
 		with respect to the format expected by the pdf and logpdf.
+		
+		Examples
+		--------
+		>>> from scipy.stats import dirichlet
+		
+		Generate a dirichlet random variable
+		
+		>>> quantiles = np.array([0.2, 0.2, 0.6])  # specify quantiles
+		>>> alpha = np.array([0.4, 5, 15])  # specify concentration parameters
+		>>> dirichlet.pdf(quantiles, alpha)
+		0.2843831684937255
+		
+		The same PDF but following a log scale
+		
+		>>> dirichlet.logpdf(quantiles, alpha)
+		-1.2574327653159187
+		
+		Once we specify the dirichlet distribution
+		we can then calculate quantities of interest
+		
+		>>> dirichlet.mean(alpha)  # get the mean of the distribution
+		array([0.01960784, 0.24509804, 0.73529412])
+		>>> dirichlet.var(alpha) # get variance
+		array([0.00089829, 0.00864603, 0.00909517])
+		>>> dirichlet.entropy(alpha)  # calculate the differential entropy
+		-4.3280162474082715
+		
+		We can also return random samples from the distribution
+		
+		>>> dirichlet.rvs(alpha, size=1, random_state=1)
+		array([[0.00766178, 0.24670518, 0.74563305]])
+		>>> dirichlet.rvs(alpha, size=2, random_state=2)
+		array([[0.01639427, 0.1292273 , 0.85437844],
+		       [0.00156917, 0.19033695, 0.80809388]])
 	**/
 	static public function dirichlet(alpha:Dynamic, ?seed:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -3722,7 +3885,7 @@ package scipy.stats;
 		
 		    f(k) = \tanh(a/2) \exp(-a |k|)
 		
-		for :math:`a > 0`.
+		for integers :math:`k` and :math:`a > 0`.
 		
 		`dlaplace` takes :math:`a` as shape parameter.
 		
@@ -3822,13 +3985,15 @@ package scipy.stats;
 		
 		Notes
 		-----
-		The probability density function for `dweibull` is:
+		The probability density function for `dweibull` is given by
 		
 		.. math::
 		
 		    f(x, c) = c / 2 |x|^{c-1} \exp(-|x|^c)
 		
-		`dweibull` takes :math:`d` as a shape parameter.
+		for a real number :math:`x` and :math:`c > 0`.
+		
+		`dweibull` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -3986,6 +4151,72 @@ package scipy.stats;
 		    The calculated entropy.
 	**/
 	static public function entropy(pk:Dynamic, ?qk:Dynamic, ?base:Dynamic):Float;
+	/**
+		Compute the Epps-Singleton (ES) test statistic.
+		
+		Test the null hypothesis that two samples have the same underlying
+		probability distribution.
+		
+		Parameters
+		----------
+		x, y : array-like
+		    The two samples of observations to be tested. Input must not have more
+		    than one dimension. Samples can have different lengths.
+		t : array-like, optional
+		    The points (t1, ..., tn) where the empirical characteristic function is
+		    to be evaluated. It should be positive distinct numbers. The default
+		    value (0.4, 0.8) is proposed in [1]_. Input must not have more than
+		    one dimension.
+		
+		Returns
+		-------
+		statistic : float
+		    The test statistic.
+		pvalue : float
+		    The associated p-value based on the asymptotic chi2-distribution.
+		
+		See Also
+		--------
+		ks_2samp, anderson_ksamp
+		
+		Notes
+		-----
+		Testing whether two samples are generated by the same underlying
+		distribution is a classical question in statistics. A widely used test is
+		the Kolmogorov-Smirnov (KS) test which relies on the empirical
+		distribution function. Epps and Singleton introduce a test based on the
+		empirical characteristic function in [1]_.
+		
+		One advantage of the ES test compared to the KS test is that is does
+		not assume a continuous distribution. In [1]_, the authors conclude
+		that the test also has a higher power than the KS test in many
+		examples. They recommend the use of the ES test for discrete samples as
+		well as continuous samples with at least 25 observations each, whereas
+		`anderson_ksamp` is recommended for smaller sample sizes in the
+		continuous case.
+		
+		The p-value is computed from the asymptotic distribution of the test
+		statistic which follows a `chi2` distribution. If the sample size of both
+		`x` and `y` is below 25, the small sample correction proposed in [1]_ is
+		applied to the test statistic.
+		
+		The default values of `t` are determined in [1]_ by considering
+		various distributions and finding good values that lead to a high power
+		of the test in general. Table III in [1]_ gives the optimal values for
+		the distributions tested in that study. The values of `t` are scaled by
+		the semi-interquartile range in the implementation, see [1]_.
+		
+		References
+		----------
+		.. [1] T. W. Epps and K. J. Singleton, "An omnibus test for the two-sample
+		   problem using the empirical characteristic function", Journal of
+		   Statistical Computation and Simulation 26, p. 177--203, 1986.
+		
+		.. [2] S. J. Goerg and J. Kaiser, "Nonparametric testing of distributions
+		   - the Epps-Singleton two-sample test using the empirical characteristic
+		   function", The Stata Journal 9(3), p. 454--465, 2009.
+	**/
+	static public function epps_singleton_2samp(x:Dynamic, y:Dynamic, ?t:Dynamic):Float;
 	/**
 		An Erlang continuous random variable.
 		
@@ -4214,15 +4445,14 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, K) = \frac{1}{2K} \exp\left(\frac{1}{2 K^2}\right) \exp(-x / K)
+		    f(x, K) = \frac{1}{2K} \exp\left(\frac{1}{2 K^2} - x / K \right)
 		              \text{erfc}\left(-\frac{x - 1/K}{\sqrt{2}}\right)
 		
-		where the shape parameter :math:`K > 0`.
+		where :math:`x` is a real number and :math:`K > 0`.
 		
-		It can be thought of as the sum of a normally distributed random
-		value with mean ``loc`` and sigma ``scale`` and an exponentially
-		distributed random number with a pdf proportional to ``exp(-lambda * x)``
-		where ``lambda = (K * scale)**(-1)``.
+		It can be thought of as the sum of a standard normal random variable
+		and an independent exponentially distributed random variable with rate
+		``1/K``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -4231,7 +4461,7 @@ package scipy.stats;
 		``y = (x - loc) / scale``.
 		
 		An alternative parameterization of this distribution (for example, in
-		`Wikipedia <http://en.wikipedia.org/wiki/Exponentially_modified_Gaussian_distribution>`_)
+		`Wikipedia <https://en.wikipedia.org/wiki/Exponentially_modified_Gaussian_distribution>`_)
 		involves three parameters, :math:`\mu`, :math:`\lambda` and
 		:math:`\sigma`.
 		In the present parameterization this corresponds to having ``loc`` and
@@ -4340,11 +4570,11 @@ package scipy.stats;
 		
 		    f(x, b) = b x^{b-1} \exp(1 + x^b - \exp(x^b))
 		
-		for :math:`x \ge 0`, :math:`b > 0``.  Note that this is a different
+		for :math:`x \ge 0`, :math:`b > 0`.  Note that this is a different
 		distribution from the exponential power distribution that is also known
 		under the names "generalized normal" or "generalized Gaussian".
 		
-		`exponpow` takes :math:`b` as a shape parameter.
+		`exponpow` takes ``b`` as a shape parameter for :math:`b`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -4456,7 +4686,7 @@ package scipy.stats;
 		
 		    f(x, a, c) = a c (1-\exp(-x^c))^{a-1} \exp(-x^c) x^{c-1}
 		
-		for :math:`x > 0`, :math:`a > 0`, :math:`c > 0`.
+		for :math:`x >= 0`, :math:`a > 0`, :math:`c > 0`.
 		
 		`exponweib` takes :math:`a` and :math:`c` as shape parameters.
 		
@@ -4660,13 +4890,14 @@ package scipy.stats;
 		
 		References
 		----------
-		.. [1] Lowry, Richard.  "Concepts and Applications of Inferential
-		       Statistics". Chapter 14.
-		       http://faculty.vassar.edu/lowry/ch14pt1.html
+		.. [1] R. Lowry, "Concepts and Applications of Inferential Statistics",
+		       Chapter 14, 2014, http://vassarstats.net/textbook/
 		
-		.. [2] Heiman, G.W.  Research Methods in Statistics. 2002.
+		.. [2] G.W. Heiman, "Understanding research methods and statistics: An
+		       integrated introduction for psychology", Houghton, Mifflin and
+		       Company, 2001.
 		
-		.. [3] McDonald, G. H. "Handbook of Biological Statistics", One-way ANOVA.
+		.. [3] G.H. McDonald, "Handbook of Biological Statistics", One-way ANOVA.
 		       http://www.biostathandbook.com/onewayanova.html
 		
 		Examples
@@ -4745,11 +4976,11 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, c) = \frac{x+1}{ 2c\sqrt{2\pi x^3} \exp(-\frac{(x-1)^2}{2x c^2}}
+		    f(x, c) = \frac{x+1}{2c\sqrt{2\pi x^3}} \exp(-\frac{(x-1)^2}{2x c^2})
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0` and :math:`c > 0`.
 		
-		`fatiguelife` takes :math:`c` as a shape parameter.
+		`fatiguelife` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -4760,7 +4991,7 @@ package scipy.stats;
 		References
 		----------
 		.. [1] "Birnbaum-Saunders distribution",
-		       http://en.wikipedia.org/wiki/Birnbaum-Saunders_distribution
+		       https://en.wikipedia.org/wiki/Birnbaum-Saunders_distribution
 		
 		Examples
 		--------
@@ -4899,10 +5130,7 @@ package scipy.stats;
 	/**
 		A Fisk continuous random variable.
 		
-		The Fisk distribution is also known as the log-logistic distribution, and
-		equals the Burr distribution with ``d == 1``.
-		
-		`fisk` takes :math:`c` as a shape parameter.
+		The Fisk distribution is also known as the log-logistic distribution.
 		
 		As an instance of the `rv_continuous` class, `fisk` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -4957,9 +5185,11 @@ package scipy.stats;
 		
 		    f(x, c) = c x^{-c-1} (1 + x^{-c})^{-2}
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0` and :math:`c > 0`.
 		
-		`fisk` takes :math:`c` as a shape parameters.
+		`fisk` takes ``c`` as a shape parameter for :math:`c`.
+		
+		`fisk` is a special case of `burr` or `burr12` with ``d=1``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -5063,7 +5293,7 @@ package scipy.stats;
 		       Hypothesis Testing based on Quadratic Inference Function. Technical
 		       Report #99-03, Center for Likelihood Studies, Pennsylvania State
 		       University.
-		       http://cecas.clemson.edu/~cspark/cv/paper/qif/draftqif2.pdf
+		       https://cecas.clemson.edu/~cspark/cv/paper/qif/draftqif2.pdf
 		
 		.. [2] Fligner, M.A. and Killeen, T.J. (1976). Distribution-free two-sample
 		       tests for scale. 'Journal of the American Statistical Association.'
@@ -5136,9 +5366,9 @@ package scipy.stats;
 		
 		    f(x, c) = \frac{1}{\pi (1+(x-c)^2)} + \frac{1}{\pi (1+(x+c)^2)}
 		
-		for :math:`x \ge 0``.
+		for :math:`x \ge 0`.
 		
-		`foldcauchy` takes :math:`c` as a shape parameter.
+		`foldcauchy` takes ``c`` as a shape parameter for :math:`c`.
 		
 		Examples
 		--------
@@ -5242,7 +5472,7 @@ package scipy.stats;
 		
 		for :math:`c \ge 0`.
 		
-		`foldnorm` takes :math:`c` as a shape parameter.
+		`foldnorm` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -5295,7 +5525,7 @@ package scipy.stats;
 	**/
 	static public function foldnorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		A frechet_l continuous random variable.
+		A Frechet left (or Weibull maximum) continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `frechet_l` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -5342,8 +5572,17 @@ package scipy.stats;
 		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
+		See Also
+		--------
+		weibull_max : The same distribution as `frechet_l`.
+		
 		Notes
 		-----
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``frechet_l.pdf(x, c, loc, scale)`` is identically
+		equivalent to ``frechet_l.pdf(y, c) / scale`` with
+		``y = (x - loc) / scale``.
 		
 		Examples
 		--------
@@ -5353,7 +5592,7 @@ package scipy.stats;
 		
 		Calculate a few first moments:
 		
-		>>> c = 
+		>>> c = 3.63
 		>>> mean, var, skew, kurt = frechet_l.stats(c, moments='mvsk')
 		
 		Display the probability density function (``pdf``):
@@ -5390,7 +5629,7 @@ package scipy.stats;
 	**/
 	static public function frechet_l(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		A frechet_r continuous random variable.
+		A Frechet right (or Weibull minimum) continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `frechet_r` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -5437,8 +5676,17 @@ package scipy.stats;
 		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
+		See Also
+		--------
+		weibull_min : The same distribution as `frechet_r`.
+		
 		Notes
 		-----
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``frechet_r.pdf(x, c, loc, scale)`` is identically
+		equivalent to ``frechet_r.pdf(y, c) / scale`` with
+		``y = (x - loc) / scale``.
 		
 		Examples
 		--------
@@ -5448,7 +5696,7 @@ package scipy.stats;
 		
 		Calculate a few first moments:
 		
-		>>> c = 
+		>>> c = 1.89
 		>>> mean, var, skew, kurt = frechet_r.stats(c, moments='mvsk')
 		
 		Display the probability density function (``pdf``):
@@ -5516,7 +5764,7 @@ package scipy.stats;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Friedman_test
+		.. [1] https://en.wikipedia.org/wiki/Friedman_test
 	**/
 	static public function friedmanchisquare(?args:python.VarArgs<Dynamic>):Float;
 	/**
@@ -5582,7 +5830,7 @@ package scipy.stats;
 		for :math:`x \ge 0`, :math:`a > 0`. Here :math:`\Gamma(a)` refers to the
 		gamma function.
 		
-		`gamma` has a shape parameter `a` which needs to be set explicitly.
+		`gamma` takes ``a`` as a shape parameter for :math:`a`.
 		
 		When :math:`a` is an integer, `gamma` reduces to the Erlang
 		distribution, and when :math:`a=1` to the exponential distribution.
@@ -5694,7 +5942,9 @@ package scipy.stats;
 		    f(x, a, b, c, z) = C x^{a-1} (1-x)^{b-1} (1+zx)^{-c}
 		
 		for :math:`0 \le x \le 1`, :math:`a > 0`, :math:`b > 0`, and
-		:math:`C = \frac{1}{B(a, b) F[2, 1](c, a; a+b; -z)}`
+		:math:`C = \frac{1}{B(a, b) F[2, 1](c, a; a+b; -z)}`.
+		:math:`F[2, 1]` is the Gauss hypergeometric function
+		`scipy.special.hyp2f1`.
 		
 		`gausshyper` takes :math:`a`, :math:`b`, :math:`c` and :math:`z` as shape
 		parameters.
@@ -5937,7 +6187,7 @@ package scipy.stats;
 		Note that several sources and software packages use the opposite
 		convention for the sign of the shape parameter :math:`c`.
 		
-		`genextreme` takes :math:`c` as a shape parameter.
+		`genextreme` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -6043,9 +6293,10 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, a, c) = \frac{|c| x^{c a-1} \exp(-x^c)}{\gamma(a)}
+		    f(x, a, c) = \frac{|c| x^{c a-1} \exp(-x^c)}{\Gamma(a)}
 		
 		for :math:`x \ge 0`, :math:`a > 0`, and :math:`c \ne 0`.
+		:math:`\Gamma` is the gamma function (`scipy.special.gamma`).
 		
 		`gengamma` takes :math:`a` and :math:`c` as shape parameters.
 		
@@ -6157,7 +6408,7 @@ package scipy.stats;
 		
 		for :math:`0 \le x \le 1/c`, and :math:`c > 0`.
 		
-		`genhalflogistic` takes :math:`c` as a shape parameter.
+		`genhalflogistic` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -6266,9 +6517,9 @@ package scipy.stats;
 		    f(x, c) = c \frac{\exp(-x)}
 		                     {(1 + \exp(-x))^{c+1}}
 		
-		for :math:`x > 0`, :math:`c > 0`.
+		for :math:`x >= 0`, :math:`c > 0`.
 		
-		`genlogistic` takes :math:`c` as a shape parameter.
+		`genlogistic` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -6370,16 +6621,18 @@ package scipy.stats;
 		
 		Notes
 		-----
-		The probability density function for `gennorm` is [1]_::
+		The probability density function for `gennorm` is [1]_:
 		
-		                                 beta
-		    gennorm.pdf(x, beta) =  ---------------  exp(-|x|**beta)
-		                            2 gamma(1/beta)
+		.. math::
 		
-		`gennorm` takes :math:`\beta` as a shape parameter.
+		    f(x, \beta) = \frac{\beta}{2 \Gamma(1/\beta)} \exp(-|x|^\beta)
+		
+		:math:`\Gamma` is the gamma function (`scipy.special.gamma`).
+		
+		`gennorm` takes ``beta`` as a shape parameter for :math:`\beta`.
 		For :math:`\beta = 1`, it is identical to a Laplace distribution.
-		For ``\beta = 2``, it is identical to a normal distribution
-		(with :math:`scale=1/\sqrt{2}`).
+		For :math:`\beta = 2`, it is identical to a normal distribution
+		(with ``scale=1/sqrt(2)``).
 		
 		See Also
 		--------
@@ -6495,20 +6748,20 @@ package scipy.stats;
 		defined for :math:`x \ge 0` if :math:`c \ge 0`, and for
 		:math:`0 \le x \le -1/c` if :math:`c < 0`.
 		
-		`genpareto` takes :math:`c` as a shape parameter.
+		`genpareto` takes ``c`` as a shape parameter for :math:`c`.
 		
-		For ``c == 0``, `genpareto` reduces to the exponential
+		For :math:`c=0`, `genpareto` reduces to the exponential
 		distribution, `expon`:
 		
 		.. math::
 		
-		    f(x, c=0) = \exp(-x)
+		    f(x, 0) = \exp(-x)
 		
-		For ``c == -1``, `genpareto` is uniform on ``[0, 1]``:
+		For :math:`c=-1`, `genpareto` is uniform on ``[0, 1]``:
 		
 		.. math::
 		
-		    f(x, c=-1) = x
+		    f(x, -1) = 1
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -6621,6 +6874,10 @@ package scipy.stats;
 		Specifically, ``geom.pmf(k, p, loc)`` is identically
 		equivalent to ``geom.pmf(k - loc, p)``.
 		
+		See Also
+		--------
+		planck
+		
 		Examples
 		--------
 		>>> from scipy.stats import geom
@@ -6718,7 +6975,7 @@ package scipy.stats;
 		
 		    f(x) = \frac{1}{x \sqrt{2\pi}} \exp(-\frac{1}{2} (\log(x))^2)
 		
-		`gilbrat` is a special case of `lognorm` with ``s = 1``.
+		`gilbrat` is a special case of `lognorm` with ``s=1``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -6878,7 +7135,7 @@ package scipy.stats;
 		
 		for :math:`x \ge 0`, :math:`c > 0`.
 		
-		`gompertz` takes :math:`c` as a shape parameter.
+		`gompertz` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -6930,6 +7187,101 @@ package scipy.stats;
 		>>> plt.show()
 	**/
 	static public function gompertz(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Calculate the geometric standard deviation of an array
+		
+		The geometric standard deviation describes the spread of a set of numbers
+		where the geometric mean is preferred. It is a multiplicative factor, and
+		so a dimensionless quantity.
+		
+		It is defined as the exponent of the standard deviation of ``log(a)``.
+		Mathematically the population geometric standard deviation can be
+		evaluated as::
+		
+		    gstd = exp(std(log(a)))
+		
+		.. versionadded:: 1.3.0
+		
+		Parameters
+		----------
+		a : array_like
+		    An array like object containing the sample data.
+		axis : int, tuple or None, optional
+		    Axis along which to operate. Default is 0. If None, compute over
+		    the whole array `a`.
+		ddof : int, optional
+		    Degree of freedom correction in the calculation of the
+		    geometric standard deviation. Default is 1.
+		
+		Returns
+		-------
+		ndarray or float
+		    An array of the geometric standard deviation. If `axis` is None or `a`
+		    is a 1d array a float is returned.
+		
+		Notes
+		-----
+		As the calculation requires the use of logarithms the geometric standard
+		deviation only supports strictly positive values. Any non-positive or
+		infinite values will raise a `ValueError`.
+		The geometric standard deviation is sometimes confused with the exponent of
+		the standard deviation, ``exp(std(a))``. Instead the geometric standard
+		deviation is ``exp(std(log(a)))``.
+		The default value for `ddof` is different to the default value (0) used
+		by other ddof containing functions, such as ``np.std`` and ``np.nanstd``.
+		
+		Examples
+		--------
+		Find the geometric standard deviation of a log-normally distributed sample.
+		Note that the standard deviation of the distribution is one, on a
+		log scale this evaluates to approximately ``exp(1)``.
+		
+		>>> from scipy.stats import gstd
+		>>> np.random.seed(123)
+		>>> sample = np.random.lognormal(mean=0, sigma=1, size=1000)
+		>>> gstd(sample)
+		2.7217860664589946
+		
+		Compute the geometric standard deviation of a multidimensional array and
+		of a given axis.
+		
+		>>> a = np.arange(1, 25).reshape(2, 3, 4)
+		>>> gstd(a, axis=None)
+		2.2944076136018947
+		>>> gstd(a, axis=2)
+		array([[1.82424757, 1.22436866, 1.13183117],
+		       [1.09348306, 1.07244798, 1.05914985]])
+		>>> gstd(a, axis=(1,2))
+		array([2.12939215, 1.22120169])
+		
+		The geometric standard deviation further handles masked arrays.
+		
+		>>> a = np.arange(1, 25).reshape(2, 3, 4)
+		>>> ma = np.ma.masked_where(a > 16, a)
+		>>> ma
+		masked_array(
+		  data=[[[1, 2, 3, 4],
+		         [5, 6, 7, 8],
+		         [9, 10, 11, 12]],
+		        [[13, 14, 15, 16],
+		         [--, --, --, --],
+		         [--, --, --, --]]],
+		  mask=[[[False, False, False, False],
+		         [False, False, False, False],
+		         [False, False, False, False]],
+		        [[False, False, False, False],
+		         [ True,  True,  True,  True],
+		         [ True,  True,  True,  True]]],
+		  fill_value=999999)
+		>>> gstd(ma, axis=2)
+		masked_array(
+		  data=[[1.8242475707663655, 1.2243686572447428, 1.1318311657788478],
+		        [1.0934830582350938, --, --]],
+		  mask=[[False, False, False],
+		        [False,  True,  True]],
+		  fill_value=999999)
+	**/
+	static public function gstd(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Dynamic;
 	/**
 		A left-skewed Gumbel continuous random variable.
 		
@@ -7320,12 +7672,15 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, \beta) = \frac{\beta}{\gamma(1/\beta)} \exp(-|x|^\beta)
+		    f(x, \beta) = \frac{\beta}{\Gamma(1/\beta)} \exp(-|x|^\beta)
 		
-		`gennorm` takes :math:`\beta` as a shape parameter.
+		for :math:`x > 0`. :math:`\Gamma` is the gamma function
+		(`scipy.special.gamma`).
+		
+		`gennorm` takes ``beta`` as a shape parameter for :math:`\beta`.
 		For :math:`\beta = 1`, it is identical to an exponential distribution.
 		For :math:`\beta = 2`, it is identical to a half normal distribution
-		(with :math:`scale=1/\sqrt{2}`).
+		(with ``scale=1/sqrt(2)``).
 		
 		See Also
 		--------
@@ -7437,7 +7792,8 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x) = \frac{ 2 e^{-x} }{ (1+e^{-x})^2 } = \frac{1}{2} sech(x/2)^2
+		    f(x) = \frac{ 2 e^{-x} }{ (1+e^{-x})^2 }
+		         = \frac{1}{2} \text{sech}(x/2)^2
 		
 		for :math:`x \ge 0`.
 		
@@ -7545,11 +7901,11 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x) = \sqrt{2/\pi} e^{-\frac{x^2}{2}}
+		    f(x) = \sqrt{2/\pi} \exp(-x^2 / 2)
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0`.
 		
-		`halfnorm` is a special case of :math`\chi` with ``df == 1``.
+		`halfnorm` is a special case of `chi` with ``df=1``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -7807,7 +8163,9 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x) = \frac{1}{\pi} sech(x)
+		    f(x) = \frac{1}{\pi} \text{sech}(x)
+		
+		for a real number :math:`x`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -7913,13 +8271,14 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, a) = \frac{x^{-a-1}}{\gamma(a)} \exp(-\frac{1}{x})
+		    f(x, a) = \frac{x^{-a-1}}{\Gamma(a)} \exp(-\frac{1}{x})
 		
-		for :math:`x > 0`, :math:`a > 0`.
+		for :math:`x >= 0`, :math:`a > 0`. :math:`\Gamma` is the gamma function
+		(`scipy.special.gamma`).
 		
-		`invgamma` takes :math:`a` as a shape parameter.
+		`invgamma` takes ``a`` as a shape parameter for :math:`a`.
 		
-		`invgamma` is a special case of `gengamma` with ``c == -1``.
+		`invgamma` is a special case of `gengamma` with ``c=-1``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -8028,9 +8387,9 @@ package scipy.stats;
 		    f(x, \mu) = \frac{1}{\sqrt{2 \pi x^3}}
 		                \exp(-\frac{(x-\mu)^2}{2 x \mu^2})
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0` and :math:`\mu > 0`.
 		
-		`invgauss` takes :math:`\mu` as a shape parameter.
+		`invgauss` takes ``mu`` as a shape parameter for :math:`\mu`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -8145,9 +8504,9 @@ package scipy.stats;
 		
 		    f(x, c) = c x^{-c-1} \exp(-x^{-c})
 		
-		for :math:`x > 0``, :math:`c > 0``.
+		for :math:`x > 0`, :math:`c > 0`.
 		
-		`invweibull` takes :math:`c`` as a shape parameter.
+		`invweibull` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -8288,8 +8647,9 @@ package scipy.stats;
 		----------
 		.. [1] M.L. Eaton, "Multivariate Statistics: A Vector Space Approach",
 		       Wiley, 1983.
-		.. [2] M.C. Jones, "Generating Inverse Wishart Matrices", Communications in
-		       Statistics - Simulation and Computation, vol. 14.2, pp.511-514, 1985.
+		.. [2] M.C. Jones, "Generating Inverse Wishart Matrices", Communications
+		       in Statistics - Simulation and Computation, vol. 14.2, pp.511-514,
+		       1985.
 		
 		Examples
 		--------
@@ -8566,7 +8926,7 @@ package scipy.stats;
 		
 		    f(x, a, b) = \frac{b}{x(1-x)}  \phi(a + b \log \frac{x}{1-x} )
 		
-		for :math:`0 < x < 1` and :math:`a, b > 0`, and :math:`\phi` is the normal
+		for :math:`0 <= x < =1` and :math:`a, b > 0`, and :math:`\phi` is the normal
 		pdf.
 		
 		`johnsonsb` takes :math:`a` and :math:`b` as shape parameters.
@@ -8786,28 +9146,26 @@ package scipy.stats;
 		
 		Notes
 		-----
-		The probability density function for `kappa` is:
+		The probability density function for `kappa3` is:
 		
 		.. math::
 		
-		    f(x, a) = \begin{cases}
-		                a [a + x^a]^{-(a + 1)/a},     &\text{for } x > 0\\
-		                0.0,                          &\text{for } x \le 0
-		              \end{cases}
+		    f(x, a) = a (a + x^a)^{-(a + 1)/a}
 		
-		`kappa3` takes :math:`a` as a shape parameter and :math:`a > 0`.
+		for :math:`x > 0` and :math:`a > 0`.
+		
+		`kappa3` takes ``a`` as a shape parameter for :math:`a`.
 		
 		References
 		----------
 		P.W. Mielke and E.S. Johnson, "Three-Parameter Kappa Distribution Maximum
 		Likelihood and Likelihood Ratio Tests", Methods in Weather Research,
 		701-707, (September, 1973),
-		http://docs.lib.noaa.gov/rescue/mwr/101/mwr-101-09-0701.pdf
+		https://doi.org/10.1175/1520-0493(1973)101<0701:TKDMLE>2.3.CO;2
 		
 		B. Kumphon, "Maximum Entropy and Maximum Likelihood Estimation for the
 		Three-Parameter Kappa Distribution", Open Journal of Statistics, vol 2,
-		415-419 (2012)
-		http://file.scirp.org/pdf/OJS20120400011_95789012.pdf
+		415-419 (2012), https://doi.org/10.4236/ojs.2012.24050
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -8962,7 +9320,7 @@ package scipy.stats;
 		    The "fifth" one is the one kappa4 should match which currently
 		    isn't implemented in scipy:
 		    https://en.wikipedia.org/wiki/Talk:Generalized_logistic_distribution
-		    http://www.mathwave.com/help/easyfit/html/analyses/distributions/gen_logistic.html
+		    https://www.mathwave.com/help/easyfit/html/analyses/distributions/gen_logistic.html
 		(2) This distribution is currently not in scipy.
 		
 		References
@@ -8971,7 +9329,7 @@ package scipy.stats;
 		to the Kolmogorov-Smirnov Test", A Dissertation Submitted to the Graduate
 		Faculty of the Louisiana State University and Agricultural and Mechanical
 		College, (August, 2004),
-		http://digitalcommons.lsu.edu/cgi/viewcontent.cgi?article=4671&context=gradschool_dissertations
+		https://digitalcommons.lsu.edu/gradschool_dissertations/3672
 		
 		J.R.M. Hosking, "The four-parameter kappa distribution". IBM J. Res.
 		Develop. 38 (3), 25 1-258 (1994).
@@ -8979,7 +9337,7 @@ package scipy.stats;
 		B. Kumphon, A. Kaew-Man, P. Seenoi, "A Rainfall Distribution for the Lampao
 		Site in the Chi River Basin, Thailand", Journal of Water Resource and
 		Protection, vol. 4, 866-869, (2012).
-		http://file.scirp.org/pdf/JWARP20121000009_14676002.pdf
+		https://doi.org/10.4236/jwarp.2012.410101
 		
 		C. Winchester, "On Estimation of the Four-Parameter Kappa Distribution", A
 		Thesis Submitted to Dalhousie University, Halifax, Nova Scotia, (March
@@ -9058,6 +9416,12 @@ package scipy.stats;
 		    values. Default is 'propagate'. Note that if the input contains nan
 		    'omit' delegates to mstats_basic.kendalltau(), which has a different
 		    implementation.
+		method: {'auto', 'asymptotic', 'exact'}, optional
+		    Defines which method is used to calculate the p-value [5]_.
+		    'asymptotic' uses a normal approximation valid for large samples.
+		    'exact' computes the exact p-value, but can only be used if no ties
+		    are present. 'auto' is the default and selects the appropriate
+		    method based on a trade-off between speed and accuracy.
 		
 		Returns
 		-------
@@ -9095,6 +9459,8 @@ package scipy.stats;
 		.. [4] Peter M. Fenwick, "A new data structure for cumulative frequency
 		       tables", Software: Practice and Experience, Vol. 24, No. 3,
 		       pp. 327-336, 1994.
+		.. [5] Maurice G. Kendall, "Rank Correlation Methods" (4th Edition),
+		       Charles Griffin & Co., 1970.
 		
 		Examples
 		--------
@@ -9107,7 +9473,7 @@ package scipy.stats;
 		>>> p_value
 		0.2827454599327748
 	**/
-	static public function kendalltau(x:Dynamic, y:Dynamic, ?initial_lexsort:Dynamic, ?nan_policy:Dynamic):Float;
+	static public function kendalltau(x:Dynamic, y:Dynamic, ?initial_lexsort:Dynamic, ?nan_policy:Dynamic, ?method:Dynamic):Float;
 	/**
 		Compute the Kruskal-Wallis H-test for independent samples
 		
@@ -9153,7 +9519,7 @@ package scipy.stats;
 		.. [1] W. H. Kruskal & W. W. Wallis, "Use of Ranks in
 		   One-Criterion Variance Analysis", Journal of the American Statistical
 		   Association, Vol. 47, Issue 260, pp. 583-621, 1952.
-		.. [2] http://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
+		.. [2] https://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
 		
 		Examples
 		--------
@@ -9174,13 +9540,25 @@ package scipy.stats;
 		Compute the Kolmogorov-Smirnov statistic on 2 samples.
 		
 		This is a two-sided test for the null hypothesis that 2 independent samples
-		are drawn from the same continuous distribution.
+		are drawn from the same continuous distribution.  The
+		alternative hypothesis can be either 'two-sided' (default), 'less'
+		or 'greater'.
 		
 		Parameters
 		----------
 		data1, data2 : sequence of 1-D ndarrays
-		    two arrays of sample observations assumed to be drawn from a continuous
-		    distribution, sample sizes can be different
+		    Two arrays of sample observations assumed to be drawn from a continuous
+		    distribution, sample sizes can be different.
+		alternative : {'two-sided', 'less', 'greater'}, optional
+		    Defines the alternative hypothesis (see explanation above).
+		    Default is 'two-sided'.
+		mode : {'auto', 'exact', 'asymp'}, optional
+		    Defines the method used for calculating the p-value.
+		    Default is 'auto'.
+		
+		    - 'exact' : use approximation to exact distribution of test statistic
+		    - 'asymp' : use asymptotic distribution of test statistic
+		    - 'auto' : use 'exact' for small size arrays, 'asymp' for large.
 		
 		Returns
 		-------
@@ -9195,12 +9573,26 @@ package scipy.stats;
 		that, like in the case of the one-sample K-S test, the distribution is
 		assumed to be continuous.
 		
-		This is the two-sided test, one-sided tests are not implemented.
-		The test uses the two-sided asymptotic Kolmogorov-Smirnov distribution.
+		In the one-sided test, the alternative is that the empirical
+		cumulative distribution function F(x) of the data1 variable is "less"
+		or "greater" than the empirical cumulative distribution function G(x)
+		of the data2 variable, ``F(x)<=G(x)``, resp. ``F(x)>=G(x)``.
 		
 		If the K-S statistic is small or the p-value is high, then we cannot
 		reject the hypothesis that the distributions of the two samples
 		are the same.
+		
+		If the mode is 'auto', the computation is exact if the sample sizes are
+		less than 10000.  For larger sizes, the computation uses the
+		Kolmogorov-Smirnov distributions to compute an approximate value.
+		
+		We generally follow Hodges' treatment of Drion/Gnedenko/Korolyuk [1]_.
+		
+		References
+		----------
+		.. [1] Hodges, J.L. Jr.,  "The Significance Probability of the Smirnov
+		       Two-Sample Test," Arkiv fiur Matematik, 3, No. 43 (1958), 469-86.
+		
 		
 		Examples
 		--------
@@ -9215,14 +9607,14 @@ package scipy.stats;
 		>>> rvs1 = stats.norm.rvs(size=n1, loc=0., scale=1)
 		>>> rvs2 = stats.norm.rvs(size=n2, loc=0.5, scale=1.5)
 		>>> stats.ks_2samp(rvs1, rvs2)
-		(0.20833333333333337, 4.6674975515806989e-005)
+		(0.20833333333333334, 5.129279597781977e-05)
 		
 		For a slightly different distribution, we cannot reject the null hypothesis
 		at a 10% or lower alpha since the p-value at 0.144 is higher than 10%
 		
 		>>> rvs3 = stats.norm.rvs(size=n2, loc=0.01, scale=1.0)
 		>>> stats.ks_2samp(rvs1, rvs3)
-		(0.10333333333333333, 0.14498781825751686)
+		(0.10333333333333333, 0.14691437867433876)
 		
 		For an identical distribution, we cannot reject the null hypothesis since
 		the p-value is high, 41%:
@@ -9231,9 +9623,13 @@ package scipy.stats;
 		>>> stats.ks_2samp(rvs1, rvs4)
 		(0.07999999999999996, 0.41126949729859719)
 	**/
-	static public function ks_2samp(data1:Dynamic, data2:Dynamic):Float;
+	static public function ks_2samp(data1:Dynamic, data2:Dynamic, ?alternative:Dynamic, ?mode:Dynamic):Float;
 	/**
 		General Kolmogorov-Smirnov one-sided test.
+		
+		This is the distribution of the one-sided Kolmogorov-Smirnov (KS)
+		statistics :math:`D_n^+` and :math:`D_n^-`
+		for a finite sample size ``n`` (the shape parameter).
 		
 		As an instance of the `rv_continuous` class, `ksone` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -9279,6 +9675,36 @@ package scipy.stats;
 		    Standard deviation of the distribution.
 		interval(alpha, n, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		:math:`D_n^+` and :math:`D_n^-` are given by
+		
+		.. math::
+		
+		    D_n^+ &= \text{sup}_x (F_n(x) - F(x)),\\
+		    D_n^- &= \text{sup}_x (F(x) - F_n(x)),\\
+		
+		where :math:`F` is a CDF and :math:`F_n` is an empirical CDF. `ksone`
+		describes the distribution under the null hypothesis of the KS test
+		that the empirical CDF corresponds to :math:`n` i.i.d. random variates
+		with CDF :math:`F`.
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``ksone.pdf(x, n, loc, scale)`` is identically
+		equivalent to ``ksone.pdf(y, n) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		See Also
+		--------
+		kstwobign, kstest
+		
+		References
+		----------
+		.. [1] Birnbaum, Z. W. and Tingey, F.H. "One-sided confidence contours
+		   for probability distribution functions", The Annals of Mathematical
+		   Statistics, 22(4), pp 592-596 (1951).
 		
 		Examples
 		--------
@@ -9431,9 +9857,9 @@ package scipy.stats;
 	/**
 		Perform the Kolmogorov-Smirnov test for goodness of fit.
 		
-		This performs a test of the distribution G(x) of an observed
-		random variable against a given distribution F(x). Under the null
-		hypothesis the two distributions are identical, G(x)=F(x). The
+		This performs a test of the distribution F(x) of an observed
+		random variable against a given distribution G(x). Under the null
+		hypothesis the two distributions are identical, F(x)=G(x). The
 		alternative hypothesis can be either 'two-sided' (default), 'less'
 		or 'greater'. The KS test is only valid for continuous distributions.
 		
@@ -9473,8 +9899,8 @@ package scipy.stats;
 		-----
 		In the one-sided test, the alternative is that the empirical
 		cumulative distribution function of the random variable is "less"
-		or "greater" than the cumulative distribution function F(x) of the
-		hypothesis, ``G(x)<=F(x)``, resp. ``G(x)>=F(x)``.
+		or "greater" than the cumulative distribution function G(x) of the
+		hypothesis, ``F(x)<=G(x)``, resp. ``F(x)>=G(x)``.
 		
 		Examples
 		--------
@@ -9535,6 +9961,10 @@ package scipy.stats;
 	/**
 		Kolmogorov-Smirnov two-sided test for large N.
 		
+		This is the asymptotic distribution of the two-sided Kolmogorov-Smirnov
+		statistic :math:`\sqrt{n} D_n` that measures the maximum absolute
+		distance of the theoretical CDF from the empirical CDF (see `kstest`).
+		
 		As an instance of the `rv_continuous` class, `kstwobign` object inherits from it
 		a collection of generic methods (see below for the full list),
 		and completes them with details specific for this particular distribution.
@@ -9579,6 +10009,34 @@ package scipy.stats;
 		    Standard deviation of the distribution.
 		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		:math:`\sqrt{n} D_n` is given by
+		
+		.. math::
+		
+		    D_n = \text{sup}_x |F_n(x) - F(x)|
+		
+		where :math:`F` is a CDF and :math:`F_n` is an empirical CDF. `kstwobign`
+		describes the asymptotic distribution (i.e. the limit of
+		:math:`\sqrt{n} D_n`) under the null hypothesis of the KS test that the
+		empirical CDF corresponds to i.i.d. random variates with CDF :math:`F`.
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``kstwobign.pdf(x, loc, scale)`` is identically
+		equivalent to ``kstwobign.pdf(y) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		See Also
+		--------
+		ksone, kstest
+		
+		References
+		----------
+		.. [1] Marsaglia, G. et al. "Evaluating Kolmogorov's distribution",
+		   Journal of Statistical Software, 8(18), 2003.
 		
 		Examples
 		--------
@@ -9700,8 +10158,7 @@ package scipy.stats;
 		
 		Notes
 		-----
-		Valid only for n>20.  The Z-score is set to 0 for bad entries.
-		This function uses the method described in [1]_.
+		Valid only for n>20. This function uses the method described in [1]_.
 		
 		References
 		----------
@@ -9770,11 +10227,13 @@ package scipy.stats;
 		
 		Notes
 		-----
-		The probability density function for `laplace` is:
+		The probability density function for `laplace` is
 		
 		.. math::
 		
 		    f(x) = \frac{1}{2} \exp(-|x|)
+		
+		for a real number :math:`x`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -9837,7 +10296,8 @@ package scipy.stats;
 		Parameters
 		----------
 		sample1, sample2, ... : array_like
-		    The sample data, possibly with different lengths
+		    The sample data, possibly with different lengths. Only one-dimensional
+		    samples are accepted.
 		center : {'mean', 'median', 'trimmed'}, optional
 		    Which function of the data to use in the test.  The default
 		    is 'median'.
@@ -9862,9 +10322,14 @@ package scipy.stats;
 		  * 'mean' : Recommended for symmetric, moderate-tailed distributions.
 		  * 'trimmed' : Recommended for heavy-tailed distributions.
 		
+		The test version using the mean was proposed in the original article
+		of Levene ([2]_) while the median and trimmed mean have been studied by
+		Brown and Forsythe ([3]_), sometimes also referred to as Brown-Forsythe
+		test.
+		
 		References
 		----------
-		.. [1]  http://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm
+		.. [1]  https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm
 		.. [2]   Levene, H. (1960). In Contributions to Probability and Statistics:
 		           Essays in Honor of Harold Hotelling, I. Olkin et al. eds.,
 		           Stanford University Press, pp. 278-292.
@@ -9930,9 +10395,9 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x) = \frac{1}{x \sqrt{2\pi x}) \exp(-\frac{1}{2x}}
+		    f(x) = \frac{1}{\sqrt{2\pi x^3}} \exp\left(-\frac{1}{2x}\right)
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0`.
 		
 		This is the same as the Levy-stable distribution with :math:`a=1/2` and
 		:math:`b=1`.
@@ -10044,10 +10509,9 @@ package scipy.stats;
 		The probability density function for `levy_l` is:
 		
 		.. math::
+		    f(x) = \frac{1}{|x| \sqrt{2\pi |x|}} \exp{ \left(-\frac{1}{2|x|} \right)}
 		
-		    f(x) = \frac{1}{|x| \sqrt{2\pi |x|}} \exp(-\frac{1}{2 |x|})
-		
-		for :math:`x < 0`.
+		for :math:`x <= 0`.
 		
 		This is the same as the Levy-stable distribution with :math:`a=1/2` and
 		:math:`b=-1`.
@@ -10156,8 +10620,120 @@ package scipy.stats;
 		
 		Notes
 		-----
-		Levy-stable distribution (only random variates available -- ignore other
-		docs)
+		The distribution for `levy_stable` has characteristic function:
+		
+		.. math::
+		
+		    \varphi(t, \alpha, \beta, c, \mu) =
+		    e^{it\mu -|ct|^{\alpha}(1-i\beta \operatorname{sign}(t)\Phi(\alpha, t))}
+		
+		where:
+		
+		.. math::
+		
+		    \Phi = \begin{cases}
+		            \tan \left({\frac {\pi \alpha }{2}}\right)&\alpha \neq 1\\
+		            -{\frac {2}{\pi }}\log |t|&\alpha =1
+		            \end{cases}
+		
+		The probability density function for `levy_stable` is:
+		
+		.. math::
+		
+		    f(x) = \frac{1}{2\pi}\int_{-\infty}^\infty \varphi(t)e^{-ixt}\,dt
+		
+		where :math:`-\infty < t < \infty`. This integral does not have a known closed form.
+		
+		For evaluation of pdf we use either Zolotarev :math:`S_0` parameterization with integration,
+		direct integration of standard parameterization of characteristic function or FFT of
+		characteristic function. If set to other than None and if number of points is greater than
+		``levy_stable.pdf_fft_min_points_threshold`` (defaults to None) we use FFT otherwise we use one
+		of the other methods.
+		
+		The default method is 'best' which uses Zolotarev's method if alpha = 1 and integration of
+		characteristic function otherwise. The default method can be changed by setting
+		``levy_stable.pdf_default_method`` to either 'zolotarev', 'quadrature' or 'best'.
+		
+		To increase accuracy of FFT calculation one can specify ``levy_stable.pdf_fft_grid_spacing``
+		(defaults to 0.001) and ``pdf_fft_n_points_two_power`` (defaults to a value that covers the
+		input range * 4). Setting ``pdf_fft_n_points_two_power`` to 16 should be sufficiently accurate
+		in most cases at the expense of CPU time.
+		
+		For evaluation of cdf we use Zolatarev :math:`S_0` parameterization with integration or integral of
+		the pdf FFT interpolated spline. The settings affecting FFT calculation are the same as
+		for pdf calculation. Setting the threshold to ``None`` (default) will disable FFT. For cdf
+		calculations the Zolatarev method is superior in accuracy, so FFT is disabled by default.
+		
+		Fitting estimate uses quantile estimation method in [MC]. MLE estimation of parameters in
+		fit method uses this quantile estimate initially. Note that MLE doesn't always converge if
+		using FFT for pdf calculations; so it's best that ``pdf_fft_min_points_threshold`` is left unset.
+		
+		.. warning::
+		
+		    For pdf calculations implementation of Zolatarev is unstable for values where alpha = 1 and
+		    beta != 0. In this case the quadrature method is recommended. FFT calculation is also
+		    considered experimental.
+		
+		    For cdf calculations FFT calculation is considered experimental. Use Zolatarev's method
+		    instead (default).
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``levy_stable.pdf(x, alpha, beta, loc, scale)`` is identically
+		equivalent to ``levy_stable.pdf(y, alpha, beta) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		References
+		----------
+		.. [MC] McCulloch, J., 1986. Simple consistent estimators of stable distribution parameters.
+		   Communications in Statistics - Simulation and Computation 15, 11091136.
+		.. [MS] Mittnik, S.T. Rachev, T. Doganoglu, D. Chenyao, 1999. Maximum likelihood estimation
+		   of stable Paretian models, Mathematical and Computer Modelling, Volume 29, Issue 10,
+		   1999, Pages 275-293.
+		.. [BS] Borak, S., Hardle, W., Rafal, W. 2005. Stable distributions, Economic Risk.
+		
+		Examples
+		--------
+		>>> from scipy.stats import levy_stable
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> alpha, beta = 1.8, -0.5
+		>>> mean, var, skew, kurt = levy_stable.stats(alpha, beta, moments='mvsk')
+		
+		Display the probability density function (``pdf``):
+		
+		>>> x = np.linspace(levy_stable.ppf(0.01, alpha, beta),
+		...                 levy_stable.ppf(0.99, alpha, beta), 100)
+		>>> ax.plot(x, levy_stable.pdf(x, alpha, beta),
+		...        'r-', lw=5, alpha=0.6, label='levy_stable pdf')
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape, location and scale parameters. This returns a "frozen"
+		RV object holding the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pdf``:
+		
+		>>> rv = levy_stable(alpha, beta)
+		>>> ax.plot(x, rv.pdf(x), 'k-', lw=2, label='frozen pdf')
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> vals = levy_stable.ppf([0.001, 0.5, 0.999], alpha, beta)
+		>>> np.allclose([0.001, 0.5, 0.999], levy_stable.cdf(vals, alpha, beta))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = levy_stable.rvs(alpha, beta, size=1000)
+		
+		And compare the histogram:
+		
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
 	**/
 	static public function levy_stable(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -10166,21 +10742,23 @@ package scipy.stats;
 		Parameters
 		----------
 		x, y : array_like
-		    Two sets of measurements.  Both arrays should have the same length.
-		    If only x is given (and y=None), then it must be a two-dimensional
+		    Two sets of measurements.  Both arrays should have the same length.  If
+		    only `x` is given (and ``y=None``), then it must be a two-dimensional
 		    array where one dimension has length 2.  The two sets of measurements
-		    are then found by splitting the array along the length-2 dimension.
+		    are then found by splitting the array along the length-2 dimension.  In
+		    the case where ``y=None`` and `x` is a 2x2 array, ``linregress(x)`` is
+		    equivalent to ``linregress(x[0], x[1])``.
 		
 		Returns
 		-------
 		slope : float
-		    slope of the regression line
+		    Slope of the regression line.
 		intercept : float
-		    intercept of the regression line
+		    Intercept of the regression line.
 		rvalue : float
-		    correlation coefficient
+		    Correlation coefficient.
 		pvalue : float
-		    two-sided p-value for a hypothesis test whose null hypothesis is
+		    Two-sided p-value for a hypothesis test whose null hypothesis is
 		    that the slope is zero, using Wald Test with t-distribution of
 		    the test statistic.
 		stderr : float
@@ -10193,26 +10771,46 @@ package scipy.stats;
 		:func:`scipy.optimize.leastsq` : Minimize the sum of
 		 squares of a set of equations.
 		
+		Notes
+		-----
+		Missing values are considered pair-wise: if a value is missing in `x`,
+		the corresponding value in `y` is masked.
+		
 		Examples
 		--------
 		>>> import matplotlib.pyplot as plt
 		>>> from scipy import stats
+		
+		Generate some data:
+		
 		>>> np.random.seed(12345678)
 		>>> x = np.random.random(10)
-		>>> y = np.random.random(10)
+		>>> y = 1.6*x + np.random.random(10)
+		
+		Perform the linear regression:
+		
 		>>> slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
+		>>> print("slope: %f    intercept: %f" % (slope, intercept))
+		slope: 1.944864    intercept: 0.268578
 		
-		To get coefficient of determination (r_squared)
+		To get coefficient of determination (R-squared):
 		
-		>>> print("r-squared:", r_value**2)
-		r-squared: 0.08040226853902833
+		>>> print("R-squared: %f" % r_value**2)
+		R-squared: 0.735498
 		
-		Plot the data along with the fitted line
+		Plot the data along with the fitted line:
 		
 		>>> plt.plot(x, y, 'o', label='original data')
 		>>> plt.plot(x, intercept + slope*x, 'r', label='fitted line')
 		>>> plt.legend()
 		>>> plt.show()
+		
+		Example for the case where only x is provided as a 2x2 array:
+		
+		>>> x = np.array([[0, 1], [0, 2]])
+		>>> r = stats.linregress(x)
+		>>> r.slope, r.intercept
+		(2.0, 0.0)
 	**/
 	static public function linregress(x:Dynamic, ?y:Dynamic):Float;
 	/**
@@ -10270,11 +10868,12 @@ package scipy.stats;
 		.. math::
 		
 		    f(x, c) = \frac{\exp(c x - \exp(x))}
-		                   {\gamma(c)}
+		                   {\Gamma(c)}
 		
-		for all :math:`x, c > 0`.
+		for all :math:`x, c > 0`. Here, :math:`\Gamma` is the
+		gamma function (`scipy.special.gamma`).
 		
-		`loggamma` takes :math:`c` as a shape parameter.
+		`loggamma` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -10381,9 +10980,9 @@ package scipy.stats;
 		.. math::
 		
 		    f(x) = \frac{\exp(-x)}
-		                {(1+exp(-x))^2}
+		                {(1+\exp(-x))^2}
 		
-		`logistic` is a special case of `genlogistic` with ``c == 1``.
+		`logistic` is a special case of `genlogistic` with ``c=1``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -10493,9 +11092,9 @@ package scipy.stats;
 		                           \frac{c}{2} x^{-c-1}  &\text{for } x \ge 1
 		              \end{cases}
 		
-		for ``c > 0``.
+		for :math:`c > 0`.
 		
-		`loglaplace` takes ``c`` as a shape parameter.
+		`loglaplace` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -10607,11 +11206,11 @@ package scipy.stats;
 		.. math::
 		
 		    f(x, s) = \frac{1}{s x \sqrt{2\pi}}
-		              \exp(-\frac{1}{2} (\frac{\log(x)}{s})^2)
+		              \exp\left(-\frac{\log^2(x)}{2s^2}\right)
 		
-		for ``x > 0``, ``s > 0``.
+		for :math:`x > 0`, :math:`s > 0`.
 		
-		`lognorm` takes ``s`` as a shape parameter.
+		`lognorm` takes ``s`` as a shape parameter for :math:`s`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -10821,18 +11420,17 @@ package scipy.stats;
 		
 		Notes
 		-----
-		The Lomax distribution is a special case of the Pareto distribution, with
-		(loc=-1.0).
-		
 		The probability density function for `lomax` is:
 		
 		.. math::
 		
 		    f(x, c) = \frac{c}{(1+x)^{c+1}}
 		
-		for :math:`x \ge 0`, ``c > 0``.
+		for :math:`x \ge 0`, :math:`c > 0`.
 		
-		`lomax` takes :math:`c` as a shape parameter.
+		`lomax` takes ``c`` as a shape parameter for :math:`c`.
+		
+		`lomax` is a special case of `pareto` with ``loc=-1.0``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -11096,7 +11694,7 @@ package scipy.stats;
 		
 		Notes
 		-----
-		A special case of a `chi` distribution,  with ``df = 3``, ``loc = 0.0``,
+		A special case of a `chi` distribution,  with ``df=3``, ``loc=0.0``,
 		and given ``scale = a``, where ``a`` is the parameter used in the
 		Mathworld description [1]_.
 		
@@ -11106,7 +11704,7 @@ package scipy.stats;
 		
 		    f(x) = \sqrt{2/\pi}x^2 \exp(-x^2/2)
 		
-		for ``x > 0``.
+		for :math:`x >= 0`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -11162,6 +11760,92 @@ package scipy.stats;
 		>>> plt.show()
 	**/
 	static public function maxwell(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Compute the median absolute deviation of the data along the given axis.
+		
+		The median absolute deviation (MAD, [1]_) computes the median over the
+		absolute deviations from the median. It is a measure of dispersion
+		similar to the standard deviation, but is more robust to outliers [2]_.
+		
+		The MAD of an empty array is ``np.nan``.
+		
+		.. versionadded:: 1.3.0
+		
+		Parameters
+		----------
+		x : array_like
+		    Input array or object that can be converted to an array.
+		axis : int or None, optional
+		    Axis along which the range is computed. Default is 0. If None, compute
+		    the MAD over the entire array.
+		center : callable, optional
+		    A function that will return the central value. The default is to use
+		    np.median. Any user defined function used will need to have the function
+		    signature ``func(arr, axis)``.
+		scale : int, optional
+		    The scaling factor applied to the MAD. The default scale (1.4826)
+		    ensures consistency with the standard deviation for normally distributed
+		    data.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate'
+		    returns nan, 'raise' throws an error, 'omit' performs the
+		    calculations ignoring nan values. Default is 'propagate'.
+		
+		Returns
+		-------
+		mad : scalar or ndarray
+		    If ``axis=None``, a scalar is returned. If the input contains
+		    integers or floats of smaller precision than ``np.float64``, then the
+		    output data-type is ``np.float64``. Otherwise, the output data-type is
+		    the same as that of the input.
+		
+		See Also
+		--------
+		numpy.std, numpy.var, numpy.median, scipy.stats.iqr, scipy.stats.tmean,
+		scipy.stats.tstd, scipy.stats.tvar
+		
+		Notes
+		-----
+		The `center` argument only affects the calculation of the central value
+		around which the MAD is calculated. That is, passing in ``center=np.mean``
+		will calculate the MAD around the mean - it will not calculate the *mean*
+		absolute deviation.
+		
+		References
+		----------
+		.. [1] "Median absolute deviation" https://en.wikipedia.org/wiki/Median_absolute_deviation
+		.. [2] "Robust measures of scale" https://en.wikipedia.org/wiki/Robust_measures_of_scale
+		
+		Examples
+		--------
+		When comparing the behavior of `median_absolute_deviation` with ``np.std``,
+		the latter is affected when we change a single value of an array to have an
+		outlier value while the MAD hardly changes:
+		
+		>>> from scipy import stats
+		>>> x = stats.norm.rvs(size=100, scale=1, random_state=123456)
+		>>> x.std()
+		0.9973906394005013
+		>>> stats.median_absolute_deviation(x)
+		1.2280762773108278
+		>>> x[0] = 345.6
+		>>> x.std()
+		34.42304872314415
+		>>> stats.median_absolute_deviation(x)
+		1.2340335571164334
+		
+		Axis handling example:
+		
+		>>> x = np.array([[10, 7, 4], [3, 2, 1]])
+		>>> x
+		array([[10,  7,  4],
+		       [ 3,  2,  1]])
+		>>> stats.median_absolute_deviation(x)
+		array([5.1891, 3.7065, 2.2239])
+		>>> stats.median_absolute_deviation(x, axis=None)
+		2.9652
+	**/
+	static public function median_absolute_deviation(x:Dynamic, ?axis:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
 		Mood's median test.
 		
@@ -11301,7 +11985,7 @@ package scipy.stats;
 	**/
 	static public function median_test(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
-		A Mielke's Beta-Kappa continuous random variable.
+		A Mielke Beta-Kappa continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `mielke` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -11356,7 +12040,7 @@ package scipy.stats;
 		
 		    f(x, k, s) = \frac{k x^{k-1}}{(1+x^s)^{1+k/s}}
 		
-		for ``x > 0``.
+		for :math:`x >= 0` and :math:`k, s > 0`.
 		
 		`mielke` takes ``k`` and ``s`` as shape parameters.
 		
@@ -11366,6 +12050,11 @@ package scipy.stats;
 		equivalent to ``mielke.pdf(y, k, s) / scale`` with
 		``y = (x - loc) / scale``.
 		
+		References
+		----------
+		.. [1] Mielke, P.W., 1973 "Another Family of Distributions for Describing
+		       and Analyzing Precipitation Data." J. Appl. Meteor., 12, 275-280
+		
 		Examples
 		--------
 		>>> from scipy.stats import mielke
@@ -11374,7 +12063,7 @@ package scipy.stats;
 		
 		Calculate a few first moments:
 		
-		>>> k, s = 10.4, 3.6
+		>>> k, s = 10.4, 4.6
 		>>> mean, var, skew, kurt = mielke.stats(k, s, moments='mvsk')
 		
 		Display the probability density function (``pdf``):
@@ -11498,7 +12187,7 @@ package scipy.stats;
 		
 		References
 		----------
-		.. [1] http://eli.thegreenplace.net/2009/03/21/efficient-integer-exponentiation-algorithms
+		.. [1] https://eli.thegreenplace.net/2009/03/21/efficient-integer-exponentiation-algorithms
 		
 		Examples
 		--------
@@ -11631,6 +12320,8 @@ package scipy.stats;
 		
 		    f(x) = \exp(-(x + \exp(-x))/2) / \sqrt{2\pi}
 		
+		for a real number :math:`x`.
+		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``moyal.pdf(x, loc, scale)`` is identically
@@ -11648,7 +12339,7 @@ package scipy.stats;
 		.. [1] J.E. Moyal, "XXX. Theory of ionization fluctuations",
 		       The London, Edinburgh, and Dublin Philosophical Magazine
 		       and Journal of Science, vol 46, 263-280, (1955).
-		       https://doi.org/10.1080/14786440308521076 (gated)
+		       :doi:`10.1080/14786440308521076` (gated)
 		.. [2] G. Cordeiro et al., "The beta Moyal: a useful skew distribution",
 		       International Journal of Research and Reviews in Applied Sciences,
 		       vol 10, 171-192, (2012).
@@ -11656,7 +12347,7 @@ package scipy.stats;
 		.. [3] C. Walck, "Handbook on Statistical Distributions for
 		       Experimentalists; International Report SUF-PFY/96-01", Chapter 26,
 		       University of Stockholm: Stockholm, Sweden, (2007).
-		       www.stat.rice.edu/~dobelman/textfiles/DistributionsHandbook.pdf
+		       http://www.stat.rice.edu/~dobelman/textfiles/DistributionsHandbook.pdf
 		
 		.. versionadded:: 1.1.0
 		
@@ -11944,7 +12635,7 @@ package scipy.stats;
 		References
 		----------
 		T.E. Oliphant, "A Bayesian perspective on estimating mean, variance, and
-		standard-deviation from data", http://scholarsarchive.byu.edu/facpub/278,
+		standard-deviation from data", https://scholarsarchive.byu.edu/facpub/278,
 		2006.
 		
 		Examples
@@ -12018,11 +12709,11 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, nu) = \frac{2 \nu^\nu}{\Gamma(\nu)} x^{2\nu-1} \exp(-\nu x^2)
+		    f(x, \nu) = \frac{2 \nu^\nu}{\Gamma(\nu)} x^{2\nu-1} \exp(-\nu x^2)
 		
-		for ``x > 0``, ``nu > 0``.
+		for :math:`x >= 0`, :math:`\nu > 0`.
 		
-		`nakagami` takes ``nu`` as a shape parameter.
+		`nakagami` takes ``nu`` as a shape parameter for :math:`\nu`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -12241,7 +12932,7 @@ package scipy.stats;
 		                      \gamma(n_1/2) \gamma(1+n_2/2) \\
 		                     \frac{L^{\frac{v_1}{2}-1}_{v_2/2}
 		                           (-\lambda v_1 \frac{x}{2(v_1 x+v_2)})}
-		                          {(B(v_1/2, v_2/2)  \gamma(\frac{v_1+v_2}{2})}
+		                          {B(v_1/2, v_2/2)  \gamma(\frac{v_1+v_2}{2})}
 		
 		for :math:`n_1 > 1`, :math:`n_2, \lambda > 0`.  Here :math:`n_1` is the
 		degrees of freedom in the numerator, :math:`n_2` the degrees of freedom in
@@ -12302,7 +12993,7 @@ package scipy.stats;
 	**/
 	static public function ncf(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		A non-central Student's T continuous random variable.
+		A non-central Student's t continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `nct` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -12351,16 +13042,18 @@ package scipy.stats;
 		
 		Notes
 		-----
-		The probability density function for `nct` is:
+		If :math:`Y` is a standard normal random variable and :math:`V` is
+		an independent chi-square random variable (`chi2`) with :math:`k` degrees
+		of freedom, then
 		
 		.. math::
 		
-		    f(x, df, nc) = \frac{df^{df/2} \gamma(df+1)}{2^{df}
-		                   \exp(nc^2 / 2) (df+x^2)^{df/2} \gamma(df/2)}
+		    X = \frac{Y + c}{\sqrt{V/k}}
 		
-		for ``df > 0``.
-		
-		`nct` takes ``df`` and ``nc`` as shape parameters.
+		has a non-central Student's t distribution on the real line.
+		The degrees of freedom parameter :math:`k` (denoted ``df`` in the
+		implementation) satisfies :math:`k > 0` and the noncentrality parameter
+		:math:`c` (denoted ``nct`` in the implementation) is a real number.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -12466,10 +13159,14 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, df, nc) = \exp(-\frac{nc+x}{2}) \frac{1}{2} (x/nc)^{(df-2)/4}
-		                   I[(df-2)/2](\sqrt{nc x})
+		    f(x, k, \lambda) = \frac{1}{2} \exp(-(\lambda+x)/2)
+		        (x/\lambda)^{(k-2)/4}  I_{(k-2)/2}(\sqrt{\lambda x})
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0` and :math:`k, \lambda > 0`. :math:`k` specifies the
+		degrees of freedom (denoted ``df`` in the implementation) and
+		:math:`\lambda` is the non-centrality parameter (denoted ``nc`` in the
+		implementation). :math:`I_\nu` denotes the modified Bessel function of
+		first order of degree :math:`\nu` (`scipy.special.iv`).
 		
 		`ncx2` takes ``df`` and ``nc`` as shape parameters.
 		
@@ -12526,8 +13223,8 @@ package scipy.stats;
 	/**
 		A normal continuous random variable.
 		
-		The location (loc) keyword specifies the mean.
-		The scale (scale) keyword specifies the standard deviation.
+		The location (``loc``) keyword specifies the mean.
+		The scale (``scale``) keyword specifies the standard deviation.
 		
 		As an instance of the `rv_continuous` class, `norm` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -12582,9 +13279,7 @@ package scipy.stats;
 		
 		    f(x) = \frac{\exp(-x^2/2)}{\sqrt{2\pi}}
 		
-		The survival function, ``norm.sf``, is also referred to as the
-		Q-function in some contexts (see, e.g.,
-		`Wikipedia's <https://en.wikipedia.org/wiki/Q-function>`_ definition).
+		for a real number :math:`x`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -12746,12 +13441,14 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x; a, b) = (a \exp(\sqrt{a^2 - b^2} + b x)) /
-		                 (\pi \sqrt{1 + x^2} \, K_1(a * \sqrt{1 + x^2}))
+		    f(x, a, b) = (a \exp(\sqrt{a^2 - b^2} + b x)) /
+		                 (\pi \sqrt{1 + x^2} \, K_1(a \sqrt{1 + x^2}))
 		
-		where `x` is a real number, the parameter `a` is the tail heaviness
-		and `b` is the asymmetry parameter satisfying `a > 0` and `abs(b) <= a`.
-		`K_1` is the modified Bessel function of second kind (`scipy.special.k1`).
+		where :math:`x` is a real number, the parameter :math:`a` is the tail
+		heaviness and :math:`b` is the asymmetry parameter satisfying
+		:math:`a > 0` and :math:`|b| <= a`.
+		:math:`K_1` is the modified Bessel function of second kind
+		(`scipy.special.k1`).
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -12759,9 +13456,10 @@ package scipy.stats;
 		equivalent to ``norminvgauss.pdf(y, a, b) / scale`` with
 		``y = (x - loc) / scale``.
 		
-		A normal inverse Gaussian random variable with parameters `a` and `b` can
-		be expressed  as `X = b * V + sqrt(V) * X` where `X` is `norm(0,1)`
-		and `V` is `invgauss(mu=1/sqrt(a**2 - b**2))`. This representation is used
+		A normal inverse Gaussian random variable `Y` with parameters `a` and `b`
+		can be expressed as a normal mean-variance mixture:
+		`Y = b * V + sqrt(V) * X` where `X` is `norm(0,1)` and `V` is
+		`invgauss(mu=1/sqrt(a**2 - b**2))`. This representation is used
 		to generate random variates.
 		
 		References
@@ -12772,7 +13470,7 @@ package scipy.stats;
 		
 		O. Barndorff-Nielsen, "Normal Inverse Gaussian Distributions and Stochastic
 		Volatility Modelling", Scandinavian Journal of Statistics, Vol. 24,
-		pp. 1–13, 1997.
+		pp. 1-13, 1997.
 		
 		Examples
 		--------
@@ -12928,7 +13626,7 @@ package scipy.stats;
 		
 		for :math:`x \ge 1`, :math:`b > 0`.
 		
-		`pareto` takes :math:`b` as a shape parameter.
+		`pareto` takes ``b`` as a shape parameter for :math:`b`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -13034,8 +13732,9 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, skew) = \frac{|\beta|}{\gamma(\alpha)}
-		                 (\beta (x - \zeta))^{alpha - 1} \exp(-\beta (x - \zeta))
+		    f(x, skew) = \frac{|\beta|}{\Gamma(\alpha)}
+		                 (\beta (x - \zeta))^{\alpha - 1}
+		                 \exp(-\beta (x - \zeta))
 		
 		where:
 		
@@ -13045,7 +13744,8 @@ package scipy.stats;
 		        \alpha = (stddev \beta)^2
 		        \zeta = loc - \frac{\alpha}{\beta}
 		
-		`pearson3` takes ``skew`` as a shape parameter.
+		:math:`\Gamma` is the gamma function (`scipy.special.gamma`).
+		`pearson3` takes ``skew`` as a shape parameter for :math:`skew`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -13111,21 +13811,21 @@ package scipy.stats;
 	**/
 	static public function pearson3(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Calculate a Pearson correlation coefficient and the p-value for testing
-		non-correlation.
+		Pearson correlation coefficient and p-value for testing non-correlation.
 		
-		The Pearson correlation coefficient measures the linear relationship
-		between two datasets. Strictly speaking, Pearson's correlation requires
-		that each dataset be normally distributed, and not necessarily zero-mean.
-		Like other correlation coefficients, this one varies between -1 and +1
-		with 0 implying no correlation. Correlations of -1 or +1 imply an exact
-		linear relationship. Positive correlations imply that as x increases, so
-		does y. Negative correlations imply that as x increases, y decreases.
+		The Pearson correlation coefficient [1]_ measures the linear relationship
+		between two datasets.  The calculation of the p-value relies on the
+		assumption that each dataset is normally distributed.  (See Kowalski [3]_
+		for a discussion of the effects of non-normality of the input on the
+		distribution of the correlation coefficient.)  Like other correlation
+		coefficients, this one varies between -1 and +1 with 0 implying no
+		correlation. Correlations of -1 or +1 imply an exact linear relationship.
+		Positive correlations imply that as x increases, so does y. Negative
+		correlations imply that as x increases, y decreases.
 		
 		The p-value roughly indicates the probability of an uncorrelated system
 		producing datasets that have a Pearson correlation at least as extreme
-		as the one computed from these datasets. The p-values are not entirely
-		reliable but are probably reasonable for datasets larger than 500 or so.
+		as the one computed from these datasets.
 		
 		Parameters
 		----------
@@ -13139,7 +13839,24 @@ package scipy.stats;
 		r : float
 		    Pearson's correlation coefficient
 		p-value : float
-		    2-tailed p-value
+		    two-tailed p-value
+		
+		Warns
+		-----
+		PearsonRConstantInputWarning
+		    Raised if an input is a constant array.  The correlation coefficient
+		    is not defined in this case, so ``np.nan`` is returned.
+		
+		PearsonRNearConstantInputWarning
+		    Raised if an input is "nearly" constant.  The array ``x`` is considered
+		    nearly constant if ``norm(x - mean(x)) < 1e-13 * abs(mean(x))``.
+		    Numerical errors in the calculation ``x - mean(x)`` in this case might
+		    result in an inaccurate calculation of r.
+		
+		See Also
+		--------
+		spearmanr : Spearman rank-order correlation coefficient.
+		kendalltau : Kendall's tau, a correlation measure for ordinal data.
 		
 		Notes
 		-----
@@ -13148,16 +13865,58 @@ package scipy.stats;
 		
 		.. math::
 		
-		    r_{pb} = \frac{\sum (x - m_x) (y - m_y)
-		                   }{\sqrt{\sum (x - m_x)^2 (y - m_y)^2}}
+		    r = \frac{\sum (x - m_x) (y - m_y)}
+		             {\sqrt{\sum (x - m_x)^2 \sum (y - m_y)^2}}
 		
 		where :math:`m_x` is the mean of the vector :math:`x` and :math:`m_y` is
 		the mean of the vector :math:`y`.
 		
+		Under the assumption that x and y are drawn from independent normal
+		distributions (so the population correlation coefficient is 0), the
+		probability density function of the sample correlation coefficient r
+		is ([1]_, [2]_)::
+		
+		           (1 - r**2)**(n/2 - 2)
+		    f(r) = ---------------------
+		              B(1/2, n/2 - 1)
+		
+		where n is the number of samples, and B is the beta function.  This
+		is sometimes referred to as the exact distribution of r.  This is
+		the distribution that is used in `pearsonr` to compute the p-value.
+		The distribution is a beta distribution on the interval [-1, 1],
+		with equal shape parameters a = b = n/2 - 1.  In terms of SciPy's
+		implementation of the beta distribution, the distribution of r is::
+		
+		    dist = scipy.stats.beta(n/2 - 1, n/2 - 1, loc=-1, scale=2)
+		
+		The p-value returned by `pearsonr` is a two-sided p-value.  For a
+		given sample with correlation coefficient r, the p-value is
+		the probability that abs(r') of a random sample x' and y' drawn from
+		the population with zero correlation would be greater than or equal
+		to abs(r).  In terms of the object `dist` shown above, the p-value
+		for a given r and length n can be computed as::
+		
+		    p = 2*dist.cdf(-abs(r))
+		
+		When n is 2, the above continuous distribution is not well-defined.
+		One can interpret the limit of the beta distribution as the shape
+		parameters a and b approach a = b = 0 as a discrete distribution with
+		equal probability masses at r = 1 and r = -1.  More directly, one
+		can observe that, given the data x = [x1, x2] and y = [y1, y2], and
+		assuming x1 != x2 and y1 != y2, the only possible values for r are 1
+		and -1.  Because abs(r') for any sample x' and y' with length 2 will
+		be 1, the two-sided p-value for a sample of length 2 is always 1.
 		
 		References
 		----------
-		http://www.statsoft.com/textbook/glosp.html#Pearson%20Correlation
+		.. [1] "Pearson correlation coefficient", Wikipedia,
+		       https://en.wikipedia.org/wiki/Pearson_correlation_coefficient
+		.. [2] Student, "Probable error of a correlation coefficient",
+		       Biometrika, Volume 6, Issue 2-3, 1 September 1908, pp. 302-310.
+		.. [3] C. J. Kowalski, "On the Effects of Non-Normality on the Distribution
+		       of the Sample Product-Moment Correlation Coefficient"
+		       Journal of the Royal Statistical Society. Series C (Applied
+		       Statistics), Vol. 21, No. 1 (1972), pp. 1-12.
 		
 		Examples
 		--------
@@ -13165,10 +13924,10 @@ package scipy.stats;
 		>>> a = np.array([0, 0, 0, 1, 1, 1, 1])
 		>>> b = np.arange(7)
 		>>> stats.pearsonr(a, b)
-		(0.8660254037844386, 0.011724811003954654)
+		(0.8660254037844386, 0.011724811003954649)
 		
-		>>> stats.pearsonr([1,2,3,4,5], [5,6,7,8,7])
-		(0.83205029433784372, 0.080509573298498519)
+		>>> stats.pearsonr([1, 2, 3, 4, 5], [10, 9, 2.5, 6, 4])
+		(-0.7426106572325057, 0.1505558088534455)
 	**/
 	static public function pearsonr(x:Dynamic, y:Dynamic):Float;
 	/**
@@ -13200,7 +13959,7 @@ package scipy.stats;
 		    - "mean": The average of the "weak" and "strict" scores, often used in
 		              testing.  See
 		
-		              http://en.wikipedia.org/wiki/Percentile_rank
+		              https://en.wikipedia.org/wiki/Percentile_rank
 		
 		Returns
 		-------
@@ -13293,14 +14052,20 @@ package scipy.stats;
 		
 		    f(k) = (1-\exp(-\lambda)) \exp(-\lambda k)
 		
-		for :math:`k \lambda \ge 0`.
+		for :math:`k \ge 0` and :math:`\lambda > 0`.
 		
-		`planck` takes :math:`\lambda` as shape parameter.
+		`planck` takes :math:`\lambda` as shape parameter. The Planck distribution
+		can be written as a geometric distribution (`geom`) with
+		:math:`p = 1 - \exp(-\lambda)` shifted by `loc = -1`.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
 		Specifically, ``planck.pmf(k, lambda_, loc)`` is identically
 		equivalent to ``planck.pmf(k - loc, lambda_)``.
+		
+		See Also
+		--------
+		geom
 		
 		Examples
 		--------
@@ -13407,7 +14172,9 @@ package scipy.stats;
 		       Variable. Point-Biserial Correlation.", Ann. Math. Statist., Vol. 25,
 		       np. 3, pp. 603-607, 1954.
 		
-		.. [3] http://onlinelibrary.wiley.com/doi/10.1002/9781118445112.stat06227/full
+		.. [3] D. Kornbrot "Point Biserial Correlation", In Wiley StatsRef:
+		       Statistics Reference Online (eds N. Balakrishnan, et al.), 2014.
+		       https://doi.org/10.1002/9781118445112.stat06227
 		
 		Examples
 		--------
@@ -13473,7 +14240,7 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(k) = \exp(-\mu) \frac{mu^k}{k!}
+		    f(k) = \exp(-\mu) \frac{\mu^k}{k!}
 		
 		for :math:`k \ge 0`.
 		
@@ -13609,9 +14376,10 @@ package scipy.stats;
 		References
 		----------
 		.. [1] Lowry, Richard.  "Concepts and Applications of Inferential
-		       Statistics". Chapter 8. http://faculty.vassar.edu/lowry/ch8pt1.html
-		.. [2] "Chi-squared test", http://en.wikipedia.org/wiki/Chi-squared_test
-		.. [3] "G-test", http://en.wikipedia.org/wiki/G-test
+		       Statistics". Chapter 8.
+		       https://web.archive.org/web/20171015035606/http://faculty.vassar.edu/lowry/ch8pt1.html
+		.. [2] "Chi-squared test", https://en.wikipedia.org/wiki/Chi-squared_test
+		.. [3] "G-test", https://en.wikipedia.org/wiki/G-test
 		.. [4] Sokal, R. R. and Rohlf, F. J. "Biometry: the principles and
 		       practice of statistics in biological research", New York: Freeman
 		       (1981)
@@ -13736,7 +14504,7 @@ package scipy.stats;
 		
 		for :math:`0 \le x \le 1`, :math:`a > 0`.
 		
-		`powerlaw` takes :math:`a` as a shape parameter.
+		`powerlaw` takes ``a`` as a shape parameter for :math:`a`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -13744,7 +14512,7 @@ package scipy.stats;
 		equivalent to ``powerlaw.pdf(y, a) / scale`` with
 		``y = (x - loc) / scale``.
 		
-		`powerlaw` is a special case of `beta` with ``b == 1``.
+		`powerlaw` is a special case of `beta` with ``b=1``.
 		
 		Examples
 		--------
@@ -13959,9 +14727,9 @@ package scipy.stats;
 		    f(x, c) = c \phi(x) (\Phi(-x))^{c-1}
 		
 		where :math:`\phi` is the normal pdf, and :math:`\Phi` is the normal cdf,
-		and :math:`x > 0`, :math:`c > 0`.
+		and :math:`x >= 0`, :math:`c > 0`.
 		
-		`powernorm` takes :math:`c` as a shape parameter.
+		`powernorm` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -14056,7 +14824,7 @@ package scipy.stats;
 		.. [1] J.J. Filliben, "The Probability Plot Correlation Coefficient Test for
 		       Normality", Technometrics, Vol. 17, pp. 111-117, 1975.
 		
-		.. [2] http://www.itl.nist.gov/div898/handbook/eda/section3/ppccplot.htm
+		.. [2] https://www.itl.nist.gov/div898/handbook/eda/section3/ppccplot.htm
 		
 		Examples
 		--------
@@ -14417,7 +15185,7 @@ package scipy.stats;
 		
 		References
 		----------
-		.. [1] "Ranking", http://en.wikipedia.org/wiki/Ranking
+		.. [1] "Ranking", https://en.wikipedia.org/wiki/Ranking
 		
 		Examples
 		--------
@@ -14462,7 +15230,7 @@ package scipy.stats;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Wilcoxon_rank-sum_test
+		.. [1] https://en.wikipedia.org/wiki/Wilcoxon_rank-sum_test
 	**/
 	static public function ranksums(x:Dynamic, y:Dynamic):Float;
 	/**
@@ -14519,11 +15287,11 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(r) = r \exp(-r^2/2)
+		    f(x) = x \exp(-x^2/2)
 		
 		for :math:`x \ge 0`.
 		
-		`rayleigh` is a special case of `chi` with ``df == 2``.
+		`rayleigh` is a special case of `chi` with ``df=2``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -14633,7 +15401,7 @@ package scipy.stats;
 		
 		for :math:`-1 \le x \le 1`, :math:`c > 0`.
 		
-		`rdist` takes :math:`c` as a shape parameter.
+		`rdist` takes ``c`` as a shape parameter for :math:`c`.
 		
 		This distribution includes the following distribution kernels as
 		special cases::
@@ -14747,11 +15515,12 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, \mu) = \frac{1}{\sqrt{2\pi x}} \frac{\exp(-(1-\mu x)^2}{2x\mu^2)}
+		    f(x, \mu) = \frac{1}{\sqrt{2\pi x}}
+		                \exp\left(\frac{-(1-\mu x)^2}{2\mu^2x}\right)
 		
 		for :math:`x \ge 0`.
 		
-		`recipinvgauss` takes :math:`\mu` as a shape parameter.
+		`recipinvgauss` takes ``mu`` as a shape parameter for :math:`\mu`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -14859,7 +15628,7 @@ package scipy.stats;
 		
 		    f(x, a, b) = \frac{1}{x \log(b/a)}
 		
-		for :math:`a \le x \le b`, :math:`a, b > 0`.
+		for :math:`a \le x \le b`, :math:`b > a > 0`.
 		
 		`reciprocal` takes :math:`a` and :math:`b` as shape parameters.
 		
@@ -15035,11 +15804,12 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, b) = x \exp(- \frac{x^2 + b^2}{2}) I[0](x b)
+		    f(x, b) = x \exp(- \frac{x^2 + b^2}{2}) I_0(x b)
 		
-		for :math:`x > 0`, :math:`b > 0`.
+		for :math:`x >= 0`, :math:`b > 0`. :math:`I_0` is the modified Bessel
+		function of order zero (`scipy.special.i0`).
 		
-		`rice` takes :math:`b` as a shape parameter.
+		`rice` takes ``b`` as a shape parameter for :math:`b`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -15098,6 +15868,119 @@ package scipy.stats;
 	**/
 	static public function rice(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Generate random samples from a probability density function using the
+		ratio-of-uniforms method.
+		
+		Parameters
+		----------
+		pdf : callable
+		    A function with signature `pdf(x)` that is the probability
+		    density function of the distribution.
+		umax : float
+		    The upper bound of the bounding rectangle in the u-direction.
+		vmin : float
+		    The lower bound of the bounding rectangle in the v-direction.
+		vmax : float
+		    The upper bound of the bounding rectangle in the v-direction.
+		size : int or tuple of ints, optional
+		    Defining number of random variates (default is 1).
+		c : float, optional.
+		    Shift parameter of ratio-of-uniforms method, see Notes. Default is 0.
+		random_state : int or np.random.RandomState instance, optional
+		    If already a RandomState instance, use it.
+		    If seed is an int, return a new RandomState instance seeded with seed.
+		    If None, use np.random.RandomState. Default is None.
+		
+		Returns
+		-------
+		rvs : ndarray
+		    The random variates distributed according to the probability
+		    distribution defined by the pdf.
+		
+		Notes
+		-----
+		Given a univariate probability density function `pdf` and a constant `c`,
+		define the set ``A = {(u, v) : 0 < u <= sqrt(pdf(v/u + c))}``.
+		If `(U, V)` is a random vector uniformly distributed over `A`,
+		then `V/U + c` follows a distribution according to `pdf`.
+		
+		The above result (see [1]_, [2]_) can be used to sample random variables
+		using only the pdf, i.e. no inversion of the cdf is required. Typical
+		choices of `c` are zero or the mode of `pdf`. The set `A` is a subset of
+		the rectangle ``R = [0, umax] x [vmin, vmax]`` where
+		
+		- ``umax = sup sqrt(pdf(x))``
+		- ``vmin = inf (x - c) sqrt(pdf(x))``
+		- ``vmax = sup (x - c) sqrt(pdf(x))``
+		
+		In particular, these values are finite if `pdf` is bounded and
+		``x**2 * pdf(x)`` is bounded (i.e. subquadratic tails).
+		One can generate `(U, V)` uniformly on `R` and return
+		`V/U + c` if `(U, V)` are also in `A` which can be directly
+		verified.
+		
+		Intuitively, the method works well if `A` fills up most of the
+		enclosing rectangle such that the probability is high that `(U, V)`
+		lies in `A` whenever it lies in `R` as the number of required
+		iterations becomes too large otherwise. To be more precise, note that
+		the expected number of iterations to draw `(U, V)` uniformly
+		distributed on `R` such that `(U, V)` is also in `A` is given by
+		the ratio ``area(R) / area(A) = 2 * umax * (vmax - vmin)``, using the fact
+		that the area of `A` is equal to 1/2 (Theorem 7.1 in [1]_). A warning
+		is displayed if this ratio is larger than 20. Moreover, if the sampling
+		fails to generate a single random variate after 50000 iterations (i.e.
+		not a single draw is in `A`), an exception is raised.
+		
+		If the bounding rectangle is not correctly specified (i.e. if it does not
+		contain `A`), the algorithm samples from a distribution different from
+		the one given by `pdf`. It is therefore recommended to perform a
+		test such as `~scipy.stats.kstest` as a check.
+		
+		References
+		----------
+		.. [1] L. Devroye, "Non-Uniform Random Variate Generation",
+		   Springer-Verlag, 1986.
+		
+		.. [2] W. Hoermann and J. Leydold, "Generating generalized inverse Gaussian
+		   random variates", Statistics and Computing, 24(4), p. 547--557, 2014.
+		
+		.. [3] A.J. Kinderman and J.F. Monahan, "Computer Generation of Random
+		   Variables Using the Ratio of Uniform Deviates",
+		   ACM Transactions on Mathematical Software, 3(3), p. 257--260, 1977.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		
+		Simulate normally distributed random variables. It is easy to compute the
+		bounding rectangle explicitly in that case.
+		
+		>>> f = stats.norm.pdf
+		>>> v_bound = np.sqrt(f(np.sqrt(2))) * np.sqrt(2)
+		>>> umax, vmin, vmax = np.sqrt(f(0)), -v_bound, v_bound
+		>>> np.random.seed(12345)
+		>>> rvs = stats.rvs_ratio_uniforms(f, umax, vmin, vmax, size=2500)
+		
+		The K-S test confirms that the random variates are indeed normally
+		distributed (normality is not rejected at 5% significance level):
+		
+		>>> stats.kstest(rvs, 'norm')[1]
+		0.3420173467307603
+		
+		The exponential distribution provides another example where the bounding
+		rectangle can be determined explicitly.
+		
+		>>> np.random.seed(12345)
+		>>> rvs = stats.rvs_ratio_uniforms(lambda x: np.exp(-x), umax=1,
+		...                                vmin=0, vmax=2*np.exp(-1), size=1000)
+		>>> stats.kstest(rvs, 'expon')[1]
+		0.928454552559516
+		
+		Sometimes it can be helpful to use a non-zero shift parameter `c`, see e.g.
+		[2]_ above in the case of the generalized inverse Gaussian distribution.
+	**/
+	static public function rvs_ratio_uniforms(pdf:Dynamic, umax:Dynamic, vmin:Dynamic, vmax:Dynamic, ?size:Dynamic, ?c:Dynamic, ?random_state:Dynamic):Dynamic;
+	/**
 		Calculate the score at a given percentile of the input sequence.
 		
 		For example, the score at `per=50` is the median. If the desired quantile
@@ -15141,7 +16024,7 @@ package scipy.stats;
 		Notes
 		-----
 		This function will become obsolete in the future.
-		For Numpy 1.9 and higher, `numpy.percentile` provides all the functionality
+		For NumPy 1.9 and higher, `numpy.percentile` provides all the functionality
 		that `scoreatpercentile` provides.  And it's significantly faster.
 		Therefore it's recommended to use `numpy.percentile` for users that have
 		numpy >= 1.9.
@@ -15342,7 +16225,7 @@ package scipy.stats;
 		
 		References
 		----------
-		.. [1] http://www.itl.nist.gov/div898/handbook/prc/section2/prc213.htm
+		.. [1] https://www.itl.nist.gov/div898/handbook/prc/section2/prc213.htm
 		.. [2] Shapiro, S. S. & Wilk, M.B (1965). An analysis of variance test for
 		       normality (complete samples), Biometrika, Vol. 52, pp. 591-611.
 		.. [3] Razali, N. M. & Wah, Y. B. (2011) Power comparisons of Shapiro-Wilk,
@@ -15359,6 +16242,91 @@ package scipy.stats;
 		(0.9772805571556091, 0.08144091814756393)
 	**/
 	static public function shapiro(x:Dynamic):Float;
+	/**
+		Computes the Siegel estimator for a set of points (x, y).
+		
+		`siegelslopes` implements a method for robust linear regression
+		using repeated medians (see [1]_) to fit a line to the points (x, y).
+		The method is robust to outliers with an asymptotic breakdown point
+		of 50%.
+		
+		Parameters
+		----------
+		y : array_like
+		    Dependent variable.
+		x : array_like or None, optional
+		    Independent variable. If None, use ``arange(len(y))`` instead.
+		method : {'hierarchical', 'separate'}
+		    If 'hierarchical', estimate the intercept using the estimated
+		    slope ``medslope`` (default option).
+		    If 'separate', estimate the intercept independent of the estimated
+		    slope. See Notes for details.
+		
+		Returns
+		-------
+		medslope : float
+		    Estimate of the slope of the regression line.
+		medintercept : float
+		    Estimate of the intercept of the regression line.
+		
+		See also
+		--------
+		theilslopes : a similar technique without repeated medians
+		
+		Notes
+		-----
+		With ``n = len(y)``, compute ``m_j`` as the median of
+		the slopes from the point ``(x[j], y[j])`` to all other `n-1` points.
+		``medslope`` is then the median of all slopes ``m_j``.
+		Two ways are given to estimate the intercept in [1]_ which can be chosen
+		via the parameter ``method``.
+		The hierarchical approach uses the estimated slope ``medslope``
+		and computes ``medintercept`` as the median of ``y - medslope*x``.
+		The other approach estimates the intercept separately as follows: for
+		each point ``(x[j], y[j])``, compute the intercepts of all the `n-1`
+		lines through the remaining points and take the median ``i_j``.
+		``medintercept`` is the median of the ``i_j``.
+		
+		The implementation computes `n` times the median of a vector of size `n`
+		which can be slow for large vectors. There are more efficient algorithms
+		(see [2]_) which are not implemented here.
+		
+		References
+		----------
+		.. [1] A. Siegel, "Robust Regression Using Repeated Medians",
+		       Biometrika, Vol. 69, pp. 242-244, 1982.
+		
+		.. [2] A. Stein and M. Werman, "Finding the repeated median regression
+		       line", Proceedings of the Third Annual ACM-SIAM Symposium on
+		       Discrete Algorithms, pp. 409-413, 1992.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> import matplotlib.pyplot as plt
+		
+		>>> x = np.linspace(-5, 5, num=150)
+		>>> y = x + np.random.normal(size=x.size)
+		>>> y[11:15] += 10  # add outliers
+		>>> y[-5:] -= 7
+		
+		Compute the slope and intercept.  For comparison, also compute the
+		least-squares fit with `linregress`:
+		
+		>>> res = stats.siegelslopes(y, x)
+		>>> lsq_res = stats.linregress(x, y)
+		
+		Plot the results. The Siegel regression line is shown in red. The green
+		line shows the least-squares fit for comparison.
+		
+		>>> fig = plt.figure()
+		>>> ax = fig.add_subplot(111)
+		>>> ax.plot(x, y, 'b.')
+		>>> ax.plot(x, res[1] + res[0] * x, 'r-')
+		>>> ax.plot(x, lsq_res[1] + lsq_res[0] * x, 'g-')
+		>>> plt.show()
+	**/
+	static public function siegelslopes(y:Dynamic, ?x:Dynamic, ?method:Dynamic):Float;
 	/**
 		Iterative sigma-clipping of array elements.
 		
@@ -15463,8 +16431,8 @@ package scipy.stats;
 		uncorrelated Poisson random variables.
 		
 		Let :math:`k_1` and :math:`k_2` be two Poisson-distributed r.v. with
-		expected values lam1 and lam2. Then, :math:`k_1 - k_2` follows a Skellam
-		distribution with parameters
+		expected values :math:`\lambda_1` and :math:`\lambda_2`. Then,
+		:math:`k_1 - k_2` follows a Skellam distribution with parameters
 		:math:`\mu_1 = \lambda_1 - \rho \sqrt{\lambda_1 \lambda_2}` and
 		:math:`\mu_2 = \lambda_2 - \rho \sqrt{\lambda_1 \lambda_2}`, where
 		:math:`\rho` is the correlation coefficient between :math:`k_1` and
@@ -15473,7 +16441,7 @@ package scipy.stats;
 		
 		Parameters :math:`\mu_1` and :math:`\mu_2` must be strictly positive.
 		
-		For details see: http://en.wikipedia.org/wiki/Skellam_distribution
+		For details see: https://en.wikipedia.org/wiki/Skellam_distribution
 		
 		`skellam` takes :math:`\mu_1` and :math:`\mu_2` as shape parameters.
 		
@@ -15524,7 +16492,7 @@ package scipy.stats;
 	**/
 	static public function skellam(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Compute the skewness of a data set.
+		Compute the sample skewness of a data set.
 		
 		For normally distributed data, the skewness should be about 0. For
 		unimodal continuous distributions, a skewness value > 0 means that
@@ -15551,6 +16519,25 @@ package scipy.stats;
 		skewness : ndarray
 		    The skewness of values along an axis, returning 0 where all values are
 		    equal.
+		
+		Notes
+		-----
+		The sample skewness is computed as the Fisher-Pearson coefficient
+		of skewness, i.e.
+		
+		.. math:: g_1=\frac{m_3}{m_2^{3/2}}
+		
+		where
+		
+		.. math:: m_i=\frac{1}{N}\sum_{n=1}^N(x[n]-\bar{x})^i
+		
+		is the biased sample :math:`i\texttt{th}` central moment, and :math:`\bar{x}` is
+		the sample mean.  If ``bias`` is False, the calculations are
+		corrected for bias and the value computed is the adjusted
+		Fisher-Pearson standardized moment coefficient, i.e.
+		
+		.. math:: G_1=\frac{k_3}{k_2^{3/2}}=
+		              \frac{\sqrt{N(N-1)}}{N-2}\frac{m_3}{m_2^{3/2}}.
 		
 		References
 		----------
@@ -15623,9 +16610,9 @@ package scipy.stats;
 		
 		    skewnorm.pdf(x, a) = 2 * norm.pdf(x) * norm.cdf(a*x)
 		
-		`skewnorm` takes :math:`a` as a skewness parameter
-		When ``a = 0`` the distribution is identical to a normal distribution.
-		rvs implements the method of [1]_.
+		`skewnorm` takes a real number :math:`a` as a skewness parameter
+		When ``a = 0`` the distribution is identical to a normal distribution
+		(`norm`). `rvs` implements the method of [1]_.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -15774,15 +16761,11 @@ package scipy.stats;
 		correlation : float or ndarray (2-D square)
 		    Spearman correlation matrix or correlation coefficient (if only 2
 		    variables are given as parameters. Correlation matrix is square with
-		    length equal to total number of variables (columns or rows) in a and b
-		    combined.
+		    length equal to total number of variables (columns or rows) in ``a``
+		    and ``b`` combined.
 		pvalue : float
 		    The two-sided p-value for a hypothesis test whose null hypothesis is
 		    that two sets of data are uncorrelated, has same dimension as rho.
-		
-		Notes
-		-----
-		Changes in scipy 0.8.0: rewrite to add tie-handling, and axis.
 		
 		References
 		----------
@@ -15833,7 +16816,7 @@ package scipy.stats;
 	static public function spearmanr(a:Dynamic, ?b:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	static public function special_ortho_group(?dim:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
-		A Student's T continuous random variable.
+		A Student's t continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `t` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -15886,12 +16869,14 @@ package scipy.stats;
 		
 		.. math::
 		
-		    f(x, df) = \frac{\gamma((df+1)/2)}
-		                    {\sqrt{\pi*df} \gamma(df/2) (1+x^2/df)^{(df+1)/2}}
+		    f(x, \nu) = \frac{\Gamma((\nu+1)/2)}
+		                    {\sqrt{\pi \nu} \Gamma(\nu)}
+		                (1+x^2/\nu)^{-(\nu+1)/2}
 		
-		for ``df > 0``.
-		
-		`t` takes ``df`` as a shape parameter.
+		where :math:`x` is a real number and the degrees of freedom parameter
+		:math:`\nu` (denoted ``df`` in the implementation) satisfies
+		:math:`\nu > 0`. :math:`\Gamma` is the gamma function
+		(`scipy.special.gamma`).
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -15972,6 +16957,10 @@ package scipy.stats;
 		up_slope : float
 		    Upper bound of the confidence interval on `medslope`.
 		
+		See also
+		--------
+		siegelslopes : a similar technique using repeated medians
+		
 		Notes
 		-----
 		The implementation of `theilslopes` follows [1]_. The intercept is
@@ -16031,7 +17020,7 @@ package scipy.stats;
 		----------
 		rankvals : array_like
 		    A 1-D sequence of ranks.  Typically this will be the array
-		    returned by `stats.rankdata`.
+		    returned by `~scipy.stats.rankdata`.
 		
 		Returns
 		-------
@@ -16350,9 +17339,9 @@ package scipy.stats;
 		-----
 		The triangular distribution can be represented with an up-sloping line from
 		``loc`` to ``(loc + c*scale)`` and then downsloping for ``(loc + c*scale)``
-		to ``(loc+scale)``.
+		to ``(loc + scale)``.
 		
-		`triang` takes :math:`c` as a shape parameter.
+		`triang` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -16578,9 +17567,9 @@ package scipy.stats;
 		
 		    f(x, b) = \frac{\exp(-x)}{1 - \exp(-b)}
 		
-		for :math:`0 < x < b`.
+		for :math:`0 <= x <= b`.
 		
-		`truncexpon` takes :math:`b` as a shape parameter.
+		`truncexpon` takes ``b`` as a shape parameter for :math:`b`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -16934,9 +17923,9 @@ package scipy.stats;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/T-test#Independent_two-sample_t-test
+		.. [1] https://en.wikipedia.org/wiki/T-test#Independent_two-sample_t-test
 		
-		.. [2] http://en.wikipedia.org/wiki/Welch%27s_t_test
+		.. [2] https://en.wikipedia.org/wiki/Welch%27s_t-test
 		
 		Examples
 		--------
@@ -17022,9 +18011,9 @@ package scipy.stats;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/T-test#Independent_two-sample_t-test
+		.. [1] https://en.wikipedia.org/wiki/T-test#Independent_two-sample_t-test
 		
-		.. [2] http://en.wikipedia.org/wiki/Welch%27s_t_test
+		.. [2] https://en.wikipedia.org/wiki/Welch%27s_t-test
 		
 		Examples
 		--------
@@ -17164,13 +18153,13 @@ package scipy.stats;
 		A flexible distribution, able to represent and interpolate between the
 		following distributions:
 		
-		- Cauchy                (lam=-1)
-		- logistic              (lam=0.0)
-		- approx Normal         (lam=0.14)
-		- u-shape               (lam = 0.5)
-		- uniform from -1 to 1  (lam = 1)
+		- Cauchy                (:math:`lambda = -1`)
+		- logistic              (:math:`lambda = 0`)
+		- approx Normal         (:math:`lambda = 0.14`)
+		- uniform from -1 to 1  (:math:`lambda = 1`)
 		
-		`tukeylambda` takes ``lam`` as a shape parameter.
+		`tukeylambda` takes a real number :math:`lambda` (denoted ``lam``
+		in the implementation) as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -17270,7 +18259,9 @@ package scipy.stats;
 	/**
 		A uniform continuous random variable.
 		
-		This distribution is constant between `loc` and ``loc + scale``.
+		In the standard form, the distribution is uniform on ``[0, 1]``. Using
+		the parameters ``loc`` and ``scale``, one obtains the uniform distribution
+		on ``[loc, loc + scale]``.
 		
 		As an instance of the `rv_continuous` class, `uniform` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -17446,29 +18437,30 @@ package scipy.stats;
 		
 		Notes
 		-----
-		If `x` is not in range or `loc` is not in range it assumes they are angles
-		and converts them to [-\pi, \pi] equivalents.
-		
-		The probability density function for `vonmises` is:
+		The probability density function for `vonmises` and `vonmises_line` is:
 		
 		.. math::
 		
-		    f(x, \kappa) = \frac{ \exp(\kappa \cos(x)) }{ 2 \pi I[0](\kappa) }
+		    f(x, \kappa) = \frac{ \exp(\kappa \cos(x)) }{ 2 \pi I_0(\kappa) }
 		
-		for :math:`-\pi \le x \le \pi`, :math:`\kappa > 0`.
+		for :math:`-\pi \le x \le \pi`, :math:`\kappa > 0`. :math:`I_0` is the
+		modified Bessel function of order zero (`scipy.special.i0`).
 		
-		`vonmises` takes :math:`\kappa` as a shape parameter.
+		`vonmises` is a circular distribution which does not restrict the
+		distribution to a fixed interval. Currently, there is no circular
+		distribution framework in scipy. The ``cdf`` is implemented such that
+		``cdf(x + 2*np.pi) == cdf(x) + 1``.
+		
+		`vonmises_line` is the same distribution, defined on :math:`[-\pi, \pi]`
+		on the real line. This is a regular (i.e. non-circular) distribution.
+		
+		`vonmises` and `vonmises_line` take ``kappa`` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``vonmises.pdf(x, kappa, loc, scale)`` is identically
 		equivalent to ``vonmises.pdf(y, kappa) / scale`` with
 		``y = (x - loc) / scale``.
-		
-		See Also
-		--------
-		vonmises_line : The same distribution, defined on a [-\pi, \pi] segment
-		                of the real line.
 		
 		Examples
 		--------
@@ -17564,29 +18556,30 @@ package scipy.stats;
 		
 		Notes
 		-----
-		If `x` is not in range or `loc` is not in range it assumes they are angles
-		and converts them to [-\pi, \pi] equivalents.
-		
-		The probability density function for `vonmises` is:
+		The probability density function for `vonmises` and `vonmises_line` is:
 		
 		.. math::
 		
-		    f(x, \kappa) = \frac{ \exp(\kappa \cos(x)) }{ 2 \pi I[0](\kappa) }
+		    f(x, \kappa) = \frac{ \exp(\kappa \cos(x)) }{ 2 \pi I_0(\kappa) }
 		
-		for :math:`-\pi \le x \le \pi`, :math:`\kappa > 0`.
+		for :math:`-\pi \le x \le \pi`, :math:`\kappa > 0`. :math:`I_0` is the
+		modified Bessel function of order zero (`scipy.special.i0`).
 		
-		`vonmises` takes :math:`\kappa` as a shape parameter.
+		`vonmises` is a circular distribution which does not restrict the
+		distribution to a fixed interval. Currently, there is no circular
+		distribution framework in scipy. The ``cdf`` is implemented such that
+		``cdf(x + 2*np.pi) == cdf(x) + 1``.
+		
+		`vonmises_line` is the same distribution, defined on :math:`[-\pi, \pi]`
+		on the real line. This is a regular (i.e. non-circular) distribution.
+		
+		`vonmises` and `vonmises_line` take ``kappa`` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``vonmises_line.pdf(x, kappa, loc, scale)`` is identically
 		equivalent to ``vonmises_line.pdf(y, kappa) / scale`` with
 		``y = (x - loc) / scale``.
-		
-		See Also
-		--------
-		vonmises_line : The same distribution, defined on a [-\pi, \pi] segment
-		                of the real line.
 		
 		Examples
 		--------
@@ -17688,9 +18681,9 @@ package scipy.stats;
 		
 		    f(x) = \frac{1}{\sqrt{2\pi x^3}} \exp(- \frac{ (x-1)^2 }{ 2x })
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0`.
 		
-		`wald` is a special case of `invgauss` with ``mu == 1``.
+		`wald` is a special case of `invgauss` with ``mu=1``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -17799,7 +18792,7 @@ package scipy.stats;
 		
 		References
 		----------
-		.. [1] "Wasserstein metric", http://en.wikipedia.org/wiki/Wasserstein_metric
+		.. [1] "Wasserstein metric", https://en.wikipedia.org/wiki/Wasserstein_metric
 		.. [2] Ramdas, Garcia, Cuturi "On Wasserstein Two Sample Testing and Related
 		       Families of Nonparametric Tests" (2015). :arXiv:`1509.02237`.
 		
@@ -17877,7 +18870,7 @@ package scipy.stats;
 		
 		for :math:`x < 0`, :math:`c > 0`.
 		
-		`weibull_max` takes ``c`` as a shape parameter.
+		`weibull_max` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -17989,9 +18982,9 @@ package scipy.stats;
 		
 		    f(x, c) = c x^{c-1} \exp(-x^c)
 		
-		for :math:`x > 0`, :math:`c > 0`.
+		for :math:`x >= 0`, :math:`c > 0`.
 		
-		`weibull_min` takes ``c`` as a shape parameter.
+		`weibull_min` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -18185,44 +19178,109 @@ package scipy.stats;
 		Parameters
 		----------
 		x : array_like
-		    The first set of measurements.
+		    Either the first set of measurements (in which case `y` is the second
+		    set of measurements), or the differences between two sets of
+		    measurements (in which case `y` is not to be specified.)  Must be
+		    one-dimensional.
 		y : array_like, optional
-		    The second set of measurements.  If `y` is not given, then the `x`
-		    array is considered to be the differences between the two sets of
-		    measurements.
-		zero_method : string, {"pratt", "wilcox", "zsplit"}, optional
+		    Either the second set of measurements (if `x` is the first set of
+		    measurements), or not specified (if `x` is the differences between
+		    two sets of measurements.)  Must be one-dimensional.
+		zero_method : {"pratt", "wilcox", "zsplit"}, optional. Default is "wilcox".
 		    "pratt":
-		        Pratt treatment: includes zero-differences in the ranking process
-		        (more conservative)
+		        includes zero-differences in the ranking process,
+		        but drops the ranks of the zeros, see [4]_, (more conservative)
 		    "wilcox":
-		        Wilcox treatment: discards all zero-differences
+		        discards all zero-differences, the default
 		    "zsplit":
-		        Zero rank split: just like Pratt, but spliting the zero rank
-		        between positive and negative ones
+		        includes zero-differences in the ranking process and split the
+		        zero rank between positive and negative ones
 		correction : bool, optional
 		    If True, apply continuity correction by adjusting the Wilcoxon rank
 		    statistic by 0.5 towards the mean value when computing the
 		    z-statistic.  Default is False.
+		alternative : {"two-sided", "greater", "less"}, optional
+		    The alternative hypothesis to be tested, see Notes. Default is
+		    "two-sided".
 		
 		Returns
 		-------
 		statistic : float
-		    The sum of the ranks of the differences above or below zero, whichever
-		    is smaller.
+		    If `alternative` is "two-sided", the sum of the ranks of the
+		    differences above or below zero, whichever is smaller.
+		    Otherwise the sum of the ranks of the differences above zero.
 		pvalue : float
-		    The two-sided p-value for the test.
+		    The p-value for the test depending on `alternative`.
+		
+		See Also
+		--------
+		kruskal, mannwhitneyu
 		
 		Notes
 		-----
-		Because the normal approximation is used for the calculations, the
-		samples used should be large.  A typical rule is to require that
-		n > 20.
+		The test has been introduced in [4]_. Given n independent samples
+		(xi, yi) from a bivariate distribution (i.e. paired samples),
+		it computes the differences di = xi - yi. One assumption of the test
+		is that the differences are symmetric, see [2]_.
+		The two-sided test has the null hypothesis that the median of the
+		differences is zero against the alternative that it is different from
+		zero. The one-sided test has the null that the median is positive against
+		the alternative that the it is negative (``alternative == 'less'``),
+		or vice versa (``alternative == 'greater.'``).
+		
+		The test uses a normal approximation to derive the p-value (if
+		``zero_method == 'pratt'``, the approximation is adjusted as in [5]_).
+		A typical rule is to require that n > 20 ([2]_, p. 383). For smaller n,
+		exact tables can be used to find critical values.
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test
+		.. [1] https://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test
+		.. [2] Conover, W.J., Practical Nonparametric Statistics, 1971.
+		.. [3] Pratt, J.W., Remarks on Zeros and Ties in the Wilcoxon Signed
+		   Rank Procedures, Journal of the American Statistical Association,
+		   Vol. 54, 1959, pp. 655-667. :doi:`10.1080/01621459.1959.10501526`
+		.. [4] Wilcoxon, F., Individual Comparisons by Ranking Methods,
+		   Biometrics Bulletin, Vol. 1, 1945, pp. 80-83. :doi:`10.2307/3001968`
+		.. [5] Cureton, E.E., The Normal Approximation to the Signed-Rank
+		   Sampling Distribution When Zero Differences are Present,
+		   Journal of the American Statistical Association, Vol. 62, 1967,
+		   pp. 1068-1069. :doi:`10.1080/01621459.1967.10500917`
+		
+		Examples
+		--------
+		In [4]_, the differences in height between cross- and self-fertilized
+		corn plants is given as follows:
+		
+		>>> d = [6, 8, 14, 16, 23, 24, 28, 29, 41, -48, 49, 56, 60, -67, 75]
+		
+		Cross-fertilized plants appear to be be higher. To test the null
+		hypothesis that there is no height difference, we can apply the
+		two-sided test:
+		
+		>>> from scipy.stats import wilcoxon
+		>>> w, p = wilcoxon(d)
+		>>> w, p
+		(24.0, 0.04088813291185591)
+		
+		Hence, we would reject the null hypothesis at a confidence level of 5%,
+		concluding that there is a difference in height between the groups.
+		To confirm that the median of the differences can be assumed to be
+		positive, we use:
+		
+		>>> w, p = wilcoxon(d, alternative='greater')
+		>>> w, p
+		(96.0, 0.020444066455927955)
+		
+		This shows that the null hypothesis that the median is negative can be
+		rejected at a confidence level of 5% in favor of the alternative that
+		the median is greater than zero. The p-value based on the approximation
+		is within the range of 0.019 and 0.054 given in [2]_.
+		Note that the statistic changed to 96 in the one-sided case (the sum
+		of ranks of positive differences) whereas it is 24 in the two-sided
+		case (the minimum of sum of ranks above and below zero).
 	**/
-	static public function wilcoxon(x:Dynamic, ?y:Dynamic, ?zero_method:Dynamic, ?correction:Dynamic):Float;
+	static public function wilcoxon(x:Dynamic, ?y:Dynamic, ?zero_method:Dynamic, ?correction:Dynamic, ?alternative:Dynamic):Float;
 	/**
 		A Wishart random variable.
 		
@@ -18385,7 +19443,7 @@ package scipy.stats;
 		
 		for :math:`0 \le x \le 2\pi`, :math:`0 < c < 1`.
 		
-		`wrapcauchy` takes :math:`c` as a shape parameter.
+		`wrapcauchy` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -18437,6 +19495,384 @@ package scipy.stats;
 		>>> plt.show()
 	**/
 	static public function wrapcauchy(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Return a dataset transformed by a Yeo-Johnson power transformation.
+		
+		Parameters
+		----------
+		x : ndarray
+		    Input array.  Should be 1-dimensional.
+		lmbda : float, optional
+		    If ``lmbda`` is ``None``, find the lambda that maximizes the
+		    log-likelihood function and return it as the second output argument.
+		    Otherwise the transformation is done for the given value.
+		
+		Returns
+		-------
+		yeojohnson: ndarray
+		    Yeo-Johnson power transformed array.
+		maxlog : float, optional
+		    If the `lmbda` parameter is None, the second returned argument is
+		    the lambda that maximizes the log-likelihood function.
+		
+		See Also
+		--------
+		probplot, yeojohnson_normplot, yeojohnson_normmax, yeojohnson_llf, boxcox
+		
+		Notes
+		-----
+		The Yeo-Johnson transform is given by::
+		
+		    y = ((x + 1)**lmbda - 1) / lmbda,                for x >= 0, lmbda != 0
+		        log(x + 1),                                  for x >= 0, lmbda = 0
+		        -((-x + 1)**(2 - lmbda) - 1) / (2 - lmbda),  for x < 0, lmbda != 2
+		        -log(-x + 1),                                for x < 0, lmbda = 2
+		
+		Unlike `boxcox`, `yeojohnson` does not require the input data to be
+		positive.
+		
+		.. versionadded:: 1.2.0
+		
+		
+		References
+		----------
+		I. Yeo and R.A. Johnson, "A New Family of Power Transformations to
+		Improve Normality or Symmetry", Biometrika 87.4 (2000):
+		
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> import matplotlib.pyplot as plt
+		
+		We generate some random variates from a non-normal distribution and make a
+		probability plot for it, to show it is non-normal in the tails:
+		
+		>>> fig = plt.figure()
+		>>> ax1 = fig.add_subplot(211)
+		>>> x = stats.loggamma.rvs(5, size=500) + 5
+		>>> prob = stats.probplot(x, dist=stats.norm, plot=ax1)
+		>>> ax1.set_xlabel('')
+		>>> ax1.set_title('Probplot against normal distribution')
+		
+		We now use `yeojohnson` to transform the data so it's closest to normal:
+		
+		>>> ax2 = fig.add_subplot(212)
+		>>> xt, lmbda = stats.yeojohnson(x)
+		>>> prob = stats.probplot(xt, dist=stats.norm, plot=ax2)
+		>>> ax2.set_title('Probplot after Yeo-Johnson transformation')
+		
+		>>> plt.show()
+	**/
+	static public function yeojohnson(x:Dynamic, ?lmbda:Dynamic):Dynamic;
+	/**
+		The yeojohnson log-likelihood function.
+		
+		Parameters
+		----------
+		lmb : scalar
+		    Parameter for Yeo-Johnson transformation. See `yeojohnson` for
+		    details.
+		data : array_like
+		    Data to calculate Yeo-Johnson log-likelihood for. If `data` is
+		    multi-dimensional, the log-likelihood is calculated along the first
+		    axis.
+		
+		Returns
+		-------
+		llf : float
+		    Yeo-Johnson log-likelihood of `data` given `lmb`.
+		
+		See Also
+		--------
+		yeojohnson, probplot, yeojohnson_normplot, yeojohnson_normmax
+		
+		Notes
+		-----
+		The Yeo-Johnson log-likelihood function is defined here as
+		
+		.. math::
+		
+		    llf = N/2 \log(\hat{\sigma}^2) + (\lambda - 1)
+		          \sum_i \text{ sign }(x_i)\log(|x_i| + 1)
+		
+		where :math:`\hat{\sigma}^2` is estimated variance of the the Yeo-Johnson
+		transformed input data ``x``.
+		
+		.. versionadded:: 1.2.0
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> import matplotlib.pyplot as plt
+		>>> from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+		>>> np.random.seed(1245)
+		
+		Generate some random variates and calculate Yeo-Johnson log-likelihood
+		values for them for a range of ``lmbda`` values:
+		
+		>>> x = stats.loggamma.rvs(5, loc=10, size=1000)
+		>>> lmbdas = np.linspace(-2, 10)
+		>>> llf = np.zeros(lmbdas.shape, dtype=float)
+		>>> for ii, lmbda in enumerate(lmbdas):
+		...     llf[ii] = stats.yeojohnson_llf(lmbda, x)
+		
+		Also find the optimal lmbda value with `yeojohnson`:
+		
+		>>> x_most_normal, lmbda_optimal = stats.yeojohnson(x)
+		
+		Plot the log-likelihood as function of lmbda.  Add the optimal lmbda as a
+		horizontal line to check that that's really the optimum:
+		
+		>>> fig = plt.figure()
+		>>> ax = fig.add_subplot(111)
+		>>> ax.plot(lmbdas, llf, 'b.-')
+		>>> ax.axhline(stats.yeojohnson_llf(lmbda_optimal, x), color='r')
+		>>> ax.set_xlabel('lmbda parameter')
+		>>> ax.set_ylabel('Yeo-Johnson log-likelihood')
+		
+		Now add some probability plots to show that where the log-likelihood is
+		maximized the data transformed with `yeojohnson` looks closest to normal:
+		
+		>>> locs = [3, 10, 4]  # 'lower left', 'center', 'lower right'
+		>>> for lmbda, loc in zip([-1, lmbda_optimal, 9], locs):
+		...     xt = stats.yeojohnson(x, lmbda=lmbda)
+		...     (osm, osr), (slope, intercept, r_sq) = stats.probplot(xt)
+		...     ax_inset = inset_axes(ax, width="20%", height="20%", loc=loc)
+		...     ax_inset.plot(osm, osr, 'c.', osm, slope*osm + intercept, 'k-')
+		...     ax_inset.set_xticklabels([])
+		...     ax_inset.set_yticklabels([])
+		...     ax_inset.set_title(r'$\lambda=%1.2f$' % lmbda)
+		
+		>>> plt.show()
+	**/
+	static public function yeojohnson_llf(lmb:Dynamic, data:Dynamic):Float;
+	/**
+		Compute optimal Yeo-Johnson transform parameter for input data, using
+		maximum likelihood estimation.
+		
+		Parameters
+		----------
+		x : array_like
+		    Input array.
+		brack : 2-tuple, optional
+		    The starting interval for a downhill bracket search with
+		    `optimize.brent`. Note that this is in most cases not critical; the
+		    final result is allowed to be outside this bracket.
+		
+		Returns
+		-------
+		maxlog : float
+		    The optimal transform parameter found.
+		
+		Notes
+		-----
+		.. versionadded:: 1.2.0
+		
+		See Also
+		--------
+		yeojohnson, yeojohnson_llf, yeojohnson_normplot
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> import matplotlib.pyplot as plt
+		>>> np.random.seed(1234)  # make this example reproducible
+		
+		Generate some data and determine optimal ``lmbda``
+		
+		>>> x = stats.loggamma.rvs(5, size=30) + 5
+		>>> lmax = stats.yeojohnson_normmax(x)
+		
+		>>> fig = plt.figure()
+		>>> ax = fig.add_subplot(111)
+		>>> prob = stats.yeojohnson_normplot(x, -10, 10, plot=ax)
+		>>> ax.axvline(lmax, color='r')
+		
+		>>> plt.show()
+	**/
+	static public function yeojohnson_normmax(x:Dynamic, ?brack:Dynamic):Float;
+	/**
+		Compute parameters for a Yeo-Johnson normality plot, optionally show it.
+		
+		A Yeo-Johnson normality plot shows graphically what the best
+		transformation parameter is to use in `yeojohnson` to obtain a
+		distribution that is close to normal.
+		
+		Parameters
+		----------
+		x : array_like
+		    Input array.
+		la, lb : scalar
+		    The lower and upper bounds for the ``lmbda`` values to pass to
+		    `yeojohnson` for Yeo-Johnson transformations. These are also the
+		    limits of the horizontal axis of the plot if that is generated.
+		plot : object, optional
+		    If given, plots the quantiles and least squares fit.
+		    `plot` is an object that has to have methods "plot" and "text".
+		    The `matplotlib.pyplot` module or a Matplotlib Axes object can be used,
+		    or a custom object with the same methods.
+		    Default is None, which means that no plot is created.
+		N : int, optional
+		    Number of points on the horizontal axis (equally distributed from
+		    `la` to `lb`).
+		
+		Returns
+		-------
+		lmbdas : ndarray
+		    The ``lmbda`` values for which a Yeo-Johnson transform was done.
+		ppcc : ndarray
+		    Probability Plot Correlelation Coefficient, as obtained from `probplot`
+		    when fitting the Box-Cox transformed input `x` against a normal
+		    distribution.
+		
+		See Also
+		--------
+		probplot, yeojohnson, yeojohnson_normmax, yeojohnson_llf, ppcc_max
+		
+		Notes
+		-----
+		Even if `plot` is given, the figure is not shown or saved by
+		`boxcox_normplot`; ``plt.show()`` or ``plt.savefig('figname.png')``
+		should be used after calling `probplot`.
+		
+		.. versionadded:: 1.2.0
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> import matplotlib.pyplot as plt
+		
+		Generate some non-normally distributed data, and create a Yeo-Johnson plot:
+		
+		>>> x = stats.loggamma.rvs(5, size=500) + 5
+		>>> fig = plt.figure()
+		>>> ax = fig.add_subplot(111)
+		>>> prob = stats.yeojohnson_normplot(x, -20, 20, plot=ax)
+		
+		Determine and plot the optimal ``lmbda`` to transform ``x`` and plot it in
+		the same plot:
+		
+		>>> _, maxlog = stats.yeojohnson(x)
+		>>> ax.axvline(maxlog, color='r')
+		
+		>>> plt.show()
+	**/
+	static public function yeojohnson_normplot(x:Dynamic, la:Dynamic, lb:Dynamic, ?plot:Dynamic, ?N:Dynamic):Dynamic;
+	/**
+		A Yule-Simon discrete random variable.
+		
+		As an instance of the `rv_discrete` class, `yulesimon` object inherits from it
+		a collection of generic methods (see below for the full list),
+		and completes them with details specific for this particular distribution.
+		
+		Methods
+		-------
+		rvs(alpha, loc=0, size=1, random_state=None)
+		    Random variates.
+		pmf(k, alpha, loc=0)
+		    Probability mass function.
+		logpmf(k, alpha, loc=0)
+		    Log of the probability mass function.
+		cdf(k, alpha, loc=0)
+		    Cumulative distribution function.
+		logcdf(k, alpha, loc=0)
+		    Log of the cumulative distribution function.
+		sf(k, alpha, loc=0)
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
+		logsf(k, alpha, loc=0)
+		    Log of the survival function.
+		ppf(q, alpha, loc=0)
+		    Percent point function (inverse of ``cdf`` --- percentiles).
+		isf(q, alpha, loc=0)
+		    Inverse survival function (inverse of ``sf``).
+		stats(alpha, loc=0, moments='mv')
+		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
+		entropy(alpha, loc=0)
+		    (Differential) entropy of the RV.
+		expect(func, args=(alpha,), loc=0, lb=None, ub=None, conditional=False)
+		    Expected value of a function (of one argument) with respect to the distribution.
+		median(alpha, loc=0)
+		    Median of the distribution.
+		mean(alpha, loc=0)
+		    Mean of the distribution.
+		var(alpha, loc=0)
+		    Variance of the distribution.
+		std(alpha, loc=0)
+		    Standard deviation of the distribution.
+		interval(alpha, alpha, loc=0)
+		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		
+		The probability mass function for the `yulesimon` is:
+		
+		.. math::
+		
+		    f(k) =  \alpha B(k, \alpha+1)
+		
+		for :math:`k=1,2,3,...`, where :math:`\alpha>0`.
+		Here :math:`B` refers to the `scipy.special.beta` function.
+		
+		The sampling of random variates is based on pg 553, Section 6.3 of [1]_.
+		Our notation maps to the referenced logic via :math:`\alpha=a-1`.
+		
+		For details see the wikipedia entry [2]_.
+		
+		References
+		----------
+		.. [1] Devroye, Luc. "Non-uniform Random Variate Generation",
+		     (1986) Springer, New York.
+		
+		.. [2] https://en.wikipedia.org/wiki/Yule-Simon_distribution
+		
+		The probability mass function above is defined in the "standardized" form.
+		To shift distribution use the ``loc`` parameter.
+		Specifically, ``yulesimon.pmf(k, alpha, loc)`` is identically
+		equivalent to ``yulesimon.pmf(k - loc, alpha)``.
+		
+		Examples
+		--------
+		>>> from scipy.stats import yulesimon
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> alpha = 11
+		>>> mean, var, skew, kurt = yulesimon.stats(alpha, moments='mvsk')
+		
+		Display the probability mass function (``pmf``):
+		
+		>>> x = np.arange(yulesimon.ppf(0.01, alpha),
+		...               yulesimon.ppf(0.99, alpha))
+		>>> ax.plot(x, yulesimon.pmf(x, alpha), 'bo', ms=8, label='yulesimon pmf')
+		>>> ax.vlines(x, 0, yulesimon.pmf(x, alpha), colors='b', lw=5, alpha=0.5)
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pmf``:
+		
+		>>> rv = yulesimon(alpha)
+		>>> ax.vlines(x, 0, rv.pmf(x), colors='k', linestyles='-', lw=1,
+		...         label='frozen pmf')
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> prob = yulesimon.cdf(x, alpha)
+		>>> np.allclose(x, yulesimon.ppf(prob, alpha))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = yulesimon.rvs(alpha, size=1000)
+	**/
+	static public function yulesimon(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Zipf discrete random variable.
 		
@@ -18491,7 +19927,8 @@ package scipy.stats;
 		
 		for :math:`k \ge 1`.
 		
-		`zipf` takes :math:`a` as shape parameter.
+		`zipf` takes :math:`a` as shape parameter. :math:`\zeta` is the
+		Riemann zeta function (`scipy.special.zeta`)
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.

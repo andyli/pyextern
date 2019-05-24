@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.protobuf.config_pb2;
 @:pythonImport("tensorflow.core.protobuf.config_pb2", "GPUOptions") extern class GPUOptions {
-	static public var ALLOCATOR_TYPE_FIELD_NUMBER : Dynamic;
-	static public var ALLOW_GROWTH_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -23,13 +21,11 @@ package tensorflow.core.protobuf.config_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEFERRED_DELETION_BYTES_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EXPERIMENTAL_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -38,7 +34,6 @@ package tensorflow.core.protobuf.config_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FORCE_GPU_COMPATIBLE_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -71,9 +66,6 @@ package tensorflow.core.protobuf.config_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var PER_PROCESS_GPU_MEMORY_FRACTION_FIELD_NUMBER : Dynamic;
-	static public var POLLING_ACTIVE_DELAY_USECS_FIELD_NUMBER : Dynamic;
-	static public var POLLING_INACTIVE_DELAY_MSECS_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -94,7 +86,10 @@ package tensorflow.core.protobuf.config_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var VISIBLE_DEVICE_LIST_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -262,4 +257,40 @@ package tensorflow.core.protobuf.config_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.GPUOptions.allocator_type
+	**/
+	public var allocator_type : Dynamic;
+	/**
+		Field tensorflow.GPUOptions.allow_growth
+	**/
+	public var allow_growth : Dynamic;
+	/**
+		Field tensorflow.GPUOptions.deferred_deletion_bytes
+	**/
+	public var deferred_deletion_bytes : Dynamic;
+	/**
+		Field tensorflow.GPUOptions.experimental
+	**/
+	public var experimental : Dynamic;
+	/**
+		Field tensorflow.GPUOptions.force_gpu_compatible
+	**/
+	public var force_gpu_compatible : Dynamic;
+	/**
+		Field tensorflow.GPUOptions.per_process_gpu_memory_fraction
+	**/
+	public var per_process_gpu_memory_fraction : Dynamic;
+	/**
+		Field tensorflow.GPUOptions.polling_active_delay_usecs
+	**/
+	public var polling_active_delay_usecs : Dynamic;
+	/**
+		Field tensorflow.GPUOptions.polling_inactive_delay_msecs
+	**/
+	public var polling_inactive_delay_msecs : Dynamic;
+	/**
+		Field tensorflow.GPUOptions.visible_device_list
+	**/
+	public var visible_device_list : Dynamic;
 }

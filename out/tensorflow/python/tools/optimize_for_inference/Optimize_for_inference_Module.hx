@@ -10,6 +10,10 @@ package tensorflow.python.tools.optimize_for_inference;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Extracts placeholder types from a comma separate list.
+	**/
+	static public function _parse_placeholder_types(values:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public function main(unused_args:Dynamic):Dynamic;

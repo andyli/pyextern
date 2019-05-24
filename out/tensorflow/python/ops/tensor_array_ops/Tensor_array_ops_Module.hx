@@ -10,6 +10,7 @@ package tensorflow.python.ops.tensor_array_ops;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
+	static public function build_ta_with_new_flow(old_ta:Dynamic, flow:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;

@@ -41,11 +41,11 @@ package tensorflow.python.autograph.core.converter;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(recursive:Dynamic, autograph_decorators:Dynamic, partial_types:Dynamic, autograph_module:Dynamic, uncompiled_modules:Dynamic):Dynamic;
+	public function ___init__(options:Dynamic, partial_types:Dynamic, autograph_module:Dynamic, uncompiled_modules:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(recursive:Dynamic, autograph_decorators:Dynamic, partial_types:Dynamic, autograph_module:Dynamic, uncompiled_modules:Dynamic):Void;
+	public function new(options:Dynamic, partial_types:Dynamic, autograph_module:Dynamic, uncompiled_modules:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -108,6 +108,7 @@ package tensorflow.python.autograph.core.converter;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function add_symbol(name:Dynamic, value:Dynamic):Dynamic;
 	public function add_to_cache(original_entity:Dynamic, converted_ast:Dynamic):Dynamic;
 	public function new_namer(namespace:Dynamic):Dynamic;
 	/**

@@ -91,7 +91,7 @@ package tensorflow.losses;
 	/**
 		Adds a cosine-distance loss to the training procedure. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(dim)`. They will be removed in a future version.
 		Instructions for updating:
 		dim is deprecated, use axis instead
 		

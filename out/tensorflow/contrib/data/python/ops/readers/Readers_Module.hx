@@ -14,7 +14,7 @@ package tensorflow.contrib.data.python.ops.readers;
 	/**
 		Returns a `Dataset` of feature dictionaries from `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.make_batched_features_dataset(...)`.
 		
@@ -109,7 +109,7 @@ package tensorflow.contrib.data.python.ops.readers;
 	/**
 		Reads CSV files into a dataset. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.make_csv_dataset(...)`.
 		
@@ -199,7 +199,7 @@ package tensorflow.contrib.data.python.ops.readers;
 	/**
 		Reads batches of Examples. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.make_batched_features_dataset(...)`
 		

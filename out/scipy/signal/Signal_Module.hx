@@ -327,7 +327,7 @@ package scipy.signal;
 		.. [3] A.V. Oppenheim and R.W. Schafer, "Discrete-Time Signal
 		       Processing", Prentice-Hall, 1999, pp. 468-471.
 		.. [4] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function
+		       https://en.wikipedia.org/wiki/Window_function
 		.. [5] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
 		       "Numerical Recipes", Cambridge University Press, 1986, page 429.
 		
@@ -370,8 +370,10 @@ package scipy.signal;
 		    A scalar or length-2 sequence giving the critical frequencies (defined
 		    by the `norm` parameter).
 		    For analog filters, `Wn` is an angular frequency (e.g. rad/s).
-		    For digital filters, `Wn` is normalized from 0 to 1, where 1 is the
-		    Nyquist frequency, pi radians/sample.  (`Wn` is thus in
+		
+		    For digital filters, `Wn` are in the same units as `fs`.  By default,
+		    `fs` is 2 half-cycles/sample, so these are normalized from 0 to 1,
+		    where 1 is the Nyquist frequency.  (`Wn` is thus in
 		    half-cycles / sample.)
 		btype : {'lowpass', 'highpass', 'bandpass', 'bandstop'}, optional
 		    The type of filter.  Default is 'lowpass'.
@@ -405,6 +407,10 @@ package scipy.signal;
 		        angular frequency `Wn`.
 		
 		    .. versionadded:: 0.18.0
+		fs : float, optional
+		    The sampling frequency of the digital system.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -505,7 +511,7 @@ package scipy.signal;
 		       Characteristics", Proceedings of the Institution of Electrical
 		       Engineers, Part III, November 1949, Vol. 96, No. 44, pp. 487-490.
 	**/
-	static public function bessel(N:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic, ?norm:Dynamic):Dynamic;
+	static public function bessel(N:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic, ?norm:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Return (z,p,k) for analog prototype of an Nth-order Bessel filter.
 		
@@ -580,14 +586,52 @@ package scipy.signal;
 	**/
 	static public function besselap(N:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
-		Return a digital filter from an analog one using a bilinear transform.
+		Return a digital IIR filter from an analog one using a bilinear transform.
 		
-		The bilinear transform substitutes ``(z-1) / (z+1)`` for ``s``.
+		Transform a set of poles and zeros from the analog s-plane to the digital
+		z-plane using Tustin's method, which substitutes ``(z-1) / (z+1)`` for
+		``s``, maintaining the shape of the frequency response.
+		
+		Parameters
+		----------
+		b : array_like
+		    Numerator of the analog filter transfer function.
+		a : array_like
+		    Denominator of the analog filter transfer function.
+		fs : float
+		    Sample rate, as ordinary frequency (e.g. hertz). No prewarping is
+		    done in this function.
+		
+		Returns
+		-------
+		z : ndarray
+		    Numerator of the transformed digital filter transfer function.
+		p : ndarray
+		    Denominator of the transformed digital filter transfer function.
 		
 		See Also
 		--------
 		lp2lp, lp2hp, lp2bp, lp2bs
 		bilinear_zpk
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		>>> fs = 100
+		>>> bf = 2 * np.pi * np.array([7, 13])
+		>>> filts = signal.lti(*signal.butter(4, bf, btype='bandpass', analog=True))
+		>>> filtz = signal.lti(*signal.bilinear(filts.num, filts.den, fs))
+		>>> wz, hz = signal.freqz(filtz.num, filtz.den)
+		>>> ws, hs = signal.freqs(filts.num, filts.den, worN=fs*wz)
+		
+		>>> plt.semilogx(wz*fs/(2*np.pi), 20*np.log10(np.abs(hz).clip(1e-15)), label=r'$|H(j \omega)|$')
+		>>> plt.semilogx(wz*fs/(2*np.pi), 20*np.log10(np.abs(hs).clip(1e-15)), label=r'$|H_z(e^{j \omega})|$')
+		>>> plt.legend()
+		>>> plt.xlabel('Frequency [Hz]')
+		>>> plt.ylabel('Magnitude [dB]')
+		>>> plt.grid()
 	**/
 	static public function bilinear(b:Dynamic, a:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
@@ -626,6 +670,24 @@ package scipy.signal;
 		Notes
 		-----
 		.. versionadded:: 1.1.0
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		>>> fs = 100
+		>>> bf = 2 * np.pi * np.array([7, 13])
+		>>> filts = signal.lti(*signal.butter(4, bf, btype='bandpass', analog=True, output='zpk'))
+		>>> filtz = signal.lti(*signal.bilinear_zpk(filts.zeros, filts.poles, filts.gain, fs))
+		>>> wz, hz = signal.freqz_zpk(filtz.zeros, filtz.poles, filtz.gain)
+		>>> ws, hs = signal.freqs_zpk(filts.zeros, filts.poles, filts.gain, worN=fs*wz)
+		>>> plt.semilogx(wz*fs/(2*np.pi), 20*np.log10(np.abs(hz).clip(1e-15)), label=r'$|H(j \omega)|$')
+		>>> plt.semilogx(wz*fs/(2*np.pi), 20*np.log10(np.abs(hs).clip(1e-15)), label=r'$|H_z(e^{j \omega})|$')
+		>>> plt.legend()
+		>>> plt.xlabel('Frequency [Hz]')
+		>>> plt.ylabel('Magnitude [dB]')
+		>>> plt.grid()
 	**/
 	static public function bilinear_zpk(z:Dynamic, p:Dynamic, k:Dynamic, fs:Dynamic):Dynamic;
 	/**
@@ -702,7 +764,8 @@ package scipy.signal;
 		>>> plt.figure()
 		>>> A = fft(window, 2048) / (len(window)/2.0)
 		>>> freq = np.linspace(-0.5, 0.5, len(A))
-		>>> response = 20 * np.log10(np.abs(fftshift(A / abs(A).max())))
+		>>> response = np.abs(fftshift(A / abs(A).max()))
+		>>> response = 20 * np.log10(np.maximum(response, 1e-10))
 		>>> plt.plot(freq, response)
 		>>> plt.axis([-0.5, 0.5, -120, 0])
 		>>> plt.title("Frequency response of the Blackman window")
@@ -938,9 +1001,12 @@ package scipy.signal;
 		    A scalar or length-2 sequence giving the critical frequencies.
 		    For a Butterworth filter, this is the point at which the gain
 		    drops to 1/sqrt(2) that of the passband (the "-3 dB point").
-		    For digital filters, `Wn` is normalized from 0 to 1, where 1 is the
-		    Nyquist frequency, pi radians/sample.  (`Wn` is thus in
+		
+		    For digital filters, `Wn` are in the same units as `fs`.  By default,
+		    `fs` is 2 half-cycles/sample, so these are normalized from 0 to 1,
+		    where 1 is the Nyquist frequency.  (`Wn` is thus in
 		    half-cycles / sample.)
+		
 		    For analog filters, `Wn` is an angular frequency (e.g. rad/s).
 		btype : {'lowpass', 'highpass', 'bandpass', 'bandstop'}, optional
 		    The type of filter.  Default is 'lowpass'.
@@ -950,6 +1016,10 @@ package scipy.signal;
 		output : {'ba', 'zpk', 'sos'}, optional
 		    Type of output:  numerator/denominator ('ba'), pole-zero ('zpk'), or
 		    second-order sections ('sos'). Default is 'ba'.
+		fs : float, optional
+		    The sampling frequency of the digital system.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -976,7 +1046,8 @@ package scipy.signal;
 		
 		Examples
 		--------
-		Plot the filter's frequency response, showing the critical points:
+		Design an analog filter and plot its frequency response, showing the
+		critical points:
 		
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
@@ -991,8 +1062,31 @@ package scipy.signal;
 		>>> plt.grid(which='both', axis='both')
 		>>> plt.axvline(100, color='green') # cutoff frequency
 		>>> plt.show()
+		
+		Generate a signal made up of 10 Hz and 20 Hz, sampled at 1 kHz
+		
+		>>> t = np.linspace(0, 1, 1000, False)  # 1 second
+		>>> sig = np.sin(2*np.pi*10*t) + np.sin(2*np.pi*20*t)
+		>>> fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
+		>>> ax1.plot(t, sig)
+		>>> ax1.set_title('10 Hz and 20 Hz sinusoids')
+		>>> ax1.axis([0, 1, -2, 2])
+		
+		Design a digital high-pass filter at 15 Hz to remove the 10 Hz tone, and
+		apply it to the signal.  (It's recommended to use second-order sections
+		format when filtering, to avoid numerical error with transfer function
+		(``ba``) format):
+		
+		>>> sos = signal.butter(10, 15, 'hp', fs=1000, output='sos')
+		>>> filtered = signal.sosfilt(sos, sig)
+		>>> ax2.plot(t, filtered)
+		>>> ax2.set_title('After 15 Hz high-pass filter')
+		>>> ax2.axis([0, 1, -2, 2])
+		>>> ax2.set_xlabel('Time [seconds]')
+		>>> plt.tight_layout()
+		>>> plt.show()
 	**/
-	static public function butter(N:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic):Dynamic;
+	static public function butter(N:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Butterworth filter order selection.
 		
@@ -1004,8 +1098,10 @@ package scipy.signal;
 		----------
 		wp, ws : float
 		    Passband and stopband edge frequencies.
-		    For digital filters, these are normalized from 0 to 1, where 1 is the
-		    Nyquist frequency, pi radians/sample.  (`wp` and `ws` are thus in
+		
+		    For digital filters, these are in the same units as `fs`.  By default,
+		    `fs` is 2 half-cycles/sample, so these are normalized from 0 to 1,
+		    where 1 is the Nyquist frequency.  (`wp` and `ws` are thus in
 		    half-cycles / sample.)  For example:
 		
 		        - Lowpass:   wp = 0.2,          ws = 0.3
@@ -1014,7 +1110,6 @@ package scipy.signal;
 		        - Bandstop:  wp = [0.1, 0.6],   ws = [0.2, 0.5]
 		
 		    For analog filters, `wp` and `ws` are angular frequencies (e.g. rad/s).
-		
 		gpass : float
 		    The maximum loss in the passband (dB).
 		gstop : float
@@ -1022,6 +1117,10 @@ package scipy.signal;
 		analog : bool, optional
 		    When True, return an analog filter, otherwise a digital filter is
 		    returned.
+		fs : float, optional
+		    The sampling frequency of the digital system.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -1029,7 +1128,8 @@ package scipy.signal;
 		    The lowest order for a Butterworth filter which meets specs.
 		wn : ndarray or float
 		    The Butterworth natural frequency (i.e. the "3dB frequency").  Should
-		    be used with `butter` to give filter results.
+		    be used with `butter` to give filter results. If `fs` is specified,
+		    this is in the same units, and `fs` must also be passed to `butter`.
 		
 		See Also
 		--------
@@ -1063,7 +1163,7 @@ package scipy.signal;
 		>>> plt.axis([10, 100, -60, 3])
 		>>> plt.show()
 	**/
-	static public function buttord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
+	static public function buttord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic, ?fs:Dynamic):Int;
 	/**
 		Return (x, phi, psi) at dyadic points ``K/2**J`` from filter coefficients.
 		
@@ -1119,8 +1219,10 @@ package scipy.signal;
 		----------
 		wp, ws : float
 		    Passband and stopband edge frequencies.
-		    For digital filters, these are normalized from 0 to 1, where 1 is the
-		    Nyquist frequency, pi radians/sample.  (`wp` and `ws` are thus in
+		
+		    For digital filters, these are in the same units as `fs`.  By default,
+		    `fs` is 2 half-cycles/sample, so these are normalized from 0 to 1,
+		    where 1 is the Nyquist frequency.  (`wp` and `ws` are thus in
 		    half-cycles / sample.)  For example:
 		
 		        - Lowpass:   wp = 0.2,          ws = 0.3
@@ -1129,7 +1231,6 @@ package scipy.signal;
 		        - Bandstop:  wp = [0.1, 0.6],   ws = [0.2, 0.5]
 		
 		    For analog filters, `wp` and `ws` are angular frequencies (e.g. rad/s).
-		
 		gpass : float
 		    The maximum loss in the passband (dB).
 		gstop : float
@@ -1137,6 +1238,10 @@ package scipy.signal;
 		analog : bool, optional
 		    When True, return an analog filter, otherwise a digital filter is
 		    returned.
+		fs : float, optional
+		    The sampling frequency of the digital system.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -1144,7 +1249,8 @@ package scipy.signal;
 		    The lowest order for a Chebyshev type I filter that meets specs.
 		wn : ndarray or float
 		    The Chebyshev natural frequency (the "3dB frequency") for use with
-		    `cheby1` to give filter results.
+		    `cheby1` to give filter results. If `fs` is specified,
+		    this is in the same units, and `fs` must also be passed to `cheby1`.
 		
 		See Also
 		--------
@@ -1176,7 +1282,7 @@ package scipy.signal;
 		>>> plt.axis([0.08, 1, -60, 3])
 		>>> plt.show()
 	**/
-	static public function cheb1ord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
+	static public function cheb1ord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic, ?fs:Dynamic):Int;
 	/**
 		Return (z,p,k) for Nth-order Chebyshev type I analog lowpass filter.
 		
@@ -1201,8 +1307,10 @@ package scipy.signal;
 		----------
 		wp, ws : float
 		    Passband and stopband edge frequencies.
-		    For digital filters, these are normalized from 0 to 1, where 1 is the
-		    Nyquist frequency, pi radians/sample.  (`wp` and `ws` are thus in
+		
+		    For digital filters, these are in the same units as `fs`.  By default,
+		    `fs` is 2 half-cycles/sample, so these are normalized from 0 to 1,
+		    where 1 is the Nyquist frequency.  (`wp` and `ws` are thus in
 		    half-cycles / sample.)  For example:
 		
 		        - Lowpass:   wp = 0.2,          ws = 0.3
@@ -1211,7 +1319,6 @@ package scipy.signal;
 		        - Bandstop:  wp = [0.1, 0.6],   ws = [0.2, 0.5]
 		
 		    For analog filters, `wp` and `ws` are angular frequencies (e.g. rad/s).
-		
 		gpass : float
 		    The maximum loss in the passband (dB).
 		gstop : float
@@ -1219,6 +1326,10 @@ package scipy.signal;
 		analog : bool, optional
 		    When True, return an analog filter, otherwise a digital filter is
 		    returned.
+		fs : float, optional
+		    The sampling frequency of the digital system.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -1226,7 +1337,8 @@ package scipy.signal;
 		    The lowest order for a Chebyshev type II filter that meets specs.
 		wn : ndarray or float
 		    The Chebyshev natural frequency (the "3dB frequency") for use with
-		    `cheby2` to give filter results.
+		    `cheby2` to give filter results. If `fs` is specified,
+		    this is in the same units, and `fs` must also be passed to `cheby2`.
 		
 		See Also
 		--------
@@ -1260,7 +1372,7 @@ package scipy.signal;
 		>>> plt.axis([0.06, 1, -80, 3])
 		>>> plt.show()
 	**/
-	static public function cheb2ord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
+	static public function cheb2ord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic, ?fs:Dynamic):Int;
 	/**
 		Return a Dolph-Chebyshev window.
 		
@@ -1366,9 +1478,12 @@ package scipy.signal;
 		    A scalar or length-2 sequence giving the critical frequencies.
 		    For Type I filters, this is the point in the transition band at which
 		    the gain first drops below -`rp`.
-		    For digital filters, `Wn` is normalized from 0 to 1, where 1 is the
-		    Nyquist frequency, pi radians/sample.  (`Wn` is thus in
+		
+		    For digital filters, `Wn` are in the same units as `fs`.  By default,
+		    `fs` is 2 half-cycles/sample, so these are normalized from 0 to 1,
+		    where 1 is the Nyquist frequency.  (`Wn` is thus in
 		    half-cycles / sample.)
+		
 		    For analog filters, `Wn` is an angular frequency (e.g. rad/s).
 		btype : {'lowpass', 'highpass', 'bandpass', 'bandstop'}, optional
 		    The type of filter.  Default is 'lowpass'.
@@ -1378,6 +1493,10 @@ package scipy.signal;
 		output : {'ba', 'zpk', 'sos'}, optional
 		    Type of output:  numerator/denominator ('ba'), pole-zero ('zpk'), or
 		    second-order sections ('sos'). Default is 'ba'.
+		fs : float, optional
+		    The sampling frequency of the digital system.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -1412,7 +1531,8 @@ package scipy.signal;
 		
 		Examples
 		--------
-		Plot the filter's frequency response, showing the critical points:
+		Design an analog filter and plot its frequency response, showing the
+		critical points:
 		
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
@@ -1428,8 +1548,31 @@ package scipy.signal;
 		>>> plt.axvline(100, color='green') # cutoff frequency
 		>>> plt.axhline(-5, color='green') # rp
 		>>> plt.show()
+		
+		Generate a signal made up of 10 Hz and 20 Hz, sampled at 1 kHz
+		
+		>>> t = np.linspace(0, 1, 1000, False)  # 1 second
+		>>> sig = np.sin(2*np.pi*10*t) + np.sin(2*np.pi*20*t)
+		>>> fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
+		>>> ax1.plot(t, sig)
+		>>> ax1.set_title('10 Hz and 20 Hz sinusoids')
+		>>> ax1.axis([0, 1, -2, 2])
+		
+		Design a digital high-pass filter at 15 Hz to remove the 10 Hz tone, and
+		apply it to the signal.  (It's recommended to use second-order sections
+		format when filtering, to avoid numerical error with transfer function
+		(``ba``) format):
+		
+		>>> sos = signal.cheby1(10, 1, 15, 'hp', fs=1000, output='sos')
+		>>> filtered = signal.sosfilt(sos, sig)
+		>>> ax2.plot(t, filtered)
+		>>> ax2.set_title('After 15 Hz high-pass filter')
+		>>> ax2.axis([0, 1, -2, 2])
+		>>> ax2.set_xlabel('Time [seconds]')
+		>>> plt.tight_layout()
+		>>> plt.show()
 	**/
-	static public function cheby1(N:Dynamic, rp:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic):Dynamic;
+	static public function cheby1(N:Dynamic, rp:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Chebyshev type II digital and analog filter design.
 		
@@ -1447,9 +1590,12 @@ package scipy.signal;
 		    A scalar or length-2 sequence giving the critical frequencies.
 		    For Type II filters, this is the point in the transition band at which
 		    the gain first reaches -`rs`.
-		    For digital filters, `Wn` is normalized from 0 to 1, where 1 is the
-		    Nyquist frequency, pi radians/sample.  (`Wn` is thus in
+		
+		    For digital filters, `Wn` are in the same units as `fs`.  By default,
+		    `fs` is 2 half-cycles/sample, so these are normalized from 0 to 1,
+		    where 1 is the Nyquist frequency.  (`Wn` is thus in
 		    half-cycles / sample.)
+		
 		    For analog filters, `Wn` is an angular frequency (e.g. rad/s).
 		btype : {'lowpass', 'highpass', 'bandpass', 'bandstop'}, optional
 		    The type of filter.  Default is 'lowpass'.
@@ -1459,6 +1605,10 @@ package scipy.signal;
 		output : {'ba', 'zpk', 'sos'}, optional
 		    Type of output:  numerator/denominator ('ba'), pole-zero ('zpk'), or
 		    second-order sections ('sos'). Default is 'ba'.
+		fs : float, optional
+		    The sampling frequency of the digital system.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -1488,7 +1638,8 @@ package scipy.signal;
 		
 		Examples
 		--------
-		Plot the filter's frequency response, showing the critical points:
+		Design an analog filter and plot its frequency response, showing the
+		critical points:
 		
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
@@ -1504,8 +1655,30 @@ package scipy.signal;
 		>>> plt.axvline(100, color='green') # cutoff frequency
 		>>> plt.axhline(-40, color='green') # rs
 		>>> plt.show()
+		
+		Generate a signal made up of 10 Hz and 20 Hz, sampled at 1 kHz
+		
+		>>> t = np.linspace(0, 1, 1000, False)  # 1 second
+		>>> sig = np.sin(2*np.pi*10*t) + np.sin(2*np.pi*20*t)
+		>>> fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
+		>>> ax1.plot(t, sig)
+		>>> ax1.set_title('10 Hz and 20 Hz sinusoids')
+		>>> ax1.axis([0, 1, -2, 2])
+		
+		Design a digital high-pass filter at 17 Hz to remove the 10 Hz tone, and
+		apply it to the signal.  (It's recommended to use second-order sections
+		format when filtering, to avoid numerical error with transfer function
+		(``ba``) format):
+		
+		>>> sos = signal.cheby2(12, 20, 17, 'hp', fs=1000, output='sos')
+		>>> filtered = signal.sosfilt(sos, sig)
+		>>> ax2.plot(t, filtered)
+		>>> ax2.set_title('After 17 Hz high-pass filter')
+		>>> ax2.axis([0, 1, -2, 2])
+		>>> ax2.set_xlabel('Time [seconds]')
+		>>> plt.show()
 	**/
-	static public function cheby2(N:Dynamic, rs:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic):Dynamic;
+	static public function cheby2(N:Dynamic, rs:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Check whether the Constant OverLap Add (COLA) constraint is met
 		
@@ -1533,15 +1706,16 @@ package scipy.signal;
 		
 		See Also
 		--------
+		check_NOLA: Check whether the Nonzero Overlap Add (NOLA) constraint is met
 		stft: Short Time Fourier Transform
 		istft: Inverse Short Time Fourier Transform
 		
 		Notes
 		-----
 		In order to enable inversion of an STFT via the inverse STFT in
-		`istft`, the signal windowing must obey the constraint of "Constant
-		OverLap Add" (COLA). This ensures that every point in the input data
-		is equally weighted, thereby avoiding aliasing and allowing full
+		`istft`, it is sufficient that the signal windowing obeys the constraint of
+		"Constant OverLap Add" (COLA). This ensures that every point in the input
+		data is equally weighted, thereby avoiding aliasing and allowing full
 		reconstruction.
 		
 		Some examples of windows that satisfy COLA:
@@ -1599,6 +1773,103 @@ package scipy.signal;
 		True
 	**/
 	static public function check_COLA(window:Dynamic, nperseg:Dynamic, noverlap:Dynamic, ?tol:Dynamic):Bool;
+	/**
+		Check whether the Nonzero Overlap Add (NOLA) constraint is met
+		
+		Parameters
+		----------
+		window : str or tuple or array_like
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg.
+		nperseg : int
+		    Length of each segment.
+		noverlap : int
+		    Number of points to overlap between segments.
+		tol : float, optional
+		    The allowed variance of a bin's weighted sum from the median bin
+		    sum.
+		
+		Returns
+		-------
+		verdict : bool
+		    `True` if chosen combination satisfies the NOLA constraint within
+		    `tol`, `False` otherwise
+		
+		See Also
+		--------
+		check_COLA: Check whether the Constant OverLap Add (COLA) constraint is met
+		stft: Short Time Fourier Transform
+		istft: Inverse Short Time Fourier Transform
+		
+		Notes
+		-----
+		In order to enable inversion of an STFT via the inverse STFT in
+		`istft`, the signal windowing must obey the constraint of "nonzero
+		overlap add" (NOLA):
+		
+		.. math:: \sum_{t}w^{2}[n-tH] \ne 0
+		
+		for all :math:`n`, where :math:`w` is the window function, :math:`t` is the
+		frame index, and :math:`H` is the hop size (:math:`H` = `nperseg` -
+		`noverlap`).
+		
+		This ensures that the normalization factors in the denominator of the
+		overlap-add inversion equation are not zero. Only very pathological windows
+		will fail the NOLA constraint.
+		
+		.. versionadded:: 1.2.0
+		
+		References
+		----------
+		.. [1] Julius O. Smith III, "Spectral Audio Signal Processing", W3K
+		       Publishing, 2011,ISBN 978-0-9745607-3-1.
+		.. [2] G. Heinzel, A. Ruediger and R. Schilling, "Spectrum and
+		       spectral density estimation by the Discrete Fourier transform
+		       (DFT), including a comprehensive list of window functions and
+		       some new at-top windows", 2002,
+		       http://hdl.handle.net/11858/00-001M-0000-0013-557A-5
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		
+		Confirm NOLA condition for rectangular window of 75% (3/4) overlap:
+		
+		>>> signal.check_NOLA(signal.boxcar(100), 100, 75)
+		True
+		
+		NOLA is also true for 25% (1/4) overlap:
+		
+		>>> signal.check_NOLA(signal.boxcar(100), 100, 25)
+		True
+		
+		"Symmetrical" Hann window (for filter design) is also NOLA:
+		
+		>>> signal.check_NOLA(signal.hann(120, sym=True), 120, 60)
+		True
+		
+		As long as there is overlap, it takes quite a pathological window to fail
+		NOLA:
+		
+		>>> w = np.ones(64, dtype="float")
+		>>> w[::2] = 0
+		>>> signal.check_NOLA(w, 64, 32)
+		False
+		
+		If there is not enough overlap, a window with zeros at the ends will not
+		work:
+		
+		>>> signal.check_NOLA(signal.hann(64), 64, 0)
+		False
+		>>> signal.check_NOLA(signal.hann(64), 64, 1)
+		False
+		>>> signal.check_NOLA(signal.hann(64), 64, 2)
+		True
+	**/
+	static public function check_NOLA(window:Dynamic, nperseg:Dynamic, noverlap:Dynamic, ?tol:Dynamic):Bool;
 	/**
 		Frequency-swept cosine generator.
 		
@@ -1666,7 +1937,7 @@ package scipy.signal;
 		        ``f(t) = f1 - (f1 - f0) * (t1 - t)**2 / t1**2``
 		
 		    To use a more general quadratic function, or an arbitrary
-		    polynomial, use the function `scipy.signal.waveforms.sweep_poly`.
+		    polynomial, use the function `scipy.signal.sweep_poly`.
 		
 		logarithmic, log, lo:
 		
@@ -1728,7 +1999,7 @@ package scipy.signal;
 		>>> ff, tt, Sxx = spectrogram(w, fs=fs, noverlap=256, nperseg=512,
 		...                           nfft=2048)
 		>>> plt.pcolormesh(tt, ff[:513], Sxx[:513], cmap='gray_r')
-		>>> plt.title('Quadratic Chirp, f(0)=2500, f(10)=250\n' +
+		>>> plt.title('Quadratic Chirp, f(0)=1500, f(10)=250\n' +
 		...           '(vertex_zero=False)')
 		>>> plt.xlabel('t (sec)')
 		>>> plt.ylabel('Frequency (Hz)')
@@ -1995,7 +2266,7 @@ package scipy.signal;
 		
 		dt : float
 		    The discretization time step.
-		method : {"gbt", "bilinear", "euler", "backward_diff", "zoh"}, optional
+		method : str, optional
 		    Which method to use:
 		
 		        * gbt: generalized bilinear transformation
@@ -2003,6 +2274,8 @@ package scipy.signal;
 		        * euler: Euler (or forward differencing) method ("gbt" with alpha=0)
 		        * backward_diff: Backwards differencing ("gbt" with alpha=1.0)
 		        * zoh: zero-order hold (default)
+		        * foh: first-order hold (*versionadded: 1.3.0*)
+		        * impulse: equivalent impulse response (*versionadded: 1.3.0*)
 		
 		alpha : float within [0, 1], optional
 		    The generalized bilinear transformation weighting parameter, which
@@ -2025,18 +2298,23 @@ package scipy.signal;
 		an Euler's method technique, or a backwards differencing technique.
 		
 		The Zero-Order Hold (zoh) method is based on [1]_, the generalized bilinear
-		approximation is based on [2]_ and [3]_.
+		approximation is based on [2]_ and [3]_, the First-Order Hold (foh) method
+		is based on [4]_.
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Discretization#Discretization_of_linear_state_space_models
+		.. [1] https://en.wikipedia.org/wiki/Discretization#Discretization_of_linear_state_space_models
 		
 		.. [2] http://techteach.no/publications/discretetime_signals_systems/discrete.pdf
 		
 		.. [3] G. Zhang, X. Chen, and T. Chen, Digital redesign via the generalized
 		    bilinear transformation, Int. J. Control, vol. 82, no. 4, pp. 741-754,
 		    2009.
-		    (http://www.mypolyuweb.hk/~magzhang/Research/ZCC09_IJC.pdf)
+		    (https://www.mypolyuweb.hk/~magzhang/Research/ZCC09_IJC.pdf)
+		
+		.. [4] G. F. Franklin, J. D. Powell, and M. L. Workman, Digital control
+		    of dynamic systems, 3rd ed. Menlo Park, Calif: Addison-Wesley,
+		    pp. 204-206, 1998.
 	**/
 	static public function cont2discrete(system:Dynamic, dt:Dynamic, ?method:Dynamic, ?alpha:Dynamic):Dynamic;
 	/**
@@ -2463,8 +2741,8 @@ package scipy.signal;
 		    done. Defaults to 'constant'.
 		return_onesided : bool, optional
 		    If `True`, return a one-sided spectrum for real data. If
-		    `False` return a two-sided spectrum. Note that for complex
-		    data, a two-sided spectrum is always returned.
+		    `False` return a two-sided spectrum. Defaults to `True`, but for 
+		    complex data, a two-sided spectrum is always returned.
 		scaling : { 'density', 'spectrum' }, optional
 		    Selects between computing the cross spectral density ('density')
 		    where `Pxy` has units of V**2/Hz and computing the cross spectrum
@@ -2473,6 +2751,10 @@ package scipy.signal;
 		axis : int, optional
 		    Axis along which the CSD is computed for both inputs; the
 		    default is over the last axis (i.e. ``axis=-1``).
+		average : { 'mean', 'median' }, optional
+		    Method to use when averaging periodograms. Defaults to 'mean'.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -2541,7 +2823,7 @@ package scipy.signal;
 		>>> plt.ylabel('CSD [V**2/Hz]')
 		>>> plt.show()
 	**/
-	static public function csd(x:Dynamic, y:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?detrend:Dynamic, ?return_onesided:Dynamic, ?scaling:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function csd(x:Dynamic, y:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?detrend:Dynamic, ?return_onesided:Dynamic, ?scaling:Dynamic, ?axis:Dynamic, ?average:Dynamic):Dynamic;
 	/**
 		Compute cubic spline coefficients for rank-1 array.
 		
@@ -2825,6 +3107,8 @@ package scipy.signal;
 		    A sequence of break points. If given, an individual linear fit is
 		    performed for each part of `data` between two break points.
 		    Break points are specified as indices into `data`.
+		overwrite_data : bool, optional
+		    If True, perform in place detrending and avoid a copy. Default is False
 		
 		Returns
 		-------
@@ -2841,7 +3125,7 @@ package scipy.signal;
 		>>> (signal.detrend(x) - noise).max() < 0.01
 		True
 	**/
-	static public function detrend(data:Dynamic, ?axis:Dynamic, ?type:Dynamic, ?bp:Dynamic):Dynamic;
+	static public function detrend(data:Dynamic, ?axis:Dynamic, ?type:Dynamic, ?bp:Dynamic, ?overwrite_data:Dynamic):Dynamic;
 	/**
 		Calculate the frequency response of a discrete-time system.
 		
@@ -2929,13 +3213,25 @@ package scipy.signal;
 		-------
 		tout : ndarray
 		    Time values for the output, as a 1-D array.
-		yout : ndarray
+		yout : tuple of ndarray
 		    Impulse response of system.  Each element of the tuple represents
 		    the output of the system based on an impulse in each input.
 		
 		See Also
 		--------
 		impulse, dstep, dlsim, cont2discrete
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		>>> butter = signal.dlti(*signal.butter(3, 0.5))
+		>>> t, y = signal.dimpulse(butter, n=25)
+		>>> plt.step(t, np.squeeze(y))
+		>>> plt.grid()
+		>>> plt.xlabel('n [samples]')
+		>>> plt.ylabel('Amplitude')
 	**/
 	static public function dimpulse(system:Dynamic, ?x0:Dynamic, ?t:Dynamic, ?n:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -3019,13 +3315,25 @@ package scipy.signal;
 		-------
 		tout : ndarray
 		    Output time points, as a 1-D array.
-		yout : ndarray
+		yout : tuple of ndarray
 		    Step response of system.  Each element of the tuple represents
 		    the output of the system based on a step response to each input.
 		
 		See Also
 		--------
 		step, dimpulse, dlsim, cont2discrete
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		>>> butter = signal.dlti(*signal.butter(3, 0.5))
+		>>> t, y = signal.dstep(butter, n=25)
+		>>> plt.step(t, np.squeeze(y))
+		>>> plt.grid()
+		>>> plt.xlabel('n [samples]')
+		>>> plt.ylabel('Amplitude')
 	**/
 	static public function dstep(system:Dynamic, ?x0:Dynamic, ?t:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -3048,9 +3356,12 @@ package scipy.signal;
 		    A scalar or length-2 sequence giving the critical frequencies.
 		    For elliptic filters, this is the point in the transition band at
 		    which the gain first drops below -`rp`.
-		    For digital filters, `Wn` is normalized from 0 to 1, where 1 is the
-		    Nyquist frequency, pi radians/sample.  (`Wn` is thus in
+		
+		    For digital filters, `Wn` are in the same units as `fs`.  By default,
+		    `fs` is 2 half-cycles/sample, so these are normalized from 0 to 1,
+		    where 1 is the Nyquist frequency.  (`Wn` is thus in
 		    half-cycles / sample.)
+		
 		    For analog filters, `Wn` is an angular frequency (e.g. rad/s).
 		btype : {'lowpass', 'highpass', 'bandpass', 'bandstop'}, optional
 		    The type of filter.  Default is 'lowpass'.
@@ -3060,6 +3371,10 @@ package scipy.signal;
 		output : {'ba', 'zpk', 'sos'}, optional
 		    Type of output:  numerator/denominator ('ba'), pole-zero ('zpk'), or
 		    second-order sections ('sos'). Default is 'ba'.
+		fs : float, optional
+		    The sampling frequency of the digital system.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -3097,7 +3412,8 @@ package scipy.signal;
 		
 		Examples
 		--------
-		Plot the filter's frequency response, showing the critical points:
+		Design an analog filter and plot its frequency response, showing the
+		critical points:
 		
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
@@ -3114,8 +3430,31 @@ package scipy.signal;
 		>>> plt.axhline(-40, color='green') # rs
 		>>> plt.axhline(-5, color='green') # rp
 		>>> plt.show()
+		
+		Generate a signal made up of 10 Hz and 20 Hz, sampled at 1 kHz
+		
+		>>> t = np.linspace(0, 1, 1000, False)  # 1 second
+		>>> sig = np.sin(2*np.pi*10*t) + np.sin(2*np.pi*20*t)
+		>>> fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
+		>>> ax1.plot(t, sig)
+		>>> ax1.set_title('10 Hz and 20 Hz sinusoids')
+		>>> ax1.axis([0, 1, -2, 2])
+		
+		Design a digital high-pass filter at 17 Hz to remove the 10 Hz tone, and
+		apply it to the signal.  (It's recommended to use second-order sections
+		format when filtering, to avoid numerical error with transfer function
+		(``ba``) format):
+		
+		>>> sos = signal.ellip(8, 1, 100, 17, 'hp', fs=1000, output='sos')
+		>>> filtered = signal.sosfilt(sos, sig)
+		>>> ax2.plot(t, filtered)
+		>>> ax2.set_title('After 17 Hz high-pass filter')
+		>>> ax2.axis([0, 1, -2, 2])
+		>>> ax2.set_xlabel('Time [seconds]')
+		>>> plt.tight_layout()
+		>>> plt.show()
 	**/
-	static public function ellip(N:Dynamic, rp:Dynamic, rs:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic):Dynamic;
+	static public function ellip(N:Dynamic, rp:Dynamic, rs:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Return (z,p,k) of Nth-order elliptic analog lowpass filter.
 		
@@ -3146,8 +3485,10 @@ package scipy.signal;
 		----------
 		wp, ws : float
 		    Passband and stopband edge frequencies.
-		    For digital filters, these are normalized from 0 to 1, where 1 is the
-		    Nyquist frequency, pi radians/sample.  (`wp` and `ws` are thus in
+		
+		    For digital filters, these are in the same units as `fs`.  By default,
+		    `fs` is 2 half-cycles/sample, so these are normalized from 0 to 1,
+		    where 1 is the Nyquist frequency.  (`wp` and `ws` are thus in
 		    half-cycles / sample.)  For example:
 		
 		        - Lowpass:   wp = 0.2,          ws = 0.3
@@ -3156,7 +3497,6 @@ package scipy.signal;
 		        - Bandstop:  wp = [0.1, 0.6],   ws = [0.2, 0.5]
 		
 		    For analog filters, `wp` and `ws` are angular frequencies (e.g. rad/s).
-		
 		gpass : float
 		    The maximum loss in the passband (dB).
 		gstop : float
@@ -3164,6 +3504,10 @@ package scipy.signal;
 		analog : bool, optional
 		    When True, return an analog filter, otherwise a digital filter is
 		    returned.
+		fs : float, optional
+		    The sampling frequency of the digital system.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -3171,7 +3515,8 @@ package scipy.signal;
 		    The lowest order for an Elliptic (Cauer) filter that meets specs.
 		wn : ndarray or float
 		    The Chebyshev natural frequency (the "3dB frequency") for use with
-		    `ellip` to give filter results.
+		    `ellip` to give filter results. If `fs` is specified,
+		    this is in the same units, and `fs` must also be passed to `ellip`.
 		
 		See Also
 		--------
@@ -3203,7 +3548,7 @@ package scipy.signal;
 		>>> plt.axis([1, 300, -80, 3])
 		>>> plt.show()
 	**/
-	static public function ellipord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
+	static public function ellipord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic, ?fs:Dynamic):Int;
 	/**
 		Return an exponential (or Poisson) window.
 		
@@ -3313,6 +3658,11 @@ package scipy.signal;
 		    ``same``
 		       The output is the same size as `in1`, centered
 		       with respect to the 'full' output.
+		       axis : tuple, optional
+		axes : int or array_like of ints or None, optional
+		    Axes over which to compute the convolution.
+		    The default is over all axes.
+		
 		
 		Returns
 		-------
@@ -3360,7 +3710,7 @@ package scipy.signal;
 		>>> ax_blurred.set_axis_off()
 		>>> fig.show()
 	**/
-	static public function fftconvolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
+	static public function fftconvolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic, ?axes:Dynamic):Array<Dynamic>;
 	/**
 		Apply a digital filter forward and backward to a signal.
 		
@@ -3536,7 +3886,8 @@ package scipy.signal;
 		    required threshold.
 		distance : number, optional
 		    Required minimal horizontal distance (>= 1) in samples between
-		    neighbouring peaks. The removal order is explained in the notes section.
+		    neighbouring peaks. Smaller peaks are removed first until the condition
+		    is fulfilled for all remaining peaks.
 		prominence : number or ndarray or sequence, optional
 		    Required prominence of peaks. Either a number, ``None``, an array
 		    matching `x` or a 2-element sequence of the former. The first
@@ -3546,8 +3897,8 @@ package scipy.signal;
 		    Required width of peaks in samples. Either a number, ``None``, an array
 		    matching `x` or a 2-element sequence of the former. The first
 		    element is always interpreted as the  minimal and the second, if
-		    supplied, as the maximal required prominence.
-		wlen : number, optional
+		    supplied, as the maximal required width.
+		wlen : int, optional
 		    Used for calculation of the peaks prominences, thus it is only used if
 		    one of the arguments `prominence` or `width` is given. See argument
 		    `wlen` in `peak_prominences` for a full description of its effects.
@@ -3555,6 +3906,13 @@ package scipy.signal;
 		    Used for calculation of the peaks width, thus it is only used if `width`
 		    is given. See argument  `rel_height` in `peak_widths` for a full
 		    description of its effects.
+		plateau_size : number or ndarray or sequence, optional
+		    Required size of the flat top of peaks in samples. Either a number,
+		    ``None``, an array matching `x` or a 2-element sequence of the former.
+		    The first element is always interpreted as the minimal and the second,
+		    if supplied as the maximal required plateau size.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -3570,16 +3928,33 @@ package scipy.signal;
 		    * 'left_thresholds', 'right_thresholds'
 		          If `threshold` is given, these keys contain a peaks vertical
 		          distance to its neighbouring samples.
-		    * 'peak_prominences', 'right_bases', 'left_bases'
+		    * 'prominences', 'right_bases', 'left_bases'
 		          If `prominence` is given, these keys are accessible. See
 		          `peak_prominences` for a description of their content.
 		    * 'width_heights', 'left_ips', 'right_ips'
 		          If `width` is given, these keys are accessible. See `peak_widths`
 		          for a description of their content.
+		    * 'plateau_sizes', left_edges', 'right_edges'
+		          If `plateau_size` is given, these keys are accessible and contain
+		          the indices of a peak's edges (edges are still part of the
+		          plateau) and the calculated plateau sizes.
+		
+		          .. versionadded:: 1.2.0
 		
 		    To calculate and return properties without excluding peaks, provide the
 		    open interval ``(None, None)`` as a value to the appropriate argument
 		    (excluding `distance`).
+		
+		Warns
+		-----
+		PeakPropertyWarning
+		    Raised if a peak's properties have unexpected values (see
+		    `peak_prominences` and `peak_widths`).
+		
+		Warnings
+		--------
+		This function may return unexpected results for data containing NaNs. To
+		avoid this, NaNs should either be removed or replaced.
 		
 		See Also
 		--------
@@ -3612,21 +3987,15 @@ package scipy.signal;
 		* For several conditions the interval borders can be specified with
 		  arrays matching `x` in shape which enables dynamic constrains based on
 		  the sample position.
-		* The order of arguments given in the function definition above mirrors the
-		  actual order in which conditions are evaluated. In most cases this order
-		  is the fastest one because faster operations are applied first to reduce
-		  the number of peaks that need to be evaluated later.
-		* Satisfying the distance condition is accomplished by iterating over all
-		  peaks in descending order based on their height and removing all lower
-		  peaks that are too close.
+		* The conditions are evaluated in the following order: `plateau_size`,
+		  `height`, `threshold`, `distance`, `prominence`, `width`. In most cases
+		  this order is the fastest one because faster operations are applied first
+		  to reduce the number of peaks that need to be evaluated later.
+		* While indices in `peaks` are guaranteed to be at least `distance` samples
+		  apart, edges of flat peaks may be closer than the allowed `distance`.
 		* Use `wlen` to reduce the time it takes to evaluate the conditions for
 		  `prominence` or `width` if `x` is large or has many local maxima
 		  (see `peak_prominences`).
-		
-		.. warning::
-		
-		   This function may return unexpected results for data containing NaNs. To
-		   avoid this, NaNs should either be removed or replaced.
 		
 		.. versionadded:: 1.1.0
 		
@@ -3698,7 +4067,7 @@ package scipy.signal;
 		...            xmax=properties["right_ips"], color = "C1")
 		>>> plt.show()
 	**/
-	static public function find_peaks(x:Dynamic, ?height:Dynamic, ?threshold:Dynamic, ?distance:Dynamic, ?prominence:Dynamic, ?width:Dynamic, ?wlen:Dynamic, ?rel_height:Dynamic):Dynamic;
+	static public function find_peaks(x:Dynamic, ?height:Dynamic, ?threshold:Dynamic, ?distance:Dynamic, ?prominence:Dynamic, ?width:Dynamic, ?wlen:Dynamic, ?rel_height:Dynamic, ?plateau_size:Dynamic):Dynamic;
 	/**
 		Find peaks in a 1-D array with wavelet transformation.
 		
@@ -3945,25 +4314,29 @@ package scipy.signal;
 		----------
 		numtaps : int
 		    Length of the filter (number of coefficients, i.e. the filter
-		    order + 1).  `numtaps` must be even if a passband includes the
+		    order + 1).  `numtaps` must be odd if a passband includes the
 		    Nyquist frequency.
 		cutoff : float or 1D array_like
-		    Cutoff frequency of filter (expressed in the same units as `nyq`)
+		    Cutoff frequency of filter (expressed in the same units as `fs`)
 		    OR an array of cutoff frequencies (that is, band edges). In the
 		    latter case, the frequencies in `cutoff` should be positive and
-		    monotonically increasing between 0 and `nyq`.  The values 0 and
-		    `nyq` must not be included in `cutoff`.
+		    monotonically increasing between 0 and `fs/2`.  The values 0 and
+		    `fs/2` must not be included in `cutoff`.
 		width : float or None, optional
 		    If `width` is not None, then assume it is the approximate width
-		    of the transition region (expressed in the same units as `nyq`)
+		    of the transition region (expressed in the same units as `fs`)
 		    for use in Kaiser FIR filter design.  In this case, the `window`
 		    argument is ignored.
 		window : string or tuple of string and parameter values, optional
 		    Desired window to use. See `scipy.signal.get_window` for a list
 		    of windows and required parameters.
-		pass_zero : bool, optional
+		pass_zero : {True, False, 'bandpass', 'lowpass', 'highpass', 'bandstop'}, optional
 		    If True, the gain at the frequency 0 (i.e. the "DC gain") is 1.
-		    Otherwise the DC gain is 0.
+		    If False, the DC gain is 0. Can also be a string argument for the
+		    desired filter type (equivalent to ``btype`` in IIR design functions).
+		
+		    .. versionadded:: 1.3.0
+		       Support for string arguments.
 		scale : bool, optional
 		    Set to True to scale the coefficients so that the frequency
 		    response is exactly unity at a certain frequency.
@@ -3971,8 +4344,8 @@ package scipy.signal;
 		
 		    - 0 (DC) if the first passband starts at 0 (i.e. pass_zero
 		      is True)
-		    - `nyq` (the Nyquist frequency) if the first passband ends at
-		      `nyq` (i.e the filter is a single band highpass filter);
+		    - `fs/2` (the Nyquist frequency) if the first passband ends at
+		      `fs/2` (i.e the filter is a single band highpass filter);
 		      center of first passband otherwise
 		
 		nyq : float, optional
@@ -4405,30 +4778,35 @@ package scipy.signal;
 		    and ``b.shape[1:]``, ``a.shape[1:]``, and the shape of the frequencies
 		    array must be compatible for broadcasting.
 		worN : {None, int, array_like}, optional
-		    If None, then compute at 512 equally spaced frequencies.
-		    If a single integer, then compute at that many frequencies.  This is
-		    a convenient alternative to::
+		    If a single integer, then compute at that many frequencies (default is
+		    N=512).  This is a convenient alternative to::
 		
-		        np.linspace(0, 2*pi if whole else pi, N, endpoint=False)
+		        np.linspace(0, fs if whole else fs/2, N, endpoint=False)
 		
 		    Using a number that is fast for FFT computations can result in
 		    faster computations (see Notes).
-		    If an array_like, compute the response at the frequencies given (in
-		    radians/sample).
+		
+		    If an array_like, compute the response at the frequencies given.
+		    These are in the same units as `fs`.
 		whole : bool, optional
 		    Normally, frequencies are computed from 0 to the Nyquist frequency,
-		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
-		    compute frequencies from 0 to 2*pi radians/sample.
+		    fs/2 (upper-half of unit-circle).  If `whole` is True, compute
+		    frequencies from 0 to fs.  Ignored if w is array_like.
 		plot : callable
 		    A callable that takes two arguments. If given, the return parameters
 		    `w` and `h` are passed to plot. Useful for plotting the frequency
 		    response inside `freqz`.
+		fs : float, optional
+		    The sampling frequency of the digital system.  Defaults to 2*pi
+		    radians/sample (so w is from 0 to pi).
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
 		w : ndarray
-		    The normalized frequencies at which `h` was computed, in
-		    radians/sample.
+		    The frequencies at which `h` was computed, in the same units as `fs`.
+		    By default, `w` is normalized to the range [0, pi) (radians/sample).
 		h : ndarray
 		    The frequency response, as complex numbers.
 		
@@ -4465,20 +4843,19 @@ package scipy.signal;
 		>>> w, h = signal.freqz(b)
 		
 		>>> import matplotlib.pyplot as plt
-		>>> fig = plt.figure()
-		>>> plt.title('Digital filter frequency response')
-		>>> ax1 = fig.add_subplot(111)
+		>>> fig, ax1 = plt.subplots()
+		>>> ax1.set_title('Digital filter frequency response')
 		
-		>>> plt.plot(w, 20 * np.log10(abs(h)), 'b')
-		>>> plt.ylabel('Amplitude [dB]', color='b')
-		>>> plt.xlabel('Frequency [rad/sample]')
+		>>> ax1.plot(w, 20 * np.log10(abs(h)), 'b')
+		>>> ax1.set_ylabel('Amplitude [dB]', color='b')
+		>>> ax1.set_xlabel('Frequency [rad/sample]')
 		
 		>>> ax2 = ax1.twinx()
 		>>> angles = np.unwrap(np.angle(h))
-		>>> plt.plot(w, angles, 'g')
-		>>> plt.ylabel('Angle (radians)', color='g')
-		>>> plt.grid()
-		>>> plt.axis('tight')
+		>>> ax2.plot(w, angles, 'g')
+		>>> ax2.set_ylabel('Angle (radians)', color='g')
+		>>> ax2.grid()
+		>>> ax2.axis('tight')
 		>>> plt.show()
 		
 		Broadcasting Examples
@@ -4523,12 +4900,12 @@ package scipy.signal;
 		>>> h.shape
 		(2, 1024)
 	**/
-	static public function freqz(b:Dynamic, ?a:Dynamic, ?worN:Dynamic, ?whole:Dynamic, ?plot:Dynamic):Dynamic;
+	static public function freqz(b:Dynamic, ?a:Dynamic, ?worN:Dynamic, ?whole:Dynamic, ?plot:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Compute the frequency response of a digital filter in ZPK form.
 		
 		Given the Zeros, Poles and Gain of a digital filter, compute its frequency
-		response::
+		response:
 		
 		:math:`H(z)=k \prod_i (z - Z[i]) / \prod_j (z - P[j])`
 		
@@ -4544,21 +4921,28 @@ package scipy.signal;
 		k : scalar
 		    Gain of a linear filter
 		worN : {None, int, array_like}, optional
-		    If single integer (default 512, same as None), then compute at `worN`
-		    frequencies equally spaced around the unit circle. If an array_like,
-		    compute the response at the frequencies given (in radians/sample).
+		    If a single integer, then compute at that many frequencies (default is
+		    N=512).
+		
+		    If an array_like, compute the response at the frequencies given.
+		    These are in the same units as `fs`.
 		whole : bool, optional
 		    Normally, frequencies are computed from 0 to the Nyquist frequency,
-		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
-		    compute frequencies from 0 to 2*pi radians/sample.
+		    fs/2 (upper-half of unit-circle).  If `whole` is True, compute
+		    frequencies from 0 to fs.  Ignored if w is array_like.
+		fs : float, optional
+		    The sampling frequency of the digital system.  Defaults to 2*pi
+		    radians/sample (so w is from 0 to pi).
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
 		w : ndarray
-		    The normalized frequencies at which `h` was computed, in
-		    radians/sample.
+		    The frequencies at which `h` was computed, in the same units as `fs`.
+		    By default, `w` is normalized to the range [0, pi) (radians/sample).
 		h : ndarray
-		    The frequency response.
+		    The frequency response, as complex numbers.
 		
 		See Also
 		--------
@@ -4572,31 +4956,47 @@ package scipy.signal;
 		
 		Examples
 		--------
+		Design a 4th-order digital Butterworth filter with cut-off of 100 Hz in a
+		system with sample rate of 1000 Hz, and plot the frequency response:
+		
 		>>> from scipy import signal
-		>>> z, p, k = signal.butter(4, 0.2, output='zpk')
-		>>> w, h = signal.freqz_zpk(z, p, k)
+		>>> z, p, k = signal.butter(4, 100, output='zpk', fs=1000)
+		>>> w, h = signal.freqz_zpk(z, p, k, fs=1000)
 		
 		>>> import matplotlib.pyplot as plt
 		>>> fig = plt.figure()
-		>>> plt.title('Digital filter frequency response')
-		>>> ax1 = fig.add_subplot(111)
+		>>> ax1 = fig.add_subplot(1, 1, 1)
+		>>> ax1.set_title('Digital filter frequency response')
 		
-		>>> plt.plot(w, 20 * np.log10(abs(h)), 'b')
-		>>> plt.ylabel('Amplitude [dB]', color='b')
-		>>> plt.xlabel('Frequency [rad/sample]')
+		>>> ax1.plot(w, 20 * np.log10(abs(h)), 'b')
+		>>> ax1.set_ylabel('Amplitude [dB]', color='b')
+		>>> ax1.set_xlabel('Frequency [Hz]')
+		>>> ax1.grid()
 		
 		>>> ax2 = ax1.twinx()
 		>>> angles = np.unwrap(np.angle(h))
-		>>> plt.plot(w, angles, 'g')
-		>>> plt.ylabel('Angle (radians)', color='g')
-		>>> plt.grid()
+		>>> ax2.plot(w, angles, 'g')
+		>>> ax2.set_ylabel('Angle [radians]', color='g')
+		
 		>>> plt.axis('tight')
 		>>> plt.show()
 	**/
-	static public function freqz_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?worN:Dynamic, ?whole:Dynamic):Dynamic;
+	static public function freqz_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?worN:Dynamic, ?whole:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Gaussian approximation to B-spline basis function of order n.
-		    
+		
+		Parameters
+		----------
+		n : int
+		    The order of the spline. Must be nonnegative, i.e. n >= 0
+		
+		References
+		----------
+		.. [1] Bouma H., Vilanova A., Bescos J.O., ter Haar Romeny B.M., Gerritsen
+		   F.A. (2007) Fast and Accurate Gaussian Derivatives Based on B-Splines. In:
+		   Sgallari F., Murli A., Paragios N. (eds) Scale Space and Variational
+		   Methods in Computer Vision. SSVM 2007. Lecture Notes in Computer
+		   Science, vol 4485. Springer, Berlin, Heidelberg
 	**/
 	static public function gauss_spline(x:Dynamic, n:Dynamic):Dynamic;
 	/**
@@ -4769,13 +5169,13 @@ package scipy.signal;
 		>>> plt.plot(freq, response)
 		>>> plt.axis([-0.5, 0.5, -120, 0])
 		>>> plt.title(r"Freq. resp. of the gen. Gaussian "
-		...           "window (p=1.5, $\sigma$=7)")
+		...           r"window (p=1.5, $\sigma$=7)")
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
 	static public function general_gaussian(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return a window.
+		Return a window of a given length and type.
 		
 		Parameters
 		----------
@@ -4798,13 +5198,26 @@ package scipy.signal;
 		-----
 		Window types:
 		
-		    `boxcar`, `triang`, `blackman`, `hamming`, `hann`, `bartlett`,
-		    `flattop`, `parzen`, `bohman`, `blackmanharris`, `nuttall`,
-		    `barthann`, `kaiser` (needs beta), `gaussian` (needs standard
-		    deviation), `general_gaussian` (needs power, width), `slepian`
-		    (needs width), `dpss` (needs normalized half-bandwidth),
-		    `chebwin` (needs attenuation), `exponential` (needs decay scale),
-		    `tukey` (needs taper fraction)
+		- `~scipy.signal.windows.boxcar`
+		- `~scipy.signal.windows.triang`
+		- `~scipy.signal.windows.blackman`
+		- `~scipy.signal.windows.hamming`
+		- `~scipy.signal.windows.hann`
+		- `~scipy.signal.windows.bartlett`
+		- `~scipy.signal.windows.flattop`
+		- `~scipy.signal.windows.parzen`
+		- `~scipy.signal.windows.bohman`
+		- `~scipy.signal.windows.blackmanharris`
+		- `~scipy.signal.windows.nuttall`
+		- `~scipy.signal.windows.barthann`
+		- `~scipy.signal.windows.kaiser` (needs beta)
+		- `~scipy.signal.windows.gaussian` (needs standard deviation)
+		- `~scipy.signal.windows.general_gaussian` (needs power, width)
+		- `~scipy.signal.windows.slepian` (needs width)
+		- `~scipy.signal.windows.dpss` (needs normalized half-bandwidth)
+		- `~scipy.signal.windows.chebwin` (needs attenuation)
+		- `~scipy.signal.windows.exponential` (needs decay scale)
+		- `~scipy.signal.windows.tukey` (needs taper fraction)
 		
 		If the window requires no parameters, then `window` can be a string.
 		
@@ -4813,7 +5226,7 @@ package scipy.signal;
 		arguments the needed parameters.
 		
 		If `window` is a floating point number, it is interpreted as the beta
-		parameter of the `kaiser` window.
+		parameter of the `~scipy.signal.windows.kaiser` window.
 		
 		Each of the window types listed above is also the name of
 		a function that can be called directly to create a window of
@@ -4847,22 +5260,28 @@ package scipy.signal;
 		----------
 		system : tuple of array_like (b, a)
 		    Numerator and denominator coefficients of a filter transfer function.
-		w : {None, int, array-like}, optional
-		    If None, then compute at 512 frequencies equally spaced
-		    around the unit circle.
-		    If a single integer, then compute at that many frequencies.
-		    If array, compute the delay at the frequencies given
-		    (in radians/sample).
+		w : {None, int, array_like}, optional
+		    If a single integer, then compute at that many frequencies (default is
+		    N=512).
+		
+		    If an array_like, compute the delay at the frequencies given.  These
+		    are in the same units as `fs`.
 		whole : bool, optional
 		    Normally, frequencies are computed from 0 to the Nyquist frequency,
-		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
-		    compute frequencies from 0 to ``2*pi`` radians/sample.
+		    fs/2 (upper-half of unit-circle).  If `whole` is True, compute
+		    frequencies from 0 to fs.  Ignored if w is array_like.
+		fs : float, optional
+		    The sampling frequency of the digital system.  Defaults to 2*pi
+		    radians/sample (so w is from 0 to pi).
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
 		w : ndarray
-		    The normalized frequencies at which the group delay was computed,
-		    in radians/sample.
+		    The frequencies at which group delay was computed, in the same units
+		    as `fs`.  By default, `w` is normalized to the range [0, pi)
+		    (radians/sample).
 		gd : ndarray
 		    The group delay.
 		
@@ -4901,7 +5320,7 @@ package scipy.signal;
 		>>> plt.xlabel('Frequency [rad/sample]')
 		>>> plt.show()
 	**/
-	static public function group_delay(system:Dynamic, ?w:Dynamic, ?whole:Dynamic):Dynamic;
+	static public function group_delay(system:Dynamic, ?w:Dynamic, ?whole:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Return a Hamming window.
 		
@@ -4950,7 +5369,7 @@ package scipy.signal;
 		.. [2] E.R. Kanasewich, "Time Sequence Analysis in Geophysics", The
 		       University of Alberta Press, 1975, pp. 109-110.
 		.. [3] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function
+		       https://en.wikipedia.org/wiki/Window_function
 		.. [4] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
 		       "Numerical Recipes", Cambridge University Press, 1986, page 425.
 		
@@ -5029,7 +5448,7 @@ package scipy.signal;
 		.. [2] E.R. Kanasewich, "Time Sequence Analysis in Geophysics",
 		       The University of Alberta Press, 1975, pp. 106-108.
 		.. [3] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function
+		       https://en.wikipedia.org/wiki/Window_function
 		.. [4] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
 		       "Numerical Recipes", Cambridge University Press, 1986, page 425.
 		
@@ -5050,7 +5469,8 @@ package scipy.signal;
 		>>> plt.figure()
 		>>> A = fft(window, 2048) / (len(window)/2.0)
 		>>> freq = np.linspace(-0.5, 0.5, len(A))
-		>>> response = 20 * np.log10(np.abs(fftshift(A / abs(A).max())))
+		>>> response = np.abs(fftshift(A / abs(A).max()))
+		>>> response = 20 * np.log10(np.maximum(response, 1e-10))
 		>>> plt.plot(freq, response)
 		>>> plt.axis([-0.5, 0.5, -120, 0])
 		>>> plt.title("Frequency response of the Hann window")
@@ -5144,7 +5564,7 @@ package scipy.signal;
 		References
 		----------
 		.. [1] Wikipedia, "Analytic signal".
-		       http://en.wikipedia.org/wiki/Analytic_signal
+		       https://en.wikipedia.org/wiki/Analytic_signal
 		.. [2] Leon Cohen, "Time-Frequency Analysis", 1995. Chapter 2.
 		.. [3] Alan V. Oppenheim, Ronald W. Schafer. Discrete-Time Signal
 		       Processing, Third Edition, 2009. Chapter 12.
@@ -5169,7 +5589,7 @@ package scipy.signal;
 		References
 		----------
 		.. [1] Wikipedia, "Analytic signal",
-		    http://en.wikipedia.org/wiki/Analytic_signal
+		    https://en.wikipedia.org/wiki/Analytic_signal
 	**/
 	static public function hilbert2(x:Dynamic, ?N:Dynamic):Dynamic;
 	/**
@@ -5184,9 +5604,9 @@ package scipy.signal;
 		----------
 		wp, ws : float
 		    Passband and stopband edge frequencies.
-		    For digital filters, these are normalized from 0 to 1, where 1 is the
-		    Nyquist frequency, pi radians/sample.  (`wp` and `ws` are thus in
-		    half-cycles / sample.)  For example:
+		    For digital filters, these are in the same units as `fs`.  By default,
+		    `fs` is 2 half-cycles/sample, so these are normalized from 0 to 1,
+		    where 1 is the Nyquist frequency.  For example:
 		
 		        - Lowpass:   wp = 0.2,          ws = 0.3
 		        - Highpass:  wp = 0.3,          ws = 0.2
@@ -5194,7 +5614,6 @@ package scipy.signal;
 		        - Bandstop:  wp = [0.1, 0.6],   ws = [0.2, 0.5]
 		
 		    For analog filters, `wp` and `ws` are angular frequencies (e.g. rad/s).
-		
 		gpass : float
 		    The maximum loss in the passband (dB).
 		gstop : float
@@ -5214,6 +5633,10 @@ package scipy.signal;
 		output : {'ba', 'zpk', 'sos'}, optional
 		    Type of output:  numerator/denominator ('ba'), pole-zero ('zpk'), or
 		    second-order sections ('sos'). Default is 'ba'.
+		fs : float, optional
+		    The sampling frequency of the digital system.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -5238,8 +5661,41 @@ package scipy.signal;
 		Notes
 		-----
 		The ``'sos'`` output parameter was added in 0.16.0.
+		
+		Examples
+		--------
+		
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		>>> import matplotlib.ticker
+		
+		>>> wp = 0.2
+		>>> ws = 0.3
+		>>> gpass = 1
+		>>> gstop = 40
+		
+		>>> system = signal.iirdesign(wp, ws, gpass, gstop)
+		>>> w, h = signal.freqz(*system)
+		
+		>>> fig, ax1 = plt.subplots()
+		>>> ax1.set_title('Digital filter frequency response')
+		>>> ax1.plot(w, 20 * np.log10(abs(h)), 'b')
+		>>> ax1.set_ylabel('Amplitude [dB]', color='b')
+		>>> ax1.set_xlabel('Frequency [rad/sample]')
+		>>> ax1.grid()
+		>>> ax1.set_ylim([-120, 20])
+		>>> ax2 = ax1.twinx()
+		>>> angles = np.unwrap(np.angle(h))
+		>>> ax2.plot(w, angles, 'g')
+		>>> ax2.set_ylabel('Angle (radians)', color='g')
+		>>> ax2.grid()
+		>>> ax2.axis('tight')
+		>>> ax2.set_ylim([-6, 1])
+		>>> nticks = 8
+		>>> ax1.yaxis.set_major_locator(matplotlib.ticker.LinearLocator(nticks))
+		>>> ax2.yaxis.set_major_locator(matplotlib.ticker.LinearLocator(nticks))
 	**/
-	static public function iirdesign(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic, ?ftype:Dynamic, ?output:Dynamic):Dynamic;
+	static public function iirdesign(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic, ?ftype:Dynamic, ?output:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		IIR digital and analog filter design given order and critical points.
 		
@@ -5252,9 +5708,12 @@ package scipy.signal;
 		    The order of the filter.
 		Wn : array_like
 		    A scalar or length-2 sequence giving the critical frequencies.
-		    For digital filters, `Wn` is normalized from 0 to 1, where 1 is the
-		    Nyquist frequency, pi radians/sample.  (`Wn` is thus in
+		
+		    For digital filters, `Wn` are in the same units as `fs`.  By default,
+		    `fs` is 2 half-cycles/sample, so these are normalized from 0 to 1,
+		    where 1 is the Nyquist frequency.  (`Wn` is thus in
 		    half-cycles / sample.)
+		
 		    For analog filters, `Wn` is an angular frequency (e.g. rad/s).
 		rp : float, optional
 		    For Chebyshev and elliptic filters, provides the maximum ripple
@@ -5279,6 +5738,10 @@ package scipy.signal;
 		output : {'ba', 'zpk', 'sos'}, optional
 		    Type of output:  numerator/denominator ('ba'), pole-zero ('zpk'), or
 		    second-order sections ('sos'). Default is 'ba'.
+		fs : float, optional
+		    The sampling frequency of the digital system.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -5306,26 +5769,45 @@ package scipy.signal;
 		
 		Examples
 		--------
-		Generate a 17th-order Chebyshev II bandpass filter and plot the frequency
-		response:
+		Generate a 17th-order Chebyshev II analog bandpass filter from 50 Hz to
+		200 Hz and plot the frequency response:
 		
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
 		
-		>>> b, a = signal.iirfilter(17, [50, 200], rs=60, btype='band',
-		...                         analog=True, ftype='cheby2')
+		>>> b, a = signal.iirfilter(17, [2*np.pi*50, 2*np.pi*200], rs=60,
+		...                         btype='band', analog=True, ftype='cheby2')
 		>>> w, h = signal.freqs(b, a, 1000)
 		>>> fig = plt.figure()
-		>>> ax = fig.add_subplot(111)
-		>>> ax.semilogx(w, 20 * np.log10(abs(h)))
+		>>> ax = fig.add_subplot(1, 1, 1)
+		>>> ax.semilogx(w / (2*np.pi), 20 * np.log10(np.maximum(abs(h), 1e-5)))
 		>>> ax.set_title('Chebyshev Type II bandpass frequency response')
-		>>> ax.set_xlabel('Frequency [radians / second]')
+		>>> ax.set_xlabel('Frequency [Hz]')
+		>>> ax.set_ylabel('Amplitude [dB]')
+		>>> ax.axis((10, 1000, -100, 10))
+		>>> ax.grid(which='both', axis='both')
+		>>> plt.show()
+		
+		Create a digital filter with the same properties, in a system with
+		sampling rate of 2000 Hz, and plot the frequency response.  (Second-order
+		sections implementation is required to ensure stability of a filter of
+		this order):
+		
+		>>> sos = signal.iirfilter(17, [50, 200], rs=60, btype='band',
+		...                        analog=False, ftype='cheby2', fs=2000,
+		...                        output='sos')
+		>>> w, h = signal.sosfreqz(sos, 2000, fs=2000)
+		>>> fig = plt.figure()
+		>>> ax = fig.add_subplot(1, 1, 1)
+		>>> ax.semilogx(w, 20 * np.log10(np.maximum(abs(h), 1e-5)))
+		>>> ax.set_title('Chebyshev Type II bandpass frequency response')
+		>>> ax.set_xlabel('Frequency [Hz]')
 		>>> ax.set_ylabel('Amplitude [dB]')
 		>>> ax.axis((10, 1000, -100, 10))
 		>>> ax.grid(which='both', axis='both')
 		>>> plt.show()
 	**/
-	static public function iirfilter(N:Dynamic, Wn:Dynamic, ?rp:Dynamic, ?rs:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?ftype:Dynamic, ?output:Dynamic):Dynamic;
+	static public function iirfilter(N:Dynamic, Wn:Dynamic, ?rp:Dynamic, ?rs:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?ftype:Dynamic, ?output:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Design second-order IIR notch digital filter.
 		
@@ -5336,13 +5818,18 @@ package scipy.signal;
 		Parameters
 		----------
 		w0 : float
-		    Normalized frequency to remove from a signal. It is a
-		    scalar that must satisfy  ``0 < w0 < 1``, with ``w0 = 1``
-		    corresponding to half of the sampling frequency.
+		    Frequency to remove from a signal. If `fs` is specified, this is in
+		    the same units as `fs`. By default, it is a normalized scalar that must
+		    satisfy  ``0 < w0 < 1``, with ``w0 = 1`` corresponding to half of the
+		    sampling frequency.
 		Q : float
 		    Quality factor. Dimensionless parameter that characterizes
 		    notch filter -3 dB bandwidth ``bw`` relative to its center
 		    frequency, ``Q = w0/bw``.
+		fs : float, optional
+		    The sampling frequency of the digital system.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -5365,24 +5852,20 @@ package scipy.signal;
 		
 		Examples
 		--------
-		Design and plot filter to remove the 60Hz component from a
-		signal sampled at 200Hz, using a quality factor Q = 30
+		Design and plot filter to remove the 60 Hz component from a
+		signal sampled at 200 Hz, using a quality factor Q = 30
 		
 		>>> from scipy import signal
-		>>> import numpy as np
 		>>> import matplotlib.pyplot as plt
 		
 		>>> fs = 200.0  # Sample frequency (Hz)
 		>>> f0 = 60.0  # Frequency to be removed from signal (Hz)
 		>>> Q = 30.0  # Quality factor
-		>>> w0 = f0/(fs/2)  # Normalized Frequency
 		>>> # Design notch filter
-		>>> b, a = signal.iirnotch(w0, Q)
+		>>> b, a = signal.iirnotch(f0, Q, fs)
 		
 		>>> # Frequency response
-		>>> w, h = signal.freqz(b, a)
-		>>> # Generate frequency axis
-		>>> freq = w*fs/(2*np.pi)
+		>>> freq, h = signal.freqz(b, a, fs=fs)
 		>>> # Plot
 		>>> fig, ax = plt.subplots(2, 1, figsize=(8, 6))
 		>>> ax[0].plot(freq, 20*np.log10(abs(h)), color='blue')
@@ -5400,7 +5883,7 @@ package scipy.signal;
 		>>> ax[1].grid()
 		>>> plt.show()
 	**/
-	static public function iirnotch(w0:Dynamic, Q:Dynamic):Dynamic;
+	static public function iirnotch(w0:Dynamic, Q:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Design second-order IIR peak (resonant) digital filter.
 		
@@ -5411,13 +5894,18 @@ package scipy.signal;
 		Parameters
 		----------
 		w0 : float
-		    Normalized frequency to be retained in a signal. It is a
-		    scalar that must satisfy  ``0 < w0 < 1``, with ``w0 = 1`` corresponding
-		    to half of the sampling frequency.
+		    Frequency to be retained in a signal. If `fs` is specified, this is in
+		    the same units as `fs`. By default, it is a normalized scalar that must
+		    satisfy  ``0 < w0 < 1``, with ``w0 = 1`` corresponding to half of the
+		    sampling frequency.
 		Q : float
 		    Quality factor. Dimensionless parameter that characterizes
 		    peak filter -3 dB bandwidth ``bw`` relative to its center
 		    frequency, ``Q = w0/bw``.
+		fs : float, optional
+		    The sampling frequency of the digital system.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -5440,27 +5928,23 @@ package scipy.signal;
 		
 		Examples
 		--------
-		Design and plot filter to remove the frequencies other than the 300Hz
-		component from a signal sampled at 1000Hz, using a quality factor Q = 30
+		Design and plot filter to remove the frequencies other than the 300 Hz
+		component from a signal sampled at 1000 Hz, using a quality factor Q = 30
 		
 		>>> from scipy import signal
-		>>> import numpy as np
 		>>> import matplotlib.pyplot as plt
 		
 		>>> fs = 1000.0  # Sample frequency (Hz)
 		>>> f0 = 300.0  # Frequency to be retained (Hz)
 		>>> Q = 30.0  # Quality factor
-		>>> w0 = f0/(fs/2)  # Normalized Frequency
 		>>> # Design peak filter
-		>>> b, a = signal.iirpeak(w0, Q)
+		>>> b, a = signal.iirpeak(f0, Q, fs)
 		
 		>>> # Frequency response
-		>>> w, h = signal.freqz(b, a)
-		>>> # Generate frequency axis
-		>>> freq = w*fs/(2*np.pi)
+		>>> freq, h = signal.freqz(b, a, fs=fs)
 		>>> # Plot
 		>>> fig, ax = plt.subplots(2, 1, figsize=(8, 6))
-		>>> ax[0].plot(freq, 20*np.log10(abs(h)), color='blue')
+		>>> ax[0].plot(freq, 20*np.log10(np.maximum(abs(h), 1e-5)), color='blue')
 		>>> ax[0].set_title("Frequency Response")
 		>>> ax[0].set_ylabel("Amplitude (dB)", color='blue')
 		>>> ax[0].set_xlim([0, 500])
@@ -5475,7 +5959,7 @@ package scipy.signal;
 		>>> ax[1].grid()
 		>>> plt.show()
 	**/
-	static public function iirpeak(w0:Dynamic, Q:Dynamic):Dynamic;
+	static public function iirpeak(w0:Dynamic, Q:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Impulse response of continuous-time system.
 		
@@ -5511,6 +5995,16 @@ package scipy.signal;
 		If (num, den) is passed in for ``system``, coefficients for both the
 		numerator and denominator should be specified in descending exponent
 		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
+		
+		Examples
+		--------
+		Second order system with a repeated root: x''(t) + 2*x(t) + x(t) = u(t)
+		
+		>>> from scipy import signal
+		>>> system = ([1.0], [1.0, 2.0, 1.0])
+		>>> t, y = signal.impulse2(system)
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(t, y)
 	**/
 	static public function impulse(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
 	/**
@@ -5552,7 +6046,7 @@ package scipy.signal;
 		
 		See Also
 		--------
-		impulse, lsim2, integrate.odeint
+		impulse, lsim2, scipy.integrate.odeint
 		
 		Notes
 		-----
@@ -5712,7 +6206,7 @@ package scipy.signal;
 		    parameter must be specified if the number of data points per
 		    segment is odd, or if the STFT was padded via ``nfft >
 		    nperseg``. If `None`, the value depends on the shape of
-		    `Zxx` and `input_onesided`. If `input_onesided` is True,
+		    `Zxx` and `input_onesided`. If `input_onesided` is `True`,
 		    ``nperseg=2*(Zxx.shape[freq_axis] - 1)``. Otherwise,
 		    ``nperseg=Zxx.shape[freq_axis]``. Defaults to `None`.
 		noverlap : int, optional
@@ -5758,20 +6252,27 @@ package scipy.signal;
 		stft: Short Time Fourier Transform
 		check_COLA: Check whether the Constant OverLap Add (COLA) constraint
 		            is met
+		check_NOLA: Check whether the Nonzero Overlap Add (NOLA) constraint is met
 		
 		Notes
 		-----
 		In order to enable inversion of an STFT via the inverse STFT with
-		`istft`, the signal windowing must obey the constraint of "Constant
-		OverLap Add" (COLA). This ensures that every point in the input data
-		is equally weighted, thereby avoiding aliasing and allowing full
-		reconstruction. Whether a choice of `window`, `nperseg`, and
-		`noverlap` satisfy this constraint can be tested with
-		`check_COLA`, by using ``nperseg = Zxx.shape[freq_axis]``.
+		`istft`, the signal windowing must obey the constraint of "nonzero
+		overlap add" (NOLA):
+		
+		.. math:: \sum_{t}w^{2}[n-tH] \ne 0
+		
+		This ensures that the normalization factors that appear in the denominator
+		of the overlap-add reconstruction equation
+		
+		.. math:: x[n]=\frac{\sum_{t}x_{t}[n]w[n-tH]}{\sum_{t}w^{2}[n-tH]}
+		
+		are not zero. The NOLA constraint can be checked with the `check_NOLA`
+		function.
 		
 		An STFT which has been modified (via masking or otherwise) is not
 		guaranteed to correspond to a exactly realizible signal. This
-		function implements the iSTFT via the least-squares esimation
+		function implements the iSTFT via the least-squares estimation
 		algorithm detailed in [2]_, which produces a signal that minimizes
 		the mean squared error between the STFT of the returned signal and
 		the modified STFT.
@@ -5782,8 +6283,8 @@ package scipy.signal;
 		----------
 		.. [1] Oppenheim, Alan V., Ronald W. Schafer, John R. Buck
 		       "Discrete-Time Signal Processing", Prentice Hall, 1999.
-		.. [2] Daniel W. Griffin, Jae S. Limdt "Signal Estimation from
-		       Modified Short Fourier Transform", IEEE 1984,
+		.. [2] Daniel W. Griffin, Jae S. Lim "Signal Estimation from
+		       Modified Short-Time Fourier Transform", IEEE 1984,
 		       10.1109/TASSP.1984.1164317
 		
 		Examples
@@ -5923,7 +6424,7 @@ package scipy.signal;
 		.. [2] E.R. Kanasewich, "Time Sequence Analysis in Geophysics", The
 		       University of Alberta Press, 1975, pp. 177-178.
 		.. [3] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function
+		       https://en.wikipedia.org/wiki/Window_function
 		.. [4] F. J. Harris, "On the use of windows for harmonic analysis with the
 		       discrete Fourier transform," Proceedings of the IEEE, vol. 66,
 		       no. 1, pp. 51-83, Jan. 1978. :doi:`10.1109/PROC.1978.10837`.
@@ -6389,7 +6890,7 @@ package scipy.signal;
 		is unnormalized, it takes the value ``(A**2) * N/4`` for a harmonic
 		signal with amplitude A for sufficiently large N.
 		
-		When *normalize* is True the computed periodogram is is normalized by
+		When *normalize* is True the computed periodogram is normalized by
 		the residuals of the data around a constant reference model (at zero).
 		
 		Input arrays should be one-dimensional and will be cast to float64.
@@ -6432,7 +6933,7 @@ package scipy.signal;
 		.. [1] N.R. Lomb "Least-squares frequency analysis of unequally spaced
 		       data", Astrophysics and Space Science, vol 39, pp. 447-462, 1976
 		
-		.. [2] J.D. Scargle "Studies in astronomical time series analysis. II - 
+		.. [2] J.D. Scargle "Studies in astronomical time series analysis. II -
 		       Statistical aspects of spectral analysis of unevenly spaced data",
 		       The Astrophysical Journal, vol 263, pp. 835-853, 1982
 		
@@ -6440,9 +6941,16 @@ package scipy.signal;
 		       periodogram using graphics processing units.", The Astrophysical
 		       Journal Supplement Series, vol 191, pp. 247-253, 2010
 		
+		See Also
+		--------
+		istft: Inverse Short Time Fourier Transform
+		check_COLA: Check whether the Constant OverLap Add (COLA) constraint is met
+		welch: Power spectral density by Welch's method
+		spectrogram: Spectrogram by Welch's method
+		csd: Cross spectral density by Welch's method
+		
 		Examples
 		--------
-		>>> import scipy.signal
 		>>> import matplotlib.pyplot as plt
 		
 		First define some input parameters for the signal:
@@ -6453,13 +6961,13 @@ package scipy.signal;
 		>>> nin = 1000
 		>>> nout = 100000
 		>>> frac_points = 0.9 # Fraction of points to select
-		 
+		
 		Randomly select a fraction of an array with timesteps:
 		
 		>>> r = np.random.rand(nin)
 		>>> x = np.linspace(0.01, 10*np.pi, nin)
 		>>> x = x[r >= frac_points]
-		 
+		
 		Plot a sine wave for the selected times:
 		
 		>>> y = A * np.sin(w*x+phi)
@@ -6467,7 +6975,7 @@ package scipy.signal;
 		Define the array of frequencies for which to compute the periodogram:
 		
 		>>> f = np.linspace(0.01, 10, nout)
-		 
+		
 		Calculate Lomb-Scargle periodogram:
 		
 		>>> import scipy.signal as signal
@@ -6492,10 +7000,57 @@ package scipy.signal;
 		bandwidth `bw` from an analog low-pass filter prototype with unity
 		cutoff frequency, in transfer function ('ba') representation.
 		
+		Parameters
+		----------
+		b : array_like
+		    Numerator polynomial coefficients.
+		a : array_like
+		    Denominator polynomial coefficients.
+		wo : float
+		    Desired passband center, as angular frequency (e.g. rad/s).
+		    Defaults to no change.
+		bw : float
+		    Desired passband width, as angular frequency (e.g. rad/s).
+		    Defaults to 1.
+		
+		Returns
+		-------
+		b : array_like
+		    Numerator polynomial coefficients of the transformed band-pass filter.
+		a : array_like
+		    Denominator polynomial coefficients of the transformed band-pass filter.
+		
 		See Also
 		--------
 		lp2lp, lp2hp, lp2bs, bilinear
 		lp2bp_zpk
+		
+		Notes
+		-----
+		This is derived from the s-plane substitution
+		
+		.. math:: s \rightarrow \frac{s^2 + {\omega_0}^2}{s \cdot \mathrm{BW}}
+		
+		This is the "wideband" transformation, producing a passband with
+		geometric (log frequency) symmetry about `wo`.
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		>>> lp = signal.lti([1.0], [1.0, 1.0])
+		>>> bp = signal.lti(*signal.lp2bp(lp.num, lp.den))
+		>>> w, mag_lp, p_lp = lp.bode()
+		>>> w, mag_bp, p_bp = bp.bode(w)
+		
+		>>> plt.plot(w, mag_lp, label='Lowpass')
+		>>> plt.plot(w, mag_bp, label='Bandpass')
+		>>> plt.semilogx()
+		>>> plt.grid()
+		>>> plt.xlabel('Frequency [rad/s]')
+		>>> plt.ylabel('Magnitude [dB]')
+		>>> plt.legend()
 	**/
 	static public function lp2bp(b:Dynamic, a:Dynamic, ?wo:Dynamic, ?bw:Dynamic):Dynamic;
 	/**
@@ -6553,10 +7108,56 @@ package scipy.signal;
 		bandwidth `bw` from an analog low-pass filter prototype with unity
 		cutoff frequency, in transfer function ('ba') representation.
 		
+		Parameters
+		----------
+		b : array_like
+		    Numerator polynomial coefficients.
+		a : array_like
+		    Denominator polynomial coefficients.
+		wo : float
+		    Desired stopband center, as angular frequency (e.g. rad/s).
+		    Defaults to no change.
+		bw : float
+		    Desired stopband width, as angular frequency (e.g. rad/s).
+		    Defaults to 1.
+		
+		Returns
+		-------
+		b : array_like
+		    Numerator polynomial coefficients of the transformed band-stop filter.
+		a : array_like
+		    Denominator polynomial coefficients of the transformed band-stop filter.
+		
 		See Also
 		--------
 		lp2lp, lp2hp, lp2bp, bilinear
 		lp2bs_zpk
+		
+		Notes
+		-----
+		This is derived from the s-plane substitution
+		
+		.. math:: s \rightarrow \frac{s \cdot \mathrm{BW}}{s^2 + {\omega_0}^2}
+		
+		This is the "wideband" transformation, producing a stopband with
+		geometric (log frequency) symmetry about `wo`.
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		>>> lp = signal.lti([1.0], [1.0, 1.5])
+		>>> bs = signal.lti(*signal.lp2bs(lp.num, lp.den))
+		>>> w, mag_lp, p_lp = lp.bode()
+		>>> w, mag_bs, p_bs = bs.bode(w)
+		>>> plt.plot(w, mag_lp, label='Lowpass')
+		>>> plt.plot(w, mag_bs, label='Bandstop')
+		>>> plt.semilogx()
+		>>> plt.grid()
+		>>> plt.xlabel('Frequency [rad/s]')
+		>>> plt.ylabel('Magnitude [dB]')
+		>>> plt.legend()
 	**/
 	static public function lp2bs(b:Dynamic, a:Dynamic, ?wo:Dynamic, ?bw:Dynamic):Dynamic;
 	/**
@@ -6614,10 +7215,54 @@ package scipy.signal;
 		from an analog low-pass filter prototype with unity cutoff frequency, in
 		transfer function ('ba') representation.
 		
+		Parameters
+		----------
+		b : array_like
+		    Numerator polynomial coefficients.
+		a : array_like
+		    Denominator polynomial coefficients.
+		wo : float
+		    Desired cutoff, as angular frequency (e.g. rad/s).
+		    Defaults to no change.
+		
+		Returns
+		-------
+		b : array_like
+		    Numerator polynomial coefficients of the transformed high-pass filter.
+		a : array_like
+		    Denominator polynomial coefficients of the transformed high-pass filter.
+		
 		See Also
 		--------
 		lp2lp, lp2bp, lp2bs, bilinear
 		lp2hp_zpk
+		
+		Notes
+		-----
+		This is derived from the s-plane substitution
+		
+		.. math:: s \rightarrow \frac{\omega_0}{s}
+		
+		This maintains symmetry of the lowpass and highpass responses on a
+		logarithmic scale.
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		>>> lp = signal.lti([1.0], [1.0, 1.0])
+		>>> hp = signal.lti(*signal.lp2hp(lp.num, lp.den))
+		>>> w, mag_lp, p_lp = lp.bode()
+		>>> w, mag_hp, p_hp = hp.bode(w)
+		
+		>>> plt.plot(w, mag_lp, label='Lowpass')
+		>>> plt.plot(w, mag_hp, label='Highpass')
+		>>> plt.semilogx()
+		>>> plt.grid()
+		>>> plt.xlabel('Frequency [rad/s]')
+		>>> plt.ylabel('Magnitude [dB]')
+		>>> plt.legend()
 	**/
 	static public function lp2hp(b:Dynamic, a:Dynamic, ?wo:Dynamic):Dynamic;
 	/**
@@ -6672,10 +7317,52 @@ package scipy.signal;
 		from an analog low-pass filter prototype with unity cutoff frequency, in
 		transfer function ('ba') representation.
 		
+		Parameters
+		----------
+		b : array_like
+		    Numerator polynomial coefficients.
+		a : array_like
+		    Denominator polynomial coefficients.
+		wo : float
+		    Desired cutoff, as angular frequency (e.g. rad/s).
+		    Defaults to no change.
+		
+		Returns
+		-------
+		b : array_like
+		    Numerator polynomial coefficients of the transformed low-pass filter.
+		a : array_like
+		    Denominator polynomial coefficients of the transformed low-pass filter.
+		
 		See Also
 		--------
 		lp2hp, lp2bp, lp2bs, bilinear
 		lp2lp_zpk
+		
+		Notes
+		-----
+		This is derived from the s-plane substitution
+		
+		.. math:: s \rightarrow \frac{s}{\omega_0}
+		
+		Examples
+		--------
+		
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		>>> lp = signal.lti([1.0], [1.0, 1.0])
+		>>> lp2 = signal.lti(*signal.lp2lp(lp.num, lp.den, 2))
+		>>> w, mag_lp, p_lp = lp.bode()
+		>>> w, mag_lp2, p_lp2 = lp2.bode(w)
+		
+		>>> plt.plot(w, mag_lp, label='Lowpass')
+		>>> plt.plot(w, mag_lp2, label='Transformed Lowpass')
+		>>> plt.semilogx()
+		>>> plt.grid()
+		>>> plt.xlabel('Frequency [rad/s]')
+		>>> plt.ylabel('Magnitude [dB]')
+		>>> plt.legend()
 	**/
 	static public function lp2lp(b:Dynamic, a:Dynamic, ?wo:Dynamic):Dynamic;
 	/**
@@ -6914,7 +7601,7 @@ package scipy.signal;
 		Perform a median filter on an N-dimensional array.
 		
 		Apply a median filter to the input array using a local window-size
-		given by `kernel_size`.
+		given by `kernel_size`. The array will automatically be zero-padded.
 		
 		Parameters
 		----------
@@ -6931,13 +7618,23 @@ package scipy.signal;
 		out : ndarray
 		    An array the same size as input containing the median filtered
 		    result.
+		
+		See also
+		--------
+		scipy.ndimage.median_filter
+		
+		Notes
+		-------
+		The more general function `scipy.ndimage.median_filter` has a more
+		efficient implementation of a median filter and therefore runs much faster.
 	**/
 	static public function medfilt(volume:Dynamic, ?kernel_size:Dynamic):Dynamic;
 	/**
 		Median filter a 2-dimensional array.
 		
 		Apply a median filter to the `input` array using a local window-size
-		given by `kernel_size` (must be odd).
+		given by `kernel_size` (must be odd). The array is zero-padded
+		automatically.
 		
 		Parameters
 		----------
@@ -6955,6 +7652,15 @@ package scipy.signal;
 		out : ndarray
 		    An array the same size as input containing the median filtered
 		    result.
+		
+		See also
+		--------
+		scipy.ndimage.median_filter
+		
+		Notes
+		-------
+		The more general function `scipy.ndimage.median_filter` has a more
+		efficient implementation of a median filter and therefore runs much faster.
 	**/
 	static public function medfilt2d(input:Dynamic, ?kernel_size:Dynamic):Dynamic;
 	/**
@@ -7335,7 +8041,7 @@ package scipy.signal;
 		    A signal with peaks.
 		peaks : sequence
 		    Indices of peaks in `x`.
-		wlen : int or float, optional
+		wlen : int, optional
 		    A window length in samples that optionally limits the evaluated area for
 		    each peak to a subset of `x`. The peak is always placed in the middle of
 		    the window therefore the given length is rounded up to the next odd
@@ -7352,7 +8058,19 @@ package scipy.signal;
 		Raises
 		------
 		ValueError
-		    If an index in `peaks` does not point to a local maximum in `x`.
+		    If a value in `peaks` is an invalid index for `x`.
+		
+		Warns
+		-----
+		PeakPropertyWarning
+		    For indices in `peaks` that don't point to valid local maxima in `x`
+		    the returned prominence will be 0 and this warning is raised. This
+		    also happens if `wlen` is smaller than the plateau size of a peak.
+		
+		Warnings
+		--------
+		This function may return unexpected results for data containing NaNs. To
+		avoid this, NaNs should either be removed or replaced.
 		
 		See Also
 		--------
@@ -7387,11 +8105,6 @@ package scipy.signal;
 		calculated prominence. In practice this is only relevant for the highest set
 		of peaks in `x`. This behavior may even be used intentionally to calculate
 		"local" prominences.
-		
-		.. warning::
-		
-		   This function may return unexpected results for data containing NaNs. To
-		   avoid this, NaNs should either be removed or replaced.
 		
 		.. versionadded:: 1.1.0
 		
@@ -7496,6 +8209,17 @@ package scipy.signal;
 		    has the wrong dtype, is not C-contiguous or does not have the same
 		    shape.
 		
+		Warns
+		-----
+		PeakPropertyWarning
+		    Raised if any calculated width is 0. This may stem from the supplied
+		    `prominence_data` or if `rel_height` is set to 0.
+		
+		Warnings
+		--------
+		This function may return unexpected results for data containing NaNs. To
+		avoid this, NaNs should either be removed or replaced.
+		
 		See Also
 		--------
 		find_peaks
@@ -7524,11 +8248,6 @@ package scipy.signal;
 		As shown above to calculate a peak's width its prominence and bases must be
 		known. You can supply these yourself with the argument `prominence_data`.
 		Otherwise they are internally calculated (see `peak_prominences`).
-		
-		.. warning::
-		
-		   This function may return unexpected results for data containing NaNs. To
-		   avoid this, NaNs should either be removed or replaced.
 		
 		.. versionadded:: 1.1.0
 		
@@ -7592,8 +8311,8 @@ package scipy.signal;
 		    done. Defaults to 'constant'.
 		return_onesided : bool, optional
 		    If `True`, return a one-sided spectrum for real data. If
-		    `False` return a two-sided spectrum. Note that for complex
-		    data, a two-sided spectrum is always returned.
+		    `False` return a two-sided spectrum. Defaults to `True`, but for 
+		    complex data, a two-sided spectrum is always returned.
 		scaling : { 'density', 'spectrum' }, optional
 		    Selects between computing the power spectral density ('density')
 		    where `Pxx` has units of V**2/Hz and computing the power
@@ -7762,7 +8481,7 @@ package scipy.signal;
 		when ``abs(det(X))`` is used as a robustness indicator.
 		
 		[2]_ is available as a technical report on the following URL:
-		http://drum.lib.umd.edu/handle/1903/5598
+		https://hdl.handle.net/1903/5598
 		
 		References
 		----------
@@ -7979,21 +8698,80 @@ package scipy.signal;
 		
 		Examples
 		--------
-		For a signal sampled at 100 Hz, we want to construct a filter with a
-		passband at 20-40 Hz, and stop bands at 0-10 Hz and 45-50 Hz. Note that
-		this means that the behavior in the frequency ranges between those bands
-		is unspecified and may overshoot.
+		In these examples `remez` gets used creating a bandpass, bandstop, lowpass
+		and highpass filter.  The used parameters are the filter order, an array
+		with according frequency boundaries, the desired attenuation values and the
+		sampling frequency.  Using `freqz` the corresponding frequency response
+		gets calculated and plotted.
 		
 		>>> from scipy import signal
-		>>> fs = 100
-		>>> bpass = signal.remez(72, [0, 10, 20, 40, 45, 50], [0, 1, 0], fs=fs)
-		>>> freq, response = signal.freqz(bpass)
-		
 		>>> import matplotlib.pyplot as plt
-		>>> plt.semilogy(0.5*fs*freq/np.pi, np.abs(response), 'b-')
-		>>> plt.grid(alpha=0.25)
-		>>> plt.xlabel('Frequency (Hz)')
-		>>> plt.ylabel('Gain')
+		
+		>>> def plot_response(fs, w, h, title):
+		...     "Utility function to plot response functions"
+		...     fig = plt.figure()
+		...     ax = fig.add_subplot(111)
+		...     ax.plot(0.5*fs*w/np.pi, 20*np.log10(np.abs(h)))
+		...     ax.set_ylim(-40, 5)
+		...     ax.set_xlim(0, 0.5*fs)
+		...     ax.grid(True)
+		...     ax.set_xlabel('Frequency (Hz)')
+		...     ax.set_ylabel('Gain (dB)')
+		...     ax.set_title(title)
+		
+		This example shows a steep low pass transition according to the small
+		transition width and high filter order:
+		
+		>>> fs = 22050.0       # Sample rate, Hz
+		>>> cutoff = 8000.0    # Desired cutoff frequency, Hz
+		>>> trans_width = 100  # Width of transition from pass band to stop band, Hz
+		>>> numtaps = 400      # Size of the FIR filter.
+		>>> taps = signal.remez(numtaps, [0, cutoff, cutoff + trans_width, 0.5*fs], [1, 0], Hz=fs)
+		>>> w, h = signal.freqz(taps, [1], worN=2000)
+		>>> plot_response(fs, w, h, "Low-pass Filter")
+		
+		This example shows a high pass filter:
+		
+		>>> fs = 22050.0       # Sample rate, Hz
+		>>> cutoff = 2000.0    # Desired cutoff frequency, Hz
+		>>> trans_width = 250  # Width of transition from pass band to stop band, Hz
+		>>> numtaps = 125      # Size of the FIR filter.
+		>>> taps = signal.remez(numtaps, [0, cutoff - trans_width, cutoff, 0.5*fs],
+		...                     [0, 1], Hz=fs)
+		>>> w, h = signal.freqz(taps, [1], worN=2000)
+		>>> plot_response(fs, w, h, "High-pass Filter")
+		
+		For a signal sampled with 22 kHz a bandpass filter with a pass band of 2-5
+		kHz gets calculated using the Remez algorithm.  The transition width is 260
+		Hz and the filter order 10:
+		
+		>>> fs = 22000.0         # Sample rate, Hz
+		>>> band = [2000, 5000]  # Desired pass band, Hz
+		>>> trans_width = 260    # Width of transition from pass band to stop band, Hz
+		>>> numtaps = 10        # Size of the FIR filter.
+		>>> edges = [0, band[0] - trans_width, band[0], band[1],
+		...          band[1] + trans_width, 0.5*fs]
+		>>> taps = signal.remez(numtaps, edges, [0, 1, 0], Hz=fs)
+		>>> w, h = signal.freqz(taps, [1], worN=2000)
+		>>> plot_response(fs, w, h, "Band-pass Filter")
+		
+		It can be seen that for this bandpass filter, the low order leads to higher
+		ripple and less steep transitions.  There is very low attenuation in the
+		stop band and little overshoot in the pass band.  Of course the desired
+		gain can be better approximated with a higher filter order.
+		
+		The next example shows a bandstop filter. Because of the high filter order
+		the transition is quite steep:
+		
+		>>> fs = 20000.0         # Sample rate, Hz
+		>>> band = [6000, 8000]  # Desired stop band, Hz
+		>>> trans_width = 200    # Width of transition from pass band to stop band, Hz
+		>>> numtaps = 175        # Size of the FIR filter.
+		>>> edges = [0, band[0] - trans_width, band[0], band[1], band[1] + trans_width, 0.5*fs]
+		>>> taps = signal.remez(numtaps, edges, [1, 0, 1], Hz=fs)
+		>>> w, h = signal.freqz(taps, [1], worN=2000)
+		>>> plot_response(fs, w, h, "Band-stop Filter")
+		
 		>>> plt.show()
 	**/
 	static public function remez(numtaps:Dynamic, bands:Dynamic, desired:Dynamic, ?weight:Dynamic, ?Hz:Dynamic, ?type:Dynamic, ?maxiter:Dynamic, ?grid_density:Dynamic, ?fs:Dynamic):Dynamic;
@@ -8346,8 +9124,8 @@ package scipy.signal;
 		>>> savgol_coeffs(5, 2)
 		array([-0.08571429,  0.34285714,  0.48571429,  0.34285714, -0.08571429])
 		>>> savgol_coeffs(5, 2, deriv=1)
-		array([  2.00000000e-01,   1.00000000e-01,   2.00607895e-16,
-		        -1.00000000e-01,  -2.00000000e-01])
+		array([ 2.00000000e-01,  1.00000000e-01,  2.07548111e-16, -1.00000000e-01,
+		       -2.00000000e-01])
 		
 		Note that use='dot' simply reverses the coefficients.
 		
@@ -8364,7 +9142,7 @@ package scipy.signal;
 		>>> x = np.array([1, 0, 1, 4, 9])
 		>>> c = savgol_coeffs(5, 2, pos=4, deriv=1, use='dot')
 		>>> c.dot(x)
-		6.0000000000000018
+		6.0
 	**/
 	static public function savgol_coeffs(window_length:Dynamic, polyorder:Dynamic, ?deriv:Dynamic, ?delta:Dynamic, ?pos:Dynamic, ?use:Dynamic):Dynamic;
 	/**
@@ -8377,7 +9155,7 @@ package scipy.signal;
 		----------
 		x : array_like
 		    The data to be filtered.  If `x` is not a single or double precision
-		    floating point array, it will be converted to type `numpy.float64`
+		    floating point array, it will be converted to type ``numpy.float64``
 		    before filtering.
 		window_length : int
 		    The length of the filter window (i.e. the number of coefficients).
@@ -8456,7 +9234,7 @@ package scipy.signal;
 		the defaults for all other parameters.
 		
 		>>> savgol_filter(x, 5, 2)
-		array([ 1.66,  3.17,  3.54,  2.86,  0.66,  0.17,  1.  ,  4.  ,  9.  ])
+		array([1.66, 3.17, 3.54, 2.86, 0.66, 0.17, 1.  , 4.  , 9.  ])
 		
 		Note that the last five values in x are samples of a parabola, so
 		when mode='interp' (the default) is used with polyorder=2, the last
@@ -8464,7 +9242,7 @@ package scipy.signal;
 		`mode='nearest'`:
 		
 		>>> savgol_filter(x, 5, 2, mode='nearest')
-		array([ 1.74,  3.03,  3.54,  2.86,  0.66,  0.17,  1.  ,  4.6 ,  7.97])
+		array([1.74, 3.03, 3.54, 2.86, 0.66, 0.17, 1.  , 4.6 , 7.97])
 	**/
 	static public function savgol_filter(x:Dynamic, window_length:Dynamic, polyorder:Dynamic, ?deriv:Dynamic, ?delta:Dynamic, ?axis:Dynamic, ?mode:Dynamic, ?cval:Dynamic):Dynamic;
 	/**
@@ -8861,23 +9639,27 @@ package scipy.signal;
 		    coefficients and the last three providing the denominator
 		    coefficients.
 		worN : {None, int, array_like}, optional
-		    If None (default), then compute at 512 frequencies equally spaced
-		    around the unit circle.
-		    If a single integer, then compute at that many frequencies.
-		    Using a number that is fast for FFT computations can result in
-		    faster computations (see Notes of `freqz`).
-		    If an array_like, compute the response at the frequencies given (in
-		    radians/sample; must be 1D).
+		    If a single integer, then compute at that many frequencies (default is
+		    N=512).  Using a number that is fast for FFT computations can result
+		    in faster computations (see Notes of `freqz`).
+		
+		    If an array_like, compute the response at the frequencies given (must
+		    be 1D).  These are in the same units as `fs`.
 		whole : bool, optional
 		    Normally, frequencies are computed from 0 to the Nyquist frequency,
-		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
-		    compute frequencies from 0 to 2*pi radians/sample.
+		    fs/2 (upper-half of unit-circle).  If `whole` is True, compute
+		    frequencies from 0 to fs.
+		fs : float, optional
+		    The sampling frequency of the digital system.  Defaults to 2*pi
+		    radians/sample (so w is from 0 to pi).
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
 		w : ndarray
-		    The normalized frequencies at which `h` was computed, in
-		    radians/sample.
+		    The frequencies at which `h` was computed, in the same units as `fs`.
+		    By default, `w` is normalized to the range [0, pi) (radians/sample).
 		h : ndarray
 		    The frequency response, as complex numbers.
 		
@@ -8887,7 +9669,6 @@ package scipy.signal;
 		
 		Notes
 		-----
-		
 		.. versionadded:: 0.19.0
 		
 		Examples
@@ -8906,7 +9687,7 @@ package scipy.signal;
 		
 		>>> import matplotlib.pyplot as plt
 		>>> plt.subplot(2, 1, 1)
-		>>> db = 20*np.log10(np.abs(h))
+		>>> db = 20*np.log10(np.maximum(np.abs(h), 1e-5))
 		>>> plt.plot(w/np.pi, db)
 		>>> plt.ylim(-75, 5)
 		>>> plt.grid(True)
@@ -8929,13 +9710,23 @@ package scipy.signal;
 		...                    output='ba')
 		>>> w, h = signal.freqz(b, a, worN=1500)
 		>>> plt.subplot(2, 1, 1)
-		>>> db = 20*np.log10(np.abs(h))
+		>>> db = 20*np.log10(np.maximum(np.abs(h), 1e-5))
 		>>> plt.plot(w/np.pi, db)
+		>>> plt.ylim(-75, 5)
+		>>> plt.grid(True)
+		>>> plt.yticks([0, -20, -40, -60])
+		>>> plt.ylabel('Gain [dB]')
+		>>> plt.title('Frequency Response')
 		>>> plt.subplot(2, 1, 2)
 		>>> plt.plot(w/np.pi, np.angle(h))
+		>>> plt.grid(True)
+		>>> plt.yticks([-np.pi, -0.5*np.pi, 0, 0.5*np.pi, np.pi],
+		...            [r'$-\pi$', r'$-\pi/2$', '0', r'$\pi/2$', r'$\pi$'])
+		>>> plt.ylabel('Phase [rad]')
+		>>> plt.xlabel('Normalized frequency (1.0 = Nyquist)')
 		>>> plt.show()
 	**/
-	static public function sosfreqz(sos:Dynamic, ?worN:Dynamic, ?whole:Dynamic):Dynamic;
+	static public function sosfreqz(sos:Dynamic, ?worN:Dynamic, ?whole:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Compute a spectrogram with consecutive Fourier transforms.
 		
@@ -8973,8 +9764,8 @@ package scipy.signal;
 		    done. Defaults to 'constant'.
 		return_onesided : bool, optional
 		    If `True`, return a one-sided spectrum for real data. If
-		    `False` return a two-sided spectrum. Note that for complex
-		    data, a two-sided spectrum is always returned.
+		    `False` return a two-sided spectrum. Defaults to `True`, but for 
+		    complex data, a two-sided spectrum is always returned.
 		scaling : { 'density', 'spectrum' }, optional
 		    Selects between computing the power spectral density ('density')
 		    where `Sxx` has units of V**2/Hz and computing the power
@@ -9050,6 +9841,14 @@ package scipy.signal;
 		
 		>>> f, t, Sxx = signal.spectrogram(x, fs)
 		>>> plt.pcolormesh(t, f, Sxx)
+		>>> plt.ylabel('Frequency [Hz]')
+		>>> plt.xlabel('Time [sec]')
+		>>> plt.show()
+		
+		Note, if using output that is not one sided, then use the following:
+		
+		>>> f, t, Sxx = signal.spectrogram(x, fs, return_onesided=False)
+		>>> plt.pcolormesh(t, np.fft.fftshift(f), np.fft.fftshift(Sxx, axes=0))
 		>>> plt.ylabel('Frequency [Hz]')
 		>>> plt.xlabel('Time [sec]')
 		>>> plt.show()
@@ -9230,6 +10029,18 @@ package scipy.signal;
 		If (num, den) is passed in for ``system``, coefficients for both the
 		numerator and denominator should be specified in descending exponent
 		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		>>> lti = signal.lti([1.0], [1.0, 1.0])
+		>>> t, y = signal.step(lti)
+		>>> plt.plot(t, y)
+		>>> plt.xlabel('Time [s]')
+		>>> plt.ylabel('Amplitude')
+		>>> plt.title('Step response for 1. Order Lowpass')
+		>>> plt.grid()
 	**/
 	static public function step(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
 	/**
@@ -9281,6 +10092,18 @@ package scipy.signal;
 		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
 		
 		.. versionadded:: 0.8.0
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		>>> lti = signal.lti([1.0], [1.0, 1.0])
+		>>> t, y = signal.step2(lti)
+		>>> plt.plot(t, y)
+		>>> plt.xlabel('Time [s]')
+		>>> plt.ylabel('Amplitude')
+		>>> plt.title('Step response for 1. Order Lowpass')
+		>>> plt.grid()
 	**/
 	static public function step2(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -9319,9 +10142,8 @@ package scipy.signal;
 		    done. Defaults to `False`.
 		return_onesided : bool, optional
 		    If `True`, return a one-sided spectrum for real data. If
-		    `False` return a two-sided spectrum. Note that for complex
-		    data, a two-sided spectrum is always returned. Defaults to
-		    `True`.
+		    `False` return a two-sided spectrum. Defaults to `True`, but for 
+		    complex data, a two-sided spectrum is always returned.
 		boundary : str or None, optional
 		    Specifies whether the input signal is extended at both ends, and
 		    how to generate the new values, in order to center the first
@@ -9357,6 +10179,7 @@ package scipy.signal;
 		istft: Inverse Short Time Fourier Transform
 		check_COLA: Check whether the Constant OverLap Add (COLA) constraint
 		            is met
+		check_NOLA: Check whether the Nonzero Overlap Add (NOLA) constraint is met
 		welch: Power spectral density by Welch's method.
 		spectrogram: Spectrogram by Welch's method.
 		csd: Cross spectral density by Welch's method.
@@ -9365,17 +10188,26 @@ package scipy.signal;
 		Notes
 		-----
 		In order to enable inversion of an STFT via the inverse STFT in
-		`istft`, the signal windowing must obey the constraint of "Constant
-		OverLap Add" (COLA), and the input signal must have complete
+		`istft`, the signal windowing must obey the constraint of "Nonzero
+		OverLap Add" (NOLA), and the input signal must have complete
 		windowing coverage (i.e. ``(x.shape[axis] - nperseg) %
 		(nperseg-noverlap) == 0``). The `padded` argument may be used to
 		accomplish this.
 		
-		The COLA constraint ensures that every point in the input data is
-		equally weighted, thereby avoiding aliasing and allowing full
-		reconstruction. Whether a choice of `window`, `nperseg`, and
-		`noverlap` satisfy this constraint can be tested with
-		`check_COLA`.
+		Given a time-domain signal :math:`x[n]`, a window :math:`w[n]`, and a hop
+		size :math:`H` = `nperseg - noverlap`, the windowed frame at time index
+		:math:`t` is given by
+		
+		.. math:: x_{t}[n]=x[n]w[n-tH]
+		
+		The overlap-add (OLA) reconstruction equation is given by
+		
+		.. math:: x[n]=\frac{\sum_{t}x_{t}[n]w[n-tH]}{\sum_{t}w^{2}[n-tH]}
+		
+		The NOLA constraint ensures that every normalization term that appears
+		in the denomimator of the OLA reconstruction equation is nonzero. Whether a
+		choice of `window`, `nperseg`, and `noverlap` satisfy this constraint can
+		be tested with `check_NOLA`.
 		
 		.. versionadded:: 0.19.0
 		
@@ -9383,8 +10215,8 @@ package scipy.signal;
 		----------
 		.. [1] Oppenheim, Alan V., Ronald W. Schafer, John R. Buck
 		       "Discrete-Time Signal Processing", Prentice Hall, 1999.
-		.. [2] Daniel W. Griffin, Jae S. Limdt "Signal Estimation from
-		       Modified Short Fourier Transform", IEEE 1984,
+		.. [2] Daniel W. Griffin, Jae S. Lim "Signal Estimation from
+		       Modified Short-Time Fourier Transform", IEEE 1984,
 		       10.1109/TASSP.1984.1164317
 		
 		Examples
@@ -9760,7 +10592,8 @@ package scipy.signal;
 		>>> plt.figure()
 		>>> A = fft(window, 2048) / (len(window)/2.0)
 		>>> freq = np.linspace(-0.5, 0.5, len(A))
-		>>> response = 20 * np.log10(np.abs(fftshift(A / abs(A).max())))
+		>>> response = np.abs(fftshift(A / abs(A).max()))
+		>>> response = 20 * np.log10(np.maximum(response, 1e-10))
 		>>> plt.plot(freq, response)
 		>>> plt.axis([-0.5, 0.5, -120, 0])
 		>>> plt.title("Frequency response of the triangular window")
@@ -9801,7 +10634,7 @@ package scipy.signal;
 		       Analysis with the Discrete Fourier Transform". Proceedings of the
 		       IEEE 66 (1): 51-83. :doi:`10.1109/PROC.1978.10837`
 		.. [2] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function#Tukey_window
+		       https://en.wikipedia.org/wiki/Window_function#Tukey_window
 		
 		Examples
 		--------
@@ -9885,8 +10718,8 @@ package scipy.signal;
 		    all dimensions.  If an int, the impulse will be at `idx` in all
 		    dimensions.
 		dtype : data-type, optional
-		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
-		    `numpy.float64`.
+		    The desired data-type for the array, e.g., ``numpy.int8``.  Default is
+		    ``numpy.float64``.
 		
 		Returns
 		-------
@@ -10118,8 +10951,8 @@ package scipy.signal;
 		    done. Defaults to 'constant'.
 		return_onesided : bool, optional
 		    If `True`, return a one-sided spectrum for real data. If
-		    `False` return a two-sided spectrum. Note that for complex
-		    data, a two-sided spectrum is always returned.
+		    `False` return a two-sided spectrum. Defaults to `True`, but for 
+		    complex data, a two-sided spectrum is always returned.
 		scaling : { 'density', 'spectrum' }, optional
 		    Selects between computing the power spectral density ('density')
 		    where `Pxx` has units of V**2/Hz and computing the power
@@ -10129,6 +10962,10 @@ package scipy.signal;
 		axis : int, optional
 		    Axis along which the periodogram is computed; the default is
 		    over the last axis (i.e. ``axis=-1``).
+		average : { 'mean', 'median' }, optional
+		    Method to use when averaging periodograms. Defaults to 'mean'.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -10211,8 +11048,24 @@ package scipy.signal;
 		
 		>>> np.sqrt(Pxx_spec.max())
 		2.0077340678640727
+		
+		If we now introduce a discontinuity in the signal, by increasing the
+		amplitude of a small portion of the signal by 50, we can see the
+		corruption of the mean average power spectral density, but using a
+		median average better estimates the normal behaviour.
+		
+		>>> x[int(N//2):int(N//2)+10] *= 50.
+		>>> f, Pxx_den = signal.welch(x, fs, nperseg=1024)
+		>>> f_med, Pxx_den_med = signal.welch(x, fs, nperseg=1024, average='median')
+		>>> plt.semilogy(f, Pxx_den, label='mean')
+		>>> plt.semilogy(f_med, Pxx_den_med, label='median')
+		>>> plt.ylim([0.5e-3, 1])
+		>>> plt.xlabel('frequency [Hz]')
+		>>> plt.ylabel('PSD [V**2/Hz]')
+		>>> plt.legend()
+		>>> plt.show()
 	**/
-	static public function welch(x:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?detrend:Dynamic, ?return_onesided:Dynamic, ?scaling:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function welch(x:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?detrend:Dynamic, ?return_onesided:Dynamic, ?scaling:Dynamic, ?axis:Dynamic, ?average:Dynamic):Dynamic;
 	/**
 		Perform a Wiener filter on an N-dimensional array.
 		

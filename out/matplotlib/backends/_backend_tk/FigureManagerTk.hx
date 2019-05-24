@@ -110,6 +110,10 @@ package matplotlib.backends._backend_tk;
 	public var __weakref__ : Dynamic;
 	public function _get_toolbar():Dynamic;
 	public function _get_toolmanager():Dynamic;
+	/**
+		The default Matplotlib button actions for extra mouse buttons.
+	**/
+	public function button_press(event:Dynamic):Dynamic;
 	public function destroy(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function full_screen_toggle():Dynamic;
 	/**
@@ -138,11 +142,4 @@ package matplotlib.backends._backend_tk;
 		PyEval_RestoreThread: NULL state bug on win32
 	**/
 	public function show():Dynamic;
-	/**
-		.. deprecated:: 2.2
-		    The show_popup function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
-		
-		Display message in a popup -- GUI only.
-	**/
-	public function show_popup(msg:Dynamic):Dynamic;
 }

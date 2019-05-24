@@ -189,6 +189,15 @@ package tensorflow.python.ops.variable_scope;
 		    variable and return the Tensor for the projected value
 		    (which must have the same shape). Constraints are not safe to
 		    use when doing asynchronous distributed training.
+		  synchronization: Indicates when a distributed a variable will be
+		    aggregated. Accepted values are constants defined in the class
+		    `tf.VariableSynchronization`. By default the synchronization is set to
+		    `AUTO` and the current `DistributionStrategy` chooses
+		    when to synchronize. If `synchronization` is set to `ON_READ`,
+		    `trainable` must not be set to `True`.
+		  aggregation: Indicates how a distributed variable will be aggregated.
+		    Accepted values are constants defined in the class
+		    `tf.VariableAggregation`.
 		
 		Returns:
 		  A `PartitionedVariable` object.
@@ -199,7 +208,7 @@ package tensorflow.python.ops.variable_scope;
 		    when violating reuse during variable creation, or if an existing
 		    sharded variable exists for the given name but with different sharding.
 	**/
-	public function _get_partitioned_variable(name:Dynamic, partitioner:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?constraint:Dynamic):Dynamic;
+	public function _get_partitioned_variable(name:Dynamic, partitioner:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?constraint:Dynamic, ?synchronization:Dynamic, ?aggregation:Dynamic):Dynamic;
 	/**
 		Get or create a single Variable (e.g. a shard or entire variable).
 		

@@ -16,6 +16,7 @@ package tensorflow.python.ops.control_flow_util;
 		  ValueError: if input_op is from an invalid context.
 	**/
 	static public function CheckInputFromValidContext(op:Dynamic, input_op:Dynamic):Dynamic;
+	static public var ENABLE_CONTROL_FLOW_V2 : Dynamic;
 	/**
 		Returns the first ancestor CondContext of `ctxt`.
 		
@@ -68,6 +69,7 @@ package tensorflow.python.ops.control_flow_util;
 		Return the control flow context for the output of an op.
 	**/
 	static public function GetOutputContext(op:Dynamic):Dynamic;
+	static public function InXlaContext(graph:Dynamic):Dynamic;
 	/**
 		Return true if `op` is the Merge for a conditional.
 	**/

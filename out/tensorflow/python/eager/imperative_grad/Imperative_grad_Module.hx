@@ -24,18 +24,17 @@ package tensorflow.python.eager.imperative_grad;
 		 sources: list of Tensors for which we want gradients
 		 output_gradients: if not None, a list of gradient provided for each Target,
 		  or None if we are to use the target's computed downstream gradient.
+		 unconnected_gradients: determines the value returned if the target and
+		  sources are unconnected. When 'none' the value returned is None wheras when
+		  'zero' a zero tensor in the same shape as the sources is returned.
 		
 		Returns:
 		 the gradient wrt each of the sources.
 		
 		Raises:
+		  ValueError: if the arguments are invalid.
 		  RuntimeError: if something goes wrong.
-		  ValueError: if there is no sequence of differentiable operations connecting
-		   a source and any target Tensor. This can happen either if the target is
-		   not computed based on the source, if the tracing was set up incorrectly,
-		   or if only non-differentiable functions of the source were used in the
-		   computation of target.
 	**/
-	static public function imperative_grad(tape:Dynamic, target:Dynamic, sources:Dynamic, ?output_gradients:Dynamic):Dynamic;
+	static public function imperative_grad(tape:Dynamic, target:Dynamic, sources:Dynamic, ?output_gradients:Dynamic, ?unconnected_gradients:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

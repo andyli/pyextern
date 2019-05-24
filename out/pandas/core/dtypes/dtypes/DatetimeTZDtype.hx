@@ -23,10 +23,12 @@ package pandas.core.dtypes.dtypes;
 	/**
 		Check whether 'other' is equal to self.
 		
-		By default, 'other' is considered equal if
+		By default, 'other' is considered equal if either
 		
 		* it's a string matching 'self.name'.
-		* it's an instance of this type.
+		* it's an instance of this type and all of the
+		  the attributes in ``self._metadata`` are equal between
+		  `self` and `other`.
 		
 		Parameters
 		----------
@@ -59,14 +61,56 @@ package pandas.core.dtypes.dtypes;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		An ExtensionDtype for timezone-aware datetime data.
+		
+		Parameters
+		----------
+		unit : str, default "ns"
+		    The precision of the datetime data. Currently limited
+		    to ``"ns"``.
+		tz : str, int, or datetime.tzinfo
+		    The timezone.
+		
+		Raises
+		------
+		pytz.UnknownTimeZoneError
+		    When the requested timezone cannot be found.
+		
+		Examples
+		--------
+		>>> pd.core.dtypes.dtypes.DatetimeTZDtype(tz='UTC')
+		datetime64[ns, UTC]
+		
+		>>> pd.core.dtypes.dtypes.DatetimeTZDtype(tz='dateutil/US/Central')
+		datetime64[ns, tzfile('/usr/share/zoneinfo/US/Central')]
 	**/
 	@:native("__init__")
-	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(?unit:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		An ExtensionDtype for timezone-aware datetime data.
+		
+		Parameters
+		----------
+		unit : str, default "ns"
+		    The precision of the datetime data. Currently limited
+		    to ``"ns"``.
+		tz : str, int, or datetime.tzinfo
+		    The timezone.
+		
+		Raises
+		------
+		pytz.UnknownTimeZoneError
+		    When the requested timezone cannot be found.
+		
+		Examples
+		--------
+		>>> pd.core.dtypes.dtypes.DatetimeTZDtype(tz='UTC')
+		datetime64[ns, UTC]
+		
+		>>> pd.core.dtypes.dtypes.DatetimeTZDtype(tz='dateutil/US/Central')
+		datetime64[ns, tzfile('/usr/share/zoneinfo/US/Central')]
 	**/
-	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(?unit:Dynamic, ?tz:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -88,14 +132,9 @@ package pandas.core.dtypes.dtypes;
 	**/
 	public function __ne__(other:Dynamic):Dynamic;
 	/**
-		Create a new unit if needed, otherwise return from the cache
-		
-		Parameters
-		----------
-		unit : string unit that this represents, currently must be 'ns'
-		tz : string tz that this represents
+		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, ?unit:Dynamic, ?tz:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -114,6 +153,7 @@ package pandas.core.dtypes.dtypes;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(state:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -141,12 +181,54 @@ package pandas.core.dtypes.dtypes;
 	**/
 	public var __weakref__ : Dynamic;
 	static public var _cache : Dynamic;
+	/**
+		Whether this dtype should be considered boolean.
+		
+		By default, ExtensionDtypes are assumed to be non-numeric.
+		Setting this to True will affect the behavior of several places,
+		e.g.
+		
+		* is_bool
+		* boolean indexing
+		
+		Returns
+		-------
+		bool
+	**/
+	public var _is_boolean : Dynamic;
+	/**
+		Whether columns with this dtype should be considered numeric.
+		
+		By default ExtensionDtypes are assumed to be non-numeric.
+		They'll be excluded from operations that exclude non-numeric
+		columns, like (groupby) reductions, plotting, etc.
+	**/
+	public var _is_numeric : Dynamic;
 	static public var _match : Dynamic;
 	static public var _metadata : Dynamic;
 	static public var base : Dynamic;
 	/**
-		attempt to construct this type from a string, raise a TypeError if
-		it's not possible
+		Return the array type associated with this dtype
+		
+		Returns
+		-------
+		type
+	**/
+	static public function construct_array_type():Dynamic;
+	/**
+		Construct a DatetimeTZDtype from a string.
+		
+		Parameters
+		----------
+		string : str
+		    The string alias for this DatetimeTZDtype.
+		    Should be formatted like ``datetime64[ns, <tz>]``,
+		    where ``<tz>`` is the timezone name.
+		
+		Examples
+		--------
+		>>> DatetimeTZDtype.construct_from_string('datetime64[ns, UTC]')
+		datetime64[ns, UTC]
 	**/
 	static public function construct_from_string(string:Dynamic):Dynamic;
 	/**
@@ -177,6 +259,9 @@ package pandas.core.dtypes.dtypes;
 	static public var itemsize : Dynamic;
 	static public var kind : Dynamic;
 	static public var na_value : Dynamic;
+	/**
+		A string representation of the dtype.
+	**/
 	public var name : Dynamic;
 	/**
 		Ordered list of field names, or None if there are no fields.
@@ -194,7 +279,75 @@ package pandas.core.dtypes.dtypes;
 	static public var str : Dynamic;
 	static public var subdtype : Dynamic;
 	/**
-		the type of DatetimeTZDtype, this metaclass determines subclass ability
+		Pandas replacement for datetime.datetime
+		
+		Timestamp is the pandas equivalent of python's Datetime
+		and is interchangeable with it in most cases. It's the type used
+		for the entries that make up a DatetimeIndex, and other timeseries
+		oriented data structures in pandas.
+		
+		Parameters
+		----------
+		ts_input : datetime-like, str, int, float
+		    Value to be converted to Timestamp
+		freq : str, DateOffset
+		    Offset which Timestamp will have
+		tz : str, pytz.timezone, dateutil.tz.tzfile or None
+		    Time zone for time which Timestamp will have.
+		unit : str
+		    Unit used for conversion if ts_input is of type int or float. The
+		    valid values are 'D', 'h', 'm', 's', 'ms', 'us', and 'ns'. For
+		    example, 's' means seconds and 'ms' means milliseconds.
+		year, month, day : int
+		    .. versionadded:: 0.19.0
+		hour, minute, second, microsecond : int, optional, default 0
+		    .. versionadded:: 0.19.0
+		nanosecond : int, optional, default 0
+		    .. versionadded:: 0.23.0
+		tzinfo : datetime.tzinfo, optional, default None
+		    .. versionadded:: 0.19.0
+		
+		Notes
+		-----
+		There are essentially three calling conventions for the constructor. The
+		primary form accepts four parameters. They can be passed by position or
+		keyword.
+		
+		The other two forms mimic the parameters from ``datetime.datetime``. They
+		can be passed by either position or keyword, but not both mixed together.
+		
+		Examples
+		--------
+		Using the primary calling convention:
+		
+		This converts a datetime-like string
+		>>> pd.Timestamp('2017-01-01T12')
+		Timestamp('2017-01-01 12:00:00')
+		
+		This converts a float representing a Unix epoch in units of seconds
+		>>> pd.Timestamp(1513393355.5, unit='s')
+		Timestamp('2017-12-16 03:02:35.500000')
+		
+		This converts an int representing a Unix-epoch in units of seconds
+		and for a particular timezone
+		>>> pd.Timestamp(1513393355, unit='s', tz='US/Pacific')
+		Timestamp('2017-12-15 19:02:35-0800', tz='US/Pacific')
+		
+		Using the other two forms that mimic the API for ``datetime.datetime``:
+		
+		>>> pd.Timestamp(2017, 1, 1, 12)
+		Timestamp('2017-01-01 12:00:00')
+		
+		>>> pd.Timestamp(year=2017, month=1, day=1, hour=12)
+		Timestamp('2017-01-01 12:00:00')
 	**/
-	public function type(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function type(?ts_input:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?unit:Dynamic, ?year:Dynamic, ?month:Dynamic, ?day:Dynamic, ?hour:Dynamic, ?minute:Dynamic, ?second:Dynamic, ?microsecond:Dynamic, ?nanosecond:Dynamic, ?tzinfo:Dynamic):Dynamic;
+	/**
+		The timezone.
+	**/
+	public var tz : Dynamic;
+	/**
+		The precision of the datetime data.
+	**/
+	public var unit : Dynamic;
 }

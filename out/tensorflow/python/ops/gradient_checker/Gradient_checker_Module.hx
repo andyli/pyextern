@@ -13,6 +13,7 @@ package tensorflow.python.ops.gradient_checker;
 		Returns a node to compute gradient of y wrt x.
 	**/
 	static public function _compute_dx_and_dy(x:Dynamic, y:Dynamic, y_shape:Dynamic):Dynamic;
+	static public function _compute_error(grad:Dynamic):Dynamic;
 	/**
 		Computes the theoretical and numerical jacobian.
 	**/
@@ -98,7 +99,6 @@ package tensorflow.python.ops.gradient_checker;
 		    as the initial value.
 		  delta: (optional) the amount of perturbation.
 		  init_targets: list of targets to run to initialize model params.
-		    TODO(mrry): remove this argument.
 		  extra_feed_dict: dict that allows fixing specified tensor values
 		    during the Jacobian calculation.
 		

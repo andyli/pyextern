@@ -4,6 +4,7 @@ package tensorflow.core.framework.node_def_pb2;
 	static public var DESCRIPTOR : Dynamic;
 	static public var _NODEDEF : Dynamic;
 	static public var _NODEDEF_ATTRENTRY : Dynamic;
+	static public var _NODEDEF_EXPERIMENTALDEBUGINFO : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

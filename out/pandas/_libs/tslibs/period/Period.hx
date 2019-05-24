@@ -160,9 +160,8 @@ package pandas._libs.tslibs.period;
 		
 		See Also
 		--------
-		Period.dayofweek : Get the day of the week
-		
-		Period.dayofyear : Get the day of the year
+		Period.dayofweek : Get the day of the week.
+		Period.dayofyear : Get the day of the year.
 		
 		Examples
 		--------
@@ -172,34 +171,49 @@ package pandas._libs.tslibs.period;
 	**/
 	public var day : Dynamic;
 	/**
-		Return the day of the week.
+		Day of the week the period lies in, with Monday=0 and Sunday=6.
 		
-		This attribute returns the day of the week on which the particular
-		date for the given period occurs depending on the frequency with
-		Monday=0, Sunday=6.
+		If the period frequency is lower than daily (e.g. hourly), and the
+		period spans over multiple days, the day at the start of the period is
+		used.
+		
+		If the frequency is higher than daily (e.g. monthly), the last day
+		of the period is used.
 		
 		Returns
 		-------
-		Int
-		    Range from 0 to 6 (included).
+		int
+		    Day of the week.
 		
-		See also
+		See Also
 		--------
-		Period.dayofyear : Return the day of the year.
-		Period.daysinmonth : Return the number of days in that month.
+		Period.dayofweek : Day of the week the period lies in.
+		Period.weekday : Alias of Period.dayofweek.
+		Period.day : Day of the month.
+		Period.dayofyear : Day of the year.
 		
 		Examples
 		--------
-		>>> period1 = pd.Period('2012-1-1 19:00', freq='H')
-		>>> period1
-		Period('2012-01-01 19:00', 'H')
-		>>> period1.dayofweek
+		>>> per = pd.Period('2017-12-31 22:00', 'H')
+		>>> per.dayofweek
 		6
 		
-		>>> period2 = pd.Period('2013-1-9 11:00', freq='H')
-		>>> period2
-		Period('2013-01-09 11:00', 'H')
-		>>> period2.dayofweek
+		For periods that span over multiple days, the day at the beginning of
+		the period is returned.
+		
+		>>> per = pd.Period('2017-12-31 22:00', '4H')
+		>>> per.dayofweek
+		6
+		>>> per.start_time.dayofweek
+		6
+		
+		For periods with a frequency higher than days, the last day of the
+		period is returned.
+		
+		>>> per = pd.Period('2018-01', 'M')
+		>>> per.dayofweek
+		2
+		>>> per.end_time.dayofweek
 		2
 	**/
 	public var dayofweek : Dynamic;
@@ -273,8 +287,8 @@ package pandas._libs.tslibs.period;
 		
 		See Also
 		--------
-		Period.days_in_month : Return the days of the month
-		Period.dayofyear : Return the day of the year
+		Period.days_in_month : Return the days of the month.
+		Period.dayofyear : Return the day of the year.
 		
 		Examples
 		--------
@@ -337,6 +351,45 @@ package pandas._libs.tslibs.period;
 	public function now(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var ordinal : Dynamic;
 	public var quarter : Dynamic;
+	/**
+		Fiscal year the Period lies in according to its starting-quarter.
+		
+		The `year` and the `qyear` of the period will be the same if the fiscal
+		and calendar years are the same. When they are not, the fiscal year
+		can be different from the calendar year of the period.
+		
+		Returns
+		-------
+		int
+		    The fiscal year of the period.
+		
+		See Also
+		--------
+		Period.year : Return the calendar year of the period.
+		
+		Examples
+		--------
+		If the natural and fiscal year are the same, `qyear` and `year` will
+		be the same.
+		
+		>>> per = pd.Period('2018Q1', freq='Q')
+		>>> per.qyear
+		2018
+		>>> per.year
+		2018
+		
+		If the fiscal year starts in April (`Q-MAR`), the first quarter of
+		2018 will start in April 2017. `year` will then be 2018, but `qyear`
+		will be the fiscal year, 2018.
+		
+		>>> per = pd.Period('2018Q1', freq='Q-MAR')
+		>>> per.start_time
+		Timestamp('2017-04-01 00:00:00')
+		>>> per.qyear
+		2018
+		>>> per.year
+		2017
+	**/
 	public var qyear : Dynamic;
 	/**
 		Get the second component of the Period.
@@ -365,7 +418,7 @@ package pandas._libs.tslibs.period;
 		-------
 		Timestamp
 		
-		See also
+		See Also
 		--------
 		Period.end_time : Return the end Timestamp.
 		Period.dayofyear : Return the day of year.
@@ -533,7 +586,7 @@ package pandas._libs.tslibs.period;
 		freq : string or DateOffset
 		    Target frequency. Default is 'D' if self.freq is week or
 		    longer and 'S' otherwise
-		how: str, default 'S' (start)
+		how : str, default 'S' (start)
 		    'S', 'E'. Can be aliased as case insensitive
 		    'Start', 'Finish', 'Begin', 'End'
 		
@@ -569,6 +622,52 @@ package pandas._libs.tslibs.period;
 		1
 	**/
 	public var week : Dynamic;
+	/**
+		Day of the week the period lies in, with Monday=0 and Sunday=6.
+		
+		If the period frequency is lower than daily (e.g. hourly), and the
+		period spans over multiple days, the day at the start of the period is
+		used.
+		
+		If the frequency is higher than daily (e.g. monthly), the last day
+		of the period is used.
+		
+		Returns
+		-------
+		int
+		    Day of the week.
+		
+		See Also
+		--------
+		Period.dayofweek : Day of the week the period lies in.
+		Period.weekday : Alias of Period.dayofweek.
+		Period.day : Day of the month.
+		Period.dayofyear : Day of the year.
+		
+		Examples
+		--------
+		>>> per = pd.Period('2017-12-31 22:00', 'H')
+		>>> per.dayofweek
+		6
+		
+		For periods that span over multiple days, the day at the beginning of
+		the period is returned.
+		
+		>>> per = pd.Period('2017-12-31 22:00', '4H')
+		>>> per.dayofweek
+		6
+		>>> per.start_time.dayofweek
+		6
+		
+		For periods with a frequency higher than days, the last day of the
+		period is returned.
+		
+		>>> per = pd.Period('2018-01', 'M')
+		>>> per.dayofweek
+		2
+		>>> per.end_time.dayofweek
+		2
+	**/
 	public var weekday : Dynamic;
 	public var weekofyear : Dynamic;
 	public var year : Dynamic;

@@ -120,7 +120,6 @@ package pandas.io.stata;
 	public var __weakref__ : Dynamic;
 	public function _calcsize(fmt:Dynamic):Dynamic;
 	public function _decode(s:Dynamic):Dynamic;
-	static public var _default_encoding : Dynamic;
 	/**
 		Converts categorical columns to Categorical type.
 	**/
@@ -144,6 +143,10 @@ package pandas.io.stata;
 	public function _read_strls():Dynamic;
 	public function _read_value_labels():Dynamic;
 	/**
+		Set string encoding which depends on file version
+	**/
+	public function _set_encoding():Dynamic;
+	/**
 		Map between numpy and state dtypes
 	**/
 	public function _setup_dtype():Dynamic;
@@ -154,8 +157,8 @@ package pandas.io.stata;
 	/**
 		Reads observations from Stata file, converting them into a dataframe
 		
-		    .. deprecated::
-		       This is a legacy method.  Use `read` in new code.
+		.. deprecated::
+		    This is a legacy method.  Use `read` in new code.
 		
 		Parameters
 		----------

@@ -47,7 +47,7 @@ package tensorflow.contrib.learn.python.learn.utils.gc;
 	/**
 		Gets a list of Paths in a given directory. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please implement your own file name management.
 		
@@ -71,7 +71,7 @@ package tensorflow.contrib.learn.python.learn.utils.gc;
 	/**
 		Creates a filter that keeps the largest n export versions. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please implement your own file management or use Saver.
 		
@@ -85,7 +85,7 @@ package tensorflow.contrib.learn.python.learn.utils.gc;
 	/**
 		Creates a filter that keeps every export that is a multiple of n. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please implement your own file management or use Saver.
 		
@@ -99,7 +99,7 @@ package tensorflow.contrib.learn.python.learn.utils.gc;
 	/**
 		Negate a filter. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please implement your own file management or use Saver.
 		
@@ -113,7 +113,7 @@ package tensorflow.contrib.learn.python.learn.utils.gc;
 	/**
 		Creates a filter that keeps one of every n export versions. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please implement your own file management or use Saver.
 		
@@ -130,7 +130,7 @@ package tensorflow.contrib.learn.python.learn.utils.gc;
 	/**
 		Creates a filter that keeps the union of two filters. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please implement your own file management or use Saver.
 		

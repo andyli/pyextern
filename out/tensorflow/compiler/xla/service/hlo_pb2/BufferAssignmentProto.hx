@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.compiler.xla.service.hlo_pb2;
 @:pythonImport("tensorflow.compiler.xla.service.hlo_pb2", "BufferAssignmentProto") extern class BufferAssignmentProto {
-	static public var BUFFER_ALIASES_FIELD_NUMBER : Dynamic;
-	static public var BUFFER_ALLOCATIONS_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -44,7 +42,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HEAP_SIMULATOR_TRACES_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -57,7 +54,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LOGICAL_BUFFERS_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -90,6 +86,10 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -255,4 +255,20 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.BufferAssignmentProto.buffer_aliases
+	**/
+	public var buffer_aliases : Dynamic;
+	/**
+		Field xla.BufferAssignmentProto.buffer_allocations
+	**/
+	public var buffer_allocations : Dynamic;
+	/**
+		Field xla.BufferAssignmentProto.heap_simulator_traces
+	**/
+	public var heap_simulator_traces : Dynamic;
+	/**
+		Field xla.BufferAssignmentProto.logical_buffers
+	**/
+	public var logical_buffers : Dynamic;
 }

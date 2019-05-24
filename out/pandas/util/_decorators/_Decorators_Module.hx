@@ -2,7 +2,6 @@
 package pandas.util._decorators;
 @:pythonImport("pandas.util._decorators") extern class _Decorators_Module {
 	static public var PY2 : Dynamic;
-	static public var WRAPPER_ASSIGNMENTS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -101,7 +100,6 @@ package pandas.util._decorators;
 		  warnings.warn(msg, FutureWarning)
 		yes!
 		
-		
 		To raise a warning that a keyword will be removed entirely in the future
 		
 		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
@@ -123,42 +121,19 @@ package pandas.util._decorators;
 	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	static public function indent(text:Dynamic, ?indents:Dynamic):Dynamic;
 	/**
-		Returns a string repr of the arg list of a func call, with any defaults.
+		Returns a tuple containing the paramenter list with defaults
+		and parameter list.
 		
 		Examples
 		--------
-		>>> def f(a,b,c=2) :
-		>>>     return a*b*c
-		>>> print(_make_signature(f))
-		a,b,c=2
+		>>> def f(a, b, c=2):
+		>>>     return a * b * c
+		>>> print(make_signature(f))
+		(['a', 'b', 'c=2'], ['a', 'b', 'c'])
 	**/
 	static public function make_signature(func:Dynamic):Dynamic;
 	static public function rewrite_axis_style_signature(name:Dynamic, extra_params:Dynamic):Dynamic;
 	static public function signature(f:Dynamic):Dynamic;
-	/**
-		Update a wrapper function to look like the wrapped function
-		
-		wrapper is the function to be updated
-		wrapped is the original function
-		assigned is a tuple naming the attributes assigned directly
-		from the wrapped function to the wrapper function (defaults to
-		functools.WRAPPER_ASSIGNMENTS)
-		updated is a tuple naming the attributes of the wrapper that
-		are updated with the corresponding attribute from the wrapped
-		function (defaults to functools.WRAPPER_UPDATES)
-	**/
-	static public function update_wrapper(wrapper:Dynamic, wrapped:Dynamic, ?assigned:Dynamic, ?updated:Dynamic):Dynamic;
-	/**
-		Wrap a single paragraph of text, returning a list of wrapped lines.
-		
-		Reformat the single paragraph in 'text' so it fits in lines of no
-		more than 'width' columns, and return a list of wrapped lines.  By
-		default, tabs in 'text' are expanded with string.expandtabs(), and
-		all other whitespace characters (including newline) are converted to
-		space.  See TextWrapper class for available keyword args to customize
-		wrapping behaviour.
-	**/
-	static public function wrap(text:Dynamic, ?width:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Decorator factory to apply update_wrapper() to a wrapper function
 		

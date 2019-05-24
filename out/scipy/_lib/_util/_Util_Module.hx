@@ -1,6 +1,10 @@
 /* This file is generated, do not edit! */
 package scipy._lib._util;
 @:pythonImport("scipy._lib._util") extern class _Util_Module {
+	/**
+		Returns a process pool object
+	**/
+	static public function Pool(?processes:Dynamic, ?initializer:Dynamic, ?initargs:Dynamic, ?maxtasksperchild:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

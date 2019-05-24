@@ -16,17 +16,9 @@ package scipy._build_utils;
 	**/
 	static public function get_g77_abi_wrappers(info:Dynamic):Dynamic;
 	/**
-		Returns source file needed to correct SGEMV 
-	**/
-	static public function get_sgemv_fix(info:Dynamic):Dynamic;
-	/**
 		Returns True if g77 ABI wrapper must be used.
 	**/
 	static public function needs_g77_abi_wrapper(info:Dynamic):Dynamic;
-	/**
-		Returns True if SGEMV must be fixed.
-	**/
-	static public function needs_sgemv_fix(info:Dynamic):Dynamic;
 	static public var numpy_nodepr_api : Dynamic;
 	/**
 		Split each file in `source_dir` into separate files per subroutine.

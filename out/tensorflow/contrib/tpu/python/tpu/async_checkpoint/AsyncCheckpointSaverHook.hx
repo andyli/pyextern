@@ -138,6 +138,8 @@ package tensorflow.contrib.tpu.python.tpu.async_checkpoint;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _estimator_api_names : Dynamic;
+	static public var _estimator_api_names_v1 : Dynamic;
 	public function _get_saver():Dynamic;
 	/**
 		Saves the latest checkpoint, returns should_stop.

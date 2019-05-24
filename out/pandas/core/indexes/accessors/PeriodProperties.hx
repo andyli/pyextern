@@ -129,7 +129,7 @@ package pandas.core.indexes.accessors;
 	public var __weakref__ : Dynamic;
 	static public var _accessors : Dynamic;
 	/**
-		add accessors to cls from the delegate class
+		Add accessors to cls from the delegate class.
 		
 		Parameters
 		----------
@@ -167,11 +167,10 @@ package pandas.core.indexes.accessors;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	/**
-		Convert the PeriodIndex to the specified frequency `freq`.
+		Convert the Period Array/Index to the specified frequency `freq`.
 		
 		Parameters
 		----------
-		
 		freq : str
 		    a frequency
 		how : str {'E', 'S'}
@@ -179,12 +178,11 @@ package pandas.core.indexes.accessors;
 		    'S', 'START', or 'BEGIN' for start.
 		    Whether the elements should be aligned to the end
 		    or start within pa period. January 31st ('END') vs.
-		    Janury 1st ('START') for example.
+		    January 1st ('START') for example.
 		
 		Returns
 		-------
-		
-		new : PeriodIndex with the new frequency
+		new : Period Array/Index with the new frequency
 		
 		Examples
 		--------
@@ -227,7 +225,7 @@ package pandas.core.indexes.accessors;
 	public var daysinmonth : Dynamic;
 	public var end_time : Dynamic;
 	/**
-		Return the frequency object if it is set, otherwise None
+		Return the frequency object for this PeriodArray.
 	**/
 	public var freq : Dynamic;
 	/**
@@ -235,7 +233,7 @@ package pandas.core.indexes.accessors;
 	**/
 	public var hour : Dynamic;
 	/**
-		Logical indicating if the date belongs to a leap year 
+		Logical indicating if the date belongs to a leap year
 	**/
 	public var is_leap_year : Dynamic;
 	/**
@@ -261,7 +259,8 @@ package pandas.core.indexes.accessors;
 		
 		Return an Index of formatted strings specified by date_format, which
 		supports the same string format as the python standard library. Details
-		of the string format can be found in `python string format doc <https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior>`__
+		of the string format can be found in `python string format
+		doc <https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior>`__
 		
 		Parameters
 		----------
@@ -275,7 +274,7 @@ package pandas.core.indexes.accessors;
 		
 		See Also
 		--------
-		pandas.to_datetime : Convert the given argument to datetime
+		to_datetime : Convert the given argument to datetime.
 		DatetimeIndex.normalize : Return DatetimeIndex with times to midnight.
 		DatetimeIndex.round : Round the DatetimeIndex to the specified freq.
 		DatetimeIndex.floor : Floor the DatetimeIndex to the specified freq.
@@ -291,7 +290,7 @@ package pandas.core.indexes.accessors;
 	**/
 	public function strftime(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Cast to DatetimeIndex
+		Cast to DatetimeArray/Index.
 		
 		Parameters
 		----------
@@ -302,7 +301,7 @@ package pandas.core.indexes.accessors;
 		
 		Returns
 		-------
-		DatetimeIndex
+		DatetimeArray/Index
 	**/
 	public function to_timestamp(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

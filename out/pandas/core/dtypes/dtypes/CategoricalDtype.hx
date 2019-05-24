@@ -23,13 +23,14 @@ package pandas.core.dtypes.dtypes;
 	/**
 		Rules for CDT equality:
 		1) Any CDT is equal to the string 'category'
-		2) Any CDT is equal to a CDT with categories=None regardless of ordered
-		3) A CDT with ordered=True is only equal to another CDT with
+		2) Any CDT is equal to itself
+		3) Any CDT is equal to a CDT with categories=None regardless of ordered
+		4) A CDT with ordered=True is only equal to another CDT with
 		   ordered=True and identical categories in the same order
-		4) A CDT with ordered={False, None} is only equal to another CDT with
+		5) A CDT with ordered={False, None} is only equal to another CDT with
 		   ordered={False, None} and identical categories, but same order is
 		   not required. There is no distinction between False/None.
-		5) Any other comparison returns False
+		6) Any other comparison returns False
 	**/
 	public function __eq__(other:Dynamic):Dynamic;
 	/**
@@ -135,13 +136,100 @@ package pandas.core.dtypes.dtypes;
 	public function _finalize(categories:Dynamic, ordered:Dynamic, ?fastpath:Dynamic):Dynamic;
 	static public function _from_categorical_dtype(dtype:Dynamic, ?categories:Dynamic, ?ordered:Dynamic):Dynamic;
 	static public function _from_fastpath(?categories:Dynamic, ?ordered:Dynamic):Dynamic;
+	/**
+		Construct dtype from the input parameters used in :class:`Categorical`.
+		
+		This constructor method specifically does not do the factorization
+		step, if that is needed to find the categories. This constructor may
+		therefore return ``CategoricalDtype(categories=None, ordered=None)``,
+		which may not be useful. Additional steps may therefore have to be
+		taken to create the final dtype.
+		
+		The return dtype is specified from the inputs in this prioritized
+		order:
+		1. if dtype is a CategoricalDtype, return dtype
+		2. if dtype is the string 'category', create a CategoricalDtype from
+		   the supplied categories and ordered parameters, and return that.
+		3. if values is a categorical, use value.dtype, but override it with
+		   categories and ordered if either/both of those are not None.
+		4. if dtype is None and values is not a categorical, construct the
+		   dtype from categories and ordered, even if either of those is None.
+		
+		Parameters
+		----------
+		values : list-like, optional
+		    The list-like must be 1-dimensional.
+		categories : list-like, optional
+		    Categories for the CategoricalDtype.
+		ordered : bool, optional
+		    Designating if the categories are ordered.
+		dtype : CategoricalDtype or the string "category", optional
+		    If ``CategoricalDtype``, cannot be used together with
+		    `categories` or `ordered`.
+		
+		Returns
+		-------
+		CategoricalDtype
+		
+		Examples
+		--------
+		>>> CategoricalDtype._from_values_or_dtype()
+		CategoricalDtype(categories=None, ordered=None)
+		>>> CategoricalDtype._from_values_or_dtype(categories=['a', 'b'],
+		...                                        ordered=True)
+		CategoricalDtype(categories=['a', 'b'], ordered=True)
+		>>> dtype1 = CategoricalDtype(['a', 'b'], ordered=True)
+		>>> dtype2 = CategoricalDtype(['x', 'y'], ordered=False)
+		>>> c = Categorical([0, 1], dtype=dtype1, fastpath=True)
+		>>> CategoricalDtype._from_values_or_dtype(c, ['x', 'y'], ordered=True,
+		...                                        dtype=dtype2)
+		ValueError: Cannot specify `categories` or `ordered` together with
+		`dtype`.
+		
+		The supplied dtype takes precedence over values' dtype:
+		
+		>>> CategoricalDtype._from_values_or_dtype(c, dtype=dtype2)
+		CategoricalDtype(['x', 'y'], ordered=False)
+	**/
+	static public function _from_values_or_dtype(?values:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function _hash_categories(categories:Dynamic, ?ordered:Dynamic):Dynamic;
+	/**
+		Whether this dtype should be considered boolean.
+		
+		By default, ExtensionDtypes are assumed to be non-numeric.
+		Setting this to True will affect the behavior of several places,
+		e.g.
+		
+		* is_bool
+		* boolean indexing
+		
+		Returns
+		-------
+		bool
+	**/
+	public var _is_boolean : Dynamic;
+	/**
+		Whether columns with this dtype should be considered numeric.
+		
+		By default ExtensionDtypes are assumed to be non-numeric.
+		They'll be excluded from operations that exclude non-numeric
+		columns, like (groupby) reductions, plotting, etc.
+	**/
+	public var _is_numeric : Dynamic;
 	static public var _metadata : Dynamic;
 	static public var base : Dynamic;
 	/**
 		An ``Index`` containing the unique categories allowed.
 	**/
 	public var categories : Dynamic;
+	/**
+		Return the array type associated with this dtype
+		
+		Returns
+		-------
+		type
+	**/
+	static public function construct_array_type():Dynamic;
 	/**
 		attempt to construct this type from a string, raise a TypeError if
 		it's not possible 
@@ -185,7 +273,7 @@ package pandas.core.dtypes.dtypes;
 	public var names : Dynamic;
 	static public var num : Dynamic;
 	/**
-		Whether the categories have an ordered relationship
+		Whether the categories have an ordered relationship.
 	**/
 	public var ordered : Dynamic;
 	/**

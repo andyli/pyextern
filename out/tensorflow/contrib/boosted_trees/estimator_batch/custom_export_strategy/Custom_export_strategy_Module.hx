@@ -31,10 +31,11 @@ package tensorflow.contrib.boosted_trees.estimator_batch.custom_export_strategy;
 		  export_input_fn: A function that takes no arguments and returns an
 		    `InputFnOps`.
 		  use_core_columns: A boolean, whether core feature columns were used.
+		  feature_engineering_fn: Feature eng function to be called on the input.
 		
 		Returns:
 		  An `ExportStrategy`.
 	**/
-	static public function make_custom_export_strategy(name:Dynamic, convert_fn:Dynamic, feature_columns:Dynamic, export_input_fn:Dynamic, ?use_core_columns:Dynamic):Dynamic;
+	static public function make_custom_export_strategy(name:Dynamic, convert_fn:Dynamic, feature_columns:Dynamic, export_input_fn:Dynamic, ?use_core_columns:Dynamic, ?feature_engineering_fn:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

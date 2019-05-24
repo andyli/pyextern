@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.framework.op_def_pb2;
 @:pythonImport("tensorflow.core.framework.op_def_pb2", "OpDef") extern class OpDef {
-	static public var ALLOWS_UNINITIALIZED_INPUT_FIELD_NUMBER : Dynamic;
-	static public var ATTR_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -31,8 +29,6 @@ package tensorflow.core.framework.op_def_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEPRECATION_FIELD_NUMBER : Dynamic;
-	static public var DESCRIPTION_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		Discards the unknown fields.
@@ -58,10 +54,6 @@ package tensorflow.core.framework.op_def_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INPUT_ARG_FIELD_NUMBER : Dynamic;
-	static public var IS_AGGREGATE_FIELD_NUMBER : Dynamic;
-	static public var IS_COMMUTATIVE_FIELD_NUMBER : Dynamic;
-	static public var IS_STATEFUL_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -78,8 +70,6 @@ package tensorflow.core.framework.op_def_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NAME_FIELD_NUMBER : Dynamic;
-	static public var OUTPUT_ARG_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -88,7 +78,6 @@ package tensorflow.core.framework.op_def_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SUMMARY_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -101,6 +90,10 @@ package tensorflow.core.framework.op_def_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -266,4 +259,48 @@ package tensorflow.core.framework.op_def_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.OpDef.allows_uninitialized_input
+	**/
+	public var allows_uninitialized_input : Dynamic;
+	/**
+		Field tensorflow.OpDef.attr
+	**/
+	public var attr : Dynamic;
+	/**
+		Field tensorflow.OpDef.deprecation
+	**/
+	public var deprecation : Dynamic;
+	/**
+		Field tensorflow.OpDef.description
+	**/
+	public var description : Dynamic;
+	/**
+		Field tensorflow.OpDef.input_arg
+	**/
+	public var input_arg : Dynamic;
+	/**
+		Field tensorflow.OpDef.is_aggregate
+	**/
+	public var is_aggregate : Dynamic;
+	/**
+		Field tensorflow.OpDef.is_commutative
+	**/
+	public var is_commutative : Dynamic;
+	/**
+		Field tensorflow.OpDef.is_stateful
+	**/
+	public var is_stateful : Dynamic;
+	/**
+		Field tensorflow.OpDef.name
+	**/
+	public var name : Dynamic;
+	/**
+		Field tensorflow.OpDef.output_arg
+	**/
+	public var output_arg : Dynamic;
+	/**
+		Field tensorflow.OpDef.summary
+	**/
+	public var summary : Dynamic;
 }

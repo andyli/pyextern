@@ -11,7 +11,11 @@ package tensorflow.graph_util;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Replaces all the variables in a graph with constants of the same values.
+		Replaces all the variables in a graph with constants of the same values. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.compat.v1.graph_util.convert_variables_to_constants
 		
 		If you have a trained graph containing Variable ops, it can be convenient to
 		convert them all to Const ops holding the same values. This makes it possible
@@ -32,7 +36,11 @@ package tensorflow.graph_util;
 	**/
 	static public function convert_variables_to_constants(sess:Dynamic, input_graph_def:Dynamic, output_node_names:Dynamic, ?variable_names_whitelist:Dynamic, ?variable_names_blacklist:Dynamic):Dynamic;
 	/**
-		Extract the subgraph that can reach any of the nodes in 'dest_nodes'.
+		Extract the subgraph that can reach any of the nodes in 'dest_nodes'. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.compat.v1.graph_util.extract_sub_graph
 		
 		Args:
 		  graph_def: A graph_pb2.GraphDef proto.
@@ -47,7 +55,7 @@ package tensorflow.graph_util;
 	/**
 		Imports the graph from `graph_def` into the current default `Graph`. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(op_dict)`. They will be removed in a future version.
 		Instructions for updating:
 		Please file an issue at https://github.com/tensorflow/tensorflow/issues if you depend on this feature.
 		
@@ -80,7 +88,8 @@ package tensorflow.graph_util;
 		
 		Returns:
 		  A list of `Operation` and/or `Tensor` objects from the imported graph,
-		  corresponding to the names in `return_elements`.
+		  corresponding to the names in `return_elements`,
+		  and None if `returns_elements` is None.
 		
 		Raises:
 		  TypeError: If `graph_def` is not a `GraphDef` proto,
@@ -92,7 +101,11 @@ package tensorflow.graph_util;
 	**/
 	static public function import_graph_def(graph_def:Dynamic, ?input_map:Dynamic, ?return_elements:Dynamic, ?name:Dynamic, ?op_dict:Dynamic, ?producer_op_list:Dynamic):Dynamic;
 	/**
-		Returns True if the given node_def must run on CPU, otherwise False.
+		Returns True if the given node_def must run on CPU, otherwise False. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.compat.v1.graph_util.must_run_on_cpu
 		
 		Args:
 		  node: The node to be assigned to a device. Could be either an ops.Operation
@@ -105,7 +118,11 @@ package tensorflow.graph_util;
 	**/
 	static public function must_run_on_cpu(node:Dynamic, ?pin_variables_on_cpu:Dynamic):Dynamic;
 	/**
-		Prunes out nodes that aren't needed for inference.
+		Prunes out nodes that aren't needed for inference. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.compat.v1.graph_util.remove_training_nodes
 		
 		There are nodes like Identity and CheckNumerics that are only useful
 		during training, and can be removed in graphs that will be used for
@@ -125,7 +142,11 @@ package tensorflow.graph_util;
 	**/
 	static public function remove_training_nodes(input_graph:Dynamic, ?protected_nodes:Dynamic):Dynamic;
 	/**
-		Convenience function to get a shape from a NodeDef's input string.
+		Convenience function to get a shape from a NodeDef's input string. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.compat.v1.graph_util.remove_training_nodes
 	**/
 	static public function tensor_shape_from_node_def_name(graph:Dynamic, input_name:Dynamic):Dynamic;
 }

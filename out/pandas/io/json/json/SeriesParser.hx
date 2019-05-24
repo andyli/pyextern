@@ -111,7 +111,7 @@ package pandas.io.json.json;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		try to convert axes 
+		Try to convert axes.
 	**/
 	public function _convert_axes():Dynamic;
 	static public var _default_orient : Dynamic;
@@ -119,20 +119,20 @@ package pandas.io.json.json;
 	public function _parse_numpy():Dynamic;
 	static public var _split_keys : Dynamic;
 	/**
-		try to parse a ndarray like into a column by inferring dtype 
+		Try to parse a ndarray like into a column by inferring dtype.
 	**/
 	public function _try_convert_data(name:Dynamic, data:Dynamic, ?use_dtypes:Dynamic, ?convert_dates:Dynamic):Dynamic;
 	public function _try_convert_dates():Dynamic;
 	/**
-		try to parse a ndarray like into a date column
-		try to coerce object in epoch/iso formats and
-		integer/float in epcoh formats, return a boolean if parsing
-		was successful 
+		Try to parse a ndarray like into a date column.
+		
+		Try to coerce object in epoch/iso formats and integer/float in epoch
+		formats. Return a boolean if parsing was successful.
 	**/
 	public function _try_convert_to_date(data:Dynamic):Dynamic;
 	public function _try_convert_types():Dynamic;
 	/**
-		checks that dict has only the appropriate keys for orient='split'
+		Checks that dict has only the appropriate keys for orient='split'.
 	**/
 	public function check_keys_split(decoded:Dynamic):Dynamic;
 	public function parse():Dynamic;

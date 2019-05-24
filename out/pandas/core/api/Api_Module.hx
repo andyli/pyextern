@@ -11,7 +11,199 @@ package pandas.core.api;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _removals : Dynamic;
+	/**
+		Create an array.
+		
+		.. versionadded:: 0.24.0
+		
+		Parameters
+		----------
+		data : Sequence of objects
+		    The scalars inside `data` should be instances of the
+		    scalar type for `dtype`. It's expected that `data`
+		    represents a 1-dimensional array of data.
+		
+		    When `data` is an Index or Series, the underlying array
+		    will be extracted from `data`.
+		
+		dtype : str, np.dtype, or ExtensionDtype, optional
+		    The dtype to use for the array. This may be a NumPy
+		    dtype or an extension type registered with pandas using
+		    :meth:`pandas.api.extensions.register_extension_dtype`.
+		
+		    If not specified, there are two possibilities:
+		
+		    1. When `data` is a :class:`Series`, :class:`Index`, or
+		       :class:`ExtensionArray`, the `dtype` will be taken
+		       from the data.
+		    2. Otherwise, pandas will attempt to infer the `dtype`
+		       from the data.
+		
+		    Note that when `data` is a NumPy array, ``data.dtype`` is
+		    *not* used for inferring the array type. This is because
+		    NumPy cannot represent all the types of data that can be
+		    held in extension arrays.
+		
+		    Currently, pandas will infer an extension dtype for sequences of
+		
+		    ============================== =====================================
+		    Scalar Type                    Array Type
+		    ============================== =====================================
+		    :class:`pandas.Interval`       :class:`pandas.arrays.IntervalArray`
+		    :class:`pandas.Period`         :class:`pandas.arrays.PeriodArray`
+		    :class:`datetime.datetime`     :class:`pandas.arrays.DatetimeArray`
+		    :class:`datetime.timedelta`    :class:`pandas.arrays.TimedeltaArray`
+		    ============================== =====================================
+		
+		    For all other cases, NumPy's usual inference rules will be used.
+		
+		copy : bool, default True
+		    Whether to copy the data, even if not necessary. Depending
+		    on the type of `data`, creating the new array may require
+		    copying data, even if ``copy=False``.
+		
+		Returns
+		-------
+		ExtensionArray
+		    The newly created array.
+		
+		Raises
+		------
+		ValueError
+		    When `data` is not 1-dimensional.
+		
+		See Also
+		--------
+		numpy.array : Construct a NumPy array.
+		Series : Construct a pandas Series.
+		Index : Construct a pandas Index.
+		arrays.PandasArray : ExtensionArray wrapping a NumPy array.
+		Series.array : Extract the array stored within a Series.
+		
+		Notes
+		-----
+		Omitting the `dtype` argument means pandas will attempt to infer the
+		best array type from the values in the data. As new array types are
+		added by pandas and 3rd party libraries, the "best" array type may
+		change. We recommend specifying `dtype` to ensure that
+		
+		1. the correct array type for the data is returned
+		2. the returned array type doesn't change as new extension types
+		   are added by pandas and third-party libraries
+		
+		Additionally, if the underlying memory representation of the returned
+		array matters, we recommend specifying the `dtype` as a concrete object
+		rather than a string alias or allowing it to be inferred. For example,
+		a future version of pandas or a 3rd-party library may include a
+		dedicated ExtensionArray for string data. In this event, the following
+		would no longer return a :class:`arrays.PandasArray` backed by a NumPy
+		array.
+		
+		>>> pd.array(['a', 'b'], dtype=str)
+		<PandasArray>
+		['a', 'b']
+		Length: 2, dtype: str32
+		
+		This would instead return the new ExtensionArray dedicated for string
+		data. If you really need the new array to be backed by a  NumPy array,
+		specify that in the dtype.
+		
+		>>> pd.array(['a', 'b'], dtype=np.dtype("<U1"))
+		<PandasArray>
+		['a', 'b']
+		Length: 2, dtype: str32
+		
+		Or use the dedicated constructor for the array you're expecting, and
+		wrap that in a PandasArray
+		
+		>>> pd.array(np.array(['a', 'b'], dtype='<U1'))
+		<PandasArray>
+		['a', 'b']
+		Length: 2, dtype: str32
+		
+		Finally, Pandas has arrays that mostly overlap with NumPy
+		
+		  * :class:`arrays.DatetimeArray`
+		  * :class:`arrays.TimedeltaArray`
+		
+		When data with a ``datetime64[ns]`` or ``timedelta64[ns]`` dtype is
+		passed, pandas will always return a ``DatetimeArray`` or ``TimedeltaArray``
+		rather than a ``PandasArray``. This is for symmetry with the case of
+		timezone-aware data, which NumPy does not natively support.
+		
+		>>> pd.array(['2015', '2016'], dtype='datetime64[ns]')
+		<DatetimeArray>
+		['2015-01-01 00:00:00', '2016-01-01 00:00:00']
+		Length: 2, dtype: datetime64[ns]
+		
+		>>> pd.array(["1H", "2H"], dtype='timedelta64[ns]')
+		<TimedeltaArray>
+		['01:00:00', '02:00:00']
+		Length: 2, dtype: timedelta64[ns]
+		
+		Examples
+		--------
+		If a dtype is not specified, `data` is passed through to
+		:meth:`numpy.array`, and a :class:`arrays.PandasArray` is returned.
+		
+		>>> pd.array([1, 2])
+		<PandasArray>
+		[1, 2]
+		Length: 2, dtype: int64
+		
+		Or the NumPy dtype can be specified
+		
+		>>> pd.array([1, 2], dtype=np.dtype("int32"))
+		<PandasArray>
+		[1, 2]
+		Length: 2, dtype: int32
+		
+		You can use the string alias for `dtype`
+		
+		>>> pd.array(['a', 'b', 'a'], dtype='category')
+		[a, b, a]
+		Categories (2, object): [a, b]
+		
+		Or specify the actual dtype
+		
+		>>> pd.array(['a', 'b', 'a'],
+		...          dtype=pd.CategoricalDtype(['a', 'b', 'c'], ordered=True))
+		[a, b, a]
+		Categories (3, object): [a < b < c]
+		
+		Because omitting the `dtype` passes the data through to NumPy,
+		a mixture of valid integers and NA will return a floating-point
+		NumPy array.
+		
+		>>> pd.array([1, 2, np.nan])
+		<PandasArray>
+		[1.0,  2.0, nan]
+		Length: 3, dtype: float64
+		
+		To use pandas' nullable :class:`pandas.arrays.IntegerArray`, specify
+		the dtype:
+		
+		>>> pd.array([1, 2, np.nan], dtype='Int64')
+		<IntegerArray>
+		[1, 2, NaN]
+		Length: 3, dtype: Int64
+		
+		Pandas will infer an ExtensionArray for some types of data:
+		
+		>>> pd.array([pd.Period('2000', freq="D"), pd.Period("2000", freq="D")])
+		<PeriodArray>
+		['2000-01-01', '2000-01-01']
+		Length: 2, dtype: period[D]
+		
+		`data` must be 1-dimensional. A ValueError is raised when the input
+		has the wrong dimensionality.
+		
+		>>> pd.array(1)
+		Traceback (most recent call last):
+		  ...
+		ValueError: Cannot pass scalar '1' to 'pandas.array'.
+	**/
+	static public function array(data:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Return a fixed frequency DatetimeIndex, with business day as the default
 		frequency
@@ -19,37 +211,43 @@ package pandas.core.api;
 		Parameters
 		----------
 		start : string or datetime-like, default None
-		    Left bound for generating dates
+		    Left bound for generating dates.
 		end : string or datetime-like, default None
-		    Right bound for generating dates
+		    Right bound for generating dates.
 		periods : integer, default None
-		    Number of periods to generate
+		    Number of periods to generate.
 		freq : string or DateOffset, default 'B' (business daily)
-		    Frequency strings can have multiples, e.g. '5H'
+		    Frequency strings can have multiples, e.g. '5H'.
 		tz : string or None
 		    Time zone name for returning localized DatetimeIndex, for example
-		    Asia/Beijing
+		    Asia/Beijing.
 		normalize : bool, default False
-		    Normalize start/end dates to midnight before generating date range
+		    Normalize start/end dates to midnight before generating date range.
 		name : string, default None
-		    Name of the resulting DatetimeIndex
+		    Name of the resulting DatetimeIndex.
 		weekmask : string or None, default None
 		    Weekmask of valid business days, passed to ``numpy.busdaycalendar``,
 		    only used when custom frequency strings are passed.  The default
-		    value None is equivalent to 'Mon Tue Wed Thu Fri'
+		    value None is equivalent to 'Mon Tue Wed Thu Fri'.
 		
 		    .. versionadded:: 0.21.0
 		
 		holidays : list-like or None, default None
 		    Dates to exclude from the set of valid business days, passed to
 		    ``numpy.busdaycalendar``, only used when custom frequency strings
-		    are passed
+		    are passed.
 		
 		    .. versionadded:: 0.21.0
 		
 		closed : string, default None
 		    Make the interval closed with respect to the given frequency to
-		    the 'left', 'right', or both sides (None)
+		    the 'left', 'right', or both sides (None).
+		**kwargs
+		    For compatibility. Has no effect on the result.
+		
+		Returns
+		-------
+		DatetimeIndex
 		
 		Notes
 		-----
@@ -61,11 +259,16 @@ package pandas.core.api;
 		To learn more about the frequency strings, please see `this link
 		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 		
-		Returns
-		-------
-		rng : DatetimeIndex
+		Examples
+		--------
+		Note how the two weekend days are skipped in the result.
+		
+		>>> pd.bdate_range(start='1/1/2018', end='1/08/2018')
+		DatetimeIndex(['2018-01-01', '2018-01-02', '2018-01-03', '2018-01-04',
+		           '2018-01-05', '2018-01-08'],
+		          dtype='datetime64[ns]', freq='B')
 	**/
-	static public function bdate_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?weekmask:Dynamic, ?holidays:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
+	static public function bdate_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?weekmask:Dynamic, ?holidays:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a fixed frequency DatetimeIndex.
 		
@@ -77,7 +280,7 @@ package pandas.core.api;
 		    Right bound for generating dates.
 		periods : integer, optional
 		    Number of periods to generate.
-		freq : str or DateOffset, default 'D' (calendar daily)
+		freq : str or DateOffset, default 'D'
 		    Frequency strings can have multiples, e.g. '5H'. See
 		    :ref:`here <timeseries.offset_aliases>` for a list of
 		    frequency aliases.
@@ -149,7 +352,8 @@ package pandas.core.api;
 		
 		>>> pd.date_range(start='2018-04-24', end='2018-04-27', periods=3)
 		DatetimeIndex(['2018-04-24 00:00:00', '2018-04-25 12:00:00',
-		               '2018-04-27 00:00:00'], freq=None)
+		               '2018-04-27 00:00:00'],
+		              dtype='datetime64[ns]', freq=None)
 		
 		**Other Parameters**
 		
@@ -202,7 +406,6 @@ package pandas.core.api;
 		              dtype='datetime64[ns]', freq='D')
 	**/
 	static public function date_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
-	static public var datetools : Dynamic;
 	/**
 		describe_option(pat, _print_desc=False)
 		
@@ -287,7 +490,7 @@ package pandas.core.api;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
+		    [default: ANSI_X3.4-1968] [currently: ANSI_X3.4-1968]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -542,8 +745,8 @@ package pandas.core.api;
 		Parameters
 		----------
 		values : sequence
-		    A 1-D seqeunce. Sequences that aren't pandas objects are
-		    coereced to ndarrays before factorization.
+		    A 1-D sequence. Sequences that aren't pandas objects are
+		    coerced to ndarrays before factorization.
 		sort : bool, default False
 		    Sort `uniques` and shuffle `labels` to maintain the
 		    relationship.
@@ -574,8 +777,8 @@ package pandas.core.api;
 		
 		See Also
 		--------
-		pandas.cut : Discretize continuous-valued array.
-		pandas.unique : Find the unique valuse in an array.
+		cut : Discretize continuous-valued array.
+		unique : Find the unique value in an array.
 		
 		Examples
 		--------
@@ -620,7 +823,7 @@ package pandas.core.api;
 		[a, c]
 		Categories (3, object): [a, b, c]
 		
-		Notice that ``'b'`` is in ``uniques.categories``, desipite not being
+		Notice that ``'b'`` is in ``uniques.categories``, despite not being
 		present in ``cat.values``.
 		
 		For all other pandas objects, an Index of the appropriate type is
@@ -655,9 +858,8 @@ package pandas.core.api;
 		    If `columns` is None then all the columns with
 		    `object` or `category` dtype will be converted.
 		sparse : bool, default False
-		    Whether the dummy columns should be sparse or not.  Returns
-		    SparseDataFrame if `data` is a Series or if all columns are included.
-		    Otherwise returns a DataFrame with some SparseBlocks.
+		    Whether the dummy-encoded columns should be be backed by
+		    a :class:`SparseArray` (True) or a regular NumPy array (False).
 		drop_first : bool, default False
 		    Whether to get k-1 dummies out of k categorical levels by removing the
 		    first level.
@@ -671,11 +873,14 @@ package pandas.core.api;
 		
 		Returns
 		-------
-		dummies : DataFrame or SparseDataFrame
+		dummies : DataFrame
+		
+		See Also
+		--------
+		Series.str.get_dummies
 		
 		Examples
 		--------
-		>>> import pandas as pd
 		>>> s = pd.Series(list('abca'))
 		
 		>>> pd.get_dummies(s)
@@ -729,12 +934,8 @@ package pandas.core.api;
 		0  1.0  0.0  0.0
 		1  0.0  1.0  0.0
 		2  0.0  0.0  1.0
-		
-		See Also
-		--------
-		Series.str.get_dummies
 	**/
-	static public function get_dummies(data:Dynamic, ?prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?columns:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_dummies(data:Dynamic, ?prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?columns:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic, ?dtype:Dynamic):pandas.DataFrame;
 	/**
 		get_option(pat)
 		
@@ -819,7 +1020,7 @@ package pandas.core.api;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
+		    [default: ANSI_X3.4-1968] [currently: ANSI_X3.4-1968]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -1063,7 +1264,6 @@ package pandas.core.api;
 		    [default: True] [currently: True]
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	static public function groupby(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a fixed frequency IntervalIndex
 		
@@ -1078,12 +1278,20 @@ package pandas.core.api;
 		freq : numeric, string, or DateOffset, default None
 		    The length of each interval. Must be consistent with the type of start
 		    and end, e.g. 2 for numeric, or '5H' for datetime-like.  Default is 1
-		    for numeric and 'D' (calendar daily) for datetime-like.
+		    for numeric and 'D' for datetime-like.
 		name : string, default None
 		    Name of the resulting IntervalIndex
 		closed : {'left', 'right', 'both', 'neither'}, default 'right'
 		    Whether the intervals are closed on the left-side, right-side, both
 		    or neither.
+		
+		Returns
+		-------
+		rng : IntervalIndex
+		
+		See Also
+		--------
+		IntervalIndex : An Index of intervals that are all closed on the same side.
 		
 		Notes
 		-----
@@ -1095,24 +1303,20 @@ package pandas.core.api;
 		To learn more about datetime-like frequency strings, please see `this link
 		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 		
-		Returns
-		-------
-		rng : IntervalIndex
-		
 		Examples
 		--------
 		Numeric ``start`` and  ``end`` is supported.
 		
 		>>> pd.interval_range(start=0, end=5)
-		IntervalIndex([(0, 1], (1, 2], (2, 3], (3, 4], (4, 5]]
+		IntervalIndex([(0, 1], (1, 2], (2, 3], (3, 4], (4, 5]],
 		              closed='right', dtype='interval[int64]')
 		
 		Additionally, datetime-like input is also supported.
 		
 		>>> pd.interval_range(start=pd.Timestamp('2017-01-01'),
-		                      end=pd.Timestamp('2017-01-04'))
+		...                   end=pd.Timestamp('2017-01-04'))
 		IntervalIndex([(2017-01-01, 2017-01-02], (2017-01-02, 2017-01-03],
-		               (2017-01-03, 2017-01-04]]
+		               (2017-01-03, 2017-01-04]],
 		              closed='right', dtype='interval[datetime64[ns]]')
 		
 		The ``freq`` parameter specifies the frequency between the left and right.
@@ -1120,23 +1324,23 @@ package pandas.core.api;
 		numeric ``start`` and ``end``, the frequency must also be numeric.
 		
 		>>> pd.interval_range(start=0, periods=4, freq=1.5)
-		IntervalIndex([(0.0, 1.5], (1.5, 3.0], (3.0, 4.5], (4.5, 6.0]]
+		IntervalIndex([(0.0, 1.5], (1.5, 3.0], (3.0, 4.5], (4.5, 6.0]],
 		              closed='right', dtype='interval[float64]')
 		
 		Similarly, for datetime-like ``start`` and ``end``, the frequency must be
 		convertible to a DateOffset.
 		
 		>>> pd.interval_range(start=pd.Timestamp('2017-01-01'),
-		                      periods=3, freq='MS')
+		...                   periods=3, freq='MS')
 		IntervalIndex([(2017-01-01, 2017-02-01], (2017-02-01, 2017-03-01],
-		               (2017-03-01, 2017-04-01]]
+		               (2017-03-01, 2017-04-01]],
 		              closed='right', dtype='interval[datetime64[ns]]')
 		
 		Specify ``start``, ``end``, and ``periods``; the frequency is generated
 		automatically (linearly spaced).
 		
 		>>> pd.interval_range(start=0, end=6, periods=4)
-		IntervalIndex([(0.0, 1.5], (1.5, 3.0], (3.0, 4.5], (4.5, 6.0]]
+		IntervalIndex([(0.0, 1.5], (1.5, 3.0], (3.0, 4.5], (4.5, 6.0]],
 		          closed='right',
 		          dtype='interval[float64]')
 		
@@ -1144,18 +1348,14 @@ package pandas.core.api;
 		intervals within the ``IntervalIndex`` are closed.
 		
 		>>> pd.interval_range(end=5, periods=4, closed='both')
-		IntervalIndex([[1, 2], [2, 3], [3, 4], [4, 5]]
+		IntervalIndex([[1, 2], [2, 3], [3, 4], [4, 5]],
 		              closed='both', dtype='interval[int64]')
-		
-		See Also
-		--------
-		IntervalIndex : an Index of intervals that are all closed on the same side.
 	**/
 	static public function interval_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.IntervalIndex;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -1173,8 +1373,8 @@ package pandas.core.api;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -1229,7 +1429,7 @@ package pandas.core.api;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -1247,8 +1447,8 @@ package pandas.core.api;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -1300,11 +1500,10 @@ package pandas.core.api;
 		Name: 1, dtype: bool
 	**/
 	static public function isnull(obj:Dynamic):Dynamic;
-	static public function match(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -1322,8 +1521,8 @@ package pandas.core.api;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -1378,7 +1577,7 @@ package pandas.core.api;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -1396,8 +1595,8 @@ package pandas.core.api;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -1462,10 +1661,17 @@ package pandas.core.api;
 		    Right bound for generating periods
 		periods : integer, default None
 		    Number of periods to generate
-		freq : string or DateOffset, default 'D' (calendar daily)
-		    Frequency alias
+		freq : string or DateOffset, optional
+		    Frequency alias. By default the freq is taken from `start` or `end`
+		    if those are Period objects. Otherwise, the default is ``"D"`` for
+		    daily frequency.
+		
 		name : string, default None
 		    Name of the resulting PeriodIndex
+		
+		Returns
+		-------
+		prng : PeriodIndex
 		
 		Notes
 		-----
@@ -1474,10 +1680,6 @@ package pandas.core.api;
 		
 		To learn more about the frequency strings, please see `this link
 		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
-		
-		Returns
-		-------
-		prng : PeriodIndex
 		
 		Examples
 		--------
@@ -1498,7 +1700,6 @@ package pandas.core.api;
 		            dtype='period[M]', freq='M')
 	**/
 	static public function period_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic):pandas.PeriodIndex;
-	static public function pnow(?freq:Dynamic):Dynamic;
 	/**
 		reset_option(pat)
 		
@@ -1581,7 +1782,7 @@ package pandas.core.api;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
+		    [default: ANSI_X3.4-1968] [currently: ANSI_X3.4-1968]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -1919,7 +2120,7 @@ package pandas.core.api;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
+		    [default: ANSI_X3.4-1968] [currently: ANSI_X3.4-1968]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -2175,7 +2376,7 @@ package pandas.core.api;
 		    Right bound for generating timedeltas
 		periods : integer, default None
 		    Number of periods to generate
-		freq : string or DateOffset, default 'D' (calendar daily)
+		freq : string or DateOffset, default 'D'
 		    Frequency strings can have multiples, e.g. '5H'
 		name : string, default None
 		    Name of the resulting TimedeltaIndex
@@ -2260,7 +2461,7 @@ package pandas.core.api;
 		      as dateutil).
 		
 		    Warning: yearfirst=True is not strict, but will prefer to parse
-		    with year first (this is a known bug, based on dateutil beahavior).
+		    with year first (this is a known bug, based on dateutil behavior).
 		
 		    .. versionadded:: 0.16.1
 		
@@ -2269,7 +2470,7 @@ package pandas.core.api;
 		    datetime.datetime objects as well).
 		box : boolean, default True
 		
-		    - If True returns a DatetimeIndex
+		    - If True returns a DatetimeIndex or Index-like object
 		    - If False returns ndarray of values.
 		format : string, default None
 		    strftime to parse time, eg "%d/%m/%Y", note that "%f" will parse
@@ -2303,8 +2504,8 @@ package pandas.core.api;
 		    .. versionadded:: 0.20.0
 		cache : boolean, default False
 		    If True, use a cache of unique, converted dates to apply the datetime
-		    conversion. May produce sigificant speed-up when parsing duplicate date
-		    strings, especially ones with timezone offsets.
+		    conversion. May produce significant speed-up when parsing duplicate
+		    date strings, especially ones with timezone offsets.
 		
 		    .. versionadded:: 0.23.0
 		
@@ -2321,6 +2522,11 @@ package pandas.core.api;
 		    any element of input is before Timestamp.min or after Timestamp.max)
 		    return will have datetime.datetime type (or corresponding
 		    array/Series).
+		
+		See Also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
 		
 		Examples
 		--------
@@ -2385,15 +2591,14 @@ package pandas.core.api;
 		0    1960-01-02
 		1    1960-01-03
 		2    1960-01-04
-		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_timedelta : Convert argument to timedelta.
 	**/
 	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 	/**
 		Convert argument to a numeric type.
+		
+		The default return dtype is `float64` or `int64`
+		depending on the data supplied. Use the `downcast` parameter
+		to obtain other dtypes.
 		
 		Parameters
 		----------
@@ -2429,11 +2634,17 @@ package pandas.core.api;
 		ret : numeric if parsing succeeded.
 		    Return type depends on input.  Series if Series, otherwise ndarray
 		
+		See Also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_datetime : Convert argument to datetime.
+		pandas.to_timedelta : Convert argument to timedelta.
+		numpy.ndarray.astype : Cast a numpy array to a specified type.
+		
 		Examples
 		--------
 		Take separate series and convert to numeric, coercing when told to
 		
-		>>> import pandas as pd
 		>>> s = pd.Series(['1.0', '2', -3])
 		>>> pd.to_numeric(s)
 		0    1.0
@@ -2463,35 +2674,46 @@ package pandas.core.api;
 		2    2.0
 		3   -3.0
 		dtype: float64
-		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_datetime : Convert argument to datetime.
-		pandas.to_timedelta : Convert argument to timedelta.
-		numpy.ndarray.astype : Cast a numpy array to a specified type.
 	**/
 	static public function to_numeric(arg:Dynamic, ?errors:Dynamic, ?downcast:Dynamic):Dynamic;
 	/**
-		Convert argument to timedelta
+		Convert argument to timedelta.
+		
+		Timedeltas are absolute differences in times, expressed in difference
+		units (e.g. days, hours, minutes, seconds). This method converts
+		an argument from a recognized timedelta format / value into
+		a Timedelta type.
 		
 		Parameters
 		----------
-		arg : string, timedelta, list, tuple, 1-d array, or Series
-		unit : unit of the arg (D,h,m,s,ms,us,ns) denote the unit, which is an
-		    integer/float number
-		box : boolean, default True
-		    - If True returns a Timedelta/TimedeltaIndex of the results
-		    - if False returns a np.timedelta64 or ndarray of values of dtype
-		      timedelta64[ns]
+		arg : str, timedelta, list-like or Series
+		    The data to be converted to timedelta.
+		unit : str, default 'ns'
+		    Denotes the unit of the arg. Possible values:
+		    ('Y', 'M', 'W', 'D', 'days', 'day', 'hours', hour', 'hr',
+		    'h', 'm', 'minute', 'min', 'minutes', 'T', 'S', 'seconds',
+		    'sec', 'second', 'ms', 'milliseconds', 'millisecond',
+		    'milli', 'millis', 'L', 'us', 'microseconds', 'microsecond',
+		    'micro', 'micros', 'U', 'ns', 'nanoseconds', 'nano', 'nanos',
+		    'nanosecond', 'N').
+		box : bool, default True
+		    - If True returns a Timedelta/TimedeltaIndex of the results.
+		    - If False returns a numpy.timedelta64 or numpy.darray of
+		      values of dtype timedelta64[ns].
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
-		    - If 'raise', then invalid parsing will raise an exception
-		    - If 'coerce', then invalid parsing will be set as NaT
-		    - If 'ignore', then invalid parsing will return the input
+		    - If 'raise', then invalid parsing will raise an exception.
+		    - If 'coerce', then invalid parsing will be set as NaT.
+		    - If 'ignore', then invalid parsing will return the input.
 		
 		Returns
 		-------
-		ret : timedelta64/arrays of timedelta64 if parsing succeeded
+		timedelta64 or numpy.array of timedelta64
+		    Output type returned if parsing succeeded.
+		
+		See Also
+		--------
+		DataFrame.astype : Cast argument to a specified dtype.
+		to_datetime : Convert argument to datetime.
 		
 		Examples
 		--------
@@ -2519,10 +2741,10 @@ package pandas.core.api;
 		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
 		               dtype='timedelta64[ns]', freq=None)
 		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_datetime : Convert argument to datetime.
+		Returning an ndarray by using the 'box' keyword argument:
+		
+		>>> pd.to_timedelta(np.arange(5), box=False)
+		array([0, 1, 2, 3, 4], dtype='timedelta64[ns]')
 	**/
 	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
 	/**
@@ -2542,6 +2764,11 @@ package pandas.core.api;
 		  - If the input is a Categorical dtype, the return is a Categorical
 		  - If the input is a Series/ndarray, the return will be an ndarray
 		
+		See Also
+		--------
+		pandas.Index.unique
+		pandas.Series.unique
+		
 		Examples
 		--------
 		>>> pd.unique(pd.Series([2, 1, 3, 3]))
@@ -2550,8 +2777,8 @@ package pandas.core.api;
 		>>> pd.unique(pd.Series([2] + [1] * 5))
 		array([2, 1])
 		
-		>>> pd.unique(Series([pd.Timestamp('20160101'),
-		...                   pd.Timestamp('20160101')]))
+		>>> pd.unique(pd.Series([pd.Timestamp('20160101'),
+		...                     pd.Timestamp('20160101')]))
 		array(['2016-01-01T00:00:00.000000000'], dtype='datetime64[ns]')
 		
 		>>> pd.unique(pd.Series([pd.Timestamp('20160101', tz='US/Eastern'),
@@ -2570,20 +2797,20 @@ package pandas.core.api;
 		An unordered Categorical will return categories in the
 		order of appearance.
 		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'))))
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'))))
 		[b, a, c]
 		Categories (3, object): [b, a, c]
 		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'),
-		...                                 categories=list('abc'))))
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'),
+		...                                    categories=list('abc'))))
 		[b, a, c]
 		Categories (3, object): [b, a, c]
 		
 		An ordered Categorical preserves the category ordering.
 		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'),
-		...                                 categories=list('abc'),
-		...                                 ordered=True)))
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'),
+		...                                    categories=list('abc'),
+		...                                    ordered=True)))
 		[b, a, c]
 		Categories (3, object): [a < b < c]
 		
@@ -2591,11 +2818,6 @@ package pandas.core.api;
 		
 		>>> pd.unique([('a', 'b'), ('b', 'a'), ('a', 'c'), ('b', 'a')])
 		array([('a', 'b'), ('b', 'a'), ('a', 'c')], dtype=object)
-		
-		See Also
-		--------
-		pandas.Index.unique
-		pandas.Series.unique
 	**/
 	static public function unique(values:Dynamic):Dynamic;
 	/**

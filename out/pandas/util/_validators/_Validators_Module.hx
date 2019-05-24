@@ -97,8 +97,8 @@ package pandas.util._validators;
 		
 		See Also
 		--------
-		validate_args : purely args validation
-		validate_kwargs : purely kwargs validation
+		validate_args : Purely args validation.
+		validate_kwargs : Purely kwargs validation.
 	**/
 	static public function validate_args_and_kwargs(fname:Dynamic, args:Dynamic, kwargs:Dynamic, max_fname_arg_count:Dynamic, compat_args:Dynamic):Dynamic;
 	/**

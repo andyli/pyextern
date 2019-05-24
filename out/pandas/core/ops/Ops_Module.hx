@@ -9,7 +9,6 @@ package pandas.core.ops;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _add_example_FRAME : Dynamic;
 	static public var _agg_doc_PANEL : Dynamic;
 	/**
 		convert rhs to meet lhs dims if input is list, tuple or np.ndarray 
@@ -60,7 +59,7 @@ package pandas.core.ops;
 	static public function _cast_sparse_series_op(left:Dynamic, right:Dynamic, opname:Dynamic):Dynamic;
 	/**
 		Apply binary operator `func` to self, other using alignment and fill
-		conventions determined by the fill_value, axis, level, and try_cast kwargs.
+		conventions determined by the fill_value, axis, and level kwargs.
 		
 		Parameters
 		----------
@@ -70,13 +69,12 @@ package pandas.core.ops;
 		fill_value : object, default None
 		axis : {0, 1, 'columns', 'index', None}, default None
 		level : int or None, default None
-		try_cast : bool, default True
 		
 		Returns
 		-------
 		result : DataFrame
 	**/
-	static public function _combine_series_frame(self:Dynamic, other:Dynamic, func:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?try_cast:Dynamic):pandas.DataFrame;
+	static public function _combine_series_frame(self:Dynamic, other:Dynamic, func:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic, ?level:Dynamic):pandas.DataFrame;
 	static public function _comp_method_FRAME(cls:Dynamic, func:Dynamic, special:Dynamic):Dynamic;
 	static public function _comp_method_OBJECT_ARRAY(op:Dynamic, x:Dynamic, y:Dynamic):Dynamic;
 	static public function _comp_method_PANEL(cls:Dynamic, op:Dynamic, special:Dynamic):Dynamic;
@@ -89,15 +87,15 @@ package pandas.core.ops;
 		divmod returns a tuple of like indexed series instead of a single series.
 		    
 	**/
-	static public function _construct_divmod_result(left:Dynamic, result:Dynamic, index:Dynamic, name:Dynamic, dtype:Dynamic):Dynamic;
+	static public function _construct_divmod_result(left:Dynamic, result:Dynamic, index:Dynamic, name:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		If the raw op result has a non-None name (e.g. it is an Index object) and
 		the name argument is None, then passing name to the constructor will
 		not be enough; we still need to override the name attribute.
 	**/
-	static public function _construct_result(left:Dynamic, result:Dynamic, index:Dynamic, name:Dynamic, dtype:Dynamic):Dynamic;
-	static public function _create_methods(cls:Dynamic, arith_method:Dynamic, comp_method:Dynamic, bool_method:Dynamic, ?special:Dynamic):Dynamic;
-	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _construct_result(left:Dynamic, result:Dynamic, index:Dynamic, name:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function _create_methods(cls:Dynamic, arith_method:Dynamic, comp_method:Dynamic, bool_method:Dynamic, special:Dynamic):Dynamic;
+	static public var _flex_comp_doc_FRAME : Dynamic;
 	static public function _flex_comp_method_FRAME(cls:Dynamic, op:Dynamic, special:Dynamic):Dynamic;
 	static public var _flex_doc_FRAME : Dynamic;
 	static public var _flex_doc_PANEL : Dynamic;
@@ -121,7 +119,7 @@ package pandas.core.ops;
 		{}
 		
 		>>> _gen_eval_kwargs("rtruediv")
-		{"reversed": True, "truediv": True}
+		{'reversed': True, 'truediv': True}
 	**/
 	static public function _gen_eval_kwargs(name:Dynamic):Dynamic;
 	/**
@@ -231,15 +229,14 @@ package pandas.core.ops;
 		-------
 		name : str or None
 		
-		See also
+		See Also
 		--------
-		pandas.core.common._consensus_name_attr
+		pandas.core.common.consensus_name_attr
 	**/
 	static public function _maybe_match_name(a:Dynamic, b:Dynamic):Dynamic;
 	static public var _op_descriptions : Dynamic;
 	static public var _op_names : Dynamic;
 	static public function _sparse_series_op(left:Dynamic, right:Dynamic, op:Dynamic, name:Dynamic):Dynamic;
-	static public var _sub_example_FRAME : Dynamic;
 	/**
 		Adds the full suite of flex arithmetic methods (``pow``, ``mul``, ``add``)
 		to the class.
@@ -299,6 +296,11 @@ package pandas.core.ops;
 	**/
 	static public function construct_1d_object_array_from_listlike(values:Dynamic):Dynamic;
 	/**
+		Assume that left or right is a Series backed by an ExtensionArray,
+		apply the operator defined by op.
+	**/
+	static public function dispatch_to_extension_op(op:Dynamic, left:Dynamic, right:Dynamic):Dynamic;
+	/**
 		Wrap Series left in the given index_class to delegate the operation op
 		to the index implementation.  DatetimeIndex and TimedeltaIndex perform
 		type checking, timezone handling, overflow checks, etc.
@@ -315,7 +317,25 @@ package pandas.core.ops;
 		result : object, usually DatetimeIndex, TimedeltaIndex, or Series
 	**/
 	static public function dispatch_to_index_op(op:Dynamic, left:Dynamic, right:Dynamic, index_class:Dynamic):Dynamic;
+	/**
+		Evaluate the frame operation func(left, right) by evaluating
+		column-by-column, dispatching to the Series implementation.
+		
+		Parameters
+		----------
+		left : DataFrame
+		right : scalar or DataFrame
+		func : arithmetic or comparison operator
+		str_rep : str or None, default None
+		axis : {None, 0, 1, "index", "columns"}
+		
+		Returns
+		-------
+		DataFrame
+	**/
+	static public function dispatch_to_series(left:Dynamic, right:Dynamic, func:Dynamic, ?str_rep:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	static public function ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		If a non-None fill_value is given, replace null entries in left and right
 		with this value, but only in positions where _one_ of left/right is null,
@@ -369,6 +389,25 @@ package pandas.core.ops;
 	**/
 	static public function get_op_result_name(left:Dynamic, right:Dynamic):Dynamic;
 	/**
+		If a comparison has mismatched types and is not necessarily meaningful,
+		follow python3 conventions by:
+		
+		    - returning all-False for equality
+		    - returning all-True for inequality
+		    - raising TypeError otherwise
+		
+		Parameters
+		----------
+		left : array-like
+		right : scalar, array-like
+		op : operator.{eq, ne, lt, le, gt}
+		
+		Raises
+		------
+		TypeError : on inequality comparisons
+	**/
+	static public function invalid_comparison(left:Dynamic, right:Dynamic, op:Dynamic):Dynamic;
+	/**
 		Check whether the provided array or dtype is of a boolean dtype.
 		
 		Parameters
@@ -379,6 +418,11 @@ package pandas.core.ops;
 		Returns
 		-------
 		boolean : Whether or not the array or dtype is of a boolean dtype.
+		
+		Notes
+		-----
+		An ExtensionArray is considered boolean when the ``_is_boolean``
+		attribute is set to True.
 		
 		Examples
 		--------
@@ -395,6 +439,10 @@ package pandas.core.ops;
 		>>> is_bool_dtype(pd.Series([1, 2]))
 		False
 		>>> is_bool_dtype(np.array([True, False]))
+		True
+		>>> is_bool_dtype(pd.Categorical([True, False]))
+		True
+		>>> is_bool_dtype(pd.SparseArray([True, False]))
 		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -526,9 +574,59 @@ package pandas.core.ops;
 	**/
 	static public function is_datetimelike_v_numeric(a:Dynamic, b:Dynamic):Dynamic;
 	/**
+		Check if an object is a pandas extension array type.
+		
+		See the :ref:`Use Guide <extending.extension-types>` for more.
+		
+		Parameters
+		----------
+		arr_or_dtype : object
+		    For array-like input, the ``.dtype`` attribute will
+		    be extracted.
+		
+		Returns
+		-------
+		bool
+		    Whether the `arr_or_dtype` is an extension array type.
+		
+		Notes
+		-----
+		This checks whether an object implements the pandas extension
+		array interface. In pandas, this includes:
+		
+		* Categorical
+		* Sparse
+		* Interval
+		* Period
+		* DatetimeArray
+		* TimedeltaArray
+		
+		Third-party libraries may implement arrays or types satisfying
+		this interface as well.
+		
+		Examples
+		--------
+		>>> from pandas.api.types import is_extension_array_dtype
+		>>> arr = pd.Categorical(['a', 'b'])
+		>>> is_extension_array_dtype(arr)
+		True
+		>>> is_extension_array_dtype(arr.dtype)
+		True
+		
+		>>> arr = np.array(['a', 'b'])
+		>>> is_extension_array_dtype(arr.dtype)
+		False
+	**/
+	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Check whether the provided array or dtype is of an integer dtype.
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
 		
 		Parameters
 		----------
@@ -549,6 +647,12 @@ package pandas.core.ops;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -574,7 +678,11 @@ package pandas.core.ops;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -593,8 +701,12 @@ package pandas.core.ops;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Check whether an array-like or dtype is of the object dtype.
 		
@@ -622,19 +734,77 @@ package pandas.core.ops;
 	**/
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
+		Check whether an array-like or dtype is of the Period dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of the Period dtype.
+		
+		Examples
+		--------
+		>>> is_period_dtype(object)
+		False
+		>>> is_period_dtype(PeriodDtype(freq="D"))
+		True
+		>>> is_period_dtype([1, 2, 3])
+		False
+		>>> is_period_dtype(pd.Period("2017-01-01"))
+		False
+		>>> is_period_dtype(pd.PeriodIndex([], freq="A"))
+		True
+	**/
+	static public function is_period_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -667,7 +837,7 @@ package pandas.core.ops;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -685,8 +855,8 @@ package pandas.core.ops;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -767,6 +937,35 @@ package pandas.core.ops;
 	**/
 	static public function mask_cmp_op(x:Dynamic, y:Dynamic, op:Dynamic, allowed_types:Dynamic):Dynamic;
 	/**
+		If the given arithmetic operation fails, attempt it again on
+		only the non-null elements of the input array(s).
+		
+		Parameters
+		----------
+		x : np.ndarray
+		y : np.ndarray, Series, Index
+		op : binary operator
+	**/
+	static public function masked_arith_op(x:Dynamic, y:Dynamic, op:Dynamic):Dynamic;
+	/**
+		Cast non-pandas objects to pandas types to unify behavior of arithmetic
+		and comparison operations.
+		
+		Parameters
+		----------
+		obj: object
+		
+		Returns
+		-------
+		out : object
+		
+		Notes
+		-----
+		Be careful to call this *after* determining the `name` attribute to be
+		attached to the result of the arithmetic operation.
+	**/
+	static public function maybe_upcast_for_op(obj:Dynamic):Dynamic;
+	/**
 		A safe version of putmask that potentially upcasts the result
 		
 		Parameters
@@ -821,7 +1020,7 @@ package pandas.core.ops;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -839,8 +1038,8 @@ package pandas.core.ops;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -905,4 +1104,19 @@ package pandas.core.ops;
 	static public function rsub(left:Dynamic, right:Dynamic):Dynamic;
 	static public function rtruediv(left:Dynamic, right:Dynamic):Dynamic;
 	static public function rxor(left:Dynamic, right:Dynamic):Dynamic;
+	/**
+		Identify cases where a DataFrame operation should dispatch to its
+		Series counterpart.
+		
+		Parameters
+		----------
+		left : DataFrame
+		right : DataFrame
+		op : binary operator
+		
+		Returns
+		-------
+		override : bool
+	**/
+	static public function should_series_dispatch(left:Dynamic, right:Dynamic, op:Dynamic):Bool;
 }

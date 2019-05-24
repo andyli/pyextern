@@ -17,6 +17,7 @@ package matplotlib.style.core;
 	static public var __spec__ : Dynamic;
 	static public function _apply_style(d:Dynamic, ?warn:Dynamic):Dynamic;
 	static public var _base_library : Dynamic;
+	static public var _log : Dynamic;
 	static public function _remove_blacklisted_style_params(d:Dynamic, ?warn:Dynamic):Dynamic;
 	static public var available : Dynamic;
 	/**

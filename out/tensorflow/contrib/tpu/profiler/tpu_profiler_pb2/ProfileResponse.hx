@@ -5,7 +5,6 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var COMPUTATION_GRAPH_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -27,8 +26,6 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EMPTY_TRACE_FIELD_NUMBER : Dynamic;
-	static public var ENCODED_TRACE_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
@@ -41,7 +38,6 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HLO_METADATA_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -66,7 +62,6 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var OP_PROFILE_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -87,7 +82,10 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TOOL_DATA_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -253,4 +251,28 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.ProfileResponse.computation_graph
+	**/
+	public var computation_graph : Dynamic;
+	/**
+		Field tensorflow.ProfileResponse.empty_trace
+	**/
+	public var empty_trace : Dynamic;
+	/**
+		Field tensorflow.ProfileResponse.encoded_trace
+	**/
+	public var encoded_trace : Dynamic;
+	/**
+		Field tensorflow.ProfileResponse.hlo_metadata
+	**/
+	public var hlo_metadata : Dynamic;
+	/**
+		Field tensorflow.ProfileResponse.op_profile
+	**/
+	public var op_profile : Dynamic;
+	/**
+		Field tensorflow.ProfileResponse.tool_data
+	**/
+	public var tool_data : Dynamic;
 }

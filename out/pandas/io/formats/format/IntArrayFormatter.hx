@@ -41,11 +41,11 @@ package pandas.io.formats.format;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(values:Dynamic, ?digits:Dynamic, ?formatter:Dynamic, ?na_rep:Dynamic, ?space:Dynamic, ?float_format:Dynamic, ?justify:Dynamic, ?decimal:Dynamic, ?quoting:Dynamic, ?fixed_width:Dynamic):Dynamic;
+	public function ___init__(values:Dynamic, ?digits:Dynamic, ?formatter:Dynamic, ?na_rep:Dynamic, ?space:Dynamic, ?float_format:Dynamic, ?justify:Dynamic, ?decimal:Dynamic, ?quoting:Dynamic, ?fixed_width:Dynamic, ?leading_space:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(values:Dynamic, ?digits:Dynamic, ?formatter:Dynamic, ?na_rep:Dynamic, ?space:Dynamic, ?float_format:Dynamic, ?justify:Dynamic, ?decimal:Dynamic, ?quoting:Dynamic, ?fixed_width:Dynamic):Void;
+	public function new(values:Dynamic, ?digits:Dynamic, ?formatter:Dynamic, ?na_rep:Dynamic, ?space:Dynamic, ?float_format:Dynamic, ?justify:Dynamic, ?decimal:Dynamic, ?quoting:Dynamic, ?fixed_width:Dynamic, ?leading_space:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		

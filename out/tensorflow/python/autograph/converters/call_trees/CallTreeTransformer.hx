@@ -127,7 +127,7 @@ package tensorflow.python.autograph.converters.call_trees;
 	/**
 		Used to resolve decorator info.
 	**/
-	public function _resolve_name(node:Dynamic):Dynamic;
+	public function _resolve_decorator_name(node:Dynamic):Dynamic;
 	/**
 		Determines whether an entity should be compiled in the context.
 	**/
@@ -136,7 +136,7 @@ package tensorflow.python.autograph.converters.call_trees;
 		Works for methods of objects of known type.
 	**/
 	public function _try_resolve_target(node:Dynamic):Dynamic;
-	public function _wrap_to_py_func_no_return(node:Dynamic):Dynamic;
+	public function _visit_decorators(decorator_list:Dynamic):Dynamic;
 	public function _wrap_to_py_func_single_return(node:Dynamic, dtype:Dynamic):Dynamic;
 	/**
 		Applies a function to each individual assignment.
@@ -171,6 +171,7 @@ package tensorflow.python.autograph.converters.call_trees;
 		      apply_fn(target, value), no return value.
 	**/
 	public function apply_to_single_assignments(targets:Dynamic, values:Dynamic, apply_fn:Dynamic):Dynamic;
+	public function create_assignment(target:Dynamic, expression:Dynamic):Dynamic;
 	/**
 		Helper method useful for debugging.
 	**/
@@ -203,14 +204,22 @@ package tensorflow.python.autograph.converters.call_trees;
 	**/
 	public function generic_visit(node:Dynamic):Dynamic;
 	/**
-		Returns the unique directive for a symbol, or a default if none exist.
+		Returns the unique directive argument for a symbol.
 		
 		See lang/directives.py for details on directives.
 		
+		Example:
+		   # Given a directive in the code:
+		   ag.foo_directive(bar, baz=1)
+		
+		   # One can write for an AST node Name(id='bar'):
+		   get_definition_directive(node, ag.foo_directive, 'baz')
+		
 		Args:
-		  node: ast.AST
-		  directive: Callable[..., Any]
-		  arg: str
+		  node: ast.AST, the node representing the symbol for which the directive
+		    argument is needed.
+		  directive: Callable[..., Any], the directive to search.
+		  arg: str, the directive argument to return.
 		  default: Any
 		
 		Raises:
@@ -231,7 +240,7 @@ package tensorflow.python.autograph.converters.call_trees;
 	**/
 	public function visit(node:Dynamic):Dynamic;
 	public function visit_Call(node:Dynamic):Dynamic;
-	public function visit_Expr(node:Dynamic):Dynamic;
+	public function visit_FunctionDef(node:Dynamic):Dynamic;
 	/**
 		A more powerful version of generic_visit for statement blocks.
 		
@@ -266,15 +275,16 @@ package tensorflow.python.autograph.converters.call_trees;
 		        return node, None
 		
 		Args:
-		  nodes: enumerable of AST node objects
+		  nodes: enumerable of AST node objects. If None, the function returns None.
 		  before_visit: optional callable that is called before visiting each item
-		      in nodes
-		  after_visit: optional callable that takes in an AST node and
-		      returns a tuple (new_node, new_destination). It is called after
-		      visiting each item in nodes. Is used in the same was as the
+		    in nodes
+		  after_visit: optional callable that takes in an AST node and returns a
+		    tuple (new_node, new_destination). It is called after visiting each item
+		    in nodes. Is used in the same was as the
 		      visit_* methods: new_node will replace the node; if not None,
-		      new_destination must be a list, and subsequent nodes will be placed
-		      in this list instead of the list returned by visit_block.
+		        new_destination must be a list, and subsequent nodes will be placed
+		        in this list instead of the list returned by visit_block.
+		
 		Returns:
 		  A list of AST node objects containing the transformed items fron nodes,
 		  except those nodes that have been relocated using after_visit.

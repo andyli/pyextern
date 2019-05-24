@@ -69,7 +69,7 @@ package numpy.lib.histograms;
 		--------
 		_hist_bin_fd, _hist_bin_sturges
 	**/
-	static public function _hist_bin_auto(x:Dynamic):Dynamic;
+	static public function _hist_bin_auto(x:Dynamic, range:Dynamic):Dynamic;
 	/**
 		Doane's histogram bin estimator.
 		
@@ -87,7 +87,7 @@ package numpy.lib.histograms;
 		-------
 		h : An estimate of the optimal bin width for the given data.
 	**/
-	static public function _hist_bin_doane(x:Dynamic):Dynamic;
+	static public function _hist_bin_doane(x:Dynamic, range:Dynamic):Dynamic;
 	/**
 		The Freedman-Diaconis histogram bin estimator.
 		
@@ -112,7 +112,7 @@ package numpy.lib.histograms;
 		-------
 		h : An estimate of the optimal bin width for the given data.
 	**/
-	static public function _hist_bin_fd(x:Dynamic):Dynamic;
+	static public function _hist_bin_fd(x:Dynamic, range:Dynamic):Dynamic;
 	/**
 		Rice histogram bin estimator.
 		
@@ -132,7 +132,7 @@ package numpy.lib.histograms;
 		-------
 		h : An estimate of the optimal bin width for the given data.
 	**/
-	static public function _hist_bin_rice(x:Dynamic):Dynamic;
+	static public function _hist_bin_rice(x:Dynamic, range:Dynamic):Dynamic;
 	/**
 		Scott histogram bin estimator.
 		
@@ -150,7 +150,7 @@ package numpy.lib.histograms;
 		-------
 		h : An estimate of the optimal bin width for the given data.
 	**/
-	static public function _hist_bin_scott(x:Dynamic):Dynamic;
+	static public function _hist_bin_scott(x:Dynamic, range:Dynamic):Dynamic;
 	static public var _hist_bin_selectors : Dynamic;
 	/**
 		Square root histogram bin estimator.
@@ -168,7 +168,30 @@ package numpy.lib.histograms;
 		-------
 		h : An estimate of the optimal bin width for the given data.
 	**/
-	static public function _hist_bin_sqrt(x:Dynamic):Dynamic;
+	static public function _hist_bin_sqrt(x:Dynamic, range:Dynamic):Dynamic;
+	/**
+		Histogram bin estimator based on minimizing the estimated integrated squared error (ISE).
+		
+		The number of bins is chosen by minimizing the estimated ISE against the unknown true distribution.
+		The ISE is estimated using cross-validation and can be regarded as a generalization of Scott's rule.
+		https://en.wikipedia.org/wiki/Histogram#Scott.27s_normal_reference_rule
+		
+		This paper by Stone appears to be the origination of this rule.
+		http://digitalassets.lib.berkeley.edu/sdtr/ucb/text/34.pdf
+		
+		Parameters
+		----------
+		x : array_like
+		    Input data that is to be histogrammed, trimmed to range. May not
+		    be empty.
+		range : (float, float)
+		    The lower and upper range of the bins.
+		
+		Returns
+		-------
+		h : An estimate of the optimal bin width for the given data.
+	**/
+	static public function _hist_bin_stone(x:Dynamic, range:Dynamic):Dynamic;
 	/**
 		Sturges histogram bin estimator.
 		
@@ -187,7 +210,10 @@ package numpy.lib.histograms;
 		-------
 		h : An estimate of the optimal bin width for the given data.
 	**/
-	static public function _hist_bin_sturges(x:Dynamic):Dynamic;
+	static public function _hist_bin_sturges(x:Dynamic, range:Dynamic):Dynamic;
+	static public function _histogram_bin_edges_dispatcher(a:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?weights:Dynamic):Dynamic;
+	static public function _histogram_dispatcher(a:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?density:Dynamic):Dynamic;
+	static public function _histogramdd_dispatcher(sample:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?density:Dynamic):Dynamic;
 	/**
 		Check a and weights have matching shapes, and ravel both 
 	**/
@@ -206,6 +232,7 @@ package numpy.lib.histograms;
 	**/
 	static public function _unsigned_subtract(a:Dynamic, b:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Compute the histogram of a set of data.
@@ -217,8 +244,8 @@ package numpy.lib.histograms;
 		bins : int or sequence of scalars or str, optional
 		    If `bins` is an int, it defines the number of equal-width
 		    bins in the given range (10, by default). If `bins` is a
-		    sequence, it defines the bin edges, including the rightmost
-		    edge, allowing for non-uniform bin widths.
+		    sequence, it defines a monotonically increasing array of bin edges,
+		    including the rightmost edge, allowing for non-uniform bin widths.
 		
 		    .. versionadded:: 1.11.0
 		
@@ -354,6 +381,11 @@ package numpy.lib.histograms;
 		    'scott'
 		        Less robust estimator that that takes into account data
 		        variability and data size.
+		
+		    'stone'
+		        Estimator based on leave-one-out cross-validation estimate of
+		        the integrated squared error. Can be regarded as a generalization
+		        of Scott's rule.
 		
 		    'rice'
 		        Estimator does not take variability into account, only data
@@ -524,7 +556,8 @@ package numpy.lib.histograms;
 		bins : sequence or int, optional
 		    The bin specification:
 		
-		    * A sequence of arrays describing the bin edges along each dimension.
+		    * A sequence of arrays describing the monotonically increasing bin
+		      edges along each dimension.
 		    * The number of bins for each dimension (nx, ny, ... =bins)
 		    * The number of bins for all dimensions (nx=ny=...=bins).
 		

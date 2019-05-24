@@ -41,15 +41,9 @@ package matplotlib.docstring;
 		Return hash(self).
 	**/
 	public function __hash__():Dynamic;
-	/**
-		Initialize self.  See help(type(self)) for accurate signature.
-	**/
 	@:native("__init__")
-	public function ___init__(addendum:Dynamic, ?join:Dynamic):Dynamic;
-	/**
-		Initialize self.  See help(type(self)) for accurate signature.
-	**/
-	public function new(addendum:Dynamic, ?join:Dynamic):Void;
+	public function ___init__(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function new(?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		

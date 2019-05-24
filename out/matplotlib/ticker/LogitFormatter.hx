@@ -113,6 +113,10 @@ package matplotlib.ticker;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Subclasses may want to override this to set a locator.
+	**/
+	public function _set_locator(locator:Dynamic):Dynamic;
 	static public var axis : Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -138,6 +142,10 @@ package matplotlib.ticker;
 		return a short formatted string representation of a number
 	**/
 	public function format_data_short(value:Dynamic):Dynamic;
+	/**
+		Return the tick labels for all the ticks at once.
+	**/
+	public function format_ticks(values:Dynamic):Dynamic;
 	public function get_offset():Dynamic;
 	static public var locs : Dynamic;
 	public function set_axis(axis:Dynamic):Dynamic;

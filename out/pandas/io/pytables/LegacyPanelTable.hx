@@ -238,7 +238,7 @@ package pandas.io.pytables;
 	**/
 	public var nrows_expected : Dynamic;
 	/**
-		 Represents wide format panel data, stored as 3-dimensional array
+		Represents wide format panel data, stored as 3-dimensional array.
 		
 		.. deprecated:: 0.20.0
 		    The recommended way to represent 3-D data are with a MultiIndex on a
@@ -247,20 +247,19 @@ package pandas.io.pytables;
 		    Pandas provides a :attr:`~Panel.to_xarray()` method to automate this
 		    conversion.
 		
-		 Parameters
-		 ----------
-		 data : ndarray (items x major x minor), or dict of DataFrames
-		 items : Index or array-like
-		     axis=0
-		 major_axis : Index or array-like
-		     axis=1
-		 minor_axis : Index or array-like
-		     axis=2
-		 dtype : dtype, default None
-		     Data type to force, otherwise infer
-		 copy : boolean, default False
-		     Copy data from inputs. Only affects DataFrame / 2d ndarray input
-		 
+		Parameters
+		----------
+		data : ndarray (items x major x minor), or dict of DataFrames
+		items : Index or array-like
+		    axis=0
+		major_axis : Index or array-like
+		    axis=1
+		minor_axis : Index or array-like
+		    axis=2
+		copy : boolean, default False
+		    Copy data from inputs. Only affects DataFrame / 2d ndarray input
+		dtype : dtype, default None
+		    Data type to force, otherwise infer
 	**/
 	static public function obj_type(?data:Dynamic, ?items:Dynamic, ?major_axis:Dynamic, ?minor_axis:Dynamic, ?copy:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public var pandas_kind : Dynamic;
@@ -288,7 +287,7 @@ package pandas.io.pytables;
 		return a single column from the table, generally only indexables
 		are interesting
 	**/
-	public function read_column(column:Dynamic, ?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function read_column(column:Dynamic, ?where:Dynamic, ?start:Dynamic, ?stop:Dynamic):Dynamic;
 	/**
 		select coordinates (row numbers) from a table; return the
 		coordinates object

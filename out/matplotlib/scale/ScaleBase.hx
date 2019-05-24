@@ -38,14 +38,32 @@ package matplotlib.scale;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Construct a new scale.
+		
+		Notes
+		-----
+		The following note is for scale implementors.
+		
+		For back-compatibility reasons, scales take an `~matplotlib.axis.Axis`
+		object as first argument.  However, this argument should not
+		be used: a single scale object should be usable by multiple
+		`~matplotlib.axis.Axis`\es at the same time.
 	**/
 	@:native("__init__")
-	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Construct a new scale.
+		
+		Notes
+		-----
+		The following note is for scale implementors.
+		
+		For back-compatibility reasons, scales take an `~matplotlib.axis.Axis`
+		object as first argument.  However, this argument should not
+		be used: a single scale object should be usable by multiple
+		`~matplotlib.axis.Axis`\es at the same time.
 	**/
-	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		

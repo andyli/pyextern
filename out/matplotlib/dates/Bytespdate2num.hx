@@ -44,19 +44,9 @@ package matplotlib.dates;
 		Return hash(self).
 	**/
 	public function __hash__():Dynamic;
-	/**
-		Args:
-		    fmt: any valid strptime format is supported
-		    encoding: encoding to use on byte input (default: 'utf-8')
-	**/
 	@:native("__init__")
-	public function ___init__(fmt:Dynamic, ?encoding:Dynamic):Dynamic;
-	/**
-		Args:
-		    fmt: any valid strptime format is supported
-		    encoding: encoding to use on byte input (default: 'utf-8')
-	**/
-	public function new(fmt:Dynamic, ?encoding:Dynamic):Void;
+	public function ___init__(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function new(?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		

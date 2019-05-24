@@ -13,6 +13,7 @@ package tensorflow.python.ops.gen_linalg_ops;
 	static public var _batch_self_adjoint_eig_v2_outputs : Dynamic;
 	static public var _batch_svd_outputs : Dynamic;
 	static public var _log_matrix_determinant_outputs : Dynamic;
+	static public var _lu_outputs : Dynamic;
 	static public var _op_def_lib : Dynamic;
 	static public var _qr_outputs : Dynamic;
 	static public var _self_adjoint_eig_v2_outputs : Dynamic;
@@ -302,6 +303,46 @@ package tensorflow.python.ops.gen_linalg_ops;
 	**/
 	static public function log_matrix_determinant_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		Computes the LU decomposition of one or more square matrices.
+		
+		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
+		form square matrices.
+		
+		The input has to be invertible.
+		
+		The output consists of two tensors LU and P containing the LU decomposition
+		of all input submatrices `[..., :, :]`. LU encodes the lower triangular and
+		upper triangular factors.
+		
+		For each input submatrix of shape `[M, M]`, L is a lower triangular matrix of
+		shape `[M, M]` with unit diagonal whose entries correspond to the strictly lower
+		triangular part of LU. U is a upper triangular matrix of shape `[M, M]` whose
+		entries correspond to the upper triangular part, including the diagonal, of LU.
+		
+		P represents a permutation matrix encoded as a list of indices each between `0`
+		and `M-1`, inclusive. If P_mat denotes the permutation matrix corresponding to
+		P, then the L, U and P satisfies P_mat * input = L * U.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
+		    A tensor of shape `[..., M, M]` whose inner-most 2 dimensions form matrices of
+		    size `[M, M]`.
+		  output_idx_type: An optional `tf.DType` from: `tf.int32, tf.int64`. Defaults to `tf.int32`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (lu, p).
+		
+		  lu: A `Tensor`. Has the same type as `input`.
+		  p: A `Tensor` of type `output_idx_type`.
+	**/
+	static public function lu(input:Dynamic, ?output_idx_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function lu
+	**/
+	static public function lu_eager_fallback(input:Dynamic, ?output_idx_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Computes the determinant of one or more square matrices.
 		
 		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
@@ -490,6 +531,39 @@ package tensorflow.python.ops.gen_linalg_ops;
 		This is for function matrix_solve_ls
 	**/
 	static public function matrix_solve_ls_eager_fallback(matrix:Dynamic, rhs:Dynamic, l2_regularizer:Dynamic, ?fast:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the matrix square root of one or more square matrices:
+		
+		matmul(sqrtm(A), sqrtm(A)) = A
+		
+		The input matrix should be invertible. If the input matrix is real, it should
+		have no eigenvalues which are real and negative (pairs of complex conjugate
+		eigenvalues are allowed).
+		
+		The matrix square root is computed by first reducing the matrix to 
+		quasi-triangular form with the real Schur decomposition. The square root 
+		of the quasi-triangular matrix is then computed directly. Details of 
+		the algorithm can be found in: Nicholas J. Higham, "Computing real 
+		square roots of a real matrix", Linear Algebra Appl., 1987.
+		
+		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
+		form square matrices. The output is a tensor of the same shape as the input
+		containing the matrix square root for all input submatrices `[..., :, :]`.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
+		    Shape is `[..., M, M]`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function matrix_square_root(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function matrix_square_root
+	**/
+	static public function matrix_square_root_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Solves systems of linear equations with upper or lower triangular matrices by
 		

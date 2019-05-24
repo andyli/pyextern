@@ -45,11 +45,11 @@ package tensorflow.python.framework._function;
 		Creates a new, empty Graph.
 	**/
 	@:native("__init__")
-	public function ___init__(name:Dynamic, capture_by_value:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(name:Dynamic, capture_by_value:Dynamic, whitelisted_stateful_ops:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Creates a new, empty Graph.
 	**/
-	public function new(name:Dynamic, capture_by_value:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(name:Dynamic, capture_by_value:Dynamic, whitelisted_stateful_ops:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -388,10 +388,6 @@ package tensorflow.python.framework._function;
 	**/
 	public function _kernel_label_map(op_to_kernel_label_map:Dynamic):Dynamic;
 	public var _last_id : Dynamic;
-	/**
-		Return detailed error message about device conflict due to colocation.
-	**/
-	public function _make_colocation_conflict_message(op:Dynamic, colocation_op:Dynamic):Dynamic;
 	/**
 		Returns a lock to guard code that creates & mutates ops.
 		
@@ -760,7 +756,7 @@ package tensorflow.python.framework._function;
 	/**
 		Creates an `Operation` in this graph. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(compute_shapes)`. They will be removed in a future version.
 		Instructions for updating:
 		Shapes are always computed; don't use the compute_shapes as it has no effect.
 		

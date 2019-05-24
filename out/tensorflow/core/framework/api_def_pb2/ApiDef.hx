@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.framework.api_def_pb2;
 @:pythonImport("tensorflow.core.framework.api_def_pb2", "ApiDef") extern class ApiDef {
-	static public var ARG_ORDER_FIELD_NUMBER : Dynamic;
-	static public var ATTR_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -32,16 +30,11 @@ package tensorflow.core.framework.api_def_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DEFAULT_VISIBILITY : Dynamic;
-	static public var DEPRECATION_MESSAGE_FIELD_NUMBER : Dynamic;
-	static public var DESCRIPTION_FIELD_NUMBER : Dynamic;
-	static public var DESCRIPTION_PREFIX_FIELD_NUMBER : Dynamic;
-	static public var DESCRIPTION_SUFFIX_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ENDPOINT_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -58,7 +51,6 @@ package tensorflow.core.framework.api_def_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GRAPH_OP_NAME_FIELD_NUMBER : Dynamic;
 	static public var HIDDEN : Dynamic;
 	/**
 		Checks if a message field is set.
@@ -68,7 +60,6 @@ package tensorflow.core.framework.api_def_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var IN_ARG_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -85,7 +76,6 @@ package tensorflow.core.framework.api_def_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var OUT_ARG_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -95,7 +85,6 @@ package tensorflow.core.framework.api_def_pb2;
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var SKIP : Dynamic;
-	static public var SUMMARY_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -108,7 +97,10 @@ package tensorflow.core.framework.api_def_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var VISIBILITY_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var VISIBLE : Dynamic;
 	static public var Visibility : Dynamic;
 	/**
@@ -276,4 +268,56 @@ package tensorflow.core.framework.api_def_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.ApiDef.arg_order
+	**/
+	public var arg_order : Dynamic;
+	/**
+		Field tensorflow.ApiDef.attr
+	**/
+	public var attr : Dynamic;
+	/**
+		Field tensorflow.ApiDef.deprecation_message
+	**/
+	public var deprecation_message : Dynamic;
+	/**
+		Field tensorflow.ApiDef.deprecation_version
+	**/
+	public var deprecation_version : Dynamic;
+	/**
+		Field tensorflow.ApiDef.description
+	**/
+	public var description : Dynamic;
+	/**
+		Field tensorflow.ApiDef.description_prefix
+	**/
+	public var description_prefix : Dynamic;
+	/**
+		Field tensorflow.ApiDef.description_suffix
+	**/
+	public var description_suffix : Dynamic;
+	/**
+		Field tensorflow.ApiDef.endpoint
+	**/
+	public var endpoint : Dynamic;
+	/**
+		Field tensorflow.ApiDef.graph_op_name
+	**/
+	public var graph_op_name : Dynamic;
+	/**
+		Field tensorflow.ApiDef.in_arg
+	**/
+	public var in_arg : Dynamic;
+	/**
+		Field tensorflow.ApiDef.out_arg
+	**/
+	public var out_arg : Dynamic;
+	/**
+		Field tensorflow.ApiDef.summary
+	**/
+	public var summary : Dynamic;
+	/**
+		Field tensorflow.ApiDef.visibility
+	**/
+	public var visibility : Dynamic;
 }

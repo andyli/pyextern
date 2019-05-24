@@ -183,12 +183,6 @@ package matplotlib.backends.backend_pdf;
 		the object with writeObject.
 	**/
 	public function reserveObject(?name:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The texFontMap function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		\ 
-	**/
 	public var texFontMap : Dynamic;
 	public function write(data:Dynamic):Dynamic;
 	public function writeFonts():Dynamic;

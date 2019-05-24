@@ -10,8 +10,22 @@ package numpy.lib.shape_base;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _apply_along_axis_dispatcher(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _apply_over_axes_dispatcher(func:Dynamic, a:Dynamic, axes:Dynamic):Dynamic;
+	static public function _array_split_dispatcher(ary:Dynamic, indices_or_sections:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _arrays_for_stack_dispatcher(arrays:Dynamic, ?stacklevel:Dynamic):Dynamic;
+	static public function _column_stack_dispatcher(tup:Dynamic):Dynamic;
+	static public function _dstack_dispatcher(tup:Dynamic):Dynamic;
+	static public function _expand_dims_dispatcher(a:Dynamic, axis:Dynamic):Dynamic;
+	static public function _hvdsplit_dispatcher(ary:Dynamic, indices_or_sections:Dynamic):Dynamic;
+	static public function _kron_dispatcher(a:Dynamic, b:Dynamic):Dynamic;
 	static public function _make_along_axis_idx(arr_shape:Dynamic, indices:Dynamic, axis:Dynamic):Dynamic;
+	static public function _put_along_axis_dispatcher(arr:Dynamic, indices:Dynamic, values:Dynamic, axis:Dynamic):Dynamic;
 	static public function _replace_zero_by_x_arrays(sub_arys:Dynamic):Dynamic;
+	static public function _split_dispatcher(ary:Dynamic, indices_or_sections:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _take_along_axis_dispatcher(arr:Dynamic, indices:Dynamic, axis:Dynamic):Dynamic;
+	static public function _tile_dispatcher(A:Dynamic, reps:Dynamic):Dynamic;
+	static public function _warn_for_nonsequence(arrays:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Apply a function to 1-D slices along the given axis.
@@ -279,6 +293,7 @@ package numpy.lib.shape_base;
 		        [3, 4]])
 	**/
 	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	/**
 		Split an array into multiple sub-arrays.
 		
@@ -537,6 +552,7 @@ package numpy.lib.shape_base;
 		hstack : Stack arrays in sequence horizontally (column wise)
 		vstack : Stack arrays in sequence vertically (row wise)
 		dstack : Stack arrays in sequence depth wise (along third dimension)
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -566,19 +582,19 @@ package numpy.lib.shape_base;
 		>>> a[1] = np.ma.masked
 		>>> b = np.arange(2, 5)
 		>>> a
-		masked_array(data = [0 -- 2],
-		             mask = [False  True False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2],
+		             mask=[False,  True, False],
+		       fill_value=999999)
 		>>> b
 		array([2, 3, 4])
 		>>> np.concatenate([a, b])
-		masked_array(data = [0 1 2 2 3 4],
-		             mask = False,
-		       fill_value = 999999)
+		masked_array(data=[0, 1, 2, 2, 3, 4],
+		             mask=False,
+		       fill_value=999999)
 		>>> np.ma.concatenate([a, b])
-		masked_array(data = [0 -- 2 2 3 4],
-		             mask = [False  True False False False False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2, 2, 3, 4],
+		             mask=[False,  True, False, False, False, False],
+		       fill_value=999999)
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;

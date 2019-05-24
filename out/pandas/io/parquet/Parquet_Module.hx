@@ -116,7 +116,7 @@ package pandas.io.parquet;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
+		    [default: ANSI_X3.4-1968] [currently: ANSI_X3.4-1968]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -373,7 +373,7 @@ package pandas.io.parquet;
 		----------
 		path : string
 		    File path
-		columns: list, default=None
+		columns : list, default=None
 		    If not None, only these columns will be read from the file.
 		
 		    .. versionadded 0.21.1
@@ -395,9 +395,12 @@ package pandas.io.parquet;
 		
 		Parameters
 		----------
-		df : DataFrame
-		path : string
-		    File path
+		path : str
+		    File path or Root Directory path. Will be used as Root Directory path
+		    while writing a partitioned dataset.
+		
+		    .. versionchanged:: 0.24.0
+		
 		engine : {'auto', 'pyarrow', 'fastparquet'}, default 'auto'
 		    Parquet library to use. If 'auto', then the option
 		    ``io.parquet.engine`` is used. The default ``io.parquet.engine``
@@ -405,8 +408,21 @@ package pandas.io.parquet;
 		    'pyarrow' is unavailable.
 		compression : {'snappy', 'gzip', 'brotli', None}, default 'snappy'
 		    Name of the compression to use. Use ``None`` for no compression.
+		index : bool, default None
+		    If ``True``, include the dataframe's index(es) in the file output. If
+		    ``False``, they will not be written to the file. If ``None``, the
+		    engine's default behavior will be used.
+		
+		    .. versionadded 0.24.0
+		
+		partition_cols : list, optional, default None
+		    Column names by which to partition the dataset
+		    Columns are partitioned in the order they are given
+		
+		    .. versionadded:: 0.24.0
+		
 		kwargs
 		    Additional keyword arguments passed to the engine
 	**/
-	static public function to_parquet(df:Dynamic, path:Dynamic, ?engine:Dynamic, ?compression:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function to_parquet(df:Dynamic, path:Dynamic, ?engine:Dynamic, ?compression:Dynamic, ?index:Dynamic, ?partition_cols:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

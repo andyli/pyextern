@@ -27,6 +27,7 @@ package tensorflow.keras.activations;
 		      Linear Units (ELUs)](https://arxiv.org/abs/1511.07289)
 	**/
 	static public function elu(x:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function exponential(x:Dynamic):Dynamic;
 	static public function get(identifier:Dynamic):Dynamic;
 	/**
 		Hard sigmoid activation function.

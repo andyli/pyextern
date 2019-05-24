@@ -122,9 +122,6 @@ package matplotlib.mathtext;
 	public var __weakref__ : Dynamic;
 	static public var _fontmap : Dynamic;
 	public function _get_font(font:Dynamic):Dynamic;
-	/**
-		Override prime symbol to use Bakoma 
-	**/
 	public function _get_glyph(fontname:Dynamic, font_class:Dynamic, sym:Dynamic, fontsize:Dynamic, ?math:Dynamic):Dynamic;
 	public function _get_info(fontname:Dynamic, font_class:Dynamic, sym:Dynamic, fontsize:Dynamic, dpi:Dynamic, ?math:Dynamic):Dynamic;
 	public function _get_offset(font:Dynamic, glyph:Dynamic, fontsize:Dynamic, dpi:Dynamic):Dynamic;

@@ -52,4 +52,16 @@ package tensorflow.python.ops.numerics;
 		  Same tensor as `t`.
 	**/
 	static public function verify_tensor_all_finite(t:Dynamic, msg:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Assert that the tensor does not contain any NaN's or Inf's.
+		
+		Args:
+		  x: Tensor to check.
+		  message: Message to log on failure.
+		  name: A name for this operation (optional).
+		
+		Returns:
+		  Same tensor as `x`.
+	**/
+	static public function verify_tensor_all_finite_v2(x:Dynamic, message:Dynamic, ?name:Dynamic):Dynamic;
 }

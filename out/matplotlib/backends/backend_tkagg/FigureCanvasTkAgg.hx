@@ -108,6 +108,7 @@ package matplotlib.backends.backend_tkagg;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public function _fix_ipython_backend2gui():Dynamic;
 	public function _get_key(event:Dynamic):Dynamic;
 	/**
 		Return a canvas suitable for saving figures to a specified file format.
@@ -128,14 +129,14 @@ package matplotlib.backends.backend_tkagg;
 	**/
 	public function blit(?bbox:Dynamic):Dynamic;
 	/**
-		Get the image as an RGBA byte string.
+		Get the image as a memoryview to the renderer's buffer.
 		
 		`draw` must be called at least once before this function will work and
 		to update the renderer for any subsequent changes to the Figure.
 		
 		Returns
 		-------
-		bytes
+		memoryview
 	**/
 	public function buffer_rgba():Dynamic;
 	public function button_dblclick_event(event:Dynamic):Dynamic;
@@ -187,7 +188,15 @@ package matplotlib.backends.backend_tkagg;
 	**/
 	public function draw_event(renderer:Dynamic):Dynamic;
 	/**
-		update drawing area only if idle
+		Request a widget redraw once control returns to the GUI event loop.
+		
+		Even if multiple calls to `draw_idle` occur before control returns
+		to the GUI event loop, the figure will only be rendered once.
+		
+		Notes
+		-----
+		Backends may choose to override the method and implement their own
+		strategy to prevent multiple renderings.
 	**/
 	public function draw_idle():Dynamic;
 	/**
@@ -258,6 +267,21 @@ package matplotlib.backends.backend_tkagg;
 		another axes.
 	**/
 	public function grab_mouse(ax:Dynamic):Dynamic;
+	/**
+		Check if a point is in an axes.
+		
+		Parameters
+		----------
+		xy : tuple or list
+		    (x,y) coordinates.
+		    x position - pixels from left of canvas.
+		    y position - pixels from bottom of canvas.
+		
+		Returns
+		-------
+		axes: topmost axes containing the point, or None if no axes.
+	**/
+	public function inaxes(xy:Dynamic):Dynamic;
 	/**
 		Returns whether the renderer is in the process of saving
 		to a file, rather than rendering for an on-screen buffer.
@@ -362,30 +386,29 @@ package matplotlib.backends.backend_tkagg;
 	**/
 	public function mpl_disconnect(cid:Dynamic):Dynamic;
 	/**
-		Creates a new backend-specific subclass of :class:`backend_bases.Timer`.
-		This is useful for getting periodic events through the backend's native
-		event loop. Implemented only for backends with GUIs.
+		Creates a new backend-specific subclass of
+		:class:`backend_bases.Timer`. This is useful for getting periodic
+		events through the backend's native event loop. Implemented only for
+		backends with GUIs.
 		
 		Other Parameters
 		----------------
 		interval : scalar
 		    Timer interval in milliseconds
-		callbacks : list
+		
+		callbacks : List[Tuple[callable, Tuple, Dict]]
 		    Sequence of (func, args, kwargs) where ``func(*args, **kwargs)``
 		    will be executed by the timer every *interval*.
+		
+		    callbacks which return ``False`` or ``0`` will be removed from the
+		    timer.
+		
+		Examples
+		--------
+		
+		>>> timer = fig.canvas.new_timer(callbacks=[(f1, (1, ), {'a': 3}),])
 	**/
 	public function new_timer(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		.. deprecated:: 2.2
-		    The onRemove function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
-		
-		Mouse event processor which removes the top artist
-		under the cursor.  Connect this to the 'mouse_press_event'
-		using::
-		
-		    canvas.mpl_connect('mouse_press_event',canvas.onRemove)
-	**/
-	public function onRemove(ev:Dynamic):Dynamic;
 	public function pick(mouseevent:Dynamic):Dynamic;
 	/**
 		This method will be called by artists who are picked and will
@@ -409,10 +432,10 @@ package matplotlib.backends.backend_tkagg;
 		dpi : scalar, optional
 		    the dots per inch to save the figure in; if None, use savefig.dpi
 		
-		facecolor : color spec or None, optional
+		facecolor : color or None, optional
 		    the facecolor of the figure; if None, defaults to savefig.facecolor
 		
-		edgecolor : color spec or None, optional
+		edgecolor : color or None, optional
 		    the edgecolor of the figure; if None, defaults to savefig.edgecolor
 		
 		format : str, optional
@@ -470,8 +493,16 @@ package matplotlib.backends.backend_tkagg;
 		    For more details see the `PNG specification`_.
 		
 		    .. _PNG specification:                 https://www.w3.org/TR/2003/REC-PNG-20031110/#11keywords
+		
+		pil_kwargs : dict, optional
+		    If set to a non-None value, use Pillow to save the figure instead
+		    of Matplotlib's builtin PNG support, and pass these keyword
+		    arguments to `PIL.Image.save`.
+		
+		    If the 'pnginfo' key is present, it completely overrides
+		    *metadata*, including the default 'Software' key.
 	**/
-	public function print_png(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function print_png(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?metadata:Dynamic, ?pil_kwargs:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function print_raw(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function print_rgba(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function print_to_buffer():Dynamic;
@@ -545,7 +576,7 @@ package matplotlib.backends.backend_tkagg;
 	**/
 	public function switch_backends(FigureCanvasClass:Dynamic):Dynamic;
 	/**
-		Get the image as an ARGB byte string
+		Get the image as an ARGB byte string.
 		
 		`draw` must be called at least once before this function will work and
 		to update the renderer for any subsequent changes to the Figure.

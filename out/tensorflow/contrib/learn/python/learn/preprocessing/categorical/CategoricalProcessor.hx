@@ -40,7 +40,7 @@ package tensorflow.contrib.learn.python.learn.preprocessing.categorical;
 	/**
 		Initializes a CategoricalProcessor instance. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tensorflow/transform or tf.data for sequence processing.
 		
@@ -58,7 +58,7 @@ package tensorflow.contrib.learn.python.learn.preprocessing.categorical;
 	/**
 		Initializes a CategoricalProcessor instance. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tensorflow/transform or tf.data for sequence processing.
 		

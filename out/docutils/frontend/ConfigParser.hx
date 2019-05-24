@@ -25,7 +25,7 @@ package docutils.frontend;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __contains__(key:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -282,13 +282,13 @@ package docutils.frontend;
 	**/
 	public function popitem():Dynamic;
 	/**
-		Read and parse a filename or a list of filenames.
+		Read and parse a filename or an iterable of filenames.
 		
 		Files that cannot be opened are silently ignored; this is
-		designed so that you can specify a list of potential
+		designed so that you can specify an iterable of potential
 		configuration file locations (e.g. current directory, user's
 		home directory, systemwide directory), and all existing
-		configuration files in the list will be read.  A single
+		configuration files in the iterable will be read.  A single
 		filename may also be given.
 		
 		Return list of successfully read files.

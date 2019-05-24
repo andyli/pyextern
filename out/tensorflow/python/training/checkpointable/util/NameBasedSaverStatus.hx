@@ -40,7 +40,7 @@ package tensorflow.python.training.checkpointable.util;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Restoring a name-based tf.train.Saver checkpoint using the object-based restore API. This mode uses global names to match variables, and so is somewhat fragile. It also adds new restore ops to the graph each time it is called when graph building. Prefer re-encoding training checkpoints in the object-based format: run save() on the object-based saver (the same one this message is coming from) and use that checkpoint in the future.
 	**/
@@ -49,7 +49,7 @@ package tensorflow.python.training.checkpointable.util;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Restoring a name-based tf.train.Saver checkpoint using the object-based restore API. This mode uses global names to match variables, and so is somewhat fragile. It also adds new restore ops to the graph each time it is called when graph building. Prefer re-encoding training checkpoints in the object-based format: run save() on the object-based saver (the same one this message is coming from) and use that checkpoint in the future.
 	**/
@@ -128,6 +128,10 @@ package tensorflow.python.training.checkpointable.util;
 		Raises an exception if currently created objects are unmatched.
 	**/
 	public function assert_existing_objects_matched():Dynamic;
+	/**
+		Raises an exception if currently created objects are unmatched.
+	**/
+	public function assert_nontrivial_match():Dynamic;
 	/**
 		Alias for `run_restore_ops`.
 	**/

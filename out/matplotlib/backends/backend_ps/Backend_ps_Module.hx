@@ -13,6 +13,7 @@ package matplotlib.backends.backend_ps;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	static public function _get_papertype(w:Dynamic, h:Dynamic):Dynamic;
+	static public function _is_transparent(rgb_or_rgba:Dynamic):Dynamic;
 	static public var _log : Dynamic;
 	/**
 		Move the contents of file at *src* to path-or-filelike *dst*.
@@ -23,6 +24,14 @@ package matplotlib.backends.backend_ps;
 	static public function _num_to_str(val:Dynamic):Dynamic;
 	static public function _nums_to_str(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var backend_version : Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	static public function checkdep_ghostscript():Dynamic;
 	/**
 		When we want to use the LaTeX backend with postscript, we write PSFrag tags
@@ -46,22 +55,23 @@ package matplotlib.backends.backend_ps;
 	static public var debugPS : Dynamic;
 	static public function draw_if_interactive():Dynamic;
 	/**
-		Returns `True` if the given writable file-like object requires Unicode
-		to be written to it.
+		Return whether the given writable file-like object requires Unicode to be
+		written to it.
 	**/
 	static public function file_requires_unicode(x:Dynamic):Dynamic;
-	static public function findfont(prop:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		.. deprecated:: 3.0
-		    The get_bbox function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		Use ghostscript's bbox device to find the center of the bounding box.
+		[*Deprecated*] Use ghostscript's bbox device to find the center of the bounding box.
 		Return an appropriately sized bbox centered around that point. A bit of a
 		hack.
+		
+		Notes
+		-----
+		.. deprecated:: 3.0
+		   
 	**/
 	static public function get_bbox(tmpfile:Dynamic, bbox:Dynamic):Dynamic;
 	/**
-		return a postscript header stringfor the given bbox lbrt=(l, b, r, t).
+		return a postscript header string for the given bbox lbrt=(l, b, r, t).
 		Optionally, return rotate command.
 	**/
 	static public function get_bbox_header(lbrt:Dynamic, ?rotated:Dynamic):Dynamic;
@@ -74,13 +84,13 @@ package matplotlib.backends.backend_ps;
 	**/
 	static public function gs_distill(tmpfile:Dynamic, ?eps:Dynamic, ?ptype:Dynamic, ?bbox:Dynamic, ?rotated:Dynamic):Dynamic;
 	/**
-		Returns True if the given font is a Postscript Compact Font Format
-		Font embedded in an OpenType wrapper.  Used by the PostScript and
-		PDF backends that can not subset these fonts.
+		Return whether the given font is a Postscript Compact Font Format Font
+		embedded in an OpenType wrapper.  Used by the PostScript and PDF backends
+		that can not subset these fonts.
 	**/
 	static public function is_opentype_cff_font(filename:Dynamic):Dynamic;
 	/**
-		return true if *obj* looks like a file object with a *write* method
+		Return whether *obj* looks like a file object with a *write* method.
 	**/
 	static public function is_writable_file_like(obj:Dynamic):Dynamic;
 	/**

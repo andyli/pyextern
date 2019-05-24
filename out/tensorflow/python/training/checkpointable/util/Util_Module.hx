@@ -14,13 +14,13 @@ package tensorflow.python.training.checkpointable.util;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Create SaveableObjects and corresponding SerializedTensor protos.
+	**/
+	static public function _add_attributes_to_object_graph(checkpointable_objects:Dynamic, object_graph_proto:Dynamic, node_ids:Dynamic, object_names:Dynamic, saveables_cache:Dynamic, object_map:Dynamic):Dynamic;
+	/**
 		Find shortest paths to all variables owned by dependencies of root.
 	**/
 	static public function _breadth_first_checkpointable_traversal(root_checkpointable:Dynamic):Dynamic;
-	/**
-		Copy a `tf.train.Saver`'s state to a new Saver with different variables.
-	**/
-	static public function _copy_saver_with_new_var_list(old_saver:Dynamic, new_var_list:Dynamic):Dynamic;
 	/**
 		A pared-down version of get_variable which does not reuse variables.
 	**/
@@ -28,9 +28,9 @@ package tensorflow.python.training.checkpointable.util;
 	static public function _escape_local_name(name:Dynamic):Dynamic;
 	static public function _object_prefix_from_path(path_to_root:Dynamic):Dynamic;
 	/**
-		Name non-slot `Checkpointable`s and add them to `object_graph_proto`.
+		Create SaveableObjects and protos for gathered objects.
 	**/
-	static public function _serialize_checkpointables(checkpointable_objects:Dynamic, node_ids:Dynamic, object_names:Dynamic, slot_variables:Dynamic, saveables_cache:Dynamic):Dynamic;
+	static public function _serialize_gathered_objects(checkpointable_objects:Dynamic, path_to_root:Dynamic, saveables_cache:Dynamic, object_map:Dynamic):Dynamic;
 	/**
 		Determine checkpoint keys for variables and build a serialized graph.
 		
@@ -92,6 +92,14 @@ package tensorflow.python.training.checkpointable.util;
 	**/
 	static public function capture_dependencies(template:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Name non-slot `Checkpointable`s and add them to `object_graph_proto`.
+	**/
+	static public function fill_object_graph_proto(checkpointable_objects:Dynamic, node_ids:Dynamic, slot_variables:Dynamic, ?object_graph_proto:Dynamic):Dynamic;
+	/**
+		Find and number objects which are dependencies of `root_checkpointable`.
+	**/
+	static public function find_objects(root_checkpointable:Dynamic):Dynamic;
 	/**
 		Creates a static `tf.train.Saver` from a checkpointable object.
 		

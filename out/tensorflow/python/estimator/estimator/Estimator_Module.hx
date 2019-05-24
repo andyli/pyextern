@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.estimator.estimator;
 @:pythonImport("tensorflow.python.estimator.estimator") extern class Estimator_Module {
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var _VALID_MODEL_FN_ARGS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -10,6 +11,10 @@ package tensorflow.python.estimator.estimator;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Assert Estimator methods are not overwritten.
+	**/
+	static public function _assert_members_are_not_overridden(cls:Dynamic, obj:Dynamic):Dynamic;
 	static public function _check_checkpoint_available(model_dir:Dynamic):Dynamic;
 	/**
 		Returns hooks if all are `SessionRunHook`, raises TypeError otherwise.
@@ -20,7 +25,7 @@ package tensorflow.python.estimator.estimator;
 	**/
 	static public function _check_listeners_type(saving_listeners:Dynamic):Dynamic;
 	/**
-		Combines scaffold(s) returned from `distribution.call_for_each_tower`.
+		Combines scaffold(s) returned from `call_for_each_replica`.
 	**/
 	static public function _combine_distributed_scaffold(grouped_scaffold:Dynamic, distribution:Dynamic):Dynamic;
 	/**
@@ -106,9 +111,9 @@ package tensorflow.python.estimator.estimator;
 	static public function _write_dict_to_summary(output_dir:Dynamic, dictionary:Dynamic, current_global_step:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Create a `tf.train.Scaffold.ready_for_local_init_op` inside a tower.
+		Create a `tf.train.Scaffold.ready_for_local_init_op` inside a replica.
 	**/
-	static public function create_per_tower_ready_for_local_init_op(scaffold:Dynamic):Dynamic;
+	static public function create_per_replica_ready_for_local_init_op(scaffold:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public function estimator_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

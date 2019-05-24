@@ -15,7 +15,7 @@ package tensorflow.contrib.data.python.ops.resampling;
 	/**
 		A transformation that resamples a dataset to achieve a target distribution. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.rejection_resample(...)`.
 		

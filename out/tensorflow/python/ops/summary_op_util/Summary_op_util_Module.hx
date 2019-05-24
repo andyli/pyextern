@@ -32,6 +32,15 @@ package tensorflow.python.ops.summary_op_util;
 	static public function collect(val:Dynamic, collections:Dynamic, default_collections:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Determines if summary should be skipped.
+		
+		If using multiple replicas in distributed strategy, skip summaries on all
+		replicas except the first one (replica_id=0).
+		
+		Returns:
+		  True if the summary is skipped; False otherwise.
+	**/
 	static public function skip_summary():Dynamic;
 	/**
 		Enters a scope used for the summary and yields both the name and tag.

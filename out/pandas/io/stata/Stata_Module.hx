@@ -2,7 +2,6 @@
 package pandas.io.stata;
 @:pythonImport("pandas.io.stata") extern class Stata_Module {
 	static public var NaT : Dynamic;
-	static public var VALID_ENCODINGS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -106,7 +105,6 @@ package pandas.io.stata;
 	**/
 	static public function _dtype_to_stata_type_117(dtype:Dynamic, column:Dynamic, force_strl:Dynamic):Dynamic;
 	static public var _encoding_params : Dynamic;
-	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _iterator_params : Dynamic;
 	static public function _maybe_convert_to_int_keys(convert_dates:Dynamic, varlist:Dynamic):Dynamic;
 	/**
@@ -153,7 +151,6 @@ package pandas.io.stata;
 		
 		Examples
 		--------
-		>>> import pandas as pd
 		>>> dates = pd.Series([52])
 		>>> _stata_elapsed_date_to_datetime_vec(dates , "%tw")
 		0   1961-01-01
@@ -255,7 +252,6 @@ package pandas.io.stata;
 		  warnings.warn(msg, FutureWarning)
 		yes!
 		
-		
 		To raise a warning that a keyword will be removed entirely in the future
 		
 		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
@@ -275,6 +271,7 @@ package pandas.io.stata;
 		should raise warning
 	**/
 	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
+	static public function ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var excessive_string_length_error : Dynamic;
 	/**
 		If the filepath_or_buffer is a url, translate and return the buffer.
@@ -303,8 +300,7 @@ package pandas.io.stata;
 		----------
 		value : scalar, list, ndarray, or pandas type
 		skipna : bool, default False
-		    Ignore NaN values when inferring the type. The default of ``False``
-		    will be deprecated in a later version of pandas.
+		    Ignore NaN values when inferring the type.
 		
 		    .. versionadded:: 0.21.0
 		
@@ -453,7 +449,7 @@ package pandas.io.stata;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -471,8 +467,8 @@ package pandas.io.stata;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -573,14 +569,13 @@ package pandas.io.stata;
 		
 		See Also
 		--------
-		pandas.io.stata.StataReader : low-level reader for Stata data files
-		pandas.DataFrame.to_stata: export Stata data files
+		pandas.io.stata.StataReader : Low-level reader for Stata data files.
+		pandas.DataFrame.to_stata: Export Stata data files.
 		
 		Examples
 		--------
 		Read a Stata dta file:
 		
-		>>> import pandas as pd
 		>>> df = pd.read_stata('filename.dta')
 		
 		Read a Stata dta file in 10,000 line chunks:
@@ -623,7 +618,7 @@ package pandas.io.stata;
 		      as dateutil).
 		
 		    Warning: yearfirst=True is not strict, but will prefer to parse
-		    with year first (this is a known bug, based on dateutil beahavior).
+		    with year first (this is a known bug, based on dateutil behavior).
 		
 		    .. versionadded:: 0.16.1
 		
@@ -632,7 +627,7 @@ package pandas.io.stata;
 		    datetime.datetime objects as well).
 		box : boolean, default True
 		
-		    - If True returns a DatetimeIndex
+		    - If True returns a DatetimeIndex or Index-like object
 		    - If False returns ndarray of values.
 		format : string, default None
 		    strftime to parse time, eg "%d/%m/%Y", note that "%f" will parse
@@ -666,8 +661,8 @@ package pandas.io.stata;
 		    .. versionadded:: 0.20.0
 		cache : boolean, default False
 		    If True, use a cache of unique, converted dates to apply the datetime
-		    conversion. May produce sigificant speed-up when parsing duplicate date
-		    strings, especially ones with timezone offsets.
+		    conversion. May produce significant speed-up when parsing duplicate
+		    date strings, especially ones with timezone offsets.
 		
 		    .. versionadded:: 0.23.0
 		
@@ -684,6 +679,11 @@ package pandas.io.stata;
 		    any element of input is before Timestamp.min or after Timestamp.max)
 		    return will have datetime.datetime type (or corresponding
 		    array/Series).
+		
+		See Also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
 		
 		Examples
 		--------
@@ -748,33 +748,46 @@ package pandas.io.stata;
 		0    1960-01-02
 		1    1960-01-03
 		2    1960-01-04
-		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_timedelta : Convert argument to timedelta.
 	**/
 	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 	/**
-		Convert argument to timedelta
+		Convert argument to timedelta.
+		
+		Timedeltas are absolute differences in times, expressed in difference
+		units (e.g. days, hours, minutes, seconds). This method converts
+		an argument from a recognized timedelta format / value into
+		a Timedelta type.
 		
 		Parameters
 		----------
-		arg : string, timedelta, list, tuple, 1-d array, or Series
-		unit : unit of the arg (D,h,m,s,ms,us,ns) denote the unit, which is an
-		    integer/float number
-		box : boolean, default True
-		    - If True returns a Timedelta/TimedeltaIndex of the results
-		    - if False returns a np.timedelta64 or ndarray of values of dtype
-		      timedelta64[ns]
+		arg : str, timedelta, list-like or Series
+		    The data to be converted to timedelta.
+		unit : str, default 'ns'
+		    Denotes the unit of the arg. Possible values:
+		    ('Y', 'M', 'W', 'D', 'days', 'day', 'hours', hour', 'hr',
+		    'h', 'm', 'minute', 'min', 'minutes', 'T', 'S', 'seconds',
+		    'sec', 'second', 'ms', 'milliseconds', 'millisecond',
+		    'milli', 'millis', 'L', 'us', 'microseconds', 'microsecond',
+		    'micro', 'micros', 'U', 'ns', 'nanoseconds', 'nano', 'nanos',
+		    'nanosecond', 'N').
+		box : bool, default True
+		    - If True returns a Timedelta/TimedeltaIndex of the results.
+		    - If False returns a numpy.timedelta64 or numpy.darray of
+		      values of dtype timedelta64[ns].
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
-		    - If 'raise', then invalid parsing will raise an exception
-		    - If 'coerce', then invalid parsing will be set as NaT
-		    - If 'ignore', then invalid parsing will return the input
+		    - If 'raise', then invalid parsing will raise an exception.
+		    - If 'coerce', then invalid parsing will be set as NaT.
+		    - If 'ignore', then invalid parsing will return the input.
 		
 		Returns
 		-------
-		ret : timedelta64/arrays of timedelta64 if parsing succeeded
+		timedelta64 or numpy.array of timedelta64
+		    Output type returned if parsing succeeded.
+		
+		See Also
+		--------
+		DataFrame.astype : Cast argument to a specified dtype.
+		to_datetime : Convert argument to datetime.
 		
 		Examples
 		--------
@@ -802,10 +815,10 @@ package pandas.io.stata;
 		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
 		               dtype='timedelta64[ns]', freq=None)
 		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_datetime : Convert argument to datetime.
+		Returning an ndarray by using the 'box' keyword argument:
+		
+		>>> pd.to_timedelta(np.arange(5), box=False)
+		array([0, 1, 2, 3, 4], dtype='timedelta64[ns]')
 	**/
 	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
 	static public var value_label_mismatch_doc : Dynamic;

@@ -39,9 +39,9 @@ package numpy.core.records;
 	/**
 		Create an array from binary file data
 		
-		If file is a string then that file is opened, else it is assumed
-		to be a file object. The file object must support random access
-		(i.e. it must have tell and seek methods).
+		If file is a string or a path-like object then that file is opened,
+		else it is assumed to be a file object. The file object must
+		support random access (i.e. it must have tell and seek methods).
 		
 		>>> from tempfile import TemporaryFile
 		>>> a = np.empty(10,dtype='f8,i4,a5')
@@ -122,5 +122,25 @@ package numpy.core.records;
 	static public function get_remaining_size(fd:Dynamic):Dynamic;
 	static public function isfileobj(f:Dynamic):Dynamic;
 	static public var numfmt : Dynamic;
+	/**
+		Return the file system path representation of the object.
+		
+		If the object is str or bytes, then allow it to pass through as-is. If the
+		object defines __fspath__(), then return the result of that method. All other
+		types raise a TypeError.
+	**/
+	static public function os_fspath(path:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
 }

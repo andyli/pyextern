@@ -1,12 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.compiler.xla.xla_data_pb2;
 @:pythonImport("tensorflow.compiler.xla.xla_data_pb2", "LiteralProto") extern class LiteralProto {
-	static public var BF16S_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var C64S_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -32,9 +30,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var F16S_FIELD_NUMBER : Dynamic;
-	static public var F32S_FIELD_NUMBER : Dynamic;
-	static public var F64S_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -67,7 +62,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var PREDS_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -76,11 +70,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var S32S_FIELD_NUMBER : Dynamic;
-	static public var S64S_FIELD_NUMBER : Dynamic;
-	static public var S8S_FIELD_NUMBER : Dynamic;
-	static public var SHAPE_FIELD_NUMBER : Dynamic;
-	static public var SPARSE_INDICES_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -93,10 +82,10 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TUPLE_LITERALS_FIELD_NUMBER : Dynamic;
-	static public var U32S_FIELD_NUMBER : Dynamic;
-	static public var U64S_FIELD_NUMBER : Dynamic;
-	static public var U8S_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -262,4 +251,72 @@ package tensorflow.compiler.xla.xla_data_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.LiteralProto.bf16s
+	**/
+	public var bf16s : Dynamic;
+	/**
+		Field xla.LiteralProto.c64s
+	**/
+	public var c64s : Dynamic;
+	/**
+		Field xla.LiteralProto.f16s
+	**/
+	public var f16s : Dynamic;
+	/**
+		Field xla.LiteralProto.f32s
+	**/
+	public var f32s : Dynamic;
+	/**
+		Field xla.LiteralProto.f64s
+	**/
+	public var f64s : Dynamic;
+	/**
+		Field xla.LiteralProto.preds
+	**/
+	public var preds : Dynamic;
+	/**
+		Field xla.LiteralProto.s16s
+	**/
+	public var s16s : Dynamic;
+	/**
+		Field xla.LiteralProto.s32s
+	**/
+	public var s32s : Dynamic;
+	/**
+		Field xla.LiteralProto.s64s
+	**/
+	public var s64s : Dynamic;
+	/**
+		Field xla.LiteralProto.s8s
+	**/
+	public var s8s : Dynamic;
+	/**
+		Field xla.LiteralProto.shape
+	**/
+	public var shape : Dynamic;
+	/**
+		Field xla.LiteralProto.sparse_indices
+	**/
+	public var sparse_indices : Dynamic;
+	/**
+		Field xla.LiteralProto.tuple_literals
+	**/
+	public var tuple_literals : Dynamic;
+	/**
+		Field xla.LiteralProto.u16s
+	**/
+	public var u16s : Dynamic;
+	/**
+		Field xla.LiteralProto.u32s
+	**/
+	public var u32s : Dynamic;
+	/**
+		Field xla.LiteralProto.u64s
+	**/
+	public var u64s : Dynamic;
+	/**
+		Field xla.LiteralProto.u8s
+	**/
+	public var u8s : Dynamic;
 }

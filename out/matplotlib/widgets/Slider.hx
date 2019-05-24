@@ -78,6 +78,9 @@ package matplotlib.widgets;
 		valstep : float, optional, default: None
 		    If given, the slider will snap to multiples of `valstep`.
 		
+		orientation : str, 'horizontal' or 'vertical', default: 'horizontal'
+		    The orientation of the slider.
+		
 		Notes
 		-----
 		Additional kwargs are passed on to ``self.poly`` which is the
@@ -86,7 +89,7 @@ package matplotlib.widgets;
 		valid property names (e.g., `facecolor`, `edgecolor`, `alpha`).
 	**/
 	@:native("__init__")
-	public function ___init__(ax:Dynamic, label:Dynamic, valmin:Dynamic, valmax:Dynamic, ?valinit:Dynamic, ?valfmt:Dynamic, ?closedmin:Dynamic, ?closedmax:Dynamic, ?slidermin:Dynamic, ?slidermax:Dynamic, ?dragging:Dynamic, ?valstep:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(ax:Dynamic, label:Dynamic, valmin:Dynamic, valmax:Dynamic, ?valinit:Dynamic, ?valfmt:Dynamic, ?closedmin:Dynamic, ?closedmax:Dynamic, ?slidermin:Dynamic, ?slidermax:Dynamic, ?dragging:Dynamic, ?valstep:Dynamic, ?orientation:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Parameters
 		----------
@@ -128,6 +131,9 @@ package matplotlib.widgets;
 		valstep : float, optional, default: None
 		    If given, the slider will snap to multiples of `valstep`.
 		
+		orientation : str, 'horizontal' or 'vertical', default: 'horizontal'
+		    The orientation of the slider.
+		
 		Notes
 		-----
 		Additional kwargs are passed on to ``self.poly`` which is the
@@ -135,7 +141,7 @@ package matplotlib.widgets;
 		knob.  See the :class:`~matplotlib.patches.Rectangle` documentation for
 		valid property names (e.g., `facecolor`, `edgecolor`, `alpha`).
 	**/
-	public function new(ax:Dynamic, label:Dynamic, valmin:Dynamic, valmax:Dynamic, ?valinit:Dynamic, ?valfmt:Dynamic, ?closedmin:Dynamic, ?closedmax:Dynamic, ?slidermin:Dynamic, ?slidermax:Dynamic, ?dragging:Dynamic, ?valstep:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(ax:Dynamic, label:Dynamic, valmin:Dynamic, valmax:Dynamic, ?valinit:Dynamic, ?valfmt:Dynamic, ?closedmin:Dynamic, ?closedmax:Dynamic, ?slidermin:Dynamic, ?slidermax:Dynamic, ?dragging:Dynamic, ?valstep:Dynamic, ?orientation:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -200,11 +206,11 @@ package matplotlib.widgets;
 	public var __weakref__ : Dynamic;
 	static public var _active : Dynamic;
 	/**
-		update the slider position
+		Update the slider position.
 	**/
 	public function _update(event:Dynamic):Dynamic;
 	/**
-		Makes sure self.val is with given bounds.
+		Makes sure *val* is with given bounds.
 	**/
 	public function _value_in_bounds(val:Dynamic):Dynamic;
 	/**

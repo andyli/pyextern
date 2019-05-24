@@ -25,6 +25,7 @@ package scipy.optimize._differentialevolution;
 	static public function check_random_state(seed:Dynamic):Dynamic;
 	/**
 		Finds the global minimum of a multivariate function.
+		
 		Differential Evolution is stochastic in nature (does not use gradient
 		methods) to find the minimium, and can search large areas of candidate
 		space, but often requires larger numbers of function evaluations than
@@ -39,11 +40,13 @@ package scipy.optimize._differentialevolution;
 		    ``f(x, *args)``, where ``x`` is the argument in the form of a 1-D array
 		    and ``args`` is a  tuple of any additional fixed parameters needed to
 		    completely specify the function.
-		bounds : sequence
-		    Bounds for variables.  ``(min, max)`` pairs for each element in ``x``,
-		    defining the lower and upper bounds for the optimizing argument of
-		    `func`. It is required to have ``len(bounds) == len(x)``.
-		    ``len(bounds)`` is used to determine the number of parameters in ``x``.
+		bounds : sequence or `Bounds`, optional
+		    Bounds for variables.  There are two ways to specify the bounds:
+		    1. Instance of `Bounds` class.
+		    2. ``(min, max)`` pairs for each element in ``x``, defining the finite
+		    lower and upper bounds for the optimizing argument of `func`. It is
+		    required to have ``len(bounds) == len(x)``. ``len(bounds)`` is used
+		    to determine the number of parameters in ``x``.
 		args : tuple, optional
 		    Any additional fixed parameters needed to
 		    completely specify the objective function.
@@ -135,6 +138,30 @@ package scipy.optimize._differentialevolution;
 		    ``np.std(pop) <= atol + tol * np.abs(np.mean(population_energies))``,
 		    where and `atol` and `tol` are the absolute and relative tolerance
 		    respectively.
+		updating : {'immediate', 'deferred'}, optional
+		    If ``'immediate'``, the best solution vector is continuously updated
+		    within a single generation [4]_. This can lead to faster convergence as
+		    trial vectors can take advantage of continuous improvements in the best
+		    solution.
+		    With ``'deferred'``, the best solution vector is updated once per
+		    generation. Only ``'deferred'`` is compatible with parallelization, and
+		    the `workers` keyword can over-ride this option.
+		
+		    .. versionadded:: 1.2.0
+		
+		workers : int or map-like callable, optional
+		    If `workers` is an int the population is subdivided into `workers`
+		    sections and evaluated in parallel
+		    (uses `multiprocessing.Pool <multiprocessing>`).
+		    Supply -1 to use all available CPU cores.
+		    Alternatively supply a map-like callable, such as
+		    `multiprocessing.Pool.map` for evaluating the population in parallel.
+		    This evaluation is carried out as ``workers(func, iterable)``.
+		    This option will override the `updating` keyword to
+		    ``updating='deferred'`` if ``workers != 1``.
+		    Requires that `func` be pickleable.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -165,12 +192,12 @@ package scipy.optimize._differentialevolution;
 		
 		A trial vector is then constructed. Starting with a randomly chosen 'i'th
 		parameter the trial is sequentially filled (in modulo) with parameters from
-		`b'` or the original candidate. The choice of whether to use `b'` or the
+		``b'`` or the original candidate. The choice of whether to use ``b'`` or the
 		original candidate is made with a binomial distribution (the 'bin' in
 		'best1bin') - a random number in [0, 1) is generated.  If this number is
 		less than the `recombination` constant then the parameter is loaded from
-		`b'`, otherwise it is loaded from the original candidate.  The final
-		parameter is always loaded from `b'`.  Once the trial candidate is built
+		``b'``, otherwise it is loaded from the original candidate.  The final
+		parameter is always loaded from ``b'``.  Once the trial candidate is built
 		its fitness is assessed. If the trial is better than the original candidate
 		then it takes its place. If it is also better than the best overall
 		candidate it also replaces that.
@@ -178,6 +205,12 @@ package scipy.optimize._differentialevolution;
 		values, with higher `mutation` and (dithering), but lower `recombination`
 		values. This has the effect of widening the search radius, but slowing
 		convergence.
+		By default the best solution vector is updated continuously within a single
+		iteration (``updating='immediate'``). This is a modification [4]_ of the
+		original differential evolution algorithm which can lead to faster
+		convergence as trial vectors can immediately benefit from improved
+		solutions. To use the original Storn and Price behaviour, updating the best
+		solution once per iteration, set ``updating='deferred'``.
 		
 		.. versionadded:: 0.15.0
 		
@@ -192,8 +225,16 @@ package scipy.optimize._differentialevolution;
 		>>> result.x, result.fun
 		(array([1., 1., 1., 1., 1.]), 1.9216496320061384e-19)
 		
+		Now repeat, but with parallelization.
+		
+		>>> bounds = [(0,2), (0, 2), (0, 2), (0, 2), (0, 2)]
+		>>> result = differential_evolution(rosen, bounds, updating='deferred',
+		...                                 workers=2)
+		>>> result.x, result.fun
+		(array([1., 1., 1., 1., 1.]), 1.9216496320061384e-19)
+		
 		Next find the minimum of the Ackley function
-		(http://en.wikipedia.org/wiki/Test_functions_for_optimization).
+		(https://en.wikipedia.org/wiki/Test_functions_for_optimization).
 		
 		>>> from scipy.optimize import differential_evolution
 		>>> import numpy as np
@@ -213,8 +254,12 @@ package scipy.optimize._differentialevolution;
 		       Journal of Global Optimization, 1997, 11, 341 - 359.
 		.. [2] http://www1.icsi.berkeley.edu/~storn/code.html
 		.. [3] http://en.wikipedia.org/wiki/Differential_evolution
+		.. [4] Wormington, M., Panaccione, C., Matney, K. M., Bowen, D. K., -
+		       Characterization of structures from X-ray scattering data using
+		       genetic algorithms, Phil. Trans. R. Soc. Lond. A, 1999, 357,
+		       2827-2848
 	**/
-	static public function differential_evolution(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?strategy:Dynamic, ?maxiter:Dynamic, ?popsize:Dynamic, ?tol:Dynamic, ?mutation:Dynamic, ?recombination:Dynamic, ?seed:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?polish:Dynamic, ?init:Dynamic, ?atol:Dynamic):Dynamic;
+	static public function differential_evolution(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?strategy:Dynamic, ?maxiter:Dynamic, ?popsize:Dynamic, ?tol:Dynamic, ?mutation:Dynamic, ?recombination:Dynamic, ?seed:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?polish:Dynamic, ?init:Dynamic, ?atol:Dynamic, ?updating:Dynamic, ?workers:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Minimization of scalar function of one or more variables.
@@ -380,7 +425,6 @@ package scipy.optimize._differentialevolution;
 		    ``message`` which describes the cause of the termination. See
 		    `OptimizeResult` for a description of other attributes.
 		
-		
 		See also
 		--------
 		minimize_scalar : Interface to minimization algorithms for scalar
@@ -524,7 +568,7 @@ package scipy.optimize._differentialevolution;
 		its contents also passed as `method` parameters pair by pair.  Also, if
 		`jac` has been passed as a bool type, `jac` and `fun` are mangled so that
 		`fun` returns just the function values and `jac` is converted to a function
-		returning the Jacobian.  The method shall return an ``OptimizeResult``
+		returning the Jacobian.  The method shall return an `OptimizeResult`
 		object.
 		
 		The provided `method` callable must be able to accept (and possibly ignore)
@@ -646,6 +690,14 @@ package scipy.optimize._differentialevolution;
 		It should converge to the theoretical solution (1.4 ,1.7).
 	**/
 	static public function minimize(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?method:Dynamic, ?jac:Dynamic, ?hess:Dynamic, ?hessp:Dynamic, ?bounds:Dynamic, ?constraints:Dynamic, ?tol:Dynamic, ?callback:Dynamic, ?options:Dynamic):Dynamic;
+	/**
+		Convert the new bounds representation to the old one.
+		
+		The new representation is a tuple (lb, ub) and the old one is a list
+		containing n tuples, i-th containing lower and upper bound on a i-th
+		variable.
+	**/
+	static public function new_bounds_to_old(lb:Dynamic, ub:Dynamic, n:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public var string_types : Dynamic;
 }

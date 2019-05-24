@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.framework.tensor_pb2;
 @:pythonImport("tensorflow.core.framework.tensor_pb2", "TensorProto") extern class TensorProto {
-	static public var BOOL_VAL_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -22,10 +21,7 @@ package tensorflow.core.framework.tensor_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DCOMPLEX_VAL_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DOUBLE_VAL_FIELD_NUMBER : Dynamic;
-	static public var DTYPE_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -34,7 +30,6 @@ package tensorflow.core.framework.tensor_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FLOAT_VAL_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -43,7 +38,6 @@ package tensorflow.core.framework.tensor_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HALF_VAL_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -52,8 +46,6 @@ package tensorflow.core.framework.tensor_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INT64_VAL_FIELD_NUMBER : Dynamic;
-	static public var INT_VAL_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -74,13 +66,10 @@ package tensorflow.core.framework.tensor_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var RESOURCE_HANDLE_VAL_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SCOMPLEX_VAL_FIELD_NUMBER : Dynamic;
-	static public var STRING_VAL_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -93,12 +82,10 @@ package tensorflow.core.framework.tensor_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TENSOR_CONTENT_FIELD_NUMBER : Dynamic;
-	static public var TENSOR_SHAPE_FIELD_NUMBER : Dynamic;
-	static public var UINT32_VAL_FIELD_NUMBER : Dynamic;
-	static public var UINT64_VAL_FIELD_NUMBER : Dynamic;
-	static public var VARIANT_VAL_FIELD_NUMBER : Dynamic;
-	static public var VERSION_NUMBER_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -264,4 +251,72 @@ package tensorflow.core.framework.tensor_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.TensorProto.bool_val
+	**/
+	public var bool_val : Dynamic;
+	/**
+		Field tensorflow.TensorProto.dcomplex_val
+	**/
+	public var dcomplex_val : Dynamic;
+	/**
+		Field tensorflow.TensorProto.double_val
+	**/
+	public var double_val : Dynamic;
+	/**
+		Field tensorflow.TensorProto.dtype
+	**/
+	public var dtype : Dynamic;
+	/**
+		Field tensorflow.TensorProto.float_val
+	**/
+	public var float_val : Dynamic;
+	/**
+		Field tensorflow.TensorProto.half_val
+	**/
+	public var half_val : Dynamic;
+	/**
+		Field tensorflow.TensorProto.int64_val
+	**/
+	public var int64_val : Dynamic;
+	/**
+		Field tensorflow.TensorProto.int_val
+	**/
+	public var int_val : Dynamic;
+	/**
+		Field tensorflow.TensorProto.resource_handle_val
+	**/
+	public var resource_handle_val : Dynamic;
+	/**
+		Field tensorflow.TensorProto.scomplex_val
+	**/
+	public var scomplex_val : Dynamic;
+	/**
+		Field tensorflow.TensorProto.string_val
+	**/
+	public var string_val : Dynamic;
+	/**
+		Field tensorflow.TensorProto.tensor_content
+	**/
+	public var tensor_content : Dynamic;
+	/**
+		Field tensorflow.TensorProto.tensor_shape
+	**/
+	public var tensor_shape : Dynamic;
+	/**
+		Field tensorflow.TensorProto.uint32_val
+	**/
+	public var uint32_val : Dynamic;
+	/**
+		Field tensorflow.TensorProto.uint64_val
+	**/
+	public var uint64_val : Dynamic;
+	/**
+		Field tensorflow.TensorProto.variant_val
+	**/
+	public var variant_val : Dynamic;
+	/**
+		Field tensorflow.TensorProto.version_number
+	**/
+	public var version_number : Dynamic;
 }

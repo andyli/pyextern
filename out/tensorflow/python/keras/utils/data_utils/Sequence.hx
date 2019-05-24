@@ -64,10 +64,7 @@ package tensorflow.python.keras.utils.data_utils;
 	**/
 	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Creates an infinite generator that iterate over the Sequence.
-		
-		Yields:
-		  Sequence items.
+		Create a generator that iterate over the Sequence.
 	**/
 	public function __iter__():Dynamic;
 	/**

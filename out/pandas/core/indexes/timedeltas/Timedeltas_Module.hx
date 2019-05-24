@@ -11,160 +11,57 @@ package pandas.core.indexes.timedeltas;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Convert string 'r' to a timedelta object.
-	**/
-	static public function _coerce_scalar_to_timedelta_type(r:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
-	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _field_accessor(name:Dynamic, alias:Dynamic, ?docstring:Dynamic):Dynamic;
-	static public function _generate_regular_range(start:Dynamic, end:Dynamic, periods:Dynamic, offset:Dynamic):Dynamic;
 	static public var _index_shared_docs : Dynamic;
 	/**
 		return a boolean whether I can attempt conversion to a TimedeltaIndex
 	**/
 	static public function _is_convertible_to_index(other:Dynamic):Dynamic;
 	static public function _is_convertible_to_td(key:Dynamic):Dynamic;
+	static public function _make_wrapped_arith_op(opname:Dynamic):Dynamic;
 	static public var _shared_docs : Dynamic;
 	/**
-		Wrap comparison operations to convert timedelta-like to timedelta64
-	**/
-	static public function _td_index_cmp(opname:Dynamic, cls:Dynamic):Dynamic;
-	/**
-		Timedelta-like => dt64
-	**/
-	static public function _to_m8(key:Dynamic):Dynamic;
-	/**
-		Convert an ndarray to an array of timedeltas. If errors == 'coerce',
-		coerce non-convertible objects to NaT. Otherwise, raise.
-	**/
-	static public function array_to_timedelta64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Perform array addition that checks for underflow and overflow.
-		
-		Performs the addition of an int64 array and an int64 integer (or array)
-		but checks that they do not result in overflow first. For elements that
-		are indicated to be NaN, whether or not there is overflow for that element
-		is automatically ignored.
+		Add delegated names to a class using a class decorator.  This provides
+		an alternative usage to directly calling `_add_delegate_accessors`
+		below a class definition.
 		
 		Parameters
 		----------
-		arr : array addend.
-		b : array or scalar addend.
-		arr_mask : boolean array or None
-		    array indicating which elements to exclude from checking
-		b_mask : boolean array or boolean or None
-		    array or scalar indicating which element(s) to exclude from checking
+		delegate : object
+		    the class to get methods/properties & doc-strings
+		acccessors : Sequence[str]
+		    List of accessor to add
+		typ : {'property', 'method'}
+		overwrite : boolean, default False
+		   overwrite the method/property in the target class if it exists
 		
 		Returns
 		-------
-		sum : An array for elements x + b for each element x in arr if b is
-		      a scalar or an array for elements x + y for each element pair
-		      (x, y) in (arr, b).
-		
-		Raises
-		------
-		OverflowError if any x + y exceeds the maximum or minimum int64 value.
-	**/
-	static public function checked_add_with_arr(arr:Dynamic, b:Dynamic, ?arr_mask:Dynamic, ?b_mask:Dynamic):Dynamic;
-	/**
-		Decorator to deprecate a keyword argument of a function.
-		
-		Parameters
-		----------
-		old_arg_name : str
-		    Name of argument in function to deprecate
-		new_arg_name : str or None
-		    Name of preferred argument in function. Use None to raise warning that
-		    ``old_arg_name`` keyword is deprecated.
-		mapping : dict or callable
-		    If mapping is present, use it to translate old arguments to
-		    new arguments. A callable must do its own value checking;
-		    values not found in a dict will be forwarded unchanged.
+		callable
+		    A class decorator.
 		
 		Examples
 		--------
-		The following deprecates 'cols', using 'columns' instead
-		
-		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name='columns')
-		... def f(columns=''):
-		...     print(columns)
-		...
-		>>> f(columns='should work ok')
-		should work ok
-		
-		>>> f(cols='should raise warning')
-		FutureWarning: cols is deprecated, use columns instead
-		  warnings.warn(msg, FutureWarning)
-		should raise warning
-		
-		>>> f(cols='should error', columns="can't pass do both")
-		TypeError: Can only specify 'cols' or 'columns', not both
-		
-		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
-		... def f(new=False):
-		...     print('yes!' if new else 'no!')
-		...
-		>>> f(old='yes')
-		FutureWarning: old='yes' is deprecated, use new=True instead
-		  warnings.warn(msg, FutureWarning)
-		yes!
-		
-		
-		To raise a warning that a keyword will be removed entirely in the future
-		
-		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
-		... def f(cols='', another_param=''):
-		...     print(cols)
-		...
-		>>> f(cols='should raise warning')
-		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
-		future version please takes steps to stop use of 'cols'
-		should raise warning
-		>>> f(another_param='should not raise warning')
-		should not raise warning
-		
-		>>> f(cols='should raise warning', another_param='')
-		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
-		future version please takes steps to stop use of 'cols'
-		should raise warning
+		@delegate_names(Categorical, ["categories", "ordered"], "property")
+		class CategoricalAccessor(PandasDelegate):
+		    [...]
 	**/
-	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
+	static public function delegate_names(delegate:Dynamic, accessors:Dynamic, typ:Dynamic, ?overwrite:Dynamic):Dynamic;
+	static public function ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Given a int64-based timedelta index, extract the days, hrs, sec.,
-		field and return an array of these values.
-	**/
-	static public function get_timedelta_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var iNaT : Dynamic;
-	/**
-		Check whether the provided array or dtype is of a boolean dtype.
+		Find the appropriate name to pin to an operation result.  This result
+		should always be either an Index or a Series.
 		
 		Parameters
 		----------
-		arr_or_dtype : array-like
-		    The array or dtype to check.
+		left : {Series, Index}
+		right : object
 		
 		Returns
 		-------
-		boolean : Whether or not the array or dtype is of a boolean dtype.
-		
-		Examples
-		--------
-		>>> is_bool_dtype(str)
-		False
-		>>> is_bool_dtype(int)
-		False
-		>>> is_bool_dtype(bool)
-		True
-		>>> is_bool_dtype(np.bool)
-		True
-		>>> is_bool_dtype(np.array(['a', 'b']))
-		False
-		>>> is_bool_dtype(pd.Series([1, 2]))
-		False
-		>>> is_bool_dtype(np.array([True, False]))
-		True
+		name : object
+		    Usually a string
 	**/
-	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function get_op_result_name(left:Dynamic, right:Dynamic):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -177,7 +74,11 @@ package pandas.core.indexes.timedeltas;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -196,22 +97,58 @@ package pandas.core.indexes.timedeltas;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -272,7 +209,7 @@ package pandas.core.indexes.timedeltas;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -290,8 +227,8 @@ package pandas.core.indexes.timedeltas;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -344,6 +281,20 @@ package pandas.core.indexes.timedeltas;
 	**/
 	static public function isna(obj:Dynamic):Dynamic;
 	/**
+		If operating against another Index object, we need to unwrap the underlying
+		data before deferring to the DatetimeArray/TimedeltaArray/PeriodArray
+		implementation, otherwise we will incorrectly return NotImplemented.
+		
+		Parameters
+		----------
+		obj : object
+		
+		Returns
+		-------
+		unwrapped object
+	**/
+	static public function maybe_unwrap_index(obj:Dynamic):Dynamic;
+	/**
 		Converts input into a pandas only dtype object or a numpy dtype object.
 		
 		Parameters
@@ -353,6 +304,10 @@ package pandas.core.indexes.timedeltas;
 		Returns
 		-------
 		np.dtype or a pandas dtype
+		
+		Raises
+		------
+		TypeError if not a dtype
 	**/
 	static public function pandas_dtype(dtype:Dynamic):Dynamic;
 	/**
@@ -367,7 +322,7 @@ package pandas.core.indexes.timedeltas;
 		    Right bound for generating timedeltas
 		periods : integer, default None
 		    Number of periods to generate
-		freq : string or DateOffset, default 'D' (calendar daily)
+		freq : string or DateOffset, default 'D'
 		    Frequency strings can have multiples, e.g. '5H'
 		name : string, default None
 		    Name of the resulting TimedeltaIndex
@@ -464,58 +419,5 @@ package pandas.core.indexes.timedeltas;
 		<Hour>
 	**/
 	static public function to_offset(freq:Dynamic):pandas.DateOffset;
-	/**
-		Convert argument to timedelta
-		
-		Parameters
-		----------
-		arg : string, timedelta, list, tuple, 1-d array, or Series
-		unit : unit of the arg (D,h,m,s,ms,us,ns) denote the unit, which is an
-		    integer/float number
-		box : boolean, default True
-		    - If True returns a Timedelta/TimedeltaIndex of the results
-		    - if False returns a np.timedelta64 or ndarray of values of dtype
-		      timedelta64[ns]
-		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
-		    - If 'raise', then invalid parsing will raise an exception
-		    - If 'coerce', then invalid parsing will be set as NaT
-		    - If 'ignore', then invalid parsing will return the input
-		
-		Returns
-		-------
-		ret : timedelta64/arrays of timedelta64 if parsing succeeded
-		
-		Examples
-		--------
-		
-		Parsing a single string to a Timedelta:
-		
-		>>> pd.to_timedelta('1 days 06:05:01.00003')
-		Timedelta('1 days 06:05:01.000030')
-		>>> pd.to_timedelta('15.5us')
-		Timedelta('0 days 00:00:00.000015')
-		
-		Parsing a list or array of strings:
-		
-		>>> pd.to_timedelta(['1 days 06:05:01.00003', '15.5us', 'nan'])
-		TimedeltaIndex(['1 days 06:05:01.000030', '0 days 00:00:00.000015', NaT],
-		               dtype='timedelta64[ns]', freq=None)
-		
-		Converting numbers by specifying the `unit` keyword argument:
-		
-		>>> pd.to_timedelta(np.arange(5), unit='s')
-		TimedeltaIndex(['00:00:00', '00:00:01', '00:00:02',
-		                '00:00:03', '00:00:04'],
-		               dtype='timedelta64[ns]', freq=None)
-		>>> pd.to_timedelta(np.arange(5), unit='d')
-		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
-		               dtype='timedelta64[ns]', freq=None)
-		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_datetime : Convert argument to datetime.
-	**/
-	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
-	static public function u(s:Dynamic):Dynamic;
+	static public function wrap_arithmetic_op(self:Dynamic, other:Dynamic, result:Dynamic):Dynamic;
 }

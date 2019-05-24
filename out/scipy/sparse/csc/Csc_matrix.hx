@@ -116,7 +116,7 @@ package scipy.sparse.csc;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
-	public function __setitem__(index:Dynamic, x:Dynamic):Dynamic;
+	public function __setitem__(key:Dynamic, x:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -146,15 +146,15 @@ package scipy.sparse.csc;
 	public function _arg_min_or_max(axis:Dynamic, out:Dynamic, op:Dynamic, compare:Dynamic):Dynamic;
 	public function _arg_min_or_max_axis(axis:Dynamic, op:Dynamic, compare:Dynamic):Dynamic;
 	/**
+		Convert `idx` to a valid index for an axis with a given length.
+		
+		Subclasses that need special validation can override this method.
+	**/
+	public function _asindices(idx:Dynamic, length:Dynamic):Dynamic;
+	/**
 		apply the binary operation fn to two sparse matrices.
 	**/
 	public function _binopt(other:Dynamic, op:Dynamic):Dynamic;
-	public function _boolean_index_to_array(i:Dynamic):Dynamic;
-	public function _check_boolean(row:Dynamic, col:Dynamic):Dynamic;
-	/**
-		Process indices with Ellipsis. Returns modified index.
-	**/
-	public function _check_ellipsis(index:Dynamic):Dynamic;
 	/**
 		Determine whether the matrix has sorted indices and no duplicates
 		
@@ -183,14 +183,24 @@ package scipy.sparse.csc;
 		Divide this matrix by a second sparse matrix.
 	**/
 	public function _divide_sparse(other:Dynamic):Dynamic;
+	public function _get_arrayXarray(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_arrayXint(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_arrayXslice(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_columnXarray(row:Dynamic, col:Dynamic):Dynamic;
 	public function _get_dtype():Dynamic;
-	public function _get_single_element(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_intXarray(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_intXint(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_intXslice(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_sliceXarray(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_sliceXint(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_sliceXslice(row:Dynamic, col:Dynamic):Dynamic;
 	/**
-		Return a submatrix of this matrix (new matrix is created).
+		Return a submatrix of this matrix.
+		
+		major, minor: None, int, or slice with step 1
 	**/
-	public function _get_submatrix(slice0:Dynamic, slice1:Dynamic):Dynamic;
+	public function _get_submatrix(?major:Dynamic, ?minor:Dynamic, ?copy:Dynamic):Dynamic;
 	public function _imag():Dynamic;
-	public function _index_to_arrays(i:Dynamic, j:Dynamic):Dynamic;
 	public function _inequality(other:Dynamic, op:Dynamic, op_name:Dynamic, bad_scalar_msg:Dynamic):Dynamic;
 	/**
 		Inserts new nonzero at each (i, j) with value x
@@ -202,9 +212,24 @@ package scipy.sparse.csc;
 		Modifies i, j, x in place.
 	**/
 	public function _insert_many(i:Dynamic, j:Dynamic, x:Dynamic):Dynamic;
+	/**
+		Index along the major axis where idx is an array of ints.
+		        
+	**/
+	public function _major_index_fancy(idx:Dynamic):Dynamic;
+	/**
+		Index along the major axis where idx is a slice object.
+		        
+	**/
+	public function _major_slice(idx:Dynamic, ?copy:Dynamic):Dynamic;
 	public function _maximum_minimum(other:Dynamic, npop:Dynamic, op_name:Dynamic, dense_check:Dynamic):Dynamic;
 	public function _min_or_max(axis:Dynamic, out:Dynamic, min_or_max:Dynamic):Dynamic;
 	public function _min_or_max_axis(axis:Dynamic, min_or_max:Dynamic):Dynamic;
+	/**
+		Index along the minor axis where idx is an array of ints.
+		        
+	**/
+	public function _minor_index_fancy(idx:Dynamic):Dynamic;
 	/**
 		Reduce nonzeros with a ufunc over the minor axis when non-empty
 		
@@ -221,6 +246,11 @@ package scipy.sparse.csc;
 		    Reduce result for nonzeros in each major_index
 	**/
 	public function _minor_reduce(ufunc:Dynamic, ?data:Dynamic):Dynamic;
+	/**
+		Index along the minor axis where idx is a slice object.
+		        
+	**/
+	public function _minor_slice(idx:Dynamic, ?copy:Dynamic):Dynamic;
 	public function _mul_multivector(other:Dynamic):Dynamic;
 	public function _mul_scalar(other:Dynamic):Dynamic;
 	public function _mul_sparse_matrix(other:Dynamic):Dynamic;
@@ -234,7 +264,10 @@ package scipy.sparse.csc;
 		are added. Produces a new spmatrix in canonical form.
 	**/
 	public function _scalar_binopt(other:Dynamic, op:Dynamic):Dynamic;
+	public function _set_arrayXarray(row:Dynamic, col:Dynamic, x:Dynamic):Dynamic;
+	public function _set_arrayXarray_sparse(row:Dynamic, col:Dynamic, x:Dynamic):Dynamic;
 	public function _set_dtype(newtype:Dynamic):Dynamic;
+	public function _set_intXint(row:Dynamic, col:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Sets value at each (i, j) to x
 		
@@ -247,11 +280,6 @@ package scipy.sparse.csc;
 	**/
 	public function _set_self(other:Dynamic, ?copy:Dynamic):Dynamic;
 	public function _setdiag(values:Dynamic, k:Dynamic):Dynamic;
-	/**
-		Given a slice object, use numpy arange to change it to a 1D
-		array.
-	**/
-	public function _slicetoarange(j:Dynamic, shape:Dynamic):Dynamic;
 	public function _sub_dense(other:Dynamic):Dynamic;
 	public function _sub_sparse(other:Dynamic):Dynamic;
 	/**
@@ -259,11 +287,7 @@ package scipy.sparse.csc;
 		        
 	**/
 	public function _swap(x:Dynamic):Dynamic;
-	/**
-		Parse index. Always return a tuple of the form (row, col).
-		Where row/col is a integer, slice, or array of integers.
-	**/
-	public function _unpack_index(index:Dynamic):Dynamic;
+	public function _validate_indices(key:Dynamic):Dynamic;
 	/**
 		Returns a matrix with the same sparsity structure as self,
 		but with different data.  By default the structure arrays
@@ -318,7 +342,7 @@ package scipy.sparse.csc;
 		
 		Returns
 		-------
-		ind : np.matrix or int
+		ind : numpy.matrix or int
 		    Indices of maximum elements. If matrix, its size along `axis` is 1.
 	**/
 	public function argmax(?axis:Dynamic, ?out:Dynamic):Dynamic;
@@ -340,24 +364,24 @@ package scipy.sparse.csc;
 		
 		Returns
 		-------
-		 ind : np.matrix or int
+		 ind : numpy.matrix or int
 		    Indices of minimum elements. If matrix, its size along `axis` is 1.
 	**/
 	public function argmin(?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
-		Return this matrix in the passed sparse format.
+		Return this matrix in the passed format.
 		
 		Parameters
 		----------
 		format : {str, None}
-		    The desired sparse matrix format ("csr", "csc", "lil", "dok", ...)
+		    The desired matrix format ("csr", "csc", "lil", "dok", "array", ...)
 		    or None for no conversion.
 		copy : bool, optional
 		    If True, the result is guaranteed to not share data with self.
 		
 		Returns
 		-------
-		A : This matrix in the passed sparse format.
+		A : This matrix in the passed format.
 	**/
 	public function asformat(format:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
@@ -520,7 +544,7 @@ package scipy.sparse.csc;
 		
 		See Also
 		--------
-		np.matrix.getH : NumPy's implementation of `getH` for matrices
+		numpy.matrix.getH : NumPy's implementation of `getH` for matrices
 	**/
 	public function getH():Dynamic;
 	/**
@@ -611,7 +635,7 @@ package scipy.sparse.csc;
 		See Also
 		--------
 		min : The minimum value of a sparse matrix along a given axis.
-		np.matrix.max : NumPy's implementation of 'max' for matrices
+		numpy.matrix.max : NumPy's implementation of 'max' for matrices
 	**/
 	public function max(?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -651,7 +675,7 @@ package scipy.sparse.csc;
 		
 		See Also
 		--------
-		np.matrix.mean : NumPy's implementation of 'mean' for matrices
+		numpy.matrix.mean : NumPy's implementation of 'mean' for matrices
 	**/
 	public function mean(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -680,7 +704,7 @@ package scipy.sparse.csc;
 		See Also
 		--------
 		max : The maximum value of a sparse matrix along a given axis.
-		np.matrix.min : NumPy's implementation of 'min' for matrices
+		numpy.matrix.min : NumPy's implementation of 'min' for matrices
 	**/
 	public function min(?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -764,7 +788,8 @@ package scipy.sparse.csc;
 		
 		See Also
 		--------
-		np.matrix.reshape : NumPy's implementation of 'reshape' for matrices
+		numpy.matrix.reshape : NumPy's implementation of 'reshape' for
+		                       matrices
 	**/
 	public function reshape(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -892,7 +917,7 @@ package scipy.sparse.csc;
 		
 		See Also
 		--------
-		np.matrix.sum : NumPy's implementation of 'sum' for matrices
+		numpy.matrix.sum : NumPy's implementation of 'sum' for matrices
 	**/
 	public function sum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -1046,8 +1071,8 @@ package scipy.sparse.csc;
 		
 		See Also
 		--------
-		np.matrix.transpose : NumPy's implementation of 'transpose'
-		                      for matrices
+		numpy.matrix.transpose : NumPy's implementation of 'transpose'
+		                         for matrices
 	**/
 	public function transpose(?axes:Dynamic, ?copy:Dynamic):Dynamic;
 	/**

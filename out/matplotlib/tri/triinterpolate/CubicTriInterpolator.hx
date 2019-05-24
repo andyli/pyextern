@@ -130,10 +130,10 @@ package matplotlib.tri.triinterpolate;
 		
 		Parameters
 		----------
-		kind: {'min_E', 'geom', 'user'}
+		kind : {'min_E', 'geom', 'user'}
 		    Choice of the _DOF_estimator subclass to perform the gradient
 		    estimation.
-		dz: tuple of array_likes (dzdx, dzdy), optional
+		dz : tuple of array_likes (dzdx, dzdy), optional
 		    Used only if *kind*=user; in this case passed to the
 		    :class:`_DOF_estimator_user`.
 		
@@ -219,7 +219,7 @@ package matplotlib.tri.triinterpolate;
 		      unnecessary to compute the containing triangles twice)
 		    - scaling according to self._unit_x, self._unit_y
 		    - dealing with points outside of the grid (with fill value np.nan)
-		    - dealing with multi-dimensionnal *x*, *y* arrays: flattening for
+		    - dealing with multi-dimensional *x*, *y* arrays: flattening for
 		      :meth:`_interpolate_params` call and final reshaping.
 		
 		(Note that np.vectorize could do most of those things very well for

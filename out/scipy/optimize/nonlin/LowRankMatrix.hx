@@ -168,7 +168,7 @@ package scipy.optimize.nonlin;
 		   systems of nonlinear equations". Mathematisch Instituut,
 		   Universiteit Leiden, The Netherlands (2003).
 		
-		   http://www.math.leidenuniv.nl/scripties/Rotten.pdf
+		   https://web.archive.org/web/20161022015821/http://www.math.leidenuniv.nl/scripties/Rotten.pdf
 	**/
 	public function svd_reduce(max_rank:Dynamic, ?to_retain:Dynamic):Dynamic;
 }

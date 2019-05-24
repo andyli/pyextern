@@ -282,7 +282,9 @@ package scipy.ndimage.measurements;
 		    counted as features and zero values are considered the background.
 		structure : array_like, optional
 		    A structuring element that defines feature connections.
-		    `structure` must be symmetric.  If no structuring element is provided,
+		    `structure` must be centrosymmetric
+		    (see Notes).
+		    If no structuring element is provided,
 		    one is automatically generated with a squared connectivity equal to
 		    one.  That is, for a 2-D `input` array, the default structuring element
 		    is::
@@ -293,7 +295,7 @@ package scipy.ndimage.measurements;
 		
 		output : (None, data-type, array_like), optional
 		    If `output` is a data type, it specifies the type of the resulting
-		    labeled feature array
+		    labeled feature array.
 		    If `output` is an array-like object, then `output` will be updated
 		    with the labeled features from this function.  This function can
 		    operate in-place, by passing output=input.
@@ -320,6 +322,29 @@ package scipy.ndimage.measurements;
 		find_objects : generate a list of slices for the labeled features (or
 		               objects); useful for finding features' position or
 		               dimensions
+		
+		Notes
+		-----
+		A centrosymmetric matrix is a matrix that is symmetric about the center.
+		See [1]_ for more information.
+		
+		The `structure` matrix must be centrosymmetric to ensure
+		two-way connections.
+		For instance, if the `structure` matrix is not centrosymmetric
+		and is defined as::
+		
+		    [[0,1,0],
+		     [1,1,0],
+		     [0,0,0]]
+		
+		and the `input` is::
+		
+		    [[1,2],
+		     [0,3]]
+		
+		then the structure matrix would indicate the
+		entry 2 in the input is connected to 1,
+		but 1 is not connected to 2.
 		
 		Examples
 		--------
@@ -368,6 +393,14 @@ package scipy.ndimage.measurements;
 		       [0, 0, 0, 1, 0, 0],
 		       [2, 2, 0, 0, 1, 0],
 		       [0, 0, 0, 1, 0, 0]])
+		
+		References
+		----------
+		
+		.. [1] James R. Weaver, "Centrosymmetric (cross-symmetric)
+		   matrices, their basic properties, eigenvalues, and
+		   eigenvectors." The American Mathematical Monthly 92.10
+		   (1985): 711-717.
 	**/
 	static public function label(input:Dynamic, ?structure:Dynamic, ?output:Dynamic):Dynamic;
 	/**
@@ -471,7 +504,7 @@ package scipy.ndimage.measurements;
 		
 		Notes
 		-----
-		The function returns a Python list and not a Numpy array, use
+		The function returns a Python list and not a NumPy array, use
 		`np.array` to convert the list to an array.
 		
 		Examples
@@ -579,9 +612,7 @@ package scipy.ndimage.measurements;
 		
 		See also
 		--------
-		ndimage.variance, ndimage.standard_deviation, ndimage.minimum,
-		ndimage.maximum, ndimage.sum
-		ndimage.label
+		variance, standard_deviation, minimum, maximum, sum, label
 		
 		Examples
 		--------
@@ -635,7 +666,7 @@ package scipy.ndimage.measurements;
 		
 		Notes
 		-----
-		The function returns a Python list and not a Numpy array, use
+		The function returns a Python list and not a NumPy array, use
 		`np.array` to convert the list to an array.
 		
 		Examples
@@ -693,7 +724,7 @@ package scipy.ndimage.measurements;
 		
 		Notes
 		-----
-		The function returns a Python list and not a Numpy array, use
+		The function returns a Python list and not a NumPy array, use
 		`np.array` to convert the list to an array.
 		
 		Examples

@@ -15,7 +15,7 @@ package torch.onnx.utils;
 	**/
 	static public function _add_attribute(node:Dynamic, key:Dynamic, value:Dynamic, aten:Dynamic):Dynamic;
 	static public function _export(model:Dynamic, args:Dynamic, f:Dynamic, ?export_params:Dynamic, ?verbose:Dynamic, ?training:Dynamic, ?input_names:Dynamic, ?output_names:Dynamic, ?operator_export_type:Dynamic, ?export_type:Dynamic, ?example_outputs:Dynamic, ?propagate:Dynamic):Dynamic;
-	static public function _export_to_pretty_string(model:Dynamic, args:Dynamic, f:Dynamic, ?export_params:Dynamic, ?verbose:Dynamic, ?training:Dynamic, ?input_names:Dynamic, ?output_names:Dynamic, ?operator_export_type:Dynamic, ?export_type:Dynamic, ?example_outputs:Dynamic, ?propagate:Dynamic):Dynamic;
+	static public function _export_to_pretty_string(model:Dynamic, args:Dynamic, f:Dynamic, ?export_params:Dynamic, ?verbose:Dynamic, ?training:Dynamic, ?input_names:Dynamic, ?output_names:Dynamic, ?operator_export_type:Dynamic, ?export_type:Dynamic, ?example_outputs:Dynamic, ?propagate:Dynamic, ?google_printer:Dynamic):Dynamic;
 	static public function _graph_at(g:Dynamic, opname:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _graph_constant(g:Dynamic, value:Dynamic, dims:Dynamic, type:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -68,6 +68,7 @@ package torch.onnx.utils;
 	**/
 	static public function _scalar(x:Dynamic):Dynamic;
 	static public function _set_input_and_output_names(graph:Dynamic, input_names:Dynamic, output_names:Dynamic):Dynamic;
+	static public function _split_tensor_list_constants(g:Dynamic, block:Dynamic):Dynamic;
 	static public function _trace(func:Dynamic, args:Dynamic, operator_export_type:Dynamic, ?return_outs:Dynamic):Dynamic;
 	static public function _trace_and_get_graph_from_model(model:Dynamic, args:Dynamic, training:Dynamic):Dynamic;
 	static public function _unique_state_dict(module:Dynamic, ?keep_vars:Dynamic):Dynamic;
@@ -111,9 +112,15 @@ package torch.onnx.utils;
 		        by the functions in symbolic.py are exported as ATen ops.
 		    export_raw_ir (bool, default False): [DEPRECATED. use operator_export_type]
 		        export the internal IR directly instead of converting it to ONNX ops.
+		    operator_export_type (enum, default OperatorExportTypes.ONNX):
+		        OperatorExportTypes.ONNX: all ops are exported as regular ONNX ops.
+		        OperatorExportTypes.ONNX_ATEN: all ops are exported as ATen ops.
+		        OperatorExportTypes.ONNX_ATEN_FALLBACK: if symbolic is missing,
+		                                                fall back on ATen op.
+		        OperatorExportTypes.RAW: export raw ir.
 	**/
 	static public function export(model:Dynamic, args:Dynamic, f:Dynamic, ?export_params:Dynamic, ?verbose:Dynamic, ?training:Dynamic, ?input_names:Dynamic, ?output_names:Dynamic, ?aten:Dynamic, ?export_raw_ir:Dynamic, ?operator_export_type:Dynamic):Dynamic;
-	static public function export_to_pretty_string(model:Dynamic, args:Dynamic, f:Dynamic, ?export_params:Dynamic, ?verbose:Dynamic, ?training:Dynamic, ?input_names:Dynamic, ?output_names:Dynamic, ?aten:Dynamic, ?export_raw_ir:Dynamic, ?operator_export_type:Dynamic, ?export_type:Dynamic, ?example_outputs:Dynamic, ?propagate:Dynamic):Dynamic;
+	static public function export_to_pretty_string(model:Dynamic, args:Dynamic, f:Dynamic, ?export_params:Dynamic, ?verbose:Dynamic, ?training:Dynamic, ?input_names:Dynamic, ?output_names:Dynamic, ?aten:Dynamic, ?export_raw_ir:Dynamic, ?operator_export_type:Dynamic, ?export_type:Dynamic, ?example_outputs:Dynamic, ?propagate:Dynamic, ?google_printer:Dynamic):Dynamic;
 	/**
 		A context manager to temporarily set the training mode of 'model'
 		to 'mode', resetting it when we exit the with-block.  A no-op if

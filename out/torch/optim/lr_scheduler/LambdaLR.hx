@@ -122,6 +122,8 @@ package torch.optim.lr_scheduler;
 		
 		It contains an entry for every variable in self.__dict__ which
 		is not the optimizer.
+		The learning rate lambda functions will only be saved if they are callable objects
+		and not if they are functions or lambdas.
 	**/
 	public function state_dict():Dynamic;
 	public function step(?epoch:Dynamic):Dynamic;

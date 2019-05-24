@@ -116,7 +116,7 @@ package pandas.io.json.json;
 	public var __weakref__ : Dynamic;
 	static public var _default_orient : Dynamic;
 	/**
-		try to axes if they are datelike 
+		Try to format axes if they are datelike.
 	**/
 	public function _format_axes():Dynamic;
 	public function _write(obj:Dynamic, orient:Dynamic, double_precision:Dynamic, ensure_ascii:Dynamic, date_unit:Dynamic, iso_dates:Dynamic, default_handler:Dynamic):Dynamic;

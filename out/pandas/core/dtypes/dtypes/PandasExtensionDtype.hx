@@ -23,10 +23,12 @@ package pandas.core.dtypes.dtypes;
 	/**
 		Check whether 'other' is equal to self.
 		
-		By default, 'other' is considered equal if
+		By default, 'other' is considered equal if either
 		
 		* it's a string matching 'self.name'.
-		* it's an instance of this type.
+		* it's an instance of this type and all of the
+		  the attributes in ``self._metadata`` are equal between
+		  `self` and `other`.
 		
 		Parameters
 		----------
@@ -136,6 +138,29 @@ package pandas.core.dtypes.dtypes;
 	**/
 	public var __weakref__ : Dynamic;
 	static public var _cache : Dynamic;
+	/**
+		Whether this dtype should be considered boolean.
+		
+		By default, ExtensionDtypes are assumed to be non-numeric.
+		Setting this to True will affect the behavior of several places,
+		e.g.
+		
+		* is_bool
+		* boolean indexing
+		
+		Returns
+		-------
+		bool
+	**/
+	public var _is_boolean : Dynamic;
+	/**
+		Whether columns with this dtype should be considered numeric.
+		
+		By default ExtensionDtypes are assumed to be non-numeric.
+		They'll be excluded from operations that exclude non-numeric
+		columns, like (groupby) reductions, plotting, etc.
+	**/
+	public var _is_numeric : Dynamic;
 	static public var _metadata : Dynamic;
 	static public var base : Dynamic;
 	/**

@@ -55,10 +55,7 @@ package tensorflow.python.keras.preprocessing.sequence;
 	**/
 	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Creates an infinite generator that iterate over the Sequence.
-		
-		Yields:
-		  Sequence items.
+		Create a generator that iterate over the Sequence.
 	**/
 	public function __iter__():Dynamic;
 	/**
@@ -117,7 +114,6 @@ package tensorflow.python.keras.preprocessing.sequence;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _empty_batch(num_rows:Dynamic):Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
 	/**

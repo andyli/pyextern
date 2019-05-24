@@ -209,6 +209,8 @@ package tensorflow.python.training.checkpoint_management;
 		Deletes or preserves managed checkpoints.
 	**/
 	public function _sweep():Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		A list of managed checkpoints.
 		
@@ -235,9 +237,6 @@ package tensorflow.python.training.checkpoint_management;
 		Creates a new checkpoint and manages it.
 		
 		Args:
-		  session: The session to evaluate variables in. Ignored when executing
-		    eagerly. If not provided when graph building, the default session is
-		    used.
 		  checkpoint_number: An optional integer, or an integer-dtype `Variable` or
 		    `Tensor`, used to number the checkpoint. If `None` (default),
 		    checkpoints are numbered using `checkpoint.save_counter`. Even if
@@ -249,5 +248,5 @@ package tensorflow.python.training.checkpoint_management;
 		  The path to the new checkpoint. It is also recorded in the `checkpoints`
 		  and `latest_checkpoint` properies.
 	**/
-	public function save(?session:Dynamic, ?checkpoint_number:Dynamic):Dynamic;
+	public function save(?checkpoint_number:Dynamic):Dynamic;
 }

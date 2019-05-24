@@ -268,37 +268,7 @@ package scipy.sparse.linalg.isolve.utils;
 		<2x3 MatrixLinearOperator with dtype=int32>
 	**/
 	static public function aslinearoperator(A:Dynamic):Dynamic;
-	/**
-		Interpret the input as a matrix.
-		
-		Unlike `matrix`, `asmatrix` does not make a copy if the input is already
-		a matrix or an ndarray.  Equivalent to ``matrix(data, copy=False)``.
-		
-		Parameters
-		----------
-		data : array_like
-		    Input data.
-		dtype : data-type
-		   Data-type of the output matrix.
-		
-		Returns
-		-------
-		mat : matrix
-		    `data` interpreted as a matrix.
-		
-		Examples
-		--------
-		>>> x = np.array([[1, 2], [3, 4]])
-		
-		>>> m = np.asmatrix(x)
-		
-		>>> x[0,0] = 5
-		
-		>>> m
-		matrix([[5, 2],
-		        [3, 4]])
-	**/
-	static public function asmatrix(data:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function asmatrix(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function coerce(x:Dynamic, y:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public function id(x:Dynamic):Dynamic;
@@ -334,10 +304,6 @@ package scipy.sparse.linalg.isolve.utils;
 	**/
 	static public function make_system(A:Dynamic, M:Dynamic, x0:Dynamic, b:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	/**
-		Issue a warning, or maybe ignore it or raise an exception.
-	**/
-	static public function warn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

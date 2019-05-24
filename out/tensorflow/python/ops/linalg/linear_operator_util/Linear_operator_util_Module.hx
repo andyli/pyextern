@@ -10,6 +10,10 @@ package tensorflow.python.ops.linalg.linear_operator_util;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _broadcast_to_shape(x:Dynamic, shape:Dynamic):Dynamic;
+	/**
+		Maybe reshape a, b, and return an inverse map.  For matmul/solve.
+	**/
+	static public function _reshape_for_efficiency(a:Dynamic, b:Dynamic, ?transpose_a:Dynamic, ?transpose_b:Dynamic, ?adjoint_a:Dynamic, ?adjoint_b:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Assert that an argument to solve/matmul has proper domain dimension.
@@ -112,9 +116,9 @@ package tensorflow.python.ops.linalg.linear_operator_util;
 		Multiplies matrix `a` by matrix `b`, producing `a @ b`.
 		
 		Works identically to `tf.matmul`, but broadcasts batch dims
-		of `a` and `b` (by replicating) if they are determined statically to be
-		different, or if static shapes are not fully defined.  Thus, this may result
-		in an inefficient replication of data.
+		of `a` and `b` if they are determined statically to be different, or if static
+		shapes are not fully defined. Attempts are made to avoid unnecessary
+		replication of data, but this is not always possible.
 		
 		The inputs must be matrices (or tensors of rank > 2, representing batches of
 		matrices).

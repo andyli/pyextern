@@ -15,7 +15,7 @@ package pandas.io.excel;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -58,11 +58,11 @@ package pandas.io.excel;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(path:Dynamic, ?engine:Dynamic, ?date_format:Dynamic, ?datetime_format:Dynamic, ?engine_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(path:Dynamic, ?engine:Dynamic, ?date_format:Dynamic, ?datetime_format:Dynamic, ?mode:Dynamic, ?engine_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(path:Dynamic, ?engine:Dynamic, ?date_format:Dynamic, ?datetime_format:Dynamic, ?engine_kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(path:Dynamic, ?engine:Dynamic, ?date_format:Dynamic, ?datetime_format:Dynamic, ?mode:Dynamic, ?engine_kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -177,8 +177,8 @@ package pandas.io.excel;
 		    cell of formatted data to save to Excel sheet
 		sheet_name : string, default None
 		    Name of Excel sheet, if None, then use self.cur_sheet
-		startrow: upper left cell row to dump data frame
-		startcol: upper left cell column to dump data frame
+		startrow : upper left cell row to dump data frame
+		startcol : upper left cell column to dump data frame
 		freeze_panes: integer tuple of length 2
 		    contains the bottom-most row and right-most column to freeze
 	**/

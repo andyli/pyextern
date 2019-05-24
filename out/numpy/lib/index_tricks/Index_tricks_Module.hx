@@ -11,6 +11,9 @@ package numpy.lib.index_tricks;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _diag_indices_from(arr:Dynamic):Dynamic;
+	static public function _fill_diagonal_dispatcher(a:Dynamic, val:Dynamic, ?wrap:Dynamic):Dynamic;
+	static public function _ix__dispatcher(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Check if all elements of input array are true.
@@ -28,11 +31,10 @@ package numpy.lib.index_tricks;
 		Values are generated within the half-open interval ``[start, stop)``
 		(in other words, the interval including `start` but excluding `stop`).
 		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
+		`range` function, but returns an ndarray rather than a list.
 		
 		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
+		be consistent.  It is better to use `numpy.linspace` for these cases.
 		
 		Parameters
 		----------
@@ -192,6 +194,7 @@ package numpy.lib.index_tricks;
 		        [3, 4]])
 	**/
 	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	/**
 		Create a view into the array with the given shape and strides.
 		
@@ -474,6 +477,12 @@ package numpy.lib.index_tricks;
 		axis : int, optional
 		    The axis along which the difference is taken, default is the
 		    last axis.
+		prepend, append : array_like, optional
+		    Values to prepend or append to "a" along axis prior to
+		    performing the difference.  Scalar values are expanded to
+		    arrays with length 1 in the direction of axis and the shape
+		    of the input array in along all other axes.  Otherwise the
+		    dimension and shape must match "a" except along axis.
 		
 		Returns
 		-------
@@ -531,7 +540,7 @@ package numpy.lib.index_tricks;
 		>>> np.diff(x)
 		array([1, 1], dtype='timedelta64[D]')
 	**/
-	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):numpy.Ndarray;
+	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?prepend:Dynamic, ?append:Dynamic):numpy.Ndarray;
 	static public var division : Dynamic;
 	/**
 		Fill the main diagonal of the given array of any dimensionality.
@@ -759,45 +768,92 @@ package numpy.lib.index_tricks;
 	**/
 	static public function ix_(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		`nd_grid` instance which returns a dense multi-dimensional "meshgrid".
+		Return evenly spaced numbers over a specified interval.
 		
-		An instance of `numpy.lib.index_tricks.nd_grid` which returns an dense
-		(or fleshed out) mesh-grid when indexed, so that each returned argument
-		has the same shape.  The dimensions and number of the output arrays are
-		equal to the number of indexing dimensions.  If the step length is not a
-		complex number, then the stop is not inclusive.
+		Returns `num` evenly spaced samples, calculated over the
+		interval [`start`, `stop`].
 		
-		However, if the step length is a **complex number** (e.g. 5j), then
-		the integer part of its magnitude is interpreted as specifying the
-		number of points to create between the start and stop values, where
-		the stop value **is inclusive**.
+		The endpoint of the interval can optionally be excluded.
+		
+		.. versionchanged:: 1.16.0
+		    Non-scalar `start` and `stop` are now supported.
+		
+		Parameters
+		----------
+		start : array_like
+		    The starting value of the sequence.
+		stop : array_like
+		    The end value of the sequence, unless `endpoint` is set to False.
+		    In that case, the sequence consists of all but the last of ``num + 1``
+		    evenly spaced samples, so that `stop` is excluded.  Note that the step
+		    size changes when `endpoint` is False.
+		num : int, optional
+		    Number of samples to generate. Default is 50. Must be non-negative.
+		endpoint : bool, optional
+		    If True, `stop` is the last sample. Otherwise, it is not included.
+		    Default is True.
+		retstep : bool, optional
+		    If True, return (`samples`, `step`), where `step` is the spacing
+		    between samples.
+		dtype : dtype, optional
+		    The type of the output array.  If `dtype` is not given, infer the data
+		    type from the other input arguments.
+		
+		    .. versionadded:: 1.9.0
+		
+		axis : int, optional
+		    The axis in the result to store the samples.  Relevant only if start
+		    or stop are array-like.  By default (0), the samples will be along a
+		    new axis inserted at the beginning. Use -1 to get an axis at the end.
+		
+		    .. versionadded:: 1.16.0
 		
 		Returns
-		----------
-		mesh-grid `ndarrays` all of the same dimensions
+		-------
+		samples : ndarray
+		    There are `num` equally spaced samples in the closed interval
+		    ``[start, stop]`` or the half-open interval ``[start, stop)``
+		    (depending on whether `endpoint` is True or False).
+		step : float, optional
+		    Only returned if `retstep` is True
+		
+		    Size of spacing between samples.
+		
 		
 		See Also
 		--------
-		numpy.lib.index_tricks.nd_grid : class of `ogrid` and `mgrid` objects
-		ogrid : like mgrid but returns open (not fleshed out) mesh grids
-		r_ : array concatenator
+		arange : Similar to `linspace`, but uses a step size (instead of the
+		         number of samples).
+		geomspace : Similar to `linspace`, but with numbers spaced evenly on a log
+		            scale (a geometric progression).
+		logspace : Similar to `geomspace`, but with the end points specified as
+		           logarithms.
 		
 		Examples
 		--------
-		>>> np.mgrid[0:5,0:5]
-		array([[[0, 0, 0, 0, 0],
-		        [1, 1, 1, 1, 1],
-		        [2, 2, 2, 2, 2],
-		        [3, 3, 3, 3, 3],
-		        [4, 4, 4, 4, 4]],
-		       [[0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4]]])
-		>>> np.mgrid[-1:1:5j]
-		array([-1. , -0.5,  0. ,  0.5,  1. ])
+		>>> np.linspace(2.0, 3.0, num=5)
+		array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ])
+		>>> np.linspace(2.0, 3.0, num=5, endpoint=False)
+		array([ 2. ,  2.2,  2.4,  2.6,  2.8])
+		>>> np.linspace(2.0, 3.0, num=5, retstep=True)
+		(array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)
+		
+		Graphical illustration:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> N = 8
+		>>> y = np.zeros(N)
+		>>> x1 = np.linspace(0, 10, N, endpoint=True)
+		>>> x2 = np.linspace(0, 10, N, endpoint=False)
+		>>> plt.plot(x1, y, 'o')
+		[<matplotlib.lines.Line2D object at 0x...>]
+		>>> plt.plot(x2, y + 0.5, 'o')
+		[<matplotlib.lines.Line2D object at 0x...>]
+		>>> plt.ylim([-0.5, 1])
+		(-0.5, 1)
+		>>> plt.show()
 	**/
+	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	static public var mgrid : Dynamic;
 	/**
 		Return the number of dimensions of an array.
@@ -829,42 +885,6 @@ package numpy.lib.index_tricks;
 		0
 	**/
 	static public function ndim(a:Dynamic):Int;
-	/**
-		`nd_grid` instance which returns an open multi-dimensional "meshgrid".
-		
-		An instance of `numpy.lib.index_tricks.nd_grid` which returns an open
-		(i.e. not fleshed out) mesh-grid when indexed, so that only one dimension
-		of each returned array is greater than 1.  The dimension and number of the
-		output arrays are equal to the number of indexing dimensions.  If the step
-		length is not a complex number, then the stop is not inclusive.
-		
-		However, if the step length is a **complex number** (e.g. 5j), then
-		the integer part of its magnitude is interpreted as specifying the
-		number of points to create between the start and stop values, where
-		the stop value **is inclusive**.
-		
-		Returns
-		----------
-		mesh-grid `ndarrays` with only one dimension :math:`\neq 1`
-		
-		See Also
-		--------
-		np.lib.index_tricks.nd_grid : class of `ogrid` and `mgrid` objects
-		mgrid : like `ogrid` but returns dense (or fleshed out) mesh grids
-		r_ : array concatenator
-		
-		Examples
-		--------
-		>>> from numpy import ogrid
-		>>> ogrid[-1:1:5j]
-		array([-1. , -0.5,  0. ,  0.5,  1. ])
-		>>> ogrid[0:5,0:5]
-		[array([[0],
-		        [1],
-		        [2],
-		        [3],
-		        [4]]), array([[0, 1, 2, 3, 4]])]
-	**/
 	static public var ogrid : Dynamic;
 	static public var print_function : Dynamic;
 	static public var r_ : Dynamic;
@@ -927,7 +947,19 @@ package numpy.lib.index_tricks;
 	static public function ravel_multi_index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var s_ : Dynamic;
 	/**
-		unravel_index(indices, dims, order='C')
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
+	/**
+		unravel_index(indices, shape, order='C')
 		
 		Converts a flat index or array of flat indices into a tuple
 		of coordinate arrays.
@@ -936,10 +968,14 @@ package numpy.lib.index_tricks;
 		----------
 		indices : array_like
 		    An integer array whose elements are indices into the flattened
-		    version of an array of dimensions ``dims``. Before version 1.6.0,
+		    version of an array of dimensions ``shape``. Before version 1.6.0,
 		    this function accepted just one index value.
-		dims : tuple of ints
+		shape : tuple of ints
 		    The shape of the array to use for unraveling ``indices``.
+		
+		    .. versionchanged:: 1.16.0
+		        Renamed from ``dims`` to ``shape``.
+		
 		order : {'C', 'F'}, optional
 		    Determines whether the indices should be viewed as indexing in
 		    row-major (C-style) or column-major (Fortran-style) order.

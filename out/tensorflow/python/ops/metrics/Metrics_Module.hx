@@ -694,25 +694,24 @@ package tensorflow.python.ops.metrics;
 		Create variable in `GraphKeys.(LOCAL|METRIC_VARIABLES)` collections.
 		
 		If running in a `DistributionStrategy` context, the variable will be
-		"tower local". This means:
+		"replica local". This means:
 		
 		*   The returned object will be a container with separate variables
-		    per replica/tower of the model.
+		    per replica of the model.
 		
 		*   When writing to the variable, e.g. using `assign_add` in a metric
 		    update, the update will be applied to the variable local to the
-		    replica/tower.
+		    replica.
 		
 		*   To get a metric's result value, we need to sum the variable values
-		    across the replicas/towers before computing the final answer.
-		    Furthermore, the final answer should be computed once instead of
-		    in every replica/tower. Both of these are accomplished by
-		    running the computation of the final result value inside
-		    `tf.contrib.distribution_strategy_context.get_tower_context(
-		    ).merge_call(fn)`.
+		    across the replicas before computing the final answer. Furthermore,
+		    the final answer should be computed once instead of in every
+		    replica. Both of these are accomplished by running the computation
+		    of the final result value inside
+		    `distribution_strategy_context.get_replica_context().merge_call(fn)`.
 		    Inside the `merge_call()`, ops are only added to the graph once
-		    and access to a tower-local variable in a computation returns
-		    the sum across all replicas/towers.
+		    and access to a replica-local variable in a computation returns
+		    the sum across all replicas.
 		
 		Args:
 		  shape: Shape of the created variable.
@@ -723,7 +722,7 @@ package tensorflow.python.ops.metrics;
 		
 		Returns:
 		  A (non-trainable) variable initialized to zero, or if inside a
-		  `DistributionStrategy` scope a tower-local variable container.
+		  `DistributionStrategy` scope a replica-local variable container.
 	**/
 	static public function metric_variable(shape:Dynamic, dtype:Dynamic, ?validate_shape:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -1277,7 +1276,7 @@ package tensorflow.python.ops.metrics;
 	/**
 		Renamed to `average_precision_at_k`, please use that method instead. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use average_precision_at_k instead
 	**/
@@ -1285,7 +1284,7 @@ package tensorflow.python.ops.metrics;
 	/**
 		Renamed to `precision_at_k`, please use that method instead. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use precision_at_k instead
 	**/

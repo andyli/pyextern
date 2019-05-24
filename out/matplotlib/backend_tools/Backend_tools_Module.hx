@@ -9,13 +9,14 @@ package matplotlib.backend_tools;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _log : Dynamic;
 	static public var _views_positions : Dynamic;
 	/**
 		Add multiple tools to the container.
 		
 		Parameters
 		----------
-		container: Container
+		container : Container
 		    `backend_bases.ToolContainerBase` object that will get the tools added
 		tools : list, optional
 		    List in the form
@@ -29,7 +30,7 @@ package matplotlib.backend_tools;
 		
 		Parameters
 		----------
-		toolmanager: ToolManager
+		toolmanager : ToolManager
 		    `backend_managers.ToolManager` object that will get the tools added
 		tools : {str: class_like}, optional
 		    The tools to add in a {name: tool} dict, see `add_tool` for more

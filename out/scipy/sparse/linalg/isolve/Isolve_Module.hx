@@ -19,8 +19,9 @@ package scipy.sparse.linalg.isolve;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
-		    It is required that the linear operator can produce
-		    ``Ax`` and ``A^T x``.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` and ``A^T x`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -67,6 +68,9 @@ package scipy.sparse.linalg.isolve;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -114,6 +118,9 @@ package scipy.sparse.linalg.isolve;
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
 		    ``A`` must represent a hermitian, positive definite matrix.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -160,6 +167,9 @@ package scipy.sparse.linalg.isolve;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real-valued N-by-N matrix of the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -207,6 +217,9 @@ package scipy.sparse.linalg.isolve;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		x0  : {array, matrix}
@@ -283,6 +296,9 @@ package scipy.sparse.linalg.isolve;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -369,6 +385,9 @@ package scipy.sparse.linalg.isolve;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		x0  : {array, matrix}
@@ -476,6 +495,9 @@ package scipy.sparse.linalg.isolve;
 		----------
 		A : {matrix, sparse matrix, ndarray, LinearOperator}
 		    Matrix A in the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` and ``A^T x`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : array_like, shape (m,)
 		    Vector b in the linear system.
 		damp : float
@@ -568,8 +590,8 @@ package scipy.sparse.linalg.isolve;
 		.. [1] D. C.-L. Fong and M. A. Saunders,
 		       "LSMR: An iterative algorithm for sparse least-squares problems",
 		       SIAM J. Sci. Comput., vol. 33, pp. 2950-2971, 2011.
-		       http://arxiv.org/abs/1006.0758
-		.. [2] LSMR Software, http://web.stanford.edu/group/SOL/software/lsmr/
+		       https://arxiv.org/abs/1006.0758
+		.. [2] LSMR Software, https://web.stanford.edu/group/SOL/software/lsmr/
 		
 		Examples
 		--------
@@ -649,8 +671,10 @@ package scipy.sparse.linalg.isolve;
 		Parameters
 		----------
 		A : {sparse matrix, ndarray, LinearOperator}
-		    Representation of an m-by-n matrix.  It is required that
-		    the linear operator can produce ``Ax`` and ``A^T x``.
+		    Representation of an m-by-n matrix.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` and ``A^T x`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : array_like, shape (m,)
 		    Right-hand side vector ``b``.
 		damp : float
@@ -848,6 +872,9 @@ package scipy.sparse.linalg.isolve;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real symmetric N-by-N matrix of the linear system
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -899,8 +926,9 @@ package scipy.sparse.linalg.isolve;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real-valued N-by-N matrix of the linear system.
-		    It is required that the linear operator can produce
-		    ``Ax`` and ``A^T x``.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` and ``A^T x`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		

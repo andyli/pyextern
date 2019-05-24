@@ -47,8 +47,9 @@ package scipy.sparse.linalg.isolve.iterative;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
-		    It is required that the linear operator can produce
-		    ``Ax`` and ``A^T x``.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` and ``A^T x`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -95,6 +96,9 @@ package scipy.sparse.linalg.isolve.iterative;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -142,6 +146,9 @@ package scipy.sparse.linalg.isolve.iterative;
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
 		    ``A`` must represent a hermitian, positive definite matrix.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -188,6 +195,9 @@ package scipy.sparse.linalg.isolve.iterative;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real-valued N-by-N matrix of the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -229,10 +239,6 @@ package scipy.sparse.linalg.isolve.iterative;
 	static public function cgs(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?atol:Dynamic):Dynamic;
 	static public var common_doc1 : Dynamic;
 	static public var common_doc2 : Dynamic;
-	/**
-		decorator(caller) converts a caller function into a decorator
-	**/
-	static public function decorator(caller:Dynamic, ?_func:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Use Generalized Minimal RESidual iteration to solve ``Ax = b``.
@@ -241,6 +247,9 @@ package scipy.sparse.linalg.isolve.iterative;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -359,8 +368,9 @@ package scipy.sparse.linalg.isolve.iterative;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real-valued N-by-N matrix of the linear system.
-		    It is required that the linear operator can produce
-		    ``Ax`` and ``A^T x``.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` and ``A^T x`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		

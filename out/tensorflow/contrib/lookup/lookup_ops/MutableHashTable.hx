@@ -313,6 +313,10 @@ package tensorflow.contrib.lookup.lookup_ops;
 	**/
 	public function _track_checkpointable(checkpointable:Dynamic, name:Dynamic, ?overwrite:Dynamic):Dynamic;
 	/**
+		A function that creates a resource handle.
+	**/
+	public function create_resource():Dynamic;
+	/**
 		Returns tensors of all keys and values in the table.
 		
 		Args:
@@ -324,9 +328,9 @@ package tensorflow.contrib.lookup.lookup_ops;
 	**/
 	public function export(?name:Dynamic):Dynamic;
 	/**
-		The table initialization op.
+		A function that initializes the resource. Optional.
 	**/
-	public var init : Dynamic;
+	public function initialize():Dynamic;
 	/**
 		Associates `keys` with `values`.
 		
@@ -371,6 +375,27 @@ package tensorflow.contrib.lookup.lookup_ops;
 		The name of the table.
 	**/
 	public var name : Dynamic;
+	/**
+		Removes `keys` and its associated values from the table.
+		
+		If a key is not present in the table, it is silently ignored.
+		
+		Args:
+		  keys: Keys to remove. Can be a tensor of any shape. Must match the table's
+		    key type.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The created Operation.
+		
+		Raises:
+		  TypeError: when `keys` do not match the table data types.
+	**/
+	public function remove(keys:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns the resource handle associated with this Resource.
+	**/
+	public var resource_handle : Dynamic;
 	/**
 		Compute the number of elements in this table.
 		

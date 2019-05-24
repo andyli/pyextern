@@ -11,7 +11,40 @@ package tensorflow.python.autograph.operators;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Functional form of "and". Uses lazy evaluation semantics.
+	**/
+	static public function and_(a:Dynamic, b:Dynamic):Dynamic;
+	/**
+		Functional form of an assert statement.
+		
+		This follows the semantics of the Python assert statement, however the
+		concrete implementations may deviate from it. See the respective
+		implementation for details.
+		
+		In general, the assert statement should not be used for control flow.
+		Furthermore, it is encouraged that the assertion expressions should not have
+		side effects.
+		
+		Args:
+		  expression1: Any
+		  expression2: Callable[[], Any], returns the expression to include in the
+		      error message when expression1 evaluates to False. When expression1 is
+		      True, the result of expression2 will not be evaluated, however,
+		      expression2 itself may be evaluated in some implementations.
+		
+		Returns:
+		  Any, implementation-dependent.
+		
+		Raises:
+		  ValueError: if any arguments are illegal.
+	**/
+	static public function assert_stmt(expression1:Dynamic, expression2:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Functional form of "equal".
+	**/
+	static public function eq(a:Dynamic, b:Dynamic):Dynamic;
 	static public function float_(?x:Dynamic):Dynamic;
 	/**
 		Functional form of a for statement.
@@ -65,7 +98,41 @@ package tensorflow.python.autograph.operators;
 		  ValueError: if target is not of a supported type.
 	**/
 	static public function get_item(target:Dynamic, i:Dynamic, opts:Dynamic):Dynamic;
+	/**
+		Functional form of "less-than".
+	**/
+	static public function gt(a:Dynamic, b:Dynamic):Dynamic;
+	/**
+		Functional form of "less-than".
+	**/
+	static public function gt_e(a:Dynamic, b:Dynamic):Dynamic;
+	/**
+		Functional form of an if statement.
+		
+		Args:
+		  cond: Boolean.
+		  body: Callable with no arguments, and outputs of the positive (if) branch
+		      as return type.
+		  orelse: Callable with no arguments, and outputs of the negative (else)
+		      branch as return type.
+		
+		Returns:
+		  Tuple containing the statement outputs.
+	**/
+	static public function if_stmt(cond:Dynamic, body:Dynamic, orelse:Dynamic):Dynamic;
+	/**
+		Functional form of "less-than".
+	**/
+	static public function in_(a:Dynamic, b:Dynamic):Dynamic;
 	static public function int_(?x:Dynamic, ?base:Dynamic):Dynamic;
+	/**
+		Functional form of "less-than".
+	**/
+	static public function is_(a:Dynamic, b:Dynamic):Dynamic;
+	/**
+		Functional form of "less-than".
+	**/
+	static public function is_not(a:Dynamic, b:Dynamic):Dynamic;
 	static public function len_(s:Dynamic):Dynamic;
 	/**
 		The list append function.
@@ -127,6 +194,14 @@ package tensorflow.python.autograph.operators;
 	**/
 	static public function list_stack(list_:Dynamic, opts:Dynamic):Dynamic;
 	/**
+		Functional form of "less-than".
+	**/
+	static public function lt(a:Dynamic, b:Dynamic):Dynamic;
+	/**
+		Functional form of "less-than".
+	**/
+	static public function lt_e(a:Dynamic, b:Dynamic):Dynamic;
+	/**
 		The list constructor.
 		
 		Args:
@@ -136,6 +211,22 @@ package tensorflow.python.autograph.operators;
 		  A list-like object. The exact return value depends on the initial elements.
 	**/
 	static public function new_list(?iterable:Dynamic):Dynamic;
+	/**
+		Functional form of "not".
+	**/
+	static public function not_(a:Dynamic):Dynamic;
+	/**
+		Functional form of "not-equal".
+	**/
+	static public function not_eq(a:Dynamic, b:Dynamic):Dynamic;
+	/**
+		Functional form of "less-than".
+	**/
+	static public function not_in(a:Dynamic, b:Dynamic):Dynamic;
+	/**
+		Functional form of "or". Uses lazy evaluation semantics.
+	**/
+	static public function or_(a:Dynamic, b:Dynamic):Dynamic;
 	static public function print_(?objects:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	static public function range_(start_or_stop:Dynamic, ?stop:Dynamic, ?step:Dynamic):Dynamic;
@@ -157,6 +248,10 @@ package tensorflow.python.autograph.operators;
 		  ValueError: if target is not of a supported type.
 	**/
 	static public function set_item(target:Dynamic, i:Dynamic, x:Dynamic):Dynamic;
+	/**
+		Functional form of "unary-sub".
+	**/
+	static public function u_sub(a:Dynamic):Dynamic;
 	/**
 		Functional form of a while statement.
 		

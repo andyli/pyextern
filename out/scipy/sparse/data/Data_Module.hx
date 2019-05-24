@@ -19,13 +19,14 @@ package scipy.sparse.data;
 		Is x either a scalar, an array scalar, or a 0-dim array?
 	**/
 	static public function isscalarlike(x:Dynamic):Dynamic;
+	static public function matrix(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var name : Dynamic;
 	/**
-		tanh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		tan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Compute hyperbolic tangent element-wise.
+		Compute tangent element-wise.
 		
-		Equivalent to ``np.sinh(x)/np.cosh(x)`` or ``-1j * np.tan(1j*x)``.
+		Equivalent to ``np.sin(x)/np.cos(x)`` element-wise.
 		
 		Parameters
 		----------
@@ -46,7 +47,7 @@ package scipy.sparse.data;
 		Returns
 		-------
 		y : ndarray
-		    The corresponding hyperbolic tangent values.
+		    The corresponding tangent values.
 		    This is a scalar if `x` is a scalar.
 		
 		Notes
@@ -56,29 +57,26 @@ package scipy.sparse.data;
 		
 		References
 		----------
-		.. [1] M. Abramowitz and I. A. Stegun, Handbook of Mathematical Functions.
-		       New York, NY: Dover, 1972, pg. 83.
-		       http://www.math.sfu.ca/~cbm/aands/
-		
-		.. [2] Wikipedia, "Hyperbolic function",
-		       http://en.wikipedia.org/wiki/Hyperbolic_function
+		M. Abramowitz and I. A. Stegun, Handbook of Mathematical Functions.
+		New York, NY: Dover, 1972.
 		
 		Examples
 		--------
-		>>> np.tanh((0, np.pi*1j, np.pi*1j/2))
-		array([ 0. +0.00000000e+00j,  0. -1.22460635e-16j,  0. +1.63317787e+16j])
-		
+		>>> from math import pi
+		>>> np.tan(np.array([-pi,pi/2,pi]))
+		array([  1.22460635e-16,   1.63317787e+16,  -1.22460635e-16])
+		>>>
 		>>> # Example of providing the optional output parameter illustrating
 		>>> # that what is returned is a reference to said parameter
-		>>> out2 = np.tanh([0.1], out1)
+		>>> out2 = np.cos([0.1], out1)
 		>>> out2 is out1
 		True
-		
+		>>>
 		>>> # Example of ValueError due to provision of shape mis-matched `out`
-		>>> np.tanh(np.zeros((3,3)),np.zeros((2,2)))
+		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

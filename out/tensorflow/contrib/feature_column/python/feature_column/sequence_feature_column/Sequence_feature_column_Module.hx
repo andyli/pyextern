@@ -14,6 +14,27 @@ package tensorflow.contrib.feature_column.python.feature_column.sequence_feature
 	**/
 	static public function _assert_all_equal_and_return(tensors:Dynamic, ?name:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Replicates `context_input` across all timesteps of `sequence_input`.
+		
+		Expands dimension 1 of `context_input` then tiles it `sequence_length` times.
+		This value is appended to `sequence_input` on dimension 2 and the result is
+		returned.
+		
+		Args:
+		  context_input: A `Tensor` of dtype `float32` and shape `[batch_size, d1]`.
+		  sequence_input: A `Tensor` of dtype `float32` and shape `[batch_size,
+		    padded_length, d0]`.
+		
+		Returns:
+		  A `Tensor` of dtype `float32` and shape `[batch_size, padded_length,
+		  d0 + d1]`.
+		
+		Raises:
+		  ValueError: If `sequence_input` does not have rank 3 or `context_input` does
+		    not have rank 2.
+	**/
+	static public function concatenate_context_input(context_input:Dynamic, sequence_input:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	/**

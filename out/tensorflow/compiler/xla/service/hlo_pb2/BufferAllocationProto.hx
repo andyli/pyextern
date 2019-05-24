@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.compiler.xla.service.hlo_pb2;
 @:pythonImport("tensorflow.compiler.xla.service.hlo_pb2", "BufferAllocationProto") extern class BufferAllocationProto {
-	static public var ASSIGNED_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -10,7 +9,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var COLOR_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -52,11 +50,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INDEX_FIELD_NUMBER : Dynamic;
-	static public var IS_CONSTANT_FIELD_NUMBER : Dynamic;
-	static public var IS_ENTRY_COMPUTATION_PARAMETER_FIELD_NUMBER : Dynamic;
-	static public var IS_THREAD_LOCAL_FIELD_NUMBER : Dynamic;
-	static public var IS_TUPLE_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -65,7 +58,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAYBE_LIVE_OUT_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -74,8 +66,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var PARAMETER_NUMBER_FIELD_NUMBER : Dynamic;
-	static public var PARAMETER_SHAPE_INDEX_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -84,7 +74,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SIZE_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -97,6 +86,10 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -262,4 +255,48 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.BufferAllocationProto.assigned
+	**/
+	public var assigned : Dynamic;
+	/**
+		Field xla.BufferAllocationProto.color
+	**/
+	public var color : Dynamic;
+	/**
+		Field xla.BufferAllocationProto.index
+	**/
+	public var index : Dynamic;
+	/**
+		Field xla.BufferAllocationProto.is_constant
+	**/
+	public var is_constant : Dynamic;
+	/**
+		Field xla.BufferAllocationProto.is_entry_computation_parameter
+	**/
+	public var is_entry_computation_parameter : Dynamic;
+	/**
+		Field xla.BufferAllocationProto.is_thread_local
+	**/
+	public var is_thread_local : Dynamic;
+	/**
+		Field xla.BufferAllocationProto.is_tuple
+	**/
+	public var is_tuple : Dynamic;
+	/**
+		Field xla.BufferAllocationProto.maybe_live_out
+	**/
+	public var maybe_live_out : Dynamic;
+	/**
+		Field xla.BufferAllocationProto.parameter_number
+	**/
+	public var parameter_number : Dynamic;
+	/**
+		Field xla.BufferAllocationProto.parameter_shape_index
+	**/
+	public var parameter_shape_index : Dynamic;
+	/**
+		Field xla.BufferAllocationProto.size
+	**/
+	public var size : Dynamic;
 }

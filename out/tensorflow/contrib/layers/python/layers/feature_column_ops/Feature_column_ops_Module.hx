@@ -274,7 +274,7 @@ package tensorflow.contrib.layers.python.layers.feature_column_ops;
 	/**
 		Builds inputs for sequence models from `FeatureColumn`s. (experimental)
 		
-		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
+		Warning: THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
 		
 		See documentation for `input_from_feature_columns`. The following types of
 		`FeatureColumn` are permitted in `feature_columns`: `_OneHotColumn`,

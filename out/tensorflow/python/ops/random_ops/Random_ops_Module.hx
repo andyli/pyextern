@@ -15,6 +15,30 @@ package tensorflow.python.ops.random_ops;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
+		Draws samples from a categorical distribution.
+		
+		Example:
+		
+		```python
+		# samples has shape [1, 5], where each value is either 0 or 1 with equal
+		# probability.
+		samples = tf.random.categorical(tf.log([[10., 10.]]), 5)
+		```
+		
+		Args:
+		  logits: 2-D Tensor with shape `[batch_size, num_classes]`.  Each slice
+		    `[i, :]` represents the unnormalized log-probabilities for all classes.
+		  num_samples: 0-D.  Number of independent samples to draw for each row slice.
+		  dtype: integer type to use for the output. Defaults to int64.
+		  seed: A Python integer. Used to create a random seed for the distribution.
+		    See `tf.set_random_seed` for behavior.
+		  name: Optional name for the operation.
+		
+		Returns:
+		  The drawn samples of shape `[batch_size, num_samples]`.
+	**/
+	static public function categorical(logits:Dynamic, num_samples:Dynamic, ?dtype:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Decorator for marking endpoints deprecated.
 		
 		This decorator does not print deprecation messages.
@@ -33,7 +57,11 @@ package tensorflow.python.ops.random_ops;
 	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Draws samples from a multinomial distribution.
+		Draws samples from a multinomial distribution. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.random.categorical instead.
 		
 		Example:
 		
@@ -48,9 +76,7 @@ package tensorflow.python.ops.random_ops;
 		    `[i, :]` represents the unnormalized log-probabilities for all classes.
 		  num_samples: 0-D.  Number of independent samples to draw for each row slice.
 		  seed: A Python integer. Used to create a random seed for the distribution.
-		    See
-		    `tf.set_random_seed`
-		    for behavior.
+		    See `tf.set_random_seed` for behavior.
 		  name: Optional name for the operation.
 		  output_dtype: integer type to use for the output. Defaults to int64.
 		
@@ -58,6 +84,10 @@ package tensorflow.python.ops.random_ops;
 		  The drawn samples of shape `[batch_size, num_samples]`.
 	**/
 	static public function multinomial(logits:Dynamic, num_samples:Dynamic, ?seed:Dynamic, ?name:Dynamic, ?output_dtype:Dynamic):Dynamic;
+	/**
+		Implementation for random.multinomial (v1) and random.categorical (v2).
+	**/
+	static public function multinomial_categorical_impl(logits:Dynamic, num_samples:Dynamic, dtype:Dynamic, seed:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function multinomial
@@ -268,38 +298,41 @@ package tensorflow.python.ops.random_ops;
 	**/
 	static public function random_poisson_eager_fallback(shape:Dynamic, rate:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Outputs random values from the Poisson distribution(s) described by rate.
+		Draws `shape` samples from each of the given Poisson distribution(s).
 		
-		This op uses two algorithms, depending on rate. If rate >= 10, then
-		the algorithm by Hormann is used to acquire samples via
-		transformation-rejection.
-		See http://www.sciencedirect.com/science/article/pii/0167668793909974.
+		`lam` is the rate parameter describing the distribution(s).
 		
-		Otherwise, Knuth's algorithm is used to acquire samples via multiplying uniform
-		random variables.
-		See Donald E. Knuth (1969). Seminumerical Algorithms. The Art of Computer
-		Programming, Volume 2. Addison Wesley
+		Example:
+		
+		```python
+		samples = tf.random_poisson([10], [0.5, 1.5])
+		# samples has shape [10, 2], where each slice [:, 0] and [:, 1] represents
+		# the samples drawn from each distribution
+		
+		samples = tf.random_poisson([7, 5], [12.2, 3.3])
+		# samples has shape [7, 5, 2], where each slice [:, :, 0] and [:, :, 1]
+		# represents the 7x5 samples drawn from each of the two distributions
+		```
 		
 		Args:
-		  shape: A `Tensor`. Must be one of the following types: `int32`, `int64`.
-		    1-D integer tensor. Shape of independent samples to draw from each
-		    distribution described by the shape parameters given in rate.
-		  rate: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `int32`, `int64`.
-		    A tensor in which each scalar is a "rate" parameter describing the
-		    associated poisson distribution.
-		  seed: An optional `int`. Defaults to `0`.
-		    If either `seed` or `seed2` are set to be non-zero, the random number
-		    generator is seeded by the given seed.  Otherwise, it is seeded by a
-		    random seed.
-		  seed2: An optional `int`. Defaults to `0`.
-		    A second seed to avoid seed collision.
-		  dtype: An optional `tf.DType` from: `tf.half, tf.float32, tf.float64, tf.int32, tf.int64`. Defaults to `tf.int64`.
-		  name: A name for the operation (optional).
+		  shape: A 1-D integer Tensor or Python array. The shape of the output samples
+		    to be drawn per "rate"-parameterized distribution.
+		  lam: A Tensor or Python value or N-D array of type `dtype`.
+		    `lam` provides the rate parameter(s) describing the poisson
+		    distribution(s) to sample.
+		  dtype: The type of the output: `float16`, `float32`, `float64`, `int32` or
+		    `int64`.
+		  seed: A Python integer. Used to create a random seed for the distributions.
+		    See
+		    `tf.set_random_seed`
+		    for behavior.
+		  name: Optional name for the operation.
 		
 		Returns:
-		  A `Tensor` of type `dtype`.
+		  samples: a `Tensor` of shape `tf.concat([shape, tf.shape(lam)], axis=0)`
+		    with values of type `dtype`.
 	**/
-	static public function random_poisson_v2(shape:Dynamic, rate:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	static public function random_poisson_v2(shape:Dynamic, lam:Dynamic, ?dtype:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function random_poisson_v2

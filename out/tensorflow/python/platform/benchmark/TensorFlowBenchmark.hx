@@ -117,6 +117,16 @@ package tensorflow.python.platform.benchmark;
 	public function _get_name(?overwrite_name:Dynamic):Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Evaluates tensors and returns numpy values.
+		
+		Args:
+		  tensors: A Tensor or a nested list/tuple of Tensors.
+		
+		Returns:
+		  tensors numpy values.
+	**/
+	public function evaluate(tensors:Dynamic):Dynamic;
 	static public function is_abstract():Dynamic;
 	/**
 		Report a benchmark.

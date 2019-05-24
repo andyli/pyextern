@@ -5,7 +5,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var COLLAPSED_SLICE_DIMS_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -47,7 +46,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INDEX_VECTOR_DIM_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -64,7 +62,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var OFFSET_DIMS_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -73,7 +70,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var START_INDEX_MAP_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -86,6 +82,10 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.compiler.xla.xla_data_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.GatherDimensionNumbers.collapsed_slice_dims
+	**/
+	public var collapsed_slice_dims : Dynamic;
+	/**
+		Field xla.GatherDimensionNumbers.index_vector_dim
+	**/
+	public var index_vector_dim : Dynamic;
+	/**
+		Field xla.GatherDimensionNumbers.offset_dims
+	**/
+	public var offset_dims : Dynamic;
+	/**
+		Field xla.GatherDimensionNumbers.start_index_map
+	**/
+	public var start_index_map : Dynamic;
 }

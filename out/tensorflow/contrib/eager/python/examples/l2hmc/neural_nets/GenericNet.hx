@@ -181,19 +181,13 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 	**/
 	public function _add_variable_with_custom_getter(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?getter:Dynamic, ?overwrite:Dynamic, ?kwargs_for_getter:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Checks compatibility between the layer and provided inputs.
-		
-		This checks that the tensor(s) `inputs` verify the input assumptions
-		of the layer (if any). If not, a clear and actional exception gets raised.
-		
-		Arguments:
-		    inputs: input tensor or list of input tensors.
-		
-		Raises:
-		    ValueError: in case of mismatch between
-		        the provided inputs and the expectations of the layer.
+		Returns the network's symbolic metric tensors.
 	**/
-	public function _assert_input_compatibility(inputs:Dynamic):Dynamic;
+	public var _all_metrics_tensors : Dynamic;
+	/**
+		Returns the network's symbolic metric tensors.
+	**/
+	public var _all_stateful_metrics_tensors : Dynamic;
 	public function _base_init(?name:Dynamic):Dynamic;
 	/**
 		Caches metric name and function attributes for every model output.
@@ -222,6 +216,11 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 	**/
 	public var _checkpoint_dependencies : Dynamic;
 	/**
+		Used every step in eager to reset losses.
+	**/
+	public function _clear_losses():Dynamic;
+	public var _default_save_signature : Dynamic;
+	/**
 		A dictionary with deferred dependencies.
 		
 		Stores restorations for other Checkpointable objects on which this object
@@ -235,7 +234,7 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 	**/
 	public var _deferred_dependencies : Dynamic;
 	/**
-		Decides how `self.call()` is invoked. See base_layer.CallConvention.
+		Decides how `self.call()` is invoked. See `CallConvention`.
 	**/
 	public function _determine_call_convention(call_argspec:Dynamic):Dynamic;
 	/**
@@ -261,6 +260,7 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		    execute.
 		  validation_split: Float between 0 and 1.
 		    Fraction of the training data to be used as validation data.
+		  shuffle: Boolean whether to shuffle the training data before each epoch.
 		
 		Returns:
 		  Iterator for reading the dataset `x`.
@@ -269,23 +269,9 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		  ValueError: In case of invalid user-provided data.
 		  RuntimeError: If the model was never compiled.
 	**/
-	public function _distribution_standardize_user_data(x:Dynamic, ?y:Dynamic, ?sample_weight:Dynamic, ?class_weight:Dynamic, ?batch_size:Dynamic, ?check_steps:Dynamic, ?steps_name:Dynamic, ?steps:Dynamic, ?validation_split:Dynamic):Dynamic;
-	/**
-		Set model's input and output specs based on the input data received.
-		
-		This is to be used for Model subclasses, which do not know at instantiation
-		time what their inputs look like.
-		
-		We assume the number and ndim of outputs
-		does not change over different calls.
-		
-		Args:
-		  inputs: Argument `x` (input data) passed by the user upon first model use.
-		
-		Raises:
-		  ValueError: If the model's inputs are already set.
-	**/
-	public function _eager_set_inputs(inputs:Dynamic):Dynamic;
+	public function _distribution_standardize_user_data(x:Dynamic, ?y:Dynamic, ?sample_weight:Dynamic, ?class_weight:Dynamic, ?batch_size:Dynamic, ?check_steps:Dynamic, ?steps_name:Dynamic, ?steps:Dynamic, ?validation_split:Dynamic, ?shuffle:Dynamic):Dynamic;
+	public function _eager_add_metric(value:Dynamic, ?aggregation:Dynamic, ?name:Dynamic):Dynamic;
+	public function _gather_children_attribute(attribute:Dynamic):Dynamic;
 	/**
 		Returns a dictionary of values to checkpoint with this object.
 		
@@ -320,6 +306,7 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		Returns the Callback Model for this Model.
 	**/
 	public function _get_callback_model():Dynamic;
+	public function _get_existing_metric(?name:Dynamic):Dynamic;
 	public function _get_iterator_get_next_tensors(iterator:Dynamic):Dynamic;
 	/**
 		Private utility to retrieves an attribute (e.g. inputs) from a node.
@@ -379,11 +366,13 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		  targets: List of targets.
 		  sample_weights: Optional list of sample weight arrays.
 		  masks: List of computed output mask values.
+		  return_stateful_result: Boolean, indicates whether the stateful
+		    (aggregated)/stateless metric result should be returned.
 		
 		Returns:
 		  A list of metric result tensors.
 	**/
-	public function _handle_metrics(outputs:Dynamic, ?skip_target_indices:Dynamic, ?targets:Dynamic, ?sample_weights:Dynamic, ?masks:Dynamic):Dynamic;
+	public function _handle_metrics(outputs:Dynamic, ?skip_target_indices:Dynamic, ?targets:Dynamic, ?sample_weights:Dynamic, ?masks:Dynamic, ?return_stateful_result:Dynamic):Dynamic;
 	/**
 		Calls metric functions for a single output.
 		
@@ -393,11 +382,13 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		  y_pred: Predicted output.
 		  mask: Computed mask value for the current output.
 		  weights: Weights to be applied on the current output.
+		  return_stateful_result: Boolean, indicates whether the stateful
+		    (aggregated)/stateless metric result should be returned.
 		
 		Returns:
 		  A list of metric result tensors.
 	**/
-	public function _handle_per_output_metrics(metrics_dict:Dynamic, y_true:Dynamic, y_pred:Dynamic, mask:Dynamic, ?weights:Dynamic):Dynamic;
+	public function _handle_per_output_metrics(metrics_dict:Dynamic, y_true:Dynamic, y_pred:Dynamic, mask:Dynamic, ?weights:Dynamic, ?return_stateful_result:Dynamic):Dynamic;
 	/**
 		Create lambdas which compute regularization losses.
 	**/
@@ -433,10 +424,16 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		  found.
 	**/
 	public function _lookup_dependency(name:Dynamic):Dynamic;
-	public function _make_callback_model():Dynamic;
+	public function _make_callback_model(grouped_model:Dynamic):Dynamic;
+	public function _make_eval_function():Dynamic;
+	public function _make_execution_function(mode:Dynamic):Dynamic;
+	public function _make_fit_function():Dynamic;
 	public function _make_predict_function():Dynamic;
 	public function _make_test_function():Dynamic;
+	public function _make_test_function_helper(fn_name:Dynamic, outputs:Dynamic, ?metric_updates:Dynamic):Dynamic;
 	public function _make_train_function():Dynamic;
+	public function _make_train_function_helper(fn_name:Dynamic, outputs:Dynamic, ?metric_updates:Dynamic):Dynamic;
+	public function _maybe_build(inputs:Dynamic):Dynamic;
 	/**
 		Initialize dependency management.
 		
@@ -449,20 +446,7 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 	public function _name_based_attribute_restore(checkpoint:Dynamic):Dynamic;
 	public function _name_scope():Dynamic;
 	/**
-		Override to allow `Layer` to disable dependency tracking.
-		
-		`CheckpointableBase` defines this method, whose semantics are "if a subclass
-		does dependency tracking, this method exempts `value`." Layer uses
-		`_no_dependency` to exempt some of its attribute assignments (conditional on
-		attribute assignment causing tracking in the subclass).
-		
-		Args:
-		  value: An object which will be assigned to an object attribute, whose
-		    value should not be tracked.
-		
-		Returns:
-		  A wrapped object which, when assigned to an attribute, will not be
-		  tracked (`value` will be stored in the attribute).
+		If automatic dependency tracking is enabled, ignores `value`.
 	**/
 	public function _no_dependency(value:Dynamic):Dynamic;
 	/**
@@ -514,14 +498,17 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		
 		Args:
 		  inputs: Single array, or list of arrays. The arrays could be placeholders,
-		    Numpy arrays, or data tensors.
+		    Numpy arrays, data tensors, or TensorShapes.
 		    - if placeholders: the model is built on top of these placeholders,
 		      and we expect Numpy data to be fed for them when calling `fit`/etc.
-		    - if Numpy data: we create placeholders matching the shape of the Numpy
-		      arrays. We expect Numpy data to be fed for these placeholders
-		      when calling `fit`/etc.
+		    - if Numpy data or TensorShapes: we create placeholders matching the
+		      TensorShapes or shapes of the Numpy arrays. We expect Numpy data to be
+		      fed for these placeholders when calling `fit`/etc.
 		    - if data tensors: the model is built on top of these tensors.
 		      We do not expect any Numpy data to be provided when calling `fit`/etc.
+		  outputs: None, a data tensor, or a list of tensors. If None, the
+		    outputs will be determined by invoking `self.call()`, otherwise the
+		    provided value will be used.
 		  training: Boolean or None. Only relevant in symbolic mode. Specifies
 		    whether to build the model's graph in inference mode (False), training
 		    mode (True), or using the Keras learning phase (None).
@@ -529,8 +516,7 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		  ValueError: If dict inputs are passed to a Sequential Model where the
 		    first layer isn't FeatureLayer.
 	**/
-	public function _set_inputs(inputs:Dynamic, ?training:Dynamic):Dynamic;
-	public function _set_learning_phase_metadata(inputs:Dynamic, outputs:Dynamic):Dynamic;
+	public function _set_inputs(inputs:Dynamic, ?outputs:Dynamic, ?training:Dynamic):Dynamic;
 	public function _set_mask_metadata(inputs:Dynamic, outputs:Dynamic, previous_mask:Dynamic):Dynamic;
 	/**
 		Sets the metric attributes on the model for all the model outputs.
@@ -543,6 +529,9 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		  metrics_dict: A dict with metric names as keys and metric fns as values.
 		  output_index: The index of the model output for which the metric
 		    attributes are added.
+		
+		Returns:
+		  Metrics dict updated with unique metric names as keys.
 	**/
 	public function _set_per_output_metric_attributes(metrics_dict:Dynamic, output_index:Dynamic):Dynamic;
 	/**
@@ -595,6 +584,7 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		    execute.
 		  validation_split: Float between 0 and 1.
 		    Fraction of the training data to be used as validation data.
+		  shuffle: Boolean whether to shuffle the training data before each epoch.
 		
 		Returns:
 		  A tuple of 3: inputs (arrays or dicts, depending on whether `x` was a dict
@@ -607,27 +597,23 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		  ValueError: In case of invalid user-provided data.
 		  RuntimeError: If the model was never compiled.
 	**/
-	public function _standardize_user_data(x:Dynamic, ?y:Dynamic, ?sample_weight:Dynamic, ?class_weight:Dynamic, ?batch_size:Dynamic, ?check_steps:Dynamic, ?steps_name:Dynamic, ?steps:Dynamic, ?validation_split:Dynamic):Dynamic;
-	public function _standardize_weights(x:Dynamic, y:Dynamic, ?sample_weight:Dynamic, ?class_weight:Dynamic, ?batch_size:Dynamic):Dynamic;
+	public function _standardize_user_data(x:Dynamic, ?y:Dynamic, ?sample_weight:Dynamic, ?class_weight:Dynamic, ?batch_size:Dynamic, ?check_steps:Dynamic, ?steps_name:Dynamic, ?steps:Dynamic, ?validation_split:Dynamic, ?shuffle:Dynamic):Dynamic;
 	/**
-		Set model's inputs and output specs based.
+		Whether the layer can be called to create a static graph.
 		
-		This is to be used for Model subclasses, which do not know at instantiation
-		time what their inputs look like.
+		Because of nesting, there are two components to being "graph-friendly":
+		  1) all inner layers are graph-friendly
+		  2) the way they are composed is graph-friendly.
+		We denote the latter as "_call_is_graph_friendly", and define
+		"_static_graph_friendly" as being the combination of
+		"_call_is_graph_friendly" and "all inner layers are _static_graph_friendly".
+		For atomic layers (no inner layers), this is just "_call_is_graph_friendly".
 		
-		Args:
-		  inputs: Argument `x` (input data) passed by the user upon first model use.
-		  outputs: None, a data tensor, or a list of data tensors. If None, the
-		    outputs will be determined by invoking self.call(), otherwise the
-		    provided value will be used.
-		  training: Boolean or None. Only relevant in symbolic mode. Specifies
-		    whether to build the model's graph in inference mode (False), training
-		    mode (True), or using the Keras learning phase (None).
-		
-		Raises:
-		  ValueError: If the model's inputs are already set.
+		Returns:
+		  Boolean.
 	**/
-	public function _symbolic_set_inputs(inputs:Dynamic, ?outputs:Dynamic, ?training:Dynamic):Dynamic;
+	public var _static_graph_friendly : Dynamic;
+	public function _symbolic_add_metric(value:Dynamic, ?aggregation:Dynamic, ?name:Dynamic):Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
 	/**
@@ -672,6 +658,30 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 	**/
 	public function _updated_config():Dynamic;
 	/**
+		Validates the inputs and outputs of a Graph Network.
+	**/
+	public function _validate_graph_inputs_and_outputs():Dynamic;
+	/**
+		Validates that the `batch_size` provided is consistent with InputLayer.
+		
+		It's possible that the user specified a static batch size in their
+		InputLayer. If so, this method checks the provided `batch_size` and `x`
+		arguments are consistent with this static batch size. Also, if
+		`batch_size` is `None`, this method will attempt to infer the batch size
+		from the static batch size of the InputLayer.
+		
+		Arguments:
+		  batch_size: The batch_size provided as an argument to
+		    fit/evaluate/predict.
+		  steps: The steps provided as an argument to fit/evaluate/predict.
+		  x: The data passed as `x` to fit/evaluate/predict.
+		
+		Returns:
+		  The validated batch_size, auto-inferred from the first layer if not
+		  provided.
+	**/
+	public function _validate_or_infer_batch_size(batch_size:Dynamic, steps:Dynamic, x:Dynamic):Dynamic;
+	/**
 		Optional regularizer function for the output of this layer.
 	**/
 	public var activity_regularizer : Dynamic;
@@ -694,21 +704,33 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		
 		Arguments:
 		  losses: Loss tensor, or list/tuple of tensors. Rather than tensors, losses
-		    may also be zero-argument callables which create a loss tensor. Only
-		    callable losses are supported when executing eagerly.
-		  inputs: If anything other than None is passed, it signals the losses
-		    are conditional on some of the layer's inputs,
-		    and thus they should only be run where these inputs are available.
-		    This is the case for activity regularization losses, for instance.
-		    If `None` is passed, the losses are assumed
+		    may also be zero-argument callables which create a loss tensor.
+		  inputs: Ignored when executing eagerly. If anything other than None is
+		    passed, it signals the losses are conditional on some of the layer's
+		    inputs, and thus they should only be run where these inputs are
+		    available. This is the case for activity regularization losses, for
+		    instance. If `None` is passed, the losses are assumed
 		    to be unconditional, and will apply across all dataflows of the layer
 		    (e.g. weight regularization losses).
+	**/
+	public function add_loss(losses:Dynamic, ?inputs:Dynamic):Dynamic;
+	/**
+		Adds metric tensor to the layer.
+		
+		Args:
+		  value: Metric tensor.
+		  aggregation: Sample-wise metric reduction function. If `aggregation=None`,
+		    it indicates that the metric tensor provided has been aggregated
+		    already. eg, `model.add_metric(BinaryAccuracy(name='acc')(y_true,
+		    y_pred))`. If aggregation='mean', the given metric tensor will be
+		    sample-wise reduced using `mean` function. eg, `model.add_metric(
+		    tf.reduce_mean(outputs), name='output_mean', aggregation='mean')`.
+		  name: String metric name.
 		
 		Raises:
-		  RuntimeError: If called in Eager mode with a `Tensor` rather than a
-		    callable, or if `inputs` is not None.
+		  ValueError: If `aggregation` is anything other than None or `mean`.
 	**/
-	public function add_loss(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function add_metric(value:Dynamic, ?aggregation:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Add update op(s), potentially dependent on layer inputs.
 		
@@ -741,7 +763,7 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 	/**
 		Alias for `add_weight`.
 	**/
-	public function add_variable(name:Dynamic, shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?constraint:Dynamic):Dynamic;
+	public function add_variable(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Adds a new variable to the layer, or gets an existing one; returns it.
 		
@@ -788,7 +810,7 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 	/**
 		Apply the layer on a input.
 		
-		This simply wraps `self.__call__`.
+		This is an alias of `self.__call__`.
 		
 		Arguments:
 		  inputs: Input tensor(s).
@@ -804,6 +826,11 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		
 		This is to be used for subclassed models, which do not know at instantiation
 		time what their inputs look like.
+		
+		This method only exists for users who want to call `model.build()` in a
+		standalone way (as a substitute for calling the model on real data to
+		build it). It will never be called by the framework (and thus it will
+		never throw unexpected errors in an unrelated workflow).
 		
 		Args:
 		 input_shape: Single tuple, TensorShape, or list of shapes, where shapes
@@ -846,12 +873,11 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		
 		Arguments:
 		    optimizer: String (name of optimizer) or optimizer instance.
-		        See [optimizers](/api_docs/python/tf/keras/optimizers).
+		        See `tf.keras.optimizers`.
 		    loss: String (name of objective function) or objective function.
-		        See [losses](/api_docs/python/tf/losses).
-		        If the model has multiple outputs, you can use a different loss
-		        on each output by passing a dictionary or a list of losses.
-		        The loss value that will be minimized by the model
+		        See `tf.losses`. If the model has multiple outputs, you can use a
+		        different loss on each output by passing a dictionary or a list of
+		        losses. The loss value that will be minimized by the model
 		        will then be the sum of all individual losses.
 		    metrics: List of metrics to be evaluated by the model
 		        during training and testing.
@@ -1088,7 +1114,7 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		        0 = silent, 1 = progress bar, 2 = one line per epoch.
 		    callbacks: List of `keras.callbacks.Callback` instances.
 		        List of callbacks to apply during training.
-		        See [callbacks](/api_docs/python/tf/keras/callbacks).
+		        See `tf.keras.callbacks`.
 		    validation_split: Float between 0 and 1.
 		        Fraction of the training data to be used as validation data.
 		        The model will set apart this fraction of the training data,
@@ -1107,6 +1133,8 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		          - tuple `(x_val, y_val)` of Numpy arrays or tensors
 		          - tuple `(x_val, y_val, val_sample_weights)` of Numpy arrays
 		          - dataset or a dataset iterator
+		        For the first two cases, `batch_size` must be provided.
+		        For the last case, `validation_steps` must be provided.
 		    shuffle: Boolean (whether to shuffle the training data
 		        before each epoch) or str (for 'batch').
 		        'batch' is a special option for dealing with the
@@ -1142,9 +1170,10 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		        TensorFlow data tensors, the default `None` is equal to
 		        the number of samples in your dataset divided by
 		        the batch size, or 1 if that cannot be determined.
-		    validation_steps: Only relevant if `steps_per_epoch`
-		        is specified. Total number of steps (batches of samples)
-		        to validate before stopping.
+		    validation_steps: Only relevant if `validation_data` is provided and
+		        is a dataset or dataset iterator. Total number of steps (batches of
+		        samples) to draw before stopping when performing validation
+		        at the end of every epoch.
 		    max_queue_size: Integer. Used for generator or `keras.utils.Sequence`
 		        input only. Maximum size for the generator queue.
 		        If unspecified, `max_queue_size` will default to 10.
@@ -1560,6 +1589,14 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		    A list of loss tensors.
 	**/
 	public var losses : Dynamic;
+	/**
+		Returns the model's metrics added using `compile`, `add_metric` APIs.
+	**/
+	public var metrics : Dynamic;
+	/**
+		Returns the model's display labels for all outputs.
+	**/
+	public var metrics_names : Dynamic;
 	public var name : Dynamic;
 	public var non_trainable_variables : Dynamic;
 	public var non_trainable_weights : Dynamic;
@@ -1714,7 +1751,25 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		      expectations of the model.
 	**/
 	public function predict_on_batch(x:Dynamic):Dynamic;
+	/**
+		Resets the state of metrics.
+	**/
+	public function reset_metrics():Dynamic;
 	public function reset_states():Dynamic;
+	/**
+		Settable attribute indicating whether the model should run eagerly.
+		
+		Running eagerly means that your model will be run step by step,
+		like Python code. Your model might run slower, but it should become easier
+		for you to debug it by stepping into individual layer calls.
+		
+		By default, we will attempt to compile your model to a static graph to
+		deliver the best execution performance.
+		
+		Returns:
+		  Boolean, whether the model should run eagerly.
+	**/
+	public var run_eagerly : Dynamic;
 	/**
 		Saves the model to a single HDF5 file.
 		
@@ -1860,6 +1915,9 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		        In this case you should make sure to specify
 		        sample_weight_mode="temporal" in compile(). This argument is not
 		        supported when `x` is a dataset or a dataset iterator.
+		    reset_metrics: If `True`, the metrics returned will be only for this
+		      batch. If `False`, the metrics will be statefully accumulated across
+		      batches.
 		
 		Returns:
 		    Scalar test loss (if the model has a single output and no metrics)
@@ -1870,7 +1928,7 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		Raises:
 		    ValueError: In case of invalid user-provided arguments.
 	**/
-	public function test_on_batch(x:Dynamic, ?y:Dynamic, ?sample_weight:Dynamic):Dynamic;
+	public function test_on_batch(x:Dynamic, ?y:Dynamic, ?sample_weight:Dynamic, ?reset_metrics:Dynamic):Dynamic;
 	/**
 		Returns a JSON string containing the network configuration.
 		
@@ -1912,32 +1970,31 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		Arguments:
 		    x: Input data. It could be:
 		      - A Numpy array (or array-like), or a list of arrays
-		        (in case the model has multiple inputs).
+		          (in case the model has multiple inputs).
 		      - A TensorFlow tensor, or a list of tensors
-		        (in case the model has multiple inputs).
+		          (in case the model has multiple inputs).
 		      - A dict mapping input names to the corresponding array/tensors,
-		        if the model has named inputs.
+		          if the model has named inputs.
 		      - A `tf.data` dataset or a dataset iterator.
-		    y: Target data. Like the input data `x`,
-		      it could be either Numpy array(s) or TensorFlow tensor(s).
-		      It should be consistent with `x` (you cannot have Numpy inputs and
-		      tensor targets, or inversely). If `x` is a dataset or a
-		      dataset iterator, `y` should not be specified
+		    y: Target data. Like the input data `x`, it could be either Numpy
+		      array(s) or TensorFlow tensor(s). It should be consistent with `x`
+		      (you cannot have Numpy inputs and tensor targets, or inversely). If
+		      `x` is a dataset or a dataset iterator, `y` should not be specified
 		      (since targets will be obtained from the iterator).
 		    sample_weight: Optional array of the same length as x, containing
-		        weights to apply to the model's loss for each sample.
-		        In the case of temporal data, you can pass a 2D array
-		        with shape (samples, sequence_length),
-		        to apply a different weight to every timestep of every sample.
-		        In this case you should make sure to specify
-		        sample_weight_mode="temporal" in compile(). This argument is not
-		        supported when `x` is a dataset or a dataset iterator.
-		    class_weight: Optional dictionary mapping
-		        class indices (integers) to
-		        a weight (float) to apply to the model's loss for the samples
-		        from this class during training.
-		        This can be useful to tell the model to "pay more attention" to
-		        samples from an under-represented class.
+		      weights to apply to the model's loss for each sample. In the case of
+		      temporal data, you can pass a 2D array with shape (samples,
+		      sequence_length), to apply a different weight to every timestep of
+		      every sample. In this case you should make sure to specify
+		      sample_weight_mode="temporal" in compile(). This argument is not
+		      supported when `x` is a dataset or a dataset iterator.
+		    class_weight: Optional dictionary mapping class indices (integers) to a
+		      weight (float) to apply to the model's loss for the samples from this
+		      class during training. This can be useful to tell the model to "pay
+		      more attention" to samples from an under-represented class.
+		    reset_metrics: If `True`, the metrics returned will be only for this
+		      batch. If `False`, the metrics will be statefully accumulated across
+		      batches.
 		
 		Returns:
 		    Scalar training loss
@@ -1949,7 +2006,7 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		Raises:
 		  ValueError: In case of invalid user-provided arguments.
 	**/
-	public function train_on_batch(x:Dynamic, ?y:Dynamic, ?sample_weight:Dynamic, ?class_weight:Dynamic):Dynamic;
+	public function train_on_batch(x:Dynamic, ?y:Dynamic, ?sample_weight:Dynamic, ?class_weight:Dynamic, ?reset_metrics:Dynamic):Dynamic;
 	public var trainable_variables : Dynamic;
 	public var trainable_weights : Dynamic;
 	/**
@@ -2002,9 +2059,10 @@ package tensorflow.contrib.eager.python.examples.l2hmc.neural_nets;
 		    A list of update ops.
 	**/
 	public var updates : Dynamic;
-	public var uses_learning_phase : Dynamic;
 	/**
 		Returns the list of all layer variables/weights.
+		
+		Alias of `self.weights`.
 		
 		Returns:
 		  A list of variables.

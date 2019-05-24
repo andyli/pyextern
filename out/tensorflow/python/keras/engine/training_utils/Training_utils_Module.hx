@@ -9,26 +9,6 @@ package tensorflow.python.keras.engine.training_utils;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Converts all lists to tuples, since Datasets expect tuples.
-	**/
-	static public function _convert_lists_to_tuples(data:Dynamic):Dynamic;
-	/**
-		Returns batch axis shape for nested data.
-	**/
-	static public function _get_batch_axis_size(data:Dynamic):Dynamic;
-	/**
-		Maps each nested element using func.
-	**/
-	static public function _map_nested(data:Dynamic, func:Dynamic):Dynamic;
-	/**
-		Checks if all elements in a nested structure satisfy cond_func.
-	**/
-	static public function _nested_all(data:Dynamic, cond_func:Dynamic):Dynamic;
-	/**
-		Checks if any nested_elements in a nested structure satisfy cond_func.
-	**/
-	static public function _nested_any(data:Dynamic, cond_func:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Shuffles an array in a batch-wise fashion.
@@ -44,6 +24,10 @@ package tensorflow.python.keras.engine.training_utils;
 		    The `index_array` array, shuffled in a batch-wise fashion.
 	**/
 	static public function batch_shuffle(index_array:Dynamic, batch_size:Dynamic):Dynamic;
+	/**
+		Invokes metric function and returns the metric result tensor.
+	**/
+	static public function call_metric_function(metric_fn:Dynamic, y_true:Dynamic, y_pred:Dynamic, ?weights:Dynamic, ?mask:Dynamic):Dynamic;
 	/**
 		Casts the given data tensors to the default floating point type.
 		
@@ -160,41 +144,40 @@ package tensorflow.python.keras.engine.training_utils;
 		    For instance, if the model has 2 outputs, and for the first output
 		    we want to compute "binary_accuracy" and "binary_crossentropy",
 		    and just "binary_accuracy" for the second output,
-		    the list would look like: `[[('acc', binary_accuracy()),
-		    ('ce', binary_crossentropy())], [('acc', binary_accuracy())]]`
+		    the list would look like: `[
+		      {
+		        'acc': (binary_accuracy(), mean_obj_1),
+		        'ce': (binary_crossentropy(), mean_obj_2)
+		      },
+		      {
+		        'acc': (binary_accuracy(), mean_obj_3)
+		      }
+		    ]`
 		
 		Raises:
 		    TypeError: if an incorrect type is passed for the `metrics` argument.
 	**/
 	static public function collect_per_output_metric_info(metrics:Dynamic, output_names:Dynamic, output_shapes:Dynamic, loss_fns:Dynamic, ?sample_weights:Dynamic):Dynamic;
+	static public var division : Dynamic;
+	static public function generic_output_names(outputs_list:Dynamic):Dynamic;
 	/**
-		Converts NumPy arrays or EagerTensors to an EagerIterator.
+		Retrieves input shape and input dtype of layer if applicable.
 		
-		Combines all provided data into a single EagerIterator.
-		
-		Arguments:
-		    x: NumPy array or EagerTensor,  or list of Numpy arrays or EagerTensors
-		      representing inputs to a model.
-		    y: Optional. NumPy array or EagerTensor, or list of Numpy arrays or
-		      EagerTensors representing targets of a model.
-		    sample_weights: Optional NumPy array or EagerTensor representing sample
-		      weights.
-		    batch_size: Used to batch data and calculate how many steps EagerIterator
-		      should take per epoch.
-		    steps_per_epoch: If provided, how many steps EagerIterator should take per
-		      epoch.
-		    epochs: Epochs to repeat iterator for.
-		    shuffle: Whether to shuffle data after each epoch.
-		
-		Raises:
-		    ValueError: if steps_per_epoch cannot be calculated from the data
-		    provided.
+		Args:
+		  layer: Layer (or model) instance.
 		
 		Returns:
-		    (Iterator, steps_per_epoch).
+		  Tuple (input_shape, input_dtype). Both could be None if the layer
+		    does not have a defined input shape.
+		
+		Raises:
+		  ValueError: in case an empty Sequential or Graph Network is passed.
 	**/
-	static public function convert_to_iterator(?x:Dynamic, ?y:Dynamic, ?sample_weights:Dynamic, ?batch_size:Dynamic, ?steps_per_epoch:Dynamic, ?epochs:Dynamic, ?shuffle:Dynamic):Dynamic;
-	static public var division : Dynamic;
+	static public function get_input_shape_and_dtype(layer:Dynamic):Dynamic;
+	/**
+		Returns the loss function corresponding to the given loss input.
+	**/
+	static public function get_loss_function(loss:Dynamic):Dynamic;
 	/**
 		Returns the metric function corresponding to the given metric input.
 		
@@ -223,12 +206,30 @@ package tensorflow.python.keras.engine.training_utils;
 		Returns the sample weight and weight mode for a single output.
 	**/
 	static public function get_output_sample_weight_and_mode(skip_target_weighing_indices:Dynamic, sample_weight_mode:Dynamic, output_name:Dynamic, output_index:Dynamic):Dynamic;
+	/**
+		Get Progbar.
+	**/
+	static public function get_progbar(model:Dynamic, count_mode:Dynamic):Dynamic;
+	/**
+		Gets the static batch size of a Layer.
+		
+		Arguments:
+		  layer: a `Layer` instance.
+		
+		Returns:
+		  The static batch size of a Layer.
+	**/
+	static public function get_static_batch_size(layer:Dynamic):Dynamic;
 	static public function has_symbolic_tensors(ls:Dynamic):Dynamic;
 	static public function has_tensors(ls:Dynamic):Dynamic;
 	/**
 		Returns whether `layer` is a FeatureLayer or not.
 	**/
 	static public function is_feature_layer(layer:Dynamic):Dynamic;
+	/**
+		Computes logs for sending to `on_batch_end` methods.
+	**/
+	static public function make_logs(model:Dynamic, outputs:Dynamic, mode:Dynamic, ?prefix:Dynamic):Dynamic;
 	/**
 		Prepares sample weights for the model.
 		
@@ -247,6 +248,49 @@ package tensorflow.python.keras.engine.training_utils;
 	**/
 	static public function prepare_sample_weights(output_names:Dynamic, sample_weight_mode:Dynamic, skip_target_weighing_indices:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Slices batches out of provided arrays (workaround for eager tensors).
+		
+		Unfortunately eager tensors don't have the same slicing behavior as
+		Numpy arrays (they follow the same slicing behavior as symbolic TF tensors),
+		hence we cannot use `generic_utils.slice_arrays` directly
+		and we have to implement this workaround based on `concat`. This has a
+		performance cost.
+		
+		Arguments:
+		  arrays: Single array or list of arrays.
+		  indices: List of indices in the array that should be included in the output
+		    batch.
+		  contiguous: Boolean flag indicating whether the indices are contiguous.
+		
+		Returns:
+		  Slice of data (either single array or list of arrays).
+	**/
+	static public function slice_arrays(arrays:Dynamic, indices:Dynamic, ?contiguous:Dynamic):Dynamic;
+	/**
+		Squeeze or expand last dimension if needed.
+		
+		1. Squeezes last dim of `y_pred` or `y_true` if their rank differs by 1
+		(using `confusion_matrix.remove_squeezable_dimensions`).
+		2. Squeezes or expands last dim of `sample_weight` if its rank differs by 1
+		from the new rank of `y_pred`.
+		If `sample_weight` is scalar, it is kept scalar.
+		
+		This will use static shape if available. Otherwise, it will add graph
+		operations, which could result in a performance hit.
+		
+		Args:
+		  y_pred: Predicted values, a `Tensor` of arbitrary dimensions.
+		  y_true: Optional label `Tensor` whose dimensions match `y_pred`.
+		  sample_weight: Optional weight scalar or `Tensor` whose dimensions match
+		    `y_pred`.
+		
+		Returns:
+		  Tuple of `y_pred`, `y_true` and `sample_weight`. Each of them possibly has
+		  the last dimension squeezed,
+		  `sample_weight` could be extended by one dimension.
+	**/
+	static public function squeeze_or_expand_dimensions(y_pred:Dynamic, y_true:Dynamic, sample_weight:Dynamic):Dynamic;
 	static public function standardize_class_weights(class_weight:Dynamic, output_names:Dynamic):Dynamic;
 	/**
 		Normalizes inputs and targets provided by users.
@@ -289,7 +333,10 @@ package tensorflow.python.keras.engine.training_utils;
 	**/
 	static public function standardize_sample_or_class_weights(x_weight:Dynamic, output_names:Dynamic, weight_type:Dynamic):Dynamic;
 	static public function standardize_sample_weights(sample_weight:Dynamic, output_names:Dynamic):Dynamic;
-	static public function standardize_single_array(x:Dynamic):Dynamic;
+	/**
+		Expand data of shape (x,) to (x, 1), unless len(expected_shape)==1.
+	**/
+	static public function standardize_single_array(x:Dynamic, ?expected_shape:Dynamic):Dynamic;
 	/**
 		Performs sample weight validation and standardization.
 		
@@ -312,6 +359,21 @@ package tensorflow.python.keras.engine.training_utils;
 		    ValueError: In case of invalid user-provided arguments.
 	**/
 	static public function standardize_weights(y:Dynamic, ?sample_weight:Dynamic, ?class_weight:Dynamic, ?sample_weight_mode:Dynamic):Dynamic;
+	/**
+		Trace the model call to create a tf.function for exporting a Keras model.
+		
+		Args:
+		  model: A Keras model.
+		  input_signature: optional, a list of tf.TensorSpec objects specifying the
+		    inputs to the model.
+		
+		Returns:
+		  A tf.function wrapping the model's call function with input signatures set.
+		
+		Raises:
+		  ValueError: if input signature cannot be inferred from the model.
+	**/
+	static public function trace_model_call(model:Dynamic, ?input_signature:Dynamic):Dynamic;
 	/**
 		Validates user input arguments when a dataset iterator is passed.
 		

@@ -12,6 +12,10 @@ package theano.gof.cmodule;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Get the suffix for compiled extensions
+	**/
+	static public function _get_ext_suffix():Dynamic;
 	static public var _logger : Dynamic;
 	static public var _module_cache : Dynamic;
 	/**

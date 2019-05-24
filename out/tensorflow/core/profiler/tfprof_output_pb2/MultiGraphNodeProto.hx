@@ -1,13 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.profiler.tfprof_output_pb2;
 @:pythonImport("tensorflow.core.profiler.tfprof_output_pb2", "MultiGraphNodeProto") extern class MultiGraphNodeProto {
-	static public var ACCELERATOR_EXEC_MICROS_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CHILDREN_FIELD_NUMBER : Dynamic;
-	static public var CPU_EXEC_MICROS_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -29,12 +26,10 @@ package tensorflow.core.profiler.tfprof_output_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EXEC_MICROS_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FLOAT_OPS_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -43,7 +38,6 @@ package tensorflow.core.profiler.tfprof_output_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GRAPH_NODES_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -68,16 +62,10 @@ package tensorflow.core.profiler.tfprof_output_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NAME_FIELD_NUMBER : Dynamic;
-	static public var OUTPUT_BYTES_FIELD_NUMBER : Dynamic;
-	static public var PARAMETERS_FIELD_NUMBER : Dynamic;
-	static public var PEAK_BYTES_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var REQUESTED_BYTES_FIELD_NUMBER : Dynamic;
-	static public var RESIDUAL_BYTES_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -94,15 +82,10 @@ package tensorflow.core.profiler.tfprof_output_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TOTAL_ACCELERATOR_EXEC_MICROS_FIELD_NUMBER : Dynamic;
-	static public var TOTAL_CPU_EXEC_MICROS_FIELD_NUMBER : Dynamic;
-	static public var TOTAL_EXEC_MICROS_FIELD_NUMBER : Dynamic;
-	static public var TOTAL_FLOAT_OPS_FIELD_NUMBER : Dynamic;
-	static public var TOTAL_OUTPUT_BYTES_FIELD_NUMBER : Dynamic;
-	static public var TOTAL_PARAMETERS_FIELD_NUMBER : Dynamic;
-	static public var TOTAL_PEAK_BYTES_FIELD_NUMBER : Dynamic;
-	static public var TOTAL_REQUESTED_BYTES_FIELD_NUMBER : Dynamic;
-	static public var TOTAL_RESIDUAL_BYTES_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -270,4 +253,88 @@ package tensorflow.core.profiler.tfprof_output_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.accelerator_exec_micros
+	**/
+	public var accelerator_exec_micros : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.children
+	**/
+	public var children : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.cpu_exec_micros
+	**/
+	public var cpu_exec_micros : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.exec_micros
+	**/
+	public var exec_micros : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.float_ops
+	**/
+	public var float_ops : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.graph_nodes
+	**/
+	public var graph_nodes : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.name
+	**/
+	public var name : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.output_bytes
+	**/
+	public var output_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.parameters
+	**/
+	public var parameters : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.peak_bytes
+	**/
+	public var peak_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.requested_bytes
+	**/
+	public var requested_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.residual_bytes
+	**/
+	public var residual_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.total_accelerator_exec_micros
+	**/
+	public var total_accelerator_exec_micros : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.total_cpu_exec_micros
+	**/
+	public var total_cpu_exec_micros : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.total_exec_micros
+	**/
+	public var total_exec_micros : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.total_float_ops
+	**/
+	public var total_float_ops : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.total_output_bytes
+	**/
+	public var total_output_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.total_parameters
+	**/
+	public var total_parameters : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.total_peak_bytes
+	**/
+	public var total_peak_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.total_requested_bytes
+	**/
+	public var total_requested_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.MultiGraphNodeProto.total_residual_bytes
+	**/
+	public var total_residual_bytes : Dynamic;
 }

@@ -164,6 +164,7 @@ package pandas.plotting._core;
 	**/
 	public function _parse_errorbars(label:Dynamic, err:Dynamic):Dynamic;
 	static public function _plot(ax:Dynamic, x:Dynamic, y:Dynamic, ?style:Dynamic, ?is_errorbar:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function _plot_colorbar(ax:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _pop_attributes : Dynamic;
 	/**
 		Post process for each axes. Overridden in child classes
@@ -178,8 +179,6 @@ package pandas.plotting._core;
 	public function draw():Dynamic;
 	public function generate():Dynamic;
 	public var legend_title : Dynamic;
-	static public function mpl_ge_1_3_1():Dynamic;
-	static public function mpl_ge_1_5_0():Dynamic;
 	public var nseries : Dynamic;
 	public function on_right(i:Dynamic):Dynamic;
 	static public var orientation : Dynamic;

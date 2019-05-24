@@ -10,40 +10,13 @@ package pandas.core.reshape.merge;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _any(x:Dynamic):Dynamic;
-	static public function _asof_by_function(direction:Dynamic, on_type:Dynamic, by_type:Dynamic):Dynamic;
-	static public function _asof_function(direction:Dynamic, on_type:Dynamic):Dynamic;
-	static public var _cython_types : Dynamic;
-	static public function _ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _asof_by_function(direction:Dynamic):Dynamic;
+	static public function _asof_function(direction:Dynamic):Dynamic;
 	static public function _factorize_keys(lk:Dynamic, rk:Dynamic, ?sort:Dynamic):Dynamic;
-	/**
-		Given a dtype, return a C name like 'int64_t' or 'double' 
-	**/
-	static public function _get_cython_type(dtype:Dynamic):Dynamic;
 	/**
 		Upcast a dtype to 'int64_t', 'double', or 'object' 
 	**/
 	static public function _get_cython_type_upcast(dtype:Dynamic):Dynamic;
-	/**
-		Get the dtype instance associated with an array
-		or dtype object.
-		
-		Parameters
-		----------
-		arr_or_dtype : array-like
-		    The array-like or dtype object whose dtype we want to extract.
-		
-		Returns
-		-------
-		obj_dtype : The extract dtype instance from the
-		            passed in array or dtype object.
-		
-		Raises
-		------
-		TypeError : The passed in object is None.
-	**/
-	static public function _get_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Parameters
 		----------
@@ -99,6 +72,41 @@ package pandas.core.reshape.merge;
 		array([ 1,  0,  0, -1])
 	**/
 	static public function _recode_for_categories(codes:Dynamic, old_categories:Dynamic, new_categories:Dynamic):Dynamic;
+	/**
+		*this is an internal non-public method*
+		
+		Returns the levels, labels and names of a multi-index to multi-index join.
+		Depending on the type of join, this method restores the appropriate
+		dropped levels of the joined multi-index.
+		The method relies on lidx, rindexer which hold the index positions of
+		left and right, where a join was feasible
+		
+		Parameters
+		----------
+		left : MultiIndex
+		    left index
+		right : MultiIndex
+		    right index
+		dropped_level_names : str array
+		    list of non-common level names
+		join_index : MultiIndex
+		    the index of the join between the
+		    common levels of left and right
+		lindexer : intp array
+		    left indexer
+		rindexer : intp array
+		    right indexer
+		
+		Returns
+		-------
+		levels : list of Index
+		    levels of combined multiindexes
+		labels : intp array
+		    labels of combined multiindexes
+		names : str array
+		    names of combined multiindexes
+	**/
+	static public function _restore_dropped_levels_multijoin(left:Dynamic, right:Dynamic, dropped_level_names:Dynamic, join_index:Dynamic, lindexer:Dynamic, rindexer:Dynamic):Dynamic;
 	static public function _right_outer_join(x:Dynamic, y:Dynamic, max_groups:Dynamic):Dynamic;
 	static public function _should_fill(lname:Dynamic, rname:Dynamic):Dynamic;
 	static public function _sort_labels(uniques:Dynamic, left:Dynamic, right:Dynamic):Dynamic;
@@ -114,6 +122,9 @@ package pandas.core.reshape.merge;
 		copy : bool
 	**/
 	static public function concatenate_block_managers(mgrs_indexers:Dynamic, axes:Dynamic, concat_axis:Dynamic, copy:Dynamic):Dynamic;
+	static public function ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check if the object is array-like.
 		
@@ -122,7 +133,7 @@ package pandas.core.reshape.merge;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -156,6 +167,11 @@ package pandas.core.reshape.merge;
 		-------
 		boolean : Whether or not the array or dtype is of a boolean dtype.
 		
+		Notes
+		-----
+		An ExtensionArray is considered boolean when the ``_is_boolean``
+		attribute is set to True.
+		
 		Examples
 		--------
 		>>> is_bool_dtype(str)
@@ -171,6 +187,10 @@ package pandas.core.reshape.merge;
 		>>> is_bool_dtype(pd.Series([1, 2]))
 		False
 		>>> is_bool_dtype(np.array([True, False]))
+		True
+		>>> is_bool_dtype(pd.Categorical([True, False]))
+		True
+		>>> is_bool_dtype(pd.SparseArray([True, False]))
 		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -325,7 +345,54 @@ package pandas.core.reshape.merge;
 	**/
 	static public function is_dtype_equal(source:Dynamic, target:Dynamic):Dynamic;
 	/**
+		Check if an object is a pandas extension array type.
+		
+		See the :ref:`Use Guide <extending.extension-types>` for more.
+		
+		Parameters
+		----------
+		arr_or_dtype : object
+		    For array-like input, the ``.dtype`` attribute will
+		    be extracted.
+		
+		Returns
+		-------
+		bool
+		    Whether the `arr_or_dtype` is an extension array type.
+		
+		Notes
+		-----
+		This checks whether an object implements the pandas extension
+		array interface. In pandas, this includes:
+		
+		* Categorical
+		* Sparse
+		* Interval
+		* Period
+		* DatetimeArray
+		* TimedeltaArray
+		
+		Third-party libraries may implement arrays or types satisfying
+		this interface as well.
+		
+		Examples
+		--------
+		>>> from pandas.api.types import is_extension_array_dtype
+		>>> arr = pd.Categorical(['a', 'b'])
+		>>> is_extension_array_dtype(arr)
+		True
+		>>> is_extension_array_dtype(arr.dtype)
+		True
+		
+		>>> arr = np.array(['a', 'b'])
+		>>> is_extension_array_dtype(arr.dtype)
+		False
+	**/
+	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Check whether the provided array or dtype is of a float dtype.
+		
+		This function is internal and should not be exposed in the public API.
 		
 		Parameters
 		----------
@@ -378,6 +445,12 @@ package pandas.core.reshape.merge;
 		False
 		>>> is_int64_dtype(np.int64)
 		True
+		>>> is_int64_dtype('int8')
+		False
+		>>> is_int64_dtype('Int8')
+		False
+		>>> is_int64_dtype(pd.Int64Dtype)
+		True
 		>>> is_int64_dtype(float)
 		False
 		>>> is_int64_dtype(np.uint64)  # unsigned
@@ -393,51 +466,16 @@ package pandas.core.reshape.merge;
 	**/
 	static public function is_int64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_int64_overflow_possible(shape:Dynamic):Dynamic;
-	/**
-		Check whether the provided array or dtype is of an
-		integer, timedelta64, or datetime64 dtype.
-		
-		Parameters
-		----------
-		arr_or_dtype : array-like
-		    The array or dtype to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array or dtype is of an
-		          integer, timedelta64, or datetime64 dtype.
-		
-		Examples
-		--------
-		>>> is_int_or_datetime_dtype(str)
-		False
-		>>> is_int_or_datetime_dtype(int)
-		True
-		>>> is_int_or_datetime_dtype(float)
-		False
-		>>> is_int_or_datetime_dtype(np.uint64)
-		True
-		>>> is_int_or_datetime_dtype(np.datetime64)
-		True
-		>>> is_int_or_datetime_dtype(np.timedelta64)
-		True
-		>>> is_int_or_datetime_dtype(np.array(['a', 'b']))
-		False
-		>>> is_int_or_datetime_dtype(pd.Series([1, 2]))
-		True
-		>>> is_int_or_datetime_dtype(np.array([], dtype=np.timedelta64))
-		True
-		>>> is_int_or_datetime_dtype(np.array([], dtype=np.datetime64))
-		True
-		>>> is_int_or_datetime_dtype(pd.Index([1, 2.]))  # float
-		False
-	**/
-	static public function is_int_or_datetime_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of an integer dtype.
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
 		
 		Parameters
 		----------
@@ -458,6 +496,12 @@ package pandas.core.reshape.merge;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -483,7 +527,11 @@ package pandas.core.reshape.merge;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -502,8 +550,49 @@ package pandas.core.reshape.merge;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
+	/**
+		Check if the object is a number.
+		
+		Returns True when the object is a number, and False if is not.
+		
+		Parameters
+		----------
+		obj : any type
+		    The object to check if is a number.
+		
+		Returns
+		-------
+		is_number : bool
+		    Whether `obj` is a number or not.
+		
+		See Also
+		--------
+		pandas.api.types.is_integer: Checks a subgroup of numbers.
+		
+		Examples
+		--------
+		>>> pd.api.types.is_number(1)
+		True
+		>>> pd.api.types.is_number(7.15)
+		True
+		
+		Booleans are valid because they are int subclass.
+		
+		>>> pd.api.types.is_number(False)
+		True
+		
+		>>> pd.api.types.is_number("foo")
+		False
+		>>> pd.api.types.is_number("5")
+		False
+	**/
+	static public function is_number(obj:Dynamic):Bool;
 	/**
 		Check whether the provided array or dtype is of a numeric dtype.
 		
@@ -541,6 +630,106 @@ package pandas.core.reshape.merge;
 	**/
 	static public function is_numeric_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
+		Check whether an array-like or dtype is of the object dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of the object dtype.
+		
+		Examples
+		--------
+		>>> is_object_dtype(object)
+		True
+		>>> is_object_dtype(int)
+		False
+		>>> is_object_dtype(np.array([], dtype=object))
+		True
+		>>> is_object_dtype(np.array([], dtype=int))
+		False
+		>>> is_object_dtype([1, 2, 3])
+		False
+	**/
+	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indicates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
+		
+		Parameters
+		----------
+		obj : scalar or array-like
+		    Object to check for null or missing values.
+		
+		Returns
+		-------
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
+		
+		See Also
+		--------
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
+	**/
+	static public function isnull(obj:Dynamic):Dynamic;
+	/**
 		If two indices overlap, add suffixes to overlapping entries.
 		
 		If corresponding suffix is empty, the entry is simply converted to string.
@@ -548,26 +737,28 @@ package pandas.core.reshape.merge;
 	static public function items_overlap_with_suffix(left:Dynamic, lsuffix:Dynamic, right:Dynamic, rsuffix:Dynamic):Dynamic;
 	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Merge DataFrame objects by performing a database-style join operation by
-		columns or indexes.
+		Merge DataFrame or named Series objects with a database-style join.
 		
-		If joining columns on columns, the DataFrame indexes *will be
-		ignored*. Otherwise if joining indexes on indexes or indexes on a column or
-		columns, the index will be passed on.
+		The join is done on columns or indexes. If joining columns on
+		columns, the DataFrame indexes *will be ignored*. Otherwise if joining indexes
+		on indexes or indexes on a column or columns, the index will be passed on.
 		
 		Parameters
 		----------
 		left : DataFrame
-		right : DataFrame
+		right : DataFrame or named Series
+		    Object to merge with.
 		how : {'left', 'right', 'outer', 'inner'}, default 'inner'
+		    Type of merge to be performed.
+		
 		    * left: use only keys from left frame, similar to a SQL left outer join;
-		      preserve key order
+		      preserve key order.
 		    * right: use only keys from right frame, similar to a SQL right outer join;
-		      preserve key order
+		      preserve key order.
 		    * outer: use union of keys from both frames, similar to a SQL full outer
-		      join; sort keys lexicographically
+		      join; sort keys lexicographically.
 		    * inner: use intersection of keys from both frames, similar to a SQL inner
-		      join; preserve the order of the left keys
+		      join; preserve the order of the left keys.
 		on : label or list
 		    Column or index level names to join on. These must be found in both
 		    DataFrames. If `on` is None and not merging on indexes then this defaults
@@ -580,22 +771,23 @@ package pandas.core.reshape.merge;
 		    Column or index level names to join on in the right DataFrame. Can also
 		    be an array or list of arrays of the length of the right DataFrame.
 		    These arrays are treated as if they are columns.
-		left_index : boolean, default False
+		left_index : bool, default False
 		    Use the index from the left DataFrame as the join key(s). If it is a
 		    MultiIndex, the number of keys in the other DataFrame (either the index
-		    or a number of columns) must match the number of levels
-		right_index : boolean, default False
+		    or a number of columns) must match the number of levels.
+		right_index : bool, default False
 		    Use the index from the right DataFrame as the join key. Same caveats as
-		    left_index
-		sort : boolean, default False
+		    left_index.
+		sort : bool, default False
 		    Sort the join keys lexicographically in the result DataFrame. If False,
-		    the order of the join keys depends on the join type (how keyword)
-		suffixes : 2-length sequence (tuple, list, ...)
+		    the order of the join keys depends on the join type (how keyword).
+		suffixes : tuple of (str, str), default ('_x', '_y')
 		    Suffix to apply to overlapping column names in the left and right
-		    side, respectively
-		copy : boolean, default True
-		    If False, do not copy data unnecessarily
-		indicator : boolean or string, default False
+		    side, respectively. To raise an exception on overlapping columns use
+		    (False, False).
+		copy : bool, default True
+		    If False, avoid copy if possible.
+		indicator : bool or str, default False
 		    If True, adds a column to output DataFrame called "_merge" with
 		    information on the source of each row.
 		    If string, column with information on source of each row will be added to
@@ -605,7 +797,7 @@ package pandas.core.reshape.merge;
 		    "right_only" for observations whose merge key only appears in 'right'
 		    DataFrame, and "both" if the observation's merge key is found in both.
 		
-		validate : string, default None
+		validate : str, optional
 		    If specified, checks if merge is of specified type.
 		
 		    * "one_to_one" or "1:1": check if merge keys are unique in both
@@ -618,43 +810,78 @@ package pandas.core.reshape.merge;
 		
 		    .. versionadded:: 0.21.0
 		
+		Returns
+		-------
+		DataFrame
+		    A DataFrame of the two merged objects.
+		
+		See Also
+		--------
+		merge_ordered : Merge with optional filling/interpolation.
+		merge_asof : Merge on nearest keys.
+		DataFrame.join : Similar method using indices.
+		
 		Notes
 		-----
 		Support for specifying index levels as the `on`, `left_on`, and
 		`right_on` parameters was added in version 0.23.0
+		Support for merging named Series objects was added in version 0.24.0
 		
 		Examples
 		--------
 		
-		>>> A              >>> B
-		    lkey value         rkey value
-		0   foo  1         0   foo  5
-		1   bar  2         1   bar  6
-		2   baz  3         2   qux  7
-		3   foo  4         3   bar  8
+		>>> df1 = pd.DataFrame({'lkey': ['foo', 'bar', 'baz', 'foo'],
+		...                     'value': [1, 2, 3, 5]})
+		>>> df2 = pd.DataFrame({'rkey': ['foo', 'bar', 'baz', 'foo'],
+		...                     'value': [5, 6, 7, 8]})
+		>>> df1
+		    lkey value
+		0   foo      1
+		1   bar      2
+		2   baz      3
+		3   foo      5
+		>>> df2
+		    rkey value
+		0   foo      5
+		1   bar      6
+		2   baz      7
+		3   foo      8
 		
-		>>> A.merge(B, left_on='lkey', right_on='rkey', how='outer')
-		   lkey  value_x  rkey  value_y
-		0  foo   1        foo   5
-		1  foo   4        foo   5
-		2  bar   2        bar   6
-		3  bar   2        bar   8
-		4  baz   3        NaN   NaN
-		5  NaN   NaN      qux   7
+		Merge df1 and df2 on the lkey and rkey columns. The value columns have
+		the default suffixes, _x and _y, appended.
 		
-		Returns
-		-------
-		merged : DataFrame
-		    The output type will the be same as 'left', if it is a subclass
-		    of DataFrame.
+		>>> df1.merge(df2, left_on='lkey', right_on='rkey')
+		  lkey  value_x rkey  value_y
+		0  foo        1  foo        5
+		1  foo        1  foo        8
+		2  foo        5  foo        5
+		3  foo        5  foo        8
+		4  bar        2  bar        6
+		5  baz        3  baz        7
 		
-		See also
-		--------
-		merge_ordered
-		merge_asof
-		DataFrame.join
+		Merge DataFrames df1 and df2 with specified left and right suffixes
+		appended to any overlapping columns.
+		
+		>>> df1.merge(df2, left_on='lkey', right_on='rkey',
+		...           suffixes=('_left', '_right'))
+		  lkey  value_left rkey  value_right
+		0  foo           1  foo            5
+		1  foo           1  foo            8
+		2  foo           5  foo            5
+		3  foo           5  foo            8
+		4  bar           2  bar            6
+		5  baz           3  baz            7
+		
+		Merge DataFrames df1 and df2, but raise an exception if the DataFrames have
+		any overlapping columns.
+		
+		>>> df1.merge(df2, left_on='lkey', right_on='rkey', suffixes=(False, False))
+		Traceback (most recent call last):
+		...
+		ValueError: columns overlap but no suffix specified:
+		    Index(['value'], dtype='object')
 	**/
-	static public function merge(left:Dynamic, right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic, ?validate:Dynamic):pandas.DataFrame;
+	static public function merge(left:Dynamic, right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic, ?validate:Dynamic):Dynamic;
 	/**
 		Perform an asof merge. This is similar to a left-join except that we
 		match on nearest key rather than equal keys.
@@ -726,17 +953,21 @@ package pandas.core.reshape.merge;
 		    - If True, allow matching with the same 'on' value
 		      (i.e. less-than-or-equal-to / greater-than-or-equal-to)
 		    - If False, don't match the same 'on' value
-		      (i.e., stricly less-than / strictly greater-than)
+		      (i.e., strictly less-than / strictly greater-than)
 		
 		direction : 'backward' (default), 'forward', or 'nearest'
 		    Whether to search for prior, subsequent, or closest matches.
 		
 		    .. versionadded:: 0.20.0
 		
-		
 		Returns
 		-------
 		merged : DataFrame
+		
+		See Also
+		--------
+		merge
+		merge_ordered
 		
 		Examples
 		--------
@@ -867,11 +1098,6 @@ package pandas.core.reshape.merge;
 		2 2016-05-25 13:30:00.048   GOOG  720.77       100     NaN     NaN
 		3 2016-05-25 13:30:00.048   GOOG  720.92       100     NaN     NaN
 		4 2016-05-25 13:30:00.048   AAPL   98.00       100     NaN     NaN
-		
-		See also
-		--------
-		merge
-		merge_ordered
 	**/
 	static public function merge_asof(left:Dynamic, right:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?by:Dynamic, ?left_by:Dynamic, ?right_by:Dynamic, ?suffixes:Dynamic, ?tolerance:Dynamic, ?allow_exact_matches:Dynamic, ?direction:Dynamic):pandas.DataFrame;
 	/**
@@ -911,6 +1137,17 @@ package pandas.core.reshape.merge;
 		
 		    .. versionadded:: 0.19.0
 		
+		Returns
+		-------
+		merged : DataFrame
+		    The output type will the be same as 'left', if it is a subclass
+		    of DataFrame.
+		
+		See Also
+		--------
+		merge
+		merge_asof
+		
 		Examples
 		--------
 		>>> A                      >>> B
@@ -934,17 +1171,6 @@ package pandas.core.reshape.merge;
 		7     b   c       2     2.0
 		8     b   d       2     3.0
 		9     b   e       3     3.0
-		
-		Returns
-		-------
-		merged : DataFrame
-		    The output type will the be same as 'left', if it is a subclass
-		    of DataFrame.
-		
-		See also
-		--------
-		merge
-		merge_asof
 	**/
 	static public function merge_ordered(left:Dynamic, right:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_by:Dynamic, ?right_by:Dynamic, ?fill_method:Dynamic, ?suffixes:Dynamic, ?how:Dynamic):pandas.DataFrame;
 	/**
@@ -958,6 +1184,19 @@ package pandas.core.reshape.merge;
 		Returns
 		-------
 		np.dtype or a pandas dtype
+		
+		Examples
+		--------
+		>>> na_value_for_dtype(np.dtype('int64'))
+		0
+		>>> na_value_for_dtype(np.dtype('int64'), compat=False)
+		nan
+		>>> na_value_for_dtype(np.dtype('float64'))
+		nan
+		>>> na_value_for_dtype(np.dtype('bool'))
+		False
+		>>> na_value_for_dtype(np.dtype('datetime64[ns]'))
+		NaT
 	**/
 	static public function na_value_for_dtype(dtype:Dynamic, ?compat:Dynamic):Dynamic;
 	/**
@@ -993,4 +1232,5 @@ package pandas.core.reshape.merge;
 		True
 	**/
 	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
+	static public function validate_operand(obj:Dynamic):Dynamic;
 }

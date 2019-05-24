@@ -68,7 +68,7 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 	/**
 		Load Boston housing dataset. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use scikits.learn.datasets.
 		
@@ -82,7 +82,7 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 	/**
 		Load dataset from CSV file with a header row. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data instead.
 	**/
@@ -90,7 +90,7 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 	/**
 		Load dataset from CSV file without a header row. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data instead.
 	**/
@@ -98,7 +98,7 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 	/**
 		Load Iris dataset. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use scikits.learn.datasets.
 		
@@ -112,7 +112,7 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 	/**
 		Download the data from source url, unless it's already here. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please write your own downloading logic.
 		
@@ -129,7 +129,7 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 	/**
 		Simple decorator for wrapping retriable functions. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use the retry module or similar alternatives.
 		
@@ -152,7 +152,7 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 	/**
 		Create a smaller dataset of only 1/ratio of original data. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data instead.
 	**/
@@ -160,7 +160,7 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 	/**
 		The actual wrapper function that applies the retry logic. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use urllib or similar directly.
 	**/

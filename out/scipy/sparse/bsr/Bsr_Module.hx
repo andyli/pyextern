@@ -17,6 +17,7 @@ package scipy.sparse.bsr;
 	static public function bsr_matvec(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function bsr_matvecs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function bsr_sort_indices(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function bsr_tocsr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function bsr_transpose(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Imitate numpy.matrix handling of shape arguments

@@ -15,27 +15,18 @@ package numpy.core.numerictypes;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test_types : Dynamic;
-	static public function _add_aliases():Dynamic;
-	static public function _add_array_type(typename:Dynamic, bits:Dynamic):Dynamic;
-	static public function _add_integer_aliases():Dynamic;
-	static public function _add_types():Dynamic;
 	static public var _alignment : Dynamic;
-	static public var _all_chars : Dynamic;
-	static public var _ascii_lower : Dynamic;
-	static public var _ascii_upper : Dynamic;
+	static public function _bits_of(obj:Dynamic):Dynamic;
 	static public function _can_coerce_all(dtypelist:Dynamic, ?start:Dynamic):Dynamic;
-	static public function _construct_char_code_lookup():Dynamic;
+	static public var _concrete_typeinfo : Dynamic;
+	static public var _concrete_types : Dynamic;
 	static public function _construct_lookups():Dynamic;
-	static public function _evalname(name:Dynamic):Dynamic;
 	static public function _find_common_coerce(a:Dynamic, b:Dynamic):Dynamic;
 	static public var _kind_list : Dynamic;
+	static public function _kind_name(dtype:Dynamic):Dynamic;
 	static public var _maxvals : Dynamic;
 	static public var _minvals : Dynamic;
 	static public function _register_types():Dynamic;
-	static public var _sctype2char_dict : Dynamic;
-	static public function _set_array_types():Dynamic;
-	static public function _set_up_aliases():Dynamic;
-	static public var _typestr : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var allTypes : Dynamic;
 	/**
@@ -373,8 +364,8 @@ package numpy.core.numerictypes;
 		
 		Get information about the step size of a date or time type.
 		
-		The returned tuple can be passed as the second argument of `datetime64` and
-		`timedelta64`.
+		The returned tuple can be passed as the second argument of `numpy.datetime64` and
+		`numpy.timedelta64`.
 		
 		Parameters
 		----------
@@ -398,10 +389,10 @@ package numpy.core.numerictypes;
 		array(250, dtype='timedelta64[s]')
 		
 		The result can be used to construct a datetime that uses the same units
-		as a timedelta::
+		as a timedelta
 		
 		>>> np.datetime64('2010', np.datetime_data(dt_25s))
-		numpy.datetime64('2010-01-01T00:00:00','25s')
+		numpy.datetime64('2010-01-01T00:00:00', '25s')
 	**/
 	static public function datetime_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
@@ -869,9 +860,20 @@ package numpy.core.numerictypes;
 	static public var sctypeDict : Dynamic;
 	static public var sctypeNA : Dynamic;
 	static public var sctypes : Dynamic;
+	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
 	static public var typeDict : Dynamic;
 	static public var typeNA : Dynamic;
 	static public var typecodes : Dynamic;
 	static public var typeinfo : Dynamic;
-	static public var val : Dynamic;
 }

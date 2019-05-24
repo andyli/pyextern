@@ -347,7 +347,11 @@ package tensorflow.nn;
 	**/
 	static public function bias_add(value:Dynamic, bias:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Creates a dynamic version of bidirectional recurrent neural network.
+		Creates a dynamic version of bidirectional recurrent neural network. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use `keras.layers.Bidirectional(keras.layers.RNN(cell))`, which is equivalent to this API
 		
 		Takes input and builds independent forward and backward RNNs. The input_size
 		of forward and backward cell must match. The initial state for both directions
@@ -423,6 +427,23 @@ package tensorflow.nn;
 	**/
 	static public function bidirectional_dynamic_rnn(cell_fw:Dynamic, cell_bw:Dynamic, inputs:Dynamic, ?sequence_length:Dynamic, ?initial_state_fw:Dynamic, ?initial_state_bw:Dynamic, ?dtype:Dynamic, ?parallel_iterations:Dynamic, ?swap_memory:Dynamic, ?time_major:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
+		Merge repeated labels into single labels.
+		
+		Args:
+		  labels: Tensor of shape (batch, max value in seq_length)
+		  seq_length: Tensor of shape (batch), sequence length of each batch element.
+		  name: A name for this `Op`. Defaults to "collapse_repeated_labels".
+		
+		Returns:
+		  tuple of Tensor of shape (batch, max_seq_length) with repeated labels
+		  collapsed and padded to max_seq_length, eg:
+		      [[A, A, B, B, A],
+		       [A, B, C, D, E]] => [[A, B, A, 0, 0],
+		                            [A, B, C, D, E]]
+		  and int tensor of shape [batch] with new sequence lengths.
+	**/
+	static public function collapse_repeated(labels:Dynamic, seq_length:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Compute the position ids in `sampled_candidates` matching `true_classes`.
 		
 		In Candidate Sampling, this operation facilitates virtually removing
@@ -464,13 +485,13 @@ package tensorflow.nn;
 	**/
 	static public function compute_accidental_hits(true_classes:Dynamic, sampled_candidates:Dynamic, num_true:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes a 1-D convolution given 3-D input and filter tensors. (deprecated arguments) (deprecated arguments)
+		Computes a 1-D convolution given 3-D input and filter tensors. (deprecated argument values) (deprecated argument values)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENT VALUES ARE DEPRECATED: `(data_format='NCHW')`. They will be removed in a future version.
 		Instructions for updating:
 		`NCHW` for data_format is deprecated, use `NCW` instead
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENT VALUES ARE DEPRECATED: `(data_format='NHWC')`. They will be removed in a future version.
 		Instructions for updating:
 		`NHWC` for data_format is deprecated, use `NWC` instead
 		
@@ -755,6 +776,43 @@ package tensorflow.nn;
 		Returns:
 		  A `Tensor`. Has the same type as `input`.
 	**/
+	static public function conv3d_backprop_filter(input:Dynamic, filter_sizes:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the gradients of 3-D convolution with respect to the filter.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		    Shape `[batch, depth, rows, cols, in_channels]`.
+		  filter_sizes: A `Tensor` of type `int32`.
+		    An integer vector representing the tensor shape of `filter`,
+		    where `filter` is a 5-D
+		    `[filter_depth, filter_height, filter_width, in_channels, out_channels]`
+		    tensor.
+		  out_backprop: A `Tensor`. Must have the same type as `input`.
+		    Backprop signal of shape `[batch, out_depth, out_rows, out_cols,
+		    out_channels]`.
+		  strides: A list of `ints` that has length `>= 5`.
+		    1-D tensor of length 5. The stride of the sliding window for each
+		    dimension of `input`. Must have `strides[0] = strides[4] = 1`.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  data_format: An optional `string` from: `"NDHWC", "NCDHW"`. Defaults to `"NDHWC"`.
+		    The data format of the input and output data. With the
+		    default format "NDHWC", the data is stored in the order of:
+		        [batch, in_depth, in_height, in_width, in_channels].
+		    Alternatively, the format could be "NCDHW", the data storage order is:
+		        [batch, in_channels, in_depth, in_height, in_width].
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1, 1]`.
+		    1-D tensor of length 5.  The dilation factor for each dimension of
+		    `input`. If set to k > 1, there will be k-1 skipped cells between each
+		    filter element on that dimension. The dimension order is determined by the
+		    value of `data_format`, see above for details. Dilations in the batch and
+		    depth dimensions must be 1.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
 	static public function conv3d_backprop_filter_v2(input:Dynamic, filter_sizes:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		The transpose of `conv3d`.
@@ -847,12 +905,12 @@ package tensorflow.nn;
 		It is required that 1 <= N <= 3.
 		
 		Args:
-		  input: An N-D `Tensor` of type `T`, of shape
+		  input: An (N+2)-D `Tensor` of type `T`, of shape
 		    `[batch_size] + input_spatial_shape + [in_channels]` if data_format does
 		    not start with "NC" (default), or
 		    `[batch_size, in_channels] + input_spatial_shape` if data_format starts
 		    with "NC".
-		  filter: An N-D `Tensor` with the same type as `input` and shape
+		  filter: An (N+2)-D `Tensor` with the same type as `input` and shape
 		    `spatial_filter_shape + [in_channels, out_channels]`.
 		  padding: A string, either `"VALID"` or `"SAME"`. The padding algorithm.
 		  strides: Optional.  Sequence of N ints >= 1.  Specifies the output stride.
@@ -946,18 +1004,57 @@ package tensorflow.nn;
 		
 		Returns:
 		  A tuple `(decoded, log_probabilities)` where
+		
 		  decoded: A list of length top_paths, where `decoded[j]`
 		    is a `SparseTensor` containing the decoded outputs:
+		
 		    `decoded[j].indices`: Indices matrix `(total_decoded_outputs[j] x 2)`
 		      The rows store: [batch, time].
+		
 		    `decoded[j].values`: Values vector, size `(total_decoded_outputs[j])`.
 		      The vector stores the decoded classes for beam j.
+		
 		    `decoded[j].dense_shape`: Shape vector, size `(2)`.
 		      The shape values are: `[batch_size, max_decoded_length[j]]`.
+		
 		  log_probability: A `float` matrix `(batch_size x top_paths)` containing
 		      sequence log-probabilities.
 	**/
 	static public function ctc_beam_search_decoder(inputs:Dynamic, sequence_length:Dynamic, ?beam_width:Dynamic, ?top_paths:Dynamic, ?merge_repeated:Dynamic):Dynamic;
+	/**
+		Performs beam search decoding on the logits given in input.
+		
+		**Note** The `ctc_greedy_decoder` is a special case of the
+		`ctc_beam_search_decoder` with `top_paths=1` and `beam_width=1` (but
+		that decoder is faster for this special case).
+		
+		Args:
+		  inputs: 3-D `float` `Tensor`, size
+		    `[max_time, batch_size, num_classes]`.  The logits.
+		  sequence_length: 1-D `int32` vector containing sequence lengths,
+		    having size `[batch_size]`.
+		  beam_width: An int scalar >= 0 (beam search beam width).
+		  top_paths: An int scalar >= 0, <= beam_width (controls output size).
+		
+		Returns:
+		  A tuple `(decoded, log_probabilities)` where
+		
+		  decoded: A list of length top_paths, where `decoded[j]`
+		    is a `SparseTensor` containing the decoded outputs:
+		
+		    `decoded[j].indices`: Indices matrix `[total_decoded_outputs[j], 2]`;
+		      The rows store: `[batch, time]`.
+		
+		    `decoded[j].values`: Values vector, size `[total_decoded_outputs[j]]`.
+		      The vector stores the decoded classes for beam `j`.
+		
+		    `decoded[j].dense_shape`: Shape vector, size `(2)`.
+		      The shape values are: `[batch_size, max_decoded_length[j]]`.
+		
+		  log_probability: A `float` matrix `[batch_size, top_paths]` containing
+		      sequence log-probabilities.
+	**/
+	static public function ctc_beam_search_decoder_v2(inputs:Dynamic, sequence_length:Dynamic, ?beam_width:Dynamic, ?top_paths:Dynamic):Dynamic;
 	/**
 		Performs greedy decoding on the logits given in input (best path).
 		
@@ -982,14 +1079,19 @@ package tensorflow.nn;
 		
 		Returns:
 		  A tuple `(decoded, neg_sum_logits)` where
+		
 		  decoded: A single-element list. `decoded[0]`
 		    is an `SparseTensor` containing the decoded outputs s.t.:
+		
 		    `decoded.indices`: Indices matrix `(total_decoded_outputs, 2)`.
 		      The rows store: `[batch, time]`.
+		
 		    `decoded.values`: Values vector, size `(total_decoded_outputs)`.
 		      The vector stores the decoded classes.
+		
 		    `decoded.dense_shape`: Shape vector, size `(2)`.
 		      The shape values are: `[batch_size, max_decoded_length]`
+		
 		  neg_sum_logits: A `float` matrix `(batch_size x 1)` containing, for the
 		      sequence found, the negative of the sum of the greatest logit at each
 		      timeframe.
@@ -1102,6 +1204,75 @@ package tensorflow.nn;
 		  TypeError: if labels is not a `SparseTensor`.
 	**/
 	static public function ctc_loss(labels:Dynamic, inputs:Dynamic, sequence_length:Dynamic, ?preprocess_collapse_repeated:Dynamic, ?ctc_merge_repeated:Dynamic, ?ignore_longer_outputs_than_inputs:Dynamic, ?time_major:Dynamic):Dynamic;
+	/**
+		Computes CTC (Connectionist Temporal Classification) loss.
+		
+		This op implements the CTC loss as presented in the article:
+		
+		[A. Graves, S. Fernandez, F. Gomez, J. Schmidhuber.
+		Connectionist Temporal Classification: Labeling Unsegmented Sequence Data
+		with Recurrent Neural Networks. ICML 2006, Pittsburgh, USA,
+		pp. 369-376.](http://www.cs.toronto.edu/~graves/icml_2006.pdf)
+		
+		Notes:
+		    - Same as the "Classic CTC" in TensorFlow 1.x's tf.nn.ctc_loss setting of
+		      preprocess_collapse_repeated=False, ctc_merge_repeated=True
+		    - Labels may be supplied as either a dense, zero-padded tensor with a
+		      vector of label sequence lengths OR as a SparseTensor.
+		    - On TPU and GPU:
+		        - Only dense padded labels are supported.
+		    - On CPU:
+		        - Caller may use SparseTensor or dense padded labels but calling with
+		          a SparseTensor will be significantly faster.
+		    - Default blank label is 0 rather num_classes - 1, unless overridden by
+		      blank_index.
+		
+		Args:
+		  labels: tensor of shape [batch_size, max_label_seq_length] or SparseTensor
+		  logits: tensor of shape [frames, batch_size, num_labels],
+		    if logits_time_major == False, shape is [batch_size, frames, num_labels].
+		  label_length: tensor of shape [batch_size], None if labels is SparseTensor
+		    Length of reference label sequence in labels.
+		  logit_length: tensor of shape [batch_size]
+		    Length of input sequence in logits.
+		  logits_time_major: (optional) If True (default), logits is shaped
+		    [time, batch, logits]. If False, shape is [batch, time, logits]
+		  unique: (optional) Unique label indices as computed by
+		    ctc_unique_labels(labels).  If supplied, enable a faster, memory
+		    efficient implementation on TPU.
+		  blank_index: (optional) Set the class index to use for the blank label.
+		    Negative values will start from num_classes, ie, -1 will reproduce the
+		    ctc_loss behavior of using num_classes - 1 for the blank symbol.
+		    There is some memory/performance overhead to switching from the default
+		    of 0 as an additional shifted copy of the logits may be created.
+		  name: A name for this `Op`. Defaults to "ctc_loss_dense".
+		
+		Returns:
+		  loss: tensor of shape [batch_size], negative log probabilities.
+	**/
+	static public function ctc_loss_v2(labels:Dynamic, logits:Dynamic, label_length:Dynamic, logit_length:Dynamic, ?logits_time_major:Dynamic, ?unique:Dynamic, ?blank_index:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Get unique labels and indices for batched labels for tf.nn.ctc_loss.
+		
+		For use with tf.nn.ctc_loss_v2 optional argument `unique`: This op can be
+		used to preprocess labels in input pipeline to for better speed/memory use
+		computing the ctc loss on TPU.
+		
+		Example:
+		  ctc_unique_labels([[3, 4, 4, 3]]) ->
+		    unique labels padded with 0: [[3, 4, 0, 0]]
+		    indices of original labels in unique: [0, 1, 1, 0]
+		
+		Args:
+		  labels: tensor of shape [batch_size, max_label_length] padded with 0.
+		  name: A name for this `Op`. Defaults to "ctc_unique_labels".
+		
+		Returns:
+		  tuple of
+		    - unique labels, tensor of shape `[batch_size, max_label_length]`
+		    - indices into unique labels, shape `[batch_size, max_label_length]`
+	**/
+	static public function ctc_unique_labels(labels:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		DepthToSpace for tensors of type T.
 		
@@ -1249,6 +1420,85 @@ package tensorflow.nn;
 		  `[batch, out_height, out_width, in_channels * channel_multiplier].`
 	**/
 	static public function depthwise_conv2d(input:Dynamic, filter:Dynamic, strides:Dynamic, padding:Dynamic, ?rate:Dynamic, ?name:Dynamic, ?data_format:Dynamic):Dynamic;
+	/**
+		Computes the gradients of depthwise convolution with respect to the filter.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		    4-D with shape based on `data_format`.  For example, if
+		    `data_format` is 'NHWC' then `input` is a 4-D `[batch, in_height,
+		    in_width, in_channels]` tensor.
+		  filter_sizes: A `Tensor` of type `int32`.
+		    An integer vector representing the tensor shape of `filter`,
+		    where `filter` is a 4-D
+		    `[filter_height, filter_width, in_channels, depthwise_multiplier]` tensor.
+		  out_backprop: A `Tensor`. Must have the same type as `input`.
+		    4-D with shape  based on `data_format`.
+		    For example, if `data_format` is 'NHWC' then
+		    out_backprop shape is `[batch, out_height, out_width, out_channels]`.
+		    Gradients w.r.t. the output of the convolution.
+		  strides: A list of `ints`.
+		    The stride of the sliding window for each dimension of the input
+		    of the convolution.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  data_format: An optional `string` from: `"NHWC", "NCHW"`. Defaults to `"NHWC"`.
+		    Specify the data format of the input and output data. With the
+		    default format "NHWC", the data is stored in the order of:
+		        [batch, height, width, channels].
+		    Alternatively, the format could be "NCHW", the data storage order of:
+		        [batch, channels, height, width].
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1]`.
+		    1-D tensor of length 4.  The dilation factor for each dimension of
+		    `input`. If set to k > 1, there will be k-1 skipped cells between each filter
+		    element on that dimension. The dimension order is determined by the value of
+		    `data_format`, see above for details. Dilations in the batch and depth
+		    dimensions must be 1.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function depthwise_conv2d_backprop_filter(input:Dynamic, filter_sizes:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the gradients of depthwise convolution with respect to the input.
+		
+		Args:
+		  input_sizes: A `Tensor` of type `int32`.
+		    An integer vector representing the shape of `input`, based
+		    on `data_format`.  For example, if `data_format` is 'NHWC' then
+		     `input` is a 4-D `[batch, height, width, channels]` tensor.
+		  filter: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		    4-D with shape
+		    `[filter_height, filter_width, in_channels, depthwise_multiplier]`.
+		  out_backprop: A `Tensor`. Must have the same type as `filter`.
+		    4-D with shape  based on `data_format`.
+		    For example, if `data_format` is 'NHWC' then
+		    out_backprop shape is `[batch, out_height, out_width, out_channels]`.
+		    Gradients w.r.t. the output of the convolution.
+		  strides: A list of `ints`.
+		    The stride of the sliding window for each dimension of the input
+		    of the convolution.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  data_format: An optional `string` from: `"NHWC", "NCHW"`. Defaults to `"NHWC"`.
+		    Specify the data format of the input and output data. With the
+		    default format "NHWC", the data is stored in the order of:
+		        [batch, height, width, channels].
+		    Alternatively, the format could be "NCHW", the data storage order of:
+		        [batch, channels, height, width].
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1]`.
+		    1-D tensor of length 4.  The dilation factor for each dimension of
+		    `input`. If set to k > 1, there will be k-1 skipped cells between each filter
+		    element on that dimension. The dimension order is determined by the value of
+		    `data_format`, see above for details. Dilations in the batch and depth
+		    dimensions must be 1.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `filter`.
+	**/
+	static public function depthwise_conv2d_backprop_input(input_sizes:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes a 2-D depthwise convolution given 4-D `input` and `filter` tensors.
 		
@@ -1423,10 +1673,14 @@ package tensorflow.nn;
 	**/
 	static public function dilation2d(input:Dynamic, filter:Dynamic, strides:Dynamic, rates:Dynamic, padding:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes dropout.
+		Computes dropout. (deprecated arguments)
 		
-		With probability `keep_prob`, outputs the input element scaled up by
-		`1 / keep_prob`, otherwise outputs `0`.  The scaling is so that the expected
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_prob)`. They will be removed in a future version.
+		Instructions for updating:
+		Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
+		
+		For each element of `x`, with probability `rate`, outputs `0`, and otherwise
+		scales up the input by `1 / (1-rate)`. The scaling is such that the expected
 		sum is unchanged.
 		
 		By default, each element is kept or dropped independently.  If `noise_shape`
@@ -1439,25 +1693,29 @@ package tensorflow.nn;
 		
 		Args:
 		  x: A floating point tensor.
-		  keep_prob: A scalar `Tensor` with the same type as x. The probability
-		    that each element is kept.
+		  keep_prob: (deprecated) A deprecated alias for `(1-rate)`.
 		  noise_shape: A 1-D `Tensor` of type `int32`, representing the
 		    shape for randomly generated keep/drop flags.
 		  seed: A Python integer. Used to create random seeds. See
-		    `tf.set_random_seed`
-		    for behavior.
+		    `tf.set_random_seed` for behavior.
 		  name: A name for this operation (optional).
+		  rate: A scalar `Tensor` with the same type as `x`. The probability that each
+		    element of `x` is discarded.
 		
 		Returns:
 		  A Tensor of the same shape of `x`.
 		
 		Raises:
-		  ValueError: If `keep_prob` is not in `(0, 1]` or if `x` is not a floating
+		  ValueError: If `rate` is not in `[0, 1)` or if `x` is not a floating
 		    point tensor.
 	**/
-	static public function dropout(x:Dynamic, keep_prob:Dynamic, ?noise_shape:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
+	static public function dropout(x:Dynamic, ?keep_prob:Dynamic, ?noise_shape:Dynamic, ?seed:Dynamic, ?name:Dynamic, ?rate:Dynamic):Dynamic;
 	/**
-		Creates a recurrent neural network specified by RNNCell `cell`.
+		Creates a recurrent neural network specified by RNNCell `cell`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use `keras.layers.RNN(cell)`, which is equivalent to this API
 		
 		Performs fully dynamic unrolling of `inputs`.
 		
@@ -1830,7 +2088,13 @@ package tensorflow.nn;
 	**/
 	static public function fixed_unigram_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?vocab_file:Dynamic, ?distortion:Dynamic, ?num_reserved_ids:Dynamic, ?num_shards:Dynamic, ?shard:Dynamic, ?unigrams:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Performs fractional average pooling on the input.
+		Performs fractional average pooling on the input. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		`seed2` and `deterministic` args are deprecated.  Use fractional_avg_pool_v2.
+		
+		This is a deprecated version of `fractional_avg_pool`.
 		
 		Fractional average pooling is similar to Fractional max pooling in the pooling
 		region generation step. The only difference is that after pooling regions are
@@ -1838,52 +2102,50 @@ package tensorflow.nn;
 		pooling region.
 		
 		Args:
-		  value: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`.
-		    4-D with shape `[batch, height, width, channels]`.
-		  pooling_ratio: A list of `floats` that has length `>= 4`.
-		    Pooling ratio for each dimension of `value`, currently only
-		    supports row and col dimension and should be >= 1.0. For example, a valid
-		    pooling ratio looks like [1.0, 1.44, 1.73, 1.0]. The first and last elements
-		    must be 1.0 because we don't allow pooling on batch and channels
-		    dimensions. 1.44 and 1.73 are pooling ratio on height and width dimensions
-		    respectively.
-		  pseudo_random: An optional `bool`. Defaults to `False`.
-		    When set to True, generates the pooling sequence in a
-		    pseudorandom fashion, otherwise, in a random fashion. Check paper [Benjamin
-		    Graham, Fractional Max-Pooling](http://arxiv.org/abs/1412.6071) for
-		    difference between pseudorandom and random.
-		  overlapping: An optional `bool`. Defaults to `False`.
-		    When set to True, it means when pooling, the values at the boundary
-		    of adjacent pooling cells are used by both cells. For example:
-		
+		  value: A `Tensor`. 4-D with shape `[batch, height, width, channels]`.
+		  pooling_ratio: A list of `floats` that has length >= 4.  Pooling ratio for
+		    each dimension of `value`, currently only supports row and col dimension
+		    and should be >= 1.0. For example, a valid pooling ratio looks like [1.0,
+		    1.44, 1.73, 1.0]. The first and last elements must be 1.0 because we don't
+		    allow pooling on batch and channels dimensions.  1.44 and 1.73 are pooling
+		    ratio on height and width dimensions respectively.
+		  pseudo_random: An optional `bool`.  Defaults to `False`. When set to `True`,
+		    generates the pooling sequence in a pseudorandom fashion, otherwise, in a
+		    random fashion. Check paper [Benjamin Graham, Fractional
+		    Max-Pooling](http://arxiv.org/abs/1412.6071) for difference between
+		    pseudorandom and random.
+		  overlapping: An optional `bool`.  Defaults to `False`.  When set to `True`,
+		    it means when pooling, the values at the boundary of adjacent pooling
+		    cells are used by both cells. For example:
 		    `index  0  1  2  3  4`
-		
 		    `value  20 5  16 3  7`
-		
-		    If the pooling sequence is [0, 2, 4], then 16, at index 2 will be used twice.
-		    The result would be [41/3, 26/3] for fractional avg pooling.
-		  deterministic: An optional `bool`. Defaults to `False`.
-		    When set to True, a fixed pooling region will be used when
-		    iterating over a FractionalAvgPool node in the computation graph. Mainly used
-		    in unit test to make FractionalAvgPool deterministic.
-		  seed: An optional `int`. Defaults to `0`.
-		    If either seed or seed2 are set to be non-zero, the random number
-		    generator is seeded by the given seed.  Otherwise, it is seeded by a
-		    random seed.
-		  seed2: An optional `int`. Defaults to `0`.
-		    An second seed to avoid seed collision.
+		    If the pooling sequence is [0, 2, 4], then 16, at index 2 will be used
+		    twice.  The result would be [20, 16] for fractional avg pooling.
+		  deterministic: An optional `bool`.  Deprecated; use `fractional_avg_pool_v2`
+		    instead.
+		  seed: An optional `int`.  Defaults to `0`.  If set to be non-zero, the
+		    random number generator is seeded by the given seed.  Otherwise it is
+		    seeded by a random seed.
+		  seed2: An optional `int`.  Deprecated; use `fractional_avg_pool_v2` instead.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A tuple of `Tensor` objects (output, row_pooling_sequence, col_pooling_sequence).
-		
-		  output: A `Tensor`. Has the same type as `value`.
+		A tuple of `Tensor` objects (`output`, `row_pooling_sequence`,
+		`col_pooling_sequence`).
+		  output: Output `Tensor` after fractional avg pooling.  Has the same type as
+		    `value`.
 		  row_pooling_sequence: A `Tensor` of type `int64`.
 		  col_pooling_sequence: A `Tensor` of type `int64`.
 	**/
 	static public function fractional_avg_pool(value:Dynamic, pooling_ratio:Dynamic, ?pseudo_random:Dynamic, ?overlapping:Dynamic, ?deterministic:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Performs fractional max pooling on the input.
+		Performs fractional max pooling on the input. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		`seed2` and `deterministic` args are deprecated.  Use fractional_max_pool_v2.
+		
+		This is a deprecated version of `fractional_max_pool`.
 		
 		Fractional max pooling is slightly different than regular max pooling.  In
 		regular max pooling, you downsize an input set by taking the maximum value of
@@ -1892,9 +2154,9 @@ package tensorflow.nn;
 		expect from the word "fractional", means that the overall reduction ratio N
 		does not have to be an integer.
 		
-		The sizes of the pooling regions are generated randomly but are fairly uniform.
-		For example, let's look at the height dimension, and the constraints on the
-		list of rows that will be pool boundaries.
+		The sizes of the pooling regions are generated randomly but are fairly
+		uniform.  For example, let's look at the height dimension, and the constraints
+		on the list of rows that will be pool boundaries.
 		
 		First we define the following:
 		
@@ -1911,50 +2173,42 @@ package tensorflow.nn;
 		3.  K <= (a[i+1] - a[i]) <= K+1 : all intervals are K or K+1 size
 		4.  length(row_pooling_sequence) = output_row_length+1
 		
-		For more details on fractional max pooling, see this paper:
-		[Benjamin Graham, Fractional Max-Pooling](http://arxiv.org/abs/1412.6071)
+		For more details on fractional max pooling, see this paper: [Benjamin Graham,
+		Fractional Max-Pooling](http://arxiv.org/abs/1412.6071)
 		
 		Args:
-		  value: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`.
-		    4-D with shape `[batch, height, width, channels]`.
-		  pooling_ratio: A list of `floats` that has length `>= 4`.
-		    Pooling ratio for each dimension of `value`, currently only
-		    supports row and col dimension and should be >= 1.0. For example, a valid
-		    pooling ratio looks like [1.0, 1.44, 1.73, 1.0]. The first and last elements
-		    must be 1.0 because we don't allow pooling on batch and channels
-		    dimensions. 1.44 and 1.73 are pooling ratio on height and width dimensions
-		    respectively.
-		  pseudo_random: An optional `bool`. Defaults to `False`.
-		    When set to True, generates the pooling sequence in a
-		    pseudorandom fashion, otherwise, in a random fashion. Check paper [Benjamin
-		    Graham, Fractional Max-Pooling](http://arxiv.org/abs/1412.6071) for
-		    difference between pseudorandom and random.
-		  overlapping: An optional `bool`. Defaults to `False`.
-		    When set to True, it means when pooling, the values at the boundary
-		    of adjacent pooling cells are used by both cells. For example:
-		
+		  value: A `Tensor`. 4-D with shape `[batch, height, width, channels]`.
+		  pooling_ratio: A list of `floats` that has length >= 4.  Pooling ratio for
+		    each dimension of `value`, currently only supports row and col dimension
+		    and should be >= 1.0. For example, a valid pooling ratio looks like [1.0,
+		    1.44, 1.73, 1.0]. The first and last elements must be 1.0 because we don't
+		    allow pooling on batch and channels dimensions.  1.44 and 1.73 are pooling
+		    ratio on height and width dimensions respectively.
+		  pseudo_random: An optional `bool`.  Defaults to `False`. When set to `True`,
+		    generates the pooling sequence in a pseudorandom fashion, otherwise, in a
+		    random fashion. Check paper [Benjamin Graham, Fractional
+		    Max-Pooling](http://arxiv.org/abs/1412.6071) for difference between
+		    pseudorandom and random.
+		  overlapping: An optional `bool`.  Defaults to `False`.  When set to `True`,
+		    it means when pooling, the values at the boundary of adjacent pooling
+		    cells are used by both cells. For example:
 		    `index  0  1  2  3  4`
-		
 		    `value  20 5  16 3  7`
-		
-		    If the pooling sequence is [0, 2, 4], then 16, at index 2 will be used twice.
-		    The result would be [20, 16] for fractional max pooling.
-		  deterministic: An optional `bool`. Defaults to `False`.
-		    When set to True, a fixed pooling region will be used when
-		    iterating over a FractionalMaxPool node in the computation graph. Mainly used
-		    in unit test to make FractionalMaxPool deterministic.
-		  seed: An optional `int`. Defaults to `0`.
-		    If either seed or seed2 are set to be non-zero, the random number
-		    generator is seeded by the given seed.  Otherwise, it is seeded by a
-		    random seed.
-		  seed2: An optional `int`. Defaults to `0`.
-		    An second seed to avoid seed collision.
+		    If the pooling sequence is [0, 2, 4], then 16, at index 2 will be used
+		    twice.  The result would be [20, 16] for fractional max pooling.
+		  deterministic: An optional `bool`.  Deprecated; use `fractional_max_pool_v2`
+		    instead.
+		  seed: An optional `int`.  Defaults to `0`.  If set to be non-zero, the
+		    random number generator is seeded by the given seed.  Otherwise it is
+		    seeded by a random seed.
+		  seed2: An optional `int`.  Deprecated; use `fractional_max_pool_v2` instead.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A tuple of `Tensor` objects (output, row_pooling_sequence, col_pooling_sequence).
-		
-		  output: A `Tensor`. Has the same type as `value`.
+		A tuple of `Tensor` objects (`output`, `row_pooling_sequence`,
+		`col_pooling_sequence`).
+		  output: Output `Tensor` after fractional max pooling.  Has the same type as
+		    `value`.
 		  row_pooling_sequence: A `Tensor` of type `int64`.
 		  col_pooling_sequence: A `Tensor` of type `int64`.
 	**/
@@ -2035,7 +2289,7 @@ package tensorflow.nn;
 	/**
 		Normalizes along dimension `axis` using an L2 norm. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(dim)`. They will be removed in a future version.
 		Instructions for updating:
 		dim is deprecated, use axis instead
 		
@@ -2198,7 +2452,7 @@ package tensorflow.nn;
 	/**
 		Computes log softmax activations. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(dim)`. They will be removed in a future version.
 		Instructions for updating:
 		dim is deprecated, use axis instead
 		
@@ -3161,7 +3415,7 @@ package tensorflow.nn;
 	/**
 		Computes softmax activations. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(dim)`. They will be removed in a future version.
 		Instructions for updating:
 		dim is deprecated, use axis instead
 		
@@ -3188,7 +3442,7 @@ package tensorflow.nn;
 	/**
 		Computes softmax cross entropy between `logits` and `labels`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		
 		Future major versions of TensorFlow will allow gradients to flow
@@ -3242,7 +3496,11 @@ package tensorflow.nn;
 	**/
 	static public function softmax_cross_entropy_with_logits(?_sentinel:Dynamic, ?labels:Dynamic, ?logits:Dynamic, ?dim:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes softmax cross entropy between `logits` and `labels`.
+		Computes softmax cross entropy between `logits` and `labels`. (deprecated arguments)
+		
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(dim)`. They will be removed in a future version.
+		Instructions for updating:
+		dim is deprecated, use axis instead
 		
 		Measures the probability error in discrete classification tasks in which the
 		classes are mutually exclusive (each entry is in exactly one class).  For
@@ -3263,7 +3521,7 @@ package tensorflow.nn;
 		
 		A common use case is to have logits and labels of shape
 		`[batch_size, num_classes]`, but higher dimensions are supported, with
-		the `dim` argument specifying the class dimension.
+		the `axis` argument specifying the class dimension.
 		
 		`logits` and `labels` must have the same dtype (either `float16`, `float32`,
 		or `float64`).
@@ -3276,21 +3534,21 @@ package tensorflow.nn;
 		this function.**
 		
 		Args:
-		  _sentinel: Used to prevent positional parameters. Internal, do not use.
 		  labels: Each vector along the class dimension should hold a valid
 		    probability distribution e.g. for the case in which labels are of shape
 		    `[batch_size, num_classes]`, each row of `labels[i]` must be a valid
 		    probability distribution.
 		  logits: Unscaled log probabilities.
-		  dim: The class dimension. Defaulted to -1 which is the last dimension.
+		  axis: The class dimension. Defaulted to -1 which is the last dimension.
 		  name: A name for the operation (optional).
+		  dim: Deprecated alias for axis.
 		
 		Returns:
 		  A `Tensor` that contains the softmax cross entropy loss. Its type is the
 		  same as `logits` and its shape is the same as `labels` except that it does
 		  not have the last dimension of `labels`.
 	**/
-	static public function softmax_cross_entropy_with_logits_v2(?_sentinel:Dynamic, ?labels:Dynamic, ?logits:Dynamic, ?dim:Dynamic, ?name:Dynamic):Dynamic;
+	static public function softmax_cross_entropy_with_logits_v2(labels:Dynamic, logits:Dynamic, ?axis:Dynamic, ?name:Dynamic, ?dim:Dynamic):Dynamic;
 	/**
 		Computes softplus: `log(exp(features) + 1)`.
 		
@@ -3535,8 +3793,9 @@ package tensorflow.nn;
 		on `logits` internally for efficiency.  Do not call this op with the
 		output of `softmax`, as it will produce incorrect results.
 		
-		A common use case is to have logits and labels of shape
-		`[batch_size, num_classes]`, but higher dimensions are supported, in which
+		A common use case is to have logits of shape
+		`[batch_size, num_classes]` and have labels of shape
+		`[batch_size]`, but higher dimensions are supported, in which
 		case the `dim`-th dimension is assumed to be of size `num_classes`.
 		`logits` must have the dtype of `float16`, `float32`, or `float64`, and
 		`labels` must have the dtype of `int32` or `int64`.
@@ -3566,7 +3825,11 @@ package tensorflow.nn;
 	**/
 	static public function sparse_softmax_cross_entropy_with_logits(?_sentinel:Dynamic, ?labels:Dynamic, ?logits:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Creates a bidirectional recurrent neural network.
+		Creates a bidirectional recurrent neural network. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use `keras.layers.Bidirectional(keras.layers.RNN(cell, unroll=True))`, which is equivalent to this API
 		
 		Similar to the unidirectional case above (rnn) but takes input and builds
 		independent forward and backward RNNs with the final forward and backward
@@ -3609,7 +3872,11 @@ package tensorflow.nn;
 	**/
 	static public function static_bidirectional_rnn(cell_fw:Dynamic, cell_bw:Dynamic, inputs:Dynamic, ?initial_state_fw:Dynamic, ?initial_state_bw:Dynamic, ?dtype:Dynamic, ?sequence_length:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Creates a recurrent neural network specified by RNNCell `cell`.
+		Creates a recurrent neural network specified by RNNCell `cell`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use `keras.layers.RNN(cell, unroll=True)`, which is equivalent to this API
 		
 		The simplest form of RNN network generated is:
 		
@@ -3726,12 +3993,14 @@ package tensorflow.nn;
 		Computes hyperbolic tangent of `x` element-wise.
 		
 		Args:
-		  x: A Tensor or SparseTensor with type `float16`, `float32`, `double`,
-		    `complex64`, or `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `complex64`, `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A Tensor or SparseTensor respectively with the same type as `x`.
+		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.tanh(x.values, ...), x.dense_shape)`
 	**/
 	static public function tanh(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**

@@ -14,7 +14,11 @@ package tensorflow.python.util.deprecation;
 	/**
 		Adds a deprecation notice to a docstring for deprecated arguments.
 	**/
-	static public function _add_deprecated_arg_notice_to_docstring(doc:Dynamic, date:Dynamic, instructions:Dynamic):Dynamic;
+	static public function _add_deprecated_arg_notice_to_docstring(doc:Dynamic, date:Dynamic, instructions:Dynamic, deprecated_names:Dynamic):Dynamic;
+	/**
+		Adds a deprecation notice to a docstring for deprecated arguments.
+	**/
+	static public function _add_deprecated_arg_value_notice_to_docstring(doc:Dynamic, date:Dynamic, instructions:Dynamic, deprecated_name_value_dict:Dynamic):Dynamic;
 	/**
 		Adds a deprecation notice to a docstring for deprecated functions.
 	**/

@@ -122,6 +122,7 @@ package scipy.sparse.coo;
 		False
 	**/
 	static public function isspmatrix_coo(x:Dynamic):Dynamic;
+	static public function matrix(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	static public function to_native(A:Dynamic):Dynamic;
 	/**

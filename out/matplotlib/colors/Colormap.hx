@@ -158,7 +158,7 @@ package matplotlib.colors;
 	/**
 		Make a reversed instance of the Colormap.
 		
-		.. note :: Function not implemented for base class.
+		.. note:: Function not implemented for base class.
 		
 		Parameters
 		----------
@@ -166,10 +166,10 @@ package matplotlib.colors;
 		    The name for the reversed colormap. If it's None the
 		    name will be the name of the parent colormap + "_r".
 		
-		Notes
-		-----
-		See :meth:`LinearSegmentedColormap.reversed` and
-		:meth:`ListedColormap.reversed`
+		See Also
+		--------
+		LinearSegmentedColormap.reversed
+		ListedColormap.reversed
 	**/
 	public function reversed(?name:Dynamic):Dynamic;
 	/**

@@ -24,6 +24,9 @@ package tensorflow.python.framework.ops;
 		    values.
 		  Note, for `complex64` or `complex128` input, the returned `Tensor` will be
 		    of type `float32` or `float64`, respectively.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.abs(x.values, ...), x.dense_shape)`
 	**/
 	static public function __abs__(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -210,7 +213,8 @@ package tensorflow.python.framework.ops;
 		
 		Raises:
 		  ValueError: If a slice range is negative size.
-		  TypeError: If the slice indices aren't int, slice, or Ellipsis.
+		  TypeError: If the slice indices aren't int, slice, ellipsis,
+		    tf.newaxis or scalar int32/int64 tensors.
 	**/
 	static public function __getitem__(tensor:Dynamic, slice_spec:Dynamic, ?_var:Dynamic):Dynamic;
 	/**
@@ -277,6 +281,10 @@ package tensorflow.python.framework.ops;
 		  A `Tensor` of type `bool`.
 	**/
 	static public function __le__(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns the length of the first dimension in the Tensor.
+	**/
+	public function __len__():Dynamic;
 	/**
 		Returns the truth value of (x < y) element-wise.
 		
@@ -400,7 +408,7 @@ package tensorflow.python.framework.ops;
 		true, this follows Python semantics in that the result here is consistent
 		with a flooring divide. E.g. `floor(x / y) * y + mod(x, y) = x`.
 		
-		*NOTE*: `FloorMod` supports broadcasting. More about broadcasting
+		*NOTE*: `floormod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -432,6 +440,9 @@ package tensorflow.python.framework.ops;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.negative(x.values, ...), x.dense_shape)`
 	**/
 	static public function __neg__(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -670,7 +681,7 @@ package tensorflow.python.framework.ops;
 		true, this follows Python semantics in that the result here is consistent
 		with a flooring divide. E.g. `floor(x / y) * y + mod(x, y) = x`.
 		
-		*NOTE*: `FloorMod` supports broadcasting. More about broadcasting
+		*NOTE*: `floormod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -878,6 +889,10 @@ package tensorflow.python.framework.ops;
 	public var _tensor_shape : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		backing_device
+	**/
+	public var backing_device : Dynamic;
 	/**
 		Returns a list of `Operation`s that consume this tensor.
 		

@@ -165,19 +165,9 @@ package tensorflow.python.keras.engine.network;
 	**/
 	public function _add_variable_with_custom_getter(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?getter:Dynamic, ?overwrite:Dynamic, ?kwargs_for_getter:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Checks compatibility between the layer and provided inputs.
-		
-		This checks that the tensor(s) `inputs` verify the input assumptions
-		of the layer (if any). If not, a clear and actional exception gets raised.
-		
-		Arguments:
-		    inputs: input tensor or list of input tensors.
-		
-		Raises:
-		    ValueError: in case of mismatch between
-		        the provided inputs and the expectations of the layer.
+		Returns the network's symbolic metric tensors.
 	**/
-	public function _assert_input_compatibility(inputs:Dynamic):Dynamic;
+	public var _all_metrics_tensors : Dynamic;
 	public function _base_init(?name:Dynamic):Dynamic;
 	public function _call_and_compute_mask(inputs:Dynamic, ?training:Dynamic, ?mask:Dynamic):Dynamic;
 	/**
@@ -192,6 +182,10 @@ package tensorflow.python.keras.engine.network;
 	**/
 	public var _checkpoint_dependencies : Dynamic;
 	/**
+		Used every step in eager to reset losses.
+	**/
+	public function _clear_losses():Dynamic;
+	/**
 		A dictionary with deferred dependencies.
 		
 		Stores restorations for other Checkpointable objects on which this object
@@ -205,9 +199,11 @@ package tensorflow.python.keras.engine.network;
 	**/
 	public var _deferred_dependencies : Dynamic;
 	/**
-		Decides how `self.call()` is invoked. See base_layer.CallConvention.
+		Decides how `self.call()` is invoked. See `CallConvention`.
 	**/
 	public function _determine_call_convention(call_argspec:Dynamic):Dynamic;
+	public function _eager_add_metric(value:Dynamic, ?aggregation:Dynamic, ?name:Dynamic):Dynamic;
+	public function _gather_children_attribute(attribute:Dynamic):Dynamic;
 	/**
 		Returns a dictionary of values to checkpoint with this object.
 		
@@ -238,6 +234,7 @@ package tensorflow.python.keras.engine.network;
 		   SaveableObject(name=name, ...)}
 	**/
 	public function _gather_saveables_for_checkpoint():Dynamic;
+	public function _get_existing_metric(?name:Dynamic):Dynamic;
 	/**
 		Private utility to retrieves an attribute (e.g. inputs) from a node.
 		
@@ -318,6 +315,7 @@ package tensorflow.python.keras.engine.network;
 		  found.
 	**/
 	public function _lookup_dependency(name:Dynamic):Dynamic;
+	public function _maybe_build(inputs:Dynamic):Dynamic;
 	/**
 		Initialize dependency management.
 		
@@ -330,20 +328,7 @@ package tensorflow.python.keras.engine.network;
 	public function _name_based_attribute_restore(checkpoint:Dynamic):Dynamic;
 	public function _name_scope():Dynamic;
 	/**
-		Override to allow `Layer` to disable dependency tracking.
-		
-		`CheckpointableBase` defines this method, whose semantics are "if a subclass
-		does dependency tracking, this method exempts `value`." Layer uses
-		`_no_dependency` to exempt some of its attribute assignments (conditional on
-		attribute assignment causing tracking in the subclass).
-		
-		Args:
-		  value: An object which will be assigned to an object attribute, whose
-		    value should not be tracked.
-		
-		Returns:
-		  A wrapped object which, when assigned to an attribute, will not be
-		  tracked (`value` will be stored in the attribute).
+		If automatic dependency tracking is enabled, ignores `value`.
 	**/
 	public function _no_dependency(value:Dynamic):Dynamic;
 	/**
@@ -387,12 +372,27 @@ package tensorflow.python.keras.engine.network;
 	**/
 	public function _run_internal_graph(inputs:Dynamic, ?training:Dynamic, ?mask:Dynamic):Dynamic;
 	public function _set_connectivity_metadata_(inputs:Dynamic, outputs:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	public function _set_learning_phase_metadata(inputs:Dynamic, outputs:Dynamic):Dynamic;
 	public function _set_mask_metadata(inputs:Dynamic, outputs:Dynamic, previous_mask:Dynamic):Dynamic;
 	/**
 		Restore this object, and either queue its dependencies or defer them.
 	**/
 	public function _single_restoration_from_checkpoint_position(checkpoint_position:Dynamic, visit_queue:Dynamic):Dynamic;
+	/**
+		Whether the layer can be called to create a static graph.
+		
+		Because of nesting, there are two components to being "graph-friendly":
+		  1) all inner layers are graph-friendly
+		  2) the way they are composed is graph-friendly.
+		We denote the latter as "_call_is_graph_friendly", and define
+		"_static_graph_friendly" as being the combination of
+		"_call_is_graph_friendly" and "all inner layers are _static_graph_friendly".
+		For atomic layers (no inner layers), this is just "_call_is_graph_friendly".
+		
+		Returns:
+		  Boolean.
+	**/
+	public var _static_graph_friendly : Dynamic;
+	public function _symbolic_add_metric(value:Dynamic, ?aggregation:Dynamic, ?name:Dynamic):Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
 	/**
@@ -437,6 +437,10 @@ package tensorflow.python.keras.engine.network;
 	**/
 	public function _updated_config():Dynamic;
 	/**
+		Validates the inputs and outputs of a Graph Network.
+	**/
+	public function _validate_graph_inputs_and_outputs():Dynamic;
+	/**
 		Optional regularizer function for the output of this layer.
 	**/
 	public var activity_regularizer : Dynamic;
@@ -459,21 +463,33 @@ package tensorflow.python.keras.engine.network;
 		
 		Arguments:
 		  losses: Loss tensor, or list/tuple of tensors. Rather than tensors, losses
-		    may also be zero-argument callables which create a loss tensor. Only
-		    callable losses are supported when executing eagerly.
-		  inputs: If anything other than None is passed, it signals the losses
-		    are conditional on some of the layer's inputs,
-		    and thus they should only be run where these inputs are available.
-		    This is the case for activity regularization losses, for instance.
-		    If `None` is passed, the losses are assumed
+		    may also be zero-argument callables which create a loss tensor.
+		  inputs: Ignored when executing eagerly. If anything other than None is
+		    passed, it signals the losses are conditional on some of the layer's
+		    inputs, and thus they should only be run where these inputs are
+		    available. This is the case for activity regularization losses, for
+		    instance. If `None` is passed, the losses are assumed
 		    to be unconditional, and will apply across all dataflows of the layer
 		    (e.g. weight regularization losses).
+	**/
+	public function add_loss(losses:Dynamic, ?inputs:Dynamic):Dynamic;
+	/**
+		Adds metric tensor to the layer.
+		
+		Args:
+		  value: Metric tensor.
+		  aggregation: Sample-wise metric reduction function. If `aggregation=None`,
+		    it indicates that the metric tensor provided has been aggregated
+		    already. eg, `model.add_metric(BinaryAccuracy(name='acc')(y_true,
+		    y_pred))`. If aggregation='mean', the given metric tensor will be
+		    sample-wise reduced using `mean` function. eg, `model.add_metric(
+		    tf.reduce_mean(outputs), name='output_mean', aggregation='mean')`.
+		  name: String metric name.
 		
 		Raises:
-		  RuntimeError: If called in Eager mode with a `Tensor` rather than a
-		    callable, or if `inputs` is not None.
+		  ValueError: If `aggregation` is anything other than None or `mean`.
 	**/
-	public function add_loss(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function add_metric(value:Dynamic, ?aggregation:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Add update op(s), potentially dependent on layer inputs.
 		
@@ -506,7 +522,7 @@ package tensorflow.python.keras.engine.network;
 	/**
 		Alias for `add_weight`.
 	**/
-	public function add_variable(name:Dynamic, shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?constraint:Dynamic):Dynamic;
+	public function add_variable(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Adds a new variable to the layer, or gets an existing one; returns it.
 		
@@ -553,7 +569,7 @@ package tensorflow.python.keras.engine.network;
 	/**
 		Apply the layer on a input.
 		
-		This simply wraps `self.__call__`.
+		This is an alias of `self.__call__`.
 		
 		Arguments:
 		  inputs: Input tensor(s).
@@ -569,6 +585,11 @@ package tensorflow.python.keras.engine.network;
 		
 		This is to be used for subclassed models, which do not know at instantiation
 		time what their inputs look like.
+		
+		This method only exists for users who want to call `model.build()` in a
+		standalone way (as a substitute for calling the model on real data to
+		build it). It will never be called by the framework (and thus it will
+		never throw unexpected errors in an unrelated workflow).
 		
 		Args:
 		 input_shape: Single tuple, TensorShape, or list of shapes, where shapes
@@ -940,6 +961,12 @@ package tensorflow.python.keras.engine.network;
 		    A list of loss tensors.
 	**/
 	public var losses : Dynamic;
+	/**
+		Returns the network's symbolic metrics.
+		
+		Model overrides this function to include the metrics from `compile` API.
+	**/
+	public var metrics : Dynamic;
 	public var name : Dynamic;
 	public var non_trainable_variables : Dynamic;
 	public var non_trainable_weights : Dynamic;
@@ -1199,9 +1226,10 @@ package tensorflow.python.keras.engine.network;
 		    A list of update ops.
 	**/
 	public var updates : Dynamic;
-	public var uses_learning_phase : Dynamic;
 	/**
 		Returns the list of all layer variables/weights.
+		
+		Alias of `self.weights`.
 		
 		Returns:
 		  A list of variables.

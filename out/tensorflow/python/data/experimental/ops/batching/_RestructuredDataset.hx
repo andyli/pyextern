@@ -9,7 +9,21 @@ package tensorflow.python.data.experimental.ops.batching;
 		repeated, or nested within a parallel computation.
 	**/
 	static public function _GeneratorState(generator:Dynamic):Dynamic;
-	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var __abstractmethods__ : Dynamic;
+	/**
+		Metaclass for defining Abstract Base Classes (ABCs).
+		
+		Use this metaclass to create an ABC.  An ABC can be subclassed
+		directly, and then acts as a mix-in class.  You can also register
+		unrelated concrete classes (even built-in classes) and unrelated
+		ABCs as 'virtual subclasses' -- these and their descendants will
+		be considered subclasses of the registering ABC by the built-in
+		issubclass() function, but the registering ABC won't show up in
+		their MRO (Method Resolution Order) nor will method
+		implementations defined by the registering ABC be callable (not
+		even via super()).
+	**/
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -130,20 +144,6 @@ package tensorflow.python.data.experimental.ops.batching;
 		Return self<value.
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
-	/**
-		Metaclass for defining Abstract Base Classes (ABCs).
-		
-		Use this metaclass to create an ABC.  An ABC can be subclassed
-		directly, and then acts as a mix-in class.  You can also register
-		unrelated concrete classes (even built-in classes) and unrelated
-		ABCs as 'virtual subclasses' -- these and their descendants will
-		be considered subclasses of the registering ABC by the built-in
-		issubclass() function, but the registering ABC won't show up in
-		their MRO (Method Resolution Order) nor will method
-		implementations defined by the registering ABC be callable (not
-		even via super()).
-	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -191,6 +191,14 @@ package tensorflow.python.data.experimental.ops.batching;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _abc_cache : Dynamic;
+	static public var _abc_negative_cache : Dynamic;
+	static public var _abc_negative_cache_version : Dynamic;
+	static public var _abc_registry : Dynamic;
+	/**
+		Apply options, such as optimization configuration, to the dataset.
+	**/
+	public function _apply_options():Dynamic;
 	/**
 		Produces serialized graph representation of the dataset.
 		
@@ -206,7 +214,31 @@ package tensorflow.python.data.experimental.ops.batching;
 		  A scalar `tf.Tensor` of `tf.variant` type, which represents this dataset.
 	**/
 	public function _as_variant_tensor():Dynamic;
+	/**
+		The structure of an element of this dataset.
+		
+		Returns:
+		  A `Structure` object representing the structure of an element of this
+		  dataset.
+	**/
+	public var _element_structure : Dynamic;
 	public function _enumerate(?start:Dynamic):Dynamic;
+	/**
+		Returns a list of functions associated with this dataset.
+		
+		Returns:
+		  A list of `StructuredFunctionWrapper` objects.
+	**/
+	public function _functions():Dynamic;
+	public var _graph : Dynamic;
+	/**
+		Whether this dataset uses a function that captures ref variables.
+		
+		Returns:
+		  A boolean, which if true indicates that the dataset or one of its inputs
+		  uses a function that captures ref variables.
+	**/
+	public function _has_captured_ref():Dynamic;
 	/**
 		Returns a list of the input datasets of the dataset.
 	**/
@@ -251,7 +283,7 @@ package tensorflow.python.data.experimental.ops.batching;
 		  batch_size: A `tf.int64` scalar `tf.Tensor`, representing the number of
 		    consecutive elements of this dataset to combine in a single batch.
 		  drop_remainder: (Optional.) A `tf.bool` scalar `tf.Tensor`, representing
-		    whether the last batch should be dropped in the case its has fewer than
+		    whether the last batch should be dropped in the case it has fewer than
 		    `batch_size` elements; the default behavior is not to drop the smaller
 		    batch.
 		
@@ -350,17 +382,19 @@ package tensorflow.python.data.experimental.ops.batching;
 		
 		```python
 		import itertools
+		tf.enable_eager_execution()
 		
 		def gen():
 		  for i in itertools.count(1):
 		    yield (i, [1] * i)
 		
-		ds = Dataset.from_generator(
+		ds = tf.data.Dataset.from_generator(
 		    gen, (tf.int64, tf.int64), (tf.TensorShape([]), tf.TensorShape([None])))
-		value = ds.make_one_shot_iterator().get_next()
 		
-		sess.run(value)  # (1, array([1]))
-		sess.run(value)  # (2, array([1, 1]))
+		for value in ds.take(2):
+		  print value
+		# (1, array([1]))
+		# (2, array([1, 1]))
 		```
 		
 		NOTE: The current implementation of `Dataset.from_generator()` uses
@@ -398,28 +432,15 @@ package tensorflow.python.data.experimental.ops.batching;
 	**/
 	static public function from_generator(generator:Dynamic, output_types:Dynamic, ?output_shapes:Dynamic, ?args:Dynamic):Dynamic;
 	/**
-		Splits each rank-N `tf.SparseTensor` in this dataset row-wise. (deprecated)
-		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
-		Instructions for updating:
-		Use `tf.data.Dataset.from_tensor_slices()`.
-		
-		Args:
-		  sparse_tensor: A `tf.SparseTensor`.
-		
-		Returns:
-		  Dataset: A `Dataset` of rank-(N-1) sparse tensors.
-	**/
-	static public function from_sparse_tensor_slices(sparse_tensor:Dynamic):Dynamic;
-	/**
 		Creates a `Dataset` whose elements are slices of the given tensors.
 		
 		Note that if `tensors` contains a NumPy array, and eager execution is not
 		enabled, the values will be embedded in the graph as one or more
 		`tf.constant` operations. For large datasets (> 1 GB), this can waste
-		memory and run into byte limits of graph serialization.  If tensors contains
-		one or more large NumPy arrays, consider the alternative described in
-		[this guide](https://tensorflow.org/guide/datasets#consuming_numpy_arrays).
+		memory and run into byte limits of graph serialization. If `tensors`
+		contains one or more large NumPy arrays, consider the alternative described
+		in [this guide](
+		https://tensorflow.org/guide/datasets#consuming_numpy_arrays).
 		
 		Args:
 		  tensors: A nested structure of tensors, each having the same size in the
@@ -435,9 +456,10 @@ package tensorflow.python.data.experimental.ops.batching;
 		Note that if `tensors` contains a NumPy array, and eager execution is not
 		enabled, the values will be embedded in the graph as one or more
 		`tf.constant` operations. For large datasets (> 1 GB), this can waste
-		memory and run into byte limits of graph serialization.  If tensors contains
-		one or more large NumPy arrays, consider the alternative described in
-		[this guide](https://tensorflow.org/guide/datasets#consuming_numpy_arrays).
+		memory and run into byte limits of graph serialization. If `tensors`
+		contains one or more large NumPy arrays, consider the alternative described
+		in [this
+		guide](https://tensorflow.org/guide/datasets#consuming_numpy_arrays).
 		
 		Args:
 		  tensors: A nested structure of tensors.
@@ -512,14 +534,16 @@ package tensorflow.python.data.experimental.ops.batching;
 		  num_parallel_calls: (Optional.) If specified, the implementation creates
 		    a threadpool, which is used to fetch inputs from cycle elements
 		    asynchronously and in parallel. The default behavior is to fetch inputs
-		    from cycle elements synchronously with no parallelism.
+		    from cycle elements synchronously with no parallelism. If the value
+		    `tf.data.experimental.AUTOTUNE` is used, then the number of parallel
+		    calls is set dynamically based on available CPU.
 		
 		Returns:
 		  Dataset: A `Dataset`.
 	**/
 	public function interleave(map_func:Dynamic, cycle_length:Dynamic, ?block_length:Dynamic, ?num_parallel_calls:Dynamic):Dynamic;
 	/**
-		A dataset of all files matching a pattern.
+		A dataset of all files matching one or more glob patterns.
 		
 		NOTE: The default behavior of this method is to return filenames in
 		a non-deterministic random shuffled order. Pass a `seed` or `shuffle=False`
@@ -536,53 +560,19 @@ package tensorflow.python.data.experimental.ops.batching;
 		    - /path/to/dir/c.py
 		
 		Args:
-		  file_pattern: A string or scalar string `tf.Tensor`, representing
-		    the filename pattern that will be matched.
+		  file_pattern: A string, a list of strings, or a `tf.Tensor` of string type
+		    (scalar or vector), representing the filename glob (i.e. shell wildcard)
+		    pattern(s) that will be matched.
 		  shuffle: (Optional.) If `True`, the file names will be shuffled randomly.
 		    Defaults to `True`.
-		  seed: (Optional.) A `tf.int64` scalar `tf.Tensor`, representing the
-		    random seed that will be used to create the distribution. See
+		  seed: (Optional.) A `tf.int64` scalar `tf.Tensor`, representing the random
+		    seed that will be used to create the distribution. See
 		    `tf.set_random_seed` for behavior.
 		
 		Returns:
 		 Dataset: A `Dataset` of strings corresponding to file names.
 	**/
 	static public function list_files(file_pattern:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic):Dynamic;
-	/**
-		Creates an `Iterator` for enumerating the elements of this dataset.
-		
-		Note: The returned iterator will be in an uninitialized state,
-		and you must run the `iterator.initializer` operation before using it:
-		
-		```python
-		dataset = ...
-		iterator = dataset.make_initializable_iterator()
-		# ...
-		sess.run(iterator.initializer)
-		```
-		
-		Args:
-		  shared_name: (Optional.) If non-empty, the returned iterator will be
-		    shared under the given name across multiple sessions that share the
-		    same devices (e.g. when using a remote server).
-		
-		Returns:
-		  An `Iterator` over the elements of this dataset.
-		
-		Raises:
-		  RuntimeError: If eager execution is enabled.
-	**/
-	public function make_initializable_iterator(?shared_name:Dynamic):Dynamic;
-	/**
-		Creates an `Iterator` for enumerating the elements of this dataset.
-		
-		Note: The returned iterator will be initialized automatically.
-		A "one-shot" iterator does not currently support re-initialization.
-		
-		Returns:
-		  An `Iterator` over the elements of this dataset.
-	**/
-	public function make_one_shot_iterator():Dynamic;
 	/**
 		Maps `map_func` across the elements of this dataset.
 		
@@ -668,14 +658,16 @@ package tensorflow.python.data.experimental.ops.batching;
 		   `self.output_types`) to another nested structure of tensors.
 		  num_parallel_calls: (Optional.) A `tf.int32` scalar `tf.Tensor`,
 		    representing the number elements to process in parallel. If not
-		    specified, elements will be processed sequentially.
+		    specified, elements will be processed sequentially. If the value
+		    `tf.data.experimental.AUTOTUNE` is used, then the number of parallel
+		    calls is set dynamically based on available CPU.
 		
 		Returns:
 		  Dataset: A `Dataset`.
 	**/
 	public function map(map_func:Dynamic, ?num_parallel_calls:Dynamic):Dynamic;
 	/**
-		Returns the options for this dataset.
+		Returns the options for this dataset and its inputs.
 		
 		Returns:
 		  A `tf.data.Options` object representing the dataset options.
@@ -751,7 +743,7 @@ package tensorflow.python.data.experimental.ops.batching;
 		    respective components.  Defaults are `0` for numeric types and
 		    the empty string for string types.
 		  drop_remainder: (Optional.) A `tf.bool` scalar `tf.Tensor`, representing
-		    whether the last batch should be dropped in the case its has fewer than
+		    whether the last batch should be dropped in the case it has fewer than
 		    `batch_size` elements; the default behavior is not to drop the smaller
 		    batch.
 		
@@ -785,7 +777,7 @@ package tensorflow.python.data.experimental.ops.batching;
 		```
 		
 		Args:
-		  *args: follow same semantics as python's xrange.
+		  *args: follows the same semantics as python's xrange.
 		    len(args) == 1 -> start = 0, stop = args[0], step = 1
 		    len(args) == 2 -> start = args[0], stop = args[1], step = 1
 		    len(args) == 3 -> start = args[0], stop = args[1, stop = args[2]
@@ -841,59 +833,12 @@ package tensorflow.python.data.experimental.ops.batching;
 	**/
 	public function repeat(?count:Dynamic):Dynamic;
 	/**
-		Creates a `Dataset` that includes only 1/`num_shards` of this dataset.
-		
-		This dataset operator is very useful when running distributed training, as
-		it allows each worker to read a unique subset.
-		
-		When reading a single input file, you can skip elements as follows:
-		
-		```python
-		d = tf.data.TFRecordDataset(FLAGS.input_file)
-		d = d.shard(FLAGS.num_workers, FLAGS.worker_index)
-		d = d.repeat(FLAGS.num_epochs)
-		d = d.shuffle(FLAGS.shuffle_buffer_size)
-		d = d.map(parser_fn, num_parallel_calls=FLAGS.num_map_threads)
-		```
-		
-		Important caveats:
-		
-		- Be sure to shard before you use any randomizing operator (such as
-		  shuffle).
-		- Generally it is best if the shard operator is used early in the dataset
-		  pipeline. For example, when reading from a set of TFRecord files, shard
-		  before converting the dataset to input samples. This avoids reading every
-		  file on every worker. The following is an example of an efficient
-		  sharding strategy within a complete pipeline:
-		
-		```python
-		d = Dataset.list_files(FLAGS.pattern)
-		d = d.shard(FLAGS.num_workers, FLAGS.worker_index)
-		d = d.repeat(FLAGS.num_epochs)
-		d = d.shuffle(FLAGS.shuffle_buffer_size)
-		d = d.interleave(tf.data.TFRecordDataset,
-		                 cycle_length=FLAGS.num_readers, block_length=1)
-		d = d.map(parser_fn, num_parallel_calls=FLAGS.num_map_threads)
-		```
-		
-		Args:
-		  num_shards: A `tf.int64` scalar `tf.Tensor`, representing the number of
-		    shards operating in parallel.
-		  index: A `tf.int64` scalar `tf.Tensor`, representing the worker index.
-		
-		Returns:
-		  Dataset: A `Dataset`.
-		
-		Raises:
-		  ValueError: if `num_shards` or `index` are illegal values. Note: error
-		    checking is done on a best-effort basis, and aren't guaranteed to be
-		    caught upon dataset creation. (e.g. providing in a placeholder tensor
-		    bypasses the early checking, and will instead result in an error during
-		    a session.run call.)
-	**/
-	public function shard(num_shards:Dynamic, index:Dynamic):Dynamic;
-	/**
 		Randomly shuffles the elements of this dataset.
+		
+		This dataset fills a buffer with `buffer_size` elements, then randomly
+		samples elements from this buffer, replacing the selected elements with new
+		elements. For perfect shuffling, a buffer size greater than or equal to the
+		full size of the dataset is required.
 		
 		Args:
 		  buffer_size: A `tf.int64` scalar `tf.Tensor`, representing the
@@ -976,10 +921,9 @@ package tensorflow.python.data.experimental.ops.batching;
 	/**
 		Returns a new `tf.data.Dataset` with the given options set.
 		
-		The options are "global" in the sense they apply to the entire input
-		pipeline in which the `with_options` transformation is used. If options are
-		set multiple times, they are merged if possible (see
-		`tf.data.Options.merge()` for details).
+		The options are "global" in the sense they apply to the entire dataset.
+		If options are set multiple times, they are merged as long as different
+		options do not use different non-default values.
 		
 		Args:
 		  options: A `tf.data.Options` that identifies the options the use.
@@ -988,7 +932,7 @@ package tensorflow.python.data.experimental.ops.batching;
 		  Dataset: A `Dataset` with the given options.
 		
 		Raises:
-		  ValueError: if options are set more than once
+		  ValueError: when an option is set more than once to a non-default value
 	**/
 	public function with_options(options:Dynamic):Dynamic;
 	/**

@@ -52,48 +52,20 @@ package tensorflow.python.ops.distributions.beta;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize a batch of Beta distributions.
+		DEPRECATED FUNCTION
 		
-		Args:
-		  concentration1: Positive floating-point `Tensor` indicating mean
-		    number of successes; aka "alpha". Implies `self.dtype` and
-		    `self.batch_shape`, i.e.,
-		    `concentration1.shape = [N1, N2, ..., Nm] = self.batch_shape`.
-		  concentration0: Positive floating-point `Tensor` indicating mean
-		    number of failures; aka "beta". Otherwise has same semantics as
-		    `concentration1`.
-		  validate_args: Python `bool`, default `False`. When `True` distribution
-		    parameters are checked for validity despite possibly degrading runtime
-		    performance. When `False` invalid inputs may silently render incorrect
-		    outputs.
-		  allow_nan_stats: Python `bool`, default `True`. When `True`, statistics
-		    (e.g., mean, mode, variance) use the value "`NaN`" to indicate the
-		    result is undefined. When `False`, an exception is raised if one or
-		    more of the statistic's batch members are undefined.
-		  name: Python `str` name prefixed to Ops created by this class.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		Use `tfd.Beta(tf.nn.softplus(concentration1), tf.nn.softplus(concentration2))` instead.
 	**/
 	@:native("__init__")
 	public function ___init__(concentration1:Dynamic, concentration0:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Initialize a batch of Beta distributions.
+		DEPRECATED FUNCTION
 		
-		Args:
-		  concentration1: Positive floating-point `Tensor` indicating mean
-		    number of successes; aka "alpha". Implies `self.dtype` and
-		    `self.batch_shape`, i.e.,
-		    `concentration1.shape = [N1, N2, ..., Nm] = self.batch_shape`.
-		  concentration0: Positive floating-point `Tensor` indicating mean
-		    number of failures; aka "beta". Otherwise has same semantics as
-		    `concentration1`.
-		  validate_args: Python `bool`, default `False`. When `True` distribution
-		    parameters are checked for validity despite possibly degrading runtime
-		    performance. When `False` invalid inputs may silently render incorrect
-		    outputs.
-		  allow_nan_stats: Python `bool`, default `True`. When `True`, statistics
-		    (e.g., mean, mode, variance) use the value "`NaN`" to indicate the
-		    result is undefined. When `False`, an exception is raised if one or
-		    more of the statistic's batch members are undefined.
-		  name: Python `str` name prefixed to Ops created by this class.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		Use `tfd.Beta(tf.nn.softplus(concentration1), tf.nn.softplus(concentration2))` instead.
 	**/
 	public function new(concentration1:Dynamic, concentration0:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Void;
 	/**

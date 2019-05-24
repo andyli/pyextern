@@ -9,6 +9,7 @@ package matplotlib.afm;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _log : Dynamic;
 	/**
 		Parse the Adobe Font Metrics file in file handle *fh*.
 		
@@ -112,17 +113,22 @@ package matplotlib.afm;
 	**/
 	static public function _parse_optional(fh:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
-		Check if the file at least looks like AFM.
-		If not, raise :exc:`RuntimeError`.
+		Check if the file looks like AFM; if it doesn't, raise `RuntimeError`.
 	**/
 	static public function _sanity_check(fh:Dynamic):Dynamic;
 	static public function _to_bool(s:Dynamic):Dynamic;
+	static public function _to_float(x:Dynamic):Dynamic;
 	static public function _to_int(x:Dynamic):Dynamic;
 	static public function _to_list_of_floats(s:Dynamic):Dynamic;
 	static public function _to_list_of_ints(s:Dynamic):Dynamic;
 	static public function _to_str(x:Dynamic):Dynamic;
 	/**
-		Decorator to mark a function or a class as deprecated.
+		Decorator to mark a function, a class, or a property as deprecated.
+		
+		When deprecating a classmethod, a staticmethod, or a property, the
+		``@deprecated`` decorator should go *under* the ``@classmethod``, etc.
+		decorator (i.e., `deprecated` should directly decorate the underlying
+		callable).
 		
 		Parameters
 		----------
@@ -146,7 +152,7 @@ package matplotlib.afm;
 		
 		        def new_function():
 		            ...
-		        oldFunction = new_function
+		        old_function = new_function
 		
 		alternative : str, optional
 		    An alternative API that the user may use in place of the deprecated
@@ -157,14 +163,18 @@ package matplotlib.afm;
 		    If True, uses a PendingDeprecationWarning instead of a
 		    DeprecationWarning.  Cannot be used together with *removal*.
 		
+		obj_type : str, optional
+		    The object type being deprecated; by default, 'function' if decorating
+		    a function and 'class' if decorating a class.
+		
+		addendum : str, optional
+		    Additional text appended directly to the final message.
+		
 		removal : str, optional
 		    The expected removal version.  With the default (an empty string), a
 		    removal version is automatically computed from *since*.  Set to other
 		    Falsy values to not schedule a removal date.  Cannot be used together
 		    with *pending*.
-		
-		addendum : str, optional
-		    Additional text appended directly to the final message.
 		
 		Examples
 		--------
@@ -200,10 +210,12 @@ package matplotlib.afm;
 	**/
 	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 3.0
-		    Use the class AFM instead.
+		[*Deprecated*] 
 		
-		\ 
+		Notes
+		-----
+		.. deprecated:: 3.0
+		   \ 
 	**/
 	static public function parse_afm(fh:Dynamic):Dynamic;
 	static public var uni2type1 : Dynamic;

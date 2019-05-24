@@ -48,7 +48,7 @@ package tensorflow.contrib.learn.python.learn.datasets.text_datasets;
 	/**
 		Get DBpedia datasets from CSV files. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		See contrib/learn/README.md
 	**/
@@ -56,7 +56,7 @@ package tensorflow.contrib.learn.python.learn.datasets.text_datasets;
 	/**
 		Download if DBpedia data is not present. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		See contrib/learn/README.md
 	**/

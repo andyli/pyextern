@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 @:pythonImport("tensorflow.contrib.tpu.proto.optimization_parameters_pb2", "AdamParameters") extern class AdamParameters {
-	static public var BETA1_FIELD_NUMBER : Dynamic;
-	static public var BETA2_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -28,7 +26,6 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EPSILON_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
@@ -49,8 +46,6 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INITIAL_M_FIELD_NUMBER : Dynamic;
-	static public var INITIAL_V_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -87,8 +82,10 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var USE_NON_LAZY_ADAM_FIELD_NUMBER : Dynamic;
-	static public var USE_SUM_INSIDE_SQRT_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -254,4 +251,32 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tpu.AdamParameters.beta1
+	**/
+	public var beta1 : Dynamic;
+	/**
+		Field tensorflow.tpu.AdamParameters.beta2
+	**/
+	public var beta2 : Dynamic;
+	/**
+		Field tensorflow.tpu.AdamParameters.epsilon
+	**/
+	public var epsilon : Dynamic;
+	/**
+		Field tensorflow.tpu.AdamParameters.initial_m
+	**/
+	public var initial_m : Dynamic;
+	/**
+		Field tensorflow.tpu.AdamParameters.initial_v
+	**/
+	public var initial_v : Dynamic;
+	/**
+		Field tensorflow.tpu.AdamParameters.use_non_lazy_adam
+	**/
+	public var use_non_lazy_adam : Dynamic;
+	/**
+		Field tensorflow.tpu.AdamParameters.use_sum_inside_sqrt
+	**/
+	public var use_sum_inside_sqrt : Dynamic;
 }

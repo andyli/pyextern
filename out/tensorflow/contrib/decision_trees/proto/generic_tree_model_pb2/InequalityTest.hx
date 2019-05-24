@@ -30,7 +30,6 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FEATURE_ID_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -67,7 +66,6 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var OBLIQUE_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -88,9 +86,11 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var THRESHOLD_FIELD_NUMBER : Dynamic;
-	static public var TYPE_FIELD_NUMBER : Dynamic;
 	static public var Type : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -256,4 +256,20 @@ package tensorflow.contrib.decision_trees.proto.generic_tree_model_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.decision_trees.InequalityTest.feature_id
+	**/
+	public var feature_id : Dynamic;
+	/**
+		Field tensorflow.decision_trees.InequalityTest.oblique
+	**/
+	public var oblique : Dynamic;
+	/**
+		Field tensorflow.decision_trees.InequalityTest.threshold
+	**/
+	public var threshold : Dynamic;
+	/**
+		Field tensorflow.decision_trees.InequalityTest.type
+	**/
+	public var type : Dynamic;
 }

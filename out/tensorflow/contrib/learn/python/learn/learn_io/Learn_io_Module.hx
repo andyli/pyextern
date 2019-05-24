@@ -17,7 +17,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	/**
 		Extract data from dask.Series or dask.DataFrame for predictors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please feed input to tf.data to support dask.
 		
@@ -37,7 +37,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	/**
 		Extract data from dask.Series or dask.DataFrame for labels. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please feed input to tf.data to support dask.
 		
@@ -63,7 +63,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	/**
 		Extract data from pandas.DataFrame for predictors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please access pandas data directly.
 		
@@ -83,7 +83,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	/**
 		Extract data from pandas.DataFrame for labels. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please access pandas data directly.
 		
@@ -102,7 +102,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	/**
 		Extracts numpy matrix from pandas DataFrame. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please access pandas data directly.
 		
@@ -116,7 +116,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	/**
 		Returns input function that returns dicts of numpy arrays (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.data.
 		
@@ -175,24 +175,24 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	/**
 		This input_fn diffs from the core version with default `shuffle`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
-		Use tf.estimator.inputs.numpy_input_fn.
+		Use tf.compat.v1.estimator.inputs.numpy_input_fn.
 	**/
 	static public function numpy_input_fn(x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic):Dynamic;
 	/**
 		This input_fn diffs from the core version with default `shuffle`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
-		Please use tf.estimator.inputs.pandas_input_fn
+		Please use tf.compat.v1.estimator.inputs.pandas_input_fn
 	**/
 	static public function pandas_input_fn(x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic, ?target_column:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Speeds up parsing by using queues to do it asynchronously. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -231,7 +231,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	/**
 		Adds operations to read, queue, batch `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -278,7 +278,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	/**
 		Adds operations to read, queue, batch and parse `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -333,7 +333,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	/**
 		Reads TFRecord, queues, batches and parses `Example` proto. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -366,7 +366,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	/**
 		Adds operations to read, queue, batch `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -415,7 +415,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	/**
 		Adds operations to read, queue, batch `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -467,7 +467,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	/**
 		Adds operations to read, queue, batch and parse `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -523,7 +523,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	/**
 		Adds operations to read, queue, batch and parse `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		

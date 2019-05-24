@@ -78,9 +78,9 @@ package torch._c;
 	**/
 	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		__repr__(self: torch._C.ArgumentSpec) -> str
+		Return repr(self).
 	**/
-	public function __repr__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __repr__():Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/

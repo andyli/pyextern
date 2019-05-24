@@ -238,7 +238,7 @@ package pandas.plotting._core;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	/**
-		Area plot
+		Area plot.
 		
 		Parameters
 		----------
@@ -252,7 +252,7 @@ package pandas.plotting._core;
 	**/
 	public function area(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Vertical bar plot
+		Vertical bar plot.
 		
 		Parameters
 		----------
@@ -266,7 +266,7 @@ package pandas.plotting._core;
 	**/
 	public function bar(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Horizontal bar plot
+		Horizontal bar plot.
 		
 		Parameters
 		----------
@@ -280,7 +280,7 @@ package pandas.plotting._core;
 	**/
 	public function barh(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Boxplot
+		Boxplot.
 		
 		Parameters
 		----------
@@ -299,7 +299,7 @@ package pandas.plotting._core;
 		In statistics, `kernel density estimation`_ (KDE) is a non-parametric
 		way to estimate the probability density function (PDF) of a random
 		variable. This function uses Gaussian kernels and includes automatic
-		bandwith determination.
+		bandwidth determination.
 		
 		.. _kernel density estimation:
 		    https://en.wikipedia.org/wiki/Kernel_density_estimation
@@ -346,8 +346,8 @@ package pandas.plotting._core;
 		    >>> ax = s.plot.kde()
 		
 		A scalar bandwidth can be specified. Using a small bandwidth value can
-		lead to overfitting, while using a large bandwidth value may result
-		in underfitting:
+		lead to over-fitting, while using a large bandwidth value may result
+		in under-fitting:
 		
 		.. plot::
 		    :context: close-figs
@@ -369,11 +369,11 @@ package pandas.plotting._core;
 	**/
 	public function density(?bw_method:Dynamic, ?ind:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Histogram
+		Histogram.
 		
 		Parameters
 		----------
-		bins: integer, default 10
+		bins : integer, default 10
 		    Number of histogram bins to be used
 		`**kwds` : optional
 		    Additional keyword arguments are documented in
@@ -390,7 +390,7 @@ package pandas.plotting._core;
 		In statistics, `kernel density estimation`_ (KDE) is a non-parametric
 		way to estimate the probability density function (PDF) of a random
 		variable. This function uses Gaussian kernels and includes automatic
-		bandwith determination.
+		bandwidth determination.
 		
 		.. _kernel density estimation:
 		    https://en.wikipedia.org/wiki/Kernel_density_estimation
@@ -437,8 +437,8 @@ package pandas.plotting._core;
 		    >>> ax = s.plot.kde()
 		
 		A scalar bandwidth can be specified. Using a small bandwidth value can
-		lead to overfitting, while using a large bandwidth value may result
-		in underfitting:
+		lead to over-fitting, while using a large bandwidth value may result
+		in under-fitting:
 		
 		.. plot::
 		    :context: close-figs
@@ -460,7 +460,7 @@ package pandas.plotting._core;
 	**/
 	public function kde(?bw_method:Dynamic, ?ind:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Line plot
+		Line plot.
 		
 		Parameters
 		----------
@@ -483,7 +483,7 @@ package pandas.plotting._core;
 	**/
 	public function line(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Pie chart
+		Pie chart.
 		
 		Parameters
 		----------

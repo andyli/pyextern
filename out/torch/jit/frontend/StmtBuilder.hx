@@ -113,13 +113,15 @@ package torch.jit.frontend;
 	**/
 	public var __weakref__ : Dynamic;
 	static public var augassign_map : Dynamic;
+	static public function build_Assert(ctx:Dynamic, stmt:Dynamic):Dynamic;
 	static public function build_Assign(ctx:Dynamic, stmt:Dynamic):Dynamic;
 	static public function build_AugAssign(ctx:Dynamic, stmt:Dynamic):Dynamic;
 	static public function build_Expr(ctx:Dynamic, stmt:Dynamic):Dynamic;
 	static public function build_For(ctx:Dynamic, stmt:Dynamic):Dynamic;
 	static public function build_If(ctx:Dynamic, stmt:Dynamic):Dynamic;
+	static public function build_Pass(ctx:Dynamic, stmt:Dynamic):Dynamic;
 	static public function build_Print(ctx:Dynamic, stmt:Dynamic):Dynamic;
+	static public function build_Raise(ctx:Dynamic, stmt:Dynamic):Dynamic;
 	static public function build_Return(ctx:Dynamic, stmt:Dynamic):Dynamic;
 	static public function build_While(ctx:Dynamic, stmt:Dynamic):Dynamic;
-	static public function get_assign_lhs_expr(ctx:Dynamic, expr:Dynamic):Dynamic;
 }

@@ -939,7 +939,8 @@ package tensorflow._api.v1.image;
 		away from zero to protect against division by 0 when handling uniform images.
 		
 		Args:
-		  image: 3-D tensor of shape `[height, width, channels]`.
+		  image: An n-D Tensor where the last 3 dimensions are
+		         `[height, width, channels]`.
 		
 		Returns:
 		  The standardized image with same shape as `image`.
@@ -1154,6 +1155,7 @@ package tensorflow._api.v1.image;
 		  ValueError: if `upper <= lower` or if `lower < 0`.
 	**/
 	static public function random_saturation(image:Dynamic, lower:Dynamic, upper:Dynamic, ?seed:Dynamic):Dynamic;
+	static public function resize(images:Dynamic, size:Dynamic, ?method:Dynamic, ?align_corners:Dynamic, ?preserve_aspect_ratio:Dynamic):Dynamic;
 	/**
 		Resize `images` to `size` using area interpolation.
 		
@@ -1277,55 +1279,6 @@ package tensorflow._api.v1.image;
 		  `[new_height, new_width, channels]`.
 	**/
 	static public function resize_image_with_pad(image:Dynamic, target_height:Dynamic, target_width:Dynamic, ?method:Dynamic):Dynamic;
-	/**
-		Resize `images` to `size` using the specified `method`.
-		
-		Resized images will be distorted if their original aspect ratio is not
-		the same as `size`.  To avoid distortions see
-		`tf.image.resize_image_with_pad`.
-		
-		`method` can be one of:
-		
-		*   <b>`ResizeMethod.BILINEAR`</b>: [Bilinear interpolation.](
-		  https://en.wikipedia.org/wiki/Bilinear_interpolation)
-		*   <b>`ResizeMethod.NEAREST_NEIGHBOR`</b>: [Nearest neighbor interpolation.](
-		  https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation)
-		*   <b>`ResizeMethod.BICUBIC`</b>: [Bicubic interpolation.](
-		  https://en.wikipedia.org/wiki/Bicubic_interpolation)
-		*   <b>`ResizeMethod.AREA`</b>: Area interpolation.
-		
-		The return value has the same type as `images` if `method` is
-		`ResizeMethod.NEAREST_NEIGHBOR`. It will also have the same type as `images`
-		if the size of `images` can be statically determined to be the same as `size`,
-		because `images` is returned in this case. Otherwise, the return value has
-		type `float32`.
-		
-		Args:
-		  images: 4-D Tensor of shape `[batch, height, width, channels]` or
-		          3-D Tensor of shape `[height, width, channels]`.
-		  size: A 1-D int32 Tensor of 2 elements: `new_height, new_width`.  The
-		        new size for the images.
-		  method: ResizeMethod.  Defaults to `ResizeMethod.BILINEAR`.
-		  align_corners: bool.  If True, the centers of the 4 corner pixels of the
-		      input and output tensors are aligned, preserving the values at the
-		      corner pixels. Defaults to `False`.
-		  preserve_aspect_ratio: Whether to preserve the aspect ratio. If this is set,
-		    then `images` will be resized to a size that fits in `size` while
-		    preserving the aspect ratio of the original image. Scales up the image if
-		    `size` is bigger than the current size of the `image`. Defaults to False.
-		
-		Raises:
-		  ValueError: if the shape of `images` is incompatible with the
-		    shape arguments to this function
-		  ValueError: if `size` has invalid shape or type.
-		  ValueError: if an unsupported resize method is specified.
-		
-		Returns:
-		  If `images` was 4-D, a 4-D float Tensor of shape
-		  `[batch, new_height, new_width, channels]`.
-		  If `images` was 3-D, a 3-D float Tensor of shape
-		  `[new_height, new_width, channels]`.
-	**/
 	static public function resize_images(images:Dynamic, size:Dynamic, ?method:Dynamic, ?align_corners:Dynamic, ?preserve_aspect_ratio:Dynamic):Dynamic;
 	/**
 		Resize `images` to `size` using nearest neighbor interpolation.
@@ -1427,7 +1380,11 @@ package tensorflow._api.v1.image;
 	**/
 	static public function rot90(image:Dynamic, ?k:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Generate a single randomly distorted bounding box for an image.
+		Generate a single randomly distorted bounding box for an image. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		`seed2` arg is deprecated.Use sample_distorted_bounding_box_v2 instead.
 		
 		Bounding box annotations are often supplied in addition to ground-truth labels
 		in image recognition or object localization tasks. A common technique for
@@ -1648,24 +1605,7 @@ package tensorflow._api.v1.image;
 		  that image.
 	**/
 	static public function total_variation(images:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Transpose image(s) by swapping the height and width dimension.
-		
-		See also `transpose()`.
-		
-		Args:
-		  image: 4-D Tensor of shape `[batch, height, width, channels]` or
-		         3-D Tensor of shape `[height, width, channels]`.
-		
-		Returns:
-		  If `image` was 4-D, a 4-D float Tensor of shape
-		 `[batch, width, height, channels]`
-		  If `image` was 3-D, a 3-D float Tensor of shape
-		 `[width, height, channels]`
-		
-		Raises:
-		  ValueError: if the shape of `image` not supported.
-	**/
+	static public function transpose(image:Dynamic):Dynamic;
 	static public function transpose_image(image:Dynamic):Dynamic;
 	/**
 		Converts one or more images from YIQ to RGB.

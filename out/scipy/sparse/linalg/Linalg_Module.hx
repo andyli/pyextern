@@ -45,8 +45,9 @@ package scipy.sparse.linalg;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
-		    It is required that the linear operator can produce
-		    ``Ax`` and ``A^T x``.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` and ``A^T x`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -93,6 +94,9 @@ package scipy.sparse.linalg;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -140,6 +144,9 @@ package scipy.sparse.linalg;
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
 		    ``A`` must represent a hermitian, positive definite matrix.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -186,6 +193,9 @@ package scipy.sparse.linalg;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real-valued N-by-N matrix of the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -367,9 +377,9 @@ package scipy.sparse.linalg;
 		--------
 		Find 6 eigenvectors of the identity matrix:
 		
-		>>> import scipy.sparse as sparse
+		>>> from scipy.sparse.linalg import eigs
 		>>> id = np.eye(13)
-		>>> vals, vecs = sparse.linalg.eigs(id, k=6)
+		>>> vals, vecs = eigs(id, k=6)
 		>>> vals
 		array([ 1.+0.j,  1.+0.j,  1.+0.j,  1.+0.j,  1.+0.j,  1.+0.j])
 		>>> vecs.shape
@@ -385,13 +395,14 @@ package scipy.sparse.linalg;
 		
 		If M is specified, solves ``A * x[i] = w[i] * M * x[i]``, the
 		generalized eigenvalue problem for w[i] eigenvalues
-		with corresponding eigenvectors x[i]
+		with corresponding eigenvectors x[i].
 		
 		Parameters
 		----------
-		A : An N x N matrix, array, sparse matrix, or LinearOperator representing
-		    the operation A * x, where A is a real symmetric matrix
-		    For buckling mode (see below) A must additionally be positive-definite
+		A : ndarray, sparse matrix or LinearOperator
+		    A square operator representing the operation ``A * x``, where ``A`` is
+		    real symmetric or complex hermitian. For buckling mode (see below)
+		    ``A`` must additionally be positive-definite.
 		k : int, optional
 		    The number of eigenvalues and eigenvectors desired.
 		    `k` must be smaller than N. It is not possible to compute all
@@ -400,7 +411,7 @@ package scipy.sparse.linalg;
 		Returns
 		-------
 		w : array
-		    Array of k eigenvalues
+		    Array of k eigenvalues.
 		v : array
 		    An array representing the `k` eigenvectors.  The column ``v[:, i]`` is
 		    the eigenvector corresponding to the eigenvalue ``w[i]``.
@@ -408,36 +419,36 @@ package scipy.sparse.linalg;
 		Other Parameters
 		----------------
 		M : An N x N matrix, array, sparse matrix, or linear operator representing
-		    the operation M * x for the generalized eigenvalue problem
+		    the operation ``M @ x`` for the generalized eigenvalue problem
 		
-		        A * x = w * M * x.
+		        A @ x = w * M @ x.
 		
 		    M must represent a real, symmetric matrix if A is real, and must
 		    represent a complex, hermitian matrix if A is complex. For best
 		    results, the data type of M should be the same as that of A.
 		    Additionally:
 		
-		        If sigma is None, M is symmetric positive definite
+		        If sigma is None, M is symmetric positive definite.
 		
-		        If sigma is specified, M is symmetric positive semi-definite
+		        If sigma is specified, M is symmetric positive semi-definite.
 		
 		        In buckling mode, M is symmetric indefinite.
 		
 		    If sigma is None, eigsh requires an operator to compute the solution
-		    of the linear equation ``M * x = b``. This is done internally via a
+		    of the linear equation ``M @ x = b``. This is done internally via a
 		    (sparse) LU decomposition for an explicit matrix M, or via an
 		    iterative solver for a general linear operator.  Alternatively,
 		    the user can supply the matrix or operator Minv, which gives
-		    ``x = Minv * b = M^-1 * b``.
+		    ``x = Minv @ b = M^-1 @ b``.
 		sigma : real
 		    Find eigenvalues near sigma using shift-invert mode.  This requires
 		    an operator to compute the solution of the linear system
-		    `[A - sigma * M] x = b`, where M is the identity matrix if
+		    ``[A - sigma * M] x = b``, where M is the identity matrix if
 		    unspecified.  This is computed internally via a (sparse) LU
 		    decomposition for explicit matrices A & M, or via an iterative
 		    solver if either A or M is a general linear operator.
 		    Alternatively, the user can supply the matrix or operator OPinv,
-		    which gives ``x = OPinv * b = [A - sigma * M]^-1 * b``.
+		    which gives ``x = OPinv @ b = [A - sigma * M]^-1 @ b``.
 		    Note that when sigma is specified, the keyword 'which' refers to
 		    the shifted eigenvalues ``w'[i]`` where:
 		
@@ -459,15 +470,15 @@ package scipy.sparse.linalg;
 		    If A is a complex hermitian matrix, 'BE' is invalid.
 		    Which `k` eigenvectors and eigenvalues to find:
 		
-		        'LM' : Largest (in magnitude) eigenvalues
+		        'LM' : Largest (in magnitude) eigenvalues.
 		
-		        'SM' : Smallest (in magnitude) eigenvalues
+		        'SM' : Smallest (in magnitude) eigenvalues.
 		
-		        'LA' : Largest (algebraic) eigenvalues
+		        'LA' : Largest (algebraic) eigenvalues.
 		
-		        'SA' : Smallest (algebraic) eigenvalues
+		        'SA' : Smallest (algebraic) eigenvalues.
 		
-		        'BE' : Half (k/2) from each end of the spectrum
+		        'BE' : Half (k/2) from each end of the spectrum.
 		
 		    When k is odd, return one more (k/2+1) from the high end.
 		    When sigma != None, 'which' refers to the shifted eigenvalues ``w'[i]``
@@ -475,17 +486,32 @@ package scipy.sparse.linalg;
 		    at finding large values than small values.  If small eigenvalues are
 		    desired, consider using shift-invert mode for better performance.
 		maxiter : int, optional
-		    Maximum number of Arnoldi update iterations allowed
+		    Maximum number of Arnoldi update iterations allowed.
 		    Default: ``n*10``
 		tol : float
 		    Relative accuracy for eigenvalues (stopping criterion).
 		    The default value of 0 implies machine precision.
 		Minv : N x N matrix, array, sparse matrix, or LinearOperator
-		    See notes in M, above
+		    See notes in M, above.
 		OPinv : N x N matrix, array, sparse matrix, or LinearOperator
 		    See notes in sigma, above.
 		return_eigenvectors : bool
-		    Return eigenvectors (True) in addition to eigenvalues
+		    Return eigenvectors (True) in addition to eigenvalues. This value determines
+		    the order in which eigenvalues are sorted. The sort order is also dependent on the `which` variable.
+		
+		        For which = 'LM' or 'SA':
+		            If `return_eigenvectors` is True, eigenvalues are sorted by algebraic value.
+		
+		            If `return_eigenvectors` is False, eigenvalues are sorted by absolute value.
+		
+		        For which = 'BE' or 'LA':
+		            eigenvalues are always sorted by algebraic value.
+		
+		        For which = 'SM':
+		            If `return_eigenvectors` is True, eigenvalues are sorted by algebraic value.
+		
+		            If `return_eigenvectors` is False, eigenvalues are sorted by decreasing absolute value.
+		
 		mode : string ['normal' | 'buckling' | 'cayley']
 		    Specify strategy to use for shift-invert mode.  This argument applies
 		    only for real-valued A and sigma != None.  For shift-invert mode,
@@ -497,23 +523,23 @@ package scipy.sparse.linalg;
 		    The modes are as follows:
 		
 		        'normal' :
-		            OP = [A - sigma * M]^-1 * M,
+		            OP = [A - sigma * M]^-1 @ M,
 		            B = M,
 		            w'[i] = 1 / (w[i] - sigma)
 		
 		        'buckling' :
-		            OP = [A - sigma * M]^-1 * A,
+		            OP = [A - sigma * M]^-1 @ A,
 		            B = A,
 		            w'[i] = w[i] / (w[i] - sigma)
 		
 		        'cayley' :
-		            OP = [A - sigma * M]^-1 * [A + sigma * M],
+		            OP = [A - sigma * M]^-1 @ [A + sigma * M],
 		            B = M,
 		            w'[i] = (w[i] + sigma) / (w[i] - sigma)
 		
 		    The choice of mode will affect which eigenvalues are selected by
 		    the keyword 'which', and can also impact the stability of
-		    convergence (see [2] for a discussion)
+		    convergence (see [2] for a discussion).
 		
 		Raises
 		------
@@ -544,12 +570,12 @@ package scipy.sparse.linalg;
 		
 		Examples
 		--------
-		>>> import scipy.sparse as sparse
-		>>> id = np.eye(13)
-		>>> vals, vecs = sparse.linalg.eigsh(id, k=6)
-		>>> vals
-		array([ 1.+0.j,  1.+0.j,  1.+0.j,  1.+0.j,  1.+0.j,  1.+0.j])
-		>>> vecs.shape
+		>>> from scipy.sparse.linalg import eigsh
+		>>> identity = np.eye(13)
+		>>> eigenvalues, eigenvectors = eigsh(identity, k=6)
+		>>> eigenvalues
+		array([1., 1., 1., 1., 1., 1.])
+		>>> eigenvectors.shape
 		(13, 6)
 	**/
 	static public function eigsh(A:Dynamic, ?k:Dynamic, ?M:Dynamic, ?sigma:Dynamic, ?which:Dynamic, ?v0:Dynamic, ?ncv:Dynamic, ?maxiter:Dynamic, ?tol:Dynamic, ?return_eigenvectors:Dynamic, ?Minv:Dynamic, ?OPinv:Dynamic, ?mode:Dynamic):Array<Dynamic>;
@@ -713,6 +739,9 @@ package scipy.sparse.linalg;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		x0  : {array, matrix}
@@ -789,6 +818,9 @@ package scipy.sparse.linalg;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -913,6 +945,9 @@ package scipy.sparse.linalg;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		x0  : {array, matrix}
@@ -1032,16 +1067,6 @@ package scipy.sparse.linalg;
 		    n-by-sizeY matrix of constraints, sizeY < n
 		    The iterations will be performed in the B-orthogonal complement
 		    of the column-space of Y. Y must be full rank.
-		
-		Returns
-		-------
-		w : array
-		    Array of k eigenvalues
-		v : array
-		    An array of k eigenvectors.  V has the same shape as X.
-		
-		Other Parameters
-		----------------
 		tol : scalar, optional
 		    Solver tolerance (stopping criterion)
 		    by default: tol=n*sqrt(eps)
@@ -1057,6 +1082,17 @@ package scipy.sparse.linalg;
 		retResidualNormsHistory : boolean, optional
 		    whether to return history of residual norms
 		
+		Returns
+		-------
+		w : array
+		    Array of k eigenvalues
+		v : array
+		    An array of k eigenvectors.  V has the same shape as X.
+		lambdas : list of arrays, optional
+		    The eigenvalue history, if `retLambdaHistory` is True.
+		rnorms : list of arrays, optional
+		    The history of residual norms, if `retResidualNormsHistory` is True.
+		
 		Examples
 		--------
 		
@@ -1068,13 +1104,13 @@ package scipy.sparse.linalg;
 		>>> vals = [np.arange(n, dtype=np.float64) + 1]
 		>>> A = spdiags(vals, 0, n, n)
 		>>> A.toarray()
-		array([[   1.,    0.,    0., ...,    0.,    0.,    0.],
-		       [   0.,    2.,    0., ...,    0.,    0.,    0.],
-		       [   0.,    0.,    3., ...,    0.,    0.,    0.],
+		array([[  1.,   0.,   0., ...,   0.,   0.,   0.],
+		       [  0.,   2.,   0., ...,   0.,   0.,   0.],
+		       [  0.,   0.,   3., ...,   0.,   0.,   0.],
 		       ...,
-		       [   0.,    0.,    0., ...,   98.,    0.,    0.],
-		       [   0.,    0.,    0., ...,    0.,   99.,    0.],
-		       [   0.,    0.,    0., ...,    0.,    0.,  100.]])
+		       [  0.,   0.,   0., ...,  98.,   0.,   0.],
+		       [  0.,   0.,   0., ...,   0.,  99.,   0.],
+		       [  0.,   0.,   0., ...,   0.,   0., 100.]])
 		
 		Constraints.
 		
@@ -1095,9 +1131,9 @@ package scipy.sparse.linalg;
 		Here, ``invA`` could of course have been used directly as a preconditioner.
 		Let us then solve the problem:
 		
-		>>> eigs, vecs = lobpcg(A, X, Y=Y, M=M, tol=1e-4, maxiter=40, largest=False)
+		>>> eigs, vecs = lobpcg(A, X, Y=Y, M=M, largest=False)
 		>>> eigs
-		array([ 4.,  5.,  6.])
+		array([4., 5., 6.])
 		
 		Note that the vectors passed in Y are the eigenvectors of the 3 smallest
 		eigenvalues. The results returned are orthogonal to those.
@@ -1117,27 +1153,26 @@ package scipy.sparse.linalg;
 		code, but rather one should use the "standard" eigensolver,
 		e.g. numpy or scipy function in this case.
 		If one calls the LOBPCG algorithm for 5``m``>``n``,
-		it will most likely break internally, so the code tries to call the standard
-		function instead.
+		it will most likely break internally, so the code tries to call
+		the standard function instead.
 		
 		It is not that n should be large for the LOBPCG to work, but rather the
-		ratio ``n``/``m`` should be large. It you call the LOBPCG code with ``m``=1
-		and ``n``=10, it should work, though ``n`` is small. The method is intended
+		ratio ``n``/``m`` should be large. It you call LOBPCG with ``m``=1
+		and ``n``=10, it works though ``n`` is small. The method is intended
 		for extremely large ``n``/``m``, see e.g., reference [28] in
-		http://arxiv.org/abs/0705.2626
+		https://arxiv.org/abs/0705.2626
 		
 		The convergence speed depends basically on two factors:
 		
-		1.  How well relatively separated the seeking eigenvalues are
-		    from the rest of the eigenvalues.
-		    One can try to vary ``m`` to make this better.
+		1. How well relatively separated the seeking eigenvalues are from the rest
+		   of the eigenvalues. One can try to vary ``m`` to make this better.
 		
-		2.  How well conditioned the problem is. This can be changed by using proper
-		    preconditioning. For example, a rod vibration test problem (under tests
-		    directory) is ill-conditioned for large ``n``, so convergence will be
-		    slow, unless efficient preconditioning is used.
-		    For this specific problem, a good simple preconditioner function would
-		    be a linear solve for A, which is easy to code since A is tridiagonal.
+		2. How well conditioned the problem is. This can be changed by using proper
+		   preconditioning. For example, a rod vibration test problem (under tests
+		   directory) is ill-conditioned for large ``n``, so convergence will be
+		   slow, unless efficient preconditioning is used. For this specific
+		   problem, a good simple preconditioner function would be a linear solve
+		   for A, which is easy to code since A is tridiagonal.
 		
 		*Acknowledgements*
 		
@@ -1153,9 +1188,9 @@ package scipy.sparse.linalg;
 		       SIAM Journal on Scientific Computing 23, no. 2,
 		       pp. 517-541. http://dx.doi.org/10.1137/S1064827500366124
 		
-		.. [2] A. V. Knyazev, I. Lashuk, M. E. Argentati, and E. Ovchinnikov (2007),
-		       Block Locally Optimal Preconditioned Eigenvalue Xolvers (BLOPEX)
-		       in hypre and PETSc.  http://arxiv.org/abs/0705.2626
+		.. [2] A. V. Knyazev, I. Lashuk, M. E. Argentati, and E. Ovchinnikov
+		       (2007), Block Locally Optimal Preconditioned Eigenvalue Xolvers
+		       (BLOPEX) in hypre and PETSc. https://arxiv.org/abs/0705.2626
 		
 		.. [3] A. V. Knyazev's C and MATLAB implementations:
 		       https://bitbucket.org/joseroman/blopex
@@ -1174,6 +1209,9 @@ package scipy.sparse.linalg;
 		----------
 		A : {matrix, sparse matrix, ndarray, LinearOperator}
 		    Matrix A in the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` and ``A^T x`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : array_like, shape (m,)
 		    Vector b in the linear system.
 		damp : float
@@ -1266,8 +1304,8 @@ package scipy.sparse.linalg;
 		.. [1] D. C.-L. Fong and M. A. Saunders,
 		       "LSMR: An iterative algorithm for sparse least-squares problems",
 		       SIAM J. Sci. Comput., vol. 33, pp. 2950-2971, 2011.
-		       http://arxiv.org/abs/1006.0758
-		.. [2] LSMR Software, http://web.stanford.edu/group/SOL/software/lsmr/
+		       https://arxiv.org/abs/1006.0758
+		.. [2] LSMR Software, https://web.stanford.edu/group/SOL/software/lsmr/
 		
 		Examples
 		--------
@@ -1347,8 +1385,10 @@ package scipy.sparse.linalg;
 		Parameters
 		----------
 		A : {sparse matrix, ndarray, LinearOperator}
-		    Representation of an m-by-n matrix.  It is required that
-		    the linear operator can produce ``Ax`` and ``A^T x``.
+		    Representation of an m-by-n matrix.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` and ``A^T x`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : array_like, shape (m,)
 		    Right-hand side vector ``b``.
 		damp : float
@@ -1546,6 +1586,9 @@ package scipy.sparse.linalg;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real symmetric N-by-N matrix of the linear system
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		
@@ -1755,8 +1798,9 @@ package scipy.sparse.linalg;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real-valued N-by-N matrix of the linear system.
-		    It is required that the linear operator can produce
-		    ``Ax`` and ``A^T x``.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` and ``A^T x`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		

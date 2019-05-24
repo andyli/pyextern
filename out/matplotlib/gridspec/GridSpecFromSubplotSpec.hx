@@ -30,7 +30,7 @@ package matplotlib.gridspec;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	/**
-		Create and return a SuplotSpec instance.
+		Create and return a SubplotSpec instance.
 		        
 	**/
 	public function __getitem__(key:Dynamic):Dynamic;
@@ -138,14 +138,14 @@ package matplotlib.gridspec;
 		Return a dictionary of subplot layout parameters.
 		        
 	**/
-	public function get_subplot_params(?figure:Dynamic, ?fig:Dynamic):Dynamic;
+	public function get_subplot_params(?figure:Dynamic):Dynamic;
 	/**
 		Get the topmost SubplotSpec instance associated with the subplot.
 	**/
 	public function get_topmost_subplotspec():Dynamic;
 	public function get_width_ratios():Dynamic;
 	/**
-		create and return a SuplotSpec instance.
+		create and return a SubplotSpec instance.
 	**/
 	public function new_subplotspec(loc:Dynamic, ?rowspan:Dynamic, ?colspan:Dynamic):Dynamic;
 	public function set_height_ratios(height_ratios:Dynamic):Dynamic;

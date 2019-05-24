@@ -26,8 +26,6 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_analysis_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EMPTY_TRACE_FIELD_NUMBER : Dynamic;
-	static public var ERROR_MESSAGE_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
@@ -84,6 +82,10 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_analysis_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -249,4 +251,12 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_analysis_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.NewProfileSessionResponse.empty_trace
+	**/
+	public var empty_trace : Dynamic;
+	/**
+		Field tensorflow.NewProfileSessionResponse.error_message
+	**/
+	public var error_message : Dynamic;
 }

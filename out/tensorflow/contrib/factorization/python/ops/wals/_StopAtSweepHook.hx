@@ -120,6 +120,8 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _estimator_api_names : Dynamic;
+	static public var _estimator_api_names_v1 : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
 	/**

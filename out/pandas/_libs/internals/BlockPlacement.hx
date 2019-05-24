@@ -87,7 +87,7 @@ package pandas._libs.internals;
 	**/
 	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return str(self).
+		Return repr(self).
 	**/
 	public function __repr__():Dynamic;
 	/**

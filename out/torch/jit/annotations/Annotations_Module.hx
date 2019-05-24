@@ -1,6 +1,9 @@
 /* This file is generated, do not edit! */
 package torch.jit.annotations;
 @:pythonImport("torch.jit.annotations") extern class Annotations_Module {
+	static public var BroadcastingList1 : Dynamic;
+	static public var BroadcastingList2 : Dynamic;
+	static public var BroadcastingList3 : Dynamic;
 	static public var PY35 : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -10,7 +13,6 @@ package torch.jit.annotations;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _def_end_regex : Dynamic;
 	static public var _eval_env : Dynamic;
 	static public function ann_to_type(ann:Dynamic):Dynamic;
 	/**
@@ -27,18 +29,8 @@ package torch.jit.annotations;
 		expanded tabs before searching for common leading whitespace.)
 	**/
 	static public function dedent(text:Dynamic):Dynamic;
-	/**
-		Returns the default signature for fn.
-		
-		The current formula is to use the source (if available) to determine the
-		number of inputs and outputs, and set all their types as tensors.
-		If the source is missing, we fall back to the numbers provided by the compiler,
-		to make sure we don't cause an error there (although type mismatches can still happen).
-		
-		This method also accounts for the self argument if fn is a method.
-	**/
-	static public function default_signature(fn:Dynamic, source:Dynamic, _n_arguments:Dynamic, _n_binders:Dynamic):Dynamic;
-	static public function get_signature(fn:Dynamic, ?_n_arguments:Dynamic, ?_n_binders:Dynamic):Dynamic;
+	static public function get_num_params(fn:Dynamic):Dynamic;
+	static public function get_signature(fn:Dynamic):Dynamic;
 	/**
 		Tries to find the line containing a comment with the type annotation.
 	**/

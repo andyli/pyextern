@@ -9,7 +9,7 @@ package pandas.core.tools.numeric;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of
 		a timedelta64 or datetime64 dtype.
@@ -62,7 +62,7 @@ package pandas.core.tools.numeric;
 		
 		See Also
 		--------
-		pandas.api.types.is_integer: checks a subgroup of numbers
+		pandas.api.types.is_integer: Checks a subgroup of numbers.
 		
 		Examples
 		--------
@@ -121,17 +121,49 @@ package pandas.core.tools.numeric;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -141,6 +173,10 @@ package pandas.core.tools.numeric;
 	static public function maybe_downcast_to_dtype(result:Dynamic, dtype:Dynamic):Dynamic;
 	/**
 		Convert argument to a numeric type.
+		
+		The default return dtype is `float64` or `int64`
+		depending on the data supplied. Use the `downcast` parameter
+		to obtain other dtypes.
 		
 		Parameters
 		----------
@@ -176,11 +212,17 @@ package pandas.core.tools.numeric;
 		ret : numeric if parsing succeeded.
 		    Return type depends on input.  Series if Series, otherwise ndarray
 		
+		See Also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_datetime : Convert argument to datetime.
+		pandas.to_timedelta : Convert argument to timedelta.
+		numpy.ndarray.astype : Cast a numpy array to a specified type.
+		
 		Examples
 		--------
 		Take separate series and convert to numeric, coercing when told to
 		
-		>>> import pandas as pd
 		>>> s = pd.Series(['1.0', '2', -3])
 		>>> pd.to_numeric(s)
 		0    1.0
@@ -210,13 +252,6 @@ package pandas.core.tools.numeric;
 		2    2.0
 		3   -3.0
 		dtype: float64
-		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_datetime : Convert argument to datetime.
-		pandas.to_timedelta : Convert argument to timedelta.
-		numpy.ndarray.astype : Cast a numpy array to a specified type.
 	**/
 	static public function to_numeric(arg:Dynamic, ?errors:Dynamic, ?downcast:Dynamic):Dynamic;
 }

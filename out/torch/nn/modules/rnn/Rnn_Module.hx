@@ -9,4 +9,5 @@ package torch.nn.modules.rnn;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _rnn_impls : Dynamic;
 }

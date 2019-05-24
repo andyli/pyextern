@@ -260,7 +260,7 @@ package scipy.linalg.decomp_lu;
 		
 		Notes
 		-----
-		This is a LU factorization routine written for Scipy.
+		This is a LU factorization routine written for SciPy.
 		
 		Examples
 		--------

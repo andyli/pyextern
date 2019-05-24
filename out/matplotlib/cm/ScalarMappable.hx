@@ -150,6 +150,13 @@ package matplotlib.cm;
 	**/
 	public function check_update(checker:Dynamic):Dynamic;
 	/**
+		Returns
+		-------
+		alpha : float
+		    Always returns 1.
+	**/
+	public function get_alpha():Float;
+	/**
 		Return the array
 	**/
 	public function get_array():Dynamic;
@@ -192,6 +199,12 @@ package matplotlib.cm;
 		Parameters
 		----------
 		norm : `.Normalize`
+		
+		Notes
+		-----
+		If there are any colorbars using the mappable for this norm, setting
+		the norm of the mappable will reset the norm, locator, and formatters
+		on the colorbar to default.
 	**/
 	public function set_norm(norm:Dynamic):Dynamic;
 	/**

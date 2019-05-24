@@ -33,6 +33,21 @@ package scipy.sparse.csgraph._validation;
 		-------
 		csgraph : csr_matrix
 		    Compressed sparse representation of graph,
+		
+		Examples
+		--------
+		>>> from scipy.sparse.csgraph import csgraph_from_dense
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [0, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		
+		>>> csgraph_from_dense(graph)
+		<4x4 sparse matrix of type '<class 'numpy.float64'>'
+		    with 4 stored elements in Compressed Sparse Row format>
 	**/
 	static public function csgraph_from_dense(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -51,6 +66,27 @@ package scipy.sparse.csgraph._validation;
 		-------
 		csgraph : csr_matrix
 		    Compressed sparse representation of graph,
+		
+		Examples
+		--------
+		>>> import numpy as np
+		>>> from scipy.sparse.csgraph import csgraph_from_masked
+		
+		>>> graph_masked = np.ma.masked_array(data =[
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [0, 0, 0, 3],
+		... [0, 0, 0, 0]
+		...  ],
+		... mask=[[ True, False, False , True],
+		... [ True,  True , True, False],
+		... [ True , True,  True ,False],
+		... [ True ,True , True , True]],
+		... fill_value = 0)
+		
+		>>> csgraph_from_masked(graph_masked)
+		<4x4 sparse matrix of type '<class 'numpy.float64'>'
+		    with 4 stored elements in Compressed Sparse Row format>
 	**/
 	static public function csgraph_from_masked(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -77,6 +113,29 @@ package scipy.sparse.csgraph._validation;
 		-------
 		csgraph : MaskedArray
 		    masked array representation of graph
+		
+		Examples
+		--------
+		>>> from scipy.sparse.csgraph import csgraph_masked_from_dense
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [0, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		
+		>>> csgraph_masked_from_dense(graph)
+		masked_array(
+		  data=[[--, 1, 2, --],
+		        [--, --, --, 1],
+		        [--, --, --, 3],
+		        [--, --, --, --]],
+		  mask=[[ True, False, False,  True],
+		        [ True,  True,  True, False],
+		        [ True,  True,  True, False],
+		        [ True,  True,  True,  True]],
+		  fill_value=0)
 	**/
 	static public function csgraph_masked_from_dense(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -148,6 +207,27 @@ package scipy.sparse.csgraph._validation;
 		In the first case, the zero-weight edge gets lost in the dense
 		representation.  In the second case, we can choose a different null value
 		and see the true form of the graph.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import csgraph_to_dense
+		
+		>>> graph = csr_matrix( [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [0, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ])
+		>>> graph
+		<4x4 sparse matrix of type '<class 'numpy.int64'>'
+		    with 4 stored elements in Compressed Sparse Row format>
+		
+		>>> csgraph_to_dense(graph)
+		array([[ 0.,  1.,  2.,  0.],
+		       [ 0.,  0.,  0.,  1.],
+		       [ 0.,  0.,  0.,  3.],
+		       [ 0.,  0.,  0.,  0.]])
 	**/
 	static public function csgraph_to_dense(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;

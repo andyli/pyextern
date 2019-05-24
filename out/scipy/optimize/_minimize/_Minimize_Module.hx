@@ -92,8 +92,10 @@ package scipy.optimize._minimize;
 		
 		Options
 		-------
-		disp : bool
-		   Set to True to print convergence messages.
+		disp : None or int
+		    If `disp is None` (the default), then the supplied version of `iprint`
+		    is used. If `disp is not None`, then it overrides the supplied version
+		    of `iprint` with the behaviour you outlined.
 		maxcor : int
 		    The maximum number of variable metric corrections used to
 		    define the limited memory matrix. (The limited memory BFGS
@@ -108,8 +110,6 @@ package scipy.optimize._minimize;
 		    projected gradient.
 		eps : float
 		    Step size used for numerical approximation of the jacobian.
-		disp : int
-		    Set to True to print convergence messages.
 		maxfun : int
 		    Maximum number of function evaluations.
 		maxiter : int
@@ -321,13 +321,13 @@ package scipy.optimize._minimize;
 		a nearly exact trust-region algorithm that only requires matrix
 		vector products with the hessian matrix.
 		
+		.. versionadded:: 1.0.0
+		
 		Options
 		-------
 		inexact : bool, optional
 		    Accuracy to solve subproblems. If True requires less nonlinear
 		    iterations, but more vector products.
-		
-		.. versionadded:: 1.0.0
 	**/
 	static public function _minimize_trust_krylov(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?hess:Dynamic, ?hessp:Dynamic, ?inexact:Dynamic, ?trust_region_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -472,7 +472,7 @@ package scipy.optimize._minimize;
 		    Gradient of the objective function at the solution.
 		lagrangian_grad : ndarray, shape (n,)
 		    Gradient of the Lagrangian function at the solution.
-		niter : int
+		nit : int
 		    Total number of iterations.
 		nfev : integer
 		    Number of the objective function evaluations.
@@ -483,7 +483,7 @@ package scipy.optimize._minimize;
 		cg_niter : int
 		    Total number of the conjugate gradient method iterations.
 		method : {'equality_constrained_sqp', 'tr_interior_point'}
-		    Optimization method used.    
+		    Optimization method used.
 		constr : list of ndarray
 		    List of constraint values at the solution.
 		jac : list of {ndarray, sparse matrix}
@@ -530,6 +530,11 @@ package scipy.optimize._minimize;
 		        * 2 : Reached the trust-region boundary.
 		        * 3 : Negative curvature detected.
 		        * 4 : Tolerance was satisfied.
+		
+		References
+		----------
+		.. [1] Conn, A. R., Gould, N. I., & Toint, P. L.
+		       Trust region methods. 2000. Siam. pp. 19.
 	**/
 	static public function _minimize_trustregion_constr(fun:Dynamic, x0:Dynamic, args:Dynamic, grad:Dynamic, hess:Dynamic, hessp:Dynamic, bounds:Dynamic, constraints:Dynamic, ?xtol:Dynamic, ?gtol:Dynamic, ?barrier_tol:Dynamic, ?sparse_jacobian:Dynamic, ?callback:Dynamic, ?maxiter:Dynamic, ?verbose:Dynamic, ?finite_diff_rel_step:Dynamic, ?initial_constr_penalty:Dynamic, ?initial_tr_radius:Dynamic, ?initial_barrier_parameter:Dynamic, ?initial_barrier_tolerance:Dynamic, ?factorization_method:Dynamic, ?disp:Dynamic):Dynamic;
 	/**
@@ -717,7 +722,6 @@ package scipy.optimize._minimize;
 		    ``message`` which describes the cause of the termination. See
 		    `OptimizeResult` for a description of other attributes.
 		
-		
 		See also
 		--------
 		minimize_scalar : Interface to minimization algorithms for scalar
@@ -861,7 +865,7 @@ package scipy.optimize._minimize;
 		its contents also passed as `method` parameters pair by pair.  Also, if
 		`jac` has been passed as a bool type, `jac` and `fun` are mangled so that
 		`fun` returns just the function values and `jac` is converted to a function
-		returning the Jacobian.  The method shall return an ``OptimizeResult``
+		returning the Jacobian.  The method shall return an `OptimizeResult`
 		object.
 		
 		The provided `method` callable must be able to accept (and possibly ignore)
@@ -1068,7 +1072,7 @@ package scipy.optimize._minimize;
 		where ``kwargs`` corresponds to any other parameters passed to `minimize`
 		(such as `bracket`, `tol`, etc.), except the `options` dict, which has
 		its contents also passed as `method` parameters pair by pair.  The method
-		shall return an ``OptimizeResult`` object.
+		shall return an `OptimizeResult` object.
 		
 		The provided `method` callable must be able to accept (and possibly ignore)
 		arbitrary parameters; the set of parameters accepted by `minimize` may
@@ -1108,6 +1112,10 @@ package scipy.optimize._minimize;
 	**/
 	static public function new_bounds_to_old(lb:Dynamic, ub:Dynamic, n:Dynamic):Dynamic;
 	/**
+		Converts new-style constraint objects to old-style constraint dictionaries.
+	**/
+	static public function new_constraint_to_old(con:Dynamic, x0:Dynamic):Dynamic;
+	/**
 		Convert the old bounds representation to the new one.
 		
 		The new representation is a tuple (lb, ub) and the old one is a list
@@ -1115,7 +1123,19 @@ package scipy.optimize._minimize;
 		variable.
 	**/
 	static public function old_bound_to_new(bounds:Dynamic):Dynamic;
+	/**
+		Converts old-style constraint dictionaries to new-style constraint objects.
+	**/
+	static public function old_constraint_to_new(ic:Dynamic, con:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Converts bounds to the form required by the solver.
+	**/
+	static public function standardize_bounds(bounds:Dynamic, x0:Dynamic, meth:Dynamic):Dynamic;
+	/**
+		Converts constraints to the form required by the solver.
+	**/
+	static public function standardize_constraints(constraints:Dynamic, x0:Dynamic, meth:Dynamic):Dynamic;
 	/**
 		Issue a warning, or maybe ignore it or raise an exception.
 	**/

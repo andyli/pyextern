@@ -130,19 +130,19 @@ package scipy.special.orthogonal;
 	public var _coeffs : Dynamic;
 	public function _scale(p:Dynamic):Dynamic;
 	/**
-		A copy of the polynomial coefficients 
+		The polynomial coefficients 
 	**/
 	public var c : Dynamic;
 	/**
-		A copy of the polynomial coefficients 
+		The polynomial coefficients 
 	**/
 	public var coef : Dynamic;
 	/**
-		A copy of the polynomial coefficients 
+		The polynomial coefficients 
 	**/
 	public var coefficients : Dynamic;
 	/**
-		A copy of the polynomial coefficients 
+		The polynomial coefficients 
 	**/
 	public var coeffs : Dynamic;
 	/**

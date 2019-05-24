@@ -59,6 +59,16 @@ package pandas.io.json.table_schema;
 		-------
 		schema : dict
 		
+		Notes
+		-----
+		See `_as_json_table_type` for conversion types.
+		Timedeltas as converted to ISO8601 duration format with
+		9 decimal places after the seconds field for nanosecond precision.
+		
+		Categoricals are converted to the `any` dtype, and use the `enum` field
+		constraint to list the allowed values. The `ordered` attribute is included
+		in an `ordered` field.
+		
 		Examples
 		--------
 		>>> df = pd.DataFrame(
@@ -73,16 +83,6 @@ package pandas.io.json.table_schema;
 		{'name': 'C', 'type': 'datetime'}],
 		'pandas_version': '0.20.0',
 		'primaryKey': ['idx']}
-		
-		Notes
-		-----
-		See `_as_json_table_type` for conversion types.
-		Timedeltas as converted to ISO8601 duration format with
-		9 decimal places after the secnods field for nanosecond precision.
-		
-		Categoricals are converted to the `any` dtype, and use the `enum` field
-		constraint to list the allowed values. The `ordered` attribute is included
-		in an `ordered` field.
 	**/
 	static public function build_table_schema(data:Dynamic, ?index:Dynamic, ?primary_key:Dynamic, ?version:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
@@ -135,6 +135,11 @@ package pandas.io.json.table_schema;
 		-------
 		boolean : Whether or not the array or dtype is of a boolean dtype.
 		
+		Notes
+		-----
+		An ExtensionArray is considered boolean when the ``_is_boolean``
+		attribute is set to True.
+		
 		Examples
 		--------
 		>>> is_bool_dtype(str)
@@ -150,6 +155,10 @@ package pandas.io.json.table_schema;
 		>>> is_bool_dtype(pd.Series([1, 2]))
 		False
 		>>> is_bool_dtype(np.array([True, False]))
+		True
+		>>> is_bool_dtype(pd.Categorical([True, False]))
+		True
+		>>> is_bool_dtype(pd.SparseArray([True, False]))
 		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -244,6 +253,11 @@ package pandas.io.json.table_schema;
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
 		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -263,6 +277,12 @@ package pandas.io.json.table_schema;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -428,9 +448,9 @@ package pandas.io.json.table_schema;
 		    :class:`Index` name of 'index'  and :class:`MultiIndex` names starting
 		    with 'level_' are not supported.
 		
-		See also
+		See Also
 		--------
-		build_table_schema : inverse function
+		build_table_schema : Inverse function.
 		pandas.read_json
 	**/
 	static public function parse_table_schema(json:Dynamic, precise_float:Dynamic):pandas.DataFrame;

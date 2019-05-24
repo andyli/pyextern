@@ -41,11 +41,11 @@ package pandas.io.parsers;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(f:Dynamic, colspecs:Dynamic, delimiter:Dynamic, comment:Dynamic, ?skiprows:Dynamic):Dynamic;
+	public function ___init__(f:Dynamic, colspecs:Dynamic, delimiter:Dynamic, comment:Dynamic, ?skiprows:Dynamic, ?infer_nrows:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(f:Dynamic, colspecs:Dynamic, delimiter:Dynamic, comment:Dynamic, ?skiprows:Dynamic):Void;
+	public function new(f:Dynamic, colspecs:Dynamic, delimiter:Dynamic, comment:Dynamic, ?skiprows:Dynamic, ?infer_nrows:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -110,19 +110,20 @@ package pandas.io.parsers;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function detect_colspecs(?n:Dynamic, ?skiprows:Dynamic):Dynamic;
+	public function detect_colspecs(?infer_nrows:Dynamic, ?skiprows:Dynamic):Dynamic;
 	/**
 		Read rows from self.f, skipping as specified.
 		
-		We distinguish buffer_rows (the first <= n lines)
-		from the rows returned to detect_colspecs because
-		it's simpler to leave the other locations with
-		skiprows logic alone than to modify them to deal
-		with the fact we skipped some rows here as well.
+		We distinguish buffer_rows (the first <= infer_nrows
+		lines) from the rows returned to detect_colspecs
+		because it's simpler to leave the other locations
+		with skiprows logic alone than to modify them to
+		deal with the fact we skipped some rows here as
+		well.
 		
 		Parameters
 		----------
-		n : int
+		infer_nrows : int
 		    Number of rows to read from self.f, not counting
 		    rows that are skipped.
 		skiprows: set, optional
@@ -133,5 +134,5 @@ package pandas.io.parsers;
 		detect_rows : list of str
 		    A list containing the rows to read.
 	**/
-	public function get_rows(n:Dynamic, ?skiprows:Dynamic):Dynamic;
+	public function get_rows(infer_nrows:Dynamic, ?skiprows:Dynamic):Dynamic;
 }

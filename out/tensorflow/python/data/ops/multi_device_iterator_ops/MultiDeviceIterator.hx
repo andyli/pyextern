@@ -131,5 +131,9 @@ package tensorflow.python.data.ops.multi_device_iterator_ops;
 	**/
 	public var __weakref__ : Dynamic;
 	public function get_next():Dynamic;
+	public function get_next_as_optional():Dynamic;
 	public var initializer : Dynamic;
+	public var output_classes : Dynamic;
+	public var output_shapes : Dynamic;
+	public var output_types : Dynamic;
 }

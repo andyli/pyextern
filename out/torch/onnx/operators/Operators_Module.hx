@@ -9,8 +9,6 @@ package torch.onnx.operators;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _reshape_from_tensor_shape(g:Dynamic, input:Dynamic, shape:Dynamic):Dynamic;
-	static public function _shape_as_tensor(g:Dynamic, input:Dynamic):Dynamic;
 	static public function reshape_from_tensor_shape(x:Dynamic, shape:Dynamic):Dynamic;
 	static public function shape_as_tensor(x:Dynamic):Dynamic;
 }

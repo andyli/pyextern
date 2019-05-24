@@ -151,6 +151,10 @@ package matplotlib.backends.backend_webagg_core;
 	public function _get_toolbar(canvas:Dynamic):Dynamic;
 	public function _send_event(event_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function add_web_socket(web_socket:Dynamic):Dynamic;
+	/**
+		The default Matplotlib button actions for extra mouse buttons.
+	**/
+	public function button_press(event:Dynamic):Dynamic;
 	public function destroy():Dynamic;
 	public function full_screen_toggle():Dynamic;
 	static public function get_javascript(?stream:Dynamic):Dynamic;
@@ -186,11 +190,4 @@ package matplotlib.backends.backend_webagg_core;
 		optional warning.
 	**/
 	public function show():Dynamic;
-	/**
-		.. deprecated:: 2.2
-		    The show_popup function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
-		
-		Display message in a popup -- GUI only.
-	**/
-	public function show_popup(msg:Dynamic):Dynamic;
 }

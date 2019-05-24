@@ -21,8 +21,10 @@ package scipy.optimize.lbfgsb;
 		
 		Options
 		-------
-		disp : bool
-		   Set to True to print convergence messages.
+		disp : None or int
+		    If `disp is None` (the default), then the supplied version of `iprint`
+		    is used. If `disp is not None`, then it overrides the supplied version
+		    of `iprint` with the behaviour you outlined.
 		maxcor : int
 		    The maximum number of variable metric corrections used to
 		    define the limited memory matrix. (The limited memory BFGS
@@ -37,8 +39,6 @@ package scipy.optimize.lbfgsb;
 		    projected gradient.
 		eps : float
 		    Step size used for numerical approximation of the jacobian.
-		disp : int
-		    Set to True to print convergence messages.
 		maxfun : int
 		    Maximum number of function evaluations.
 		maxiter : int
@@ -56,61 +56,6 @@ package scipy.optimize.lbfgsb;
 	**/
 	static public function _minimize_lbfgsb(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?disp:Dynamic, ?maxcor:Dynamic, ?ftol:Dynamic, ?gtol:Dynamic, ?eps:Dynamic, ?maxfun:Dynamic, ?maxiter:Dynamic, ?iprint:Dynamic, ?callback:Dynamic, ?maxls:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
-	/**
-		Finite-difference approximation of the gradient of a scalar function.
-		
-		Parameters
-		----------
-		xk : array_like
-		    The coordinate vector at which to determine the gradient of `f`.
-		f : callable
-		    The function of which to determine the gradient (partial derivatives).
-		    Should take `xk` as first argument, other arguments to `f` can be
-		    supplied in ``*args``.  Should return a scalar, the value of the
-		    function at `xk`.
-		epsilon : array_like
-		    Increment to `xk` to use for determining the function gradient.
-		    If a scalar, uses the same finite difference delta for all partial
-		    derivatives.  If an array, should contain one value per element of
-		    `xk`.
-		\*args : args, optional
-		    Any other arguments that are to be passed to `f`.
-		
-		Returns
-		-------
-		grad : ndarray
-		    The partial derivatives of `f` to `xk`.
-		
-		See Also
-		--------
-		check_grad : Check correctness of gradient function against approx_fprime.
-		
-		Notes
-		-----
-		The function gradient is determined by the forward finite difference
-		formula::
-		
-		             f(xk[i] + epsilon[i]) - f(xk[i])
-		    f'[i] = ---------------------------------
-		                        epsilon[i]
-		
-		The main use of `approx_fprime` is in scalar function optimizers like
-		`fmin_bfgs`, to determine numerically the Jacobian of a function.
-		
-		Examples
-		--------
-		>>> from scipy import optimize
-		>>> def func(x, c0, c1):
-		...     "Coordinate vector `x` should be an array of size two."
-		...     return c0 * x[0]**2 + c1*x[1]**2
-		
-		>>> x = np.ones(2)
-		>>> c0, c1 = (1, 200)
-		>>> eps = np.sqrt(np.finfo(float).eps)
-		>>> optimize.approx_fprime(x, func, [eps, np.sqrt(200) * eps], c0, c1)
-		array([   2.        ,  400.00004198])
-	**/
-	static public function approx_fprime(xk:Dynamic, f:Dynamic, epsilon:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		

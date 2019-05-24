@@ -40,7 +40,7 @@ package tensorflow.contrib.learn.python.learn.estimators.composable_model;
 	/**
 		Common initialization for all _ComposableModel objects. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use model_fns in tf.estimator.
 		
@@ -62,7 +62,7 @@ package tensorflow.contrib.learn.python.learn.estimators.composable_model;
 	/**
 		Common initialization for all _ComposableModel objects. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use model_fns in tf.estimator.
 		

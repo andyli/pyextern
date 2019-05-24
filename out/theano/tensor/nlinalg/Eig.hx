@@ -197,11 +197,11 @@ package theano.tensor.nlinalg;
 		--------
 		eigvals : eigenvalues of a non-symmetric array.
 		
-		eigh : eigenvalues and eigenvectors of a symmetric or Hermitian
-		       (conjugate symmetric) array.
+		eigh : eigenvalues and eigenvectors of a real symmetric or complex 
+		       Hermitian (conjugate symmetric) array.
 		
-		eigvalsh : eigenvalues of a symmetric or Hermitian (conjugate symmetric)
-		           array.
+		eigvalsh : eigenvalues of a real symmetric or complex Hermitian
+		           (conjugate symmetric) array.
 		
 		Notes
 		-----

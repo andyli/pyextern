@@ -41,11 +41,11 @@ package tensorflow.python.keras.utils.data_utils;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(sequence:Dynamic, ?use_multiprocessing:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(sequence:Dynamic, ?use_multiprocessing:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -108,14 +108,31 @@ package tensorflow.python.keras.utils.data_utils;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Gets the Pool initializer for multiprocessing.
+		
+		Arguments:
+		    workers: Number of workers.
+		
+		Returns:
+		    Function, a Function to initialize the pool
+	**/
+	public function _get_executor_init(workers:Dynamic):Dynamic;
+	/**
+		Submits request to the executor and queue the `Future` objects.
+	**/
+	public function _run():Dynamic;
+	/**
+		Sends current Iterable to all workers.
+	**/
+	public function _send_sequence():Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Creates a generator to extract data from the queue.
 		
 		Skip the data if it is `None`.
-		
-		Returns:
+		# Returns
 		    Generator yielding tuples `(inputs, targets)`
 		        or `(inputs, targets, sample_weights)`.
 	**/
@@ -125,18 +142,18 @@ package tensorflow.python.keras.utils.data_utils;
 		Starts the handler's workers.
 		
 		Arguments:
-		    workers: number of worker threads
+		    workers: Number of workers.
 		    max_queue_size: queue size
-		        (when full, threads could block on `put()`).
+		        (when full, workers could block on `put()`)
 	**/
 	public function start(?workers:Dynamic, ?max_queue_size:Dynamic):Dynamic;
 	/**
-		Stop running threads and wait for them to exit, if necessary.
+		Stops running threads and wait for them to exit, if necessary.
 		
-		Should be called by the same thread which called start().
+		Should be called by the same thread which called `start()`.
 		
 		Arguments:
-		    timeout: maximum time to wait on thread.join()
+		    timeout: maximum time to wait on `thread.join()`
 	**/
 	public function stop(?timeout:Dynamic):Dynamic;
 }

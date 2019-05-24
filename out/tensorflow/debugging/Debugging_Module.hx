@@ -239,7 +239,7 @@ package tensorflow.debugging;
 		If both `x` and `y` are empty, this is trivially satisfied.
 		
 		The default `atol` and `rtol` is `10 * eps`, where `eps` is the smallest
-		representable positive number such that `1 + eps != eps`.  This is about
+		representable positive number such that `1 + eps != 1`.  This is about
 		`1.2e-6` in `32bit`, `2.22e-15` in `64bit`, and `0.00977` in `16bit`.
 		See `numpy.finfo`.
 		
@@ -424,7 +424,7 @@ package tensorflow.debugging;
 		  x:  Numeric `Tensor`.
 		  rank:  Scalar integer `Tensor`.
 		  data:  The tensors to print out if the condition is False.  Defaults to
-		    error message and first few entries of `x`.
+		    error message and the shape of `x`.
 		  summarize: Print this many entries of each tensor.
 		  message: A string to prefix to the default message.
 		  name: A name for this operation (optional).  Defaults to "assert_rank".
@@ -506,19 +506,40 @@ package tensorflow.debugging;
 		  tensors: Tensors of input values. Can include `None` elements, which will be
 		      ignored.
 		  dtype: Expected type.
+		
 		Returns:
 		  Validated type.
+		
 		Raises:
 		  ValueError: if neither `tensors` nor `dtype` is supplied, or result is not
 		      float, or the common type of the inputs is not a floating point type.
 	**/
 	static public function assert_same_float_dtype(?tensors:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public function assert_scalar(tensor:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Asserts that the given `tensor` is a scalar.
+		
+		This function raises `ValueError` unless it can be certain that the given
+		`tensor` is a scalar. `ValueError` is also raised if the shape of `tensor` is
+		unknown.
+		
+		Args:
+		  tensor: A `Tensor`.
+		  name:  A name for this operation. Defaults to "assert_scalar"
+		  message: A string to prefix to the default message.
+		
+		Returns:
+		  The input tensor (potentially converted to a `Tensor`).
+		
+		Raises:
+		  ValueError: If the tensor is not scalar (rank 0), or if its shape is
+		    unknown.
+	**/
+	static public function assert_scalar(tensor:Dynamic, ?name:Dynamic, ?message:Dynamic):Dynamic;
 	/**
 		Statically asserts that the given `Tensor` is of the specified type.
 		
 		Args:
-		  tensor: A tensorflow `Tensor`.
+		  tensor: A `Tensor`.
 		  tf_type: A tensorflow type (`dtypes.float32`, `tf.int64`, `dtypes.bool`,
 		    etc).
 		  message: A string to prefix to the default message.

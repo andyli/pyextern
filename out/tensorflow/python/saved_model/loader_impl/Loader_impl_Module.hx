@@ -39,6 +39,11 @@ package tensorflow.python.saved_model.loader_impl;
 		      other than exactly one tensor.
 	**/
 	static public function _get_main_op_tensor(meta_graph_def_to_load:Dynamic, ?init_op_key:Dynamic):Dynamic;
+	static public function _get_op_from_collection(meta_graph_def:Dynamic, op_key:Dynamic):Dynamic;
+	/**
+		Retrieve op stored in the imported meta graph's signature def.
+	**/
+	static public function _get_op_from_signature_def(meta_graph_def:Dynamic, op_signature_key:Dynamic, import_scope:Dynamic):Dynamic;
 	/**
 		Reads the savedmodel.pb or savedmodel.pbtxt file containing `SavedModel`.
 		
@@ -53,9 +58,31 @@ package tensorflow.python.saved_model.loader_impl;
 	**/
 	static public function _parse_saved_model(export_dir:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
 	/**
-		Loads the model from a SavedModel as specified by tags.
+		Checks whether the provided export directory could contain a SavedModel.
+		
+		Note that the method does not load any data by itself. If the method returns
+		`false`, the export directory definitely does not contain a SavedModel. If the
+		method returns `true`, the export directory may contain a SavedModel but
+		provides no guarantee that it can be loaded.
+		
+		Args:
+		  export_dir: Absolute string path to possible export location. For example,
+		              '/my/foo/model'.
+		
+		Returns:
+		  True if the export directory contains SavedModel files, False otherwise.
+	**/
+	static public function contains_saved_model(export_dir:Dynamic):Dynamic;
+	static public var division : Dynamic;
+	static public function get_init_op(meta_graph_def:Dynamic, ?import_scope:Dynamic):Dynamic;
+	static public function get_train_op(meta_graph_def:Dynamic, ?import_scope:Dynamic):Dynamic;
+	/**
+		Loads the model from a SavedModel as specified by tags. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This function will only be available through the v1 compatibility library as tf.compat.v1.saved_model.loader.load or tf.compat.v1.saved_model.load. There will be a new function for importing SavedModels in Tensorflow 2.0.
 		
 		Args:
 		  sess: The TensorFlow session to restore the variables.
@@ -94,6 +121,19 @@ package tensorflow.python.saved_model.loader_impl;
 		  True if the export directory contains SavedModel files, False otherwise.
 	**/
 	static public function maybe_saved_model_directory(export_dir:Dynamic):Dynamic;
+	/**
+		Reads the savedmodel.pb or savedmodel.pbtxt file containing `SavedModel`.
+		
+		Args:
+		  export_dir: Directory containing the SavedModel file.
+		
+		Returns:
+		  A `SavedModel` protocol buffer.
+		
+		Raises:
+		  IOError: If the file does not exist, or cannot be successfully parsed.
+	**/
+	static public function parse_saved_model(export_dir:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -42,27 +42,11 @@ package pandas._libs.groupby;
 	/**
 		Only transforms on axis=0
 	**/
-	static public function group_cummax_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function group_cummax(out:Dynamic, values:Dynamic, labels:Dynamic, is_datetimelike:Dynamic):Dynamic;
 	/**
 		Only transforms on axis=0
 	**/
-	static public function group_cummax_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Only transforms on axis=0
-	**/
-	static public function group_cummax_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Only transforms on axis=0
-	**/
-	static public function group_cummin_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Only transforms on axis=0
-	**/
-	static public function group_cummin_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Only transforms on axis=0
-	**/
-	static public function group_cummin_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function group_cummin(out:Dynamic, values:Dynamic, labels:Dynamic, is_datetimelike:Dynamic):Dynamic;
 	/**
 		Only transforms on axis=0
 	**/
@@ -109,15 +93,7 @@ package pandas._libs.groupby;
 	/**
 		Only aggregates on axis=0
 	**/
-	static public function group_max_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Only aggregates on axis=0
-	**/
-	static public function group_max_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Only aggregates on axis=0
-	**/
-	static public function group_max_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function group_max(out:Dynamic, counts:Dynamic, values:Dynamic, labels:Dynamic, ?min_count:Dynamic):Dynamic;
 	static public function group_mean_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function group_mean_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -127,15 +103,7 @@ package pandas._libs.groupby;
 	/**
 		Only aggregates on axis=0
 	**/
-	static public function group_min_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Only aggregates on axis=0
-	**/
-	static public function group_min_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Only aggregates on axis=0
-	**/
-	static public function group_min_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function group_min(out:Dynamic, counts:Dynamic, values:Dynamic, labels:Dynamic, ?min_count:Dynamic):Dynamic;
 	/**
 		Only aggregates on axis=0
 	**/
@@ -180,7 +148,8 @@ package pandas._libs.groupby;
 		is_datetimelike : bool, default False
 		    unused in this method but provided for call compatibility with other
 		    Cython transformations
-		ties_method : {'average', 'min', 'max', 'first', 'dense'}, default 'average'
+		ties_method : {'average', 'min', 'max', 'first', 'dense'}, default
+		    'average'
 		    * average: average rank of group
 		    * min: lowest rank in group
 		    * max: highest rank in group
@@ -213,7 +182,8 @@ package pandas._libs.groupby;
 		is_datetimelike : bool, default False
 		    unused in this method but provided for call compatibility with other
 		    Cython transformations
-		ties_method : {'average', 'min', 'max', 'first', 'dense'}, default 'average'
+		ties_method : {'average', 'min', 'max', 'first', 'dense'}, default
+		    'average'
 		    * average: average rank of group
 		    * min: lowest rank in group
 		    * max: highest rank in group
@@ -246,7 +216,8 @@ package pandas._libs.groupby;
 		is_datetimelike : bool, default False
 		    unused in this method but provided for call compatibility with other
 		    Cython transformations
-		ties_method : {'average', 'min', 'max', 'first', 'dense'}, default 'average'
+		ties_method : {'average', 'min', 'max', 'first', 'dense'}, default
+		    'average'
 		    * average: average rank of group
 		    * min: lowest rank in group
 		    * max: highest rank in group

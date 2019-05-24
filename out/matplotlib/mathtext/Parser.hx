@@ -185,6 +185,14 @@ package matplotlib.mathtext;
 	public function snowflake(s:Dynamic, loc:Dynamic, toks:Dynamic):Dynamic;
 	public function space(s:Dynamic, loc:Dynamic, toks:Dynamic):Dynamic;
 	public function sqrt(s:Dynamic, loc:Dynamic, toks:Dynamic):Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	public function stackrel(s:Dynamic, loc:Dynamic, toks:Dynamic):Dynamic;
 	public function start_group(s:Dynamic, loc:Dynamic, toks:Dynamic):Dynamic;
 	public function subsuper(s:Dynamic, loc:Dynamic, toks:Dynamic):Dynamic;

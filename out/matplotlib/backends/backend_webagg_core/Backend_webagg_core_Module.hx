@@ -16,6 +16,7 @@ package matplotlib.backends.backend_webagg_core;
 		Handle key codes
 	**/
 	static public function _handle_key(key:Dynamic):Dynamic;
+	static public var _log : Dynamic;
 	static public var backend_version : Dynamic;
 	static public function draw_if_interactive():Dynamic;
 	/**

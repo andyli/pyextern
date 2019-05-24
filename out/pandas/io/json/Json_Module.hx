@@ -30,6 +30,16 @@ package pandas.io.json;
 		-------
 		schema : dict
 		
+		Notes
+		-----
+		See `_as_json_table_type` for conversion types.
+		Timedeltas as converted to ISO8601 duration format with
+		9 decimal places after the seconds field for nanosecond precision.
+		
+		Categoricals are converted to the `any` dtype, and use the `enum` field
+		constraint to list the allowed values. The `ordered` attribute is included
+		in an `ordered` field.
+		
 		Examples
 		--------
 		>>> df = pd.DataFrame(
@@ -44,16 +54,6 @@ package pandas.io.json;
 		{'name': 'C', 'type': 'datetime'}],
 		'pandas_version': '0.20.0',
 		'primaryKey': ['idx']}
-		
-		Notes
-		-----
-		See `_as_json_table_type` for conversion types.
-		Timedeltas as converted to ISO8601 duration format with
-		9 decimal places after the secnods field for nanosecond precision.
-		
-		Categoricals are converted to the `any` dtype, and use the `enum` field
-		constraint to list the allowed values. The `ordered` attribute is included
-		in an `ordered` field.
 	**/
 	static public function build_table_schema(data:Dynamic, ?index:Dynamic, ?primary_key:Dynamic, ?version:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
@@ -61,7 +61,7 @@ package pandas.io.json;
 	**/
 	static public function dumps(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		"Normalize" semi-structured JSON data into a flat table
+		Normalize semi-structured JSON data into a flat table.
 		
 		Parameters
 		----------
@@ -72,10 +72,10 @@ package pandas.io.json;
 		    assumed to be an array of records
 		meta : list of paths (string or list of strings), default None
 		    Fields to use as metadata for each record in resulting table
+		meta_prefix : string, default None
 		record_prefix : string, default None
 		    If True, prefix records with dotted (?) path, e.g. foo.bar.field if
 		    path to records is ['foo', 'bar']
-		meta_prefix : string, default None
 		errors : {'raise', 'ignore'}, default 'raise'
 		
 		    * 'ignore' : will ignore KeyError if keys listed in meta are not
@@ -90,7 +90,6 @@ package pandas.io.json;
 		    e.g., for sep='.', { 'foo' : { 'bar' : 0 } } -> foo.bar
 		
 		    .. versionadded:: 0.20.0
-		
 		
 		Returns
 		-------
@@ -146,14 +145,14 @@ package pandas.io.json;
 	**/
 	static public function loads(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Convert a JSON string to pandas object
+		Convert a JSON string to pandas object.
 		
 		Parameters
 		----------
 		path_or_buf : a valid JSON string or file-like, default: None
-		    The string could be a URL. Valid URL schemes include http, ftp, s3, and
-		    file. For file URLs, a host is expected. For instance, a local file
-		    could be ``file://localhost/path/to/table.json``
+		    The string could be a URL. Valid URL schemes include http, ftp, s3,
+		    gcs, and file. For file URLs, a host is expected. For instance, a local
+		    file could be ``file://localhost/path/to/table.json``
 		
 		orient : string,
 		    Indication of expected JSON string format.
@@ -226,17 +225,17 @@ package pandas.io.json;
 		    is to try and detect the correct precision, but if this is not desired
 		    then pass one of 's', 'ms', 'us' or 'ns' to force parsing only seconds,
 		    milliseconds, microseconds or nanoseconds respectively.
-		lines : boolean, default False
-		    Read the file as a json object per line.
-		
-		    .. versionadded:: 0.19.0
-		
 		encoding : str, default is 'utf-8'
 		    The encoding to use to decode py3 bytes.
 		
 		    .. versionadded:: 0.19.0
 		
-		chunksize: integer, default None
+		lines : boolean, default False
+		    Read the file as a json object per line.
+		
+		    .. versionadded:: 0.19.0
+		
+		chunksize : integer, default None
 		    Return JsonReader object for iteration.
 		    See the `line-delimted json docs
 		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-jsonl>`_
@@ -259,6 +258,10 @@ package pandas.io.json;
 		-------
 		result : Series or DataFrame, depending on the value of `typ`.
 		
+		See Also
+		--------
+		DataFrame.to_json
+		
 		Notes
 		-----
 		Specific to ``orient='table'``, if a :class:`DataFrame` with a literal
@@ -269,10 +272,6 @@ package pandas.io.json;
 		:func:`read_json` operation cannot distinguish between the two. The same
 		limitation is encountered with a :class:`MultiIndex` and any names
 		beginning with ``'level_'``.
-		
-		See Also
-		--------
-		DataFrame.to_json
 		
 		Examples
 		--------

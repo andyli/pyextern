@@ -14,8 +14,10 @@ package matplotlib.contour;
 	**/
 	static public function _find_closest_point_on_leg(p1:Dynamic, p2:Dynamic, p0:Dynamic):Dynamic;
 	/**
-		lc: coordinates of vertices
-		point: coordinates of test point
+		Parameters
+		----------
+		lc : coordinates of vertices
+		point : coordinates of test point
 	**/
 	static public function _find_closest_point_on_path(lc:Dynamic, point:Dynamic):Dynamic;
 	/**

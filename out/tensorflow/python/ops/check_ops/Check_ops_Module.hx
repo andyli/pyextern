@@ -122,6 +122,29 @@ package tensorflow.python.ops.check_ops;
 	**/
 	static public function assert_equal(x:Dynamic, y:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Assert the condition `x == y` holds element-wise.
+		
+		This Op checks that `x[i] == y[i]` holds for every pair of (possibly
+		broadcast) elements of `x` and `y`. If both `x` and `y` are empty, this is
+		trivially satisfied.
+		
+		If `x` and `y` are not equal, `message`, as well as the first `summarize`
+		entries of `x` and `y` are printed, and `InvalidArgumentError` is raised.
+		
+		Args:
+		  x:  Numeric `Tensor`.
+		  y:  Numeric `Tensor`, same dtype as and broadcastable to `x`.
+		  message: A string to prefix to the default message.
+		  summarize: Print this many entries of each tensor.
+		  name: A name for this operation (optional).  Defaults to "assert_equal".
+		
+		Raises:
+		  InvalidArgumentError: if the check can be performed immediately and
+		    `x == y` is False. The check can be performed immediately during eager
+		    execution or if `x` and `y` are statically known.
+	**/
+	static public function assert_equal_v2(x:Dynamic, y:Dynamic, ?message:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Assert the condition `x > y` holds element-wise.
 		
 		Example of adding a dependency to an operation:
@@ -177,6 +200,55 @@ package tensorflow.python.ops.check_ops;
 	**/
 	static public function assert_greater_equal(x:Dynamic, y:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Assert the condition `x >= y` holds element-wise.
+		
+		This Op checks that `x[i] >= y[i]` holds for every pair of (possibly
+		broadcast) elements of `x` and `y`. If both `x` and `y` are empty, this is
+		trivially satisfied.
+		
+		If `x` is not greater or equal to `y` element-wise, `message`, as well as the
+		first `summarize` entries of `x` and `y` are printed, and
+		`InvalidArgumentError` is raised.
+		
+		Args:
+		  x:  Numeric `Tensor`.
+		  y:  Numeric `Tensor`, same dtype as and broadcastable to `x`.
+		  message: A string to prefix to the default message.
+		  summarize: Print this many entries of each tensor.
+		  name: A name for this operation (optional).  Defaults to
+		  "assert_greater_equal".
+		
+		Raises:
+		  InvalidArgumentError: if the check can be performed immediately and
+		    `x >= y` is False. The check can be performed immediately during eager
+		    execution or if `x` and `y` are statically known.
+	**/
+	static public function assert_greater_equal_v2(x:Dynamic, y:Dynamic, ?message:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Assert the condition `x > y` holds element-wise.
+		
+		This Op checks that `x[i] > y[i]` holds for every pair of (possibly
+		broadcast) elements of `x` and `y`. If both `x` and `y` are empty, this is
+		trivially satisfied.
+		
+		If `x` is not greater than `y` element-wise, `message`, as well as the first
+		`summarize` entries of `x` and `y` are printed, and `InvalidArgumentError` is
+		raised.
+		
+		Args:
+		  x:  Numeric `Tensor`.
+		  y:  Numeric `Tensor`, same dtype as and broadcastable to `x`.
+		  message: A string to prefix to the default message.
+		  summarize: Print this many entries of each tensor.
+		  name: A name for this operation (optional).  Defaults to "assert_greater".
+		
+		Raises:
+		  InvalidArgumentError: if the check can be performed immediately and
+		    `x > y` is False. The check can be performed immediately during eager
+		    execution or if `x` and `y` are statically known.
+	**/
+	static public function assert_greater_v2(x:Dynamic, y:Dynamic, ?message:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Assert that `x` is of integer dtype.
 		
 		Example of adding a dependency to an operation:
@@ -198,6 +270,21 @@ package tensorflow.python.ops.check_ops;
 		  A `no_op` that does nothing.  Type can be determined statically.
 	**/
 	static public function assert_integer(x:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Assert that `x` is of integer dtype.
+		
+		If `x` has a non-integer type, `message`, as well as the dtype of `x` are
+		printed, and `InvalidArgumentError` is raised.
+		
+		Args:
+		  x: A `Tensor`.
+		  message: A string to prefix to the default message.
+		  name: A name for this operation (optional). Defaults to "assert_integer".
+		
+		Raises:
+		  TypeError:  If `x.dtype` is not a non-quantized integer type.
+	**/
+	static public function assert_integer_v2(x:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Assert the condition `x < y` holds element-wise.
 		
@@ -253,6 +340,54 @@ package tensorflow.python.ops.check_ops;
 	**/
 	static public function assert_less_equal(x:Dynamic, y:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Assert the condition `x <= y` holds element-wise.
+		
+		This Op checks that `x[i] <= y[i]` holds for every pair of (possibly
+		broadcast) elements of `x` and `y`. If both `x` and `y` are empty, this is
+		trivially satisfied.
+		
+		If `x` is not less or equal than `y` element-wise, `message`, as well as the
+		first `summarize` entries of `x` and `y` are printed, and
+		`InvalidArgumentError` is raised.
+		
+		Args:
+		  x:  Numeric `Tensor`.
+		  y:  Numeric `Tensor`, same dtype as and broadcastable to `x`.
+		  message: A string to prefix to the default message.
+		  summarize: Print this many entries of each tensor.
+		  name: A name for this operation (optional). Defaults to "assert_less_equal".
+		
+		Raises:
+		  InvalidArgumentError: if the check can be performed immediately and
+		    `x <= y` is False. The check can be performed immediately during eager
+		    execution or if `x` and `y` are statically known.
+	**/
+	static public function assert_less_equal_v2(x:Dynamic, y:Dynamic, ?message:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Assert the condition `x < y` holds element-wise.
+		
+		This Op checks that `x[i] < y[i]` holds for every pair of (possibly
+		broadcast) elements of `x` and `y`. If both `x` and `y` are empty, this is
+		trivially satisfied.
+		
+		If `x` is not less than `y` element-wise, `message`, as well as the first
+		`summarize` entries of `x` and `y` are printed, and `InvalidArgumentError` is
+		raised.
+		
+		Args:
+		  x:  Numeric `Tensor`.
+		  y:  Numeric `Tensor`, same dtype as and broadcastable to `x`.
+		  message: A string to prefix to the default message.
+		  summarize: Print this many entries of each tensor.
+		  name: A name for this operation (optional).  Defaults to "assert_less".
+		
+		Raises:
+		  InvalidArgumentError: if the check can be performed immediately and
+		    `x < y` is False. The check can be performed immediately during eager
+		    execution or if `x` and `y` are statically known.
+	**/
+	static public function assert_less_v2(x:Dynamic, y:Dynamic, ?message:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Assert the condition `x` and `y` are close element-wise.
 		
 		Example of adding a dependency to an operation:
@@ -270,7 +405,7 @@ package tensorflow.python.ops.check_ops;
 		If both `x` and `y` are empty, this is trivially satisfied.
 		
 		The default `atol` and `rtol` is `10 * eps`, where `eps` is the smallest
-		representable positive number such that `1 + eps != eps`.  This is about
+		representable positive number such that `1 + eps != 1`.  This is about
 		`1.2e-6` in `32bit`, `2.22e-15` in `64bit`, and `0.00977` in `16bit`.
 		See `numpy.finfo`.
 		
@@ -298,6 +433,46 @@ package tensorflow.python.ops.check_ops;
 	**/
 	static public function assert_near(x:Dynamic, y:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Assert the condition `x` and `y` are close element-wise.
+		
+		This Op checks that `x[i] - y[i] < atol + rtol * tf.abs(y[i])` holds for every
+		pair of (possibly broadcast) elements of `x` and `y`. If both `x` and `y` are
+		empty, this is trivially satisfied.
+		
+		If any elements of `x` and `y` are not close, `message`, as well as the first
+		`summarize` entries of `x` and `y` are printed, and `InvalidArgumentError`
+		is raised.
+		
+		The default `atol` and `rtol` is `10 * eps`, where `eps` is the smallest
+		representable positive number such that `1 + eps != 1`.  This is about
+		`1.2e-6` in `32bit`, `2.22e-15` in `64bit`, and `0.00977` in `16bit`.
+		See `numpy.finfo`.
+		
+		Args:
+		  x: Float or complex `Tensor`.
+		  y: Float or complex `Tensor`, same dtype as and broadcastable to `x`.
+		  rtol:  `Tensor`.  Same `dtype` as, and broadcastable to, `x`.
+		    The relative tolerance.  Default is `10 * eps`.
+		  atol:  `Tensor`.  Same `dtype` as, and broadcastable to, `x`.
+		    The absolute tolerance.  Default is `10 * eps`.
+		  message: A string to prefix to the default message.
+		  summarize: Print this many entries of each tensor.
+		  name: A name for this operation (optional).  Defaults to "assert_near".
+		
+		Raises:
+		  InvalidArgumentError: if the check can be performed immediately and
+		    `x != y` is False for any pair of elements in `x` and `y`. The check can
+		    be performed immediately during eager execution or if `x` and `y` are
+		    statically known.
+		
+		@compatibility(numpy)
+		Similar to `numpy.assert_allclose`, except tolerance depends on data type.
+		This is due to the fact that `TensorFlow` is often used with `32bit`, `64bit`,
+		and even `16bit` data.
+		@end_compatibility
+	**/
+	static public function assert_near_v2(x:Dynamic, y:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?message:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Assert the condition `x < 0` holds element-wise.
 		
 		Example of adding a dependency to an operation:
@@ -322,6 +497,27 @@ package tensorflow.python.ops.check_ops;
 		  Op raising `InvalidArgumentError` unless `x` is all negative.
 	**/
 	static public function assert_negative(x:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Assert the condition `x < 0` holds element-wise.
+		
+		This Op checks that `x[i] < 0` holds for every element of `x`. If `x` is
+		empty, this is trivially satisfied.
+		
+		If `x` is not negative everywhere, `message`, as well as the first `summarize`
+		entries of `x` are printed, and `InvalidArgumentError` is raised.
+		
+		Args:
+		  x:  Numeric `Tensor`.
+		  message: A string to prefix to the default message.
+		  summarize: Print this many entries of each tensor.
+		  name: A name for this operation (optional).  Defaults to "assert_negative".
+		
+		Raises:
+		  InvalidArgumentError: if the check can be performed immediately and
+		    `x[i] < 0` is False. The check can be performed immediately during eager
+		    execution or if `x` is statically known.
+	**/
+	static public function assert_negative_v2(x:Dynamic, ?message:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Assert the condition `x >= 0` holds element-wise.
 		
@@ -349,6 +545,28 @@ package tensorflow.python.ops.check_ops;
 	**/
 	static public function assert_non_negative(x:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Assert the condition `x >= 0` holds element-wise.
+		
+		This Op checks that `x[i] >= 0` holds for every element of `x`. If `x` is
+		empty, this is trivially satisfied.
+		
+		If `x` is not >= 0 everywhere, `message`, as well as the first `summarize`
+		entries of `x` are printed, and `InvalidArgumentError` is raised.
+		
+		Args:
+		  x:  Numeric `Tensor`.
+		  message: A string to prefix to the default message.
+		  summarize: Print this many entries of each tensor.
+		  name: A name for this operation (optional).  Defaults to
+		    "assert_non_negative".
+		
+		Raises:
+		  InvalidArgumentError: if the check can be performed immediately and
+		    `x[i] >= 0` is False. The check can be performed immediately during eager
+		    execution or if `x` is statically known.
+	**/
+	static public function assert_non_negative_v2(x:Dynamic, ?message:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Assert the condition `x <= 0` holds element-wise.
 		
 		Example of adding a dependency to an operation:
@@ -374,6 +592,28 @@ package tensorflow.python.ops.check_ops;
 		  Op raising `InvalidArgumentError` unless `x` is all non-positive.
 	**/
 	static public function assert_non_positive(x:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Assert the condition `x <= 0` holds element-wise.
+		
+		This Op checks that `x[i] <= 0` holds for every element of `x`. If `x` is
+		empty, this is trivially satisfied.
+		
+		If `x` is not <= 0 everywhere, `message`, as well as the first `summarize`
+		entries of `x` are printed, and `InvalidArgumentError` is raised.
+		
+		Args:
+		  x:  Numeric `Tensor`.
+		  message: A string to prefix to the default message.
+		  summarize: Print this many entries of each tensor.
+		  name: A name for this operation (optional).  Defaults to
+		    "assert_non_positive".
+		
+		Raises:
+		  InvalidArgumentError: if the check can be performed immediately and
+		    `x[i] <= 0` is False. The check can be performed immediately during eager
+		    execution or if `x` is statically known.
+	**/
+	static public function assert_non_positive_v2(x:Dynamic, ?message:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Assert the condition `x != y` holds for all elements.
 		
@@ -403,6 +643,32 @@ package tensorflow.python.ops.check_ops;
 	**/
 	static public function assert_none_equal(x:Dynamic, y:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Assert the condition `x != y` holds for all elements.
+		
+		This Op checks that `x[i] != y[i]` holds for every pair of (possibly
+		broadcast) elements of `x` and `y`. If both `x` and `y` are empty, this is
+		trivially satisfied.
+		
+		If any elements of `x` and `y` are equal, `message`, as well as the first
+		`summarize` entries of `x` and `y` are printed, and `InvalidArgumentError`
+		is raised.
+		
+		Args:
+		  x:  Numeric `Tensor`.
+		  y:  Numeric `Tensor`, same dtype as and broadcastable to `x`.
+		  summarize: Print this many entries of each tensor.
+		  message: A string to prefix to the default message.
+		  name: A name for this operation (optional).  Defaults to
+		  "assert_none_equal".
+		
+		Raises:
+		  InvalidArgumentError: if the check can be performed immediately and
+		    `x != y` is False for any pair of elements in `x` and `y`. The check can
+		    be performed immediately during eager execution or if `x` and `y` are
+		    statically known.
+	**/
+	static public function assert_none_equal_v2(x:Dynamic, y:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Assert the condition `x > 0` holds element-wise.
 		
 		Example of adding a dependency to an operation:
@@ -427,6 +693,27 @@ package tensorflow.python.ops.check_ops;
 		  Op raising `InvalidArgumentError` unless `x` is all positive.
 	**/
 	static public function assert_positive(x:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Assert the condition `x > 0` holds element-wise.
+		
+		This Op checks that `x[i] > 0` holds for every element of `x`. If `x` is
+		empty, this is trivially satisfied.
+		
+		If `x` is not positive everywhere, `message`, as well as the first `summarize`
+		entries of `x` are printed, and `InvalidArgumentError` is raised.
+		
+		Args:
+		  x:  Numeric `Tensor`.
+		  message: A string to prefix to the default message.
+		  summarize: Print this many entries of each tensor.
+		  name: A name for this operation (optional). Defaults to "assert_positive".
+		
+		Raises:
+		  InvalidArgumentError: if the check can be performed immediately and
+		    `x[i] > 0` is False. The check can be performed immediately during eager
+		    execution or if `x` is statically known.
+	**/
+	static public function assert_positive_v2(x:Dynamic, ?message:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Static assert that values is a "proper" iterable.
 		
@@ -455,7 +742,7 @@ package tensorflow.python.ops.check_ops;
 		  x:  Numeric `Tensor`.
 		  rank:  Scalar integer `Tensor`.
 		  data:  The tensors to print out if the condition is False.  Defaults to
-		    error message and first few entries of `x`.
+		    error message and the shape of `x`.
 		  summarize: Print this many entries of each tensor.
 		  message: A string to prefix to the default message.
 		  name: A name for this operation (optional).  Defaults to "assert_rank".
@@ -497,6 +784,27 @@ package tensorflow.python.ops.check_ops;
 	**/
 	static public function assert_rank_at_least(x:Dynamic, rank:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Assert that `x` has rank of at least `rank`.
+		
+		This Op checks that the rank of `x` is greater or equal to `rank`.
+		
+		If `x` has a rank lower than `rank`, `message`, as well as the shape of `x`
+		are printed, and `InvalidArgumentError` is raised.
+		
+		Args:
+		  x: `Tensor`.
+		  rank: Scalar integer `Tensor`.
+		  message: A string to prefix to the default message.
+		  name: A name for this operation (optional).  Defaults to
+		    "assert_rank_at_least".
+		
+		Raises:
+		  InvalidArgumentError: `x` does not have rank at least `rank`, but the rank
+		    cannot be statically determined.
+		  ValueError: If static checks determine `x` has mismatched rank.
+	**/
+	static public function assert_rank_at_least_v2(x:Dynamic, rank:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Assert `x` has rank in `ranks`.
 		
 		Example of adding a dependency to an operation:
@@ -525,6 +833,47 @@ package tensorflow.python.ops.check_ops;
 	**/
 	static public function assert_rank_in(x:Dynamic, ranks:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Assert that `x` has a rank in `ranks`.
+		
+		This Op checks that the rank of `x` is in `ranks`.
+		
+		If `x` has a different rank, `message`, as well as the shape of `x` are
+		printed, and `InvalidArgumentError` is raised.
+		
+		Args:
+		  x: `Tensor`.
+		  ranks: `Iterable` of scalar `Tensor` objects.
+		  message: A string to prefix to the default message.
+		  name: A name for this operation (optional). Defaults to "assert_rank_in".
+		
+		Raises:
+		  InvalidArgumentError: `x` does not have rank in `ranks`, but the rank cannot
+		    be statically determined.
+		  ValueError: If static checks determine `x` has mismatched rank.
+	**/
+	static public function assert_rank_in_v2(x:Dynamic, ranks:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Assert that `x` has rank equal to `rank`.
+		
+		This Op checks that the rank of `x` is equal to `rank`.
+		
+		If `x` has a different rank, `message`, as well as the shape of `x` are
+		printed, and `InvalidArgumentError` is raised.
+		
+		Args:
+		  x: `Tensor`.
+		  rank: Scalar integer `Tensor`.
+		  message: A string to prefix to the default message.
+		  name: A name for this operation (optional). Defaults to
+		    "assert_rank".
+		
+		Raises:
+		  InvalidArgumentError: if the check can be performed immediately and
+		    `x` does not have rank `rank`. The check can be performed immediately
+		    during eager execution or if the shape of `x` is statically known.
+	**/
+	static public function assert_rank_v2(x:Dynamic, rank:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Validate and return float type based on `tensors` and `dtype`.
 		
 		For ops such as matrix multiplication, inputs and weights must be of the
@@ -537,19 +886,57 @@ package tensorflow.python.ops.check_ops;
 		  tensors: Tensors of input values. Can include `None` elements, which will be
 		      ignored.
 		  dtype: Expected type.
+		
 		Returns:
 		  Validated type.
+		
 		Raises:
 		  ValueError: if neither `tensors` nor `dtype` is supplied, or result is not
 		      float, or the common type of the inputs is not a floating point type.
 	**/
 	static public function assert_same_float_dtype(?tensors:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public function assert_scalar(tensor:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Asserts that the given `tensor` is a scalar.
+		
+		This function raises `ValueError` unless it can be certain that the given
+		`tensor` is a scalar. `ValueError` is also raised if the shape of `tensor` is
+		unknown.
+		
+		Args:
+		  tensor: A `Tensor`.
+		  name:  A name for this operation. Defaults to "assert_scalar"
+		  message: A string to prefix to the default message.
+		
+		Returns:
+		  The input tensor (potentially converted to a `Tensor`).
+		
+		Raises:
+		  ValueError: If the tensor is not scalar (rank 0), or if its shape is
+		    unknown.
+	**/
+	static public function assert_scalar(tensor:Dynamic, ?name:Dynamic, ?message:Dynamic):Dynamic;
+	/**
+		Asserts that the given `tensor` is a scalar.
+		
+		This function raises `ValueError` unless it can be certain that the given
+		`tensor` is a scalar. `ValueError` is also raised if the shape of `tensor` is
+		unknown.
+		
+		Args:
+		  tensor: A `Tensor`.
+		  message: A string to prefix to the default message.
+		  name:  A name for this operation. Defaults to "assert_scalar"
+		
+		Raises:
+		  ValueError: If the tensor is not scalar (rank 0), or if its shape is
+		    unknown.
+	**/
+	static public function assert_scalar_v2(tensor:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Statically asserts that the given `Tensor` is of the specified type.
 		
 		Args:
-		  tensor: A tensorflow `Tensor`.
+		  tensor: A `Tensor`.
 		  tf_type: A tensorflow type (`dtypes.float32`, `tf.int64`, `dtypes.bool`,
 		    etc).
 		  message: A string to prefix to the default message.
@@ -562,6 +949,20 @@ package tensorflow.python.ops.check_ops;
 		  A `no_op` that does nothing.  Type can be determined statically.
 	**/
 	static public function assert_type(tensor:Dynamic, tf_type:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Asserts that the given `Tensor` is of the specified type.
+		
+		Args:
+		  tensor: A `Tensor`.
+		  tf_type: A tensorflow type (`dtypes.float32`, `tf.int64`, `dtypes.bool`,
+		    etc).
+		  message: A string to prefix to the default message.
+		  name:  A name for this operation. Defaults to "assert_type"
+		
+		Raises:
+		  TypeError: If the tensor's data type doesn't match `tf_type`.
+	**/
+	static public function assert_type_v2(tensor:Dynamic, tf_type:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Updates the shape of a tensor and checks at runtime that the shape holds.

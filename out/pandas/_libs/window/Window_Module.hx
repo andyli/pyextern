@@ -32,7 +32,7 @@ package pandas._libs.window;
 		
 		Parameters
 		----------
-		input : ndarray (float64 type)
+		vals : ndarray (float64 type)
 		com : float64
 		adjust: int
 		ignore_na: int
@@ -66,11 +66,11 @@ package pandas._libs.window;
 		
 		Parameters
 		----------
-		input: 1d ndarray
+		values: 1d ndarray
 		win: integer, window size
 		minp: integer, minimum periods
 		index: 1d ndarray, optional
-		    index to the input array
+		    index to the values array
 		closed: string, default None
 		    {'right', 'left', 'both', 'neither'}
 		    window endpoint closedness. Defaults to 'right' in
@@ -98,7 +98,7 @@ package pandas._libs.window;
 		
 		Parameters
 		----------
-		input: numpy array
+		values: numpy array
 		window: int, size of rolling window
 		minp: if number of observations in window
 		      is below this, output a NaN
@@ -108,7 +108,7 @@ package pandas._libs.window;
 		        make the interval closed on the right, left,
 		        both or neither endpoints
 	**/
-	static public function roll_max(input:Dynamic, win:Dynamic, minp:Dynamic, index:Dynamic, closed:Dynamic):Dynamic;
+	static public function roll_max(values:Dynamic, win:Dynamic, minp:Dynamic, index:Dynamic, closed:Dynamic):Dynamic;
 	static public function roll_mean(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function roll_median_c(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -116,14 +116,14 @@ package pandas._libs.window;
 		
 		Parameters
 		----------
-		input: numpy array
+		values: numpy array
 		window: int, size of rolling window
 		minp: if number of observations in window
 		      is below this, output a NaN
 		index: ndarray, optional
 		   index for window computation
 	**/
-	static public function roll_min(input:Dynamic, win:Dynamic, minp:Dynamic, index:Dynamic, closed:Dynamic):Dynamic;
+	static public function roll_min(values:Dynamic, win:Dynamic, minp:Dynamic, index:Dynamic, closed:Dynamic):Dynamic;
 	/**
 		O(N log(window)) implementation using skip list
 	**/
@@ -135,7 +135,7 @@ package pandas._libs.window;
 	**/
 	static public function roll_var(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Assume len(weights) << len(input)
+		Assume len(weights) << len(values)
 	**/
 	static public function roll_window(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

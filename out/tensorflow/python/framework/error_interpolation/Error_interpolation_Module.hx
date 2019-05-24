@@ -133,8 +133,8 @@ package tensorflow.python.framework.error_interpolation;
 	/**
 		Interpolates an error message.
 		
-		The error message can contain tags of the form ^^type:name^^ which will
-		be replaced.
+		The error message can contain tags of the form `{{type name}}` which will be
+		replaced.
 		
 		Args:
 		  error_message: A string to interpolate.

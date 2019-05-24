@@ -38,6 +38,7 @@ package scipy.sparse.linalg._interface;
 		<2x3 MatrixLinearOperator with dtype=int32>
 	**/
 	static public function aslinearoperator(A:Dynamic):Dynamic;
+	static public function asmatrix(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Is x appropriate as an index into a sparse matrix? Returns True

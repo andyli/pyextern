@@ -120,4 +120,5 @@ package torch.autograd;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var name : Dynamic;
 }

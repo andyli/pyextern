@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.profiler.tfprof_log_pb2;
 @:pythonImport("tensorflow.core.profiler.tfprof_log_pb2", "ProfileNode") extern class ProfileNode {
-	static public var ATTRS_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -10,7 +9,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CANONICAL_DEVICE_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -32,7 +30,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EXECS_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -41,7 +38,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FLOAT_OPS_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -50,7 +46,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HOST_DEVICE_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -59,9 +54,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ID_FIELD_NUMBER : Dynamic;
-	static public var INPUTS_FIELD_NUMBER : Dynamic;
-	static public var INPUT_SHAPES_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -86,11 +78,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NAME_FIELD_NUMBER : Dynamic;
-	static public var OP_FIELD_NUMBER : Dynamic;
-	static public var OP_TYPES_FIELD_NUMBER : Dynamic;
-	static public var OUTPUTS_FIELD_NUMBER : Dynamic;
-	static public var OUTPUT_SHAPES_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -107,8 +94,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SHAPE_FIELD_NUMBER : Dynamic;
-	static public var SRC_OUTPUT_INDEX_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -125,7 +110,10 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		A ProtocolMessage
 	**/
 	public function SrcOutputIndexEntry(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TRACE_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -291,4 +279,68 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.attrs
+	**/
+	public var attrs : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.canonical_device
+	**/
+	public var canonical_device : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.execs
+	**/
+	public var execs : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.float_ops
+	**/
+	public var float_ops : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.host_device
+	**/
+	public var host_device : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.id
+	**/
+	public var id : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.input_shapes
+	**/
+	public var input_shapes : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.inputs
+	**/
+	public var inputs : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.name
+	**/
+	public var name : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.op
+	**/
+	public var op : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.op_types
+	**/
+	public var op_types : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.output_shapes
+	**/
+	public var output_shapes : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.outputs
+	**/
+	public var outputs : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.shape
+	**/
+	public var shape : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.src_output_index
+	**/
+	public var src_output_index : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileNode.trace
+	**/
+	public var trace : Dynamic;
 }

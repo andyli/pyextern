@@ -39,6 +39,43 @@ package pandas.io.formats.printing;
 		    function used to justify str. Needed for unicode handling.
 	**/
 	static public function adjoin(space:Dynamic, ?lists:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function default_pprint(x:Dynamic, ?max_seq_items:Dynamic):Dynamic;
+	/**
+		Return a list of tuples of the (attr, formatted_value)
+		for common attrs, including dtype, name, length
+		
+		Parameters
+		----------
+		obj : object
+		    must be iterable
+		
+		Returns
+		-------
+		list
+	**/
+	static public function format_object_attrs(obj:Dynamic):Dynamic;
+	/**
+		Return the formatted obj as a unicode string
+		
+		Parameters
+		----------
+		obj : object
+		    must be iterable and support __getitem__
+		formatter : callable
+		    string formatter for an element
+		is_justify : boolean
+		    should justify the display
+		name : name, optional
+		    defaults to the class name of the obj
+		indent_for_name : bool, default True
+		    Whether subsequent lines should be be indented to
+		    align with the name.
+		
+		Returns
+		-------
+		summary string
+	**/
+	static public function format_object_summary(obj:Dynamic, formatter:Dynamic, ?is_justify:Dynamic, ?name:Dynamic, ?indent_for_name:Dynamic):Dynamic;
 	/**
 		get_option(pat)
 		
@@ -123,7 +160,7 @@ package pandas.io.formats.printing;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
+		    [default: ANSI_X3.4-1968] [currently: ANSI_X3.4-1968]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -373,7 +410,7 @@ package pandas.io.formats.printing;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------

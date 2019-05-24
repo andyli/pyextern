@@ -40,7 +40,7 @@ package tensorflow.contrib.learn.python.learn.datasets.synthetic;
 	/**
 		Create circles separated by some value (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Consider using synthetic datasets from scikits.learn.
 		
@@ -110,7 +110,7 @@ package tensorflow.contrib.learn.python.learn.datasets.synthetic;
 	/**
 		Create spirals (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Consider using synthetic datasets from scikits.learn.
 		

@@ -44,7 +44,7 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	/**
 		Clear cached summary writers. Currently only used for unit tests. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
 		Instructions for updating:
 		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 	**/
@@ -86,7 +86,7 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	/**
 		Evaluate a model loaded from a checkpoint. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
 		Instructions for updating:
 		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
@@ -137,7 +137,7 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	/**
 		Returns single SummaryWriter per logdir in current run. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `SummaryWriterCache.get` directly.
 		
@@ -152,7 +152,7 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	/**
 		Restore graph from `restore_checkpoint_path` and run `output_dict` tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
 		Instructions for updating:
 		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
@@ -194,7 +194,7 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	/**
 		See run_feeds_iter(). Returns a `list` instead of an iterator. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
 		Instructions for updating:
 		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 	**/
@@ -202,7 +202,7 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	/**
 		Run `output_dict` tensors with each input in `feed_dicts`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
 		Instructions for updating:
 		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
@@ -229,7 +229,7 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	/**
 		Run `output_dict` tensors `n` times, with the same `feed_dict` each run. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
 		Instructions for updating:
 		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
@@ -249,7 +249,7 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	/**
 		Train a model. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
 		Instructions for updating:
 		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		

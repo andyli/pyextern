@@ -38,6 +38,7 @@ package scipy;
 	static public var UFUNC_BUFSIZE_DEFAULT : Dynamic;
 	static public var UFUNC_PYVALS_NAME : Dynamic;
 	static public var WRAP : Dynamic;
+	static public var _UFUNC_API : Dynamic;
 	static public var __SCIPY_SETUP__ : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -51,6 +52,37 @@ package scipy;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
+	/**
+		add_ufunc_docstring(ufunc, new_docstring)
+		
+		Replace the docstring for a ufunc with new_docstring.
+		This method will only work if the current docstring for
+		the ufunc is NULL. (At the C level, i.e. when ufunc->doc is NULL.)
+		
+		Parameters
+		----------
+		ufunc : numpy.ufunc
+		    A ufunc whose current doc is NULL.
+		new_docstring : string
+		    The new docstring for the ufunc.
+		
+		Notes
+		-----
+		This method allocates memory for new_docstring on
+		the heap. Technically this creates a mempory leak, since this
+		memory will not be reclaimed until the end of the program
+		even if the ufunc itself is removed. However this will only
+		be a problem if the user is repeatedly creating ufuncs with
+		no documentation, adding documentation via add_newdoc_ufunc,
+		and then throwing away the ufunc.
+	**/
+	static public function _add_newdoc_ufunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		_arg(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		DO NOT USE, ONLY FOR TESTING
+	**/
+	static public function _arg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -603,6 +635,9 @@ package scipy;
 		angle : ndarray or scalar
 		    The counterclockwise angle from the positive real axis on
 		    the complex plane, with dtype as numpy.float64.
+		    
+		    ..versionchanged:: 1.16.0
+		        This function works on subclasses of ndarray like `ma.array`.
 		
 		See Also
 		--------
@@ -903,11 +938,10 @@ package scipy;
 		Values are generated within the half-open interval ``[start, stop)``
 		(in other words, the interval including `start` but excluding `stop`).
 		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
+		`range` function, but returns an ndarray rather than a list.
 		
 		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
+		be consistent.  It is better to use `numpy.linspace` for these cases.
 		
 		Parameters
 		----------
@@ -1045,7 +1079,7 @@ package scipy;
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
 		.. [2] Wikipedia, "Inverse hyperbolic function",
-		       http://en.wikipedia.org/wiki/Arccosh
+		       https://en.wikipedia.org/wiki/Arccosh
 		
 		Examples
 		--------
@@ -1143,7 +1177,7 @@ package scipy;
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
 		.. [2] Wikipedia, "Inverse hyperbolic function",
-		       http://en.wikipedia.org/wiki/Arcsinh
+		       https://en.wikipedia.org/wiki/Arcsinh
 		
 		Examples
 		--------
@@ -1391,10 +1425,10 @@ package scipy;
 		
 		Examples
 		--------
-		>>> a = np.arange(6).reshape(2,3)
+		>>> a = np.arange(6).reshape(2,3) + 10
 		>>> a
-		array([[0, 1, 2],
-		       [3, 4, 5]])
+		array([[10, 11, 12],
+		       [13, 14, 15]])
 		>>> np.argmax(a)
 		5
 		>>> np.argmax(a, axis=0)
@@ -1408,7 +1442,7 @@ package scipy;
 		>>> ind
 		(1, 2)
 		>>> a[ind]
-		5
+		15
 		
 		>>> b = np.arange(6)
 		>>> b[1] = 5
@@ -1451,10 +1485,10 @@ package scipy;
 		
 		Examples
 		--------
-		>>> a = np.arange(6).reshape(2,3)
+		>>> a = np.arange(6).reshape(2,3) + 10
 		>>> a
-		array([[0, 1, 2],
-		       [3, 4, 5]])
+		array([[10, 11, 12],
+		       [13, 14, 15]])
 		>>> np.argmin(a)
 		0
 		>>> np.argmin(a, axis=0)
@@ -1468,12 +1502,12 @@ package scipy;
 		>>> ind
 		(0, 0)
 		>>> a[ind]
-		0
+		10
 		
-		>>> b = np.arange(6)
-		>>> b[4] = 0
+		>>> b = np.arange(6) + 10
+		>>> b[4] = 10
 		>>> b
-		array([0, 1, 2, 3, 0, 5])
+		array([10, 11, 12, 13, 10, 15])
 		>>> np.argmin(b)  # Only the first occurrence is returned.
 		0
 	**/
@@ -1714,11 +1748,11 @@ package scipy;
 		
 		References
 		----------
-		.. [1] "Lecture Notes on the Status of  IEEE 754", William Kahan,
-		       http://www.cs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF
+		.. [1] "Lecture Notes on the Status of IEEE 754", William Kahan,
+		       https://people.eecs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF
 		.. [2] "How Futile are Mindless Assessments of
 		       Roundoff in Floating-Point Computation?", William Kahan,
-		       http://www.cs.berkeley.edu/~wkahan/Mindless.pdf
+		       https://people.eecs.berkeley.edu/~wkahan/Mindless.pdf
 		
 		Examples
 		--------
@@ -1873,6 +1907,8 @@ package scipy;
 		
 		    The output is left-padded by the length of the prefix string, and
 		    wrapping is forced at the column ``max_line_width - len(suffix)``.
+		    It should be noted that the content of prefix and suffix strings are
+		    not included in the output.
 		style : _NoValue, optional
 		    Has no effect, do not use.
 		
@@ -2323,7 +2359,7 @@ package scipy;
 	**/
 	static public function asarray_chkfinite(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	/**
-		Return a contiguous array in memory (C order).
+		Return a contiguous array (ndim >= 1) in memory (C order).
 		
 		Parameters
 		----------
@@ -2353,6 +2389,9 @@ package scipy;
 		       [ 3.,  4.,  5.]], dtype=float32)
 		>>> x.flags['C_CONTIGUOUS']
 		True
+		
+		Note: This function returns an array with at least one-dimension (1-d) 
+		so it will not preserve 0-d arrays.  
 	**/
 	static public function ascontiguousarray(a:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
@@ -2382,7 +2421,7 @@ package scipy;
 	**/
 	static public function asfarray(a:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
-		Return an array laid out in Fortran order in memory.
+		Return an array (ndim >= 1) laid out in Fortran order in memory.
 		
 		Parameters
 		----------
@@ -2412,6 +2451,9 @@ package scipy;
 		False
 		>>> y.flags['F_CONTIGUOUS']
 		True
+		
+		Note: This function returns an array with at least one-dimension (1-d) 
+		so it will not preserve 0-d arrays.  
 	**/
 	static public function asfortranarray(a:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
@@ -2447,6 +2489,10 @@ package scipy;
 	static public function asmatrix(data:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Convert an array of size 1 to its scalar equivalent.
+		
+		.. deprecated:: 1.16
+		
+		    Deprecated, use `numpy.ndarray.item()` instead.
 		
 		Parameters
 		----------
@@ -2621,12 +2667,17 @@ package scipy;
 		
 		Returns
 		-------
-		average, [sum_of_weights] : array_type or double
-		    Return the average along the specified axis. When returned is `True`,
+		retval, [sum_of_weights] : array_type or double
+		    Return the average along the specified axis. When `returned` is `True`,
 		    return a tuple with the average as the first element and the sum
-		    of the weights as the second element. The return type is `Float`
-		    if `a` is of integer type, otherwise it is of the same type as `a`.
-		    `sum_of_weights` is of the same type as `average`.
+		    of the weights as the second element. `sum_of_weights` is of the
+		    same type as `retval`. The result dtype follows a genereal pattern.
+		    If `weights` is None, the result dtype will be that of `a` , or ``float64``
+		    if `a` is integral. Otherwise, if `weights` is not None and `a` is non-
+		    integral, the result type will be the type of lowest precision capable of
+		    representing values of both `a` and `weights`. If `a` happens to be
+		    integral, the previous rules still applies but the result dtype will
+		    at least be ``float64``.
 		
 		Raises
 		------
@@ -2643,6 +2694,8 @@ package scipy;
 		
 		ma.average : average for masked arrays -- useful if your data contains
 		             "missing" values
+		numpy.result_type : Returns the type that results from applying the
+		                    numpy type promotion rules to the arguments.
 		
 		Examples
 		--------
@@ -2662,9 +2715,16 @@ package scipy;
 		>>> np.average(data, axis=1, weights=[1./4, 3./4])
 		array([ 0.75,  2.75,  4.75])
 		>>> np.average(data, weights=[1./4, 3./4])
+		
 		Traceback (most recent call last):
 		...
 		TypeError: Axis must be specified when shapes of a and weights differ.
+		
+		>>> a = np.ones(5, dtype=np.float128)
+		>>> w = np.ones(5, dtype=np.complex64)
+		>>> avg = np.average(a, weights=w)
+		>>> print(avg.dtype)
+		complex256
 	**/
 	static public function average(a:Dynamic, ?axis:Dynamic, ?weights:Dynamic, ?returned:Dynamic):Dynamic;
 	/**
@@ -2719,7 +2779,7 @@ package scipy;
 		.. [3] A.V. Oppenheim and R.W. Schafer, "Discrete-Time Signal
 		       Processing", Prentice-Hall, 1999, pp. 468-471.
 		.. [4] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function
+		       https://en.wikipedia.org/wiki/Window_function
 		.. [5] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
 		       "Numerical Recipes", Cambridge University Press, 1986, page 429.
 		
@@ -2851,7 +2911,7 @@ package scipy;
 		References
 		----------
 		.. [1] Wikipedia, "Two's complement",
-		    http://en.wikipedia.org/wiki/Two's_complement
+		    https://en.wikipedia.org/wiki/Two's_complement
 		
 		Examples
 		--------
@@ -3060,7 +3120,7 @@ package scipy;
 		References
 		----------
 		.. [1] Wikipedia, "Two's complement",
-		    http://en.wikipedia.org/wiki/Two's_complement
+		    https://en.wikipedia.org/wiki/Two's_complement
 		
 		Examples
 		--------
@@ -3274,6 +3334,7 @@ package scipy;
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> np.blackman(12)
 		array([ -1.38777878e-17,   3.26064346e-02,   1.59903635e-01,
 		         4.14397981e-01,   7.36045180e-01,   9.67046769e-01,
@@ -3536,23 +3597,19 @@ package scipy;
 		Examples
 		--------
 		>>> x = np.array([[1,2,3]])
-		>>> y = np.array([[1],[2],[3]])
+		>>> y = np.array([[4],[5]])
 		>>> np.broadcast_arrays(x, y)
 		[array([[1, 2, 3],
-		       [1, 2, 3],
-		       [1, 2, 3]]), array([[1, 1, 1],
-		       [2, 2, 2],
-		       [3, 3, 3]])]
+		       [1, 2, 3]]), array([[4, 4, 4],
+		       [5, 5, 5]])]
 		
 		Here is a useful idiom for getting contiguous copies instead of
 		non-contiguous views.
 		
 		>>> [np.array(a) for a in np.broadcast_arrays(x, y)]
 		[array([[1, 2, 3],
-		       [1, 2, 3],
-		       [1, 2, 3]]), array([[1, 1, 1],
-		       [2, 2, 2],
-		       [3, 3, 3]])]
+		       [1, 2, 3]]), array([[4, 4, 4],
+		       [5, 5, 5]])]
 	**/
 	static public function broadcast_arrays(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -4203,6 +4260,40 @@ package scipy;
 		<type 'numpy.complex128'>
 	**/
 	static public function common_type(?arrays:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		compare_chararrays(a, b, cmp_op, rstrip)
+		
+		Performs element-wise comparison of two string arrays using the
+		comparison operator specified by `cmp_op`.
+		
+		Parameters
+		----------
+		a, b : array_like
+		    Arrays to be compared.
+		cmp_op : {"<", "<=", "==", ">=", ">", "!="}
+		    Type of comparison.
+		rstrip : Boolean
+		    If True, the spaces at the end of Strings are removed before the comparison.
+		
+		Returns
+		-------
+		out : ndarray
+		    The output array of type Boolean with the same shape as a and b.
+		
+		Raises
+		------
+		ValueError
+		    If `cmp_op` is not valid.
+		TypeError
+		    If at least one of `a` or `b` is a non-string array
+		
+		Examples
+		--------
+		>>> a = np.array(["a", "b", "cde"])
+		>>> b = np.array(["a", "a", "dec"])
+		>>> np.compare_chararrays(a, b, ">", True)
+		array([False,  True, False])
+	**/
 	static public function compare_chararrays(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return selected slices of an array along given axis.
@@ -4299,6 +4390,7 @@ package scipy;
 		hstack : Stack arrays in sequence horizontally (column wise)
 		vstack : Stack arrays in sequence vertically (row wise)
 		dstack : Stack arrays in sequence depth wise (along third dimension)
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -4328,19 +4420,19 @@ package scipy;
 		>>> a[1] = np.ma.masked
 		>>> b = np.arange(2, 5)
 		>>> a
-		masked_array(data = [0 -- 2],
-		             mask = [False  True False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2],
+		             mask=[False,  True, False],
+		       fill_value=999999)
 		>>> b
 		array([2, 3, 4])
 		>>> np.concatenate([a, b])
-		masked_array(data = [0 1 2 2 3 4],
-		             mask = False,
-		       fill_value = 999999)
+		masked_array(data=[0, 1, 2, 2, 3, 4],
+		             mask=False,
+		       fill_value=999999)
 		>>> np.ma.concatenate([a, b])
-		masked_array(data = [0 -- 2 2 3 4],
-		             mask = [False  True False False False False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2, 2, 3, 4],
+		             mask=[False,  True, False, False, False, False],
+		       fill_value=999999)
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4487,7 +4579,8 @@ package scipy;
 		
 		References
 		----------
-		.. [1] Wikipedia, "Convolution", http://en.wikipedia.org/wiki/Convolution.
+		.. [1] Wikipedia, "Convolution",
+		    https://en.wikipedia.org/wiki/Convolution
 		
 		Examples
 		--------
@@ -4804,7 +4897,7 @@ package scipy;
 		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5314,8 +5407,8 @@ package scipy;
 		
 		Get information about the step size of a date or time type.
 		
-		The returned tuple can be passed as the second argument of `datetime64` and
-		`timedelta64`.
+		The returned tuple can be passed as the second argument of `numpy.datetime64` and
+		`numpy.timedelta64`.
 		
 		Parameters
 		----------
@@ -5339,10 +5432,10 @@ package scipy;
 		array(250, dtype='timedelta64[s]')
 		
 		The result can be used to construct a datetime that uses the same units
-		as a timedelta::
+		as a timedelta
 		
 		>>> np.datetime64('2010', np.datetime_data(dt_25s))
-		numpy.datetime64('2010-01-01T00:00:00','25s')
+		numpy.datetime64('2010-01-01T00:00:00', '25s')
 	**/
 	static public function datetime_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5830,6 +5923,12 @@ package scipy;
 		axis : int, optional
 		    The axis along which the difference is taken, default is the
 		    last axis.
+		prepend, append : array_like, optional
+		    Values to prepend or append to "a" along axis prior to
+		    performing the difference.  Scalar values are expanded to
+		    arrays with length 1 in the direction of axis and the shape
+		    of the input array in along all other axes.  Otherwise the
+		    dimension and shape must match "a" except along axis.
 		
 		Returns
 		-------
@@ -5887,10 +5986,8 @@ package scipy;
 		>>> np.diff(x)
 		array([1, 1], dtype='timedelta64[D]')
 	**/
-	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?prepend:Dynamic, ?append:Dynamic):Dynamic;
 	/**
-		digitize(x, bins, right=False)
-		
 		Return the indices of the bins to which each value in input array belongs.
 		
 		=========  =============  ============================
@@ -5979,7 +6076,7 @@ package scipy;
 		>>> np.digitize(x,bins,right=False)
 		array([1, 3, 3, 4, 5])
 	**/
-	static public function digitize(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function digitize(x:Dynamic, bins:Dynamic, ?right:Dynamic):Dynamic;
 	/**
 		Display a message on a device.
 		
@@ -6345,19 +6442,27 @@ package scipy;
 		
 		Evaluates the Einstein summation convention on the operands.
 		
-		Using the Einstein summation convention, many common multi-dimensional
-		array operations can be represented in a simple fashion.  This function
-		provides a way to compute such summations. The best way to understand this
-		function is to try the examples below, which show how many common NumPy
-		functions can be implemented as calls to `einsum`.
+		Using the Einstein summation convention, many common multi-dimensional,
+		linear algebraic array operations can be represented in a simple fashion.
+		In *implicit* mode `einsum` computes these values.
+		
+		In *explicit* mode, `einsum` provides further flexibility to compute
+		other array operations that might not be considered classical Einstein
+		summation operations, by disabling, or forcing summation over specified
+		subscript labels.
+		
+		See the notes and examples for clarification.
 		
 		Parameters
 		----------
 		subscripts : str
-		    Specifies the subscripts for summation.
+		    Specifies the subscripts for summation as comma separated list of
+		    subscript labels. An implicit (classical Einstein summation)
+		    calculation is performed unless the explicit indicator '->' is
+		    included as well as subscript labels of the precise output form.
 		operands : list of array_like
 		    These are the arrays for the operation.
-		out : {ndarray, None}, optional
+		out : ndarray, optional
 		    If provided, the calculation is done into this array.
 		dtype : {data-type, None}, optional
 		    If provided, forces the calculation to use the data type specified.
@@ -6401,50 +6506,80 @@ package scipy;
 		-----
 		.. versionadded:: 1.6.0
 		
+		The Einstein summation convention can be used to compute
+		many multi-dimensional, linear algebraic array operations. `einsum`
+		provides a succinct way of representing these.
+		
+		A non-exhaustive list of these operations,
+		which can be computed by `einsum`, is shown below along with examples:
+		
+		* Trace of an array, :py:func:`numpy.trace`.
+		* Return a diagonal, :py:func:`numpy.diag`.
+		* Array axis summations, :py:func:`numpy.sum`.
+		* Transpositions and permutations, :py:func:`numpy.transpose`.
+		* Matrix multiplication and dot product, :py:func:`numpy.matmul` :py:func:`numpy.dot`.
+		* Vector inner and outer products, :py:func:`numpy.inner` :py:func:`numpy.outer`.
+		* Broadcasting, element-wise and scalar multiplication, :py:func:`numpy.multiply`.
+		* Tensor contractions, :py:func:`numpy.tensordot`.
+		* Chained array operations, in efficient calculation order, :py:func:`numpy.einsum_path`.
+		
 		The subscripts string is a comma-separated list of subscript labels,
 		where each label refers to a dimension of the corresponding operand.
-		Repeated subscripts labels in one operand take the diagonal.  For example,
-		``np.einsum('ii', a)`` is equivalent to ``np.trace(a)``.
+		Whenever a label is repeated it is summed, so ``np.einsum('i,i', a, b)``
+		is equivalent to :py:func:`np.inner(a,b) <numpy.inner>`. If a label
+		appears only once, it is not summed, so ``np.einsum('i', a)`` produces a
+		view of ``a`` with no changes. A further example ``np.einsum('ij,jk', a, b)``
+		describes traditional matrix multiplication and is equivalent to
+		:py:func:`np.matmul(a,b) <numpy.matmul>`. Repeated subscript labels in one
+		operand take the diagonal. For example, ``np.einsum('ii', a)`` is equivalent
+		to :py:func:`np.trace(a) <numpy.trace>`.
 		
-		Whenever a label is repeated, it is summed, so ``np.einsum('i,i', a, b)``
-		is equivalent to ``np.inner(a,b)``.  If a label appears only once,
-		it is not summed, so ``np.einsum('i', a)`` produces a view of ``a``
-		with no changes.
-		
-		The order of labels in the output is by default alphabetical.  This
+		In *implicit mode*, the chosen subscripts are important
+		since the axes of the output are reordered alphabetically.  This
 		means that ``np.einsum('ij', a)`` doesn't affect a 2D array, while
-		``np.einsum('ji', a)`` takes its transpose.
+		``np.einsum('ji', a)`` takes its transpose. Additionally,
+		``np.einsum('ij,jk', a, b)`` returns a matrix multiplication, while,
+		``np.einsum('ij,jh', a, b)`` returns the transpose of the
+		multiplication since subscript 'h' precedes subscript 'i'.
 		
-		The output can be controlled by specifying output subscript labels
-		as well.  This specifies the label order, and allows summing to
-		be disallowed or forced when desired.  The call ``np.einsum('i->', a)``
-		is like ``np.sum(a, axis=-1)``, and ``np.einsum('ii->i', a)``
-		is like ``np.diag(a)``.  The difference is that `einsum` does not
-		allow broadcasting by default.
+		In *explicit mode* the output can be directly controlled by
+		specifying output subscript labels.  This requires the
+		identifier '->' as well as the list of output subscript labels.
+		This feature increases the flexibility of the function since
+		summing can be disabled or forced when required. The call
+		``np.einsum('i->', a)`` is like :py:func:`np.sum(a, axis=-1) <numpy.sum>`,
+		and ``np.einsum('ii->i', a)`` is like :py:func:`np.diag(a) <numpy.diag>`.
+		The difference is that `einsum` does not allow broadcasting by default.
+		Additionally ``np.einsum('ij,jh->ih', a, b)`` directly specifies the
+		order of the output subscript labels and therefore returns matrix
+		multiplication, unlike the example above in implicit mode.
 		
 		To enable and control broadcasting, use an ellipsis.  Default
 		NumPy-style broadcasting is done by adding an ellipsis
 		to the left of each term, like ``np.einsum('...ii->...i', a)``.
 		To take the trace along the first and last axes,
 		you can do ``np.einsum('i...i', a)``, or to do a matrix-matrix
-		product with the left-most indices instead of rightmost, you can do
+		product with the left-most indices instead of rightmost, one can do
 		``np.einsum('ij...,jk...->ik...', a, b)``.
 		
 		When there is only one operand, no axes are summed, and no output
 		parameter is provided, a view into the operand is returned instead
 		of a new array.  Thus, taking the diagonal as ``np.einsum('ii->i', a)``
-		produces a view.
+		produces a view (changed in version 1.10.0).
 		
-		An alternative way to provide the subscripts and operands is as
-		``einsum(op0, sublist0, op1, sublist1, ..., [sublistout])``. The examples
-		below have corresponding `einsum` calls with the two parameter methods.
+		`einsum` also provides an alternative way to provide the subscripts
+		and operands as ``einsum(op0, sublist0, op1, sublist1, ..., [sublistout])``.
+		If the output shape is not provided in this format `einsum` will be
+		calculated in implicit mode, otherwise it will be performed explicitly.
+		The examples below have corresponding `einsum` calls with the two
+		parameter methods.
 		
 		.. versionadded:: 1.10.0
 		
 		Views returned from einsum are now writeable whenever the input array
 		is writeable. For example, ``np.einsum('ijk...->kji...', a)`` will now
-		have the same effect as ``np.swapaxes(a, 0, 2)`` and
-		``np.einsum('ii->i', a)`` will return a writeable view of the diagonal
+		have the same effect as :py:func:`np.swapaxes(a, 0, 2) <numpy.swapaxes>`
+		and ``np.einsum('ii->i', a)`` will return a writeable view of the diagonal
 		of a 2D array.
 		
 		.. versionadded:: 1.12.0
@@ -6454,13 +6589,22 @@ package scipy;
 		can greatly increase the computational efficiency at the cost of a larger
 		memory footprint during computation.
 		
-		See ``np.einsum_path`` for more details.
+		Typically a 'greedy' algorithm is applied which empirical tests have shown
+		returns the optimal path in the majority of cases. In some cases 'optimal'
+		will return the superlative path through a more expensive, exhaustive search.
+		For iterative calculations it may be advisable to calculate the optimal path
+		once and reuse that path by supplying it as an argument. An example is given
+		below.
+		
+		See :py:func:`numpy.einsum_path` for more details.
 		
 		Examples
 		--------
 		>>> a = np.arange(25).reshape(5,5)
 		>>> b = np.arange(5)
 		>>> c = np.arange(6).reshape(2,3)
+		
+		Trace of a matrix:
 		
 		>>> np.einsum('ii', a)
 		60
@@ -6469,12 +6613,60 @@ package scipy;
 		>>> np.trace(a)
 		60
 		
+		Extract the diagonal (requires explicit form):
+		
 		>>> np.einsum('ii->i', a)
 		array([ 0,  6, 12, 18, 24])
 		>>> np.einsum(a, [0,0], [0])
 		array([ 0,  6, 12, 18, 24])
 		>>> np.diag(a)
 		array([ 0,  6, 12, 18, 24])
+		
+		Sum over an axis (requires explicit form):
+		
+		>>> np.einsum('ij->i', a)
+		array([ 10,  35,  60,  85, 110])
+		>>> np.einsum(a, [0,1], [0])
+		array([ 10,  35,  60,  85, 110])
+		>>> np.sum(a, axis=1)
+		array([ 10,  35,  60,  85, 110])
+		
+		For higher dimensional arrays summing a single axis can be done with ellipsis:
+		
+		>>> np.einsum('...j->...', a)
+		array([ 10,  35,  60,  85, 110])
+		>>> np.einsum(a, [Ellipsis,1], [Ellipsis])
+		array([ 10,  35,  60,  85, 110])
+		
+		Compute a matrix transpose, or reorder any number of axes:
+		
+		>>> np.einsum('ji', c)
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		>>> np.einsum('ij->ji', c)
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		>>> np.einsum(c, [1,0])
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		>>> np.transpose(c)
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		
+		Vector inner products:
+		
+		>>> np.einsum('i,i', b, b)
+		30
+		>>> np.einsum(b, [0], b, [0])
+		30
+		>>> np.inner(b,b)
+		30
+		
+		Matrix vector multiplication:
 		
 		>>> np.einsum('ij,j', a, b)
 		array([ 30,  80, 130, 180, 230])
@@ -6485,23 +6677,12 @@ package scipy;
 		>>> np.einsum('...j,j', a, b)
 		array([ 30,  80, 130, 180, 230])
 		
-		>>> np.einsum('ji', c)
-		array([[0, 3],
-		       [1, 4],
-		       [2, 5]])
-		>>> np.einsum(c, [1,0])
-		array([[0, 3],
-		       [1, 4],
-		       [2, 5]])
-		>>> c.T
-		array([[0, 3],
-		       [1, 4],
-		       [2, 5]])
+		Broadcasting and scalar multiplication:
 		
 		>>> np.einsum('..., ...', 3, c)
 		array([[ 0,  3,  6],
 		       [ 9, 12, 15]])
-		>>> np.einsum(',ij', 3, C)
+		>>> np.einsum(',ij', 3, c)
 		array([[ 0,  3,  6],
 		       [ 9, 12, 15]])
 		>>> np.einsum(3, [Ellipsis], c, [Ellipsis])
@@ -6511,12 +6692,7 @@ package scipy;
 		array([[ 0,  3,  6],
 		       [ 9, 12, 15]])
 		
-		>>> np.einsum('i,i', b, b)
-		30
-		>>> np.einsum(b, [0], b, [0])
-		30
-		>>> np.inner(b,b)
-		30
+		Vector outer product:
 		
 		>>> np.einsum('i,j', np.arange(2)+1, b)
 		array([[0, 1, 2, 3, 4],
@@ -6528,12 +6704,7 @@ package scipy;
 		array([[0, 1, 2, 3, 4],
 		       [0, 2, 4, 6, 8]])
 		
-		>>> np.einsum('i...->...', a)
-		array([50, 55, 60, 65, 70])
-		>>> np.einsum(a, [0,Ellipsis], [Ellipsis])
-		array([50, 55, 60, 65, 70])
-		>>> np.sum(a, axis=0)
-		array([50, 55, 60, 65, 70])
+		Tensor contraction:
 		
 		>>> a = np.arange(60.).reshape(3,4,5)
 		>>> b = np.arange(24.).reshape(4,3,2)
@@ -6556,6 +6727,17 @@ package scipy;
 		       [ 4796.,  5162.],
 		       [ 4928.,  5306.]])
 		
+		Writeable returned arrays (since version 1.10.0):
+		
+		>>> a = np.zeros((3, 3))
+		>>> np.einsum('ii->i', a)[:] = 1
+		>>> a
+		array([[ 1.,  0.,  0.],
+		       [ 0.,  1.,  0.],
+		       [ 0.,  0.,  1.]])
+		
+		Example of ellipsis use:
+		
 		>>> a = np.arange(6).reshape((3,2))
 		>>> b = np.arange(12).reshape((4,3))
 		>>> np.einsum('ki,jk->ij', a, b)
@@ -6568,13 +6750,26 @@ package scipy;
 		array([[10, 28, 46, 64],
 		       [13, 40, 67, 94]])
 		
-		>>> # since version 1.10.0
-		>>> a = np.zeros((3, 3))
-		>>> np.einsum('ii->i', a)[:] = 1
-		>>> a
-		array([[ 1.,  0.,  0.],
-		       [ 0.,  1.,  0.],
-		       [ 0.,  0.,  1.]])
+		Chained array operations. For more complicated contractions, speed ups
+		might be achieved by repeatedly computing a 'greedy' path or pre-computing the
+		'optimal' path and repeatedly applying it, using an
+		`einsum_path` insertion (since version 1.12.0). Performance improvements can be
+		particularly significant with larger arrays:
+		
+		>>> a = np.ones(64).reshape(2,4,8)
+		# Basic `einsum`: ~1520ms  (benchmarked on 3.1GHz Intel i5.)
+		>>> for iteration in range(500):
+		...     np.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a)
+		# Sub-optimal `einsum` (due to repeated path calculation time): ~330ms
+		>>> for iteration in range(500):
+		...     np.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a, optimize='optimal')
+		# Greedy `einsum` (faster optimal path approximation): ~160ms
+		>>> for iteration in range(500):
+		...     np.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a, optimize='greedy')
+		# Optimal `einsum` (best usage pattern in some use cases): ~110ms
+		>>> path = np.einsum_path('ijk,ilm,njm,nlk,abc->',a,a,a,a,a, optimize='optimal')[0]
+		>>> for iteration in range(500):
+		...     np.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a, optimize=path)
 	**/
 	static public function einsum(?operands:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -6884,7 +7079,7 @@ package scipy;
 		References
 		----------
 		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
+		       https://en.wikipedia.org/wiki/Exponential_function
 		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
 		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
 		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
@@ -8357,7 +8552,7 @@ package scipy;
 		    The result of the call to `function` is passed back directly.
 		    Therefore the shape of `fromfunction` is completely determined by
 		    `function`.  If `function` returns a scalar value, the shape of
-		    `fromfunction` would match the `shape` parameter.
+		    `fromfunction` would not match the `shape` parameter.
 		
 		See Also
 		--------
@@ -8879,7 +9074,7 @@ package scipy;
 		References
 		----------
 		.. [1] NumPy User Guide, section `I/O with NumPy
-		       <http://docs.scipy.org/doc/numpy/user/basics.io.genfromtxt.html>`_.
+		       <https://docs.scipy.org/doc/numpy/user/basics.io.genfromtxt.html>`_.
 		
 		Examples
 		---------
@@ -8929,11 +9124,14 @@ package scipy;
 		This is similar to `logspace`, but with endpoints specified directly.
 		Each output sample is a constant multiple of the previous.
 		
+		.. versionchanged:: 1.16.0
+		    Non-scalar `start` and `stop` are now supported.
+		
 		Parameters
 		----------
-		start : scalar
+		start : array_like
 		    The starting value of the sequence.
-		stop : scalar
+		stop : array_like
 		    The final value of the sequence, unless `endpoint` is False.
 		    In that case, ``num + 1`` values are spaced over the
 		    interval in log-space, of which all but the last (a sequence of
@@ -8946,6 +9144,12 @@ package scipy;
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
+		axis : int, optional
+		    The axis in the result to store the samples.  Relevant only if start
+		    or stop are array-like.  By default (0), the samples will be along a
+		    new axis inserted at the beginning. Use -1 to get an axis at the end.
+		
+		    .. versionadded:: 1.16.0
 		
 		Returns
 		-------
@@ -9009,7 +9213,7 @@ package scipy;
 		>>> plt.grid(True, color='0.7', linestyle='-', which='both', axis='both')
 		>>> plt.show()
 	**/
-	static public function geomspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function geomspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?dtype:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Find the wrapper for the array with the highest priority.
 		
@@ -9513,7 +9717,7 @@ package scipy;
 		.. [2] E.R. Kanasewich, "Time Sequence Analysis in Geophysics", The
 		       University of Alberta Press, 1975, pp. 109-110.
 		.. [3] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function
+		       https://en.wikipedia.org/wiki/Window_function
 		.. [4] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
 		       "Numerical Recipes", Cambridge University Press, 1986, page 425.
 		
@@ -9526,6 +9730,7 @@ package scipy;
 		
 		Plot the window and the frequency response:
 		
+		>>> import matplotlib.pyplot as plt
 		>>> from numpy.fft import fft, fftshift
 		>>> window = np.hamming(51)
 		>>> plt.plot(window)
@@ -9604,7 +9809,7 @@ package scipy;
 		.. [2] E.R. Kanasewich, "Time Sequence Analysis in Geophysics",
 		       The University of Alberta Press, 1975, pp. 106-108.
 		.. [3] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function
+		       https://en.wikipedia.org/wiki/Window_function
 		.. [4] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
 		       "Numerical Recipes", Cambridge University Press, 1986, page 425.
 		
@@ -9617,6 +9822,7 @@ package scipy;
 		
 		Plot the window and its frequency response:
 		
+		>>> import matplotlib.pyplot as plt
 		>>> from numpy.fft import fft, fftshift
 		>>> window = np.hanning(51)
 		>>> plt.plot(window)
@@ -9713,8 +9919,8 @@ package scipy;
 		bins : int or sequence of scalars or str, optional
 		    If `bins` is an int, it defines the number of equal-width
 		    bins in the given range (10, by default). If `bins` is a
-		    sequence, it defines the bin edges, including the rightmost
-		    edge, allowing for non-uniform bin widths.
+		    sequence, it defines a monotonically increasing array of bin edges,
+		    including the rightmost edge, allowing for non-uniform bin widths.
 		
 		    .. versionadded:: 1.11.0
 		
@@ -9885,7 +10091,7 @@ package scipy;
 		
 		Examples
 		--------
-		>>> import matplotlib as mpl
+		>>> from matplotlib.image import NonUniformImage
 		>>> import matplotlib.pyplot as plt
 		
 		Construct a 2-D histogram with variable bin width. First define the bin
@@ -9920,7 +10126,7 @@ package scipy;
 		
 		>>> ax = fig.add_subplot(133, title='NonUniformImage: interpolated',
 		...         aspect='equal', xlim=xedges[[0, -1]], ylim=yedges[[0, -1]])
-		>>> im = mpl.image.NonUniformImage(ax, interpolation='bilinear')
+		>>> im = NonUniformImage(ax, interpolation='bilinear')
 		>>> xcenters = (xedges[:-1] + xedges[1:]) / 2
 		>>> ycenters = (yedges[:-1] + yedges[1:]) / 2
 		>>> im.set_data(xcenters, ycenters, H)
@@ -9966,6 +10172,11 @@ package scipy;
 		    'scott'
 		        Less robust estimator that that takes into account data
 		        variability and data size.
+		
+		    'stone'
+		        Estimator based on leave-one-out cross-validation estimate of
+		        the integrated squared error. Can be regarded as a generalization
+		        of Scott's rule.
 		
 		    'rice'
 		        Estimator does not take variability into account, only data
@@ -10136,7 +10347,8 @@ package scipy;
 		bins : sequence or int, optional
 		    The bin specification:
 		
-		    * A sequence of arrays describing the bin edges along each dimension.
+		    * A sequence of arrays describing the monotonically increasing bin
+		      edges along each dimension.
 		    * The number of bins for each dimension (nx, ny, ... =bins)
 		    * The number of bins for all dimensions (nx=ny=...=bins).
 		
@@ -11065,7 +11277,7 @@ package scipy;
 		References
 		----------
 		.. [1] Wikipedia, "Two's complement",
-		    http://en.wikipedia.org/wiki/Two's_complement
+		    https://en.wikipedia.org/wiki/Two's_complement
 		
 		Examples
 		--------
@@ -11621,6 +11833,14 @@ package scipy;
 		       [ True,  False]])
 		>>> element[mask]
 		array([2, 4])
+		
+		The indices of the matched values can be obtained with `nonzero`:
+		
+		>>> np.nonzero(mask)
+		(array([0, 1]), array([1, 0]))
+		
+		The test can also be inverted:
+		
 		>>> mask = np.isin(element, test_elements, invert=True)
 		>>> mask
 		array([[ True, False],
@@ -11756,6 +11976,8 @@ package scipy;
 		
 		Test element-wise for NaT (not a time) and return result as a boolean array.
 		
+		.. versionadded:: 1.13.0
+		
 		Parameters
 		----------
 		x : array_like
@@ -11827,7 +12049,8 @@ package scipy;
 		(IEEE 754).
 		
 		Errors result if the second argument is also supplied when x is a scalar
-		input, or if first and second arguments have different shapes.
+		input, if first and second arguments have different shapes, or if the
+		first argument has complex values.
 		
 		Examples
 		--------
@@ -11881,8 +12104,9 @@ package scipy;
 		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
-		Errors result if the second argument is also supplied when `x` is a
-		scalar input, or if first and second arguments have different shapes.
+		Errors result if the second argument is also supplied when x is a scalar
+		input, if first and second arguments have different shapes, or if the
+		first argument has complex values
 		
 		Examples
 		--------
@@ -11974,10 +12198,46 @@ package scipy;
 		val : bool
 		    True if `num` is a scalar type, False if it is not.
 		
+		See Also
+		--------
+		ndim : Get the number of dimensions of an array
+		
+		Notes
+		-----
+		In almost all cases ``np.ndim(x) == 0`` should be used instead of this
+		function, as that will also return true for 0d arrays. This is how
+		numpy overloads functions in the style of the ``dx`` arguments to `gradient`
+		and the ``bins`` argument to `histogram`. Some key differences:
+		
+		+--------------------------------------+---------------+-------------------+
+		| x                                    |``isscalar(x)``|``np.ndim(x) == 0``|
+		+======================================+===============+===================+
+		| PEP 3141 numeric objects (including  | ``True``      | ``True``          |
+		| builtins)                            |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| builtin string and buffer objects    | ``True``      | ``True``          |
+		+--------------------------------------+---------------+-------------------+
+		| other builtin objects, like          | ``False``     | ``True``          |
+		| `pathlib.Path`, `Exception`,         |               |                   |
+		| the result of `re.compile`           |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| third-party objects like             | ``False``     | ``True``          |
+		| `matplotlib.figure.Figure`           |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| zero-dimensional numpy arrays        | ``False``     | ``True``          |
+		+--------------------------------------+---------------+-------------------+
+		| other numpy arrays                   | ``False``     | ``False``         |
+		+--------------------------------------+---------------+-------------------+
+		| `list`, `tuple`, and other sequence  | ``False``     | ``False``         |
+		| objects                              |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		
 		Examples
 		--------
 		>>> np.isscalar(3.1)
 		True
+		>>> np.isscalar(np.array(3.1))
+		False
 		>>> np.isscalar([3.1])
 		False
 		>>> np.isscalar(False)
@@ -12264,10 +12524,11 @@ package scipy;
 		.. [2] E.R. Kanasewich, "Time Sequence Analysis in Geophysics", The
 		       University of Alberta Press, 1975, pp. 177-178.
 		.. [3] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function
+		       https://en.wikipedia.org/wiki/Window_function
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> np.kaiser(12, 14)
 		array([  7.72686684e-06,   3.46009194e-03,   4.65200189e-02,
 		         2.29737120e-01,   5.99885316e-01,   9.45674898e-01,
@@ -12675,11 +12936,14 @@ package scipy;
 		
 		The endpoint of the interval can optionally be excluded.
 		
+		.. versionchanged:: 1.16.0
+		    Non-scalar `start` and `stop` are now supported.
+		
 		Parameters
 		----------
-		start : scalar
+		start : array_like
 		    The starting value of the sequence.
-		stop : scalar
+		stop : array_like
 		    The end value of the sequence, unless `endpoint` is set to False.
 		    In that case, the sequence consists of all but the last of ``num + 1``
 		    evenly spaced samples, so that `stop` is excluded.  Note that the step
@@ -12698,6 +12962,13 @@ package scipy;
 		
 		    .. versionadded:: 1.9.0
 		
+		axis : int, optional
+		    The axis in the result to store the samples.  Relevant only if start
+		    or stop are array-like.  By default (0), the samples will be along a
+		    new axis inserted at the beginning. Use -1 to get an axis at the end.
+		
+		    .. versionadded:: 1.16.0
+		
 		Returns
 		-------
 		samples : ndarray
@@ -12714,7 +12985,10 @@ package scipy;
 		--------
 		arange : Similar to `linspace`, but uses a step size (instead of the
 		         number of samples).
-		logspace : Samples uniformly distributed in log space.
+		geomspace : Similar to `linspace`, but with numbers spaced evenly on a log
+		            scale (a geometric progression).
+		logspace : Similar to `geomspace`, but with the end points specified as
+		           logarithms.
 		
 		Examples
 		--------
@@ -12740,7 +13014,7 @@ package scipy;
 		(-0.5, 1)
 		>>> plt.show()
 	**/
-	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var little_endian : Dynamic;
 	/**
 		Load arrays or pickled objects from ``.npy``, ``.npz`` or pickled files.
@@ -12762,8 +13036,11 @@ package scipy;
 		    Allow loading pickled object arrays stored in npy files. Reasons for
 		    disallowing pickles include security, as loading pickled data can
 		    execute arbitrary code. If pickles are disallowed, loading object
-		    arrays will fail.
-		    Default: True
+		    arrays will fail. Default: False
+		
+		    .. versionchanged:: 1.16.3
+		        Made default False in response to CVE-2019-6446.
+		
 		fix_imports : bool, optional
 		    Only useful when loading Python 2 generated pickled files on Python 3,
 		    which includes npy/npz files containing object arrays. If `fix_imports`
@@ -12904,6 +13181,11 @@ package scipy;
 		    the system default is used. The default value is 'bytes'.
 		
 		    .. versionadded:: 1.14.0
+		max_rows : int, optional
+		    Read `max_rows` lines of content after `skiprows` lines. The default
+		    is to read all the lines.
+		
+		    .. versionadded:: 1.16.0
 		
 		Returns
 		-------
@@ -12948,7 +13230,7 @@ package scipy;
 		>>> y
 		array([ 2.,  4.])
 	**/
-	static public function loadtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?converters:Dynamic, ?skiprows:Dynamic, ?usecols:Dynamic, ?unpack:Dynamic, ?ndmin:Dynamic, ?encoding:Dynamic):Dynamic;
+	static public function loadtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?converters:Dynamic, ?skiprows:Dynamic, ?usecols:Dynamic, ?unpack:Dynamic, ?ndmin:Dynamic, ?encoding:Dynamic, ?max_rows:Dynamic):Dynamic;
 	/**
 		Compute the natural logarithm of `x`.
 		
@@ -13090,7 +13372,7 @@ package scipy;
 		----------
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+		.. [2] Wikipedia, "Logarithm". https://en.wikipedia.org/wiki/Logarithm
 		
 		Examples
 		--------
@@ -13441,8 +13723,8 @@ package scipy;
 		
 		Parameters
 		----------
-		n : int
-		   The base in which the log is taken.
+		n : array_like
+		   The integer base(s) in which the log is taken.
 		x : array_like
 		   The value(s) whose log base `n` is (are) required.
 		
@@ -13469,11 +13751,14 @@ package scipy;
 		(`base` to the power of `start`) and ends with ``base ** stop``
 		(see `endpoint` below).
 		
+		.. versionchanged:: 1.16.0
+		    Non-scalar `start` and `stop` are now supported.
+		
 		Parameters
 		----------
-		start : float
+		start : array_like
 		    ``base ** start`` is the starting value of the sequence.
-		stop : float
+		stop : array_like
 		    ``base ** stop`` is the final value of the sequence, unless `endpoint`
 		    is False.  In that case, ``num + 1`` values are spaced over the
 		    interval in log-space, of which all but the last (a sequence of
@@ -13490,6 +13775,13 @@ package scipy;
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
+		axis : int, optional
+		    The axis in the result to store the samples.  Relevant only if start
+		    or stop are array-like.  By default (0), the samples will be along a
+		    new axis inserted at the beginning. Use -1 to get an axis at the end.
+		
+		    .. versionadded:: 1.16.0
+		
 		
 		Returns
 		-------
@@ -13538,7 +13830,7 @@ package scipy;
 		(-0.5, 1)
 		>>> plt.show()
 	**/
-	static public function logspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?base:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function logspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?base:Dynamic, ?dtype:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Do a keyword search on docstrings.
 		
@@ -13691,9 +13983,48 @@ package scipy;
 	**/
 	static public function mat(data:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
-		matmul(a, b, out=None)
+		matmul(x1, x2, /, out=None, *, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Matrix product of two arrays.
+		
+		Parameters
+		----------
+		x1, x2 : array_like
+		    Input arrays, scalars not allowed.
+		out : ndarray, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that matches the signature `(n,k),(k,m)->(n,m)`. If not
+		    provided or `None`, a freshly-allocated array is returned.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		    ..versionadded:: 1.16
+		      Now handles ufunc kwargs
+		
+		Returns
+		-------
+		y : ndarray
+		    The matrix product of the inputs.
+		    This is a scalar only when both x1, x2 are 1-d vectors.
+		
+		Raises
+		------
+		ValueError
+		    If the last dimension of `a` is not the same size as
+		    the second-to-last dimension of `b`.
+		
+		    If a scalar value is passed in.
+		
+		See Also
+		--------
+		vdot : Complex-conjugating dot product.
+		tensordot : Sum products over arbitrary axes.
+		einsum : Einstein summation convention.
+		dot : alternative matrix product with different broadcasting rules.
+		
+		Notes
+		-----
 		
 		The behavior depends on the arguments in the following way.
 		
@@ -13708,61 +14039,20 @@ package scipy;
 		  appending a 1 to its dimensions. After matrix multiplication
 		  the appended 1 is removed.
 		
-		Multiplication by a scalar is not allowed, use ``*`` instead. Note that
-		multiplying a stack of matrices with a vector will result in a stack of
-		vectors, but matmul will not recognize it as such.
+		``matmul`` differs from ``dot`` in two important ways:
 		
-		``matmul`` differs from ``dot`` in two important ways.
-		
-		- Multiplication by scalars is not allowed.
+		- Multiplication by scalars is not allowed, use ``*`` instead.
 		- Stacks of matrices are broadcast together as if the matrices
-		  were elements.
+		  were elements, respecting the signature ``(n,k),(k,m)->(n,m)``:
 		
-		.. warning::
-		   This function is preliminary and included in NumPy 1.10.0 for testing
-		   and documentation. Its semantics will not change, but the number and
-		   order of the optional arguments will.
+		  >>> a = np.ones([9, 5, 7, 4])
+		  >>> c = np.ones([9, 5, 4, 3])
+		  >>> np.dot(a, c).shape
+		  (9, 5, 7, 9, 5, 3)
+		  >>> np.matmul(a, c).shape
+		  (9, 5, 7, 3)
+		  >>> # n is 7, k is 4, m is 3
 		
-		.. versionadded:: 1.10.0
-		
-		Parameters
-		----------
-		a : array_like
-		    First argument.
-		b : array_like
-		    Second argument.
-		out : ndarray, optional
-		    Output argument. This must have the exact kind that would be returned
-		    if it was not used. In particular, it must have the right type, must be
-		    C-contiguous, and its dtype must be the dtype that would be returned
-		    for `dot(a,b)`. This is a performance feature. Therefore, if these
-		    conditions are not met, an exception is raised, instead of attempting
-		    to be flexible.
-		
-		Returns
-		-------
-		output : ndarray
-		    Returns the dot product of `a` and `b`.  If `a` and `b` are both
-		    1-D arrays then a scalar is returned; otherwise an array is
-		    returned.  If `out` is given, then it is returned.
-		
-		Raises
-		------
-		ValueError
-		    If the last dimension of `a` is not the same size as
-		    the second-to-last dimension of `b`.
-		
-		    If scalar value is passed.
-		
-		See Also
-		--------
-		vdot : Complex-conjugating dot product.
-		tensordot : Sum products over arbitrary axes.
-		einsum : Einstein summation convention.
-		dot : alternative matrix product with different broadcasting rules.
-		
-		Notes
-		-----
 		The matmul function implements the semantics of the `@` operator introduced
 		in Python 3.5 following PEP465.
 		
@@ -13770,16 +14060,19 @@ package scipy;
 		--------
 		For 2-D arrays it is the matrix product:
 		
-		>>> a = [[1, 0], [0, 1]]
-		>>> b = [[4, 1], [2, 2]]
+		>>> a = np.array([[1, 0],
+		...               [0, 1]])
+		>>> b = np.array([[4, 1],
+		...               [2, 2]]
 		>>> np.matmul(a, b)
 		array([[4, 1],
 		       [2, 2]])
 		
 		For 2-D mixed with 1-D, the result is the usual.
 		
-		>>> a = [[1, 0], [0, 1]]
-		>>> b = [1, 2]
+		>>> a = np.array([[1, 0],
+		...               [0, 1]]
+		>>> b = np.array([1, 2])
 		>>> np.matmul(a, b)
 		array([1, 2])
 		>>> np.matmul(b, a)
@@ -13788,13 +14081,13 @@ package scipy;
 		
 		Broadcasting is conventional for stacks of arrays
 		
-		>>> a = np.arange(2*2*4).reshape((2,2,4))
-		>>> b = np.arange(2*2*4).reshape((2,4,2))
+		>>> a = np.arange(2 * 2 * 4).reshape((2, 2, 4))
+		>>> b = np.arange(2 * 2 * 4).reshape((2, 4, 2))
 		>>> np.matmul(a,b).shape
 		(2, 2, 2)
-		>>> np.matmul(a,b)[0,1,1]
+		>>> np.matmul(a, b)[0, 1, 1]
 		98
-		>>> sum(a[0,1,:] * b[0,:,1])
+		>>> sum(a[0, 1, :] * b[0 , :, 1])
 		98
 		
 		Vector, vector returns the scalar inner product, but neither argument
@@ -13808,7 +14101,9 @@ package scipy;
 		>>> np.matmul([1,2], 3)
 		Traceback (most recent call last):
 		...
-		ValueError: Scalar operands are not allowed, use '*' instead
+		ValueError: matmul: Input operand 1 does not have enough dimensions ...
+		
+		.. versionadded:: 1.10.0
 	**/
 	static public function matmul(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -14217,53 +14512,15 @@ package scipy;
 		
 		`meshgrid` is very useful to evaluate functions on a grid.
 		
+		>>> import matplotlib.pyplot as plt
 		>>> x = np.arange(-5, 5, 0.1)
 		>>> y = np.arange(-5, 5, 0.1)
 		>>> xx, yy = np.meshgrid(x, y, sparse=True)
 		>>> z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2)
 		>>> h = plt.contourf(x,y,z)
+		>>> plt.show()
 	**/
 	static public function meshgrid(?xi:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`nd_grid` instance which returns a dense multi-dimensional "meshgrid".
-		
-		An instance of `numpy.lib.index_tricks.nd_grid` which returns an dense
-		(or fleshed out) mesh-grid when indexed, so that each returned argument
-		has the same shape.  The dimensions and number of the output arrays are
-		equal to the number of indexing dimensions.  If the step length is not a
-		complex number, then the stop is not inclusive.
-		
-		However, if the step length is a **complex number** (e.g. 5j), then
-		the integer part of its magnitude is interpreted as specifying the
-		number of points to create between the start and stop values, where
-		the stop value **is inclusive**.
-		
-		Returns
-		----------
-		mesh-grid `ndarrays` all of the same dimensions
-		
-		See Also
-		--------
-		numpy.lib.index_tricks.nd_grid : class of `ogrid` and `mgrid` objects
-		ogrid : like mgrid but returns open (not fleshed out) mesh grids
-		r_ : array concatenator
-		
-		Examples
-		--------
-		>>> np.mgrid[0:5,0:5]
-		array([[[0, 0, 0, 0, 0],
-		        [1, 1, 1, 1, 1],
-		        [2, 2, 2, 2, 2],
-		        [3, 3, 3, 3, 3],
-		        [4, 4, 4, 4, 4]],
-		       [[0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4]]])
-		>>> np.mgrid[-1:1:5j]
-		array([-1. , -0.5,  0. ,  0.5,  1. ])
-	**/
 	static public var mgrid : Dynamic;
 	/**
 		min_scalar_type(a)
@@ -14650,8 +14907,7 @@ package scipy;
 		Returns
 		-------
 		y : ndarray
-		    The product of `x1` and `x2`, element-wise. Returns a scalar if
-		    both `x1` and `x2` are scalars.
+		    The product of `x1` and `x2`, element-wise.
 		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
@@ -15442,13 +15698,15 @@ package scipy;
 		    This optional parameter specifies the interpolation method to
 		    use when the desired quantile lies between two data points
 		    ``i < j``:
-		        * linear: ``i + (j - i) * fraction``, where ``fraction``
-		          is the fractional part of the index surrounded by ``i``
-		          and ``j``.
-		        * lower: ``i``.
-		        * higher: ``j``.
-		        * nearest: ``i`` or ``j``, whichever is nearest.
-		        * midpoint: ``(i + j) / 2``.
+		
+		    * linear: ``i + (j - i) * fraction``, where ``fraction``
+		      is the fractional part of the index surrounded by ``i``
+		      and ``j``.
+		    * lower: ``i``.
+		    * higher: ``j``.
+		    * nearest: ``i`` or ``j``, whichever is nearest.
+		    * midpoint: ``(i + j) / 2``.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left in
 		    the result as dimensions with size one. With this option, the
@@ -15988,16 +16246,16 @@ package scipy;
 		
 		Examples
 		--------
-		>>> x = np.array([[1,0,0], [0,2,0], [1,1,0]])
+		>>> x = np.array([[3, 0, 0], [0, 4, 0], [5, 6, 0]])
 		>>> x
-		array([[1, 0, 0],
-		       [0, 2, 0],
-		       [1, 1, 0]])
+		array([[3, 0, 0],
+		       [0, 4, 0],
+		       [5, 6, 0]])
 		>>> np.nonzero(x)
 		(array([0, 1, 2, 2]), array([0, 1, 0, 1]))
 		
 		>>> x[np.nonzero(x)]
-		array([1, 2, 1, 1])
+		array([3, 4, 5, 6])
 		>>> np.transpose(np.nonzero(x))
 		array([[0, 0],
 		       [1, 1],
@@ -16009,7 +16267,7 @@ package scipy;
 		boolean array and since False is interpreted as 0, np.nonzero(a > 3)
 		yields the indices of the `a` where the condition is true.
 		
-		>>> a = np.array([[1,2,3],[4,5,6],[7,8,9]])
+		>>> a = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 		>>> a > 3
 		array([[False, False, False],
 		       [ True,  True,  True],
@@ -16017,7 +16275,14 @@ package scipy;
 		>>> np.nonzero(a > 3)
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 		
-		The ``nonzero`` method of the boolean array can also be called.
+		Using this result to index `a` is equivalent to using the mask directly:
+		
+		>>> a[np.nonzero(a > 3)]
+		array([4, 5, 6, 7, 8, 9])
+		>>> a[a > 3]  # prefer this spelling
+		array([4, 5, 6, 7, 8, 9])
+		
+		``nonzero`` can also be called as a method of the array.
 		
 		>>> (a > 3).nonzero()
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
@@ -16193,42 +16458,6 @@ package scipy;
 		<type 'list'>
 	**/
 	static public function obj2sctype(rep:Dynamic, ?_default:Dynamic):Dynamic;
-	/**
-		`nd_grid` instance which returns an open multi-dimensional "meshgrid".
-		
-		An instance of `numpy.lib.index_tricks.nd_grid` which returns an open
-		(i.e. not fleshed out) mesh-grid when indexed, so that only one dimension
-		of each returned array is greater than 1.  The dimension and number of the
-		output arrays are equal to the number of indexing dimensions.  If the step
-		length is not a complex number, then the stop is not inclusive.
-		
-		However, if the step length is a **complex number** (e.g. 5j), then
-		the integer part of its magnitude is interpreted as specifying the
-		number of points to create between the start and stop values, where
-		the stop value **is inclusive**.
-		
-		Returns
-		----------
-		mesh-grid `ndarrays` with only one dimension :math:`\neq 1`
-		
-		See Also
-		--------
-		np.lib.index_tricks.nd_grid : class of `ogrid` and `mgrid` objects
-		mgrid : like `ogrid` but returns dense (or fleshed out) mesh grids
-		r_ : array concatenator
-		
-		Examples
-		--------
-		>>> from numpy import ogrid
-		>>> ogrid[-1:1:5j]
-		array([-1. , -0.5,  0. ,  0.5,  1. ])
-		>>> ogrid[0:5,0:5]
-		[array([[0],
-		        [1],
-		        [2],
-		        [3],
-		        [4]]), array([[0, 1, 2, 3, 4]])]
-	**/
 	static public var ogrid : Dynamic;
 	/**
 		Return a new array of given shape and type, filled with ones.
@@ -16735,9 +16964,9 @@ package scipy;
 	**/
 	static public function partition(a:Dynamic, kth:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
 	/**
-		Compute the qth percentile of the data along the specified axis.
+		Compute the q-th percentile of the data along the specified axis.
 		
-		Returns the qth percentile(s) of the array elements.
+		Returns the q-th percentile(s) of the array elements.
 		
 		Parameters
 		----------
@@ -16804,7 +17033,7 @@ package scipy;
 		
 		Notes
 		-----
-		Given a vector ``V`` of length ``N``, the ``q``-th percentile of
+		Given a vector ``V`` of length ``N``, the q-th percentile of
 		``V`` is the value ``q/100`` of the way from the minimum to the
 		maximum in a sorted copy of ``V``. The values and distances of
 		the two nearest neighbors as well as the `interpolation` parameter
@@ -16957,44 +17186,6 @@ package scipy;
 		array(2)
 	**/
 	static public function piecewise(x:Dynamic, condlist:Dynamic, funclist:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Load one or more packages into parent package top-level namespace.
-		
-		This function is intended to shorten the need to import many
-		subpackages, say of scipy, constantly with statements such as
-		
-		  import scipy.linalg, scipy.fftpack, scipy.etc...
-		
-		Instead, you can say:
-		
-		  import scipy
-		  scipy.pkgload('linalg','fftpack',...)
-		
-		or
-		
-		  scipy.pkgload()
-		
-		to load all of them in one call.
-		
-		If a name which doesn't exist in scipy's namespace is
-		given, a warning is shown.
-		
-		Parameters
-		----------
-		 *packages : arg-tuple
-		      the names (one or more strings) of all the modules one
-		      wishes to load into the top-level namespace.
-		 verbose= : integer
-		      verbosity level [default: -1].
-		      verbose=-1 will suspend also warnings.
-		 force= : bool
-		      when True, force reloading loaded packages [default: False].
-		 postpone= : bool
-		      when True, don't load packages [default: False]
-		
-		 
-	**/
-	static public function pkgload(?packages:python.VarArgs<Dynamic>, ?options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Change elements of an array based on conditional and input values.
 		
@@ -17341,7 +17532,11 @@ package scipy;
 		
 		Fit a polynomial ``p(x) = p[0] * x**deg + ... + p[deg]`` of degree `deg`
 		to points `(x, y)`. Returns a vector of coefficients `p` that minimises
-		the squared error.
+		the squared error in the order `deg`, `deg-1`, ... `0`.
+		
+		The `Polynomial.fit <numpy.polynomial.polynomial.Polynomial.fit>` class
+		method is recommended for new code as it is more stable numerically. See
+		the documentation of the method for more information.
 		
 		Parameters
 		----------
@@ -17365,9 +17560,14 @@ package scipy;
 		w : array_like, shape (M,), optional
 		    Weights to apply to the y-coordinates of the sample points. For
 		    gaussian uncertainties, use 1/sigma (not 1/sigma**2).
-		cov : bool, optional
-		    Return the estimate and the covariance matrix of the estimate
-		    If full is True, then cov is not returned.
+		cov : bool or str, optional
+		    If given and not `False`, return not just the estimate but also its
+		    covariance matrix. By default, the covariance are scaled by
+		    chi2/sqrt(N-dof), i.e., the weights are presumed to be unreliable
+		    except in a relative sense and everything is scaled such that the
+		    reduced chi2 is unity. This scaling is omitted if ``cov='unscaled'``,
+		    as is relevant for the case that the weights are 1/sigma**2, with
+		    sigma known to be a reliable estimate of the uncertainty.
 		
 		Returns
 		-------
@@ -17439,9 +17639,9 @@ package scipy;
 		References
 		----------
 		.. [1] Wikipedia, "Curve fitting",
-		       http://en.wikipedia.org/wiki/Curve_fitting
+		       https://en.wikipedia.org/wiki/Curve_fitting
 		.. [2] Wikipedia, "Polynomial interpolation",
-		       http://en.wikipedia.org/wiki/Polynomial_interpolation
+		       https://en.wikipedia.org/wiki/Polynomial_interpolation
 		
 		Examples
 		--------
@@ -17497,7 +17697,7 @@ package scipy;
 		Parameters
 		----------
 		p : array_like or poly1d
-		    Polynomial to differentiate.
+		    Polynomial to integrate.
 		    A sequence is interpreted as polynomial coefficients, see `poly1d`.
 		m : int, optional
 		    Order of the antiderivative. (Default: 1)
@@ -18265,7 +18465,7 @@ package scipy;
 	**/
 	static public function pv(rate:Dynamic, nper:Dynamic, pmt:Dynamic, ?fv:Dynamic, ?when:Dynamic):Dynamic;
 	/**
-		Compute the `q`th quantile of the data along the specified axis.
+		Compute the q-th quantile of the data along the specified axis.
 		..versionadded:: 1.15.0
 		
 		Parameters
@@ -18291,6 +18491,7 @@ package scipy;
 		    This optional parameter specifies the interpolation method to
 		    use when the desired quantile lies between two data points
 		    ``i < j``:
+		
 		        * linear: ``i + (j - i) * fraction``, where ``fraction``
 		          is the fractional part of the index surrounded by ``i``
 		          and ``j``.
@@ -18324,7 +18525,7 @@ package scipy;
 		
 		Notes
 		-----
-		Given a vector ``V`` of length ``N``, the ``q``-th quantile of
+		Given a vector ``V`` of length ``N``, the q-th quantile of
 		``V`` is the value ``q`` of the way from the minimum to the
 		maximum in a sorted copy of ``V``. The values and distances of
 		the two nearest neighbors as well as the `interpolation` parameter
@@ -19207,6 +19408,16 @@ package scipy;
 		--------
 		ndarray.resize : resize an array in-place.
 		
+		Notes
+		-----
+		Warning: This functionality does **not** consider axes separately,
+		i.e. it does not apply interpolation/extrapolation.
+		It fills the return array with the required number of elements, taken
+		from `a` as they are laid out in memory, disregarding strides and axes.
+		(This is in case the new shape is smaller. For larger, see above.)
+		This functionality is therefore not suitable to resize images,
+		or data where each axis represents a separate and distinct entity.
+		
 		Examples
 		--------
 		>>> a=np.array([[0,1],[2,3]])
@@ -19581,11 +19792,9 @@ package scipy;
 	/**
 		Round an array to the given number of decimals.
 		
-		Refer to `around` for full documentation.
-		
 		See Also
 		--------
-		around : equivalent function
+		around : equivalent function; see for details.
 	**/
 	static public function round_(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -19838,8 +20047,8 @@ package scipy;
 		References
 		----------
 		.. [1] `Format Specification Mini-Language
-		       <http://docs.python.org/library/string.html#
-		       format-specification-mini-language>`_, Python Documentation.
+		       <https://docs.python.org/library/string.html#format-specification-mini-language>`_,
+		       Python Documentation.
 		
 		Examples
 		--------
@@ -20134,6 +20343,12 @@ package scipy;
 		
 		Set numerical operators for array objects.
 		
+		.. deprecated:: 1.16
+		
+		    For the general case, use :c:func:`PyUFunc_ReplaceLoopBySignature`.
+		    For ndarray subclasses, define the ``__array_ufunc__`` method and
+		    override the relevant ufunc.
+		
 		Parameters
 		----------
 		op1, op2, ... : callable
@@ -20371,7 +20586,7 @@ package scipy;
 	/**
 		Find the set difference of two arrays.
 		
-		Return the sorted, unique values in `ar1` that are not in `ar2`.
+		Return the unique values in `ar1` that are not in `ar2`.
 		
 		Parameters
 		----------
@@ -20386,7 +20601,9 @@ package scipy;
 		Returns
 		-------
 		setdiff1d : ndarray
-		    Sorted 1D array of values in `ar1` that are not in `ar2`.
+		    1D array of values in `ar1` that are not in `ar2`. The result
+		    is sorted when `assume_unique=False`, but otherwise only sorted
+		    if the input is sorted.
 		
 		See Also
 		--------
@@ -20450,7 +20667,7 @@ package scipy;
 		- Invalid operation: result is not an expressible number, typically
 		  indicates that a NaN was produced.
 		
-		.. [1] http://en.wikipedia.org/wiki/IEEE_754
+		.. [1] https://en.wikipedia.org/wiki/IEEE_754
 		
 		Examples
 		--------
@@ -20910,10 +21127,11 @@ package scipy;
 		.. [1] Weisstein, Eric W. "Sinc Function." From MathWorld--A Wolfram Web
 		       Resource. http://mathworld.wolfram.com/SincFunction.html
 		.. [2] Wikipedia, "Sinc function",
-		       http://en.wikipedia.org/wiki/Sinc_function
+		       https://en.wikipedia.org/wiki/Sinc_function
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> x = np.linspace(-4, 4, 41)
 		>>> np.sinc(x)
 		array([ -3.89804309e-17,  -4.92362781e-02,  -8.40918587e-02,
@@ -21008,7 +21226,7 @@ package scipy;
 		>>> np.sinh(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function sinh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -22047,7 +22265,7 @@ package scipy;
 		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function tan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -22091,7 +22309,7 @@ package scipy;
 		       http://www.math.sfu.ca/~cbm/aands/
 		
 		.. [2] Wikipedia, "Hyperbolic function",
-		       http://en.wikipedia.org/wiki/Hyperbolic_function
+		       https://en.wikipedia.org/wiki/Hyperbolic_function
 		
 		Examples
 		--------
@@ -22108,7 +22326,7 @@ package scipy;
 		>>> np.tanh(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function tanh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -22438,10 +22656,10 @@ package scipy;
 		
 		References
 		----------
-		.. [1] Wikipedia page: http://en.wikipedia.org/wiki/Trapezoidal_rule
+		.. [1] Wikipedia page: https://en.wikipedia.org/wiki/Trapezoidal_rule
 		
 		.. [2] Illustration image:
-		       http://en.wikipedia.org/wiki/File:Composite_trapezoidal_rule_illustration.png
+		       https://en.wikipedia.org/wiki/File:Composite_trapezoidal_rule_illustration.png
 		
 		Examples
 		--------
@@ -23125,7 +23343,7 @@ package scipy;
 	**/
 	static public function unpackbits(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		unravel_index(indices, dims, order='C')
+		unravel_index(indices, shape, order='C')
 		
 		Converts a flat index or array of flat indices into a tuple
 		of coordinate arrays.
@@ -23134,10 +23352,14 @@ package scipy;
 		----------
 		indices : array_like
 		    An integer array whose elements are indices into the flattened
-		    version of an array of dimensions ``dims``. Before version 1.6.0,
+		    version of an array of dimensions ``shape``. Before version 1.6.0,
 		    this function accepted just one index value.
-		dims : tuple of ints
+		shape : tuple of ints
 		    The shape of the array to use for unraveling ``indices``.
+		
+		    .. versionchanged:: 1.16.0
+		        Renamed from ``dims`` to ``shape``.
+		
 		order : {'C', 'F'}, optional
 		    Determines whether the indices should be viewed as indexing in
 		    row-major (C-style) or column-major (Fortran-style) order.
@@ -23531,70 +23753,72 @@ package scipy;
 	/**
 		where(condition, [x, y])
 		
-		Return elements, either from `x` or `y`, depending on `condition`.
+		Return elements chosen from `x` or `y` depending on `condition`.
 		
-		If only `condition` is given, return ``condition.nonzero()``.
+		.. note::
+		    When only `condition` is provided, this function is a shorthand for
+		    ``np.asarray(condition).nonzero()``. Using `nonzero` directly should be
+		    preferred, as it behaves correctly for subclasses. The rest of this
+		    documentation covers only the case where all three arguments are
+		    provided.
 		
 		Parameters
 		----------
 		condition : array_like, bool
-		    When True, yield `x`, otherwise yield `y`.
-		x, y : array_like, optional
+		    Where True, yield `x`, otherwise yield `y`.
+		x, y : array_like
 		    Values from which to choose. `x`, `y` and `condition` need to be
 		    broadcastable to some shape.
 		
 		Returns
 		-------
-		out : ndarray or tuple of ndarrays
-		    If both `x` and `y` are specified, the output array contains
-		    elements of `x` where `condition` is True, and elements from
-		    `y` elsewhere.
-		
-		    If only `condition` is given, return the tuple
-		    ``condition.nonzero()``, the indices where `condition` is True.
+		out : ndarray
+		    An array with elements from `x` where `condition` is True, and elements
+		    from `y` elsewhere.
 		
 		See Also
 		--------
-		nonzero, choose
+		choose
+		nonzero : The function that is called when x and y are omitted
 		
 		Notes
 		-----
-		If `x` and `y` are given and input arrays are 1-D, `where` is
-		equivalent to::
+		If all the arrays are 1-D, `where` is equivalent to::
 		
-		    [xv if c else yv for (c,xv,yv) in zip(condition,x,y)]
+		    [xv if c else yv
+		     for c, xv, yv in zip(condition, x, y)]
 		
 		Examples
 		--------
+		>>> a = np.arange(10)
+		>>> a
+		array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+		>>> np.where(a < 5, a, 10*a)
+		array([ 0,  1,  2,  3,  4, 50, 60, 70, 80, 90])
+		
+		This can be used on multidimensional arrays too:
+		
 		>>> np.where([[True, False], [True, True]],
 		...          [[1, 2], [3, 4]],
 		...          [[9, 8], [7, 6]])
 		array([[1, 8],
 		       [3, 4]])
 		
-		>>> np.where([[0, 1], [1, 0]])
-		(array([0, 1]), array([1, 0]))
+		The shapes of x, y, and the condition are broadcast together:
 		
-		>>> x = np.arange(9.).reshape(3, 3)
-		>>> np.where( x > 5 )
-		(array([2, 2, 2]), array([0, 1, 2]))
-		>>> x[np.where( x > 3.0 )]               # Note: result is 1D.
-		array([ 4.,  5.,  6.,  7.,  8.])
-		>>> np.where(x < 5, x, -1)               # Note: broadcasting.
-		array([[ 0.,  1.,  2.],
-		       [ 3.,  4., -1.],
-		       [-1., -1., -1.]])
+		>>> x, y = np.ogrid[:3, :4]
+		>>> np.where(x < y, x, 10 + y)  # both x and 10+y are broadcast
+		array([[10,  0,  0,  0],
+		       [10, 11,  1,  1],
+		       [10, 11, 12,  2]])
 		
-		Find the indices of elements of `x` that are in `goodvalues`.
-		
-		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.isin(x, goodvalues)
-		>>> ix
-		array([[False, False, False],
-		       [ True,  True, False],
-		       [False,  True, False]])
-		>>> np.where(ix)
-		(array([1, 1, 2]), array([0, 1, 1]))
+		>>> a = np.array([[0, 1, 2],
+		...               [0, 2, 4],
+		...               [0, 3, 6]])
+		>>> np.where(a < 4, a, -1)  # -1 is broadcast
+		array([[ 0,  1,  2],
+		       [ 0,  2, -1],
+		       [ 0,  3, -1]])
 	**/
 	static public function where(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

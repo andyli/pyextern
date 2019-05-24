@@ -379,7 +379,7 @@ package scipy.signal.wavelets;
 		References
 		----------
 		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
+		       https://en.wikipedia.org/wiki/Exponential_function
 		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
 		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
 		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
@@ -414,11 +414,14 @@ package scipy.signal.wavelets;
 		
 		The endpoint of the interval can optionally be excluded.
 		
+		.. versionchanged:: 1.16.0
+		    Non-scalar `start` and `stop` are now supported.
+		
 		Parameters
 		----------
-		start : scalar
+		start : array_like
 		    The starting value of the sequence.
-		stop : scalar
+		stop : array_like
 		    The end value of the sequence, unless `endpoint` is set to False.
 		    In that case, the sequence consists of all but the last of ``num + 1``
 		    evenly spaced samples, so that `stop` is excluded.  Note that the step
@@ -437,6 +440,13 @@ package scipy.signal.wavelets;
 		
 		    .. versionadded:: 1.9.0
 		
+		axis : int, optional
+		    The axis in the result to store the samples.  Relevant only if start
+		    or stop are array-like.  By default (0), the samples will be along a
+		    new axis inserted at the beginning. Use -1 to get an axis at the end.
+		
+		    .. versionadded:: 1.16.0
+		
 		Returns
 		-------
 		samples : ndarray
@@ -453,7 +463,10 @@ package scipy.signal.wavelets;
 		--------
 		arange : Similar to `linspace`, but uses a step size (instead of the
 		         number of samples).
-		logspace : Samples uniformly distributed in log space.
+		geomspace : Similar to `linspace`, but with numbers spaced evenly on a log
+		            scale (a geometric progression).
+		logspace : Similar to `geomspace`, but with the end points specified as
+		           logarithms.
 		
 		Examples
 		--------
@@ -479,7 +492,7 @@ package scipy.signal.wavelets;
 		(-0.5, 1)
 		>>> plt.show()
 	**/
-	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Complex Morlet wavelet.
 		

@@ -46,6 +46,9 @@ package tensorflow.python.training.ftrl;
 		Args:
 		  learning_rate: A float value or a constant float `Tensor`.
 		  learning_rate_power: A float value, must be less or equal to zero.
+		    Controls how the learning rate decreases during training. Use zero for
+		    a fixed learning rate. See section 3.1 in the
+		    [paper](https://www.eecs.tufts.edu/~dsculley/papers/ad-click-prediction.pdf).
 		  initial_accumulator_value: The starting value for accumulators.
 		    Only zero or positive values are allowed.
 		  l1_regularization_strength: A float value, must be greater than or
@@ -84,6 +87,9 @@ package tensorflow.python.training.ftrl;
 		Args:
 		  learning_rate: A float value or a constant float `Tensor`.
 		  learning_rate_power: A float value, must be less or equal to zero.
+		    Controls how the learning rate decreases during training. Use zero for
+		    a fixed learning rate. See section 3.1 in the
+		    [paper](https://www.eecs.tufts.edu/~dsculley/papers/ad-click-prediction.pdf).
 		  initial_accumulator_value: The starting value for accumulators.
 		    Only zero or positive values are allowed.
 		  l1_regularization_strength: A float value, must be greater than or
@@ -325,16 +331,16 @@ package tensorflow.python.training.ftrl;
 	**/
 	public var _deferred_dependencies : Dynamic;
 	/**
-		A version of `apply_gradients` for cross-tower context.
+		A version of `apply_gradients` for cross-replica context.
 		
 		This is a version of `apply_gradients()` for when you are using a
-		`DistributionStrategy` and are in a cross-tower context. If in a
-		tower context, use `apply_gradients()` as normal.
+		`DistributionStrategy` and are in a cross-replica context. If in a
+		replica context, use `apply_gradients()` as normal.
 		
 		Args:
 		  distribution: A `DistributionStrategy` object.
 		  grads_and_vars: List of (gradient, variable) pairs as returned by
-		    `compute_gradients()`, and then aggregated across towers.
+		    `compute_gradients()`, and then aggregated across replicas.
 		  global_step: Optional (mirrored) `Variable` to increment by one
 		    after the variables have been updated.
 		  name: Optional name for the returned operation.  Default to the
@@ -342,8 +348,8 @@ package tensorflow.python.training.ftrl;
 		
 		Returns:
 		  An `Operation` that applies the specified gradients across all
-		  towers. If `global_step` was not None, that operation also
-		  increments `global_step`.
+		  replicas. If `global_step` was not None, that operation also
+		  increments `global_step`
 	**/
 	public function _distributed_apply(distribution:Dynamic, grads_and_vars:Dynamic, ?global_step:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -560,6 +566,7 @@ package tensorflow.python.training.ftrl;
 		Restore a newly created slot variable's value.
 	**/
 	public function _restore_slot_variable(slot_name:Dynamic, variable:Dynamic, slot_variable:Dynamic):Dynamic;
+	static public function _scale_loss(loss_value:Dynamic):Dynamic;
 	/**
 		Restore this object, and either queue its dependencies or defer them.
 	**/

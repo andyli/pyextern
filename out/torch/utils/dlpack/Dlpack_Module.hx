@@ -9,6 +9,8 @@ package torch.utils.dlpack;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
 	/**
 		from_dlpack(dlpack) -> Tensor
 		
@@ -22,6 +24,7 @@ package torch.utils.dlpack;
 		Note that each dlpack can only be consumed once.
 	**/
 	static public function from_dlpack(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		to_dlpack(tensor) -> PyCapsule
 		
@@ -34,4 +37,5 @@ package torch.utils.dlpack;
 		Note that each dlpack can only be consumed once.
 	**/
 	static public function to_dlpack(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var unicode_literals : Dynamic;
 }

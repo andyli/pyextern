@@ -26,7 +26,6 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EPSILON_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
@@ -47,8 +46,6 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INITIAL_ACCUMULATOR_FIELD_NUMBER : Dynamic;
-	static public var INITIAL_UPDATE_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -69,7 +66,6 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var RHO_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -86,6 +82,10 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tpu.AdadeltaParameters.epsilon
+	**/
+	public var epsilon : Dynamic;
+	/**
+		Field tensorflow.tpu.AdadeltaParameters.initial_accumulator
+	**/
+	public var initial_accumulator : Dynamic;
+	/**
+		Field tensorflow.tpu.AdadeltaParameters.initial_update
+	**/
+	public var initial_update : Dynamic;
+	/**
+		Field tensorflow.tpu.AdadeltaParameters.rho
+	**/
+	public var rho : Dynamic;
 }

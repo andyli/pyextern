@@ -11,7 +11,12 @@ package tensorflow.python_io;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		An iterator that read the records from a TFRecords file.
+		An iterator that read the records from a TFRecords file. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use eager execution and: 
+		`tf.data.TFRecordDataset(path)`
 		
 		Args:
 		  path: The path to the TFRecords file.

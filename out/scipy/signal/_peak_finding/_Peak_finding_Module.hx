@@ -11,37 +11,41 @@ package scipy.signal._peak_finding;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Find indices of local maxima in a 1D array.
+		Ensure argument `peaks` is a 1D C-contiguous array of dtype('intp').
 		
-		This function finds all local maxima in a 1D array and returns their
-		indices. For maxima who are wider than one sample the index of the center
-		sample is returned (rounded down in case the number of samples is even).
-		
-		Parameters
-		----------
-		x : ndarray
-		    The array to search for local maxima.
+		Used in `peak_prominences` and `peak_widths` to make `peaks` compatible
+		with the signature of the wrapped Cython functions.
 		
 		Returns
 		-------
-		maxima : ndarray
-		    Indices of local maxima in `x`.
-		
-		See Also
-		--------
-		argrelmax
-		
-		Notes
-		-----
-		- Compared to `argrelmax` this function is significantly faster and can
-		  detect maxima that are more than one sample wide. However this comes at
-		  the cost of being only applicable to 1D arrays.
-		- A maxima is defined as one or more samples of equal value that are
-		  surrounded on both sides by atleast one smaller sample.
-		
-		.. versionadded:: 1.1.0
+		value : ndarray
+		    A one-dimensional C-contiguous array with dtype('intp').
 	**/
-	static public function _argmaxima1d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _arg_peaks_as_expected(value:Dynamic):Dynamic;
+	/**
+		Ensure argument `wlen` is of type `np.intp` and larger than 1.
+		
+		Used in `peak_prominences` and `peak_widths`.
+		
+		Returns
+		-------
+		value : np.intp
+		    The original `value` rounded up to an integer or -1 if `value` was
+		    None.
+	**/
+	static public function _arg_wlen_as_expected(value:Dynamic):Dynamic;
+	/**
+		Ensure argument `x` is a 1D C-contiguous array of dtype('float64').
+		
+		Used in `find_peaks`, `peak_prominences` and `peak_widths` to make `x`
+		compatible with the signature of the wrapped Cython functions.
+		
+		Returns
+		-------
+		value : ndarray
+		    A one-dimensional C-contiguous array with dtype('float64').
+	**/
+	static public function _arg_x_as_expected(value:Dynamic):Dynamic;
 	/**
 		Calculate the relative extrema of `data`.
 		
@@ -161,6 +165,37 @@ package scipy.signal._peak_finding;
 	**/
 	static public function _identify_ridge_lines(matr:Dynamic, max_distances:Dynamic, gap_thresh:Dynamic):python.Tuple<Dynamic>;
 	/**
+		Find local maxima in a 1D array.
+		
+		This function finds all local maxima in a 1D array and returns the indices
+		for their edges and midpoints (rounded down for even plateau sizes).
+		
+		Parameters
+		----------
+		x : ndarray
+		    The array to search for local maxima.
+		
+		Returns
+		-------
+		midpoints : ndarray
+		    Indices of midpoints of local maxima in `x`.
+		left_edges : ndarray
+		    Indices of edges to the left of local maxima in `x`.
+		right_edges : ndarray
+		    Indices of edges to the right of local maxima in `x`.
+		
+		Notes
+		-----
+		- Compared to `argrelmax` this function is significantly faster and can
+		  detect maxima that are more than one sample wide. However this comes at
+		  the cost of being only applicable to 1D arrays.
+		- A maxima is defined as one or more samples of equal value that are
+		  surrounded on both sides by at least one smaller sample.
+		
+		.. versionadded:: 1.1.0
+	**/
+	static public function _local_maxima_1d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Calculate the prominence of each peak in a signal.
 		
 		Parameters
@@ -184,7 +219,12 @@ package scipy.signal._peak_finding;
 		Raises
 		------
 		ValueError
-		    If an index in `peaks` doesn't point to a local maximum in `x`.
+		    If a value in `peaks` is an invalid index for `x`.
+		
+		Warns
+		-----
+		PeakPropertyWarning
+		    If a prominence of 0 was calculated for any peak.
 		
 		Notes
 		-----
@@ -227,6 +267,12 @@ package scipy.signal._peak_finding;
 		    If the supplied prominence data doesn't satisfy the condition
 		    ``0 <= left_base <= peak <= right_base < x.shape[0]`` for each peak or
 		    if `peaks`, `left_bases` and `right_bases` don't share the same shape.
+		    Or if `rel_height` is not at least 0.
+		
+		Warnings
+		--------
+		PeakPropertyWarning
+		    If a width of 0 was calculated for any peak.
 		
 		Notes
 		-----
@@ -583,7 +629,8 @@ package scipy.signal._peak_finding;
 		    required threshold.
 		distance : number, optional
 		    Required minimal horizontal distance (>= 1) in samples between
-		    neighbouring peaks. The removal order is explained in the notes section.
+		    neighbouring peaks. Smaller peaks are removed first until the condition
+		    is fulfilled for all remaining peaks.
 		prominence : number or ndarray or sequence, optional
 		    Required prominence of peaks. Either a number, ``None``, an array
 		    matching `x` or a 2-element sequence of the former. The first
@@ -593,8 +640,8 @@ package scipy.signal._peak_finding;
 		    Required width of peaks in samples. Either a number, ``None``, an array
 		    matching `x` or a 2-element sequence of the former. The first
 		    element is always interpreted as the  minimal and the second, if
-		    supplied, as the maximal required prominence.
-		wlen : number, optional
+		    supplied, as the maximal required width.
+		wlen : int, optional
 		    Used for calculation of the peaks prominences, thus it is only used if
 		    one of the arguments `prominence` or `width` is given. See argument
 		    `wlen` in `peak_prominences` for a full description of its effects.
@@ -602,6 +649,13 @@ package scipy.signal._peak_finding;
 		    Used for calculation of the peaks width, thus it is only used if `width`
 		    is given. See argument  `rel_height` in `peak_widths` for a full
 		    description of its effects.
+		plateau_size : number or ndarray or sequence, optional
+		    Required size of the flat top of peaks in samples. Either a number,
+		    ``None``, an array matching `x` or a 2-element sequence of the former.
+		    The first element is always interpreted as the minimal and the second,
+		    if supplied as the maximal required plateau size.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -617,16 +671,33 @@ package scipy.signal._peak_finding;
 		    * 'left_thresholds', 'right_thresholds'
 		          If `threshold` is given, these keys contain a peaks vertical
 		          distance to its neighbouring samples.
-		    * 'peak_prominences', 'right_bases', 'left_bases'
+		    * 'prominences', 'right_bases', 'left_bases'
 		          If `prominence` is given, these keys are accessible. See
 		          `peak_prominences` for a description of their content.
 		    * 'width_heights', 'left_ips', 'right_ips'
 		          If `width` is given, these keys are accessible. See `peak_widths`
 		          for a description of their content.
+		    * 'plateau_sizes', left_edges', 'right_edges'
+		          If `plateau_size` is given, these keys are accessible and contain
+		          the indices of a peak's edges (edges are still part of the
+		          plateau) and the calculated plateau sizes.
+		
+		          .. versionadded:: 1.2.0
 		
 		    To calculate and return properties without excluding peaks, provide the
 		    open interval ``(None, None)`` as a value to the appropriate argument
 		    (excluding `distance`).
+		
+		Warns
+		-----
+		PeakPropertyWarning
+		    Raised if a peak's properties have unexpected values (see
+		    `peak_prominences` and `peak_widths`).
+		
+		Warnings
+		--------
+		This function may return unexpected results for data containing NaNs. To
+		avoid this, NaNs should either be removed or replaced.
 		
 		See Also
 		--------
@@ -659,21 +730,15 @@ package scipy.signal._peak_finding;
 		* For several conditions the interval borders can be specified with
 		  arrays matching `x` in shape which enables dynamic constrains based on
 		  the sample position.
-		* The order of arguments given in the function definition above mirrors the
-		  actual order in which conditions are evaluated. In most cases this order
-		  is the fastest one because faster operations are applied first to reduce
-		  the number of peaks that need to be evaluated later.
-		* Satisfying the distance condition is accomplished by iterating over all
-		  peaks in descending order based on their height and removing all lower
-		  peaks that are too close.
+		* The conditions are evaluated in the following order: `plateau_size`,
+		  `height`, `threshold`, `distance`, `prominence`, `width`. In most cases
+		  this order is the fastest one because faster operations are applied first
+		  to reduce the number of peaks that need to be evaluated later.
+		* While indices in `peaks` are guaranteed to be at least `distance` samples
+		  apart, edges of flat peaks may be closer than the allowed `distance`.
 		* Use `wlen` to reduce the time it takes to evaluate the conditions for
 		  `prominence` or `width` if `x` is large or has many local maxima
 		  (see `peak_prominences`).
-		
-		.. warning::
-		
-		   This function may return unexpected results for data containing NaNs. To
-		   avoid this, NaNs should either be removed or replaced.
 		
 		.. versionadded:: 1.1.0
 		
@@ -745,7 +810,7 @@ package scipy.signal._peak_finding;
 		...            xmax=properties["right_ips"], color = "C1")
 		>>> plt.show()
 	**/
-	static public function find_peaks(x:Dynamic, ?height:Dynamic, ?threshold:Dynamic, ?distance:Dynamic, ?prominence:Dynamic, ?width:Dynamic, ?wlen:Dynamic, ?rel_height:Dynamic):Dynamic;
+	static public function find_peaks(x:Dynamic, ?height:Dynamic, ?threshold:Dynamic, ?distance:Dynamic, ?prominence:Dynamic, ?width:Dynamic, ?wlen:Dynamic, ?rel_height:Dynamic, ?plateau_size:Dynamic):Dynamic;
 	/**
 		Find peaks in a 1-D array with wavelet transformation.
 		
@@ -847,7 +912,7 @@ package scipy.signal._peak_finding;
 		    A signal with peaks.
 		peaks : sequence
 		    Indices of peaks in `x`.
-		wlen : int or float, optional
+		wlen : int, optional
 		    A window length in samples that optionally limits the evaluated area for
 		    each peak to a subset of `x`. The peak is always placed in the middle of
 		    the window therefore the given length is rounded up to the next odd
@@ -864,7 +929,19 @@ package scipy.signal._peak_finding;
 		Raises
 		------
 		ValueError
-		    If an index in `peaks` does not point to a local maximum in `x`.
+		    If a value in `peaks` is an invalid index for `x`.
+		
+		Warns
+		-----
+		PeakPropertyWarning
+		    For indices in `peaks` that don't point to valid local maxima in `x`
+		    the returned prominence will be 0 and this warning is raised. This
+		    also happens if `wlen` is smaller than the plateau size of a peak.
+		
+		Warnings
+		--------
+		This function may return unexpected results for data containing NaNs. To
+		avoid this, NaNs should either be removed or replaced.
 		
 		See Also
 		--------
@@ -899,11 +976,6 @@ package scipy.signal._peak_finding;
 		calculated prominence. In practice this is only relevant for the highest set
 		of peaks in `x`. This behavior may even be used intentionally to calculate
 		"local" prominences.
-		
-		.. warning::
-		
-		   This function may return unexpected results for data containing NaNs. To
-		   avoid this, NaNs should either be removed or replaced.
 		
 		.. versionadded:: 1.1.0
 		
@@ -1008,6 +1080,17 @@ package scipy.signal._peak_finding;
 		    has the wrong dtype, is not C-contiguous or does not have the same
 		    shape.
 		
+		Warns
+		-----
+		PeakPropertyWarning
+		    Raised if any calculated width is 0. This may stem from the supplied
+		    `prominence_data` or if `rel_height` is set to 0.
+		
+		Warnings
+		--------
+		This function may return unexpected results for data containing NaNs. To
+		avoid this, NaNs should either be removed or replaced.
+		
 		See Also
 		--------
 		find_peaks
@@ -1036,11 +1119,6 @@ package scipy.signal._peak_finding;
 		As shown above to calculate a peak's width its prominence and bases must be
 		known. You can supply these yourself with the argument `prominence_data`.
 		Otherwise they are internally calculated (see `peak_prominences`).
-		
-		.. warning::
-		
-		   This function may return unexpected results for data containing NaNs. To
-		   avoid this, NaNs should either be removed or replaced.
 		
 		.. versionadded:: 1.1.0
 		
@@ -1158,7 +1236,7 @@ package scipy.signal._peak_finding;
 		Notes
 		-----
 		This function will become obsolete in the future.
-		For Numpy 1.9 and higher, `numpy.percentile` provides all the functionality
+		For NumPy 1.9 and higher, `numpy.percentile` provides all the functionality
 		that `scoreatpercentile` provides.  And it's significantly faster.
 		Therefore it's recommended to use `numpy.percentile` for users that have
 		numpy >= 1.9.

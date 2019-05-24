@@ -2,24 +2,6 @@
 package tensorflow.python.training.saver;
 @:pythonImport("tensorflow.python.training.saver", "BulkSaverBuilder") extern class BulkSaverBuilder {
 	/**
-		Create a dictionary of names to operation lists.
-		
-		Args:
-		  op_list: A list, tuple, or set of Variables or SaveableObjects.
-		  convert_variable_to_tensor: Whether or not to convert single Variables
-		    with no slice info into Tensors.
-		
-		Returns:
-		  A dictionary of names to the operations that must be saved under
-		  that name.  Variables with save_slice_info are grouped together under the
-		  same key in no particular order.
-		
-		Raises:
-		  TypeError: If the type of op_list or its elements is not supported.
-		  ValueError: If at least two saveables share the same name.
-	**/
-	static public function OpListToDict(op_list:Dynamic, ?convert_variable_to_tensor:Dynamic):Dynamic;
-	/**
 		SaveableObject implementation that handles ResourceVariables.
 	**/
 	static public function ResourceVariableSaveable(_var:Dynamic, slice_spec:Dynamic, name:Dynamic):Dynamic;
@@ -32,23 +14,7 @@ package tensorflow.python.training.saver;
 	**/
 	static public function SaveableObject(op:Dynamic, specs:Dynamic, name:Dynamic):Dynamic;
 	/**
-		Create `SaveableObject`s from an operation.
-		
-		Args:
-		  op: A variable, operation, or SaveableObject to coerce into a
-		    SaveableObject.
-		  name: A string name for the SaveableObject.
-		
-		Yields:
-		  `SaveableObject`s which together save/restore `op`.
-		
-		Raises:
-		  TypeError: If `name` is not a string.
-		  ValueError: For operations with no known conversion to SaveableObject.
-	**/
-	static public function SaveableObjectsForOp(op:Dynamic, name:Dynamic):Dynamic;
-	/**
-		SaveableObject implementation that handles Variables.
+		SaveableObject implementation that handles reference variables.
 	**/
 	static public function VariableSaveable(_var:Dynamic, slice_spec:Dynamic, name:Dynamic):Dynamic;
 	/**
@@ -79,19 +45,6 @@ package tensorflow.python.training.saver;
 		  A tensor with the filename used to save.
 	**/
 	public function _AddSaveOps(filename_tensor:Dynamic, saveables:Dynamic):Dynamic;
-	/**
-		Adds the saveable to the saveables list.
-		
-		Args:
-		  saveables: List to append the SaveableObject to.
-		  seen_ops: Set of the ops of the saveables already processed.  Used to
-		    check that each saveable is only saved once.
-		  saveable: The saveable.
-		
-		Raises:
-		  ValueError: If the saveable has already been processed.
-	**/
-	public function _AddSaveable(saveables:Dynamic, seen_ops:Dynamic, saveable:Dynamic):Dynamic;
 	/**
 		Add Ops to restore variables from multiple devices.
 		
@@ -156,24 +109,6 @@ package tensorflow.python.training.saver;
 		  ValueError: If the tensors of a saveable are on different devices.
 	**/
 	public function _GroupByDevices(saveables:Dynamic):Dynamic;
-	static public function _IsVariable(v:Dynamic):Dynamic;
-	/**
-		Returns the variables and names that will be used for a Saver.
-		
-		Args:
-		  names_to_saveables: A dict (k, v) where k is the name of an operation and
-		     v is an operation to save or a BaseSaverBuilder.Saver.
-		
-		Returns:
-		  A list of BaseSaverBuilder.SaveableObject objects.
-		
-		Raises:
-		  TypeError: If any of the keys are not strings or any of the
-		    values are not one of Tensor or Variable or a checkpointable operation.
-		  ValueError: If the same operation is given in more than one value
-		    (this also applies to slices of SlicedVariables).
-	**/
-	public function _ValidateAndSliceInputs(names_to_saveables:Dynamic):Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).

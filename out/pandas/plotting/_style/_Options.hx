@@ -131,7 +131,6 @@ package pandas.plotting._style;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _get_canonical_key(key:Dynamic):Dynamic;
-	public function _warn_if_deprecated():Dynamic;
 	/**
 		D.clear() -> None.  Remove all items from D.
 	**/

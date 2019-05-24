@@ -120,7 +120,7 @@ package pandas.core.window;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		provide a nice str repr of our rolling object 
+		Provide a nice str repr of our rolling object.
 	**/
 	public function __unicode__():Dynamic;
 	/**
@@ -151,7 +151,7 @@ package pandas.core.window;
 	static public var _attributes : Dynamic;
 	static public var _builtin_table : Dynamic;
 	/**
-		center the result in the window 
+		Center the result in the window.
 	**/
 	public function _center_window(result:Dynamic, window:Dynamic):Dynamic;
 	/**
@@ -159,11 +159,11 @@ package pandas.core.window;
 	**/
 	public var _constructor : Dynamic;
 	/**
-		resample according to the how, return a new object 
+		Resample according to the how, return a new object.
 	**/
 	public function _convert_freq():Dynamic;
 	/**
-		split data into blocks & return conformed data 
+		Split data into blocks & return conformed data.
 	**/
 	public function _create_blocks():Dynamic;
 	static public var _cython_table : Dynamic;
@@ -177,7 +177,7 @@ package pandas.core.window;
 	**/
 	public function _dir_deletions():Dynamic;
 	/**
-		Return index as ndarrays
+		Return index as ndarrays.
 		
 		Returns
 		-------
@@ -186,12 +186,11 @@ package pandas.core.window;
 	public function _get_index(?index:Dynamic):Dynamic;
 	public function _get_window(?other:Dynamic):Dynamic;
 	/**
-		sub-classes to define
-		return a sliced object
+		Sub-classes to define. Return a sliced object.
 		
 		Parameters
 		----------
-		key : string / list of selections
+		key : str / list of selections
 		ndim : 1,2
 		    requested ndim of result
 		subset : object, default None
@@ -206,7 +205,7 @@ package pandas.core.window;
 	**/
 	public function _is_builtin_func(arg:Dynamic):Dynamic;
 	/**
-		if we define an internal function for this argument, return it 
+		if we define an internal function for this argument, return it
 	**/
 	public function _is_cython_func(arg:Dynamic):Dynamic;
 	public var _obj_with_exclusions : Dynamic;
@@ -226,7 +225,7 @@ package pandas.core.window;
 	**/
 	public var _selection_name : Dynamic;
 	/**
-		return a new object with the replacement attributes 
+		return a new object with the replacement attributes
 	**/
 	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -238,11 +237,11 @@ package pandas.core.window;
 	public function _try_aggregate_string_function(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _window_type : Dynamic;
 	/**
-		wrap a single result 
+		Wrap a single result.
 	**/
 	public function _wrap_result(result:Dynamic, ?block:Dynamic, ?obj:Dynamic):Dynamic;
 	/**
-		wrap the results
+		Wrap the results.
 		
 		Parameters
 		----------

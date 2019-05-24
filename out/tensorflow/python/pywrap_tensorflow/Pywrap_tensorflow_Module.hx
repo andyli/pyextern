@@ -3,6 +3,7 @@ package tensorflow.python.pywrap_tensorflow;
 @:pythonImport("tensorflow.python.pywrap_tensorflow") extern class Pywrap_tensorflow_Module {
 	static public function AddControlInput(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function AddStep(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function AddWhileInputHack(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function AppendToFile(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function AssertSameStructure(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function AssertSameStructureForData(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -140,6 +141,7 @@ package tensorflow.python.pywrap_tensorflow;
 		  collections.Sequence.
 	**/
 	static public function IsSequenceForData(o:Dynamic):Dynamic;
+	static public function IsTensor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function ListDevices(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function ListDevicesWithSessionConfig(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function NewCheckpointReader(filepattern:Dynamic):Dynamic;
@@ -155,10 +157,6 @@ package tensorflow.python.pywrap_tensorflow;
 	static public function PyRecordReader_swigregister(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function PyRecordWriter_New(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function PyRecordWriter_swigregister(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function PyServer_Join(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function PyServer_New(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function PyServer_Start(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function PyServer_Stop(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function ReadFileToString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function ReadFromStream(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function RecordWriterOptions_CreateRecordWriterOptions(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -174,7 +172,6 @@ package tensorflow.python.pywrap_tensorflow;
 	**/
 	static public function SameNamedtuples(o1:Dynamic, o2:Dynamic):Dynamic;
 	static public function SerializeToString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function ServerInterface_swigregister(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function SetAttr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function SetHandleShapeAndType(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function SetRequestedDevice(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -285,6 +282,7 @@ package tensorflow.python.pywrap_tensorflow;
 	static public function TF_DeleteImportGraphDefResults(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_DeleteLibraryHandle(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_DeletePRunHandle(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function TF_DeleteServer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_DeleteSession(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_DeleteSessionOptions(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_DeleteStatus(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -353,6 +351,7 @@ package tensorflow.python.pywrap_tensorflow;
 	static public function TF_ImportGraphDefOptionsNumReturnOperations(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_ImportGraphDefOptionsNumReturnOutputs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_ImportGraphDefOptionsRemapControlDependency(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function TF_ImportGraphDefOptionsSetDefaultDevice(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_ImportGraphDefOptionsSetPrefix(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_ImportGraphDefOptionsSetUniquifyNames(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_ImportGraphDefOptionsSetUniquifyPrefix(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -376,6 +375,7 @@ package tensorflow.python.pywrap_tensorflow;
 	static public function TF_NewImportGraphDefOptions(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_NewItem(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_NewOperation(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function TF_NewServer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_NewSession(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_NewSessionOptions(?target:Dynamic, ?config:Dynamic):Dynamic;
 	static public function TF_NewSessionRef(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -436,6 +436,10 @@ package tensorflow.python.pywrap_tensorflow;
 	static public function TF_Reset_wrapper(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_Run(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var TF_STRING : Dynamic;
+	static public function TF_ServerJoin(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function TF_ServerStart(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function TF_ServerStop(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function TF_ServerTarget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_SessionListDevices(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_SessionMakeCallable(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function TF_SessionPRunSetup_wrapper(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -514,7 +518,7 @@ package tensorflow.python.pywrap_tensorflow;
 	/**
 		A general quantization scheme is being developed in `tf.contrib.quantize`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		GraphDef quantized training rewriter is deprecated in the long term
 		

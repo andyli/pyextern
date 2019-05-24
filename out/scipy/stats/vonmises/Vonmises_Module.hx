@@ -50,7 +50,7 @@ package scipy.stats.vonmises;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function i0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

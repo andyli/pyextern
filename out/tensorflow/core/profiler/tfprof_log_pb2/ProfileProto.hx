@@ -38,7 +38,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HAS_TRACE_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -47,7 +46,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ID_TO_STRING_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -60,7 +58,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MISS_ACCELERATOR_STREAM_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -69,7 +66,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NODES_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -82,7 +78,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var STEPS_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -95,6 +90,10 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -260,4 +259,24 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileProto.has_trace
+	**/
+	public var has_trace : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileProto.id_to_string
+	**/
+	public var id_to_string : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileProto.miss_accelerator_stream
+	**/
+	public var miss_accelerator_stream : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileProto.nodes
+	**/
+	public var nodes : Dynamic;
+	/**
+		Field tensorflow.tfprof.ProfileProto.steps
+	**/
+	public var steps : Dynamic;
 }

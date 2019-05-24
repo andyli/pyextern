@@ -24,6 +24,10 @@ package tensorflow.python.ops.variables;
 	**/
 	static public function _all_saveable_objects(?scope:Dynamic):Dynamic;
 	/**
+		Detect cycles in the dependencies of `initial_value`.
+	**/
+	static public function _has_cycle(op:Dynamic, path:Dynamic):Dynamic;
+	/**
 		To avoid capturing loop variables.
 	**/
 	static public function _make_getter(captured_getter:Dynamic, captured_previous:Dynamic):Dynamic;
@@ -31,7 +35,7 @@ package tensorflow.python.ops.variables;
 	/**
 		See `tf.global_variables`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-02.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-02.
 		Instructions for updating:
 		Please use tf.global_variables instead.
 	**/
@@ -137,7 +141,7 @@ package tensorflow.python.ops.variables;
 	/**
 		See `tf.global_variables_initializer`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-02.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-02.
 		Instructions for updating:
 		Use `tf.global_variables_initializer` instead.
 		
@@ -147,7 +151,7 @@ package tensorflow.python.ops.variables;
 	/**
 		See `tf.local_variables_initializer`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-02.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-02.
 		Instructions for updating:
 		Use `tf.local_variables_initializer` instead.
 		
@@ -157,7 +161,7 @@ package tensorflow.python.ops.variables;
 	/**
 		See `tf.variables_initializer`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-02.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-02.
 		Instructions for updating:
 		Use `tf.variables_initializer` instead.
 		

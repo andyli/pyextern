@@ -5,6 +5,7 @@ package tensorflow.core.kernels.boosted_trees.boosted_trees_pb2;
 	static public var _BUCKETIZEDSPLIT : Dynamic;
 	static public var _CATEGORICALSPLIT : Dynamic;
 	static public var _DEBUGOUTPUT : Dynamic;
+	static public var _DENSESPLIT : Dynamic;
 	static public var _GROWINGMETADATA : Dynamic;
 	static public var _LEAF : Dynamic;
 	static public var _NODE : Dynamic;

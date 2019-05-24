@@ -174,7 +174,7 @@ package matplotlib.colors;
 		hsv_max_val : number, optional
 		    The maximum value ("v" in "hsv") that the *intensity* map can shift
 		    the output image to. Defaults to 1.
-		hsv_min_val: number, optional
+		hsv_min_val : number, optional
 		    The minimum value ("v" in "hsv") that the *intensity* map can shift
 		    the output image to. Defaults to 0.
 		
@@ -218,7 +218,7 @@ package matplotlib.colors;
 	**/
 	public function blend_soft_light(rgb:Dynamic, intensity:Dynamic):Dynamic;
 	/**
-		The unit vector direction towards the light source 
+		The unit vector direction towards the light source.
 	**/
 	public var direction : Dynamic;
 	/**
@@ -342,18 +342,15 @@ package matplotlib.colors;
 	**/
 	public function shade_normals(normals:Dynamic, ?fraction:Dynamic):Dynamic;
 	/**
-		Take the input RGB array (ny*nx*3) adjust their color values
-		to given the impression of a shaded relief map with a
-		specified light source using the elevation (ny*nx).
-		A new RGB array ((ny*nx*3)) is returned.
+		Use this light source to adjust the colors of the *rgb* input array to
+		give the impression of a shaded relief map with the given `elevation`.
 		
 		Parameters
 		----------
 		rgb : array-like
-		    An MxNx3 RGB array, assumed to be in the range of 0 to 1.
+		    An (M, N, 3) RGB array, assumed to be in the range of 0 to 1.
 		elevation : array-like
-		    A 2d array (or equivalent) of the height values used to generate a
-		    shaded map.
+		    An (M, N) array of the height values used to generate a shaded map.
 		fraction : number
 		    Increases or decreases the contrast of the hillshade.  Values
 		    greater than one will cause intermediate values to move closer to
@@ -385,7 +382,7 @@ package matplotlib.colors;
 		Returns
 		-------
 		shaded_rgb : ndarray
-		    An MxNx3 array of floats ranging between 0-1.
+		    An (m, n, 3) array of floats ranging between 0-1.
 	**/
 	public function shade_rgb(rgb:Dynamic, elevation:Dynamic, ?fraction:Dynamic, ?blend_mode:Dynamic, ?vert_exag:Dynamic, ?dx:Dynamic, ?dy:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

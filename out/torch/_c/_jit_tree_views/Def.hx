@@ -37,12 +37,12 @@ package torch._c._jit_tree_views;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		__init__(self: torch._C._jit_tree_views.Def, arg0: torch._C._jit_tree_views.Ident, arg1: List[torch._C._jit_tree_views.Param], arg2: List[torch._C._jit_tree_views.Stmt]) -> None
+		__init__(self: torch._C._jit_tree_views.Def, arg0: torch._C._jit_tree_views.Ident, arg1: torch::jit::script::Decl, arg2: List[torch._C._jit_tree_views.Stmt]) -> None
 	**/
 	@:native("__init__")
 	public function ___init__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		__init__(self: torch._C._jit_tree_views.Def, arg0: torch._C._jit_tree_views.Ident, arg1: List[torch._C._jit_tree_views.Param], arg2: List[torch._C._jit_tree_views.Stmt]) -> None
+		__init__(self: torch._C._jit_tree_views.Def, arg0: torch._C._jit_tree_views.Ident, arg1: torch::jit::script::Decl, arg2: List[torch._C._jit_tree_views.Stmt]) -> None
 	**/
 	public function new(args:haxe.extern.Rest<Dynamic>):Void;
 	/**

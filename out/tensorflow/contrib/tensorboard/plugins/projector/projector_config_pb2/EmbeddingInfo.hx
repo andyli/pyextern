@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.tensorboard.plugins.projector.projector_config_pb2;
 @:pythonImport("tensorflow.contrib.tensorboard.plugins.projector.projector_config_pb2", "EmbeddingInfo") extern class EmbeddingInfo {
-	static public var BOOKMARKS_PATH_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -55,7 +54,6 @@ package tensorflow.contrib.tensorboard.plugins.projector.projector_config_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var METADATA_PATH_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -72,7 +70,6 @@ package tensorflow.contrib.tensorboard.plugins.projector.projector_config_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SPRITE_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -85,9 +82,10 @@ package tensorflow.contrib.tensorboard.plugins.projector.projector_config_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TENSOR_NAME_FIELD_NUMBER : Dynamic;
-	static public var TENSOR_PATH_FIELD_NUMBER : Dynamic;
-	static public var TENSOR_SHAPE_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -253,4 +251,28 @@ package tensorflow.contrib.tensorboard.plugins.projector.projector_config_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.EmbeddingInfo.bookmarks_path
+	**/
+	public var bookmarks_path : Dynamic;
+	/**
+		Field tensorflow.EmbeddingInfo.metadata_path
+	**/
+	public var metadata_path : Dynamic;
+	/**
+		Field tensorflow.EmbeddingInfo.sprite
+	**/
+	public var sprite : Dynamic;
+	/**
+		Field tensorflow.EmbeddingInfo.tensor_name
+	**/
+	public var tensor_name : Dynamic;
+	/**
+		Field tensorflow.EmbeddingInfo.tensor_path
+	**/
+	public var tensor_path : Dynamic;
+	/**
+		Field tensorflow.EmbeddingInfo.tensor_shape
+	**/
+	public var tensor_shape : Dynamic;
 }

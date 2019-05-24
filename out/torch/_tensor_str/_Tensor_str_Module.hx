@@ -10,10 +10,11 @@ package torch._tensor_str;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _maybe_wrap_suffix(suffix:Dynamic, indent:Dynamic, tensor_str:Dynamic):Dynamic;
+	static public function _add_suffixes(tensor_str:Dynamic, suffixes:Dynamic, indent:Dynamic, force_newline:Dynamic):Dynamic;
 	static public function _scalar_str(self:Dynamic, formatter:Dynamic):Dynamic;
 	static public function _str(self:Dynamic):Dynamic;
-	static public function _tensor_str(self:Dynamic, indent:Dynamic, formatter:Dynamic, summarize:Dynamic):Dynamic;
+	static public function _tensor_str(self:Dynamic, indent:Dynamic):Dynamic;
+	static public function _tensor_str_with_formatter(self:Dynamic, indent:Dynamic, formatter:Dynamic, summarize:Dynamic):Dynamic;
 	static public function _vector_str(self:Dynamic, indent:Dynamic, formatter:Dynamic, summarize:Dynamic):Dynamic;
 	static public var float_info : Dynamic;
 	static public function get_summarized_data(self:Dynamic):Dynamic;
@@ -35,7 +36,7 @@ package torch._tensor_str;
 		
 		Args:
 		    precision: Number of digits of precision for floating point output
-		        (default = 8).
+		        (default = 4).
 		    threshold: Total number of array elements which trigger summarization
 		        rather than full `repr` (default = 1000).
 		    edgeitems: Number of array items in summary at beginning and end of

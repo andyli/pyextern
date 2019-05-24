@@ -200,7 +200,7 @@ package tensorflow.python.training.supervisor;
 	/**
 		Create a `Supervisor`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.MonitoredTrainingSession
 		
@@ -287,7 +287,7 @@ package tensorflow.python.training.supervisor;
 	/**
 		Create a `Supervisor`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.MonitoredTrainingSession
 		

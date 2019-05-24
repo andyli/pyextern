@@ -72,9 +72,35 @@ package scipy.fftpack.realtransforms;
 	static public function _get_dst_fun(type:Dynamic, dtype:Dynamic):Dynamic;
 	static public function _get_norm_mode(normalize:Dynamic):Dynamic;
 	/**
-		Handle shape and axes arguments for dctn, idctn, dstn, idstn.
+		Handle shape and axes arguments for n-dimensional transforms.
+		
+		Returns the shape and axes in a standard form, taking into account negative
+		values and checking for various potential errors.
+		
+		Parameters
+		----------
+		x : array_like
+		    The input array.
+		shape : int or array_like of ints or None
+		    The shape of the result.  If both `shape` and `axes` (see below) are
+		    None, `shape` is ``x.shape``; if `shape` is None but `axes` is
+		    not None, then `shape` is ``scipy.take(x.shape, axes, axis=0)``.
+		    If `shape` is -1, the size of the corresponding dimension of `x` is
+		    used.
+		axes : int or array_like of ints or None
+		    Axes along which the calculation is computed.
+		    The default is over all axes.
+		    Negative indices are automatically converted to their positive
+		    counterpart.
+		
+		Returns
+		-------
+		shape : array
+		    The shape of the result. It is a 1D integer array.
+		axes : array
+		    The shape of the result. It is a 1D integer array.
 	**/
-	static public function _init_nd_shape_and_axes(x:Dynamic, shape:Dynamic, axes:Dynamic):Dynamic;
+	static public function _init_nd_shape_and_axes(x:Dynamic, shape:Dynamic, axes:Dynamic):Array<Dynamic>;
 	static public function _raw_dct(x0:Dynamic, type:Dynamic, n:Dynamic, axis:Dynamic, nm:Dynamic, overwrite_x:Dynamic):Dynamic;
 	static public function _raw_dst(x0:Dynamic, type:Dynamic, n:Dynamic, axis:Dynamic, nm:Dynamic, overwrite_x:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
@@ -85,7 +111,7 @@ package scipy.fftpack.realtransforms;
 		----------
 		x : array_like
 		    The input array.
-		type : {1, 2, 3}, optional
+		type : {1, 2, 3, 4}, optional
 		    Type of the DCT (see Notes). Default type is 2.
 		n : int, optional
 		    Length of the transform.  If ``n < x.shape[axis]``, `x` is
@@ -113,7 +139,7 @@ package scipy.fftpack.realtransforms;
 		For a single dimension array ``x``, ``dct(x, norm='ortho')`` is equal to
 		MATLAB ``dct(x)``.
 		
-		There are theoretically 8 types of the DCT, only the first 3 types are
+		There are theoretically 8 types of the DCT, only the first 4 types are
 		implemented in scipy. 'The' DCT generally refers to DCT type 2, and 'the'
 		Inverse DCT generally refers to DCT type 3.
 		
@@ -126,8 +152,18 @@ package scipy.fftpack.realtransforms;
 		  y[k] = x[0] + (-1)**k x[N-1] + 2 * sum x[n]*cos(pi*k*n/(N-1))
 		                                     n=1
 		
-		Only None is supported as normalization mode for DCT-I. Note also that the
-		DCT-I is only supported for input size > 1
+		If ``norm='ortho'``, ``x[0]`` and ``x[N-1]`` are multiplied by
+		a scaling factor of ``sqrt(2)``, and ``y[k]`` is multiplied by a
+		scaling factor `f`::
+		
+		  f = 0.5*sqrt(1/(N-1)) if k = 0 or N-1,
+		  f = 0.5*sqrt(2/(N-1)) otherwise.
+		
+		.. versionadded:: 1.2.0
+		   Orthonormalization in DCT-I.
+		
+		.. note::
+		   The DCT-I is only supported for input size > 1.
 		
 		**Type II**
 		
@@ -166,14 +202,31 @@ package scipy.fftpack.realtransforms;
 		to a factor `2N`. The orthonormalized DCT-III is exactly the inverse of
 		the orthonormalized DCT-II.
 		
+		**Type IV**
+		
+		There are several definitions of the DCT-IV; we use the following
+		(for ``norm=None``)::
+		
+		
+		            N-1
+		  y[k] = 2* sum x[n]*cos(pi*(2k+1)*(2n+1)/(4*N)), 0 <= k < N.
+		            n=0
+		
+		If ``norm='ortho'``, ``y[k]`` is multiplied by a scaling factor `f`::
+		
+		  f = 0.5*sqrt(2/N)
+		
+		.. versionadded:: 1.2.0
+		   Support for DCT-IV.
+		
 		References
 		----------
 		.. [1] 'A Fast Cosine Transform in One and Two Dimensions', by J.
 		       Makhoul, `IEEE Transactions on acoustics, speech and signal
 		       processing` vol. 28(1), pp. 27-34,
-		       http://dx.doi.org/10.1109/TASSP.1980.1163351 (1980).
+		       :doi:`10.1109/TASSP.1980.1163351` (1980).
 		.. [2] Wikipedia, "Discrete cosine transform",
-		       http://en.wikipedia.org/wiki/Discrete_cosine_transform
+		       https://en.wikipedia.org/wiki/Discrete_cosine_transform
 		
 		Examples
 		--------
@@ -195,17 +248,20 @@ package scipy.fftpack.realtransforms;
 		----------
 		x : array_like
 		    The input array.
-		type : {1, 2, 3}, optional
+		type : {1, 2, 3, 4}, optional
 		    Type of the DCT (see Notes). Default type is 2.
-		shape : tuple of ints, optional
+		shape : int or array_like of ints or None, optional
 		    The shape of the result.  If both `shape` and `axes` (see below) are
 		    None, `shape` is ``x.shape``; if `shape` is None but `axes` is
 		    not None, then `shape` is ``scipy.take(x.shape, axes, axis=0)``.
 		    If ``shape[i] > x.shape[i]``, the i-th dimension is padded with zeros.
 		    If ``shape[i] < x.shape[i]``, the i-th dimension is truncated to
 		    length ``shape[i]``.
-		axes : tuple or None, optional
-		    Axes along which the DCT is computed; the default is over all axes.
+		    If any element of `shape` is -1, the size of the corresponding
+		    dimension of `x` is used.
+		axes : int or array_like of ints or None, optional
+		    Axes along which the DCT is computed.
+		    The default is over all axes.
 		norm : {None, 'ortho'}, optional
 		    Normalization mode (see Notes). Default is None.
 		overwrite_x : bool, optional
@@ -241,7 +297,7 @@ package scipy.fftpack.realtransforms;
 		----------
 		x : array_like
 		    The input array.
-		type : {1, 2, 3}, optional
+		type : {1, 2, 3, 4}, optional
 		    Type of the DST (see Notes). Default type is 2.
 		n : int, optional
 		    Length of the transform.  If ``n < x.shape[axis]``, `x` is
@@ -270,7 +326,7 @@ package scipy.fftpack.realtransforms;
 		
 		There are theoretically 8 types of the DST for different combinations of
 		even/odd boundary conditions and boundary off sets [1]_, only the first
-		3 types are implemented in scipy.
+		4 types are implemented in scipy.
 		
 		**Type I**
 		
@@ -281,9 +337,9 @@ package scipy.fftpack.realtransforms;
 		  y[k] = 2 * sum x[n]*sin(pi*(k+1)*(n+1)/(N+1))
 		             n=0
 		
-		Only None is supported as normalization mode for DCT-I. Note also that the
-		DCT-I is only supported for input size > 1
-		The (unnormalized) DCT-I is its own inverse, up to a factor `2(N+1)`.
+		Note that the DST-I is only supported for input size > 1
+		The (unnormalized) DST-I is its own inverse, up to a factor `2(N+1)`.
+		The orthonormalized DST-I is exactly its own inverse.
 		
 		**Type II**
 		
@@ -310,16 +366,32 @@ package scipy.fftpack.realtransforms;
 		  y[k] = x[N-1]*(-1)**k + 2* sum x[n]*sin(pi*(k+0.5)*(n+1)/N), 0 <= k < N.
 		                             n=0
 		
-		The (unnormalized) DCT-III is the inverse of the (unnormalized) DCT-II, up
+		The (unnormalized) DST-III is the inverse of the (unnormalized) DST-II, up
 		to a factor `2N`.  The orthonormalized DST-III is exactly the inverse of
 		the orthonormalized DST-II.
 		
 		.. versionadded:: 0.11.0
 		
+		**Type IV**
+		
+		There are several definitions of the DST-IV, we use the following
+		(for ``norm=None``).  DST-IV assumes the input is odd around n=-0.5
+		and even around n=N-0.5 ::
+		
+		            N-1
+		  y[k] = 2* sum x[n]*sin(pi*(k+0.5)*(n+0.5)/N), 0 <= k < N.
+		            n=0
+		
+		The (unnormalized) DST-IV is its own inverse, up
+		to a factor `2N`.  The orthonormalized DST-IV is exactly its own inverse.
+		
+		.. versionadded:: 1.2.0
+		   Support for DST-IV.
+		
 		References
 		----------
 		.. [1] Wikipedia, "Discrete sine transform",
-		       http://en.wikipedia.org/wiki/Discrete_sine_transform
+		       https://en.wikipedia.org/wiki/Discrete_sine_transform
 	**/
 	static public function dst(x:Dynamic, ?type:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	/**
@@ -329,17 +401,20 @@ package scipy.fftpack.realtransforms;
 		----------
 		x : array_like
 		    The input array.
-		type : {1, 2, 3}, optional
-		    Type of the DCT (see Notes). Default type is 2.
-		shape : tuple of ints, optional
+		type : {1, 2, 3, 4}, optional
+		    Type of the DST (see Notes). Default type is 2.
+		shape : int or array_like of ints or None, optional
 		    The shape of the result.  If both `shape` and `axes` (see below) are
 		    None, `shape` is ``x.shape``; if `shape` is None but `axes` is
 		    not None, then `shape` is ``scipy.take(x.shape, axes, axis=0)``.
 		    If ``shape[i] > x.shape[i]``, the i-th dimension is padded with zeros.
 		    If ``shape[i] < x.shape[i]``, the i-th dimension is truncated to
 		    length ``shape[i]``.
-		axes : tuple or None, optional
-		    Axes along which the DCT is computed; the default is over all axes.
+		    If any element of `shape` is -1, the size of the corresponding
+		    dimension of `x` is used.
+		axes : int or array_like of ints or None, optional
+		    Axes along which the DCT is computed.
+		    The default is over all axes.
 		norm : {None, 'ortho'}, optional
 		    Normalization mode (see Notes). Default is None.
 		overwrite_x : bool, optional
@@ -374,7 +449,7 @@ package scipy.fftpack.realtransforms;
 		----------
 		x : array_like
 		    The input array.
-		type : {1, 2, 3}, optional
+		type : {1, 2, 3, 4}, optional
 		    Type of the DCT (see Notes). Default type is 2.
 		n : int, optional
 		    Length of the transform.  If ``n < x.shape[axis]``, `x` is
@@ -405,8 +480,8 @@ package scipy.fftpack.realtransforms;
 		'The' IDCT is the IDCT of type 2, which is the same as DCT of type 3.
 		
 		IDCT of type 1 is the DCT of type 1, IDCT of type 2 is the DCT of type
-		3, and IDCT of type 3 is the DCT of type 2. For the definition of these
-		types, see `dct`.
+		3, and IDCT of type 3 is the DCT of type 2. IDCT of type 4 is the DCT
+		of type 4. For the definition of these types, see `dct`.
 		
 		Examples
 		--------
@@ -428,17 +503,20 @@ package scipy.fftpack.realtransforms;
 		----------
 		x : array_like
 		    The input array.
-		type : {1, 2, 3}, optional
+		type : {1, 2, 3, 4}, optional
 		    Type of the DCT (see Notes). Default type is 2.
-		shape : tuple of ints, optional
+		shape : int or array_like of ints or None, optional
 		    The shape of the result.  If both `shape` and `axes` (see below) are
 		    None, `shape` is ``x.shape``; if `shape` is None but `axes` is
 		    not None, then `shape` is ``scipy.take(x.shape, axes, axis=0)``.
 		    If ``shape[i] > x.shape[i]``, the i-th dimension is padded with zeros.
 		    If ``shape[i] < x.shape[i]``, the i-th dimension is truncated to
 		    length ``shape[i]``.
-		axes : tuple or None, optional
-		    Axes along which the IDCT is computed; the default is over all axes.
+		    If any element of `shape` is -1, the size of the corresponding
+		    dimension of `x` is used.
+		axes : int or array_like of ints or None, optional
+		    Axes along which the IDCT is computed.
+		    The default is over all axes.
 		norm : {None, 'ortho'}, optional
 		    Normalization mode (see Notes). Default is None.
 		overwrite_x : bool, optional
@@ -473,7 +551,7 @@ package scipy.fftpack.realtransforms;
 		----------
 		x : array_like
 		    The input array.
-		type : {1, 2, 3}, optional
+		type : {1, 2, 3, 4}, optional
 		    Type of the DST (see Notes). Default type is 2.
 		n : int, optional
 		    Length of the transform.  If ``n < x.shape[axis]``, `x` is
@@ -514,17 +592,20 @@ package scipy.fftpack.realtransforms;
 		----------
 		x : array_like
 		    The input array.
-		type : {1, 2, 3}, optional
-		    Type of the DCT (see Notes). Default type is 2.
-		shape : tuple of ints, optional
+		type : {1, 2, 3, 4}, optional
+		    Type of the DST (see Notes). Default type is 2.
+		shape : int or array_like of ints or None, optional
 		    The shape of the result.  If both `shape` and `axes` (see below) are
 		    None, `shape` is ``x.shape``; if `shape` is None but `axes` is
 		    not None, then `shape` is ``scipy.take(x.shape, axes, axis=0)``.
 		    If ``shape[i] > x.shape[i]``, the i-th dimension is padded with zeros.
 		    If ``shape[i] < x.shape[i]``, the i-th dimension is truncated to
 		    length ``shape[i]``.
-		axes : tuple or None, optional
-		    Axes along which the IDCT is computed; the default is over all axes.
+		    If any element of `shape` is -1, the size of the corresponding
+		    dimension of `x` is used.
+		axes : int or array_like of ints or None, optional
+		    Axes along which the IDST is computed.
+		    The default is over all axes.
 		norm : {None, 'ortho'}, optional
 		    Normalization mode (see Notes). Default is None.
 		overwrite_x : bool, optional
@@ -537,7 +618,7 @@ package scipy.fftpack.realtransforms;
 		
 		See Also
 		--------
-		dctn : multidimensional DST
+		dstn : multidimensional DST
 		
 		Notes
 		-----

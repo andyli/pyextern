@@ -41,11 +41,11 @@ package pandas.io.formats.format;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(frame:Dynamic, ?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?justify:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?line_width:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?show_dimensions:Dynamic, ?decimal:Dynamic, ?table_id:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(frame:Dynamic, ?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?justify:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?line_width:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?show_dimensions:Dynamic, ?decimal:Dynamic, ?table_id:Dynamic, ?render_links:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(frame:Dynamic, ?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?justify:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?line_width:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?show_dimensions:Dynamic, ?decimal:Dynamic, ?table_id:Dynamic, ?kwds:python.KwArgs<Dynamic>):Void;
+	public function new(frame:Dynamic, ?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?justify:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?line_width:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?show_dimensions:Dynamic, ?decimal:Dynamic, ?table_id:Dynamic, ?render_links:Dynamic, ?kwds:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -127,7 +127,9 @@ package pandas.io.formats.format;
 	public var has_index_names : Dynamic;
 	static public var is_truncated : Dynamic;
 	public var should_show_dimensions : Dynamic;
+	public var show_col_idx_names : Dynamic;
 	static public var show_dimensions : Dynamic;
+	public var show_row_idx_names : Dynamic;
 	/**
 		Render a DataFrame to a html table.
 		

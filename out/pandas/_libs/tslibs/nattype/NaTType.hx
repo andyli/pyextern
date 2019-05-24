@@ -41,6 +41,9 @@ package pandas._libs.tslibs.nattype;
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
+	/**
+		Return hash(self).
+	**/
 	public function __hash__():Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
@@ -58,12 +61,14 @@ package pandas._libs.tslibs.nattype;
 		overridden to extend subclasses.
 	**/
 	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		int(self)
+	**/
 	public function __int__():Dynamic;
 	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
-	public function __long__():Dynamic;
 	/**
 		Return self<value.
 	**/
@@ -94,6 +99,9 @@ package pandas._libs.tslibs.nattype;
 	public function __reduce__():Dynamic;
 	public function __reduce_cython__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __reduce_ex__(protocol:Dynamic):Dynamic;
+	/**
+		Return repr(self).
+	**/
 	public function __repr__():Dynamic;
 	public function __rfloordiv__(other:Dynamic):Dynamic;
 	public function __rmul__(other:Dynamic):Dynamic;
@@ -112,6 +120,9 @@ package pandas._libs.tslibs.nattype;
 		size of object in memory, in bytes
 	**/
 	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return str(self).
+	**/
 	public function __str__():Dynamic;
 	/**
 		Return self-value.
@@ -160,6 +171,32 @@ package pandas._libs.tslibs.nattype;
 		Parameters
 		----------
 		freq : a freq string indicating the ceiling resolution
+		ambiguous : bool, 'NaT', default 'raise'
+		    - bool contains flags to determine if time is dst or not (note
+		      that this flag is only applicable for ambiguous fall dst dates)
+		    - 'NaT' will return NaT for an ambiguous time
+		    - 'raise' will raise an AmbiguousTimeError for an ambiguous time
+		
+		    .. versionadded:: 0.24.0
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
 	**/
 	static public function ceil(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -207,6 +244,32 @@ package pandas._libs.tslibs.nattype;
 		Parameters
 		----------
 		freq : a freq string indicating the flooring resolution
+		ambiguous : bool, 'NaT', default 'raise'
+		    - bool contains flags to determine if time is dst or not (note
+		      that this flag is only applicable for ambiguous fall dst dates)
+		    - 'NaT' will return NaT for an ambiguous time
+		    - 'raise' will raise an AmbiguousTimeError for an ambiguous time
+		
+		    .. versionadded:: 0.24.0
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
 	**/
 	static public function floor(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var fold : Dynamic;
@@ -245,7 +308,12 @@ package pandas._libs.tslibs.nattype;
 		Return a 3-tuple containing ISO year, week number, and weekday.
 	**/
 	static public function isocalendar(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function isoformat(?sep:Dynamic):Dynamic;
+	/**
+		[sep] -> string in ISO 8601 format, YYYY-MM-DDT[HH[:MM[:SS[.mmm[uuu]]]]][+HH:MM].
+		sep is used to separate the year from the time, and defaults to 'T'.
+		timespec specifies what components of the time to include (allowed values are 'auto', 'hours', 'minutes', 'seconds', 'milliseconds', and 'microseconds').
+	**/
+	public function isoformat(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return the day of the week represented by the date.
 		Monday == 1 ... Sunday == 7
@@ -301,7 +369,7 @@ package pandas._libs.tslibs.nattype;
 		minute : int, optional
 		second : int, optional
 		microsecond : int, optional
-		nanosecond: int, optional
+		nanosecond : int, optional
 		tzinfo : tz-convertible, optional
 		fold : int, optional, default is 0
 		    added in 3.6, NotImplemented
@@ -315,13 +383,35 @@ package pandas._libs.tslibs.nattype;
 	/**
 		Round the Timestamp to the specified resolution
 		
-		Returns
-		-------
-		a new Timestamp rounded to the given resolution of `freq`
-		
 		Parameters
 		----------
 		freq : a freq string indicating the rounding resolution
+		ambiguous : bool, 'NaT', default 'raise'
+		    - bool contains flags to determine if time is dst or not (note
+		      that this flag is only applicable for ambiguous fall dst dates)
+		    - 'NaT' will return NaT for an ambiguous time
+		    - 'raise' will raise an AmbiguousTimeError for an ambiguous time
+		
+		    .. versionadded:: 0.24.0
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
+		
+		Returns
+		-------
+		a new Timestamp rounded to the given resolution of `freq`
 		
 		Raises
 		------
@@ -384,7 +474,7 @@ package pandas._libs.tslibs.nattype;
 	/**
 		Total duration of timedelta in seconds (to ns precision)
 	**/
-	public function total_seconds():Dynamic;
+	public function total_seconds(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Convert tz-aware Timestamp to another time zone.
 		
@@ -415,19 +505,42 @@ package pandas._libs.tslibs.nattype;
 		    None will remove timezone holding local time.
 		
 		ambiguous : bool, 'NaT', default 'raise'
+		    When clocks moved backward due to DST, ambiguous times may arise.
+		    For example in Central European Time (UTC+01), when going from
+		    03:00 DST to 02:00 non-DST, 02:30:00 local time occurs both at
+		    00:30:00 UTC and at 01:30:00 UTC. In such a situation, the
+		    `ambiguous` parameter dictates how ambiguous times should be
+		    handled.
+		
 		    - bool contains flags to determine if time is dst or not (note
 		      that this flag is only applicable for ambiguous fall dst dates)
 		    - 'NaT' will return NaT for an ambiguous time
 		    - 'raise' will raise an AmbiguousTimeError for an ambiguous time
 		
-		errors : 'raise', 'coerce', default 'raise'
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
+		
+		errors : 'raise', 'coerce', default None
 		    - 'raise' will raise a NonExistentTimeError if a timestamp is not
 		       valid in the specified timezone (e.g. due to a transition from
-		       or to DST time)
+		       or to DST time). Use ``nonexistent='raise'`` instead.
 		    - 'coerce' will return NaT if the timestamp can not be converted
-		      into the specified timezone
+		      into the specified timezone. Use ``nonexistent='NaT'`` instead.
 		
-		      .. versionadded:: 0.19.0
+		      .. deprecated:: 0.24.0
 		
 		Returns
 		-------

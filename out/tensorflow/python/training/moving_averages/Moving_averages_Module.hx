@@ -49,9 +49,8 @@ package tensorflow.python.training.moving_averages;
 		The moving average of 'variable' updated with 'value' is:
 		  variable * decay + value * (1 - decay)
 		
-		The returned Operation sets 'variable' to the newly computed moving average.
-		
-		The new value of 'variable' can be set with the 'AssignSub' op as:
+		The returned Operation sets 'variable' to the newly computed moving average,
+		by performing this subtraction:
 		   variable -= (1 - decay) * (variable - value)
 		
 		Since variables that are initialized to a `0` value will be `0` biased,
@@ -63,7 +62,7 @@ package tensorflow.python.training.moving_averages;
 		
 		The names of the debias shadow variables, by default, include both the scope
 		they were created in and the scope of the variables they debias. They are also
-		given a uniqifying-suffix.
+		given a uniquifying-suffix.
 		
 		E.g.:
 		
@@ -71,8 +70,8 @@ package tensorflow.python.training.moving_averages;
 		  with tf.variable_scope('scope1'):
 		    with tf.variable_scope('scope2'):
 		      var = tf.get_variable('foo')
-		      tf.assign_moving_average(var, 0.0, 1.0)
-		      tf.assign_moving_average(var, 0.0, 0.9)
+		      update_1 = tf.assign_moving_average(var, 0.0, 1.0)
+		      update_2 = tf.assign_moving_average(var, 0.0, 0.9)
 		
 		  # var.name: 'scope1/scope2/foo'
 		  # shadow var names: 'scope1/scope2/scope1/scope2/foo/biased'
@@ -89,8 +88,7 @@ package tensorflow.python.training.moving_averages;
 		  name: Optional name of the returned operation.
 		
 		Returns:
-		  A reference to the input 'variable' tensor with the newly computed
-		  moving average.
+		  A tensor which if evaluated will compute and return the new moving average.
 	**/
 	static public function assign_moving_average(variable:Dynamic, value:Dynamic, decay:Dynamic, ?zero_debias:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;

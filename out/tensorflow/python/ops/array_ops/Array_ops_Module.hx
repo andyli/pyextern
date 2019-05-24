@@ -15,6 +15,8 @@ package tensorflow.python.ops.array_ops;
 		Gradient for FakeQuantWithMinMaxVarsPerChannel op.
 	**/
 	static public function _FakeQuantWithMinMaxVarsPerChannelGradient(op:Dynamic, grad:Dynamic):Dynamic;
+	static public var _SLICE_TYPE_ERROR : Dynamic;
+	static public var _SUPPORTED_SLICE_DTYPES : Dynamic;
 	/**
 		Creates a slice helper object given a variable.
 		
@@ -53,7 +55,8 @@ package tensorflow.python.ops.array_ops;
 		
 		Raises:
 		  ValueError: If a slice range is negative size.
-		  TypeError: If the slice indices aren't int, slice, or Ellipsis.
+		  TypeError: TypeError: If the slice indices aren't int, slice,
+		    ellipsis, tf.newaxis or int32/int64 tensors.
 	**/
 	static public function _SliceHelperVar(_var:Dynamic, slice_spec:Dynamic):Dynamic;
 	/**
@@ -89,6 +92,10 @@ package tensorflow.python.ops.array_ops;
 	**/
 	static public function _autopacking_helper(list_or_tuple:Dynamic, dtype:Dynamic, name:Dynamic):Dynamic;
 	static public function _cast_nested_seqs_to_dtype(dtype:Dynamic):Dynamic;
+	/**
+		Check if a given value is a valid index into a tensor.
+	**/
+	static public function _check_index(idx:Dynamic):Dynamic;
 	/**
 		Computes the size of a single strided slice dimension.
 	**/
@@ -163,7 +170,8 @@ package tensorflow.python.ops.array_ops;
 		
 		Raises:
 		  ValueError: If a slice range is negative size.
-		  TypeError: If the slice indices aren't int, slice, or Ellipsis.
+		  TypeError: If the slice indices aren't int, slice, ellipsis,
+		    tf.newaxis or scalar int32/int64 tensors.
 	**/
 	static public function _slice_helper(tensor:Dynamic, slice_spec:Dynamic, ?_var:Dynamic):Dynamic;
 	static public var _tf_api_constants : Dynamic;
@@ -440,6 +448,142 @@ package tensorflow.python.ops.array_ops;
 	**/
 	static public function batch_to_space_nd_eager_fallback(input:Dynamic, block_shape:Dynamic, crops:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		BatchToSpace for N-D tensors of type T.
+		
+		This operation reshapes the "batch" dimension 0 into `M + 1` dimensions of
+		shape `block_shape + [batch]`, interleaves these blocks back into the grid
+		defined by the spatial dimensions `[1, ..., M]`, to obtain a result with the
+		same rank as the input.  The spatial dimensions of this intermediate result
+		are then optionally cropped according to `crops` to produce the output.  This
+		is the reverse of SpaceToBatch.  See below for a precise description.
+		
+		Args:
+		  input: A `Tensor`.
+		    N-D with shape `input_shape = [batch] + spatial_shape + remaining_shape`,
+		    where spatial_shape has M dimensions.
+		  block_shape: A `Tensor`. Must be one of the following types:
+		    `int32`, `int64`. 1-D with shape `[M]`, all values must be >= 1.
+		    For backwards compatibility with TF 1.0, this parameter may be an int, in
+		    which case it is converted to
+		    `numpy.array([block_shape, block_shape], dtype=numpy.int64)`.
+		  crops: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    2-D with shape `[M, 2]`, all values must be >= 0.
+		      `crops[i] = [crop_start, crop_end]` specifies the amount to crop from
+		      input dimension `i + 1`, which corresponds to spatial dimension `i`.  It
+		      is required that
+		      `crop_start[i] + crop_end[i] <= block_shape[i] * input_shape[i + 1]`.
+		
+		    This operation is equivalent to the following steps:
+		
+		    1. Reshape `input` to `reshaped` of shape:
+		         [block_shape[0], ..., block_shape[M-1],
+		          batch / prod(block_shape),
+		          input_shape[1], ..., input_shape[N-1]]
+		
+		    2. Permute dimensions of `reshaped` to produce `permuted` of shape
+		         [batch / prod(block_shape),
+		
+		          input_shape[1], block_shape[0],
+		          ...,
+		          input_shape[M], block_shape[M-1],
+		
+		          input_shape[M+1], ..., input_shape[N-1]]
+		
+		    3. Reshape `permuted` to produce `reshaped_permuted` of shape
+		         [batch / prod(block_shape),
+		
+		          input_shape[1] * block_shape[0],
+		          ...,
+		          input_shape[M] * block_shape[M-1],
+		
+		          input_shape[M+1],
+		          ...,
+		          input_shape[N-1]]
+		
+		    4. Crop the start and end of dimensions `[1, ..., M]` of
+		       `reshaped_permuted` according to `crops` to produce the
+		       output of shape:
+		         [batch / prod(block_shape),
+		
+		          input_shape[1] * block_shape[0] - crops[0,0] - crops[0,1],
+		          ...,
+		          input_shape[M] * block_shape[M-1] - crops[M-1,0] - crops[M-1,1],
+		
+		          input_shape[M+1], ..., input_shape[N-1]]
+		
+		    Some examples:
+		
+		    (1) For the following input of shape `[4, 1, 1, 1]`,
+		        `block_shape = [2, 2]`, and `crops = [[0, 0], [0, 0]]`:
+		
+		    ```
+		    [[[[1]]], [[[2]]], [[[3]]], [[[4]]]]
+		    ```
+		
+		    The output tensor has shape `[1, 2, 2, 1]` and value:
+		
+		    ```
+		    x = [[[[1], [2]], [[3], [4]]]]
+		    ```
+		
+		    (2) For the following input of shape `[4, 1, 1, 3]`,
+		        `block_shape = [2, 2]`, and `crops = [[0, 0], [0, 0]]`:
+		
+		    ```
+		    [[[1, 2, 3]], [[4, 5, 6]], [[7, 8, 9]], [[10, 11, 12]]]
+		    ```
+		
+		    The output tensor has shape `[1, 2, 2, 3]` and value:
+		
+		    ```
+		    x = [[[[1, 2, 3], [4, 5, 6]],
+		          [[7, 8, 9], [10, 11, 12]]]]
+		    ```
+		
+		    (3) For the following input of shape `[4, 2, 2, 1]`,
+		        `block_shape = [2, 2]`, and `crops = [[0, 0], [0, 0]]`:
+		
+		    ```
+		    x = [[[[1], [3]], [[9], [11]]],
+		         [[[2], [4]], [[10], [12]]],
+		         [[[5], [7]], [[13], [15]]],
+		         [[[6], [8]], [[14], [16]]]]
+		    ```
+		
+		    The output tensor has shape `[1, 4, 4, 1]` and value:
+		
+		    ```
+		    x = [[[1],   [2],  [3],  [4]],
+		         [[5],   [6],  [7],  [8]],
+		         [[9],  [10], [11],  [12]],
+		         [[13], [14], [15],  [16]]]
+		    ```
+		
+		    (4) For the following input of shape `[8, 1, 3, 1]`,
+		        `block_shape = [2, 2]`, and `crops = [[0, 0], [2, 0]]`:
+		
+		    ```
+		    x = [[[[0], [1], [3]]], [[[0], [9], [11]]],
+		         [[[0], [2], [4]]], [[[0], [10], [12]]],
+		         [[[0], [5], [7]]], [[[0], [13], [15]]],
+		         [[[0], [6], [8]]], [[[0], [14], [16]]]]
+		    ```
+		
+		    The output tensor has shape `[2, 2, 4, 1]` and value:
+		
+		    ```
+		    x = [[[[1],   [2],  [3],  [4]],
+		          [[5],   [6],  [7],  [8]]],
+		         [[[9],  [10], [11],  [12]],
+		          [[13], [14], [15],  [16]]]]
+		    ```
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function batch_to_space_v2(input:Dynamic, block_shape:Dynamic, crops:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Bitcasts a tensor from one type to another without copying data.
 		
 		Given a tensor `input`, this operation returns a tensor that has the same buffer
@@ -513,6 +657,51 @@ package tensorflow.python.ops.array_ops;
 	**/
 	static public function boolean_mask(tensor:Dynamic, mask:Dynamic, ?name:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
+		Apply boolean mask to tensor.
+		
+		Numpy equivalent is `tensor[mask]`.
+		
+		```python
+		# 1-D example
+		tensor = [0, 1, 2, 3]
+		mask = np.array([True, False, True, False])
+		boolean_mask(tensor, mask)  # [0, 2]
+		```
+		
+		In general, `0 < dim(mask) = K <= dim(tensor)`, and `mask`'s shape must match
+		the first K dimensions of `tensor`'s shape.  We then have:
+		  `boolean_mask(tensor, mask)[i, j1,...,jd] = tensor[i1,...,iK,j1,...,jd]`
+		where `(i1,...,iK)` is the ith `True` entry of `mask` (row-major order).
+		The `axis` could be used with `mask` to indicate the axis to mask from.
+		In that case, `axis + dim(mask) <= dim(tensor)` and `mask`'s shape must match
+		the first `axis + dim(mask)` dimensions of `tensor`'s shape.
+		
+		Args:
+		  tensor:  N-D tensor.
+		  mask:  K-D boolean tensor, K <= N and K must be known statically.
+		  axis:  A 0-D int Tensor representing the axis in `tensor` to mask from. By
+		    default, axis is 0 which will mask from the first dimension. Otherwise K +
+		    axis <= N.
+		  name:  A name for this operation (optional).
+		
+		Returns:
+		  (N-K+1)-dimensional tensor populated by entries in `tensor` corresponding
+		  to `True` values in `mask`.
+		
+		Raises:
+		  ValueError:  If shapes do not conform.
+		
+		Examples:
+		
+		```python
+		# 2-D example
+		tensor = [[1, 2], [3, 4], [5, 6]]
+		mask = np.array([True, False, True])
+		boolean_mask(tensor, mask)  # [[1, 2], [5, 6]]
+		```
+	**/
+	static public function boolean_mask_v2(tensor:Dynamic, mask:Dynamic, ?axis:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Return the shape of s0 op s1 with broadcast.
 		
 		Given `s0` and `s1`, tensors that represent shapes, compute `r0`, the
@@ -533,7 +722,18 @@ package tensorflow.python.ops.array_ops;
 	**/
 	static public function broadcast_args_eager_fallback(s0:Dynamic, s1:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Returns the broadcasted dynamic shape between `shape_x` and `shape_y`.
+		Computes the shape of a broadcast given symbolic shapes.
+		
+		When shape_x and shape_y are Tensors representing shapes (i.e. the result of
+		calling tf.shape on another Tensor) this computes a Tensor which is the shape
+		of the result of a broadcasting op applied in tensors of shapes shape_x and
+		shape_y.
+		
+		For example, if shape_x is [1, 2, 3] and shape_y is [5, 1, 3], the result is a
+		Tensor whose value is [5, 2, 3].
+		
+		This is useful when validating the result of a broadcasting operation when the
+		tensors do not have statically known shapes.
 		
 		Args:
 		  shape_x: A rank 1 integer `Tensor`, representing the shape of x.
@@ -566,7 +766,17 @@ package tensorflow.python.ops.array_ops;
 	**/
 	static public function broadcast_gradient_args_eager_fallback(s0:Dynamic, s1:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Returns the broadcasted static shape between `shape_x` and `shape_y`.
+		Computes the shape of a broadcast given known shapes.
+		
+		When shape_x and shape_y are fully known TensorShapes this computes a
+		TensorShape which is the shape of the result of a broadcasting op applied in
+		tensors of shapes shape_x and shape_y.
+		
+		For example, if shape_x is [1, 2, 3] and shape_y is [5, 1, 3], the result is a
+		TensorShape whose value is [5, 2, 3].
+		
+		This is useful when validating the result of a broadcasting operation when the
+		tensors have statically known shapes.
 		
 		Args:
 		  shape_x: A `TensorShape`
@@ -833,7 +1043,11 @@ package tensorflow.python.ops.array_ops;
 		
 		```python
 		# Constant 1-D Tensor populated with value list.
-		tensor = tf.constant([1, 2, 3, 4, 5, 6, 7]) => [1 2 3 4 5 6 7]
+		tensor = tf.constant([1, 2, 3, 4, 5, 6]) => [1 2 3 4 5 6]
+		
+		# Constant 1-D Tensor populated with value list.
+		tensor = tf.constant([1, 2, 3, 4, 5, 6], shape=(2,3))
+		     => [[1 2 3], [4 5 6]]
 		
 		# Constant 2-D tensor populated with scalar value -1.
 		tensor = tf.constant(-1.0, shape=[2, 3]) => [[-1. -1. -1.]
@@ -860,15 +1074,13 @@ package tensorflow.python.ops.array_ops;
 		
 		  name:           Optional name for the tensor.
 		
-		  verify_shape:   Boolean that enables verification of a shape of values.
-		
 		Returns:
 		  A Constant Tensor.
 		
 		Raises:
 		  TypeError: if shape is incorrectly specified or unsupported.
 	**/
-	static public function constant(value:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?name:Dynamic, ?verify_shape:Dynamic):Dynamic;
+	static public function constant(value:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Identity op for gradient debugging.
 		
@@ -904,6 +1116,7 @@ package tensorflow.python.ops.array_ops;
 		  A mutable `Tensor`. Has the same type as `input`.
 	**/
 	static public function debug_gradient_ref_identity(input:Dynamic, ?name:Dynamic):Dynamic;
+	static public function debug_gradient_ref_identity_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Makes a copy of `x`.
 		
@@ -1047,6 +1260,110 @@ package tensorflow.python.ops.array_ops;
 	**/
 	static public function depth_to_space_eager_fallback(input:Dynamic, block_size:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		DepthToSpace for tensors of type T.
+		
+		Rearranges data from depth into blocks of spatial data.
+		This is the reverse transformation of SpaceToDepth. More specifically,
+		this op outputs a copy of the input tensor where values from the `depth`
+		dimension are moved in spatial blocks to the `height` and `width` dimensions.
+		The attr `block_size` indicates the input block size and how the data is moved.
+		
+		  * Chunks of data of size `block_size * block_size` from depth are rearranged
+		    into non-overlapping blocks of size `block_size x block_size`
+		  * The width the output tensor is `input_depth * block_size`, whereas the
+		    height is `input_height * block_size`.
+		  * The Y, X coordinates within each block of the output image are determined
+		    by the high order component of the input channel index.
+		  * The depth of the input tensor must be divisible by
+		    `block_size * block_size`.
+		
+		The `data_format` attr specifies the layout of the input and output tensors
+		with the following options:
+		  "NHWC": `[ batch, height, width, channels ]`
+		  "NCHW": `[ batch, channels, height, width ]`
+		  "NCHW_VECT_C":
+		      `qint8 [ batch, channels / 4, height, width, 4 ]`
+		
+		It is useful to consider the operation as transforming a 6-D Tensor.
+		e.g. for data_format = NHWC,
+		     Each element in the input tensor can be specified via 6 coordinates,
+		     ordered by decreasing memory layout significance as:
+		     n,iY,iX,bY,bX,oC  (where n=batch index, iX, iY means X or Y coordinates
+		                        within the input image, bX, bY means coordinates
+		                        within the output block, oC means output channels).
+		     The output would be the input transposed to the following layout:
+		     n,iY,bY,iX,bX,oC
+		
+		This operation is useful for resizing the activations between convolutions
+		(but keeping all data), e.g. instead of pooling. It is also useful for training
+		purely convolutional models.
+		
+		For example, given an input of shape `[1, 1, 1, 4]`, data_format = "NHWC" and
+		block_size = 2:
+		
+		```
+		x = [[[[1, 2, 3, 4]]]]
+		
+		```
+		
+		This operation will output a tensor of shape `[1, 2, 2, 1]`:
+		
+		```
+		   [[[[1], [2]],
+		     [[3], [4]]]]
+		```
+		
+		Here, the input has a batch of 1 and each batch element has shape `[1, 1, 4]`,
+		the corresponding output will have 2x2 elements and will have a depth of
+		1 channel (1 = `4 / (block_size * block_size)`).
+		The output element shape is `[2, 2, 1]`.
+		
+		For an input tensor with larger depth, here of shape `[1, 1, 1, 12]`, e.g.
+		
+		```
+		x = [[[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]]]]
+		```
+		
+		This operation, for block size of 2, will return the following tensor of shape
+		`[1, 2, 2, 3]`
+		
+		```
+		   [[[[1, 2, 3], [4, 5, 6]],
+		     [[7, 8, 9], [10, 11, 12]]]]
+		
+		```
+		
+		Similarly, for the following input of shape `[1 2 2 4]`, and a block size of 2:
+		
+		```
+		x =  [[[[1, 2, 3, 4],
+		       [5, 6, 7, 8]],
+		      [[9, 10, 11, 12],
+		       [13, 14, 15, 16]]]]
+		```
+		
+		the operator will return the following tensor of shape `[1 4 4 1]`:
+		
+		```
+		x = [[[ [1],   [2],  [5],  [6]],
+		      [ [3],   [4],  [7],  [8]],
+		      [ [9],  [10], [13],  [14]],
+		      [ [11], [12], [15],  [16]]]]
+		
+		```
+		
+		Args:
+		  input: A `Tensor`.
+		  block_size: An `int` that is `>= 2`.
+		    The size of the spatial block, same as in Space2Depth.
+		  data_format: An optional `string` from: `"NHWC", "NCHW", "NCHW_VECT_C"`. Defaults to `"NHWC"`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function depth_to_space_v2(input:Dynamic, block_size:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Dequantize the 'input' tensor into a float Tensor.
 		
 		[min_range, max_range] are scalar floats that specify the range for
@@ -1056,7 +1373,7 @@ package tensorflow.python.ops.array_ops;
 		In 'MIN_COMBINED' mode, each value of the tensor will undergo the following:
 		
 		```
-		if T == qint8, in[i] += (range(T) + 1)/ 2.0
+		if T == qint8: in[i] += (range(T) + 1)/ 2.0
 		out[i] = min_range + (in[i]* (max_range - min_range) / range(T))
 		```
 		here `range(T) = numeric_limits<T>::max() - numeric_limits<T>::min()`
@@ -1325,7 +1642,7 @@ package tensorflow.python.ops.array_ops;
 	/**
 		Inserts a dimension of 1 into a tensor's shape. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(dim)`. They will be removed in a future version.
 		Instructions for updating:
 		Use the `axis` argument instead
 		
@@ -1365,7 +1682,7 @@ package tensorflow.python.ops.array_ops;
 		  axis: 0-D (scalar). Specifies the dimension index at which to
 		    expand the shape of `input`. Must be in the range
 		    `[-rank(input) - 1, rank(input)]`.
-		  name: The name of the output `Tensor`.
+		  name: The name of the output `Tensor` (optional).
 		  dim: 0-D (scalar). Equivalent to `axis`, to be deprecated.
 		
 		Returns:
@@ -1373,7 +1690,7 @@ package tensorflow.python.ops.array_ops;
 		  dimension of size 1 added.
 		
 		Raises:
-		  ValueError: if both `dim` and `axis` are specified.
+		  ValueError: if either both or neither of `dim` and `axis` are specified.
 	**/
 	static public function expand_dims(input:Dynamic, ?axis:Dynamic, ?name:Dynamic, ?dim:Dynamic):Dynamic;
 	/**
@@ -1381,6 +1698,52 @@ package tensorflow.python.ops.array_ops;
 		This is for function expand_dims
 	**/
 	static public function expand_dims_eager_fallback(input:Dynamic, axis:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Inserts a dimension of 1 into a tensor's shape.
+		
+		Given a tensor `input`, this operation inserts a dimension of 1 at the
+		dimension index `axis` of `input`'s shape. The dimension index `axis` starts
+		at zero; if you specify a negative number for `axis` it is counted backward
+		from the end.
+		
+		This operation is useful if you want to add a batch dimension to a single
+		element. For example, if you have a single image of shape `[height, width,
+		channels]`, you can make it a batch of 1 image with `expand_dims(image, 0)`,
+		which will make the shape `[1, height, width, channels]`.
+		
+		Other examples:
+		
+		```python
+		# 't' is a tensor of shape [2]
+		tf.shape(tf.expand_dims(t, 0))  # [1, 2]
+		tf.shape(tf.expand_dims(t, 1))  # [2, 1]
+		tf.shape(tf.expand_dims(t, -1))  # [2, 1]
+		
+		# 't2' is a tensor of shape [2, 3, 5]
+		tf.shape(tf.expand_dims(t2, 0))  # [1, 2, 3, 5]
+		tf.shape(tf.expand_dims(t2, 2))  # [2, 3, 1, 5]
+		tf.shape(tf.expand_dims(t2, 3))  # [2, 3, 5, 1]
+		```
+		
+		This operation requires that:
+		
+		`-1-input.dims() <= dim <= input.dims()`
+		
+		This operation is related to `squeeze()`, which removes dimensions of
+		size 1.
+		
+		Args:
+		  input: A `Tensor`.
+		  axis: 0-D (scalar). Specifies the dimension index at which to
+		    expand the shape of `input`. Must be in the range
+		    `[-rank(input) - 1, rank(input)]`.
+		  name: The name of the output `Tensor` (optional).
+		
+		Returns:
+		  A `Tensor` with the same data as `input`, but its shape has an additional
+		  dimension of size 1 added.
+	**/
+	static public function expand_dims_v2(input:Dynamic, axis:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Extract `patches` from `images` and put them in the "depth" output dimension.
 		
@@ -1416,36 +1779,66 @@ package tensorflow.python.ops.array_ops;
 	**/
 	static public function extract_image_patches(images:Dynamic, ksizes:Dynamic, strides:Dynamic, rates:Dynamic, padding:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Deprecation decorator.
+	**/
+	static public function extract_image_patches_deprecation(func:Dynamic):Dynamic;
+	/**
 		This is the slowpath function for Eager mode.
 		This is for function extract_image_patches
 	**/
 	static public function extract_image_patches_eager_fallback(images:Dynamic, ksizes:Dynamic, strides:Dynamic, rates:Dynamic, padding:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Extract `patches` from `input` and put them in the "depth" output
-		dimension. 3D extension of `extract_image_patches`.
+		Extract `patches` from `images` and put them in the \"depth\" output dimension.
 		
-		  Args:
-		    input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
-		      5-D Tensor with shape `[batch, in_planes, in_rows, in_cols, depth]`.
-		    ksizes: A list of `ints` that has length `>= 5`.
-		      The size of the sliding window for each dimension of `input`.
-		    strides: A list of `ints` that has length `>= 5`.
-		      1-D of length 5. How far the centers of two consecutive patches are in
-		      `input`. Must be: `[1, stride_planes, stride_rows, stride_cols, 1]`.
-		    padding: A `string` from: `"SAME", "VALID"`.
-		      The type of padding algorithm to use.
+		Args:
+		  images: A 4-D Tensor with shape `[batch, in_rows, in_cols, depth]
+		  sizes: The size of the sliding window for each dimension of `images`.
+		  strides: A 1-D Tensor of length 4. How far the centers of two consecutive
+		    patches are in the images. Must be: `[1, stride_rows, stride_cols, 1]`.
+		  rates: A 1-D Tensor of length 4. Must be: `[1, rate_rows, rate_cols, 1]`.
+		    This is the input stride, specifying how far two consecutive patch samples
+		    are in the input. Equivalent to extracting patches with `patch_sizes_eff =
+		    patch_sizes + (patch_sizes - 1) * (rates - 1)`, followed by subsampling
+		    them spatially by a factor of `rates`. This is equivalent to `rate` in
+		    dilated (a.k.a. Atrous) convolutions.
+		  padding: The type of padding algorithm to use.
+		    We specify the size-related attributes as: ```python ksizes = [1,
+		      ksize_rows, ksize_cols, 1] strides = [1, strides_rows, strides_cols, 1]
+		      rates = [1, rates_rows, rates_cols, 1]
+		  name: A name for the operation (optional).
 		
-		      We specify the size-related attributes as:
+		Returns:
+		  A 4-D Tensor. Has the same type as `images`, and with shape `[batch,
+		  out_rows, out_cols, ksize_rows * ksize_cols * depth]` containing image
+		  patches with size `ksize_rows x ksize_cols x depth` vectorized in the
+		  \"depth\" dimension. Note `out_rows` and `out_cols` are the dimensions of
+		  the output patches.
+	**/
+	static public function extract_image_patches_v2(images:Dynamic, sizes:Dynamic, strides:Dynamic, rates:Dynamic, padding:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Extract `patches` from `input` and put them in the "depth" output dimension. 3D extension of `extract_image_patches`.
 		
-		      ```python
-		            ksizes = [1, ksize_planes, ksize_rows, ksize_cols, 1]
-		            strides = [1, stride_planes, strides_rows, strides_cols, 1]
-		      ```
-		    name: A name for the operation (optional).
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
+		    5-D Tensor with shape `[batch, in_planes, in_rows, in_cols, depth]`.
+		  ksizes: A list of `ints` that has length `>= 5`.
+		    The size of the sliding window for each dimension of `input`.
+		  strides: A list of `ints` that has length `>= 5`.
+		    1-D of length 5. How far the centers of two consecutive patches are in
+		    `input`. Must be: `[1, stride_planes, stride_rows, stride_cols, 1]`.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
 		
-		  Returns:
-		    A `Tensor`. Has the same type as `input`.
-		  
+		    We specify the size-related attributes as:
+		
+		    ```python
+		          ksizes = [1, ksize_planes, ksize_rows, ksize_cols, 1]
+		          strides = [1, stride_planes, strides_rows, strides_cols, 1]
+		    ```
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function extract_volume_patches(input:Dynamic, ksizes:Dynamic, strides:Dynamic, padding:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -1890,7 +2283,7 @@ package tensorflow.python.ops.array_ops;
 		Returns:
 		  A `Tensor`. Has the same type as `params`.
 	**/
-	static public function gather_v2(params:Dynamic, indices:Dynamic, axis:Dynamic, ?name:Dynamic):Dynamic;
+	static public function gather_v2(params:Dynamic, indices:Dynamic, ?validate_indices:Dynamic, ?axis:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function gather_v2
@@ -2169,7 +2562,7 @@ package tensorflow.python.ops.array_ops;
 		  
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		This op will be removed after the deprecation date. Please switch to tf.setdiff1d().
 	**/
@@ -2736,6 +3129,35 @@ package tensorflow.python.ops.array_ops;
 	**/
 	static public function ones_like_eager_fallback(x:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		Internal implementation for the v1/v2 ones_like API calls.
+	**/
+	static public function ones_like_impl(tensor:Dynamic, dtype:Dynamic, name:Dynamic, ?optimize:Dynamic):Dynamic;
+	/**
+		Creates a tensor with all elements set to zero.
+		
+		Given a single tensor (`tensor`), this operation returns a tensor of the
+		same type and shape as `tensor` with all elements set to zero. Optionally,
+		you can use `dtype` to specify a new type for the returned tensor.
+		
+		For example:
+		
+		```python
+		tensor = tf.constant([[1, 2, 3], [4, 5, 6]])
+		tf.ones_like(tensor)  # [[1, 1, 1], [1, 1, 1]]
+		```
+		
+		Args:
+		  input: A `Tensor`.
+		  dtype: A type for the returned `Tensor`. Must be `float16`, `float32`,
+		    `float64`, `int8`, `uint8`, `int16`, `uint16`, `int32`, `int64`,
+		    `complex64`, `complex128`, `bool` or `string`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` with all elements set to zero.
+	**/
+	static public function ones_like_v2(input:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Packs a list of `N` rank-`R` tensors into one rank-`(R+1)` tensor.
 		
 		Packs the `N` tensors in `values` into a tensor with rank one higher than each
@@ -2838,41 +3260,58 @@ package tensorflow.python.ops.array_ops;
 	/**
 		Pads a tensor.
 		
-		This operation pads `input` according to the `paddings` and `constant_values`
-		you specify. `paddings` is an integer tensor with shape `[Dn, 2]`, where n is
-		the rank of `input`. For each dimension D of `input`, `paddings[D, 0]` indicates
-		how many padding values to add before the contents of `input` in that dimension,
-		and `paddings[D, 1]` indicates how many padding values to add after the contents
-		of `input` in that dimension. `constant_values` is a scalar tensor of the same
-		type as `input` that indicates the value to use for padding `input`.
+		This operation pads a `tensor` according to the `paddings` you specify.
+		`paddings` is an integer tensor with shape `[n, 2]`, where n is the rank of
+		`tensor`. For each dimension D of `input`, `paddings[D, 0]` indicates how
+		many values to add before the contents of `tensor` in that dimension, and
+		`paddings[D, 1]` indicates how many values to add after the contents of
+		`tensor` in that dimension. If `mode` is "REFLECT" then both `paddings[D, 0]`
+		and `paddings[D, 1]` must be no greater than `tensor.dim_size(D) - 1`. If
+		`mode` is "SYMMETRIC" then both `paddings[D, 0]` and `paddings[D, 1]` must be
+		no greater than `tensor.dim_size(D)`.
 		
 		The padded size of each dimension D of the output is:
 		
-		`paddings(D, 0) + input.dim_size(D) + paddings(D, 1)`
+		`paddings[D, 0] + tensor.dim_size(D) + paddings[D, 1]`
 		
 		For example:
 		
-		```
-		# 't' is [[1, 1], [2, 2]]
-		# 'paddings' is [[1, 1], [2, 2]]
-		# 'constant_values' is 0
-		# rank of 't' is 2
-		pad(t, paddings) ==> [[0, 0, 0, 0, 0, 0]
-		                      [0, 0, 1, 1, 0, 0]
-		                      [0, 0, 2, 2, 0, 0]
-		                      [0, 0, 0, 0, 0, 0]]
+		```python
+		t = tf.constant([[1, 2, 3], [4, 5, 6]])
+		paddings = tf.constant([[1, 1,], [2, 2]])
+		# 'constant_values' is 0.
+		# rank of 't' is 2.
+		tf.pad(t, paddings, "CONSTANT")  # [[0, 0, 0, 0, 0, 0, 0],
+		                                 #  [0, 0, 1, 2, 3, 0, 0],
+		                                 #  [0, 0, 4, 5, 6, 0, 0],
+		                                 #  [0, 0, 0, 0, 0, 0, 0]]
+		
+		tf.pad(t, paddings, "REFLECT")  # [[6, 5, 4, 5, 6, 5, 4],
+		                                #  [3, 2, 1, 2, 3, 2, 1],
+		                                #  [6, 5, 4, 5, 6, 5, 4],
+		                                #  [3, 2, 1, 2, 3, 2, 1]]
+		
+		tf.pad(t, paddings, "SYMMETRIC")  # [[2, 1, 1, 2, 3, 3, 2],
+		                                  #  [2, 1, 1, 2, 3, 3, 2],
+		                                  #  [5, 4, 4, 5, 6, 6, 5],
+		                                  #  [5, 4, 4, 5, 6, 6, 5]]
 		```
 		
 		Args:
-		  input: A `Tensor`.
-		  paddings: A `Tensor`. Must be one of the following types: `int32`, `int64`.
-		  constant_values: A `Tensor`. Must have the same type as `input`.
+		  tensor: A `Tensor`.
+		  paddings: A `Tensor` of type `int32`.
+		  mode: One of "CONSTANT", "REFLECT", or "SYMMETRIC" (case-insensitive)
+		  constant_values: In "CONSTANT" mode, the scalar pad value to use. Must be
+		    same type as `tensor`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `input`.
+		  A `Tensor`. Has the same type as `tensor`.
+		
+		Raises:
+		  ValueError: When mode is not one of "CONSTANT", "REFLECT", or "SYMMETRIC".
 	**/
-	static public function pad_v2(input:Dynamic, paddings:Dynamic, constant_values:Dynamic, ?name:Dynamic):Dynamic;
+	static public function pad_v2(tensor:Dynamic, paddings:Dynamic, ?mode:Dynamic, ?constant_values:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function pad_v2
@@ -3026,9 +3465,9 @@ package tensorflow.python.ops.array_ops;
 		A placeholder op that passes through `input` when its output is not fed.
 		
 		Args:
-		  input: A `Tensor`. The default value to produce when `output` is not fed.
-		  shape: A `tf.TensorShape` or list of `ints`.
-		    The (possibly partial) shape of the tensor.
+		  input: A `Tensor`. The default value to produce when output is not fed.
+		  shape: A `tf.TensorShape` or list of `int`s. The (possibly partial) shape
+		    of the tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -3081,7 +3520,7 @@ package tensorflow.python.ops.array_ops;
 		
 		```
 		out[i] = (in[i] - min_range) * range(T) / (max_range - min_range)
-		if T == qint8, out[i] -= (range(T) + 1) / 2.0
+		if T == qint8: out[i] -= (range(T) + 1) / 2.0
 		```
 		
 		here `range(T) = numeric_limits<T>::max() - numeric_limits<T>::min()`
@@ -3263,6 +3702,8 @@ package tensorflow.python.ops.array_ops;
 		
 		output = round(clamp(value, input_min, input_max) * scale_factor) / scale_factor.
 		
+		The above round function rounds the value based on the given round_mode.
+		
 		Args:
 		  input: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`.
 		    Tensor to quantize and then dequantize.
@@ -3281,17 +3722,25 @@ package tensorflow.python.ops.array_ops;
 		    The bitwidth of the quantization.
 		  range_given: An optional `bool`. Defaults to `False`.
 		    Whether the range is given or should be determined from the `input` tensor.
+		  round_mode: An optional `string` from: `"HALF_TO_EVEN", "HALF_UP"`. Defaults to `"HALF_TO_EVEN"`.
+		    The 'round_mode' attribute controls which rounding tie-breaking algorithm is
+		    used when rounding float values to their quantized equivalents. The following
+		    rounding modes are currently supported:
+		
+		    *   HALF_TO_EVEN: this is the default round_mode.
+		    *   HALF_UP: round towards positive. In this mode 7.5 rounds up to 8 and -7.5
+		        rounds up to -7.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `input`.
 	**/
-	static public function quantize_and_dequantize_v2(input:Dynamic, input_min:Dynamic, input_max:Dynamic, ?signed_input:Dynamic, ?num_bits:Dynamic, ?range_given:Dynamic, ?name:Dynamic):Dynamic;
+	static public function quantize_and_dequantize_v2(input:Dynamic, input_min:Dynamic, input_max:Dynamic, ?signed_input:Dynamic, ?num_bits:Dynamic, ?range_given:Dynamic, ?round_mode:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function quantize_and_dequantize_v2
 	**/
-	static public function quantize_and_dequantize_v2_eager_fallback(input:Dynamic, input_min:Dynamic, input_max:Dynamic, ?signed_input:Dynamic, ?num_bits:Dynamic, ?range_given:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function quantize_and_dequantize_v2_eager_fallback(input:Dynamic, input_min:Dynamic, input_max:Dynamic, ?signed_input:Dynamic, ?num_bits:Dynamic, ?range_given:Dynamic, ?round_mode:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Quantizes then dequantizes a tensor.
 		
@@ -3317,7 +3766,7 @@ package tensorflow.python.ops.array_ops;
 	**/
 	static public function quantize_and_dequantize_v3_eager_fallback(input:Dynamic, input_min:Dynamic, input_max:Dynamic, num_bits:Dynamic, ?signed_input:Dynamic, ?range_given:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Please use `tf.quantize` instead.
+		Please use `tf.quantization.quantize` instead.
 	**/
 	static public function quantize_v2(input:Dynamic, min_range:Dynamic, max_range:Dynamic, T:Dynamic, ?mode:Dynamic, ?name:Dynamic, ?round_mode:Dynamic):Dynamic;
 	/**
@@ -3474,6 +3923,7 @@ package tensorflow.python.ops.array_ops;
 		  A mutable `Tensor`. Has the same type as `input`.
 	**/
 	static public function ref_identity(input:Dynamic, ?name:Dynamic):Dynamic;
+	static public function ref_identity_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Calculate padding required to make block_shape divide input_shape.
 		
@@ -3756,6 +4206,78 @@ package tensorflow.python.ops.array_ops;
 	**/
 	static public function reverse_sequence_eager_fallback(input:Dynamic, seq_lengths:Dynamic, seq_dim:Dynamic, ?batch_dim:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		Reverses variable length slices.
+		
+		This op first slices `input` along the dimension `batch_axis`, and for each
+		slice `i`, reverses the first `seq_lengths[i]` elements along
+		the dimension `seq_axis`.
+		
+		The elements of `seq_lengths` must obey `seq_lengths[i] <= input.dims[seq_dim]`,
+		and `seq_lengths` must be a vector of length `input.dims[batch_dim]`.
+		
+		The output slice `i` along dimension `batch_axis` is then given by input
+		slice `i`, with the first `seq_lengths[i]` slices along dimension
+		`seq_axis` reversed.
+		
+		For example:
+		
+		```
+		# Given this:
+		batch_dim = 0
+		seq_dim = 1
+		input.dims = (4, 8, ...)
+		seq_lengths = [7, 2, 3, 5]
+		
+		# then slices of input are reversed on seq_dim, but only up to seq_lengths:
+		output[0, 0:7, :, ...] = input[0, 7:0:-1, :, ...]
+		output[1, 0:2, :, ...] = input[1, 2:0:-1, :, ...]
+		output[2, 0:3, :, ...] = input[2, 3:0:-1, :, ...]
+		output[3, 0:5, :, ...] = input[3, 5:0:-1, :, ...]
+		
+		# while entries past seq_lens are copied through:
+		output[0, 7:, :, ...] = input[0, 7:, :, ...]
+		output[1, 2:, :, ...] = input[1, 2:, :, ...]
+		output[2, 3:, :, ...] = input[2, 3:, :, ...]
+		output[3, 2:, :, ...] = input[3, 2:, :, ...]
+		```
+		
+		In contrast, if:
+		
+		```
+		# Given this:
+		batch_dim = 2
+		seq_dim = 0
+		input.dims = (8, ?, 4, ...)
+		seq_lengths = [7, 2, 3, 5]
+		
+		# then slices of input are reversed on seq_dim, but only up to seq_lengths:
+		output[0:7, :, 0, :, ...] = input[7:0:-1, :, 0, :, ...]
+		output[0:2, :, 1, :, ...] = input[2:0:-1, :, 1, :, ...]
+		output[0:3, :, 2, :, ...] = input[3:0:-1, :, 2, :, ...]
+		output[0:5, :, 3, :, ...] = input[5:0:-1, :, 3, :, ...]
+		
+		# while entries past seq_lens are copied through:
+		output[7:, :, 0, :, ...] = input[7:, :, 0, :, ...]
+		output[2:, :, 1, :, ...] = input[2:, :, 1, :, ...]
+		output[3:, :, 2, :, ...] = input[3:, :, 2, :, ...]
+		output[2:, :, 3, :, ...] = input[2:, :, 3, :, ...]
+		```
+		
+		Args:
+		  input: A `Tensor`. The input to reverse.
+		  seq_lengths: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    1-D with length `input.dims(batch_dim)` and
+		    `max(seq_lengths) <= input.dims(seq_dim)`
+		  seq_axis: An `int`. The dimension which is partially reversed.
+		  batch_axis: An optional `int`. Defaults to `0`.
+		    The dimension along which reversal is performed.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function reverse_sequence_v2(input:Dynamic, seq_lengths:Dynamic, ?seq_axis:Dynamic, ?batch_axis:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Reverses specific dimensions of a tensor.
 		
 		NOTE `tf.reverse` has now changed behavior in preparation for 1.0.
@@ -3829,6 +4351,10 @@ package tensorflow.python.ops.array_ops;
 		slices within a tensor (initially zero for numeric, empty for string) of
 		the given `shape` according to indices.  This operator is the inverse of the
 		`tf.gather_nd` operator which extracts values or slices from a given tensor.
+		
+		This operation is similar to tensor_scatter_add, except that the tensor is
+		zero-initialized. Calling `tf.scatter_nd(indices, values, shape)` is identical
+		to `tensor_scatter_add(tf.zeros(shape, values.dtype), indices, values)`
 		
 		If `indices` contains duplicates, then their updates are accumulated (summed).
 		
@@ -4153,6 +4679,7 @@ package tensorflow.python.ops.array_ops;
 		This is for function shape_n
 	**/
 	static public function shape_n_eager_fallback(input:Dynamic, ?out_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function shape_v2(input:Dynamic, ?out_type:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns the size of a tensor.
 		
@@ -4199,6 +4726,7 @@ package tensorflow.python.ops.array_ops;
 		  A `Tensor` of type `out_type`. Defaults to `tf.int32`.
 	**/
 	static public function size_internal(input:Dynamic, ?name:Dynamic, ?optimize:Dynamic, ?out_type:Dynamic):Dynamic;
+	static public function size_v2(input:Dynamic, ?out_type:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Extracts a slice from a tensor.
 		
@@ -4513,6 +5041,139 @@ package tensorflow.python.ops.array_ops;
 	**/
 	static public function space_to_batch_nd_eager_fallback(input:Dynamic, block_shape:Dynamic, paddings:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		SpaceToBatch for N-D tensors of type T.
+		
+		This operation divides "spatial" dimensions `[1, ..., M]` of the input into a
+		grid of blocks of shape `block_shape`, and interleaves these blocks with the
+		"batch" dimension (0) such that in the output, the spatial dimensions
+		`[1, ..., M]` correspond to the position within the grid, and the batch
+		dimension combines both the position within a spatial block and the original
+		batch position.  Prior to division into blocks, the spatial dimensions of the
+		input are optionally zero padded according to `paddings`.  See below for a
+		precise description.
+		
+		Args:
+		  input: A `Tensor`.
+		    N-D with shape `input_shape = [batch] + spatial_shape + remaining_shape`,
+		    where spatial_shape has `M` dimensions.
+		  block_shape: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    1-D with shape `[M]`, all values must be >= 1.
+		  paddings: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    2-D with shape `[M, 2]`, all values must be >= 0.
+		      `paddings[i] = [pad_start, pad_end]` specifies the padding for input dimension
+		      `i + 1`, which corresponds to spatial dimension `i`.  It is required that
+		      `block_shape[i]` divides `input_shape[i + 1] + pad_start + pad_end`.
+		
+		    This operation is equivalent to the following steps:
+		
+		    1. Zero-pad the start and end of dimensions `[1, ..., M]` of the
+		       input according to `paddings` to produce `padded` of shape `padded_shape`.
+		
+		    2. Reshape `padded` to `reshaped_padded` of shape:
+		
+		         [batch] +
+		         [padded_shape[1] / block_shape[0],
+		           block_shape[0],
+		          ...,
+		          padded_shape[M] / block_shape[M-1],
+		          block_shape[M-1]] +
+		         remaining_shape
+		
+		    3. Permute dimensions of `reshaped_padded` to produce
+		       `permuted_reshaped_padded` of shape:
+		
+		         block_shape +
+		         [batch] +
+		         [padded_shape[1] / block_shape[0],
+		          ...,
+		          padded_shape[M] / block_shape[M-1]] +
+		         remaining_shape
+		
+		    4. Reshape `permuted_reshaped_padded` to flatten `block_shape` into the batch
+		       dimension, producing an output tensor of shape:
+		
+		         [batch * prod(block_shape)] +
+		         [padded_shape[1] / block_shape[0],
+		          ...,
+		          padded_shape[M] / block_shape[M-1]] +
+		         remaining_shape
+		
+		    Some examples:
+		
+		    (1) For the following input of shape `[1, 2, 2, 1]`, `block_shape = [2, 2]`, and
+		        `paddings = [[0, 0], [0, 0]]`:
+		
+		    ```
+		    x = [[[[1], [2]], [[3], [4]]]]
+		    ```
+		
+		    The output tensor has shape `[4, 1, 1, 1]` and value:
+		
+		    ```
+		    [[[[1]]], [[[2]]], [[[3]]], [[[4]]]]
+		    ```
+		
+		    (2) For the following input of shape `[1, 2, 2, 3]`, `block_shape = [2, 2]`, and
+		        `paddings = [[0, 0], [0, 0]]`:
+		
+		    ```
+		    x = [[[[1, 2, 3], [4, 5, 6]],
+		          [[7, 8, 9], [10, 11, 12]]]]
+		    ```
+		
+		    The output tensor has shape `[4, 1, 1, 3]` and value:
+		
+		    ```
+		    [[[1, 2, 3]], [[4, 5, 6]], [[7, 8, 9]], [[10, 11, 12]]]
+		    ```
+		
+		    (3) For the following input of shape `[1, 4, 4, 1]`, `block_shape = [2, 2]`, and
+		        `paddings = [[0, 0], [0, 0]]`:
+		
+		    ```
+		    x = [[[[1],   [2],  [3],  [4]],
+		          [[5],   [6],  [7],  [8]],
+		          [[9],  [10], [11],  [12]],
+		          [[13], [14], [15],  [16]]]]
+		    ```
+		
+		    The output tensor has shape `[4, 2, 2, 1]` and value:
+		
+		    ```
+		    x = [[[[1], [3]], [[9], [11]]],
+		         [[[2], [4]], [[10], [12]]],
+		         [[[5], [7]], [[13], [15]]],
+		         [[[6], [8]], [[14], [16]]]]
+		    ```
+		
+		    (4) For the following input of shape `[2, 2, 4, 1]`, block_shape = `[2, 2]`, and
+		        paddings = `[[0, 0], [2, 0]]`:
+		
+		    ```
+		    x = [[[[1],   [2],  [3],  [4]],
+		          [[5],   [6],  [7],  [8]]],
+		         [[[9],  [10], [11],  [12]],
+		          [[13], [14], [15],  [16]]]]
+		    ```
+		
+		    The output tensor has shape `[8, 1, 3, 1]` and value:
+		
+		    ```
+		    x = [[[[0], [1], [3]]], [[[0], [9], [11]]],
+		         [[[0], [2], [4]]], [[[0], [10], [12]]],
+		         [[[0], [5], [7]]], [[[0], [13], [15]]],
+		         [[[0], [6], [8]]], [[[0], [14], [16]]]]
+		    ```
+		
+		    Among others, this operation is useful for reducing atrous convolution into
+		    regular convolution.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function space_to_batch_v2(input:Dynamic, block_shape:Dynamic, paddings:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		SpaceToDepth for tensors of type T.
 		
 		Rearranges blocks of spatial data, into depth. More specifically,
@@ -4614,6 +5275,103 @@ package tensorflow.python.ops.array_ops;
 		This is for function space_to_depth
 	**/
 	static public function space_to_depth_eager_fallback(input:Dynamic, block_size:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		SpaceToDepth for tensors of type T.
+		
+		Rearranges blocks of spatial data, into depth. More specifically,
+		this op outputs a copy of the input tensor where values from the `height`
+		and `width` dimensions are moved to the `depth` dimension.
+		The attr `block_size` indicates the input block size.
+		
+		  * Non-overlapping blocks of size `block_size x block size` are rearranged
+		    into depth at each location.
+		  * The depth of the output tensor is `block_size * block_size * input_depth`.
+		  * The Y, X coordinates within each block of the input become the high order
+		    component of the output channel index.
+		  * The input tensor's height and width must be divisible by block_size.
+		
+		The `data_format` attr specifies the layout of the input and output tensors
+		with the following options:
+		  "NHWC": `[ batch, height, width, channels ]`
+		  "NCHW": `[ batch, channels, height, width ]`
+		  "NCHW_VECT_C":
+		      `qint8 [ batch, channels / 4, height, width, 4 ]`
+		
+		It is useful to consider the operation as transforming a 6-D Tensor.
+		e.g. for data_format = NHWC,
+		     Each element in the input tensor can be specified via 6 coordinates,
+		     ordered by decreasing memory layout significance as:
+		     n,oY,bY,oX,bX,iC  (where n=batch index, oX, oY means X or Y coordinates
+		                        within the output image, bX, bY means coordinates
+		                        within the input block, iC means input channels).
+		     The output would be a transpose to the following layout:
+		     n,oY,oX,bY,bX,iC
+		
+		This operation is useful for resizing the activations between convolutions
+		(but keeping all data), e.g. instead of pooling. It is also useful for training
+		purely convolutional models.
+		
+		For example, given an input of shape `[1, 2, 2, 1]`, data_format = "NHWC" and
+		block_size = 2:
+		
+		```
+		x = [[[[1], [2]],
+		      [[3], [4]]]]
+		```
+		
+		This operation will output a tensor of shape `[1, 1, 1, 4]`:
+		
+		```
+		[[[[1, 2, 3, 4]]]]
+		```
+		
+		Here, the input has a batch of 1 and each batch element has shape `[2, 2, 1]`,
+		the corresponding output will have a single element (i.e. width and height are
+		both 1) and will have a depth of 4 channels (1 * block_size * block_size).
+		The output element shape is `[1, 1, 4]`.
+		
+		For an input tensor with larger depth, here of shape `[1, 2, 2, 3]`, e.g.
+		
+		```
+		x = [[[[1, 2, 3], [4, 5, 6]],
+		      [[7, 8, 9], [10, 11, 12]]]]
+		```
+		
+		This operation, for block_size of 2, will return the following tensor of shape
+		`[1, 1, 1, 12]`
+		
+		```
+		[[[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]]]]
+		```
+		
+		Similarly, for the following input of shape `[1 4 4 1]`, and a block size of 2:
+		
+		```
+		x = [[[[1],   [2],  [5],  [6]],
+		      [[3],   [4],  [7],  [8]],
+		      [[9],  [10], [13],  [14]],
+		      [[11], [12], [15],  [16]]]]
+		```
+		
+		the operator will return the following tensor of shape `[1 2 2 4]`:
+		
+		```
+		x = [[[[1, 2, 3, 4],
+		       [5, 6, 7, 8]],
+		      [[9, 10, 11, 12],
+		       [13, 14, 15, 16]]]]
+		```
+		
+		Args:
+		  input: A `Tensor`.
+		  block_size: An `int` that is `>= 2`. The size of the spatial block.
+		  data_format: An optional `string` from: `"NHWC", "NCHW", "NCHW_VECT_C"`. Defaults to `"NHWC"`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function space_to_depth_v2(input:Dynamic, block_size:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Masks elements of `IndexedSlices`.
 		
@@ -4776,7 +5534,7 @@ package tensorflow.python.ops.array_ops;
 	/**
 		Removes dimensions of size 1 from the shape of a tensor. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(squeeze_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		Use the `axis` argument instead
 		
@@ -4822,6 +5580,7 @@ package tensorflow.python.ops.array_ops;
 		This is for function squeeze
 	**/
 	static public function squeeze_eager_fallback(input:Dynamic, ?axis:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function squeeze_v2(input:Dynamic, ?axis:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Stacks a list of rank-`R` tensors into one rank-`(R+1)` tensor.
 		
@@ -5010,6 +5769,7 @@ package tensorflow.python.ops.array_ops;
 		  A mutable `Tensor`. Has the same type as `ref`.
 	**/
 	static public function strided_slice_assign(ref:Dynamic, begin:Dynamic, end:Dynamic, strides:Dynamic, value:Dynamic, ?begin_mask:Dynamic, ?end_mask:Dynamic, ?ellipsis_mask:Dynamic, ?new_axis_mask:Dynamic, ?shrink_axis_mask:Dynamic, ?name:Dynamic):Dynamic;
+	static public function strided_slice_assign_eager_fallback(ref:Dynamic, begin:Dynamic, end:Dynamic, strides:Dynamic, value:Dynamic, ?begin_mask:Dynamic, ?end_mask:Dynamic, ?ellipsis_mask:Dynamic, ?new_axis_mask:Dynamic, ?shrink_axis_mask:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function strided_slice
@@ -5049,6 +5809,272 @@ package tensorflow.python.ops.array_ops;
 		This is for function strided_slice_grad
 	**/
 	static public function strided_slice_grad_eager_fallback(shape:Dynamic, begin:Dynamic, end:Dynamic, strides:Dynamic, dy:Dynamic, ?begin_mask:Dynamic, ?end_mask:Dynamic, ?ellipsis_mask:Dynamic, ?new_axis_mask:Dynamic, ?shrink_axis_mask:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Adds sparse `updates` to an existing tensor according to `indices`.
+		
+		This operation creates a new tensor by adding sparse `updates` to the passed
+		in `tensor`.
+		This operation is very similar to `tf.scatter_nd_add`, except that the updates
+		are added onto an existing tensor (as opposed to a variable). If the memory
+		for the existing tensor cannot be re-used, a copy is made and updated.
+		
+		`indices` is an integer tensor containing indices into a new tensor of shape
+		`shape`.  The last dimension of `indices` can be at most the rank of `shape`:
+		
+		    indices.shape[-1] <= shape.rank
+		
+		The last dimension of `indices` corresponds to indices into elements
+		(if `indices.shape[-1] = shape.rank`) or slices
+		(if `indices.shape[-1] < shape.rank`) along dimension `indices.shape[-1]` of
+		`shape`.  `updates` is a tensor with shape
+		
+		    indices.shape[:-1] + shape[indices.shape[-1]:]
+		
+		The simplest form of tensor_scatter_add is to add individual elements to a
+		tensor by index. For example, say we want to add 4 elements in a rank-1
+		tensor with 8 elements.
+		
+		In Python, this scatter add operation would look like this:
+		
+		```python
+		    indices = tf.constant([[4], [3], [1], [7]])
+		    updates = tf.constant([9, 10, 11, 12])
+		    tensor = tf.ones([8], dtype=tf.int32)
+		    updated = tf.tensor_scatter_add(tensor, indices, updates)
+		    with tf.Session() as sess:
+		      print(sess.run(scatter))
+		```
+		
+		The resulting tensor would look like this:
+		
+		    [1, 12, 1, 11, 10, 1, 1, 13]
+		
+		We can also, insert entire slices of a higher rank tensor all at once. For
+		example, if we wanted to insert two slices in the first dimension of a
+		rank-3 tensor with two matrices of new values.
+		
+		In Python, this scatter add operation would look like this:
+		
+		```python
+		    indices = tf.constant([[0], [2]])
+		    updates = tf.constant([[[5, 5, 5, 5], [6, 6, 6, 6],
+		                            [7, 7, 7, 7], [8, 8, 8, 8]],
+		                           [[5, 5, 5, 5], [6, 6, 6, 6],
+		                            [7, 7, 7, 7], [8, 8, 8, 8]]])
+		    tensor = tf.ones([4, 4, 4])
+		    updated = tf.tensor_scatter_add(tensor, indices, updates)
+		    with tf.Session() as sess:
+		      print(sess.run(scatter))
+		```
+		
+		The resulting tensor would look like this:
+		
+		    [[[6, 6, 6, 6], [7, 7, 7, 7], [8, 8, 8, 8], [9, 9, 9, 9]],
+		     [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]],
+		     [[6, 6, 6, 6], [7, 7, 7, 7], [8, 8, 8, 8], [9, 9, 9, 9]],
+		     [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]]
+		
+		Note that on CPU, if an out of bound index is found, an error is returned.
+		On GPU, if an out of bound index is found, the index is ignored.
+		
+		Args:
+		  tensor: A `Tensor`. Tensor to copy/update.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    Index tensor.
+		  updates: A `Tensor`. Must have the same type as `tensor`.
+		    Updates to scatter into output.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `tensor`.
+	**/
+	static public function tensor_scatter_add(tensor:Dynamic, indices:Dynamic, updates:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function tensor_scatter_add
+	**/
+	static public function tensor_scatter_add_eager_fallback(tensor:Dynamic, indices:Dynamic, updates:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Subtracts sparse `updates` from an existing tensor according to `indices`.
+		
+		This operation creates a new tensor by subtracting sparse `updates` from the
+		passed in `tensor`.
+		This operation is very similar to `tf.scatter_nd_sub`, except that the updates
+		are subtracted from an existing tensor (as opposed to a variable). If the memory
+		for the existing tensor cannot be re-used, a copy is made and updated.
+		
+		`indices` is an integer tensor containing indices into a new tensor of shape
+		`shape`.  The last dimension of `indices` can be at most the rank of `shape`:
+		
+		    indices.shape[-1] <= shape.rank
+		
+		The last dimension of `indices` corresponds to indices into elements
+		(if `indices.shape[-1] = shape.rank`) or slices
+		(if `indices.shape[-1] < shape.rank`) along dimension `indices.shape[-1]` of
+		`shape`.  `updates` is a tensor with shape
+		
+		    indices.shape[:-1] + shape[indices.shape[-1]:]
+		
+		The simplest form of tensor_scatter_sub is to subtract individual elements
+		from a tensor by index. For example, say we want to insert 4 scattered elements
+		in a rank-1 tensor with 8 elements.
+		
+		In Python, this scatter subtract operation would look like this:
+		
+		```python
+		    indices = tf.constant([[4], [3], [1], [7]])
+		    updates = tf.constant([9, 10, 11, 12])
+		    tensor = tf.ones([8], dtype=tf.int32)
+		    updated = tf.tensor_scatter_sub(tensor, indices, updates)
+		    with tf.Session() as sess:
+		      print(sess.run(scatter))
+		```
+		
+		The resulting tensor would look like this:
+		
+		    [1, -10, 1, -9, -8, 1, 1, -11]
+		
+		We can also, insert entire slices of a higher rank tensor all at once. For
+		example, if we wanted to insert two slices in the first dimension of a
+		rank-3 tensor with two matrices of new values.
+		
+		In Python, this scatter add operation would look like this:
+		
+		```python
+		    indices = tf.constant([[0], [2]])
+		    updates = tf.constant([[[5, 5, 5, 5], [6, 6, 6, 6],
+		                            [7, 7, 7, 7], [8, 8, 8, 8]],
+		                           [[5, 5, 5, 5], [6, 6, 6, 6],
+		                            [7, 7, 7, 7], [8, 8, 8, 8]]])
+		    tensor = tf.ones([4, 4, 4])
+		    updated = tf.tensor_scatter_sub(tensor, indices, updates)
+		    with tf.Session() as sess:
+		      print(sess.run(scatter))
+		```
+		
+		The resulting tensor would look like this:
+		
+		    [[[-4, -4, -4, -4], [-5, -5, -5, -5], [-6, -6, -6, -6], [-7, -7, -7, -7]],
+		     [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]],
+		     [[-4, -4, -4, -4], [-5, -5, -5, -5], [-6, -6, -6, -6], [-7, -7, -7, -7]],
+		     [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]]
+		
+		Note that on CPU, if an out of bound index is found, an error is returned.
+		On GPU, if an out of bound index is found, the index is ignored.
+		
+		Args:
+		  tensor: A `Tensor`. Tensor to copy/update.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    Index tensor.
+		  updates: A `Tensor`. Must have the same type as `tensor`.
+		    Updates to scatter into output.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `tensor`.
+	**/
+	static public function tensor_scatter_sub(tensor:Dynamic, indices:Dynamic, updates:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function tensor_scatter_sub
+	**/
+	static public function tensor_scatter_sub_eager_fallback(tensor:Dynamic, indices:Dynamic, updates:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Scatter `updates` into an existing tensor according to `indices`.
+		
+		This operation creates a new tensor by applying sparse `updates` to the passed
+		in `tensor`.
+		This operation is very similar to `tf.scatter_nd`, except that the updates are
+		scattered onto an existing tensor (as opposed to a zero-tensor). If the memory
+		for the existing tensor cannot be re-used, a copy is made and updated.
+		
+		If `indices` contains duplicates, then their updates are accumulated (summed).
+		
+		**WARNING**: The order in which updates are applied is nondeterministic, so the
+		output will be nondeterministic if `indices` contains duplicates -- because
+		of some numerical approximation issues, numbers summed in different order
+		may yield different results.
+		
+		`indices` is an integer tensor containing indices into a new tensor of shape
+		`shape`.  The last dimension of `indices` can be at most the rank of `shape`:
+		
+		    indices.shape[-1] <= shape.rank
+		
+		The last dimension of `indices` corresponds to indices into elements
+		(if `indices.shape[-1] = shape.rank`) or slices
+		(if `indices.shape[-1] < shape.rank`) along dimension `indices.shape[-1]` of
+		`shape`.  `updates` is a tensor with shape
+		
+		    indices.shape[:-1] + shape[indices.shape[-1]:]
+		
+		The simplest form of scatter is to insert individual elements in a tensor by
+		index. For example, say we want to insert 4 scattered elements in a rank-1
+		tensor with 8 elements.
+		
+		<div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
+		<img style="width:100%" src="https://www.tensorflow.org/images/ScatterNd1.png" alt>
+		</div>
+		
+		In Python, this scatter operation would look like this:
+		
+		```python
+		    indices = tf.constant([[4], [3], [1], [7]])
+		    updates = tf.constant([9, 10, 11, 12])
+		    tensor = tf.ones([8], dtype=tf.int32)
+		    updated = tf.tensor_scatter_update(tensor, indices, updates)
+		    with tf.Session() as sess:
+		      print(sess.run(scatter))
+		```
+		
+		The resulting tensor would look like this:
+		
+		    [1, 11, 1, 10, 9, 1, 1, 12]
+		
+		We can also, insert entire slices of a higher rank tensor all at once. For
+		example, if we wanted to insert two slices in the first dimension of a
+		rank-3 tensor with two matrices of new values.
+		
+		In Python, this scatter operation would look like this:
+		
+		```python
+		    indices = tf.constant([[0], [2]])
+		    updates = tf.constant([[[5, 5, 5, 5], [6, 6, 6, 6],
+		                            [7, 7, 7, 7], [8, 8, 8, 8]],
+		                           [[5, 5, 5, 5], [6, 6, 6, 6],
+		                            [7, 7, 7, 7], [8, 8, 8, 8]]])
+		    tensor = tf.ones([4, 4, 4])
+		    updated = tf.tensor_scatter_update(tensor, indices, updates)
+		    with tf.Session() as sess:
+		      print(sess.run(scatter))
+		```
+		
+		The resulting tensor would look like this:
+		
+		    [[[5, 5, 5, 5], [6, 6, 6, 6], [7, 7, 7, 7], [8, 8, 8, 8]],
+		     [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]],
+		     [[5, 5, 5, 5], [6, 6, 6, 6], [7, 7, 7, 7], [8, 8, 8, 8]],
+		     [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]]
+		
+		Note that on CPU, if an out of bound index is found, an error is returned.
+		On GPU, if an out of bound index is found, the index is ignored.
+		
+		Args:
+		  tensor: A `Tensor`. Tensor to copy/update.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    Index tensor.
+		  updates: A `Tensor`. Must have the same type as `tensor`.
+		    Updates to scatter into output.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `tensor`.
+	**/
+	static public function tensor_scatter_update(tensor:Dynamic, indices:Dynamic, updates:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function tensor_scatter_update
+	**/
+	static public function tensor_scatter_update_eager_fallback(tensor:Dynamic, indices:Dynamic, updates:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Constructs a tensor by tiling a given tensor.
@@ -5165,6 +6191,71 @@ package tensorflow.python.ops.array_ops;
 		This is for function transpose
 	**/
 	static public function transpose_eager_fallback(x:Dynamic, perm:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Transposes `a`. Permutes the dimensions according to `perm`.
+		
+		The returned tensor's dimension i will correspond to the input dimension
+		`perm[i]`. If `perm` is not given, it is set to (n-1...0), where n is
+		the rank of the input tensor. Hence by default, this operation performs a
+		regular matrix transpose on 2-D input Tensors. If conjugate is True and
+		`a.dtype` is either `complex64` or `complex128` then the values of `a`
+		are conjugated and transposed.
+		
+		@compatibility(numpy)
+		In `numpy` transposes are memory-efficient constant time operations as they
+		simply return a new view of the same data with adjusted `strides`.
+		
+		TensorFlow does not support strides, so `transpose` returns a new tensor with
+		the items permuted.
+		@end_compatibility
+		
+		For example:
+		
+		```python
+		x = tf.constant([[1, 2, 3], [4, 5, 6]])
+		tf.transpose(x)  # [[1, 4]
+		                 #  [2, 5]
+		                 #  [3, 6]]
+		
+		# Equivalently
+		tf.transpose(x, perm=[1, 0])  # [[1, 4]
+		                              #  [2, 5]
+		                              #  [3, 6]]
+		
+		# If x is complex, setting conjugate=True gives the conjugate transpose
+		x = tf.constant([[1 + 1j, 2 + 2j, 3 + 3j],
+		                 [4 + 4j, 5 + 5j, 6 + 6j]])
+		tf.transpose(x, conjugate=True)  # [[1 - 1j, 4 - 4j],
+		                                 #  [2 - 2j, 5 - 5j],
+		                                 #  [3 - 3j, 6 - 6j]]
+		
+		# 'perm' is more useful for n-dimensional tensors, for n > 2
+		x = tf.constant([[[ 1,  2,  3],
+		                  [ 4,  5,  6]],
+		                 [[ 7,  8,  9],
+		                  [10, 11, 12]]])
+		
+		# Take the transpose of the matrices in dimension-0
+		# (this common operation has a shorthand `linalg.transpose`)
+		tf.transpose(x, perm=[0, 2, 1])  # [[[1,  4],
+		                                 #   [2,  5],
+		                                 #   [3,  6]],
+		                                 #  [[7, 10],
+		                                 #   [8, 11],
+		                                 #   [9, 12]]]
+		```
+		
+		Args:
+		  a: A `Tensor`.
+		  perm: A permutation of the dimensions of `a`.
+		  conjugate: Optional bool. Setting it to `True` is mathematically equivalent
+		    to tf.conj(tf.transpose(input)).
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A transposed `Tensor`.
+	**/
+	static public function transpose_v2(a:Dynamic, ?perm:Dynamic, ?conjugate:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Finds unique elements in a 1-D tensor.
 		
@@ -5614,4 +6705,33 @@ package tensorflow.python.ops.array_ops;
 		This is for function zeros_like
 	**/
 	static public function zeros_like_eager_fallback(x:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Internal implementation for the v1/v2 zeros_like API calls.
+	**/
+	static public function zeros_like_impl(tensor:Dynamic, dtype:Dynamic, name:Dynamic, ?optimize:Dynamic):Dynamic;
+	/**
+		Creates a tensor with all elements set to zero.
+		
+		Given a single tensor (`tensor`), this operation returns a tensor of the
+		same type and shape as `tensor` with all elements set to zero. Optionally,
+		you can use `dtype` to specify a new type for the returned tensor.
+		
+		For example:
+		
+		```python
+		tensor = tf.constant([[1, 2, 3], [4, 5, 6]])
+		tf.zeros_like(tensor)  # [[0, 0, 0], [0, 0, 0]]
+		```
+		
+		Args:
+		  input: A `Tensor`.
+		  dtype: A type for the returned `Tensor`. Must be `float16`, `float32`,
+		    `float64`, `int8`, `uint8`, `int16`, `uint16`, `int32`, `int64`,
+		    `complex64`, `complex128`, `bool` or `string`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` with all elements set to zero.
+	**/
+	static public function zeros_like_v2(input:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 }

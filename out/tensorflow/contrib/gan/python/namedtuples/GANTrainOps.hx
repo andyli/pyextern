@@ -87,7 +87,7 @@ package tensorflow.contrib.gan.python.namedtuples;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -95,9 +95,9 @@ package tensorflow.contrib.gan.python.namedtuples;
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
 	/**
-		Create new instance of GANTrainOps(generator_train_op, discriminator_train_op, global_step_inc_op)
+		Create new instance of GANTrainOps(generator_train_op, discriminator_train_op, global_step_inc_op, train_hooks)
 	**/
-	static public function __new__(_cls:Dynamic, generator_train_op:Dynamic, discriminator_train_op:Dynamic, global_step_inc_op:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, generator_train_op:Dynamic, discriminator_train_op:Dynamic, global_step_inc_op:Dynamic, ?train_hooks:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -111,7 +111,7 @@ package tensorflow.contrib.gan.python.namedtuples;
 	**/
 	public function __repr__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**
@@ -172,4 +172,8 @@ package tensorflow.contrib.gan.python.namedtuples;
 		Raises ValueError if the value is not present.
 	**/
 	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Alias for field number 3
+	**/
+	public var train_hooks : Dynamic;
 }

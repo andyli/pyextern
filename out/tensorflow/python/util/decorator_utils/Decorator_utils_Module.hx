@@ -28,6 +28,19 @@ package tensorflow.python.util.decorator_utils;
 	static public var absolute_import : Dynamic;
 	/**
 		Adds a deprecation notice to a docstring.
+		
+		Args:
+		  doc: The original docstring.
+		  instructions: A string, describing how to fix the problem.
+		  no_doc_str: The default value to use for `doc` if `doc` is empty.
+		  suffix_str: Is added to the end of the first line.
+		  notice: A list of strings. The main notice warning body.
+		
+		Returns:
+		  A new docstring, with the notice attached.
+		
+		Raises:
+		  ValueError: If `notice` is empty.
 	**/
 	static public function add_notice_to_docstring(doc:Dynamic, instructions:Dynamic, no_doc_str:Dynamic, suffix_str:Dynamic, notice:Dynamic):Dynamic;
 	static public var division : Dynamic;

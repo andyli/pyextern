@@ -10,6 +10,33 @@ package pandas.core.indexes.accessors;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Add delegated names to a class using a class decorator.  This provides
+		an alternative usage to directly calling `_add_delegate_accessors`
+		below a class definition.
+		
+		Parameters
+		----------
+		delegate : object
+		    the class to get methods/properties & doc-strings
+		acccessors : Sequence[str]
+		    List of accessor to add
+		typ : {'property', 'method'}
+		overwrite : boolean, default False
+		   overwrite the method/property in the target class if it exists
+		
+		Returns
+		-------
+		callable
+		    A class decorator.
+		
+		Examples
+		--------
+		@delegate_names(Categorical, ["categories", "ordered"], "property")
+		class CategoricalAccessor(PandasDelegate):
+		    [...]
+	**/
+	static public function delegate_names(delegate:Dynamic, accessors:Dynamic, typ:Dynamic, ?overwrite:Dynamic):Dynamic;
+	/**
 		Check whether an array-like or dtype is of the Categorical dtype.
 		
 		Parameters
@@ -123,6 +150,11 @@ package pandas.core.indexes.accessors;
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
 		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -142,6 +174,12 @@ package pandas.core.indexes.accessors;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -167,7 +205,11 @@ package pandas.core.indexes.accessors;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -186,8 +228,12 @@ package pandas.core.indexes.accessors;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Check whether an array-like is a periodical array-like or PeriodIndex.
 		

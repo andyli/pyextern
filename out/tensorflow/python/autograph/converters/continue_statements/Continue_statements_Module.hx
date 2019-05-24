@@ -1,10 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.autograph.converters.continue_statements;
 @:pythonImport("tensorflow.python.autograph.converters.continue_statements") extern class Continue_statements_Module {
-	static public var CONTINUE_USED : Dynamic;
-	static public var CONTROL_VAR_NAME : Dynamic;
-	static public var CREATE_GUARD_NEXT : Dynamic;
-	static public var GUARD_CREATED : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

@@ -136,11 +136,11 @@ package matplotlib._layoutbox;
 		margin between the position of the axes and the outer edge of
 		the axes.
 		
-		Margins are variable because they change with the fogure size.
+		Margins are variable because they change with the figure size.
 		
 		Margin minimums are set to make room for axes decorations.  However,
 		the margins can be larger if we are mathicng the position size to
-		otehr axes.
+		other axes.
 	**/
 	public function constrain_margins():Dynamic;
 	public function constrain_right(right:Dynamic, ?strength:Dynamic):Dynamic;

@@ -35,6 +35,7 @@ package torch.jit;
 		Return getattr(self, name).
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
+	public function __getstate__():Dynamic;
 	/**
 		Return self>value.
 	**/
@@ -44,8 +45,8 @@ package torch.jit;
 	**/
 	public function __hash__():Dynamic;
 	@:native("__init__")
-	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function ___init__(orig:Dynamic, ?id_set:Dynamic, ?optimize:Dynamic):Dynamic;
+	public function new(orig:Dynamic, ?id_set:Dynamic, ?optimize:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -109,7 +110,6 @@ package torch.jit;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _all_buffers(?memo:Dynamic):Dynamic;
 	public function _apply(fn:Dynamic):Dynamic;
 	static public var _constants_set : Dynamic;
 	/**
@@ -117,11 +117,11 @@ package torch.jit;
 	**/
 	public function _create_method_from_graph(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_create_method_from_trace(self: torch._C.ScriptModule, arg0: str, arg1: function, arg2: List[torch::autograd::Variable]) -> None
+		_create_method_from_trace(self: torch._C.ScriptModule, arg0: str, arg1: function, arg2: tuple, arg3: function, arg4: bool) -> None
 	**/
 	public function _create_method_from_trace(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_create_methods(self: torch._C.ScriptModule, arg0: List[torch._C._jit_tree_views.Def], arg1: List[Callable[[str], function]]) -> None
+		_create_methods(self: torch._C.ScriptModule, arg0: List[torch._C._jit_tree_views.Def], arg1: List[Callable[[str], function]], arg2: List[Dict[str, object]]) -> None
 	**/
 	public function _create_methods(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -170,10 +170,10 @@ package torch.jit;
 		Copies parameters and buffers from :attr:`state_dict` into only
 		this module, but not its descendants. This is called on every submodule
 		in :meth:`~torch.nn.Module.load_state_dict`. Metadata saved for this
-		module in input :attr:`state_dict` is provided as :attr`metadata`.
-		For state dicts without meta data, :attr`metadata` is empty.
+		module in input :attr:`state_dict` is provided as :attr`local_metadata`.
+		For state dicts without metadata, :attr`local_metadata` is empty.
 		Subclasses can achieve class-specific backward compatible loading using
-		the version number at `metadata.get("version", None)`.
+		the version number at `local_metadata.get("version", None)`.
 		
 		.. note::
 		    :attr:`state_dict` is not the same object as the input
@@ -185,7 +185,7 @@ package torch.jit;
 		        persistent buffers.
 		    prefix (str): the prefix for parameters and buffers used in this
 		        module
-		    metadata (dict): a dict containing the metadata for this moodule.
+		    local_metadata (dict): a dict containing the metadata for this moodule.
 		        See
 		    strict (bool): whether to strictly enforce that the keys in
 		        :attr:`state_dict` with :attr:`prefix` match the names of
@@ -198,12 +198,21 @@ package torch.jit;
 		        list, and will be reported together in
 		        :meth:`~torch.nn.Module.load_state_dict`
 	**/
-	public function _load_from_state_dict(state_dict:Dynamic, prefix:Dynamic, metadata:Dynamic, strict:Dynamic, missing_keys:Dynamic, unexpected_keys:Dynamic, error_msgs:Dynamic):Dynamic;
+	public function _load_from_state_dict(state_dict:Dynamic, prefix:Dynamic, local_metadata:Dynamic, strict:Dynamic, missing_keys:Dynamic, unexpected_keys:Dynamic, error_msgs:Dynamic):Dynamic;
 	/**
 		_method_names(self: torch._C.ScriptModule) -> List[str]
 	**/
 	public function _method_names(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Helper method for yielding various names + members of modules.
+	**/
+	public function _named_members(get_members_fn:Dynamic, ?prefix:Dynamic, ?recurse:Dynamic):Dynamic;
 	static public var _original_methods : Dynamic;
+	/**
+		_python_print(self: torch._C.ScriptModule) -> Tuple[str, List[at::Tensor]]
+	**/
+	public function _python_print(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _register_load_state_dict_pre_hook(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		_register_module(self: torch._C.ScriptModule, arg0: str, arg1: torch._C.ScriptModule) -> None
 	**/
@@ -212,6 +221,7 @@ package torch.jit;
 		_register_parameter(self: torch._C.ScriptModule, arg0: str, arg1: torch::autograd::Variable, arg2: bool) -> None
 	**/
 	public function _register_parameter(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _register_state_dict_hook(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		_set_optimized(self: torch._C.ScriptModule, arg0: bool) -> None
 	**/
@@ -274,12 +284,33 @@ package torch.jit;
 	**/
 	public function apply(fn:Dynamic):Dynamic;
 	/**
+		Returns an iterator over module buffers.
+		
+		Args:
+		    recurse (bool): if True, then yields buffers of this module
+		        and all submodules. Otherwise, yields only buffers that
+		        are direct members of this module.
+		
+		Yields:
+		    torch.Tensor: module buffer
+		
+		Example::
+		
+		    >>> for buf in model.buffers():
+		    >>>     print(type(buf.data), buf.size())
+		    <class 'torch.FloatTensor'> (20L,)
+		    <class 'torch.FloatTensor'> (20L, 1L, 5L, 5L)
+	**/
+	public function buffers(?recurse:Dynamic):Dynamic;
+	/**
 		Returns an iterator over immediate children modules.
 		
 		Yields:
 		    Module: a child module
 	**/
 	public function children():Dynamic;
+	public var code : Dynamic;
+	public function copy():Dynamic;
 	/**
 		Moves all model parameters and buffers to the CPU.
 		
@@ -302,6 +333,10 @@ package torch.jit;
 		    Module: self
 	**/
 	public function cuda(?device:Dynamic):Dynamic;
+	/**
+		debug_disable_autodiff_subgraph_inlining(self: torch._C.ScriptModule) -> None
+	**/
+	public function debug_disable_autodiff_subgraph_inlining(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function define(lang:Dynamic):Dynamic;
 	/**
 		Casts all floating point parameters and buffers to ``double`` datatype.
@@ -311,7 +346,15 @@ package torch.jit;
 	**/
 	public function double():Dynamic;
 	static public var dump_patches : Dynamic;
-	public function eval(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Sets the module in evaluation mode.
+		
+		This has any effect only on certain modules. See documentations of
+		particular modules for details of their behaviors in training/evaluation
+		mode, if they are affected, e.g. :class:`Dropout`, :class:`BatchNorm`,
+		etc.
+	**/
+	public function eval():Dynamic;
 	/**
 		Set the extra representation of the module
 		
@@ -328,11 +371,15 @@ package torch.jit;
 	**/
 	public function float():Dynamic;
 	/**
-		forward(self: torch._C.ScriptModule, *args) -> object
+		forward(*args, **kwargs) -> object
 	**/
 	public function forward(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		graph_for(self: torch._C.ScriptModule, *args) -> torch._C.Graph
+		get_debug_state(self: torch._C.ScriptModule) -> torch._C.GraphExecutorState
+	**/
+	public function get_debug_state(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		graph_for(*args, **kwargs) -> torch._C.Graph
 	**/
 	public function graph_for(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -381,6 +428,26 @@ package torch.jit;
 	**/
 	public function modules():Dynamic;
 	/**
+		Returns an iterator over module buffers, yielding both the
+		name of the buffer as well as the buffer itself.
+		
+		Args:
+		    prefix (str): prefix to prepend to all buffer names.
+		    recurse (bool): if True, then yields buffers of this module
+		        and all submodules. Otherwise, yields only buffers that
+		        are direct members of this module.
+		
+		Yields:
+		    (string, torch.Tensor): Tuple containing the name and buffer
+		
+		Example::
+		
+		    >>> for name, buf in self.named_buffers():
+		    >>>    if name in ['running_var']:
+		    >>>        print(buf.size())
+	**/
+	public function named_buffers(?prefix:Dynamic, ?recurse:Dynamic):Dynamic;
+	/**
 		Returns an iterator over immediate children modules, yielding both
 		the name of the module as well as the module itself.
 		
@@ -421,7 +488,13 @@ package torch.jit;
 	public function named_modules(?memo:Dynamic, ?prefix:Dynamic):Dynamic;
 	/**
 		Returns an iterator over module parameters, yielding both the
-		name of the parameter as well as the parameter itself
+		name of the parameter as well as the parameter itself.
+		
+		Args:
+		    prefix (str): prefix to prepend to all parameter names.
+		    recurse (bool): if True, then yields parameters of this module
+		        and all submodules. Otherwise, yields only parameters that
+		        are direct members of this module.
 		
 		Yields:
 		    (string, Parameter): Tuple containing the name and parameter
@@ -432,11 +505,16 @@ package torch.jit;
 		    >>>    if name in ['bias']:
 		    >>>        print(param.size())
 	**/
-	public function named_parameters(?memo:Dynamic, ?prefix:Dynamic):Dynamic;
+	public function named_parameters(?prefix:Dynamic, ?recurse:Dynamic):Dynamic;
 	/**
 		Returns an iterator over module parameters.
 		
 		This is typically passed to an optimizer.
+		
+		Args:
+		    recurse (bool): if True, then yields parameters of this module
+		        and all submodules. Otherwise, yields only parameters that
+		        are direct members of this module.
 		
 		Yields:
 		    Parameter: module parameter
@@ -448,7 +526,7 @@ package torch.jit;
 		    <class 'torch.FloatTensor'> (20L,)
 		    <class 'torch.FloatTensor'> (20L, 1L, 5L, 5L)
 	**/
-	public function parameters():Dynamic;
+	public function parameters(?recurse:Dynamic):Dynamic;
 	public function register_backward_hook(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Adds a persistent buffer to the module.
@@ -482,6 +560,14 @@ package torch.jit;
 		    parameter (Parameter): parameter to be added to the module.
 	**/
 	public function register_parameter(name:Dynamic, param:Dynamic):Dynamic;
+	/**
+		save(self: torch._C.ScriptModule, arg0: str) -> None
+	**/
+	public function save(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		save_to_buffer(self: torch._C.ScriptModule) -> bytes
+	**/
+	public function save_to_buffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function share_memory():Dynamic;
 	/**
 		Returns a dictionary containing a whole state of the module.
@@ -500,7 +586,18 @@ package torch.jit;
 	**/
 	public function state_dict(?destination:Dynamic, ?prefix:Dynamic, ?keep_vars:Dynamic):Dynamic;
 	public function to(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function train(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Sets the module in training mode.
+		
+		This has any effect only on certain modules. See documentations of
+		particular modules for details of their behaviors in training/evaluation
+		mode, if they are affected, e.g. :class:`Dropout`, :class:`BatchNorm`,
+		etc.
+		
+		Returns:
+		    Module: self
+	**/
+	public function train(?mode:Dynamic):Dynamic;
 	/**
 		Casts all parameters and buffers to :attr:`dst_type`.
 		

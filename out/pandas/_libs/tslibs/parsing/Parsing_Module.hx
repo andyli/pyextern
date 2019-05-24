@@ -3,14 +3,15 @@ package pandas._libs.tslibs.parsing;
 @:pythonImport("pandas._libs.tslibs.parsing") extern class Parsing_Module {
 	static public var DEFAULTPARSER : Dynamic;
 	static public var MONTH_NUMBERS : Dynamic;
-	static public var NAT_SENTINEL : Dynamic;
-	static public function _DATEUTIL_LEXER_SPLIT(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var NaT : Dynamic;
+	static public function _DATEUTIL_LEXER_SPLIT(s:Dynamic):Dynamic;
 	static public var _DEFAULT_DATETIME : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	static public function _does_string_look_like_datetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -20,18 +21,7 @@ package pandas._libs.tslibs.parsing;
 		but must be consistent.  Leading 0s in dates and times are optional.
 	**/
 	static public function _format_is_iso(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Return starting month of given freq, default is December.
-		
-		Example
-		-------
-		>>> _get_rule_month('D')
-		'DEC'
-		
-		>>> _get_rule_month('A-JAN')
-		'JAN'
-	**/
-	static public function _get_rule_month(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var _get_option : Dynamic;
 	/**
 		Guess the datetime format of a given datetime string.
 		
@@ -55,11 +45,6 @@ package pandas._libs.tslibs.parsing;
 		ret : datetime format string (for `strftime` or `strptime`)
 	**/
 	static public function _guess_datetime_format(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _lexer_split_from_str(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		lifted from dateutil to get resolution
-	**/
-	static public function dateutil_parse(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Parse a string in one of the supported formats, using the
 		``parserinfo`` parameters.
@@ -154,6 +139,12 @@ package pandas._libs.tslibs.parsing;
 		    your system.
 	**/
 	static public function du_parse(timestr:Dynamic, ?parserinfo:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Defer import of get_option to break an import cycle that caused
+		significant performance degradation in Period construction. See
+		GH#24118 for details
+	**/
+	static public function get_option(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var nat_strings : Dynamic;
 	/**
 		parse datetime string, only returns datetime.
@@ -164,14 +155,6 @@ package pandas._libs.tslibs.parsing;
 		datetime
 	**/
 	static public function parse_datetime_string(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		parse datetime string, only returns datetime
-		
-		Returns
-		-------
-		datetime
-	**/
-	static public function parse_datetime_string_with_reso(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Try hard to parse datetime string, leveraging dateutil plus some extra
 		goodies like quarter recognition.

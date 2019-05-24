@@ -10,10 +10,16 @@ package numpy.lib.twodim_base;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _diag_dispatcher(v:Dynamic, ?k:Dynamic):Dynamic;
+	static public function _flip_dispatcher(m:Dynamic):Dynamic;
+	static public function _histogram2d_dispatcher(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?density:Dynamic):Dynamic;
 	/**
 		get small int that fits the range 
 	**/
 	static public function _min_int(low:Dynamic, high:Dynamic):Dynamic;
+	static public function _trilu_dispatcher(m:Dynamic, ?k:Dynamic):Dynamic;
+	static public function _trilu_indices_form_dispatcher(arr:Dynamic, ?k:Dynamic):Dynamic;
+	static public function _vander_dispatcher(x:Dynamic, ?N:Dynamic, ?increasing:Dynamic):Dynamic;
 	/**
 		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -77,11 +83,10 @@ package numpy.lib.twodim_base;
 		Values are generated within the half-open interval ``[start, stop)``
 		(in other words, the interval including `start` but excluding `stop`).
 		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
+		`range` function, but returns an ndarray rather than a list.
 		
 		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
+		be consistent.  It is better to use `numpy.linspace` for these cases.
 		
 		Parameters
 		----------
@@ -129,6 +134,7 @@ package numpy.lib.twodim_base;
 		array([3, 5])
 	**/
 	static public function arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	/**
 		Convert the input to an ndarray, but pass ndarray subclasses through.
 		
@@ -739,7 +745,7 @@ package numpy.lib.twodim_base;
 		
 		Examples
 		--------
-		>>> import matplotlib as mpl
+		>>> from matplotlib.image import NonUniformImage
 		>>> import matplotlib.pyplot as plt
 		
 		Construct a 2-D histogram with variable bin width. First define the bin
@@ -774,7 +780,7 @@ package numpy.lib.twodim_base;
 		
 		>>> ax = fig.add_subplot(133, title='NonUniformImage: interpolated',
 		...         aspect='equal', xlim=xedges[[0, -1]], ylim=yedges[[0, -1]])
-		>>> im = mpl.image.NonUniformImage(ax, interpolation='bilinear')
+		>>> im = NonUniformImage(ax, interpolation='bilinear')
 		>>> xcenters = (xedges[:-1] + xedges[1:]) / 2
 		>>> ycenters = (yedges[:-1] + yedges[1:]) / 2
 		>>> im.set_data(xcenters, ycenters, H)
@@ -873,8 +879,7 @@ package numpy.lib.twodim_base;
 		Returns
 		-------
 		y : ndarray
-		    The product of `x1` and `x2`, element-wise. Returns a scalar if
-		    both `x1` and `x2` are scalars.
+		    The product of `x1` and `x2`, element-wise.
 		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
@@ -934,16 +939,16 @@ package numpy.lib.twodim_base;
 		
 		Examples
 		--------
-		>>> x = np.array([[1,0,0], [0,2,0], [1,1,0]])
+		>>> x = np.array([[3, 0, 0], [0, 4, 0], [5, 6, 0]])
 		>>> x
-		array([[1, 0, 0],
-		       [0, 2, 0],
-		       [1, 1, 0]])
+		array([[3, 0, 0],
+		       [0, 4, 0],
+		       [5, 6, 0]])
 		>>> np.nonzero(x)
 		(array([0, 1, 2, 2]), array([0, 1, 0, 1]))
 		
 		>>> x[np.nonzero(x)]
-		array([1, 2, 1, 1])
+		array([3, 4, 5, 6])
 		>>> np.transpose(np.nonzero(x))
 		array([[0, 0],
 		       [1, 1],
@@ -955,7 +960,7 @@ package numpy.lib.twodim_base;
 		boolean array and since False is interpreted as 0, np.nonzero(a > 3)
 		yields the indices of the `a` where the condition is true.
 		
-		>>> a = np.array([[1,2,3],[4,5,6],[7,8,9]])
+		>>> a = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 		>>> a > 3
 		array([[False, False, False],
 		       [ True,  True,  True],
@@ -963,7 +968,14 @@ package numpy.lib.twodim_base;
 		>>> np.nonzero(a > 3)
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 		
-		The ``nonzero`` method of the boolean array can also be called.
+		Using this result to index `a` is equivalent to using the mask directly:
+		
+		>>> a[np.nonzero(a > 3)]
+		array([4, 5, 6, 7, 8, 9])
+		>>> a[a > 3]  # prefer this spelling
+		array([4, 5, 6, 7, 8, 9])
+		
+		``nonzero`` can also be called as a method of the array.
 		
 		>>> (a > 3).nonzero()
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
@@ -1074,6 +1086,18 @@ package numpy.lib.twodim_base;
 		dtype('S4')
 	**/
 	static public function promote_types(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
 	/**
 		Permute the dimensions of an array.
 		
@@ -1483,70 +1507,72 @@ package numpy.lib.twodim_base;
 	/**
 		where(condition, [x, y])
 		
-		Return elements, either from `x` or `y`, depending on `condition`.
+		Return elements chosen from `x` or `y` depending on `condition`.
 		
-		If only `condition` is given, return ``condition.nonzero()``.
+		.. note::
+		    When only `condition` is provided, this function is a shorthand for
+		    ``np.asarray(condition).nonzero()``. Using `nonzero` directly should be
+		    preferred, as it behaves correctly for subclasses. The rest of this
+		    documentation covers only the case where all three arguments are
+		    provided.
 		
 		Parameters
 		----------
 		condition : array_like, bool
-		    When True, yield `x`, otherwise yield `y`.
-		x, y : array_like, optional
+		    Where True, yield `x`, otherwise yield `y`.
+		x, y : array_like
 		    Values from which to choose. `x`, `y` and `condition` need to be
 		    broadcastable to some shape.
 		
 		Returns
 		-------
-		out : ndarray or tuple of ndarrays
-		    If both `x` and `y` are specified, the output array contains
-		    elements of `x` where `condition` is True, and elements from
-		    `y` elsewhere.
-		
-		    If only `condition` is given, return the tuple
-		    ``condition.nonzero()``, the indices where `condition` is True.
+		out : ndarray
+		    An array with elements from `x` where `condition` is True, and elements
+		    from `y` elsewhere.
 		
 		See Also
 		--------
-		nonzero, choose
+		choose
+		nonzero : The function that is called when x and y are omitted
 		
 		Notes
 		-----
-		If `x` and `y` are given and input arrays are 1-D, `where` is
-		equivalent to::
+		If all the arrays are 1-D, `where` is equivalent to::
 		
-		    [xv if c else yv for (c,xv,yv) in zip(condition,x,y)]
+		    [xv if c else yv
+		     for c, xv, yv in zip(condition, x, y)]
 		
 		Examples
 		--------
+		>>> a = np.arange(10)
+		>>> a
+		array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+		>>> np.where(a < 5, a, 10*a)
+		array([ 0,  1,  2,  3,  4, 50, 60, 70, 80, 90])
+		
+		This can be used on multidimensional arrays too:
+		
 		>>> np.where([[True, False], [True, True]],
 		...          [[1, 2], [3, 4]],
 		...          [[9, 8], [7, 6]])
 		array([[1, 8],
 		       [3, 4]])
 		
-		>>> np.where([[0, 1], [1, 0]])
-		(array([0, 1]), array([1, 0]))
+		The shapes of x, y, and the condition are broadcast together:
 		
-		>>> x = np.arange(9.).reshape(3, 3)
-		>>> np.where( x > 5 )
-		(array([2, 2, 2]), array([0, 1, 2]))
-		>>> x[np.where( x > 3.0 )]               # Note: result is 1D.
-		array([ 4.,  5.,  6.,  7.,  8.])
-		>>> np.where(x < 5, x, -1)               # Note: broadcasting.
-		array([[ 0.,  1.,  2.],
-		       [ 3.,  4., -1.],
-		       [-1., -1., -1.]])
+		>>> x, y = np.ogrid[:3, :4]
+		>>> np.where(x < y, x, 10 + y)  # both x and 10+y are broadcast
+		array([[10,  0,  0,  0],
+		       [10, 11,  1,  1],
+		       [10, 11, 12,  2]])
 		
-		Find the indices of elements of `x` that are in `goodvalues`.
-		
-		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.isin(x, goodvalues)
-		>>> ix
-		array([[False, False, False],
-		       [ True,  True, False],
-		       [False,  True, False]])
-		>>> np.where(ix)
-		(array([1, 1, 2]), array([0, 1, 1]))
+		>>> a = np.array([[0, 1, 2],
+		...               [0, 2, 4],
+		...               [0, 3, 6]])
+		>>> np.where(a < 4, a, -1)  # -1 is broadcast
+		array([[ 0,  1,  2],
+		       [ 0,  2, -1],
+		       [ 0,  3, -1]])
 	**/
 	static public function where(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

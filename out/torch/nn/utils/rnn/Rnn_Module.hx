@@ -9,8 +9,6 @@ package torch.nn.utils.rnn;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _symbolic_pack_padded_sequence(g:Dynamic, input:Dynamic, lengths:Dynamic, ?batch_first:Dynamic, ?padding_value:Dynamic):Dynamic;
-	static public function _symbolic_pad_packed_sequence(g:Dynamic, input:Dynamic, ?batch_first:Dynamic, ?padding_value:Dynamic, ?total_length:Dynamic):Dynamic;
 	/**
 		Returns a new subclass of tuple with named fields.
 		
@@ -140,10 +138,9 @@ package torch.nn.utils.rnn;
 		    torch.Size([25, 3, 300])
 		
 		Note:
-		    This function returns a Tensor of size ``T x B x *`` or ``B x T x *`` where `T` is the
-		        length of the longest sequence.
-		    Function assumes trailing dimensions and type of all the Tensors
-		        in sequences are same.
+		    This function returns a Tensor of size ``T x B x *`` or ``B x T x *``
+		    where `T` is the length of the longest sequence. This function assumes
+		    trailing dimensions and type of all the Tensors in sequences are same.
 		
 		Arguments:
 		    sequences (list[Tensor]): list of variable length sequences.
@@ -152,7 +149,7 @@ package torch.nn.utils.rnn;
 		    padding_value (float, optional): value for padded elements. Default: 0.
 		
 		Returns:
-		    Tensor of size ``T x B x *`` if batch_first is False
+		    Tensor of size ``T x B x *`` if :attr:`batch_first` is ``False``.
 		    Tensor of size ``B x T x *`` otherwise
 	**/
 	static public function pad_sequence(sequences:Dynamic, ?batch_first:Dynamic, ?padding_value:Dynamic):Dynamic;

@@ -66,6 +66,14 @@ package numpy.lib.format;
 	static public var absolute_import : Dynamic;
 	static public function asbytes(s:Dynamic):Dynamic;
 	static public function asstr(s:Dynamic):Dynamic;
+	/**
+		descr may be stored as dtype.descr, which is a list of
+		(name, format, [shape]) tuples. Offsets are not explicitly saved, rather
+		empty fields with name,format == '', '|Vn' are added as padding.
+		
+		This function reverses the process, eliminating the empty padding fields.
+	**/
+	static public function descr_to_dtype(descr:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Get a serializable descriptor from the dtype.
@@ -128,7 +136,7 @@ package numpy.lib.format;
 		
 		Parameters
 		----------
-		filename : str
+		filename : str or path-like
 		    The name of the file on disk.  This may *not* be a file-like
 		    object.
 		mode : str, optional
@@ -169,6 +177,14 @@ package numpy.lib.format;
 		memmap
 	**/
 	static public function open_memmap(filename:Dynamic, ?mode:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?fortran_order:Dynamic, ?version:Dynamic):Dynamic;
+	/**
+		Return the file system path representation of the object.
+		
+		If the object is str or bytes, then allow it to pass through as-is. If the
+		object defines __fspath__(), then return the result of that method. All other
+		types raise a TypeError.
+	**/
+	static public function os_fspath(path:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Read an array from an NPY file.
@@ -179,7 +195,11 @@ package numpy.lib.format;
 		    If this is not a real file object, then this may take extra memory
 		    and time.
 		allow_pickle : bool, optional
-		    Whether to allow reading pickled data. Default: True
+		    Whether to allow writing pickled data. Default: False
+		
+		    .. versionchanged:: 1.16.3
+		        Made default False in response to CVE-2019-6446.
+		
 		pickle_kwargs : dict
 		    Additional keyword arguments to pass to pickle.load. These are only
 		    useful when loading object arrays saved on Python 2 when using

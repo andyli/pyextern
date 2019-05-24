@@ -30,11 +30,11 @@ package torch.distributions.bernoulli;
 		        on :attr:`size_average`. When :attr:`reduce` is ``False``, returns a loss per
 		        batch element instead and ignores :attr:`size_average`. Default: ``True``
 		    reduction (string, optional): Specifies the reduction to apply to the output:
-		        'none' | 'elementwise_mean' | 'sum'. 'none': no reduction will be applied,
-		        'elementwise_mean': the sum of the output will be divided by the number of
+		        'none' | 'mean' | 'sum'. 'none': no reduction will be applied,
+		        'mean': the sum of the output will be divided by the number of
 		        elements in the output, 'sum': the output will be summed. Note: :attr:`size_average`
 		        and :attr:`reduce` are in the process of being deprecated, and in the meantime,
-		        specifying either of those two args will override :attr:`reduction`. Default: 'elementwise_mean'
+		        specifying either of those two args will override :attr:`reduction`. Default: 'mean'
 		    pos_weight (Tensor, optional): a weight of positive examples.
 		            Must be a vector with length equal to the number of classes.
 		
@@ -49,12 +49,10 @@ package torch.distributions.bernoulli;
 	/**
 		Given a list of values (possibly containing numbers), returns a list where each
 		value is broadcasted based on the following rules:
-		  - `torch.*Tensor` instances are broadcasted as per the `broadcasting rules
-		    <http://pytorch.org/docs/master/notes/broadcasting.html>`_
+		  - `torch.*Tensor` instances are broadcasted as per :ref:`_broadcasting-semantics`.
 		  - numbers.Number instances (scalars) are upcast to tensors having
 		    the same size and type as the first tensor passed to `values`.  If all the
-		    values are scalars, then they are upcasted to Tensors having size
-		    `(1,)`.
+		    values are scalars, then they are upcasted to scalar Tensors.
 		
 		Args:
 		    values (list of `numbers.Number` or `torch.*Tensor`)

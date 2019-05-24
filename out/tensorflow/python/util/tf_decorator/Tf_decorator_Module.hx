@@ -29,6 +29,37 @@ package tensorflow.python.util.tf_decorator;
 	static public function make_decorator(target:Dynamic, decorator_func:Dynamic, ?decorator_name:Dynamic, ?decorator_doc:Dynamic, ?decorator_argspec:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
+		Injects a new target into a function built by make_decorator.
+		
+		This function allows replacing a function wrapped by `decorator_func`,
+		assuming the decorator that wraps the function is written as described below.
+		
+		The decorator function must use `<decorator name>.__wrapped__` instead of the
+		wrapped function that is normally used:
+		
+		Example:
+		
+		    # Instead of this:
+		    def simple_parametrized_wrapper(*args, **kwds):
+		      return wrapped_fn(*args, **kwds)
+		
+		    tf_decorator.make_decorator(simple_parametrized_wrapper, wrapped_fn)
+		
+		    # Write this:
+		    def simple_parametrized_wrapper(*args, **kwds):
+		      return simple_parametrized_wrapper.__wrapped__(*args, **kwds)
+		
+		    tf_decorator.make_decorator(simple_parametrized_wrapper, wrapped_fn)
+		
+		Note that this process modifies decorator_func.
+		
+		Args:
+		  decorator_func: Callable returned by `wrap`.
+		  previous_target: Callable that needs to be replaced.
+		  new_target: Callable to replace previous_target with.
+	**/
+	static public function rewrap(decorator_func:Dynamic, previous_target:Dynamic, new_target:Dynamic):Dynamic;
+	/**
 		Unwraps an object into a list of TFDecorators and a final target.
 		
 		Args:

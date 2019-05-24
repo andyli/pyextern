@@ -143,7 +143,7 @@ package matplotlib.transforms;
 		
 		    (A + B) - (B)^-1 == A
 		
-		    # similarly, when B contains tree A, we can avoid decending A at
+		    # similarly, when B contains tree A, we can avoid descending A at
 		    # all, basically:
 		    A - (A + B) == ((B + A) - A).inverted() or B^-1
 		
@@ -163,12 +163,6 @@ package matplotlib.transforms;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	/**
-		Concatenates two transformation matrices (represented as numpy
-		arrays) together.
-	**/
-	static public function _concat(a:Dynamic, b:Dynamic):Dynamic;
-	public function _get_is_separable():Dynamic;
 	static public var _gid : Dynamic;
 	/**
 		Called by :meth:`invalidate` and subsequently ascends the transform
@@ -251,6 +245,13 @@ package matplotlib.transforms;
 	public function inverted():Dynamic;
 	static public var is_affine : Dynamic;
 	static public var is_bbox : Dynamic;
+	/**
+		bool(x) -> bool
+		
+		Returns True when the argument x is true, False otherwise.
+		The builtins True and False are the only two instances of the class bool.
+		The class bool is a subclass of the class int, and cannot be subclassed.
+	**/
 	public var is_separable : Dynamic;
 	/**
 		(staticmethod) Create a new transformation matrix as a 3x3
@@ -271,7 +272,7 @@ package matplotlib.transforms;
 	**/
 	public function set_children(?children:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Return the values of the matrix as a sequence (a,b,c,d,e,f)
+		Return the values of the matrix as an ``(a, b, c, d, e, f)`` tuple.
 	**/
 	public function to_values():Dynamic;
 	/**
@@ -303,28 +304,26 @@ package matplotlib.transforms;
 	**/
 	public function transform_affine(points:Dynamic):Dynamic;
 	/**
-		Performs transformation on a set of angles anchored at
-		specific locations.
+		Transforms a set of angles anchored at specific locations.
 		
-		The *angles* must be a column vector (i.e., numpy array).
+		Parameters
+		----------
+		angles : (N,) array-like
+		    The angles to transform.
+		pts : (N, 2) array-like
+		    The points where the angles are anchored.
+		radians : bool, default: False
+		    Whether *angles* are radians or degrees.
+		pushoff : float
+		    For each point in *pts* and angle in *angles*, the transformed
+		    angle is computed by transforming a segment of length *pushoff*
+		    starting at that point and making that angle relative to the
+		    horizontal axis, and measuring the angle between the horizontal
+		    axis and the transformed segment.
 		
-		The *pts* must be a two-column numpy array of x,y positions
-		(angle transforms currently only work in 2D).  This array must
-		have the same number of rows as *angles*.
-		
-		*radians* indicates whether or not input angles are given in
-		 radians (True) or degrees (False; the default).
-		
-		*pushoff* is the distance to move away from *pts* for
-		 determining transformed angles (see discussion of method
-		 below).
-		
-		The transformed angles are returned in an array with the same
-		size as *angles*.
-		
-		The generic version of this method uses a very generic
-		algorithm that transforms *pts*, as well as locations very
-		close to *pts*, to find the angle in the transformed system.
+		Returns
+		-------
+		transformed_angles : (N,) array
 	**/
 	public function transform_angles(angles:Dynamic, pts:Dynamic, ?radians:Dynamic, ?pushoff:Dynamic):Dynamic;
 	/**

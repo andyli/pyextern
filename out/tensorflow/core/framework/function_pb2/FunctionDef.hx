@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.framework.function_pb2;
 @:pythonImport("tensorflow.core.framework.function_pb2", "FunctionDef") extern class FunctionDef {
-	static public var ATTR_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -67,12 +66,10 @@ package tensorflow.core.framework.function_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NODE_DEF_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var RET_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -81,7 +78,6 @@ package tensorflow.core.framework.function_pb2;
 		A ProtocolMessage
 	**/
 	public function RetEntry(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SIGNATURE_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -94,6 +90,10 @@ package tensorflow.core.framework.function_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -259,4 +259,20 @@ package tensorflow.core.framework.function_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.FunctionDef.attr
+	**/
+	public var attr : Dynamic;
+	/**
+		Field tensorflow.FunctionDef.node_def
+	**/
+	public var node_def : Dynamic;
+	/**
+		Field tensorflow.FunctionDef.ret
+	**/
+	public var ret : Dynamic;
+	/**
+		Field tensorflow.FunctionDef.signature
+	**/
+	public var signature : Dynamic;
 }

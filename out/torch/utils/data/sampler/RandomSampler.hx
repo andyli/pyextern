@@ -41,11 +41,11 @@ package torch.utils.data.sampler;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(data_source:Dynamic):Dynamic;
+	public function ___init__(data_source:Dynamic, ?replacement:Dynamic, ?num_samples:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(data_source:Dynamic):Void;
+	public function new(data_source:Dynamic, ?replacement:Dynamic, ?num_samples:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		

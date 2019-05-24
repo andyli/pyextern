@@ -18,7 +18,7 @@ package tensorflow.python.ops.boosted_trees_ops;
 		
 		Args:
 		  float_values: A list of `Tensor` objects with type `float32`.
-		    float; List of Rank 2 Tensor each containing float values for a single feature.
+		    float; List of Rank 1 Tensor each containing float values for a single feature.
 		  bucket_boundaries: A list with the same length as `float_values` of `Tensor` objects with type `float32`.
 		    float; List of Rank 1 Tensors each containing the bucket boundaries for a single
 		    feature.
@@ -145,13 +145,28 @@ package tensorflow.python.ops.boosted_trees_ops;
 	**/
 	static public function get_bucket_boundaries(quantile_stream_resource_handle:Dynamic, num_features:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Checks whether a quantile stream has been initialized.
+		
+		An Op that checks if quantile stream resource is initialized.
+		
+		Args:
+		  quantile_stream_resource_handle: A `Tensor` of type `resource`.
+		    resource; The reference to quantile stream resource handle.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `bool`.
+	**/
+	static public function is_quantile_resource_initialized(quantile_stream_resource_handle:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Makes the summary of quantiles for the batch.
 		
-		An op that takes a list of tensors and outputs the quantile summaries for each tensor.
+		An op that takes a list of tensors (one tensor per feature) and outputs the
+		quantile summaries for each tensor.
 		
 		Args:
 		  float_values: A list of `Tensor` objects with type `float32`.
-		    float; List of Rank 2 Tensors each containing values for a single feature.
+		    float; List of Rank 1 Tensors each containing values for a single feature.
 		  example_weights: A `Tensor` of type `float32`.
 		    float; Rank 1 Tensor with weights per instance.
 		  epsilon: A `Tensor` of type `float32`.
@@ -248,6 +263,34 @@ package tensorflow.python.ops.boosted_trees_ops;
 		  The created Operation.
 	**/
 	static public function quantile_flush(quantile_stream_resource_handle:Dynamic, num_buckets:Dynamic, ?generate_quantiles:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Deserialize bucket boundaries and ready flag into current QuantileAccumulator.
+		
+		An op that deserializes bucket boundaries and are boundaries ready flag into current QuantileAccumulator.
+		
+		Args:
+		  quantile_stream_resource_handle: A `Tensor` of type `resource`.
+		    resource handle referring to a QuantileStreamResource.
+		  bucket_boundaries: A list of at least 1 `Tensor` objects with type `float32`.
+		    float; List of Rank 1 Tensors each containing the bucket boundaries for a feature.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The created Operation.
+	**/
+	static public function quantile_resource_deserialize(quantile_stream_resource_handle:Dynamic, bucket_boundaries:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Creates a handle to a BoostedTreesQuantileStreamResource.
+		
+		Args:
+		  container: An optional `string`. Defaults to `""`.
+		  shared_name: An optional `string`. Defaults to `""`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `resource`.
+	**/
+	static public function quantile_resource_handle_op(?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Runs multiple additive regression ensemble predictors on input instances and
 		

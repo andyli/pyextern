@@ -11,7 +11,11 @@ package tensorflow.python.framework.graph_util;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Replaces all the variables in a graph with constants of the same values.
+		Replaces all the variables in a graph with constants of the same values. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.compat.v1.graph_util.convert_variables_to_constants
 		
 		If you have a trained graph containing Variable ops, it can be convenient to
 		convert them all to Const ops holding the same values. This makes it possible
@@ -33,7 +37,11 @@ package tensorflow.python.framework.graph_util;
 	static public function convert_variables_to_constants(sess:Dynamic, input_graph_def:Dynamic, output_node_names:Dynamic, ?variable_names_whitelist:Dynamic, ?variable_names_blacklist:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Extract the subgraph that can reach any of the nodes in 'dest_nodes'.
+		Extract the subgraph that can reach any of the nodes in 'dest_nodes'. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.compat.v1.graph_util.extract_sub_graph
 		
 		Args:
 		  graph_def: A graph_pb2.GraphDef proto.
@@ -46,7 +54,11 @@ package tensorflow.python.framework.graph_util;
 	**/
 	static public function extract_sub_graph(graph_def:Dynamic, dest_nodes:Dynamic):Dynamic;
 	/**
-		Returns True if the given node_def must run on CPU, otherwise False.
+		Returns True if the given node_def must run on CPU, otherwise False. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.compat.v1.graph_util.must_run_on_cpu
 		
 		Args:
 		  node: The node to be assigned to a device. Could be either an ops.Operation
@@ -60,7 +72,11 @@ package tensorflow.python.framework.graph_util;
 	static public function must_run_on_cpu(node:Dynamic, ?pin_variables_on_cpu:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Prunes out nodes that aren't needed for inference.
+		Prunes out nodes that aren't needed for inference. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.compat.v1.graph_util.remove_training_nodes
 		
 		There are nodes like Identity and CheckNumerics that are only useful
 		during training, and can be removed in graphs that will be used for
@@ -80,7 +96,11 @@ package tensorflow.python.framework.graph_util;
 	**/
 	static public function remove_training_nodes(input_graph:Dynamic, ?protected_nodes:Dynamic):Dynamic;
 	/**
-		Convenience function to get a shape from a NodeDef's input string.
+		Convenience function to get a shape from a NodeDef's input string. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.compat.v1.graph_util.remove_training_nodes
 	**/
 	static public function tensor_shape_from_node_def_name(graph:Dynamic, input_name:Dynamic):Dynamic;
 }

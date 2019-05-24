@@ -11,20 +11,6 @@ package pandas.io.formats.csvs;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Return the argument with an initial component of ~ or ~user
-		   replaced by that user's home directory.
-		
-		Parameters
-		----------
-		filepath_or_buffer : object to be converted if possible
-		
-		Returns
-		-------
-		expanded_filepath_or_buffer : an expanded filepath or the
-		                              input if not expandable
-	**/
-	static public function _expand_user(filepath_or_buffer:Dynamic):Dynamic;
-	/**
 		Get file handle for given path/buffer and mode.
 		
 		Parameters
@@ -34,8 +20,10 @@ package pandas.io.formats.csvs;
 		mode : str
 		    mode to open path_or_buf with
 		encoding : str or None
-		compression : str or None
-		    Supported compression protocols are gzip, bz2, zip, and xz
+		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default None
+		    If 'infer' and `filepath_or_buffer` is path-like, then detect
+		    compression from the following extensions: '.gz', '.bz2', '.zip',
+		    or '.xz' (otherwise no compression).
 		memory_map : boolean, default False
 		    See parsers._parser_params for more information.
 		is_text : boolean, default True
@@ -51,32 +39,53 @@ package pandas.io.formats.csvs;
 	**/
 	static public function _get_handle(path_or_buf:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?memory_map:Dynamic, ?is_text:Dynamic):Dynamic;
 	/**
-		Attempt to convert a path-like object to a string.
+		Get the compression method for filepath_or_buffer. If compression='infer',
+		the inferred compression method is returned. Otherwise, the input
+		compression method is returned unchanged, unless it's invalid, in which
+		case an error is raised.
 		
 		Parameters
 		----------
-		filepath_or_buffer : object to be converted
+		filepath_or_buffer :
+		    a path (str) or buffer
+		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}
+		    If 'infer' and `filepath_or_buffer` is path-like, then detect
+		    compression from the following extensions: '.gz', '.bz2', '.zip',
+		    or '.xz' (otherwise no compression).
 		
 		Returns
 		-------
-		str_filepath_or_buffer : maybe a string version of the object
+		string or None :
+		    compression method
 		
-		Notes
-		-----
-		Objects supporting the fspath protocol (python 3.6+) are coerced
-		according to its __fspath__ method.
-		
-		For backwards compatibility with older pythons, pathlib.Path and
-		py.path objects are specially coerced.
-		
-		Any other object is passed through unchanged, which includes bytes,
-		strings, buffers, or anything else that's not even path-like.
+		Raises
+		------
+		ValueError on invalid compression specified
 	**/
-	static public function _stringify_path(filepath_or_buffer:Dynamic):Dynamic;
+	static public function _infer_compression(filepath_or_buffer:Dynamic, compression:Dynamic):Dynamic;
+	/**
+		If the filepath_or_buffer is a url, translate and return the buffer.
+		Otherwise passthrough.
+		
+		Parameters
+		----------
+		filepath_or_buffer : a url, filepath (str, py.path.local or pathlib.Path),
+		                     or buffer
+		encoding : the encoding to use to decode py3 bytes, default is 'utf-8'
+		mode : str, optional
+		
+		Returns
+		-------
+		tuple of ({a filepath_ or buffer or S3File instance},
+		          encoding, str,
+		          compression, str,
+		          should_close, bool)
+	**/
+	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -94,8 +103,8 @@ package pandas.io.formats.csvs;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		

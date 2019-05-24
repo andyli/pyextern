@@ -194,7 +194,7 @@ package numpy.polynomial.chebyshev;
 		>>> p = c.convert(kind=P.Polynomial)
 		>>> p
 		Polynomial([ -2.,  -8.,   4.,  12.], [-1.,  1.])
-		>>> P.cheb2poly(range(4))
+		>>> P.chebyshev.cheb2poly(range(4))
 		array([ -2.,  -8.,   4.,  12.])
 	**/
 	static public function cheb2poly(c:Dynamic):numpy.Ndarray;
@@ -218,7 +218,7 @@ package numpy.polynomial.chebyshev;
 		
 		See Also
 		--------
-		chebsub, chebmul, chebdiv, chebpow
+		chebsub, chebmulx, chebmul, chebdiv, chebpow
 		
 		Notes
 		-----
@@ -343,7 +343,7 @@ package numpy.polynomial.chebyshev;
 		
 		See Also
 		--------
-		chebadd, chebsub, chebmul, chebpow
+		chebadd, chebsub, chemulx, chebmul, chebpow
 		
 		Notes
 		-----
@@ -479,7 +479,7 @@ package numpy.polynomial.chebyshev;
 		References
 		----------
 		.. [1] Wikipedia, "Curve fitting",
-		       http://en.wikipedia.org/wiki/Curve_fitting
+		       https://en.wikipedia.org/wiki/Curve_fitting
 		
 		Examples
 		--------
@@ -849,7 +849,7 @@ package numpy.polynomial.chebyshev;
 		
 		See Also
 		--------
-		chebadd, chebsub, chebdiv, chebpow
+		chebadd, chebsub, chebmulx, chebdiv, chebpow
 		
 		Notes
 		-----
@@ -890,6 +890,12 @@ package numpy.polynomial.chebyshev;
 		-----
 		
 		.. versionadded:: 1.5.0
+		
+		Examples
+		--------
+		>>> from numpy.polynomial import chebyshev as C
+		>>> C.chebmulx([1,2,3])
+		array([ 1.,  2.5,  3.,  1.5,  2.])
 	**/
 	static public function chebmulx(c:Dynamic):numpy.Ndarray;
 	static public var chebone : Dynamic;
@@ -918,10 +924,13 @@ package numpy.polynomial.chebyshev;
 		
 		See Also
 		--------
-		chebadd, chebsub, chebmul, chebdiv
+		chebadd, chebsub, chebmulx, chebmul, chebdiv
 		
 		Examples
 		--------
+		>>> from numpy.polynomial import chebyshev as C
+		>>> C.chebpow([1, 2, 3, 4], 2)
+		array([15.5, 22. , 16. , 14. , 12.5, 12. ,  8. ])
 	**/
 	static public function chebpow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):numpy.Ndarray;
 	/**
@@ -1034,7 +1043,7 @@ package numpy.polynomial.chebyshev;
 		
 		See Also
 		--------
-		chebadd, chebmul, chebdiv, chebpow
+		chebadd, chebmulx, chebmul, chebdiv, chebpow
 		
 		Notes
 		-----
@@ -1499,7 +1508,7 @@ package numpy.polynomial.chebyshev;
 		>>> c = p.convert(kind=P.Chebyshev)
 		>>> c
 		Chebyshev([ 1.  ,  3.25,  1.  ,  0.75], domain=[-1,  1], window=[-1,  1])
-		>>> P.poly2cheb(range(4))
+		>>> P.chebyshev.poly2cheb(range(4))
 		array([ 1.  ,  3.25,  1.  ,  0.75])
 	**/
 	static public function poly2cheb(pol:Dynamic):numpy.Ndarray;

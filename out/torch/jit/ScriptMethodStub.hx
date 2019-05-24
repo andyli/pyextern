@@ -86,7 +86,7 @@ package torch.jit;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -94,9 +94,9 @@ package torch.jit;
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
 	/**
-		Create new instance of ScriptMethodStub(resolution_callback, ast, original_method)
+		Create new instance of ScriptMethodStub(resolution_callback, def_, original_method)
 	**/
-	static public function __new__(_cls:Dynamic, resolution_callback:Dynamic, ast:Dynamic, original_method:Dynamic):Dynamic;
+	static public function __new__(_cls:Dynamic, resolution_callback:Dynamic, def_:Dynamic, original_method:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -110,7 +110,7 @@ package torch.jit;
 	**/
 	public function __repr__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**
@@ -151,13 +151,13 @@ package torch.jit;
 	static public function _replace(_self:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
 	/**
-		Alias for field number 1
-	**/
-	public var ast : Dynamic;
-	/**
 		T.count(value) -> integer -- return number of occurrences of value
 	**/
 	public function count(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Alias for field number 1
+	**/
+	public var def_ : Dynamic;
 	/**
 		T.index(value, [start, [stop]]) -> integer -- return first index of value.
 		Raises ValueError if the value is not present.

@@ -279,7 +279,7 @@ package scipy.optimize.nonlin;
 		   systems of nonlinear equations\". Mathematisch Instituut,
 		   Universiteit Leiden, The Netherlands (2003).
 		
-		   http://www.math.leidenuniv.nl/scripties/Rotten.pdf
+		   https://web.archive.org/web/20161022015821/http://www.math.leidenuniv.nl/scripties/Rotten.pdf
 	**/
 	static public function broyden1(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?reduction_method:Dynamic, ?max_rank:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -368,7 +368,7 @@ package scipy.optimize.nonlin;
 		   systems of nonlinear equations". Mathematisch Instituut,
 		   Universiteit Leiden, The Netherlands (2003).
 		
-		   http://www.math.leidenuniv.nl/scripties/Rotten.pdf
+		   https://web.archive.org/web/20161022015821/http://www.math.leidenuniv.nl/scripties/Rotten.pdf
 	**/
 	static public function broyden2(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?reduction_method:Dynamic, ?max_rank:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function callable(obj:Dynamic):Dynamic;
@@ -829,7 +829,7 @@ package scipy.optimize.nonlin;
 		Due to the use of iterative matrix inverses, these methods can
 		deal with large nonlinear problems.
 		
-		Scipy's `scipy.sparse.linalg` module offers a selection of Krylov
+		SciPy's `scipy.sparse.linalg` module offers a selection of Krylov
 		solvers to choose from. The default here is `lgmres`, which is a
 		variant of restarted GMRES iteration that reuses some of the
 		information obtained in the previous Newton steps to invert
@@ -924,7 +924,7 @@ package scipy.optimize.nonlin;
 		----------
 		.. [KIM] C. T. Kelley, "Iterative Methods for Linear and Nonlinear
 		   Equations". Society for Industrial and Applied Mathematics. (1995)
-		   http://www.siam.org/books/kelley/fr16/index.php
+		   https://archive.siam.org/books/kelley/fr16/
 	**/
 	static public function nonlin_solve(F:Dynamic, x0:Dynamic, ?jacobian:Dynamic, ?iter:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?full_output:Dynamic, ?raise_exception:Dynamic):Dynamic;
 	/**
@@ -1063,7 +1063,7 @@ package scipy.optimize.nonlin;
 		    Determines what information is to be returned: either both Q and R
 		    ('full', default), only R ('r') or both Q and R but computed in
 		    economy-size ('economic', see Notes). The final option 'raw'
-		    (added in Scipy 0.11) makes the function return two matrices
+		    (added in SciPy 0.11) makes the function return two matrices
 		    (Q, TAU) in the internal format used by LAPACK.
 		pivoting : bool, optional
 		    Whether or not factorization should include pivoting for rank-revealing
@@ -1155,17 +1155,18 @@ package scipy.optimize.nonlin;
 		----------
 		phi : callable phi(alpha)
 		    Function at point `alpha`
-		derphi : callable dphi(alpha)
-		    Derivative `d phi(alpha)/ds`. Returns a scalar.
-		
+		derphi : callable phi'(alpha)
+		    Objective function derivative. Returns a scalar.
 		phi0 : float, optional
-		    Value of `f` at 0
+		    Value of phi at 0
 		old_phi0 : float, optional
-		    Value of `f` at the previous point
+		    Value of phi at previous point
 		derphi0 : float, optional
-		    Value `derphi` at 0
-		c1, c2 : float, optional
-		    Wolfe parameters
+		    Value derphi at 0
+		c1 : float, optional
+		    Parameter for Armijo condition rule.
+		c2 : float, optional
+		    Parameter for curvature condition rule.
 		amax, amin : float, optional
 		    Maximum and minimum step size
 		xtol : float, optional

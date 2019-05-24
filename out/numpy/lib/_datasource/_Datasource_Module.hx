@@ -213,4 +213,16 @@ package numpy.lib._datasource;
 	**/
 	static public function open(path:Dynamic, ?mode:Dynamic, ?destpath:Dynamic, ?encoding:Dynamic, ?newline:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
 }

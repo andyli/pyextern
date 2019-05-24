@@ -5,7 +5,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var COLOR_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -22,7 +21,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEFINED_AT_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		Discards the unknown fields.
@@ -48,7 +46,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ID_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -77,7 +74,6 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SIZE_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -90,6 +86,10 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -255,4 +255,20 @@ package tensorflow.compiler.xla.service.hlo_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.LogicalBufferProto.color
+	**/
+	public var color : Dynamic;
+	/**
+		Field xla.LogicalBufferProto.defined_at
+	**/
+	public var defined_at : Dynamic;
+	/**
+		Field xla.LogicalBufferProto.id
+	**/
+	public var id : Dynamic;
+	/**
+		Field xla.LogicalBufferProto.size
+	**/
+	public var size : Dynamic;
 }

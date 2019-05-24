@@ -155,6 +155,9 @@ package scipy.optimize._lsq.dogbox;
 		----------
 		A : {matrix, sparse matrix, ndarray, LinearOperator}
 		    Matrix A in the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` and ``A^T x`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : array_like, shape (m,)
 		    Vector b in the linear system.
 		damp : float
@@ -247,8 +250,8 @@ package scipy.optimize._lsq.dogbox;
 		.. [1] D. C.-L. Fong and M. A. Saunders,
 		       "LSMR: An iterative algorithm for sparse least-squares problems",
 		       SIAM J. Sci. Comput., vol. 33, pp. 2950-2971, 2011.
-		       http://arxiv.org/abs/1006.0758
-		.. [2] LSMR Software, http://web.stanford.edu/group/SOL/software/lsmr/
+		       https://arxiv.org/abs/1006.0758
+		.. [2] LSMR Software, https://web.stanford.edu/group/SOL/software/lsmr/
 		
 		Examples
 		--------
@@ -590,8 +593,7 @@ package scipy.optimize._lsq.dogbox;
 		Delta : float
 		    New radius.
 		ratio : float
-		    Ratio between actual and predicted reductions. Zero if predicted
-		    reduction is zero.
+		    Ratio between actual and predicted reductions.
 	**/
 	static public function update_tr_radius(Delta:Dynamic, actual_reduction:Dynamic, predicted_reduction:Dynamic, step_norm:Dynamic, bound_hit:Dynamic):Float;
 }

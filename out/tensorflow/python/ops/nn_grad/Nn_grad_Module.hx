@@ -220,6 +220,8 @@ package tensorflow.python.ops.nn_grad;
 	**/
 	static public function _L2LossGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _LRNGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _LeakyReluGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _LeakyReluGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		The gradient for log_softmax.
 		

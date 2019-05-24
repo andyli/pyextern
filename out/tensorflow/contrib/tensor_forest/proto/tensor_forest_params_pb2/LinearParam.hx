@@ -54,8 +54,6 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAX_VAL_FIELD_NUMBER : Dynamic;
-	static public var MIN_VAL_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -72,7 +70,6 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SLOPE_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -86,10 +83,13 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
 	public function WhichOneof(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var Y_INTERCEPT_FIELD_NUMBER : Dynamic;
 	/**
 		Raises TypeError if the caller is not in a _pb2.py file.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tensorforest.LinearParam.max_val
+	**/
+	public var max_val : Dynamic;
+	/**
+		Field tensorflow.tensorforest.LinearParam.min_val
+	**/
+	public var min_val : Dynamic;
+	/**
+		Field tensorflow.tensorforest.LinearParam.slope
+	**/
+	public var slope : Dynamic;
+	/**
+		Field tensorflow.tensorforest.LinearParam.y_intercept
+	**/
+	public var y_intercept : Dynamic;
 }

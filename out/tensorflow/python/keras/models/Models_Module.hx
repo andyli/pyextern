@@ -46,6 +46,16 @@ package tensorflow.python.keras.models;
 		    model = Model(x, y)
 		    ```
 		
+		    Note that even if eager execution is enabled,
+		    `Input` produces a symbolic tensor (i.e. a placeholder).
+		    This symbolic tensor can be used with other
+		    TensorFlow ops, as such:
+		
+		    ```python
+		    x = Input(shape=(32,))
+		    y = tf.square(x)
+		    ```
+		
 		Raises:
 		  ValueError: in case of invalid arguments.
 	**/
@@ -131,6 +141,9 @@ package tensorflow.python.keras.models;
 		This function can be be run in the same graph or in a separate graph from the
 		model. When using a separate graph, `in_place_reset` must be `False`.
 		
+		Note that, currently, the clone produced from this function may not work with
+		TPU DistributionStrategy. Try at your own risk.
+		
 		Args:
 		  model: `tf.keras.Model` object. Can be Functional, Sequential, or
 		    sub-classed.
@@ -155,8 +168,9 @@ package tensorflow.python.keras.models;
 		  Clone of the model.
 		
 		Raises:
-		  ValueError: if trying to clone a subclassed model, and `in_place_reset` is
-		    set to False.
+		  ValueError: Cloning fails in the following cases
+		    - cloning a subclassed model with `in_place_reset` set to False.
+		    - compiling the clone when the original model has not been compiled.
 	**/
 	static public function clone_and_build_model(model:Dynamic, ?input_tensors:Dynamic, ?target_tensors:Dynamic, ?custom_objects:Dynamic, ?compile_clone:Dynamic, ?in_place_reset:Dynamic, ?optimizer_iterations:Dynamic):Dynamic;
 	/**
@@ -169,7 +183,7 @@ package tensorflow.python.keras.models;
 		Arguments:
 		    model: Instance of `Model`
 		        (could be a functional model or a Sequential model).
-		    input_tensors: optional list of input tensors
+		    input_tensors: optional list of input tensors or InputLayer objects
 		        to build the model upon. If not provided,
 		        placeholders will be created.
 		

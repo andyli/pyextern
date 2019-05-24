@@ -64,10 +64,7 @@ package keras.preprocessing.image;
 	**/
 	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Creates an infinite generator that iterate over the Sequence.
-		
-		Yields:
-		  Sequence items.
+		Create a generator that iterate over the Sequence.
 	**/
 	public function __iter__():Dynamic;
 	/**
@@ -147,7 +144,16 @@ package keras.preprocessing.image;
 	public function _set_index_array():Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
-	public function common_init(image_data_generator:Dynamic, target_size:Dynamic, color_mode:Dynamic, data_format:Dynamic, save_to_dir:Dynamic, save_prefix:Dynamic, save_format:Dynamic, subset:Dynamic, interpolation:Dynamic):Dynamic;
+	static public var allowed_class_modes : Dynamic;
+	public var data : Dynamic;
+	/**
+		List of absolute paths to image files
+	**/
+	public var filepaths : Dynamic;
+	/**
+		Class labels of every observation
+	**/
+	public var labels : Dynamic;
 	/**
 		For python 2.x.
 		
@@ -161,4 +167,33 @@ package keras.preprocessing.image;
 	**/
 	public function on_epoch_end():Dynamic;
 	public function reset():Dynamic;
+	/**
+		Sets attributes to use later for processing files into a batch.
+		
+		# Arguments
+		    image_data_generator: Instance of `ImageDataGenerator`
+		        to use for random transformations and normalization.
+		    target_size: tuple of integers, dimensions to resize input images to.
+		    color_mode: One of `"rgb"`, `"rgba"`, `"grayscale"`.
+		        Color mode to read images.
+		    data_format: String, one of `channels_first`, `channels_last`.
+		    save_to_dir: Optional directory where to save the pictures
+		        being yielded, in a viewable format. This is useful
+		        for visualizing the random transformations being
+		        applied, for debugging purposes.
+		    save_prefix: String prefix to use for saving sample
+		        images (if `save_to_dir` is set).
+		    save_format: Format to use for saving sample images
+		        (if `save_to_dir` is set).
+		    subset: Subset of data (`"training"` or `"validation"`) if
+		        validation_split is set in ImageDataGenerator.
+		    interpolation: Interpolation method used to resample the image if the
+		        target size is different from that of the loaded image.
+		        Supported methods are "nearest", "bilinear", and "bicubic".
+		        If PIL version 1.1.3 or newer is installed, "lanczos" is also
+		        supported. If PIL version 3.4.0 or newer is installed, "box" and
+		        "hamming" are also supported. By default, "nearest" is used.
+	**/
+	public function set_processing_attrs(image_data_generator:Dynamic, target_size:Dynamic, color_mode:Dynamic, data_format:Dynamic, save_to_dir:Dynamic, save_prefix:Dynamic, save_format:Dynamic, subset:Dynamic, interpolation:Dynamic):Dynamic;
+	static public var white_list_formats : Dynamic;
 }

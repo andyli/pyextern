@@ -3,6 +3,8 @@ package pandas._libs.tslibs.ccalendar;
 @:pythonImport("pandas._libs.tslibs.ccalendar") extern class Ccalendar_Module {
 	static public var DAYS : Dynamic;
 	static public var DAYS_FULL : Dynamic;
+	static public var DAY_SECONDS : Dynamic;
+	static public var HOUR_SECONDS : Dynamic;
 	static public var LC_TIME : Dynamic;
 	static public var MONTHS : Dynamic;
 	static public var MONTHS_FULL : Dynamic;

@@ -13,7 +13,7 @@ package tensorflow.python.framework.function_def_to_graph;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
-		Converts a FunctionDef to a function.FuncGraph (sub-class Graph).
+		Converts a FunctionDef to a FuncGraph (sub-class Graph).
 		
 		The returned FuncGraph's `name`, `inputs` and `outputs` fields will be set.
 		The input tensors are represented as placeholders.

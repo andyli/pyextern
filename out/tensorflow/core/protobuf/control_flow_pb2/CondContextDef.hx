@@ -1,12 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.protobuf.control_flow_pb2;
 @:pythonImport("tensorflow.core.protobuf.control_flow_pb2", "CondContextDef") extern class CondContextDef {
-	static public var BRANCH_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CONTEXT_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -64,9 +62,6 @@ package tensorflow.core.protobuf.control_flow_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NESTED_CONTEXTS_FIELD_NUMBER : Dynamic;
-	static public var PIVOT_NAME_FIELD_NUMBER : Dynamic;
-	static public var PRED_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -87,7 +82,10 @@ package tensorflow.core.protobuf.control_flow_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var VALUES_DEF_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -253,4 +251,28 @@ package tensorflow.core.protobuf.control_flow_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.CondContextDef.branch
+	**/
+	public var branch : Dynamic;
+	/**
+		Field tensorflow.CondContextDef.context_name
+	**/
+	public var context_name : Dynamic;
+	/**
+		Field tensorflow.CondContextDef.nested_contexts
+	**/
+	public var nested_contexts : Dynamic;
+	/**
+		Field tensorflow.CondContextDef.pivot_name
+	**/
+	public var pivot_name : Dynamic;
+	/**
+		Field tensorflow.CondContextDef.pred_name
+	**/
+	public var pred_name : Dynamic;
+	/**
+		Field tensorflow.CondContextDef.values_def
+	**/
+	public var values_def : Dynamic;
 }

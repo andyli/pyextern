@@ -1,6 +1,10 @@
 /* This file is generated, do not edit! */
 package matplotlib.mathtext;
 @:pythonImport("matplotlib.mathtext", "MathtextBackendPdf") extern class MathtextBackendPdf {
+	/**
+		_PDFResult(width, height, depth, glyphs, rects, used_characters)
+	**/
+	static public function _PDFResult(width:Dynamic, height:Dynamic, depth:Dynamic, glyphs:Dynamic, rects:Dynamic, used_characters:Dynamic):Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).

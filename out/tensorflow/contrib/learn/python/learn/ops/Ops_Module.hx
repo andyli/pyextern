@@ -14,7 +14,7 @@ package tensorflow.contrib.learn.python.learn.ops;
 	/**
 		Creates an embedding for categorical variable with given number of classes. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
 		Instructions for updating:
 		Use `tf.contrib.layers.embed_sequence` instead.
 		
@@ -69,7 +69,7 @@ package tensorflow.contrib.learn.python.learn.ops;
 	/**
 		Provides a N dimensional version of tf.embedding_lookup. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
 		Instructions for updating:
 		Use `tf.embedding_lookup` instead.
 		
@@ -94,7 +94,7 @@ package tensorflow.contrib.learn.python.learn.ops;
 	/**
 		Returns prediction and loss for mean squared error regression. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
 		Instructions for updating:
 		Use `tf.losses.mean_squared_error` and explicit logits computation.
 	**/
@@ -103,7 +103,7 @@ package tensorflow.contrib.learn.python.learn.ops;
 	/**
 		RNN Decoder that creates training and sampling sub-graphs. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.nn/tf.layers directly.
 		
@@ -121,7 +121,7 @@ package tensorflow.contrib.learn.python.learn.ops;
 	/**
 		RNN Sequence to Sequence model. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.nn/tf.layers directly.
 		
@@ -140,7 +140,7 @@ package tensorflow.contrib.learn.python.learn.ops;
 	/**
 		Processes inputs for Sequence to Sequence models. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.nn/tf.layers directly.
 		
@@ -161,7 +161,7 @@ package tensorflow.contrib.learn.python.learn.ops;
 	/**
 		Returns predictions and loss for sequence of predictions. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.nn/tf.layers directly.
 		
@@ -180,7 +180,7 @@ package tensorflow.contrib.learn.python.learn.ops;
 	/**
 		Returns prediction and loss for softmax classifier. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
 		Instructions for updating:
 		Use `tf.losses.softmax_cross_entropy` and explicit logits computation.
 		

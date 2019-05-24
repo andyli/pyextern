@@ -41,11 +41,11 @@ package tensorflow.python.eager.context;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__():Dynamic;
+	public function ___init__(?config:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new():Void;
+	public function new(?config:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		

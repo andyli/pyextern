@@ -20,6 +20,12 @@ package scipy.ndimage;
 		is determined from the input image at position
 		``np.dot(matrix, o) + offset``.
 		
+		This does 'pull' (or 'backward') resampling, transforming the output space
+		to the input to locate data. Affine transformations are often described in
+		the 'push' (or 'forward') direction, transforming input to output. If you
+		have a matrix for the 'push' transformation, use its inverse
+		(:func:`numpy.linalg.inv`) in this function.
+		
 		Parameters
 		----------
 		input : array_like
@@ -58,8 +64,8 @@ package scipy.ndimage;
 		    The order has to be in the range 0-5.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'constant'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -133,11 +139,11 @@ package scipy.ndimage;
 		    is generated with a square connectivity equal to one (i.e., only
 		    nearest neighbors are connected to the center, diagonally-connected
 		    elements are not considered neighbors).
-		iterations : {int, float}, optional
+		iterations : int, optional
 		    The dilation step of the closing, then the erosion step are each
 		    repeated `iterations` times (one, by default). If iterations is
 		    less than 1, each operations is repeated until the result does
-		    not change anymore.
+		    not change anymore. Only an integer of iterations is accepted.
 		output : ndarray, optional
 		    Array of the same shape as input, into which the output is placed.
 		    By default, a new array is created.
@@ -183,8 +189,8 @@ package scipy.ndimage;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Closing_%28morphology%29
-		.. [2] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Closing_%28morphology%29
+		.. [2] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -261,10 +267,11 @@ package scipy.ndimage;
 		    Structuring element used for the dilation. Non-zero elements are
 		    considered True. If no structuring element is provided an element
 		    is generated with a square connectivity equal to one.
-		iterations : {int, float}, optional
+		iterations : int, optional
 		    The dilation is repeated `iterations` times (one, by default).
 		    If iterations is less than 1, the dilation is repeated until the
-		    result does not change anymore.
+		    result does not change anymore. Only an integer of iterations is
+		    accepted.
 		mask : array_like, optional
 		    If a mask is given, only those elements with a True value at
 		    the corresponding mask element are modified at each iteration.
@@ -302,8 +309,8 @@ package scipy.ndimage;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Dilation_%28morphology%29
-		.. [2] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Dilation_%28morphology%29
+		.. [2] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -376,7 +383,7 @@ package scipy.ndimage;
 		    Structuring element used for the erosion. Non-zero elements are
 		    considered True. If no structuring element is provided, an element
 		    is generated with a square connectivity equal to one.
-		iterations : {int, float}, optional
+		iterations : int, optional
 		    The erosion is repeated `iterations` times (one, by default).
 		    If iterations is less than 1, the erosion is repeated until the
 		    result does not change anymore.
@@ -417,8 +424,8 @@ package scipy.ndimage;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Erosion_%28morphology%29
-		.. [2] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Erosion_%28morphology%29
+		.. [2] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -492,7 +499,7 @@ package scipy.ndimage;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		
 		Examples
@@ -559,11 +566,11 @@ package scipy.ndimage;
 		
 		See also
 		--------
-		ndimage.morphology, binary_erosion
+		binary_erosion
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Hit-or-miss_transform
+		.. [1] https://en.wikipedia.org/wiki/Hit-or-miss_transform
 		
 		Examples
 		--------
@@ -622,11 +629,11 @@ package scipy.ndimage;
 		    is generated with a square connectivity equal to one (i.e., only
 		    nearest neighbors are connected to the center, diagonally-connected
 		    elements are not considered neighbors).
-		iterations : {int, float}, optional
+		iterations : int, optional
 		    The erosion step of the opening, then the dilation step are each
 		    repeated `iterations` times (one, by default). If `iterations` is
 		    less than 1, each operation is repeated until the result does
-		    not change anymore.
+		    not change anymore. Only an integer of iterations is accepted.
 		output : ndarray, optional
 		    Array of the same shape as input, into which the output is placed.
 		    By default, a new array is created.
@@ -672,8 +679,8 @@ package scipy.ndimage;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Opening_%28morphology%29
-		.. [2] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Opening_%28morphology%29
+		.. [2] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -1009,7 +1016,7 @@ package scipy.ndimage;
 		--------
 		Perhaps the simplest case to understand is ``mode='constant', cval=0.0``,
 		because in this case borders (i.e. where the `weights` kernel, centered
-		on any one value, extends beyond an edge of `input`.
+		on any one value, extends beyond an edge of `input`) are treated as zeros.
 		
 		>>> a = np.array([[1, 2, 0, 0],
 		...               [5, 3, 0, 4],
@@ -1090,8 +1097,8 @@ package scipy.ndimage;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -1206,8 +1213,8 @@ package scipy.ndimage;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -1858,8 +1865,8 @@ package scipy.ndimage;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -2243,8 +2250,8 @@ package scipy.ndimage;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -2444,8 +2451,8 @@ package scipy.ndimage;
 		    The order has to be in the range 0-5.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'constant'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -2597,7 +2604,7 @@ package scipy.ndimage;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -2664,7 +2671,7 @@ package scipy.ndimage;
 		See also
 		--------
 		binary_dilation, grey_erosion, grey_closing, grey_opening
-		generate_binary_structure, ndimage.maximum_filter
+		generate_binary_structure, maximum_filter
 		
 		Notes
 		-----
@@ -2681,8 +2688,8 @@ package scipy.ndimage;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Dilation_%28morphology%29
-		.. [2] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Dilation_%28morphology%29
+		.. [2] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -2780,7 +2787,7 @@ package scipy.ndimage;
 		See also
 		--------
 		binary_erosion, grey_dilation, grey_opening, grey_closing
-		generate_binary_structure, ndimage.minimum_filter
+		generate_binary_structure, minimum_filter
 		
 		Notes
 		-----
@@ -2797,8 +2804,8 @@ package scipy.ndimage;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Erosion_%28morphology%29
-		.. [2] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Erosion_%28morphology%29
+		.. [2] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -2887,7 +2894,7 @@ package scipy.ndimage;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -2963,12 +2970,6 @@ package scipy.ndimage;
 	**/
 	static public function histogram(input:Dynamic, min:Dynamic, max:Dynamic, bins:Dynamic, ?labels:Dynamic, ?index:Dynamic):Dynamic;
 	/**
-		`imread` is deprecated!
-		`imread` is deprecated in SciPy 1.0.0.
-		Use ``matplotlib.pyplot.imread`` instead.
-	**/
-	static public function imread(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		Iterate a structure by dilating it with itself.
 		
 		Parameters
@@ -3027,7 +3028,9 @@ package scipy.ndimage;
 		    counted as features and zero values are considered the background.
 		structure : array_like, optional
 		    A structuring element that defines feature connections.
-		    `structure` must be symmetric.  If no structuring element is provided,
+		    `structure` must be centrosymmetric
+		    (see Notes).
+		    If no structuring element is provided,
 		    one is automatically generated with a squared connectivity equal to
 		    one.  That is, for a 2-D `input` array, the default structuring element
 		    is::
@@ -3038,7 +3041,7 @@ package scipy.ndimage;
 		
 		output : (None, data-type, array_like), optional
 		    If `output` is a data type, it specifies the type of the resulting
-		    labeled feature array
+		    labeled feature array.
 		    If `output` is an array-like object, then `output` will be updated
 		    with the labeled features from this function.  This function can
 		    operate in-place, by passing output=input.
@@ -3065,6 +3068,29 @@ package scipy.ndimage;
 		find_objects : generate a list of slices for the labeled features (or
 		               objects); useful for finding features' position or
 		               dimensions
+		
+		Notes
+		-----
+		A centrosymmetric matrix is a matrix that is symmetric about the center.
+		See [1]_ for more information.
+		
+		The `structure` matrix must be centrosymmetric to ensure
+		two-way connections.
+		For instance, if the `structure` matrix is not centrosymmetric
+		and is defined as::
+		
+		    [[0,1,0],
+		     [1,1,0],
+		     [0,0,0]]
+		
+		and the `input` is::
+		
+		    [[1,2],
+		     [0,3]]
+		
+		then the structure matrix would indicate the
+		entry 2 in the input is connected to 1,
+		but 1 is not connected to 2.
 		
 		Examples
 		--------
@@ -3113,6 +3139,14 @@ package scipy.ndimage;
 		       [0, 0, 0, 1, 0, 0],
 		       [2, 2, 0, 0, 1, 0],
 		       [0, 0, 0, 1, 0, 0]])
+		
+		References
+		----------
+		
+		.. [1] James R. Weaver, "Centrosymmetric (cross-symmetric)
+		   matrices, their basic properties, eigenvalues, and
+		   eigenvectors." The American Mathematical Monthly 92.10
+		   (1985): 711-717.
 	**/
 	static public function label(input:Dynamic, ?structure:Dynamic, ?output:Dynamic):Dynamic;
 	/**
@@ -3264,8 +3298,8 @@ package scipy.ndimage;
 		    The order has to be in the range 0-5.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'constant'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -3363,7 +3397,7 @@ package scipy.ndimage;
 		
 		Notes
 		-----
-		The function returns a Python list and not a Numpy array, use
+		The function returns a Python list and not a NumPy array, use
 		`np.array` to convert the list to an array.
 		
 		Examples
@@ -3503,8 +3537,8 @@ package scipy.ndimage;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -3623,9 +3657,7 @@ package scipy.ndimage;
 		
 		See also
 		--------
-		ndimage.variance, ndimage.standard_deviation, ndimage.minimum,
-		ndimage.maximum, ndimage.sum
-		ndimage.label
+		variance, standard_deviation, minimum, maximum, sum, label
 		
 		Examples
 		--------
@@ -3679,7 +3711,7 @@ package scipy.ndimage;
 		
 		Notes
 		-----
-		The function returns a Python list and not a Numpy array, use
+		The function returns a Python list and not a NumPy array, use
 		`np.array` to convert the list to an array.
 		
 		Examples
@@ -3816,7 +3848,7 @@ package scipy.ndimage;
 		
 		Notes
 		-----
-		The function returns a Python list and not a Numpy array, use
+		The function returns a Python list and not a NumPy array, use
 		`np.array` to convert the list to an array.
 		
 		Examples
@@ -3939,8 +3971,8 @@ package scipy.ndimage;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -4094,7 +4126,7 @@ package scipy.ndimage;
 		
 		See also
 		--------
-		grey_dilation, grey_erosion, ndimage.gaussian_gradient_magnitude
+		grey_dilation, grey_erosion, gaussian_gradient_magnitude
 		
 		Notes
 		-----
@@ -4105,7 +4137,7 @@ package scipy.ndimage;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -4412,7 +4444,8 @@ package scipy.ndimage;
 		
 		Parameters
 		----------
-		%(input)s
+		input : array_like
+		    The input array.
 		angle : float
 		    The rotation angle in degrees.
 		axes : tuple of 2 ints, optional
@@ -4421,18 +4454,74 @@ package scipy.ndimage;
 		reshape : bool, optional
 		    If `reshape` is true, the output shape is adapted so that the input
 		    array is contained completely in the output. Default is True.
-		%(output)s
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		order : int, optional
 		    The order of the spline interpolation, default is 3.
 		    The order has to be in the range 0-5.
-		%(mode)s
-		%(cval)s
-		%(prefilter)s
+		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    The `mode` parameter determines how the input array is extended
+		    beyond its boundaries. Default is 'constant'. Behavior for each valid
+		    value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
+		cval : scalar, optional
+		    Value to fill past edges of input if `mode` is 'constant'. Default
+		    is 0.0.
+		prefilter : bool, optional
+		    Determines if the input array is prefiltered with `spline_filter`
+		    before interpolation. The default is True, which will create a
+		    temporary `float64` array of filtered values if `order > 1`. If
+		    setting this to False, the output will be slightly blurred if
+		    `order > 1`, unless the input is prefiltered, i.e. it is the result
+		    of calling `spline_filter` on the original input.
 		
 		Returns
 		-------
 		rotate : ndarray
 		    The rotated input.
+		
+		Examples
+		--------
+		>>> from scipy import ndimage, misc
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure(figsize=(10, 3))
+		>>> ax1, ax2, ax3 = fig.subplots(1, 3)
+		>>> img = misc.ascent()
+		>>> img_45 = ndimage.rotate(img, 45, reshape=False)
+		>>> full_img_45 = ndimage.rotate(img, 45, reshape=True)
+		>>> ax1.imshow(img, cmap='gray')
+		>>> ax1.set_axis_off()
+		>>> ax2.imshow(img_45, cmap='gray')
+		>>> ax2.set_axis_off()
+		>>> ax3.imshow(full_img_45, cmap='gray')
+		>>> ax3.set_axis_off()
+		>>> fig.set_tight_layout(True)
+		>>> plt.show()
+		>>> print(img.shape)
+		(512, 512)
+		>>> print(img_45.shape)
+		(512, 512)
+		>>> print(full_img_45.shape)
+		(724, 724)
 	**/
 	static public function rotate(input:Dynamic, angle:Dynamic, ?axes:Dynamic, ?reshape:Dynamic, ?output:Dynamic, ?order:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?prefilter:Dynamic):Dynamic;
 	/**
@@ -4458,8 +4547,8 @@ package scipy.ndimage;
 		    The order has to be in the range 0-5.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'constant'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -4568,7 +4657,7 @@ package scipy.ndimage;
 		with a limited precision, the results may be imprecise because
 		intermediate results may be stored with insufficient precision.
 	**/
-	static public function spline_filter(input:Dynamic, ?order:Dynamic, ?output:Dynamic):Dynamic;
+	static public function spline_filter(input:Dynamic, ?order:Dynamic, ?output:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		Calculate a one-dimensional spline filter along the given axis.
 		
@@ -4586,14 +4675,48 @@ package scipy.ndimage;
 		    axis.
 		output : ndarray or dtype, optional
 		    The array in which to place the output, or the dtype of the returned
-		    array. Default is `numpy.float64`.
+		    array. Default is ``numpy.float64``.
+		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    The `mode` parameter determines how the input array is extended
+		    beyond its boundaries. Default is 'constant'. Behavior for each valid
+		    value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		
 		Returns
 		-------
 		spline_filter1d : ndarray
 		    The filtered input.
+		
+		Notes
+		-----
+		All functions in `ndimage.interpolation` do spline interpolation of
+		the input image. If using b-splines of `order > 1`, the input image
+		values have to be converted to b-spline coefficients first, which is
+		done by applying this one-dimensional filter sequentially along all
+		axes of the input. All functions that require b-spline coefficients
+		will automatically filter their inputs, a behavior controllable with
+		the `prefilter` keyword argument. For functions that accept a `mode`
+		parameter, the result will only be correct if it matches the `mode`
+		used when filtering.
 	**/
-	static public function spline_filter1d(input:Dynamic, ?order:Dynamic, ?axis:Dynamic, ?output:Dynamic):Dynamic;
+	static public function spline_filter1d(input:Dynamic, ?order:Dynamic, ?axis:Dynamic, ?output:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		Calculate the standard deviation of the values of an n-D image array,
 		optionally at specified sub-regions.
@@ -4779,8 +4902,8 @@ package scipy.ndimage;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -4952,8 +5075,8 @@ package scipy.ndimage;
 		    The order has to be in the range 0-5.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'constant'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last

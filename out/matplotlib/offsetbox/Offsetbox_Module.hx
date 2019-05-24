@@ -24,7 +24,7 @@ package matplotlib.offsetbox;
 	**/
 	static public function _get_aligned_offsets(hd_list:Dynamic, height:Dynamic, ?align:Dynamic):Dynamic;
 	/**
-		Geiven a list of (width, xdescent) of each boxes, calculate the
+		Given a list of (width, xdescent) of each boxes, calculate the
 		total width and the x-offset positions of each items according to
 		*mode*. xdescent is analogous to the usual descent, but along the
 		x-direction. xdescent values are currently ignored.

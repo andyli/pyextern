@@ -179,19 +179,19 @@ package matplotlib.path;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Creates a Path instance without the expense of calling the constructor
+		Creates a Path instance without the expense of calling the constructor.
 		
 		Parameters
 		----------
 		verts : numpy array
 		codes : numpy array
-		internals : dict or None
-		    The attributes that the resulting path should have.
-		    Allowed keys are ``readonly``, ``should_simplify``,
-		    ``simplify_threshold``, ``has_nonfinite`` and
-		    ``interpolation_steps``.
+		internals_from : Path or None
+		    If not None, another `Path` from which the attributes
+		    ``should_simplify``, ``simplify_threshold``, and
+		    ``interpolation_steps`` will be copied.  Note that ``readonly`` is
+		    never copied, and always set to ``False`` by this constructor.
 	**/
-	static public function _fast_from_codes_and_verts(verts:Dynamic, codes:Dynamic, ?internals:Dynamic):Dynamic;
+	static public function _fast_from_codes_and_verts(verts:Dynamic, codes:Dynamic, ?internals_from:Dynamic):Dynamic;
 	static public var _unit_circle : Dynamic;
 	static public var _unit_circle_righthalf : Dynamic;
 	static public var _unit_rectangle : Dynamic;
@@ -199,8 +199,8 @@ package matplotlib.path;
 	static public var _unit_regular_stars : Dynamic;
 	public function _update_values():Dynamic;
 	/**
-		Return an arc on the unit circle from angle
-		*theta1* to angle *theta2* (in degrees).
+		Return the unit circle arc from angles *theta1* to *theta2* (in
+		degrees).
 		
 		*theta2* is unwrapped to produce the shortest arc within 360 degrees.
 		That is, if *theta2* > *theta1* + 360, the arc will be from *theta1* to
@@ -216,7 +216,7 @@ package matplotlib.path;
 	**/
 	static public function arc(theta1:Dynamic, theta2:Dynamic, ?n:Dynamic, ?is_wedge:Dynamic):Dynamic;
 	/**
-		Return a Path representing a circle of a given radius and center.
+		Return a `Path` representing a circle of a given radius and center.
 		
 		Parameters
 		----------
@@ -230,25 +230,19 @@ package matplotlib.path;
 		
 		Notes
 		-----
-		The circle is approximated using cubic Bezier curves.  This
-		uses 8 splines around the circle using the approach presented
-		here:
+		The circle is approximated using 8 cubic Bezier curves, as described in
 		
 		  Lancaster, Don.  `Approximating a Circle or an Ellipse Using Four
 		  Bezier Cubic Splines <http://www.tinaja.com/glib/ellipse4.pdf>`_.
 	**/
 	static public function circle(?center:Dynamic, ?radius:Dynamic, ?readonly:Dynamic):Dynamic;
 	/**
-		Cleans up the path according to the parameters returning a new
-		Path instance.
+		Return a new Path with vertices and codes cleaned according to the
+		parameters.
 		
-		.. seealso::
-		
-		    See :meth:`iter_segments` for details of the keyword arguments.
-		
-		Returns
-		-------
-		Path instance with cleaned up vertices and codes.
+		See Also
+		--------
+		Path.iter_segments : for details of the keyword arguments.
 	**/
 	public function cleaned(?transform:Dynamic, ?remove_nans:Dynamic, ?clip:Dynamic, ?quantize:Dynamic, ?simplify:Dynamic, ?curves:Dynamic, ?stroke_width:Dynamic, ?snap:Dynamic, ?sketch:Dynamic):Dynamic;
 	/**
@@ -262,13 +256,10 @@ package matplotlib.path;
 	**/
 	public function clip_to_bbox(bbox:Dynamic, ?inside:Dynamic):Dynamic;
 	/**
-		Base class for numpy scalar types.
-		
-		Class from which most (all?) numpy scalar types are derived.  For
-		consistency, exposes the same API as `ndarray`, despite many
-		consequent attributes being either "get-only," or completely irrelevant.
-		This is the class from which it is strongly suggested users should derive
-		custom scalar types.
+		Unsigned integer type, compatible with C ``unsigned char``.
+		Character code: ``'B'``.
+		Canonical name: ``np.ubyte``.
+		Alias *on this platform*: ``np.uint8``: 8-bit unsigned integer (0 to 255).
 	**/
 	public function code_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -325,9 +316,6 @@ package matplotlib.path;
 		control points appropriately.
 	**/
 	public function get_extents(?transform:Dynamic):Dynamic;
-	/**
-		`True` if the vertices array has nonfinite values.
-	**/
 	public var has_nonfinite : Dynamic;
 	/**
 		Given a hatch specifier, *hatchpattern*, generates a Path that
@@ -360,46 +348,41 @@ package matplotlib.path;
 	**/
 	public function intersects_path(other:Dynamic, ?filled:Dynamic):Dynamic;
 	/**
-		Iterates over all of the curve segments in the path.  Each
-		iteration returns a 2-tuple (*vertices*, *code*), where
-		*vertices* is a sequence of 1 - 3 coordinate pairs, and *code* is
-		one of the :class:`Path` codes.
+		Iterates over all of the curve segments in the path.  Each iteration
+		returns a 2-tuple ``(vertices, code)``, where ``vertices`` is a
+		sequence of 1-3 coordinate pairs, and ``code`` is a `Path` code.
 		
-		Additionally, this method can provide a number of standard
-		cleanups and conversions to the path.
+		Additionally, this method can provide a number of standard cleanups and
+		conversions to the path.
 		
 		Parameters
 		----------
-		transform : None or :class:`~matplotlib.transforms.Transform` instance
-		    If not None, the given affine transformation will
-		    be applied to the path.
-		remove_nans : {False, True}, optional
-		    If True, will remove all NaNs from the path and
-		    insert MOVETO commands to skip over them.
-		clip : None or sequence, optional
+		transform : None or :class:`~matplotlib.transforms.Transform`
+		    If not None, the given affine transformation will be applied to the
+		    path.
+		remove_nans : bool, optional
+		    Whether to remove all NaNs from the path and skip over them using
+		    MOVETO commands.
+		clip : None or (float, float, float, float), optional
 		    If not None, must be a four-tuple (x1, y1, x2, y2)
 		    defining a rectangle in which to clip the path.
 		snap : None or bool, optional
-		    If None, auto-snap to pixels, to reduce
-		    fuzziness of rectilinear lines.  If True, force snapping, and
-		    if False, don't snap.
+		    If True, snap all nodes to pixels; if False, don't snap them.
+		    If None, perform snapping if the path contains only segments
+		    parallel to the x or y axes, and no more than 1024 of them.
 		stroke_width : float, optional
-		    The width of the stroke being drawn.  Needed
-		     as a hint for the snapping algorithm.
+		    The width of the stroke being drawn (used for path snapping).
 		simplify : None or bool, optional
-		    If True, perform simplification, to remove
-		     vertices that do not affect the appearance of the path.  If
-		     False, perform no simplification.  If None, use the
-		     should_simplify member variable.  See also the rcParams
-		     path.simplify and path.simplify_threshold.
-		curves : {True, False}, optional
-		    If True, curve segments will be returned as curve
-		    segments.  If False, all curves will be converted to line
-		    segments.
+		    Whether to simplify the path by removing vertices
+		    that do not affect its appearance.  If None, use the
+		    :attr:`should_simplify` attribute.  See also :rc:`path.simplify`
+		    and :rc:`path.simplify_threshold`.
+		curves : bool, optional
+		    If True, curve segments will be returned as curve segments.
+		    If False, all curves will be converted to line segments.
 		sketch : None or sequence, optional
 		    If not None, must be a 3-tuple of the form
-		    (scale, length, randomness), representing the sketch
-		    parameters.
+		    (scale, length, randomness), representing the sketch parameters.
 	**/
 	public function iter_segments(?transform:Dynamic, ?remove_nans:Dynamic, ?clip:Dynamic, ?snap:Dynamic, ?stroke_width:Dynamic, ?simplify:Dynamic, ?curves:Dynamic, ?sketch:Dynamic):Dynamic;
 	/**
@@ -451,12 +434,11 @@ package matplotlib.path;
 	/**
 		Return a transformed copy of the path.
 		
-		.. seealso::
-		
-		    :class:`matplotlib.transforms.TransformedPath`
-		        A specialized path class that will cache the
-		        transformed result and automatically update when the
-		        transform changes.
+		See Also
+		--------
+		matplotlib.transforms.TransformedPath
+		    A specialized path class that will cache the transformed result and
+		    automatically update when the transform changes.
 	**/
 	public function transformed(transform:Dynamic):Dynamic;
 	/**
@@ -466,18 +448,13 @@ package matplotlib.path;
 	**/
 	static public function unit_circle():Dynamic;
 	/**
-		Return a :class:`Path` of the right half
-		of a unit circle. The circle is approximated using cubic Bezier
-		curves.  This uses 4 splines around the circle using the approach
-		presented here:
+		Return a `Path` of the right half of a unit circle.
 		
-		  Lancaster, Don.  `Approximating a Circle or an Ellipse Using Four
-		  Bezier Cubic Splines <http://www.tinaja.com/glib/ellipse4.pdf>`_.
+		See `Path.circle` for the reference on the approximation used.
 	**/
 	static public function unit_circle_righthalf():Dynamic;
 	/**
-		Return a :class:`Path` instance of the unit rectangle
-		from (0, 0) to (1, 1).
+		Return a `Path` instance of the unit rectangle from (0, 0) to (1, 1).
 	**/
 	static public function unit_rectangle():Dynamic;
 	/**
@@ -500,8 +477,8 @@ package matplotlib.path;
 	**/
 	public var vertices : Dynamic;
 	/**
-		Return a wedge of the unit circle from angle
-		*theta1* to angle *theta2* (in degrees).
+		Return the unit circle wedge from angles *theta1* to *theta2* (in
+		degrees).
 		
 		*theta2* is unwrapped to produce the shortest wedge within 360 degrees.
 		That is, if *theta2* > *theta1* + 360, the wedge will be from *theta1*
@@ -510,6 +487,8 @@ package matplotlib.path;
 		If *n* is provided, it is the number of spline segments to make.
 		If *n* is not provided, the number of spline segments is
 		determined based on the delta between *theta1* and *theta2*.
+		
+		See `Path.arc` for the reference on the approximation used.
 	**/
 	static public function wedge(theta1:Dynamic, theta2:Dynamic, ?n:Dynamic):Dynamic;
 }

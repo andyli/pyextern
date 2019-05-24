@@ -52,52 +52,20 @@ package tensorflow.python.ops.distributions.normal;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct Normal distributions with mean and stddev `loc` and `scale`.
+		DEPRECATED FUNCTION
 		
-		The parameters `loc` and `scale` must be shaped in a way that supports
-		broadcasting (e.g. `loc + scale` is a valid operation).
-		
-		Args:
-		  loc: Floating point tensor; the means of the distribution(s).
-		  scale: Floating point tensor; the stddevs of the distribution(s).
-		    Must contain only positive values.
-		  validate_args: Python `bool`, default `False`. When `True` distribution
-		    parameters are checked for validity despite possibly degrading runtime
-		    performance. When `False` invalid inputs may silently render incorrect
-		    outputs.
-		  allow_nan_stats: Python `bool`, default `True`. When `True`,
-		    statistics (e.g., mean, mode, variance) use the value "`NaN`" to
-		    indicate the result is undefined. When `False`, an exception is raised
-		    if one or more of the statistic's batch members are undefined.
-		  name: Python `str` name prefixed to Ops created by this class.
-		
-		Raises:
-		  TypeError: if `loc` and `scale` have different `dtype`.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		Use `tfd.Normal(loc, tf.nn.softplus(scale)) instead.
 	**/
 	@:native("__init__")
 	public function ___init__(loc:Dynamic, scale:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Construct Normal distributions with mean and stddev `loc` and `scale`.
+		DEPRECATED FUNCTION
 		
-		The parameters `loc` and `scale` must be shaped in a way that supports
-		broadcasting (e.g. `loc + scale` is a valid operation).
-		
-		Args:
-		  loc: Floating point tensor; the means of the distribution(s).
-		  scale: Floating point tensor; the stddevs of the distribution(s).
-		    Must contain only positive values.
-		  validate_args: Python `bool`, default `False`. When `True` distribution
-		    parameters are checked for validity despite possibly degrading runtime
-		    performance. When `False` invalid inputs may silently render incorrect
-		    outputs.
-		  allow_nan_stats: Python `bool`, default `True`. When `True`,
-		    statistics (e.g., mean, mode, variance) use the value "`NaN`" to
-		    indicate the result is undefined. When `False`, an exception is raised
-		    if one or more of the statistic's batch members are undefined.
-		  name: Python `str` name prefixed to Ops created by this class.
-		
-		Raises:
-		  TypeError: if `loc` and `scale` have different `dtype`.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		Use `tfd.Normal(loc, tf.nn.softplus(scale)) instead.
 	**/
 	public function new(loc:Dynamic, scale:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Void;
 	/**

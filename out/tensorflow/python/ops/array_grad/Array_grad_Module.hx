@@ -7,7 +7,7 @@ package tensorflow.python.ops.array_grad;
 	/**
 		Gradient for check_numerics op.
 	**/
-	static public function _CheckNumericsGrad(_:Dynamic, grad:Dynamic):Dynamic;
+	static public function _CheckNumericsGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _ConcatGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Gradient for concat op.
@@ -100,6 +100,9 @@ package tensorflow.python.ops.array_grad;
 		Gradient for StridedSliceGrad op.
 	**/
 	static public function _StridedSliceGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _TensorScatterAddGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _TensorScatterSubGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _TensorScatterUpdateGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Sum reduces grad along the tiled dimensions.
 	**/

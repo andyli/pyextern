@@ -70,13 +70,13 @@ package tensorflow.contrib.framework;
 		Args:
 		  values: 1-D or higher numeric `Tensor`.
 		  axis: The axis along which to sort. The default is -1, which sorts the last
-		      axis.
+		    axis.
 		  direction: The direction in which to sort the values (`'ASCENDING'` or
-		      `'DESCENDING'`).
+		    `'DESCENDING'`).
 		  stable: If True, equal elements in the original tensor will not be
-		      re-ordered in the returned order. Unstable sort is not yet implemented,
-		      but will eventually be the default for performance reasons. If you
-		      require a stable order, pass `stable=True` for forwards compatibility.
+		    re-ordered in the returned order. Unstable sort is not yet implemented,
+		    but will eventually be the default for performance reasons. If you require
+		    a stable order, pass `stable=True` for forwards compatibility.
 		  name: Optional name for the operation.
 		
 		Returns:
@@ -90,7 +90,7 @@ package tensorflow.contrib.framework;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.assert_global_step
 	**/
@@ -125,14 +125,35 @@ package tensorflow.contrib.framework;
 		  tensors: Tensors of input values. Can include `None` elements, which will be
 		      ignored.
 		  dtype: Expected type.
+		
 		Returns:
 		  Validated type.
+		
 		Raises:
 		  ValueError: if neither `tensors` nor `dtype` is supplied, or result is not
 		      float, or the common type of the inputs is not a floating point type.
 	**/
 	static public function assert_same_float_dtype(?tensors:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public function assert_scalar(tensor:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Asserts that the given `tensor` is a scalar.
+		
+		This function raises `ValueError` unless it can be certain that the given
+		`tensor` is a scalar. `ValueError` is also raised if the shape of `tensor` is
+		unknown.
+		
+		Args:
+		  tensor: A `Tensor`.
+		  name:  A name for this operation. Defaults to "assert_scalar"
+		  message: A string to prefix to the default message.
+		
+		Returns:
+		  The input tensor (potentially converted to a `Tensor`).
+		
+		Raises:
+		  ValueError: If the tensor is not scalar (rank 0), or if its shape is
+		    unknown.
+	**/
+	static public function assert_scalar(tensor:Dynamic, ?name:Dynamic, ?message:Dynamic):Dynamic;
 	/**
 		Assert `tensor` is 0-D, of type `tf.int32` or `tf.int64`.
 		
@@ -251,7 +272,7 @@ package tensorflow.contrib.framework;
 	/**
 		Create global step tensor in graph. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.create_global_step
 		
@@ -433,7 +454,7 @@ package tensorflow.contrib.framework;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.get_global_step
 	**/
@@ -506,7 +527,7 @@ package tensorflow.contrib.framework;
 	/**
 		Returns and create (if necessary) the global step tensor. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.get_or_create_global_step
 		
@@ -730,7 +751,7 @@ package tensorflow.contrib.framework;
 		
 		Check whether an object is a tensor. This check is equivalent to calling
 		`isinstance(x, (tf.Tensor, tf.SparseTensor, tf.Variable))` and also checks
-		if all the component variables of a MirroredVariable or a TowerLocalVariable
+		if all the component variables of a MirroredVariable or a ReplicaLocalVariable
 		are tensors.
 		
 		Args:
@@ -1163,7 +1184,7 @@ package tensorflow.contrib.framework;
 	/**
 		Squeeze last dim if ranks of `predictions` and `labels` differ by 1. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to remove_squeezable_dimensions from tf.confusion_matrix. Note that the order of the inputs and outputs of labels and predictions have also been switched.
 		
@@ -1243,9 +1264,9 @@ package tensorflow.contrib.framework;
 		Args:
 		  values: 1-D or higher numeric `Tensor`.
 		  axis: The axis along which to sort. The default is -1, which sorts the last
-		      axis.
+		    axis.
 		  direction: The direction in which to sort the values (`'ASCENDING'` or
-		      `'DESCENDING'`).
+		    `'DESCENDING'`).
 		  name: Optional name for the operation.
 		
 		Returns:

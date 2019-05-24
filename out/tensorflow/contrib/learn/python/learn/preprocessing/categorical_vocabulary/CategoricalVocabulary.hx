@@ -40,7 +40,7 @@ package tensorflow.contrib.learn.python.learn.preprocessing.categorical_vocabula
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tensorflow/transform or tf.data.
 	**/
@@ -49,7 +49,7 @@ package tensorflow.contrib.learn.python.learn.preprocessing.categorical_vocabula
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tensorflow/transform or tf.data.
 	**/

@@ -13,6 +13,8 @@ package tensorflow.python.ops.gen_string_ops;
 	static public var _op_def_lib : Dynamic;
 	static public var _string_split_outputs : Dynamic;
 	static public var _string_split_v2_outputs : Dynamic;
+	static public var _unicode_decode_outputs : Dynamic;
+	static public var _unicode_decode_with_offsets_outputs : Dynamic;
 	/**
 		Converts each entry in the given tensor to strings.  Supports many numeric
 		
@@ -535,7 +537,7 @@ package tensorflow.python.ops.gen_string_ops;
 		`pos` and `len` must have the same shape, otherwise a `ValueError` is thrown on
 		Op creation.
 		
-		*NOTE*: `strings.substr` supports broadcasting up to two dimensions. More about
+		*NOTE*: `Substr` supports broadcasting up to two dimensions. More about
 		broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
@@ -603,18 +605,190 @@ package tensorflow.python.ops.gen_string_ops;
 		    Scalar defining the position of first character in each substring
 		  len: A `Tensor`. Must have the same type as `pos`.
 		    Scalar defining the number of characters to include in each substring
+		  unit: An optional `string` from: `"BYTE", "UTF8_CHAR"`. Defaults to `"BYTE"`.
+		    The unit that is used to create the substring.  One of: `"BYTE"` (for
+		    defining position and length by bytes) or `"UTF8_CHAR"` (for the UTF-8
+		    encoded Unicode code points).  The default is `"BYTE"`. Results are undefined if
+		    `unit=UTF8_CHAR` and the `input` strings do not contain structurally valid
+		    UTF-8.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `string`.
 	**/
-	static public function substr(input:Dynamic, pos:Dynamic, len:Dynamic, ?name:Dynamic):Dynamic;
+	static public function substr(input:Dynamic, pos:Dynamic, len:Dynamic, ?unit:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function substr
 	**/
-	static public function substr_eager_fallback(input:Dynamic, pos:Dynamic, len:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function substr_eager_fallback(input:Dynamic, pos:Dynamic, len:Dynamic, ?unit:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Decodes each string in `input` into a sequence of Unicode code points.
+		
+		The character codepoints for all strings are returned using a single vector
+		`char_values`, with strings expanded to characters in row-major order.
+		
+		The `row_splits` tensor indicates where the codepoints for
+		each input string begin and end within the `char_values` tensor.
+		In particular, the values for the `i`th
+		string (in row-major order) are stored in the slice
+		`[row_splits[i]:row_splits[i+1]]`. Thus:
+		
+		* `char_values[row_splits[i]+j]` is the Unicode codepoint for the `j`th
+		  character in the `i`th string (in row-major order).
+		* `row_splits[i+1] - row_splits[i]` is the number of characters in the `i`th
+		  string (in row-major order).
+		
+		Args:
+		  input: A `Tensor` of type `string`.
+		    The text to be decoded. Can have any shape. Note that the output is flattened
+		    to a vector of char values.
+		  input_encoding: A `string`.
+		    Text encoding of the input strings. This is any of the encodings supported
+		    by ICU ucnv algorithmic converters. Examples: `"UTF-16", "US ASCII", "UTF-8"`.
+		  errors: An optional `string` from: `"strict", "replace", "ignore"`. Defaults to `"replace"`.
+		    Error handling policy when there is invalid formatting found in the input.
+		    The value of 'strict' will cause the operation to produce a InvalidArgument
+		    error on any invalid input formatting. A value of 'replace' (the default) will
+		    cause the operation to replace any invalid formatting in the input with the
+		    `replacement_char` codepoint. A value of 'ignore' will cause the operation to
+		    skip any invalid formatting in the input and produce no corresponding output
+		    character.
+		  replacement_char: An optional `int`. Defaults to `65533`.
+		    The replacement character codepoint to be used in place of any invalid
+		    formatting in the input when `errors='replace'`. Any valid unicode codepoint may
+		    be used. The default value is the default unicode replacement character is
+		    0xFFFD or U+65533.)
+		  replace_control_characters: An optional `bool`. Defaults to `False`.
+		    Whether to replace the C0 control characters (00-1F) with the
+		    `replacement_char`. Default is false.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (row_splits, char_values).
+		
+		  row_splits: A `Tensor` of type `int64`.
+		  char_values: A `Tensor` of type `int32`.
+	**/
+	static public function unicode_decode(input:Dynamic, input_encoding:Dynamic, ?errors:Dynamic, ?replacement_char:Dynamic, ?replace_control_characters:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function unicode_decode
+	**/
+	static public function unicode_decode_eager_fallback(input:Dynamic, input_encoding:Dynamic, ?errors:Dynamic, ?replacement_char:Dynamic, ?replace_control_characters:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Decodes each string in `input` into a sequence of Unicode code points.
+		
+		The character codepoints for all strings are returned using a single vector
+		`char_values`, with strings expanded to characters in row-major order.
+		Similarly, the character start byte offsets are returned using a single vector
+		`char_to_byte_starts`, with strings expanded in row-major order.
+		
+		The `row_splits` tensor indicates where the codepoints and start offsets for
+		each input string begin and end within the `char_values` and
+		`char_to_byte_starts` tensors.  In particular, the values for the `i`th
+		string (in row-major order) are stored in the slice
+		`[row_splits[i]:row_splits[i+1]]`. Thus:
+		
+		* `char_values[row_splits[i]+j]` is the Unicode codepoint for the `j`th
+		  character in the `i`th string (in row-major order).
+		* `char_to_bytes_starts[row_splits[i]+j]` is the start byte offset for the `j`th
+		  character in the `i`th string (in row-major order).
+		* `row_splits[i+1] - row_splits[i]` is the number of characters in the `i`th
+		  string (in row-major order).
+		
+		Args:
+		  input: A `Tensor` of type `string`.
+		    The text to be decoded. Can have any shape. Note that the output is flattened
+		    to a vector of char values.
+		  input_encoding: A `string`.
+		    Text encoding of the input strings. This is any of the encodings supported
+		    by ICU ucnv algorithmic converters. Examples: `"UTF-16", "US ASCII", "UTF-8"`.
+		  errors: An optional `string` from: `"strict", "replace", "ignore"`. Defaults to `"replace"`.
+		    Error handling policy when there is invalid formatting found in the input.
+		    The value of 'strict' will cause the operation to produce a InvalidArgument
+		    error on any invalid input formatting. A value of 'replace' (the default) will
+		    cause the operation to replace any invalid formatting in the input with the
+		    `replacement_char` codepoint. A value of 'ignore' will cause the operation to
+		    skip any invalid formatting in the input and produce no corresponding output
+		    character.
+		  replacement_char: An optional `int`. Defaults to `65533`.
+		    The replacement character codepoint to be used in place of any invalid
+		    formatting in the input when `errors='replace'`. Any valid unicode codepoint may
+		    be used. The default value is the default unicode replacement character is
+		    0xFFFD or U+65533.)
+		  replace_control_characters: An optional `bool`. Defaults to `False`.
+		    Whether to replace the C0 control characters (00-1F) with the
+		    `replacement_char`. Default is false.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (row_splits, char_values, char_to_byte_starts).
+		
+		  row_splits: A `Tensor` of type `int64`.
+		  char_values: A `Tensor` of type `int32`.
+		  char_to_byte_starts: A `Tensor` of type `int64`.
+	**/
+	static public function unicode_decode_with_offsets(input:Dynamic, input_encoding:Dynamic, ?errors:Dynamic, ?replacement_char:Dynamic, ?replace_control_characters:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function unicode_decode_with_offsets
+	**/
+	static public function unicode_decode_with_offsets_eager_fallback(input:Dynamic, input_encoding:Dynamic, ?errors:Dynamic, ?replacement_char:Dynamic, ?replace_control_characters:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Encode a tensor of ints into unicode strings.
+		
+		Returns a vector of strings, where `output[i]` is constructed by encoding the
+		Unicode codepoints in `input_values[input_splits[i]:input_splits[i+1]]`
+		using `output_encoding`.
+		
+		---
+		
+		Example:
+		
+		```
+		input_values = [72, 101, 108, 108, 111, 87, 111, 114, 108, 100]
+		input_splits = [0, 5, 10]
+		output_encoding = 'UTF-8'
+		
+		output = ['Hello', 'World']
+		```
+		
+		Args:
+		  input_values: A `Tensor` of type `int32`.
+		    A 1D tensor containing the unicode codepoints that should be encoded.
+		  input_splits: A `Tensor` of type `int64`.
+		    A 1D tensor specifying how the unicode codepoints should be split into strings.
+		    In particular, `output[i]` is constructed by encoding the codepoints in the
+		    slice `input_values[input_splits[i]:input_splits[i+1]]`.
+		  output_encoding: A `string` from: `"UTF-8", "UTF-16-BE", "UTF-32-BE"`.
+		    Unicode encoding of the output strings. Valid encodings are: `"UTF-8",
+		    "UTF-16-BE", and "UTF-32-BE"`.
+		  errors: An optional `string` from: `"ignore", "replace", "strict"`. Defaults to `"replace"`.
+		    Error handling policy when there is invalid formatting found in the input.
+		    The value of 'strict' will cause the operation to produce a InvalidArgument
+		    error on any invalid input formatting. A value of 'replace' (the default) will
+		    cause the operation to replace any invalid formatting in the input with the
+		    `replacement_char` codepoint. A value of 'ignore' will cause the operation to
+		    skip any invalid formatting in the input and produce no corresponding output
+		    character.
+		  replacement_char: An optional `int`. Defaults to `65533`.
+		    The replacement character codepoint to be used in place of any invalid
+		    formatting in the input when `errors='replace'`. Any valid unicode codepoint may
+		    be used. The default value is the default unicode replacement character is
+		    0xFFFD (U+65533).
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `string`.
+	**/
+	static public function unicode_encode(input_values:Dynamic, input_splits:Dynamic, output_encoding:Dynamic, ?errors:Dynamic, ?replacement_char:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function unicode_encode
+	**/
+	static public function unicode_encode_eager_fallback(input_values:Dynamic, input_splits:Dynamic, output_encoding:Dynamic, ?errors:Dynamic, ?replacement_char:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Determine the script codes of a given tensor of Unicode integer code points.
 		
@@ -637,4 +811,73 @@ package tensorflow.python.ops.gen_string_ops;
 		This is for function unicode_script
 	**/
 	static public function unicode_script_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Transcode the input text from a source encoding to a destination encoding.
+		
+		The input is a string tensor of any shape. The output is a string tensor of
+		the same shape containing the transcoded strings. Output strings are always
+		valid unicode. If the input contains invalid encoding positions, the
+		`errors` attribute sets the policy for how to deal with them. If the default
+		error-handling policy is used, invalid formatting will be substituted in the
+		output by the `replacement_char`. If the errors policy is to `ignore`, any
+		invalid encoding positions in the input are skipped and not included in the
+		output. If it set to `strict` then any invalid formatting will result in an
+		InvalidArgument error.
+		
+		This operation can be used with `output_encoding = input_encoding` to enforce
+		correct formatting for inputs even if they are already in the desired encoding.
+		
+		If the input is prefixed by a Byte Order Mark needed to determine encoding
+		(e.g. if the encoding is UTF-16 and the BOM indicates big-endian), then that
+		BOM will be consumed and not emitted into the output. If the input encoding
+		is marked with an explicit endianness (e.g. UTF-16-BE), then the BOM is
+		interpreted as a non-breaking-space and is preserved in the output (including
+		always for UTF-8).
+		
+		The end result is that if the input is marked as an explicit endianness the
+		transcoding is faithful to all codepoints in the source. If it is not marked
+		with an explicit endianness, the BOM is not considered part of the string itself
+		but as metadata, and so is not preserved in the output.
+		
+		Args:
+		  input: A `Tensor` of type `string`.
+		    The text to be processed. Can have any shape.
+		  input_encoding: A `string`.
+		    Text encoding of the input strings. This is any of the encodings supported
+		    by ICU ucnv algorithmic converters. Examples: `"UTF-16", "US ASCII", "UTF-8"`.
+		  output_encoding: A `string` from: `"UTF-8", "UTF-16-BE", "UTF-32-BE"`.
+		    The unicode encoding to use in the output. Must be one of
+		    `"UTF-8", "UTF-16-BE", "UTF-32-BE"`. Multi-byte encodings will be big-endian.
+		  errors: An optional `string` from: `"strict", "replace", "ignore"`. Defaults to `"replace"`.
+		    Error handling policy when there is invalid formatting found in the input.
+		    The value of 'strict' will cause the operation to produce a InvalidArgument
+		    error on any invalid input formatting. A value of 'replace' (the default) will
+		    cause the operation to replace any invalid formatting in the input with the
+		    `replacement_char` codepoint. A value of 'ignore' will cause the operation to
+		    skip any invalid formatting in the input and produce no corresponding output
+		    character.
+		  replacement_char: An optional `int`. Defaults to `65533`.
+		    The replacement character codepoint to be used in place of any invalid
+		    formatting in the input when `errors='replace'`. Any valid unicode codepoint may
+		    be used. The default value is the default unicode replacement character is
+		    0xFFFD or U+65533.)
+		
+		    Note that for UTF-8, passing a replacement character expressible in 1 byte, such
+		    as ' ', will preserve string alignment to the source since invalid bytes will be
+		    replaced with a 1-byte replacement. For UTF-16-BE and UTF-16-LE, any 1 or 2 byte
+		    replacement character will preserve byte alignment to the source.
+		  replace_control_characters: An optional `bool`. Defaults to `False`.
+		    Whether to replace the C0 control characters (00-1F) with the
+		    `replacement_char`. Default is false.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `string`.
+	**/
+	static public function unicode_transcode(input:Dynamic, input_encoding:Dynamic, output_encoding:Dynamic, ?errors:Dynamic, ?replacement_char:Dynamic, ?replace_control_characters:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function unicode_transcode
+	**/
+	static public function unicode_transcode_eager_fallback(input:Dynamic, input_encoding:Dynamic, output_encoding:Dynamic, ?errors:Dynamic, ?replacement_char:Dynamic, ?replace_control_characters:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 }

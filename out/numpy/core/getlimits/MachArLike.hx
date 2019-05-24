@@ -108,9 +108,4 @@ package numpy.core.getlimits;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public var _str_eps : Dynamic;
-	public var _str_epsneg : Dynamic;
-	public var _str_resolution : Dynamic;
-	public var _str_xmax : Dynamic;
-	public var _str_xmin : Dynamic;
 }

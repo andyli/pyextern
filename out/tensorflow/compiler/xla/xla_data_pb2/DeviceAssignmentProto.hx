@@ -5,8 +5,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var COMPUTATION_COUNT_FIELD_NUMBER : Dynamic;
-	static public var COMPUTATION_DEVICES_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -72,7 +70,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var REPLICA_COUNT_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -89,6 +86,10 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -254,4 +255,16 @@ package tensorflow.compiler.xla.xla_data_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.DeviceAssignmentProto.computation_count
+	**/
+	public var computation_count : Dynamic;
+	/**
+		Field xla.DeviceAssignmentProto.computation_devices
+	**/
+	public var computation_devices : Dynamic;
+	/**
+		Field xla.DeviceAssignmentProto.replica_count
+	**/
+	public var replica_count : Dynamic;
 }

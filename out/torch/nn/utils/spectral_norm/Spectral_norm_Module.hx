@@ -12,25 +12,23 @@ package torch.nn.utils.spectral_norm;
 	/**
 		Performs :math:`L_p` normalization of inputs over specified dimension.
 		
-		Does:
+		For a tensor :attr:`input` of sizes :math:`(n_0, ..., n_{dim}, ..., n_k)`, each
+		:math:`n_{dim}` -element vector :math:`v` along dimension :attr:`dim` is transformed as
 		
 		.. math::
-		    v = \frac{v}{\max(\lVert v \rVert_p, \epsilon)}
+		    v = \frac{v}{\max(\lVert v \rVert_p, \epsilon)}.
 		
-		for each subtensor v over dimension dim of input. Each subtensor is
-		flattened into a vector, i.e. :math:`\lVert v \rVert_p` is not a matrix
-		norm.
-		
-		With default arguments normalizes over the second dimension with Euclidean
-		norm.
+		With the default arguments it uses the Euclidean norm over vectors along dimension :math:`1` for normalization.
 		
 		Args:
 		    input: input tensor of any shape
 		    p (float): the exponent value in the norm formulation. Default: 2
 		    dim (int): the dimension to reduce. Default: 1
 		    eps (float): small value to avoid division by zero. Default: 1e-12
+		    out (Tensor, optional): the output tensor. If :attr:`out` is used, this
+		                            operation won't be differentiable.
 	**/
-	static public function normalize(input:Dynamic, ?p:Dynamic, ?dim:Dynamic, ?eps:Dynamic):Dynamic;
+	static public function normalize(input:Dynamic, ?p:Dynamic, ?dim:Dynamic, ?eps:Dynamic, ?out:Dynamic):Dynamic;
 	/**
 		Removes the spectral normalization reparameterization from a module.
 		
@@ -47,8 +45,8 @@ package torch.nn.utils.spectral_norm;
 		Applies spectral normalization to a parameter in the given module.
 		
 		.. math::
-		     \mathbf{W} &= \dfrac{\mathbf{W}}{\sigma(\mathbf{W})} \\
-		     \sigma(\mathbf{W}) &= \max_{\mathbf{h}: \mathbf{h} \ne 0} \dfrac{\|\mathbf{W} \mathbf{h}\|_2}{\|\mathbf{h}\|_2}
+		     \mathbf{W} = \dfrac{\mathbf{W}}{\sigma(\mathbf{W})} \\
+		     \sigma(\mathbf{W}) = \max_{\mathbf{h}: \mathbf{h} \ne 0} \dfrac{\|\mathbf{W} \mathbf{h}\|_2}{\|\mathbf{h}\|_2}
 		
 		Spectral normalization stabilizes the training of discriminators (critics)
 		in Generaive Adversarial Networks (GANs) by rescaling the weight tensor

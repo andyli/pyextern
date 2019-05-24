@@ -69,7 +69,7 @@ package numpy.polynomial.laguerre;
 		
 		See Also
 		--------
-		lagsub, lagmul, lagdiv, lagpow
+		lagsub, lagmulx, lagmul, lagdiv, lagpow
 		
 		Notes
 		-----
@@ -185,7 +185,7 @@ package numpy.polynomial.laguerre;
 		
 		See Also
 		--------
-		lagadd, lagsub, lagmul, lagpow
+		lagadd, lagsub, lagmulx, lagmul, lagpow
 		
 		Notes
 		-----
@@ -317,7 +317,7 @@ package numpy.polynomial.laguerre;
 		References
 		----------
 		.. [1] Wikipedia, "Curve fitting",
-		       http://en.wikipedia.org/wiki/Curve_fitting
+		       https://en.wikipedia.org/wiki/Curve_fitting
 		
 		Examples
 		--------
@@ -646,7 +646,7 @@ package numpy.polynomial.laguerre;
 		
 		See Also
 		--------
-		lagadd, lagsub, lagdiv, lagpow
+		lagadd, lagsub, lagmulx, lagdiv, lagpow
 		
 		Notes
 		-----
@@ -680,6 +680,10 @@ package numpy.polynomial.laguerre;
 		-------
 		out : ndarray
 		    Array representing the result of the multiplication.
+		
+		See Also
+		--------
+		lagadd, lagsub, lagmul, lagdiv, lagpow
 		
 		Notes
 		-----
@@ -723,7 +727,7 @@ package numpy.polynomial.laguerre;
 		
 		See Also
 		--------
-		lagadd, lagsub, lagmul, lagdiv
+		lagadd, lagsub, lagmulx, lagmul, lagdiv
 		
 		Examples
 		--------
@@ -797,7 +801,7 @@ package numpy.polynomial.laguerre;
 		
 		See Also
 		--------
-		lagadd, lagmul, lagdiv, lagpow
+		lagadd, lagmulx, lagmul, lagdiv, lagpow
 		
 		Notes
 		-----

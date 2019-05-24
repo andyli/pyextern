@@ -112,19 +112,19 @@ package matplotlib.mathtext;
 	static public var _font_type_mapping : Dynamic;
 	static public var _parser : Dynamic;
 	/**
-		Returns the offset of the baseline from the bottom of the
-		image in pixels.
+		Parameters
+		----------
+		texstr : str
+		    A valid mathtext string, e.g., r'IQ: $\sigma_i=15$'.
+		dpi : float
+		    The dots-per-inch setting used to render the text.
 		
-		*texstr*
-		    A valid mathtext string, e.g., r'IQ: $\sigma_i=15$'
-		
-		*dpi*
-		    The dots-per-inch to render the text
-		
-		*fontsize*
-		    The font size in points
+		Returns
+		-------
+		depth : int
+		    Offset of the baseline from the bottom of the image, in pixels.
 	**/
-	public function get_depth(texstr:Dynamic, ?dpi:Dynamic, ?fontsize:Dynamic):Dynamic;
+	public function get_depth(texstr:Dynamic, ?dpi:Dynamic, ?fontsize:Dynamic):Int;
 	/**
 		Parse the given math expression *s* at the given *dpi*.  If
 		*prop* is provided, it is a
@@ -137,69 +137,63 @@ package matplotlib.mathtext;
 	**/
 	public function parse(s:Dynamic, ?dpi:Dynamic, ?prop:Dynamic):Dynamic;
 	/**
-		*texstr*
-		    A valid mathtext string, e.g., r'IQ: $\sigma_i=15$'
-		
-		*dpi*
-		    The dots-per-inch to render the text
-		
-		*fontsize*
+		Parameters
+		----------
+		texstr : str
+		    A valid mathtext string, e.g., r'IQ: $\sigma_i=15$'.
+		dpi : float
+		    The dots-per-inch setting used to render the text.
+		fontsize : int
 		    The font size in points
 		
-		Returns a tuple (*array*, *depth*)
-		
-		  - *array* is an NxM uint8 alpha ubyte mask array of
-		    rasterized tex.
-		
-		  - depth is the offset of the baseline from the bottom of the
-		    image in pixels.
+		Returns
+		-------
+		array : 2D uint8 alpha
+		    Mask array of rasterized tex.
+		depth : int
+		    Offset of the baseline from the bottom of the image, in pixels.
 	**/
 	public function to_mask(texstr:Dynamic, ?dpi:Dynamic, ?fontsize:Dynamic):Dynamic;
 	/**
-		Writes a tex expression to a PNG file.
+		Render a tex expression to a PNG file.
 		
-		Returns the offset of the baseline from the bottom of the
-		image in pixels.
+		Parameters
+		----------
+		filename
+		    A writable filename or fileobject.
+		texstr : str
+		    A valid mathtext string, e.g., r'IQ: $\sigma_i=15$'.
+		color : color
+		    The text color.
+		dpi : float
+		    The dots-per-inch setting used to render the text.
+		fontsize : int
+		    The font size in points.
 		
-		*filename*
-		    A writable filename or fileobject
-		
-		*texstr*
-		    A valid mathtext string, e.g., r'IQ: $\sigma_i=15$'
-		
-		*color*
-		    A valid matplotlib color argument
-		
-		*dpi*
-		    The dots-per-inch to render the text
-		
-		*fontsize*
-		    The font size in points
-		
-		Returns the offset of the baseline from the bottom of the
-		image in pixels.
+		Returns
+		-------
+		depth : int
+		    Offset of the baseline from the bottom of the image, in pixels.
 	**/
-	public function to_png(filename:Dynamic, texstr:Dynamic, ?color:Dynamic, ?dpi:Dynamic, ?fontsize:Dynamic):Dynamic;
+	public function to_png(filename:Dynamic, texstr:Dynamic, ?color:Dynamic, ?dpi:Dynamic, ?fontsize:Dynamic):Int;
 	/**
-		*texstr*
-		    A valid mathtext string, e.g., r'IQ: $\sigma_i=15$'
+		Parameters
+		----------
+		texstr : str
+		    A valid mathtext string, e.g., r'IQ: $\sigma_i=15$'.
+		color : color
+		    The text color.
+		dpi : float
+		    The dots-per-inch setting used to render the text.
+		fontsize : int
+		    The font size in points.
 		
-		*color*
-		    Any matplotlib color argument
-		
-		*dpi*
-		    The dots-per-inch to render the text
-		
-		*fontsize*
-		    The font size in points
-		
-		Returns a tuple (*array*, *depth*)
-		
-		  - *array* is an NxM uint8 alpha ubyte mask array of
-		    rasterized tex.
-		
-		  - depth is the offset of the baseline from the bottom of the
-		    image in pixels.
+		Returns
+		-------
+		array : (M, N, 4) array
+		    RGBA color values of rasterized tex, colorized with *color*.
+		depth : int
+		    Offset of the baseline from the bottom of the image, in pixels.
 	**/
 	public function to_rgba(texstr:Dynamic, ?color:Dynamic, ?dpi:Dynamic, ?fontsize:Dynamic):Dynamic;
 }

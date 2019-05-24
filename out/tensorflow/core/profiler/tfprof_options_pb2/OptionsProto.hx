@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.profiler.tfprof_options_pb2;
 @:pythonImport("tensorflow.core.profiler.tfprof_options_pb2", "OptionsProto") extern class OptionsProto {
-	static public var ACCOUNT_DISPLAYED_OP_ONLY_FIELD_NUMBER : Dynamic;
-	static public var ACCOUNT_TYPE_REGEXES_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -24,7 +22,6 @@ package tensorflow.core.profiler.tfprof_options_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DUMP_TO_FILE_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -41,7 +38,6 @@ package tensorflow.core.profiler.tfprof_options_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HIDE_NAME_REGEXES_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -58,17 +54,6 @@ package tensorflow.core.profiler.tfprof_options_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAX_DEPTH_FIELD_NUMBER : Dynamic;
-	static public var MIN_ACCELERATOR_MICROS_FIELD_NUMBER : Dynamic;
-	static public var MIN_BYTES_FIELD_NUMBER : Dynamic;
-	static public var MIN_CPU_MICROS_FIELD_NUMBER : Dynamic;
-	static public var MIN_FLOAT_OPS_FIELD_NUMBER : Dynamic;
-	static public var MIN_MICROS_FIELD_NUMBER : Dynamic;
-	static public var MIN_OCCURRENCE_FIELD_NUMBER : Dynamic;
-	static public var MIN_OUTPUT_BYTES_FIELD_NUMBER : Dynamic;
-	static public var MIN_PARAMS_FIELD_NUMBER : Dynamic;
-	static public var MIN_PEAK_BYTES_FIELD_NUMBER : Dynamic;
-	static public var MIN_RESIDUAL_BYTES_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -77,8 +62,6 @@ package tensorflow.core.profiler.tfprof_options_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ORDER_BY_FIELD_NUMBER : Dynamic;
-	static public var OUTPUT_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -87,10 +70,6 @@ package tensorflow.core.profiler.tfprof_options_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SELECT_FIELD_NUMBER : Dynamic;
-	static public var SHOW_NAME_REGEXES_FIELD_NUMBER : Dynamic;
-	static public var START_NAME_REGEXES_FIELD_NUMBER : Dynamic;
-	static public var STEP_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -103,7 +82,10 @@ package tensorflow.core.profiler.tfprof_options_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TRIM_NAME_REGEXES_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -269,4 +251,92 @@ package tensorflow.core.profiler.tfprof_options_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.account_displayed_op_only
+	**/
+	public var account_displayed_op_only : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.account_type_regexes
+	**/
+	public var account_type_regexes : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.dump_to_file
+	**/
+	public var dump_to_file : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.hide_name_regexes
+	**/
+	public var hide_name_regexes : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.max_depth
+	**/
+	public var max_depth : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.min_accelerator_micros
+	**/
+	public var min_accelerator_micros : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.min_bytes
+	**/
+	public var min_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.min_cpu_micros
+	**/
+	public var min_cpu_micros : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.min_float_ops
+	**/
+	public var min_float_ops : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.min_micros
+	**/
+	public var min_micros : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.min_occurrence
+	**/
+	public var min_occurrence : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.min_output_bytes
+	**/
+	public var min_output_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.min_params
+	**/
+	public var min_params : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.min_peak_bytes
+	**/
+	public var min_peak_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.min_residual_bytes
+	**/
+	public var min_residual_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.order_by
+	**/
+	public var order_by : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.output
+	**/
+	public var output : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.select
+	**/
+	public var select : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.show_name_regexes
+	**/
+	public var show_name_regexes : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.start_name_regexes
+	**/
+	public var start_name_regexes : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.step
+	**/
+	public var step : Dynamic;
+	/**
+		Field tensorflow.tfprof.OptionsProto.trim_name_regexes
+	**/
+	public var trim_name_regexes : Dynamic;
 }

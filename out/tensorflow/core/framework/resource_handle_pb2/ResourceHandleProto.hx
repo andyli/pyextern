@@ -5,7 +5,6 @@ package tensorflow.core.framework.resource_handle_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CONTAINER_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -23,7 +22,6 @@ package tensorflow.core.framework.resource_handle_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DEVICE_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -40,7 +38,6 @@ package tensorflow.core.framework.resource_handle_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HASH_CODE_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -57,7 +54,6 @@ package tensorflow.core.framework.resource_handle_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAYBE_TYPE_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -66,7 +62,6 @@ package tensorflow.core.framework.resource_handle_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -87,6 +82,10 @@ package tensorflow.core.framework.resource_handle_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -252,4 +251,24 @@ package tensorflow.core.framework.resource_handle_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.ResourceHandleProto.container
+	**/
+	public var container : Dynamic;
+	/**
+		Field tensorflow.ResourceHandleProto.device
+	**/
+	public var device : Dynamic;
+	/**
+		Field tensorflow.ResourceHandleProto.hash_code
+	**/
+	public var hash_code : Dynamic;
+	/**
+		Field tensorflow.ResourceHandleProto.maybe_type_name
+	**/
+	public var maybe_type_name : Dynamic;
+	/**
+		Field tensorflow.ResourceHandleProto.name
+	**/
+	public var name : Dynamic;
 }

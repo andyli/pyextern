@@ -72,6 +72,13 @@ package pandas.core.reshape.api;
 		    ``DataFrame``, a ``DataFrame`` is returned. When concatenating along
 		    the columns (axis=1), a ``DataFrame`` is returned.
 		
+		See Also
+		--------
+		Series.append
+		DataFrame.append
+		DataFrame.join
+		DataFrame.merge
+		
 		Notes
 		-----
 		The keys, levels, and names arguments are all optional.
@@ -79,13 +86,6 @@ package pandas.core.reshape.api;
 		A walkthrough of how this method fits in with other tools for combining
 		pandas objects can be found `here
 		<http://pandas.pydata.org/pandas-docs/stable/merging.html>`__.
-		
-		See Also
-		--------
-		Series.append
-		DataFrame.append
-		DataFrame.join
-		DataFrame.merge
 		
 		Examples
 		--------
@@ -162,12 +162,12 @@ package pandas.core.reshape.api;
 		  letter  number animal
 		0      c       3    cat
 		1      d       4    dog
-		>>> pd.concat([df1, df3])
-		  animal letter  number
-		0    NaN      a       1
-		1    NaN      b       2
-		0    cat      c       3
-		1    dog      d       4
+		>>> pd.concat([df1, df3], sort=False)
+		  letter  number animal
+		0      a       1    NaN
+		1      b       2    NaN
+		0      c       3    cat
+		1      d       4    dog
 		
 		Combine ``DataFrame`` objects with overlapping columns
 		and return only those that are shared by passing ``inner`` to
@@ -221,12 +221,12 @@ package pandas.core.reshape.api;
 		values : array-like, optional
 		    Array of values to aggregate according to the factors.
 		    Requires `aggfunc` be specified.
-		aggfunc : function, optional
-		    If specified, requires `values` be specified as well
 		rownames : sequence, default None
 		    If passed, must match number of row arrays passed
 		colnames : sequence, default None
 		    If passed, must match number of column arrays passed
+		aggfunc : function, optional
+		    If specified, requires `values` be specified as well
 		margins : boolean, default False
 		    Add row/column margins (subtotals)
 		margins_name : string, default 'All'
@@ -247,6 +247,9 @@ package pandas.core.reshape.api;
 		
 		    .. versionadded:: 0.18.1
 		
+		Returns
+		-------
+		crosstab : DataFrame
 		
 		Notes
 		-----
@@ -281,17 +284,24 @@ package pandas.core.reshape.api;
 		>>> foo = pd.Categorical(['a', 'b'], categories=['a', 'b', 'c'])
 		>>> bar = pd.Categorical(['d', 'e'], categories=['d', 'e', 'f'])
 		>>> crosstab(foo, bar)  # 'c' and 'f' are not represented in the data,
-		...                     # but they still will be counted in the output
+		                        # and will not be shown in the output because
+		                        # dropna is True by default. Set 'dropna=False'
+		                        # to preserve categories with no data
+		... # doctest: +SKIP
+		col_0  d  e
+		row_0
+		a      1  0
+		b      0  1
+		
+		>>> crosstab(foo, bar, dropna=False)  # 'c' and 'f' are not represented
+		                        # in the data, but they still will be counted
+		                        # and shown in the output
 		... # doctest: +SKIP
 		col_0  d  e  f
 		row_0
 		a      1  0  0
 		b      0  1  0
 		c      0  0  0
-		
-		Returns
-		-------
-		crosstab : DataFrame
 	**/
 	static public function crosstab(index:Dynamic, columns:Dynamic, ?values:Dynamic, ?rownames:Dynamic, ?colnames:Dynamic, ?aggfunc:Dynamic, ?margins:Dynamic, ?margins_name:Dynamic, ?dropna:Dynamic, ?normalize:Dynamic):pandas.DataFrame;
 	/**
@@ -315,7 +325,8 @@ package pandas.core.reshape.api;
 		      and maximum values of `x`.
 		    * sequence of scalars : Defines the bin edges allowing for non-uniform
 		      width. No extension of the range of `x` is done.
-		    * IntervalIndex : Defines the exact bins to be used.
+		    * IntervalIndex : Defines the exact bins to be used. Note that
+		      IntervalIndex for `bins` must be non-overlapping.
 		
 		right : bool, default True
 		    Indicates whether `bins` includes the rightmost edge or not. If
@@ -476,9 +487,8 @@ package pandas.core.reshape.api;
 		    If `columns` is None then all the columns with
 		    `object` or `category` dtype will be converted.
 		sparse : bool, default False
-		    Whether the dummy columns should be sparse or not.  Returns
-		    SparseDataFrame if `data` is a Series or if all columns are included.
-		    Otherwise returns a DataFrame with some SparseBlocks.
+		    Whether the dummy-encoded columns should be be backed by
+		    a :class:`SparseArray` (True) or a regular NumPy array (False).
 		drop_first : bool, default False
 		    Whether to get k-1 dummies out of k categorical levels by removing the
 		    first level.
@@ -492,11 +502,14 @@ package pandas.core.reshape.api;
 		
 		Returns
 		-------
-		dummies : DataFrame or SparseDataFrame
+		dummies : DataFrame
+		
+		See Also
+		--------
+		Series.str.get_dummies
 		
 		Examples
 		--------
-		>>> import pandas as pd
 		>>> s = pd.Series(list('abca'))
 		
 		>>> pd.get_dummies(s)
@@ -550,12 +563,8 @@ package pandas.core.reshape.api;
 		0  1.0  0.0  0.0
 		1  0.0  1.0  0.0
 		2  0.0  0.0  1.0
-		
-		See Also
-		--------
-		Series.str.get_dummies
 	**/
-	static public function get_dummies(data:Dynamic, ?prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?columns:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_dummies(data:Dynamic, ?prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?columns:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic, ?dtype:Dynamic):pandas.DataFrame;
 	/**
 		Reshape long-format data to wide. Generalized inverse of DataFrame.pivot
 		
@@ -568,7 +577,6 @@ package pandas.core.reshape.api;
 		
 		Examples
 		--------
-		>>> import pandas as pd
 		>>> data = pd.DataFrame({'hr1': [514, 573], 'hr2': [545, 526],
 		...                      'team': ['Red Sox', 'Yankees'],
 		...                      'year1': [2007, 2007], 'year2': [2008, 2008]})
@@ -590,7 +598,7 @@ package pandas.core.reshape.api;
 	**/
 	static public function lreshape(data:Dynamic, groups:Dynamic, ?dropna:Dynamic, ?label:Dynamic):pandas.DataFrame;
 	/**
-		"Unpivots" a DataFrame from wide format to long format, optionally
+		Unpivots a DataFrame from wide format to long format, optionally
 		leaving identifier variables set.
 		
 		This function is useful to massage a DataFrame into a format where one
@@ -616,7 +624,7 @@ package pandas.core.reshape.api;
 		col_level : int or string, optional
 		    If columns are a MultiIndex then use this level to melt.
 		
-		See also
+		See Also
 		--------
 		DataFrame.melt
 		pivot_table
@@ -624,7 +632,6 @@ package pandas.core.reshape.api;
 		
 		Examples
 		--------
-		>>> import pandas as pd
 		>>> df = pd.DataFrame({'A': {0: 'a', 1: 'b', 2: 'c'},
 		...                    'B': {0: 1, 1: 3, 2: 5},
 		...                    'C': {0: 2, 1: 4, 2: 6}})
@@ -682,26 +689,28 @@ package pandas.core.reshape.api;
 	**/
 	static public function melt(frame:Dynamic, ?id_vars:Dynamic, ?value_vars:Dynamic, ?var_name:Dynamic, ?value_name:Dynamic, ?col_level:Dynamic):Dynamic;
 	/**
-		Merge DataFrame objects by performing a database-style join operation by
-		columns or indexes.
+		Merge DataFrame or named Series objects with a database-style join.
 		
-		If joining columns on columns, the DataFrame indexes *will be
-		ignored*. Otherwise if joining indexes on indexes or indexes on a column or
-		columns, the index will be passed on.
+		The join is done on columns or indexes. If joining columns on
+		columns, the DataFrame indexes *will be ignored*. Otherwise if joining indexes
+		on indexes or indexes on a column or columns, the index will be passed on.
 		
 		Parameters
 		----------
 		left : DataFrame
-		right : DataFrame
+		right : DataFrame or named Series
+		    Object to merge with.
 		how : {'left', 'right', 'outer', 'inner'}, default 'inner'
+		    Type of merge to be performed.
+		
 		    * left: use only keys from left frame, similar to a SQL left outer join;
-		      preserve key order
+		      preserve key order.
 		    * right: use only keys from right frame, similar to a SQL right outer join;
-		      preserve key order
+		      preserve key order.
 		    * outer: use union of keys from both frames, similar to a SQL full outer
-		      join; sort keys lexicographically
+		      join; sort keys lexicographically.
 		    * inner: use intersection of keys from both frames, similar to a SQL inner
-		      join; preserve the order of the left keys
+		      join; preserve the order of the left keys.
 		on : label or list
 		    Column or index level names to join on. These must be found in both
 		    DataFrames. If `on` is None and not merging on indexes then this defaults
@@ -714,22 +723,23 @@ package pandas.core.reshape.api;
 		    Column or index level names to join on in the right DataFrame. Can also
 		    be an array or list of arrays of the length of the right DataFrame.
 		    These arrays are treated as if they are columns.
-		left_index : boolean, default False
+		left_index : bool, default False
 		    Use the index from the left DataFrame as the join key(s). If it is a
 		    MultiIndex, the number of keys in the other DataFrame (either the index
-		    or a number of columns) must match the number of levels
-		right_index : boolean, default False
+		    or a number of columns) must match the number of levels.
+		right_index : bool, default False
 		    Use the index from the right DataFrame as the join key. Same caveats as
-		    left_index
-		sort : boolean, default False
+		    left_index.
+		sort : bool, default False
 		    Sort the join keys lexicographically in the result DataFrame. If False,
-		    the order of the join keys depends on the join type (how keyword)
-		suffixes : 2-length sequence (tuple, list, ...)
+		    the order of the join keys depends on the join type (how keyword).
+		suffixes : tuple of (str, str), default ('_x', '_y')
 		    Suffix to apply to overlapping column names in the left and right
-		    side, respectively
-		copy : boolean, default True
-		    If False, do not copy data unnecessarily
-		indicator : boolean or string, default False
+		    side, respectively. To raise an exception on overlapping columns use
+		    (False, False).
+		copy : bool, default True
+		    If False, avoid copy if possible.
+		indicator : bool or str, default False
 		    If True, adds a column to output DataFrame called "_merge" with
 		    information on the source of each row.
 		    If string, column with information on source of each row will be added to
@@ -739,7 +749,7 @@ package pandas.core.reshape.api;
 		    "right_only" for observations whose merge key only appears in 'right'
 		    DataFrame, and "both" if the observation's merge key is found in both.
 		
-		validate : string, default None
+		validate : str, optional
 		    If specified, checks if merge is of specified type.
 		
 		    * "one_to_one" or "1:1": check if merge keys are unique in both
@@ -752,43 +762,78 @@ package pandas.core.reshape.api;
 		
 		    .. versionadded:: 0.21.0
 		
+		Returns
+		-------
+		DataFrame
+		    A DataFrame of the two merged objects.
+		
+		See Also
+		--------
+		merge_ordered : Merge with optional filling/interpolation.
+		merge_asof : Merge on nearest keys.
+		DataFrame.join : Similar method using indices.
+		
 		Notes
 		-----
 		Support for specifying index levels as the `on`, `left_on`, and
 		`right_on` parameters was added in version 0.23.0
+		Support for merging named Series objects was added in version 0.24.0
 		
 		Examples
 		--------
 		
-		>>> A              >>> B
-		    lkey value         rkey value
-		0   foo  1         0   foo  5
-		1   bar  2         1   bar  6
-		2   baz  3         2   qux  7
-		3   foo  4         3   bar  8
+		>>> df1 = pd.DataFrame({'lkey': ['foo', 'bar', 'baz', 'foo'],
+		...                     'value': [1, 2, 3, 5]})
+		>>> df2 = pd.DataFrame({'rkey': ['foo', 'bar', 'baz', 'foo'],
+		...                     'value': [5, 6, 7, 8]})
+		>>> df1
+		    lkey value
+		0   foo      1
+		1   bar      2
+		2   baz      3
+		3   foo      5
+		>>> df2
+		    rkey value
+		0   foo      5
+		1   bar      6
+		2   baz      7
+		3   foo      8
 		
-		>>> A.merge(B, left_on='lkey', right_on='rkey', how='outer')
-		   lkey  value_x  rkey  value_y
-		0  foo   1        foo   5
-		1  foo   4        foo   5
-		2  bar   2        bar   6
-		3  bar   2        bar   8
-		4  baz   3        NaN   NaN
-		5  NaN   NaN      qux   7
+		Merge df1 and df2 on the lkey and rkey columns. The value columns have
+		the default suffixes, _x and _y, appended.
 		
-		Returns
-		-------
-		merged : DataFrame
-		    The output type will the be same as 'left', if it is a subclass
-		    of DataFrame.
+		>>> df1.merge(df2, left_on='lkey', right_on='rkey')
+		  lkey  value_x rkey  value_y
+		0  foo        1  foo        5
+		1  foo        1  foo        8
+		2  foo        5  foo        5
+		3  foo        5  foo        8
+		4  bar        2  bar        6
+		5  baz        3  baz        7
 		
-		See also
-		--------
-		merge_ordered
-		merge_asof
-		DataFrame.join
+		Merge DataFrames df1 and df2 with specified left and right suffixes
+		appended to any overlapping columns.
+		
+		>>> df1.merge(df2, left_on='lkey', right_on='rkey',
+		...           suffixes=('_left', '_right'))
+		  lkey  value_left rkey  value_right
+		0  foo           1  foo            5
+		1  foo           1  foo            8
+		2  foo           5  foo            5
+		3  foo           5  foo            8
+		4  bar           2  bar            6
+		5  baz           3  baz            7
+		
+		Merge DataFrames df1 and df2, but raise an exception if the DataFrames have
+		any overlapping columns.
+		
+		>>> df1.merge(df2, left_on='lkey', right_on='rkey', suffixes=(False, False))
+		Traceback (most recent call last):
+		...
+		ValueError: columns overlap but no suffix specified:
+		    Index(['value'], dtype='object')
 	**/
-	static public function merge(left:Dynamic, right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic, ?validate:Dynamic):pandas.DataFrame;
+	static public function merge(left:Dynamic, right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic, ?validate:Dynamic):Dynamic;
 	/**
 		Perform an asof merge. This is similar to a left-join except that we
 		match on nearest key rather than equal keys.
@@ -860,17 +905,21 @@ package pandas.core.reshape.api;
 		    - If True, allow matching with the same 'on' value
 		      (i.e. less-than-or-equal-to / greater-than-or-equal-to)
 		    - If False, don't match the same 'on' value
-		      (i.e., stricly less-than / strictly greater-than)
+		      (i.e., strictly less-than / strictly greater-than)
 		
 		direction : 'backward' (default), 'forward', or 'nearest'
 		    Whether to search for prior, subsequent, or closest matches.
 		
 		    .. versionadded:: 0.20.0
 		
-		
 		Returns
 		-------
 		merged : DataFrame
+		
+		See Also
+		--------
+		merge
+		merge_ordered
 		
 		Examples
 		--------
@@ -1001,11 +1050,6 @@ package pandas.core.reshape.api;
 		2 2016-05-25 13:30:00.048   GOOG  720.77       100     NaN     NaN
 		3 2016-05-25 13:30:00.048   GOOG  720.92       100     NaN     NaN
 		4 2016-05-25 13:30:00.048   AAPL   98.00       100     NaN     NaN
-		
-		See also
-		--------
-		merge
-		merge_ordered
 	**/
 	static public function merge_asof(left:Dynamic, right:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?by:Dynamic, ?left_by:Dynamic, ?right_by:Dynamic, ?suffixes:Dynamic, ?tolerance:Dynamic, ?allow_exact_matches:Dynamic, ?direction:Dynamic):pandas.DataFrame;
 	/**
@@ -1045,6 +1089,17 @@ package pandas.core.reshape.api;
 		
 		    .. versionadded:: 0.19.0
 		
+		Returns
+		-------
+		merged : DataFrame
+		    The output type will the be same as 'left', if it is a subclass
+		    of DataFrame.
+		
+		See Also
+		--------
+		merge
+		merge_asof
+		
 		Examples
 		--------
 		>>> A                      >>> B
@@ -1068,50 +1123,116 @@ package pandas.core.reshape.api;
 		7     b   c       2     2.0
 		8     b   d       2     3.0
 		9     b   e       3     3.0
-		
-		Returns
-		-------
-		merged : DataFrame
-		    The output type will the be same as 'left', if it is a subclass
-		    of DataFrame.
-		
-		See also
-		--------
-		merge
-		merge_asof
 	**/
 	static public function merge_ordered(left:Dynamic, right:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_by:Dynamic, ?right_by:Dynamic, ?fill_method:Dynamic, ?suffixes:Dynamic, ?how:Dynamic):pandas.DataFrame;
 	/**
-		Produce 'pivot' table based on 3 columns of this DataFrame.
-		Uses unique values from index / columns and fills with values.
+		Return reshaped DataFrame organized by given index / column values.
+		
+		Reshape data (produce a "pivot" table) based on column values. Uses
+		unique values from specified `index` / `columns` to form axes of the
+		resulting DataFrame. This function does not support data
+		aggregation, multiple values will result in a MultiIndex in the
+		columns. See the :ref:`User Guide <reshaping>` for more on reshaping.
 		
 		Parameters
 		----------
-		index : ndarray
-		    Labels to use to make new frame's index
-		columns : ndarray
-		    Labels to use to make new frame's columns
-		values : ndarray
-		    Values to use for populating new frame's values
+		data : DataFrame
+		index : string or object, optional
+		    Column to use to make new frame's index. If None, uses
+		    existing index.
+		columns : string or object
+		    Column to use to make new frame's columns.
+		values : string, object or a list of the previous, optional
+		    Column(s) to use for populating new frame's values. If not
+		    specified, all remaining columns will be used and the result will
+		    have hierarchically indexed columns.
 		
-		Notes
-		-----
-		Obviously, all 3 of the input arguments must have the same length
+		    .. versionchanged :: 0.23.0
+		       Also accept list of column names.
 		
 		Returns
 		-------
 		DataFrame
+		    Returns reshaped DataFrame.
 		
-		See also
+		Raises
+		------
+		ValueError:
+		    When there are any `index`, `columns` combinations with multiple
+		    values. `DataFrame.pivot_table` when you need to aggregate.
+		
+		See Also
 		--------
-		DataFrame.pivot_table : generalization of pivot that can handle
-		    duplicate values for one index/column pair
+		DataFrame.pivot_table : Generalization of pivot that can handle
+		    duplicate values for one index/column pair.
+		DataFrame.unstack : Pivot based on the index values instead of a
+		    column.
+		
+		Notes
+		-----
+		For finer-tuned control, see hierarchical indexing documentation along
+		with the related stack/unstack methods.
+		
+		Examples
+		--------
+		>>> df = pd.DataFrame({'foo': ['one', 'one', 'one', 'two', 'two',
+		...                            'two'],
+		...                    'bar': ['A', 'B', 'C', 'A', 'B', 'C'],
+		...                    'baz': [1, 2, 3, 4, 5, 6],
+		...                    'zoo': ['x', 'y', 'z', 'q', 'w', 't']})
+		>>> df
+		    foo   bar  baz  zoo
+		0   one   A    1    x
+		1   one   B    2    y
+		2   one   C    3    z
+		3   two   A    4    q
+		4   two   B    5    w
+		5   two   C    6    t
+		
+		>>> df.pivot(index='foo', columns='bar', values='baz')
+		bar  A   B   C
+		foo
+		one  1   2   3
+		two  4   5   6
+		
+		>>> df.pivot(index='foo', columns='bar')['baz']
+		bar  A   B   C
+		foo
+		one  1   2   3
+		two  4   5   6
+		
+		>>> df.pivot(index='foo', columns='bar', values=['baz', 'zoo'])
+		      baz       zoo
+		bar   A  B  C   A  B  C
+		foo
+		one   1  2  3   x  y  z
+		two   4  5  6   q  w  t
+		
+		A ValueError is raised if there are any duplicates.
+		
+		>>> df = pd.DataFrame({"foo": ['one', 'one', 'two', 'two'],
+		...                    "bar": ['A', 'A', 'B', 'C'],
+		...                    "baz": [1, 2, 3, 4]})
+		>>> df
+		   foo bar  baz
+		0  one   A    1
+		1  one   A    2
+		2  two   B    3
+		3  two   C    4
+		
+		Notice that the first two rows are the same for our `index`
+		and `columns` arguments.
+		
+		>>> df.pivot(index='foo', columns='bar', values='baz')
+		Traceback (most recent call last):
+		   ...
+		ValueError: Index contains duplicate entries, cannot reshape
 	**/
-	static public function pivot(index:Dynamic, columns:Dynamic, values:Dynamic):Dynamic;
+	static public function pivot(data:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?values:Dynamic):Dynamic;
 	/**
 		Create a spreadsheet-style pivot table as a DataFrame. The levels in
 		the pivot table will be stored in MultiIndex objects (hierarchical
-		indexes) on the index and columns of the result DataFrame
+		indexes) on the index and columns of the result DataFrame.
 		
 		Parameters
 		----------
@@ -1143,6 +1264,15 @@ package pandas.core.reshape.api;
 		    Name of the row / column that will contain the totals
 		    when margins is True.
 		
+		Returns
+		-------
+		table : DataFrame
+		
+		See Also
+		--------
+		DataFrame.pivot : Pivot without aggregation that can handle
+		    non-numeric data.
+		
 		Examples
 		--------
 		>>> df = pd.DataFrame({"A": ["foo", "foo", "foo", "foo", "foo",
@@ -1152,59 +1282,72 @@ package pandas.core.reshape.api;
 		...                    "C": ["small", "large", "large", "small",
 		...                          "small", "large", "small", "small",
 		...                          "large"],
-		...                    "D": [1, 2, 2, 3, 3, 4, 5, 6, 7]})
+		...                    "D": [1, 2, 2, 3, 3, 4, 5, 6, 7],
+		...                    "E": [2, 4, 5, 5, 6, 6, 8, 9, 9]})
 		>>> df
-		     A    B      C  D
-		0  foo  one  small  1
-		1  foo  one  large  2
-		2  foo  one  large  2
-		3  foo  two  small  3
-		4  foo  two  small  3
-		5  bar  one  large  4
-		6  bar  one  small  5
-		7  bar  two  small  6
-		8  bar  two  large  7
+		     A    B      C  D  E
+		0  foo  one  small  1  2
+		1  foo  one  large  2  4
+		2  foo  one  large  2  5
+		3  foo  two  small  3  5
+		4  foo  two  small  3  6
+		5  bar  one  large  4  6
+		6  bar  one  small  5  8
+		7  bar  two  small  6  9
+		8  bar  two  large  7  9
+		
+		This first example aggregates values by taking the sum.
 		
 		>>> table = pivot_table(df, values='D', index=['A', 'B'],
 		...                     columns=['C'], aggfunc=np.sum)
 		>>> table
 		C        large  small
 		A   B
-		bar one    4.0    5.0
-		    two    7.0    6.0
-		foo one    4.0    1.0
-		    two    NaN    6.0
+		bar one      4      5
+		    two      7      6
+		foo one      4      1
+		    two    NaN      6
+		
+		We can also fill missing values using the `fill_value` parameter.
 		
 		>>> table = pivot_table(df, values='D', index=['A', 'B'],
-		...                     columns=['C'], aggfunc=np.sum)
+		...                     columns=['C'], aggfunc=np.sum, fill_value=0)
 		>>> table
 		C        large  small
 		A   B
-		bar one    4.0    5.0
-		    two    7.0    6.0
-		foo one    4.0    1.0
-		    two    NaN    6.0
+		bar one      4      5
+		    two      7      6
+		foo one      4      1
+		    two      0      6
+		
+		The next example aggregates by taking the mean across multiple columns.
+		
+		>>> table = pivot_table(df, values=['D', 'E'], index=['A', 'C'],
+		...                     aggfunc={'D': np.mean,
+		...                              'E': np.mean})
+		>>> table
+		                  D         E
+		               mean      mean
+		A   C
+		bar large  5.500000  7.500000
+		    small  5.500000  8.500000
+		foo large  2.000000  4.500000
+		    small  2.333333  4.333333
+		
+		We can also calculate multiple types of aggregations for any given
+		value column.
 		
 		>>> table = pivot_table(df, values=['D', 'E'], index=['A', 'C'],
 		...                     aggfunc={'D': np.mean,
 		...                              'E': [min, max, np.mean]})
 		>>> table
 		                  D   E
-		               mean max median min
+		               mean max      mean min
 		A   C
-		bar large  5.500000  16   14.5  13
-		    small  5.500000  15   14.5  14
-		foo large  2.000000  10    9.5   9
-		    small  2.333333  12   11.0   8
-		
-		Returns
-		-------
-		table : DataFrame
-		
-		See also
-		--------
-		DataFrame.pivot : pivot without aggregation that can handle
-		    non-numeric data
+		bar large  5.500000  9   7.500000   6
+		    small  5.500000  9   8.500000   8
+		foo large  2.000000  5   4.500000   4
+		    small  2.333333  6   4.333333   2
 	**/
 	static public function pivot_table(data:Dynamic, ?values:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?aggfunc:Dynamic, ?fill_value:Dynamic, ?margins:Dynamic, ?dropna:Dynamic, ?margins_name:Dynamic):pandas.DataFrame;
 	/**
@@ -1266,7 +1409,8 @@ package pandas.core.reshape.api;
 		Wide panel to long format. Less flexible but more user-friendly than melt.
 		
 		With stubnames ['A', 'B'], this function expects to find one or more
-		group of columns with format Asuffix1, Asuffix2,..., Bsuffix1, Bsuffix2,...
+		group of columns with format
+		A-suffix1, A-suffix2,..., B-suffix1, B-suffix2,...
 		You specify what you want to call this suffix in the resulting long format
 		with `j` (for example `j='year'`)
 		
@@ -1285,7 +1429,7 @@ package pandas.core.reshape.api;
 		i : str or list-like
 		    Column(s) to use as id variable(s)
 		j : str
-		    The name of the subobservation variable. What you wish to name your
+		    The name of the sub-observation variable. What you wish to name your
 		    suffix in the long format.
 		sep : str, default ""
 		    A character indicating the separation of the variable names
@@ -1300,7 +1444,7 @@ package pandas.core.reshape.api;
 		    numeric suffixes. Suffixes with no numbers could be specified with the
 		    negated character class '\\D+'. You can also further disambiguate
 		    suffixes, for example, if your wide variables are of the form
-		    Aone, Btwo,.., and you have an unrelated column Arating, you can
+		    A-one, B-two,.., and you have an unrelated column A-rating, you can
 		    ignore the last one by specifying `suffix='(!?one|two)'`
 		
 		    .. versionadded:: 0.20.0
@@ -1314,10 +1458,14 @@ package pandas.core.reshape.api;
 		    A DataFrame that contains each stub name as a variable, with new index
 		    (i, j)
 		
+		Notes
+		-----
+		All extra variables are left untouched. This simply uses
+		`pandas.melt` under the hood, but is hard-coded to "do the right thing"
+		in a typical case.
+		
 		Examples
 		--------
-		>>> import pandas as pd
-		>>> import numpy as np
 		>>> np.random.seed(123)
 		>>> df = pd.DataFrame({"A1970" : {0 : "a", 1 : "b", 2 : "c"},
 		...                    "A1980" : {0 : "d", 1 : "e", 2 : "f"},
@@ -1342,7 +1490,7 @@ package pandas.core.reshape.api;
 		1  1980  0.997345  e  1.3
 		2  1980  0.282978  f  0.1
 		
-		With multuple id columns
+		With multiple id columns
 		
 		>>> df = pd.DataFrame({
 		...     'famid': [1, 1, 1, 2, 2, 2, 3, 3, 3],
@@ -1487,12 +1635,6 @@ package pandas.core.reshape.api;
 		            two  3.4
 		      3     one  2.1
 		            two  2.9
-		
-		Notes
-		-----
-		All extra variables are left untouched. This simply uses
-		`pandas.melt` under the hood, but is hard-coded to "do the right thing"
-		in a typical case.
 	**/
 	static public function wide_to_long(df:Dynamic, stubnames:Dynamic, i:Dynamic, j:Dynamic, ?sep:Dynamic, ?suffix:Dynamic):Dynamic;
 }

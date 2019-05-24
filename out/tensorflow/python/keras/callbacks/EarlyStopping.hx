@@ -41,11 +41,11 @@ package tensorflow.python.keras.callbacks;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?monitor:Dynamic, ?min_delta:Dynamic, ?patience:Dynamic, ?verbose:Dynamic, ?mode:Dynamic, ?baseline:Dynamic):Dynamic;
+	public function ___init__(?monitor:Dynamic, ?min_delta:Dynamic, ?patience:Dynamic, ?verbose:Dynamic, ?mode:Dynamic, ?baseline:Dynamic, ?restore_best_weights:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?monitor:Dynamic, ?min_delta:Dynamic, ?patience:Dynamic, ?verbose:Dynamic, ?mode:Dynamic, ?baseline:Dynamic):Void;
+	public function new(?monitor:Dynamic, ?min_delta:Dynamic, ?patience:Dynamic, ?verbose:Dynamic, ?mode:Dynamic, ?baseline:Dynamic, ?restore_best_weights:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -110,10 +110,13 @@ package tensorflow.python.keras.callbacks;
 	public var __weakref__ : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	public function get_monitor_value(logs:Dynamic):Dynamic;
 	public function on_batch_begin(batch:Dynamic, ?logs:Dynamic):Dynamic;
 	public function on_batch_end(batch:Dynamic, ?logs:Dynamic):Dynamic;
 	public function on_epoch_begin(epoch:Dynamic, ?logs:Dynamic):Dynamic;
 	public function on_epoch_end(epoch:Dynamic, ?logs:Dynamic):Dynamic;
+	public function on_train_batch_begin(batch:Dynamic, ?logs:Dynamic):Dynamic;
+	public function on_train_batch_end(batch:Dynamic, ?logs:Dynamic):Dynamic;
 	public function on_train_begin(?logs:Dynamic):Dynamic;
 	public function on_train_end(?logs:Dynamic):Dynamic;
 	public function set_model(model:Dynamic):Dynamic;

@@ -21,8 +21,6 @@ package tensorflow.core.protobuf.debug_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEBUG_OPS_FIELD_NUMBER : Dynamic;
-	static public var DEBUG_URLS_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		Discards the unknown fields.
@@ -64,8 +62,6 @@ package tensorflow.core.protobuf.debug_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NODE_NAME_FIELD_NUMBER : Dynamic;
-	static public var OUTPUT_SLOT_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -86,7 +82,10 @@ package tensorflow.core.protobuf.debug_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TOLERATE_DEBUG_OP_CREATION_FAILURES_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -252,4 +251,24 @@ package tensorflow.core.protobuf.debug_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.DebugTensorWatch.debug_ops
+	**/
+	public var debug_ops : Dynamic;
+	/**
+		Field tensorflow.DebugTensorWatch.debug_urls
+	**/
+	public var debug_urls : Dynamic;
+	/**
+		Field tensorflow.DebugTensorWatch.node_name
+	**/
+	public var node_name : Dynamic;
+	/**
+		Field tensorflow.DebugTensorWatch.output_slot
+	**/
+	public var output_slot : Dynamic;
+	/**
+		Field tensorflow.DebugTensorWatch.tolerate_debug_op_creation_failures
+	**/
+	public var tolerate_debug_op_creation_failures : Dynamic;
 }

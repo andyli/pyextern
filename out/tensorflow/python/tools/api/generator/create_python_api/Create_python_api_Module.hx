@@ -59,7 +59,7 @@ package tensorflow.python.tools.api.generator.create_python_api;
 		
 		Args:
 		  output_files: List of __init__.py file paths to create.
-		  package: Base python package containing python with target tf_export
+		  packages: Base python packages containing python with target tf_export
 		    decorators.
 		  root_init_template: Template for top-level __init__.py file.
 		    "# API IMPORTS PLACEHOLDER" comment in the template file will be replaced
@@ -70,11 +70,13 @@ package tensorflow.python.tools.api.generator.create_python_api;
 		  api_version: API version to generate (`v1` or `v2`).
 		  compat_api_versions: Additional API versions to generate in compat/
 		    subdirectory.
+		  compat_init_templates: List of templates for top level compat init files
+		    in the same order as compat_api_versions.
 		
 		Raises:
 		  ValueError: if output_files list is missing a required file.
 	**/
-	static public function create_api_files(output_files:Dynamic, _package:Dynamic, root_init_template:Dynamic, output_dir:Dynamic, output_package:Dynamic, api_name:Dynamic, api_version:Dynamic, compat_api_versions:Dynamic):Dynamic;
+	static public function create_api_files(output_files:Dynamic, packages:Dynamic, root_init_template:Dynamic, output_dir:Dynamic, output_package:Dynamic, api_name:Dynamic, api_version:Dynamic, compat_api_versions:Dynamic, compat_init_templates:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Formats import statement.
@@ -92,10 +94,10 @@ package tensorflow.python.tools.api.generator.create_python_api;
 		Get a map from destination module to __init__.py code for that module.
 		
 		Args:
-		  package: Base python package containing python with target tf_export
+		  packages: Base python packages containing python with target tf_export
 		    decorators.
-		  output_package: Base output python package where generated API will
-		    be added.
+		  output_package: Base output python package where generated API will be
+		    added.
 		  api_name: API you want to generate (e.g. `tensorflow` or `estimator`).
 		  api_version: API version you want to generate (1 or 2).
 		  compat_api_versions: Additional API versions to generate under compat/
@@ -107,7 +109,7 @@ package tensorflow.python.tools.api.generator.create_python_api;
 		    value: (string) text that should be in __init__.py files for
 		      corresponding modules.
 	**/
-	static public function get_api_init_text(_package:Dynamic, output_package:Dynamic, api_name:Dynamic, api_version:Dynamic, ?compat_api_versions:Dynamic):Dynamic;
+	static public function get_api_init_text(packages:Dynamic, output_package:Dynamic, api_name:Dynamic, api_version:Dynamic, ?compat_api_versions:Dynamic):Dynamic;
 	/**
 		Get module that corresponds to path relative to relative_to_dir.
 		

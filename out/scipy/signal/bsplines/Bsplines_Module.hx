@@ -83,11 +83,10 @@ package scipy.signal.bsplines;
 		Values are generated within the half-open interval ``[start, stop)``
 		(in other words, the interval including `start` but excluding `stop`).
 		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
+		`range` function, but returns an ndarray rather than a list.
 		
 		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
+		be consistent.  It is better to use `numpy.linspace` for these cases.
 		
 		Parameters
 		----------
@@ -508,7 +507,7 @@ package scipy.signal.bsplines;
 		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -611,7 +610,7 @@ package scipy.signal.bsplines;
 		References
 		----------
 		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
+		       https://en.wikipedia.org/wiki/Exponential_function
 		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
 		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
 		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
@@ -747,7 +746,19 @@ package scipy.signal.bsplines;
 	static public function gamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Gaussian approximation to B-spline basis function of order n.
-		    
+		
+		Parameters
+		----------
+		n : int
+		    The order of the spline. Must be nonnegative, i.e. n >= 0
+		
+		References
+		----------
+		.. [1] Bouma H., Vilanova A., Bescos J.O., ter Haar Romeny B.M., Gerritsen
+		   F.A. (2007) Fast and Accurate Gaussian Derivatives Based on B-Splines. In:
+		   Sgallari F., Murli A., Paragios N. (eds) Scale Space and Variational
+		   Methods in Computer Vision. SSVM 2007. Lecture Notes in Computer
+		   Science, vol 4485. Springer, Berlin, Heidelberg
 	**/
 	static public function gauss_spline(x:Dynamic, n:Dynamic):Dynamic;
 	/**
@@ -1287,7 +1298,7 @@ package scipy.signal.bsplines;
 		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function tan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

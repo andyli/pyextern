@@ -39,8 +39,6 @@ package matplotlib.markers;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		MarkerStyle
-		
 		Attributes
 		----------
 		markers : list of known marks
@@ -60,8 +58,6 @@ package matplotlib.markers;
 	@:native("__init__")
 	public function ___init__(?marker:Dynamic, ?fillstyle:Dynamic):Dynamic;
 	/**
-		MarkerStyle
-		
 		Attributes
 		----------
 		markers : list of known marks

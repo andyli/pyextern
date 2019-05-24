@@ -10,8 +10,16 @@ package numpy.lib.polynomial;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _binary_op_dispatcher(a1:Dynamic, a2:Dynamic):Dynamic;
+	static public function _poly_dispatcher(seq_of_zeros:Dynamic):Dynamic;
 	static public var _poly_mat : Dynamic;
+	static public function _polyder_dispatcher(p:Dynamic, ?m:Dynamic):Dynamic;
+	static public function _polydiv_dispatcher(u:Dynamic, v:Dynamic):Dynamic;
+	static public function _polyfit_dispatcher(x:Dynamic, y:Dynamic, deg:Dynamic, ?rcond:Dynamic, ?full:Dynamic, ?w:Dynamic, ?cov:Dynamic):Dynamic;
+	static public function _polyint_dispatcher(p:Dynamic, ?m:Dynamic, ?k:Dynamic):Dynamic;
+	static public function _polyval_dispatcher(p:Dynamic, x:Dynamic):Dynamic;
 	static public function _raise_power(astr:Dynamic, ?wrap:Dynamic):Dynamic;
+	static public function _roots_dispatcher(p:Dynamic):Dynamic;
 	/**
 		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -179,6 +187,7 @@ package numpy.lib.polynomial;
 		        [3, 4]])
 	**/
 	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	/**
 		Convert inputs to arrays with at least one dimension.
 		
@@ -380,8 +389,10 @@ package numpy.lib.polynomial;
 		See Also
 		--------
 		eig : eigenvalues and right eigenvectors of general arrays
-		eigvalsh : eigenvalues of symmetric or Hermitian arrays.
-		eigh : eigenvalues and eigenvectors of symmetric/Hermitian arrays.
+		eigvalsh : eigenvalues of real symmetric or complex Hermitian 
+		           (conjugate symmetric) arrays.
+		eigh : eigenvalues and eigenvectors of real symmetric or complex
+		       Hermitian (conjugate symmetric) arrays.
 		
 		Notes
 		-----
@@ -594,10 +605,46 @@ package numpy.lib.polynomial;
 		val : bool
 		    True if `num` is a scalar type, False if it is not.
 		
+		See Also
+		--------
+		ndim : Get the number of dimensions of an array
+		
+		Notes
+		-----
+		In almost all cases ``np.ndim(x) == 0`` should be used instead of this
+		function, as that will also return true for 0d arrays. This is how
+		numpy overloads functions in the style of the ``dx`` arguments to `gradient`
+		and the ``bins`` argument to `histogram`. Some key differences:
+		
+		+--------------------------------------+---------------+-------------------+
+		| x                                    |``isscalar(x)``|``np.ndim(x) == 0``|
+		+======================================+===============+===================+
+		| PEP 3141 numeric objects (including  | ``True``      | ``True``          |
+		| builtins)                            |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| builtin string and buffer objects    | ``True``      | ``True``          |
+		+--------------------------------------+---------------+-------------------+
+		| other builtin objects, like          | ``False``     | ``True``          |
+		| `pathlib.Path`, `Exception`,         |               |                   |
+		| the result of `re.compile`           |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| third-party objects like             | ``False``     | ``True``          |
+		| `matplotlib.figure.Figure`           |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| zero-dimensional numpy arrays        | ``False``     | ``True``          |
+		+--------------------------------------+---------------+-------------------+
+		| other numpy arrays                   | ``False``     | ``False``         |
+		+--------------------------------------+---------------+-------------------+
+		| `list`, `tuple`, and other sequence  | ``False``     | ``False``         |
+		| objects                              |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		
 		Examples
 		--------
 		>>> np.isscalar(3.1)
 		True
+		>>> np.isscalar(np.array(3.1))
+		False
 		>>> np.isscalar([3.1])
 		False
 		>>> np.isscalar(False)
@@ -1022,7 +1069,11 @@ package numpy.lib.polynomial;
 		
 		Fit a polynomial ``p(x) = p[0] * x**deg + ... + p[deg]`` of degree `deg`
 		to points `(x, y)`. Returns a vector of coefficients `p` that minimises
-		the squared error.
+		the squared error in the order `deg`, `deg-1`, ... `0`.
+		
+		The `Polynomial.fit <numpy.polynomial.polynomial.Polynomial.fit>` class
+		method is recommended for new code as it is more stable numerically. See
+		the documentation of the method for more information.
 		
 		Parameters
 		----------
@@ -1046,9 +1097,14 @@ package numpy.lib.polynomial;
 		w : array_like, shape (M,), optional
 		    Weights to apply to the y-coordinates of the sample points. For
 		    gaussian uncertainties, use 1/sigma (not 1/sigma**2).
-		cov : bool, optional
-		    Return the estimate and the covariance matrix of the estimate
-		    If full is True, then cov is not returned.
+		cov : bool or str, optional
+		    If given and not `False`, return not just the estimate but also its
+		    covariance matrix. By default, the covariance are scaled by
+		    chi2/sqrt(N-dof), i.e., the weights are presumed to be unreliable
+		    except in a relative sense and everything is scaled such that the
+		    reduced chi2 is unity. This scaling is omitted if ``cov='unscaled'``,
+		    as is relevant for the case that the weights are 1/sigma**2, with
+		    sigma known to be a reliable estimate of the uncertainty.
 		
 		Returns
 		-------
@@ -1120,9 +1176,9 @@ package numpy.lib.polynomial;
 		References
 		----------
 		.. [1] Wikipedia, "Curve fitting",
-		       http://en.wikipedia.org/wiki/Curve_fitting
+		       https://en.wikipedia.org/wiki/Curve_fitting
 		.. [2] Wikipedia, "Polynomial interpolation",
-		       http://en.wikipedia.org/wiki/Polynomial_interpolation
+		       https://en.wikipedia.org/wiki/Polynomial_interpolation
 		
 		Examples
 		--------
@@ -1178,7 +1234,7 @@ package numpy.lib.polynomial;
 		Parameters
 		----------
 		p : array_like or poly1d
-		    Polynomial to differentiate.
+		    Polynomial to integrate.
 		    A sequence is interpreted as polynomial coefficients, see `poly1d`.
 		m : int, optional
 		    Order of the antiderivative. (Default: 1)
@@ -1447,6 +1503,18 @@ package numpy.lib.polynomial;
 		array([-0.3125+0.46351241j, -0.3125-0.46351241j])
 	**/
 	static public function roots(p:Dynamic):numpy.Ndarray;
+	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
 	/**
 		Trim the leading and/or trailing zeros from a 1-D array or sequence.
 		

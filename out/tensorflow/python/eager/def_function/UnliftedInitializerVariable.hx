@@ -16,15 +16,6 @@ package tensorflow.python.eager.def_function;
 	**/
 	static public function SaveSliceInfo(?full_name:Dynamic, ?full_shape:Dynamic, ?var_offset:Dynamic, ?var_shape:Dynamic, ?save_slice_info_def:Dynamic, ?import_scope:Dynamic):Dynamic;
 	/**
-		Converts this variable to a Tensor.
-		
-		See `tf.Variable.value`.
-		
-		Returns:
-		  A `Tensor` containing the value of the variable.
-	**/
-	public function _AsTensor():Dynamic;
-	/**
 		Register overloads for all operators.
 	**/
 	static public function _OverloadAllOperators():Dynamic;
@@ -64,7 +55,7 @@ package tensorflow.python.eager.def_function;
 		  Note, for `complex64` or `complex128` input, the returned `Tensor` will be
 		    of type `float32` or `float64`, respectively.
 	**/
-	static public function __abs__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __abs__(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns x + y element-wise.
 		
@@ -79,7 +70,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	static public function __add__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __add__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Returns the truth value of x AND y element-wise.
 		
@@ -94,7 +85,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	static public function __and__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __and__(x:Dynamic, y:Dynamic):Dynamic;
 	static public var __array_priority__ : Dynamic;
 	public function __bool__():Dynamic;
 	/**
@@ -123,7 +114,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  `x / y` returns the quotient of x and y.
 	**/
-	static public function __div__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __div__(x:Dynamic, y:Dynamic):Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
@@ -152,7 +143,7 @@ package tensorflow.python.eager.def_function;
 		Raises:
 		  TypeError: If the inputs are complex.
 	**/
-	static public function __floordiv__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __floordiv__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -171,7 +162,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	static public function __ge__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __ge__(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Return getattr(self, name).
 	**/
@@ -214,7 +205,8 @@ package tensorflow.python.eager.def_function;
 		
 		Raises:
 		  ValueError: If a slice range is negative size.
-		  TypeError: If the slice indices aren't int, slice, or Ellipsis.
+		  TypeError: TypeError: If the slice indices aren't int, slice,
+		    ellipsis, tf.newaxis or int32/int64 tensors.
 	**/
 	static public function __getitem__(_var:Dynamic, slice_spec:Dynamic):Dynamic;
 	/**
@@ -231,7 +223,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	static public function __gt__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __gt__(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Return hash(self).
 	**/
@@ -269,6 +261,9 @@ package tensorflow.python.eager.def_function;
 		    variable and return the Tensor for the projected value
 		    (which must have the same shape). Constraints are not safe to
 		    use when doing asynchronous distributed training.
+		  add_initializers_to: if not None and not in legacy graph mode, the
+		    initializer tensor will be added to this map instead of adding the
+		    assignment to the function.
 		
 		Raises:
 		  ValueError: If the initial value is not specified, or does not have a
@@ -276,7 +271,7 @@ package tensorflow.python.eager.def_function;
 		  RuntimeError: If called outside of a function definition.
 	**/
 	@:native("__init__")
-	public function ___init__(?initial_value:Dynamic, ?trainable:Dynamic, ?caching_device:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?constraint:Dynamic, ?unused_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(?initial_value:Dynamic, ?trainable:Dynamic, ?caching_device:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?constraint:Dynamic, ?add_initializers_to:Dynamic, ?unused_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Creates a variable.
 		
@@ -307,13 +302,16 @@ package tensorflow.python.eager.def_function;
 		    variable and return the Tensor for the projected value
 		    (which must have the same shape). Constraints are not safe to
 		    use when doing asynchronous distributed training.
+		  add_initializers_to: if not None and not in legacy graph mode, the
+		    initializer tensor will be added to this map instead of adding the
+		    assignment to the function.
 		
 		Raises:
 		  ValueError: If the initial value is not specified, or does not have a
 		    shape and `validate_shape` is `True`.
 		  RuntimeError: If called outside of a function definition.
 	**/
-	public function new(?initial_value:Dynamic, ?trainable:Dynamic, ?caching_device:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?constraint:Dynamic, ?unused_kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(?initial_value:Dynamic, ?trainable:Dynamic, ?caching_device:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?constraint:Dynamic, ?add_initializers_to:Dynamic, ?unused_kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -332,7 +330,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	static public function __invert__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __invert__(x:Dynamic, ?name:Dynamic):Dynamic;
 	public function __ipow__(unused_other:Dynamic):Dynamic;
 	public function __irealdiv__(unused_other:Dynamic):Dynamic;
 	public function __isub__(unused_other:Dynamic):Dynamic;
@@ -362,7 +360,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	static public function __le__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __le__(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns the truth value of (x < y) element-wise.
 		
@@ -377,7 +375,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	static public function __lt__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __lt__(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Multiplies matrix `a` by matrix `b`, producing `a` * `b`.
 		
@@ -479,14 +477,14 @@ package tensorflow.python.eager.def_function;
 		  ValueError: If transpose_a and adjoint_a, or transpose_b and adjoint_b
 		    are both set to True.
 	**/
-	static public function __matmul__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __matmul__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Returns element-wise remainder of division. When `x < 0` xor `y < 0` is
 		
 		true, this follows Python semantics in that the result here is consistent
 		with a flooring divide. E.g. `floor(x / y) * y + mod(x, y) = x`.
 		
-		*NOTE*: `FloorMod` supports broadcasting. More about broadcasting
+		*NOTE*: `floormod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -497,12 +495,12 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	static public function __mod__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __mod__(x:Dynamic, y:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Dispatches cwise mul for "Dense*Dense" and "Dense*Sparse".
 	**/
-	static public function __mul__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __mul__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Return self!=value.
 	**/
@@ -519,7 +517,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	static public function __neg__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __neg__(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
@@ -539,7 +537,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	static public function __or__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __or__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Computes the power of one value to another.
 		
@@ -562,7 +560,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor`.
 	**/
-	static public function __pow__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __pow__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Returns x + y element-wise.
 		
@@ -577,7 +575,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	static public function __radd__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __radd__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Returns the truth value of x AND y element-wise.
 		
@@ -592,7 +590,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	static public function __rand__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rand__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Divide two values using Python 2 semantics. Used for Tensor.__div__.
 		
@@ -603,7 +601,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  `x / y` returns the quotient of x and y.
 	**/
-	static public function __rdiv__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rdiv__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -639,7 +637,7 @@ package tensorflow.python.eager.def_function;
 		Raises:
 		  TypeError: If the inputs are complex.
 	**/
-	static public function __rfloordiv__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rfloordiv__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Multiplies matrix `a` by matrix `b`, producing `a` * `b`.
 		
@@ -741,14 +739,14 @@ package tensorflow.python.eager.def_function;
 		  ValueError: If transpose_a and adjoint_a, or transpose_b and adjoint_b
 		    are both set to True.
 	**/
-	static public function __rmatmul__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rmatmul__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Returns element-wise remainder of division. When `x < 0` xor `y < 0` is
 		
 		true, this follows Python semantics in that the result here is consistent
 		with a flooring divide. E.g. `floor(x / y) * y + mod(x, y) = x`.
 		
-		*NOTE*: `FloorMod` supports broadcasting. More about broadcasting
+		*NOTE*: `floormod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -759,11 +757,11 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	static public function __rmod__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rmod__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Dispatches cwise mul for "Dense*Dense" and "Dense*Sparse".
 	**/
-	static public function __rmul__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rmul__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Returns the truth value of x OR y element-wise.
 		
@@ -778,7 +776,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	static public function __ror__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __ror__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Computes the power of one value to another.
 		
@@ -801,7 +799,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor`.
 	**/
-	static public function __rpow__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rpow__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Returns x - y element-wise.
 		
@@ -816,12 +814,12 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	static public function __rsub__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
-	static public function __rtruediv__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rsub__(y:Dynamic, x:Dynamic):Dynamic;
+	static public function __rtruediv__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		x ^ y = (x | y) & ~(x & y).
 	**/
-	static public function __rxor__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rxor__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
@@ -849,7 +847,7 @@ package tensorflow.python.eager.def_function;
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	static public function __sub__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __sub__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Abstract classes can override this to customize issubclass().
 		
@@ -859,7 +857,7 @@ package tensorflow.python.eager.def_function;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function __truediv__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __truediv__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -867,7 +865,7 @@ package tensorflow.python.eager.def_function;
 	/**
 		x ^ y = (x | y) & ~(x & y).
 	**/
-	static public function __xor__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __xor__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Restore-on-create for a variable be saved with this `Checkpointable`.
 		
@@ -1240,6 +1238,52 @@ package tensorflow.python.eager.def_function;
 	**/
 	public function assign_sub(delta:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?read_value:Dynamic):Dynamic;
 	/**
+		Assigns `IndexedSlices` to this variable batch-wise.
+		
+		Analogous to `batch_gather`. This assumes that this variable and the
+		sparse_delta IndexedSlices have a series of leading dimensions that are the
+		same for all of them, and the updates are performed on the last dimension of
+		indices. In other words, the dimensions should be the following:
+		
+		`num_prefix_dims = sparse_delta.indices.ndims - 1`
+		`batch_dim = num_prefix_dims + 1`
+		`sparse_delta.updates.shape = sparse_delta.indices.shape + var.shape[
+		     batch_dim:]`
+		
+		where
+		
+		`sparse_delta.updates.shape[:num_prefix_dims]`
+		`== sparse_delta.indices.shape[:num_prefix_dims]`
+		`== var.shape[:num_prefix_dims]`
+		
+		And the operation performed can be expressed as:
+		
+		`var[i_1, ..., i_n,
+		     sparse_delta.indices[i_1, ..., i_n, j]] = sparse_delta.updates[
+		        i_1, ..., i_n, j]`
+		
+		When sparse_delta.indices is a 1D tensor, this operation is equivalent to
+		`scatter_update`.
+		
+		To avoid this operation one can looping over the first `ndims` of the
+		variable and using `scatter_update` on the subtensors that result of slicing
+		the first dimension. This is a valid option for `ndims = 1`, but less
+		efficient than this implementation.
+		
+		Args:
+		  sparse_delta: `IndexedSlices` to be assigned to this variable.
+		  use_locking: If `True`, use locking during the operation.
+		  name: the name of the operation.
+		
+		Returns:
+		  A `Tensor` that will hold the new value of this variable after
+		  the scattered subtraction has completed.
+		
+		Raises:
+		  ValueError: if `sparse_delta` is not an `IndexedSlices`.
+	**/
+	public function batch_scatter_update(sparse_delta:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Returns the constraint function associated with this variable.
 		
 		Returns:
@@ -1248,7 +1292,11 @@ package tensorflow.python.eager.def_function;
 	**/
 	public var constraint : Dynamic;
 	/**
-		Increments this variable until it reaches `limit`.
+		Increments this variable until it reaches `limit`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Prefer Dataset.range instead.
 		
 		When that Op is run it tries to increment the variable by `1`. If
 		incrementing the variable would bring it above `limit` then the Op raises

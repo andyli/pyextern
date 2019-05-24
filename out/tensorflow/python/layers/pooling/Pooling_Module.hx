@@ -11,7 +11,11 @@ package tensorflow.python.layers.pooling;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Average Pooling layer for 1D inputs.
+		Average Pooling layer for 1D inputs. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.average_pooling1d instead.
 		
 		Arguments:
 		  inputs: The tensor over which to pool. Must have rank 3.
@@ -36,7 +40,11 @@ package tensorflow.python.layers.pooling;
 	**/
 	static public function average_pooling1d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Average pooling layer for 2D inputs (e.g. images).
+		Average pooling layer for 2D inputs (e.g. images). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.average_pooling2d instead.
 		
 		Arguments:
 		  inputs: The tensor over which to pool. Must have rank 4.
@@ -65,7 +73,11 @@ package tensorflow.python.layers.pooling;
 	**/
 	static public function average_pooling2d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Average pooling layer for 3D inputs (e.g. volumes).
+		Average pooling layer for 3D inputs (e.g. volumes). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.average_pooling3d instead.
 		
 		Arguments:
 		  inputs: The tensor over which to pool. Must have rank 5.
@@ -96,7 +108,11 @@ package tensorflow.python.layers.pooling;
 	**/
 	static public function average_pooling3d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Average pooling layer for 2D inputs (e.g. images).
+		Average pooling layer for 2D inputs (e.g. images). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.average_pooling2d instead.
 		
 		Arguments:
 		  inputs: The tensor over which to pool. Must have rank 4.
@@ -126,7 +142,11 @@ package tensorflow.python.layers.pooling;
 	static public function avg_pool2d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Max pooling layer for 2D inputs (e.g. images).
+		Max pooling layer for 2D inputs (e.g. images). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.max_pooling2d instead.
 		
 		Arguments:
 		  inputs: The tensor over which to pool. Must have rank 4.
@@ -155,7 +175,11 @@ package tensorflow.python.layers.pooling;
 	**/
 	static public function max_pool2d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Max Pooling layer for 1D inputs.
+		Max Pooling layer for 1D inputs. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.max_pooling1d instead.
 		
 		Arguments:
 		  inputs: The tensor over which to pool. Must have rank 3.
@@ -180,7 +204,11 @@ package tensorflow.python.layers.pooling;
 	**/
 	static public function max_pooling1d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Max pooling layer for 2D inputs (e.g. images).
+		Max pooling layer for 2D inputs (e.g. images). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.max_pooling2d instead.
 		
 		Arguments:
 		  inputs: The tensor over which to pool. Must have rank 4.
@@ -209,7 +237,11 @@ package tensorflow.python.layers.pooling;
 	**/
 	static public function max_pooling2d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Max pooling layer for 3D inputs (e.g. volumes).
+		Max pooling layer for 3D inputs (e.g. volumes). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.max_pooling3d instead.
 		
 		Arguments:
 		  inputs: The tensor over which to pool. Must have rank 5.

@@ -161,4 +161,5 @@ package torch.serialization;
 	**/
 	static public function save(obj:Dynamic, f:Dynamic, ?pickle_module:Dynamic, ?pickle_protocol:Dynamic):Dynamic;
 	static public function storage_to_tensor_type(storage:Dynamic):Dynamic;
+	static public function validate_cuda_device(location:Dynamic):Dynamic;
 }

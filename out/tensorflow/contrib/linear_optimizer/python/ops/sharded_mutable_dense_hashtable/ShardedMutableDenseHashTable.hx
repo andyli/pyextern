@@ -38,24 +38,22 @@ package tensorflow.contrib.linear_optimizer.python.ops.sharded_mutable_dense_has
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct a lookup table interface.
+		DEPRECATED FUNCTION
 		
-		Args:
-		  key_dtype: The table key type.
-		  value_dtype: The table value type.
-		  name: A name for the operation (optional).
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This class is deprecated. To UPDATE or USE linear optimizers, please check its latest version in core: tensorflow_estimator/python/estimator/canned/linear_optimizer/.
 	**/
 	@:native("__init__")
-	public function ___init__(key_dtype:Dynamic, value_dtype:Dynamic, default_value:Dynamic, empty_key:Dynamic, ?num_shards:Dynamic, ?checkpoint:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(key_dtype:Dynamic, value_dtype:Dynamic, default_value:Dynamic, empty_key:Dynamic, deleted_key:Dynamic, ?num_shards:Dynamic, ?checkpoint:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Construct a lookup table interface.
+		DEPRECATED FUNCTION
 		
-		Args:
-		  key_dtype: The table key type.
-		  value_dtype: The table value type.
-		  name: A name for the operation (optional).
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This class is deprecated. To UPDATE or USE linear optimizers, please check its latest version in core: tensorflow_estimator/python/estimator/canned/linear_optimizer/.
 	**/
-	public function new(key_dtype:Dynamic, value_dtype:Dynamic, default_value:Dynamic, empty_key:Dynamic, ?num_shards:Dynamic, ?checkpoint:Dynamic, ?name:Dynamic):Void;
+	public function new(key_dtype:Dynamic, value_dtype:Dynamic, default_value:Dynamic, empty_key:Dynamic, deleted_key:Dynamic, ?num_shards:Dynamic, ?checkpoint:Dynamic, ?name:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -133,29 +131,14 @@ package tensorflow.contrib.linear_optimizer.python.ops.sharded_mutable_dense_has
 	**/
 	public function export_sharded(?name:Dynamic):Dynamic;
 	/**
-		The table initialization op.
+		Inserts `keys` in a table.
 	**/
-	public var init : Dynamic;
 	public function insert(keys:Dynamic, values:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		The table key dtype.
-	**/
-	public var key_dtype : Dynamic;
 	/**
 		Looks up `keys` in a table, outputs the corresponding values.
 	**/
 	public function lookup(keys:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		The name of the table.
-	**/
 	public var name : Dynamic;
-	/**
-		Compute the number of elements in this table.
-	**/
 	public function size(?name:Dynamic):Dynamic;
 	public var table_shards : Dynamic;
-	/**
-		The table value dtype.
-	**/
-	public var value_dtype : Dynamic;
 }

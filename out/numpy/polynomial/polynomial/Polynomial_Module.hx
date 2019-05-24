@@ -81,7 +81,7 @@ package numpy.polynomial.polynomial;
 		
 		See Also
 		--------
-		polysub, polymul, polydiv, polypow
+		polysub, polymulx, polymul, polydiv, polypow
 		
 		Examples
 		--------
@@ -188,7 +188,7 @@ package numpy.polynomial.polynomial;
 		
 		See Also
 		--------
-		polyadd, polysub, polymul, polypow
+		polyadd, polysub, polymulx, polymul, polypow
 		
 		Examples
 		--------
@@ -625,7 +625,7 @@ package numpy.polynomial.polynomial;
 		
 		See Also
 		--------
-		polyadd, polysub, polydiv, polypow
+		polyadd, polysub, polymulx, polydiv, polypow
 		
 		Examples
 		--------
@@ -653,6 +653,10 @@ package numpy.polynomial.polynomial;
 		-------
 		out : ndarray
 		    Array representing the result of the multiplication.
+		
+		See Also
+		--------
+		polyadd, polysub, polymul, polydiv, polypow
 		
 		Notes
 		-----
@@ -686,10 +690,13 @@ package numpy.polynomial.polynomial;
 		
 		See Also
 		--------
-		polyadd, polysub, polymul, polydiv
+		polyadd, polysub, polymulx, polymul, polydiv
 		
 		Examples
 		--------
+		>>> from numpy.polynomial import polynomial as P
+		>>> P.polypow([1,2,3], 2)
+		array([ 1., 4., 10., 12., 9.])
 	**/
 	static public function polypow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):numpy.Ndarray;
 	/**
@@ -756,7 +763,7 @@ package numpy.polynomial.polynomial;
 		
 		See Also
 		--------
-		polyadd, polymul, polydiv, polypow
+		polyadd, polymulx, polymul, polydiv, polypow
 		
 		Examples
 		--------

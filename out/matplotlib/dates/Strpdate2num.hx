@@ -42,15 +42,9 @@ package matplotlib.dates;
 		Return hash(self).
 	**/
 	public function __hash__():Dynamic;
-	/**
-		fmt: any valid strptime format is supported 
-	**/
 	@:native("__init__")
-	public function ___init__(fmt:Dynamic):Dynamic;
-	/**
-		fmt: any valid strptime format is supported 
-	**/
-	public function new(fmt:Dynamic):Void;
+	public function ___init__(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function new(?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		

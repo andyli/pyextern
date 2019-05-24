@@ -2,6 +2,7 @@
 package torch._utils_internal;
 @:pythonImport("torch._utils_internal") extern class _Utils_internal_Module {
 	static public var TEST_MASTER_ADDR : Dynamic;
+	static public var TEST_MASTER_PORT : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

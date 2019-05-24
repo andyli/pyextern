@@ -19,11 +19,10 @@ package scipy.misc.common;
 		Values are generated within the half-open interval ``[start, stop)``
 		(in other words, the interval including `start` but excluding `stop`).
 		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
+		`range` function, but returns an ndarray rather than a list.
 		
 		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
+		be consistent.  It is better to use `numpy.linspace` for these cases.
 		
 		Parameters
 		----------
@@ -294,12 +293,12 @@ package scipy.misc.common;
 		----------
 		.. [1] Moody GB, Mark RG. The impact of the MIT-BIH Arrhythmia Database.
 		       IEEE Eng in Med and Biol 20(3):45-50 (May-June 2001).
-		       (PMID: 11446209); https://doi.org/10.13026/C2F305
+		       (PMID: 11446209); :doi:`10.13026/C2F305`
 		.. [2] Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh,
 		       Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank,
 		       PhysioToolkit, and PhysioNet: Components of a New Research Resource
 		       for Complex Physiologic Signals. Circulation 101(23):e215-e220;
-		       https://doi.org/10.1161/01.CIR.101.23.e215
+		       :doi:`10.1161/01.CIR.101.23.e215`
 		
 		Examples
 		--------
@@ -497,8 +496,11 @@ package scipy.misc.common;
 		    Allow loading pickled object arrays stored in npy files. Reasons for
 		    disallowing pickles include security, as loading pickled data can
 		    execute arbitrary code. If pickles are disallowed, loading object
-		    arrays will fail.
-		    Default: True
+		    arrays will fail. Default: False
+		
+		    .. versionchanged:: 1.16.3
+		        Made default False in response to CVE-2019-6446.
+		
 		fix_imports : bool, optional
 		    Only useful when loading Python 2 generated pickled files on Python 3,
 		    which includes npy/npz files containing object arrays. If `fix_imports`
@@ -582,9 +584,107 @@ package scipy.misc.common;
 	/**
 		Return the product of array elements over a given axis.
 		
+		Parameters
+		----------
+		a : array_like
+		    Input data.
+		axis : None or int or tuple of ints, optional
+		    Axis or axes along which a product is performed.  The default,
+		    axis=None, will calculate the product of all the elements in the
+		    input array. If axis is negative it counts from the last to the
+		    first axis.
+		
+		    .. versionadded:: 1.7.0
+		
+		    If axis is a tuple of ints, a product is performed on all of the
+		    axes specified in the tuple instead of a single axis or all the
+		    axes as before.
+		dtype : dtype, optional
+		    The type of the returned array, as well as of the accumulator in
+		    which the elements are multiplied.  The dtype of `a` is used by
+		    default unless `a` has an integer dtype of less precision than the
+		    default platform integer.  In that case, if `a` is signed then the
+		    platform integer is used while if `a` is unsigned then an unsigned
+		    integer of the same precision as the platform integer is used.
+		out : ndarray, optional
+		    Alternative output array in which to place the result. It must have
+		    the same shape as the expected output, but the type of the output
+		    values will be cast if necessary.
+		keepdims : bool, optional
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the input array.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `prod` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-class' method does not implement `keepdims` any
+		    exceptions will be raised.
+		initial : scalar, optional
+		    The starting value for this product. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
+		
+		Returns
+		-------
+		product_along_axis : ndarray, see `dtype` parameter above.
+		    An array shaped as `a` but with the specified axis removed.
+		    Returns a reference to `out` if specified.
+		
 		See Also
 		--------
-		prod : equivalent function; see for details.
+		ndarray.prod : equivalent method
+		numpy.doc.ufuncs : Section "Output arguments"
+		
+		Notes
+		-----
+		Arithmetic is modular when using integer types, and no error is
+		raised on overflow.  That means that, on a 32-bit platform:
+		
+		>>> x = np.array([536870910, 536870910, 536870910, 536870910])
+		>>> np.prod(x)  # random
+		16
+		
+		The product of an empty array is the neutral element 1:
+		
+		>>> np.prod([])
+		1.0
+		
+		Examples
+		--------
+		By default, calculate the product of all elements:
+		
+		>>> np.prod([1.,2.])
+		2.0
+		
+		Even when the input array is two-dimensional:
+		
+		>>> np.prod([[1.,2.],[3.,4.]])
+		24.0
+		
+		But we can also specify the axis over which to multiply:
+		
+		>>> np.prod([[1.,2.],[3.,4.]], axis=1)
+		array([  2.,  12.])
+		
+		If the type of `x` is unsigned, then the output type is
+		the unsigned platform integer:
+		
+		>>> x = np.array([1, 2, 3], dtype=np.uint8)
+		>>> np.prod(x).dtype == np.uint
+		True
+		
+		If `x` is of a signed integer type, then the output type
+		is the default platform integer:
+		
+		>>> x = np.array([1, 2, 3], dtype=np.int8)
+		>>> np.prod(x).dtype == int
+		True
+		
+		You can also start the product with a value other than one:
+		
+		>>> np.prod([1, 2], initial=5)
+		10
 	**/
-	static public function product(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function prod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 }

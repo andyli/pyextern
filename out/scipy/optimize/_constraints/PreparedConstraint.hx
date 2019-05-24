@@ -108,4 +108,19 @@ package scipy.optimize._constraints;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		How much the constraint is exceeded by.
+		
+		Parameters
+		----------
+		x : array-like
+		    Vector of independent variables
+		
+		Returns
+		-------
+		excess : array-like
+		    How much the constraint is exceeded by, for each of the
+		    constraints specified by `PreparedConstraint.fun`.
+	**/
+	public function violation(x:Dynamic):Dynamic;
 }

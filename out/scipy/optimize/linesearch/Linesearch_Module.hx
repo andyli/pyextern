@@ -303,17 +303,18 @@ package scipy.optimize.linesearch;
 		----------
 		phi : callable phi(alpha)
 		    Function at point `alpha`
-		derphi : callable dphi(alpha)
-		    Derivative `d phi(alpha)/ds`. Returns a scalar.
-		
+		derphi : callable phi'(alpha)
+		    Objective function derivative. Returns a scalar.
 		phi0 : float, optional
-		    Value of `f` at 0
+		    Value of phi at 0
 		old_phi0 : float, optional
-		    Value of `f` at the previous point
+		    Value of phi at previous point
 		derphi0 : float, optional
-		    Value `derphi` at 0
-		c1, c2 : float, optional
-		    Wolfe parameters
+		    Value derphi at 0
+		c1 : float, optional
+		    Parameter for Armijo condition rule.
+		c2 : float, optional
+		    Parameter for curvature condition rule.
 		amax, amin : float, optional
 		    Maximum and minimum step size
 		xtol : float, optional
@@ -340,16 +341,16 @@ package scipy.optimize.linesearch;
 		
 		Parameters
 		----------
-		phi : callable f(x)
+		phi : callable phi(alpha)
 		    Objective scalar function.
-		derphi : callable f'(x), optional
-		    Objective function derivative (can be None)
+		derphi : callable phi'(alpha)
+		    Objective function derivative. Returns a scalar.
 		phi0 : float, optional
-		    Value of phi at s=0
+		    Value of phi at 0
 		old_phi0 : float, optional
 		    Value of phi at previous point
 		derphi0 : float, optional
-		    Value of derphi at s=0
+		    Value of derphi at 0
 		c1 : float, optional
 		    Parameter for Armijo condition rule.
 		c2 : float, optional
@@ -387,7 +388,7 @@ package scipy.optimize.linesearch;
 		
 		For the zoom phase it uses an algorithm by [...].
 	**/
-	static public function scalar_search_wolfe2(phi:Dynamic, ?derphi:Dynamic, ?phi0:Dynamic, ?old_phi0:Dynamic, ?derphi0:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic, ?extra_condition:Dynamic, ?maxiter:Dynamic):Dynamic;
+	static public function scalar_search_wolfe2(phi:Dynamic, derphi:Dynamic, ?phi0:Dynamic, ?old_phi0:Dynamic, ?derphi0:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic, ?extra_condition:Dynamic, ?maxiter:Dynamic):Dynamic;
 	/**
 		Issue a warning, or maybe ignore it or raise an exception.
 	**/

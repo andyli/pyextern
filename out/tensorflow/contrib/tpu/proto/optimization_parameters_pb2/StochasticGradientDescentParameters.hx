@@ -83,6 +83,10 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
 	public function WhichOneof(args:haxe.extern.Rest<Dynamic>):Dynamic;

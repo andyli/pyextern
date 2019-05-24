@@ -184,7 +184,7 @@ package matplotlib.backends.backend_webagg;
 	/**
 		Thread identifier of this thread or None if it has not been started.
 		
-		This is a nonzero integer. See the thread.get_ident() function. Thread
+		This is a nonzero integer. See the get_ident() function. Thread
 		identifiers may be recycled when a thread exits and another thread is
 		created. The identifier is available even after the thread has exited.
 	**/

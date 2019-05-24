@@ -111,5 +111,5 @@ package pandas.io.parquet;
 	static public var api : Dynamic;
 	public function read(path:Dynamic, ?columns:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function validate_dataframe(df:Dynamic):Dynamic;
-	public function write(df:Dynamic, path:Dynamic, ?compression:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function write(df:Dynamic, path:Dynamic, ?compression:Dynamic, ?index:Dynamic, ?partition_cols:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

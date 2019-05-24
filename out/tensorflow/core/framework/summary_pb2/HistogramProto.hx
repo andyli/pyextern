@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.framework.summary_pb2;
 @:pythonImport("tensorflow.core.framework.summary_pb2", "HistogramProto") extern class HistogramProto {
-	static public var BUCKET_FIELD_NUMBER : Dynamic;
-	static public var BUCKET_LIMIT_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -56,8 +54,6 @@ package tensorflow.core.framework.summary_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAX_FIELD_NUMBER : Dynamic;
-	static public var MIN_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -66,7 +62,6 @@ package tensorflow.core.framework.summary_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NUM_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -75,8 +70,6 @@ package tensorflow.core.framework.summary_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SUM_FIELD_NUMBER : Dynamic;
-	static public var SUM_SQUARES_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -89,6 +82,10 @@ package tensorflow.core.framework.summary_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -256,4 +253,32 @@ package tensorflow.core.framework.summary_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.HistogramProto.bucket
+	**/
+	public var bucket : Dynamic;
+	/**
+		Field tensorflow.HistogramProto.bucket_limit
+	**/
+	public var bucket_limit : Dynamic;
+	/**
+		Field tensorflow.HistogramProto.max
+	**/
+	public var max : Dynamic;
+	/**
+		Field tensorflow.HistogramProto.min
+	**/
+	public var min : Dynamic;
+	/**
+		Field tensorflow.HistogramProto.num
+	**/
+	public var num : Dynamic;
+	/**
+		Field tensorflow.HistogramProto.sum
+	**/
+	public var sum : Dynamic;
+	/**
+		Field tensorflow.HistogramProto.sum_squares
+	**/
+	public var sum_squares : Dynamic;
 }

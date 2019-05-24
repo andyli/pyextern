@@ -151,7 +151,6 @@ package tensorflow.python.ops.special_math_ops;
 		* Ellipses (subscripts like `ij...,jk...->ik...`)
 		* Subscripts where an axis appears more than once for a single input
 		  (e.g. `ijj,k->ik`).
-		* Subscripts that are summed across multiple inputs (e.g., `ij,ij,jk->ik`).
 		
 		Args:
 		  equation: a `str` describing the contraction, in the same format as

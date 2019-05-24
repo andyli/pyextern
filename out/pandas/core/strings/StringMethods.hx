@@ -121,8 +121,8 @@ package pandas.core.strings;
 		
 		Parameters
 		----------
-		others : Series, DataFrame, np.ndarray, list-like or list-like of
-		    objects that are either Series, np.ndarray (1-dim) or list-like
+		others : Series, Index, DataFrame, np.ndarray, list-like or list-like
+		    of objects that are Series, Index or np.ndarray (1-dim)
 		ignore_index : boolean, default False
 		    Determines whether to forcefully align others with index of caller
 		
@@ -134,7 +134,7 @@ package pandas.core.strings;
 	public function _get_series_list(others:Dynamic, ?ignore_index:Dynamic):Dynamic;
 	static public function _make_accessor(data:Dynamic):Dynamic;
 	static public function _validate(data:Dynamic):Dynamic;
-	public function _wrap_result(result:Dynamic, ?use_codes:Dynamic, ?name:Dynamic, ?expand:Dynamic):Dynamic;
+	public function _wrap_result(result:Dynamic, ?use_codes:Dynamic, ?name:Dynamic, ?expand:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
 		Convert strings in the Series/Index to be capitalized.
 		
@@ -218,14 +218,15 @@ package pandas.core.strings;
 		    Series/Index/DataFrame) if `join` is not None.
 		
 		    If others is a list-like that contains a combination of Series,
-		    np.ndarray (1-dim) or list-like, then all elements will be unpacked
-		    and must satisfy the above criteria individually.
+		    Index or np.ndarray (1-dim), then all elements will be unpacked and
+		    must satisfy the above criteria individually.
 		
 		    If others is None, the method returns the concatenation of all
 		    strings in the calling Series/Index.
-		sep : string or None, default None
-		    If None, concatenates without any separator.
-		na_rep : string or None, default None
+		sep : str, default ''
+		    The separator between the different elements/columns. By default
+		    the empty string `''` is used.
+		na_rep : str or None, default None
 		    Representation that is inserted for all missing values:
 		
 		    - If `na_rep` is None, and `others` is None, missing values in the
@@ -252,7 +253,8 @@ package pandas.core.strings;
 		
 		See Also
 		--------
-		split : Split each string in the Series/Index
+		split : Split each string in the Series/Index.
+		join : Join lists contained as elements in the Series/Index.
 		
 		Examples
 		--------
@@ -303,13 +305,6 @@ package pandas.core.strings;
 		`join`-keyword works as in other methods.
 		
 		>>> t = pd.Series(['d', 'a', 'e', 'c'], index=[3, 0, 4, 2])
-		>>> s.str.cat(t, join=None, na_rep='-')
-		0    ad
-		1    ba
-		2    -e
-		3    dc
-		dtype: object
-		>>>
 		>>> s.str.cat(t, join='left', na_rep='-')
 		0    aa
 		1    b-
@@ -388,7 +383,10 @@ package pandas.core.strings;
 		
 		See Also
 		--------
-		match : analogous, but stricter, relying on re.match instead of re.search
+		match : Analogous, but stricter, relying on re.match instead of re.search.
+		Series.str.startswith : Test if the start of each string element matches a
+		    pattern.
+		Series.str.endswith : Same as startswith, but tests the end of string.
 		
 		Examples
 		--------
@@ -432,11 +430,11 @@ package pandas.core.strings;
 		4    False
 		dtype: bool
 		
-		Returning 'house' and 'parrot' within same string.
+		Returning 'house' or 'dog' when either expression occurs in a string.
 		
-		>>> s1.str.contains('house|parrot', regex=True)
+		>>> s1.str.contains('house|dog', regex=True)
 		0    False
-		1    False
+		1     True
 		2     True
 		3    False
 		4      NaN
@@ -493,23 +491,23 @@ package pandas.core.strings;
 		    Flags for the `re` module. For a complete list, `see here
 		    <https://docs.python.org/3/howto/regex.html#compilation-flags>`_.
 		**kwargs
-		    For compatability with other string methods. Not used.
+		    For compatibility with other string methods. Not used.
 		
 		Returns
 		-------
 		counts : Series or Index
 		    Same type as the calling object containing the integer counts.
 		
+		See Also
+		--------
+		re : Standard library module for regular expressions.
+		str.count : Standard library version, without regular expression support.
+		
 		Notes
 		-----
 		Some characters need to be escaped when passing in `pat`.
 		eg. ``'$'`` has a special meaning in regex and must be escaped when
 		finding this literal character.
-		
-		See Also
-		--------
-		re : Standard library module for regular expressions.
-		str.count : Standard library version, without regular expression support.
 		
 		Examples
 		--------
@@ -623,42 +621,48 @@ package pandas.core.strings;
 	**/
 	public function endswith(pat:Dynamic, ?na:Dynamic):Dynamic;
 	/**
+		Extract capture groups in the regex `pat` as columns in a DataFrame.
+		
 		For each subject string in the Series, extract groups from the
-		first match of regular expression pat.
+		first match of regular expression `pat`.
 		
 		Parameters
 		----------
 		pat : string
-		    Regular expression pattern with capturing groups
+		    Regular expression pattern with capturing groups.
 		flags : int, default 0 (no flags)
-		    re module flags, e.g. re.IGNORECASE
-		
+		    Flags from the ``re`` module, e.g. ``re.IGNORECASE``, that
+		    modify regular expression matching for things like case,
+		    spaces, etc. For more details, see :mod:`re`.
 		expand : bool, default True
-		    * If True, return DataFrame.
-		    * If False, return Series/Index/DataFrame.
+		    If True, return DataFrame with one column per capture group.
+		    If False, return a Series/Index if there is one capture group
+		    or DataFrame if there are multiple capture groups.
 		
 		    .. versionadded:: 0.18.0
 		
 		Returns
 		-------
-		DataFrame with one row for each subject string, and one column for
-		each group. Any capture group names in regular expression pat will
-		be used for column names; otherwise capture group numbers will be
-		used. The dtype of each result column is always object, even when
-		no match is found. If expand=False and pat has only one capture group,
-		then return a Series (if subject is a Series) or Index (if subject
-		is an Index).
+		DataFrame or Series or Index
+		    A DataFrame with one row for each subject string, and one
+		    column for each group. Any capture group names in regular
+		    expression pat will be used for column names; otherwise
+		    capture group numbers will be used. The dtype of each result
+		    column is always object, even when no match is found. If
+		    ``expand=False`` and pat has only one capture group, then
+		    return a Series (if subject is a Series) or Index (if subject
+		    is an Index).
 		
 		See Also
 		--------
-		extractall : returns all matches (not just the first match)
+		extractall : Returns all matches (not just the first match).
 		
 		Examples
 		--------
 		A pattern with two groups will return a DataFrame with two columns.
 		Non-matches will be NaN.
 		
-		>>> s = Series(['a1', 'b2', 'c3'])
+		>>> s = pd.Series(['a1', 'b2', 'c3'])
 		>>> s.str.extract(r'([ab])(\d)')
 		     0    1
 		0    a    1
@@ -709,30 +713,34 @@ package pandas.core.strings;
 		
 		Parameters
 		----------
-		pat : string
-		    Regular expression pattern with capturing groups
+		pat : str
+		    Regular expression pattern with capturing groups.
 		flags : int, default 0 (no flags)
-		    re module flags, e.g. re.IGNORECASE
+		    A ``re`` module flag, for example ``re.IGNORECASE``. These allow
+		    to modify regular expression matching for things like case, spaces,
+		    etc. Multiple flags can be combined with the bitwise OR operator,
+		    for example ``re.IGNORECASE | re.MULTILINE``.
 		
 		Returns
 		-------
-		A DataFrame with one row for each match, and one column for each
-		group. Its rows have a MultiIndex with first levels that come from
-		the subject Series. The last level is named 'match' and indicates
-		the order in the subject. Any capture group names in regular
-		expression pat will be used for column names; otherwise capture
-		group numbers will be used.
+		DataFrame
+		    A ``DataFrame`` with one row for each match, and one column for each
+		    group. Its rows have a ``MultiIndex`` with first levels that come from
+		    the subject ``Series``. The last level is named 'match' and indexes the
+		    matches in each item of the ``Series``. Any capture group names in
+		    regular expression pat will be used for column names; otherwise capture
+		    group numbers will be used.
 		
 		See Also
 		--------
-		extract : returns first match only (not all matches)
+		extract : Returns first match only (not all matches).
 		
 		Examples
 		--------
 		A pattern with one group will return a DataFrame with one column.
 		Indices with no matches will not appear in the result.
 		
-		>>> s = Series(["a1a2", "b1", "c1"], index=["A", "B", "C"])
+		>>> s = pd.Series(["a1a2", "b1", "c1"], index=["A", "B", "C"])
 		>>> s.str.extractall(r"[ab](\d)")
 		         0
 		  match
@@ -789,7 +797,7 @@ package pandas.core.strings;
 		
 		See Also
 		--------
-		rfind : Return highest indexes in each strings
+		rfind : Return highest indexes in each strings.
 	**/
 	public function find(sub:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
 	/**
@@ -945,23 +953,23 @@ package pandas.core.strings;
 		-------
 		dummies : DataFrame
 		
+		See Also
+		--------
+		get_dummies
+		
 		Examples
 		--------
-		>>> Series(['a|b', 'a', 'a|c']).str.get_dummies()
+		>>> pd.Series(['a|b', 'a', 'a|c']).str.get_dummies()
 		   a  b  c
 		0  1  1  0
 		1  1  0  0
 		2  1  0  1
 		
-		>>> Series(['a|b', np.nan, 'a|c']).str.get_dummies()
+		>>> pd.Series(['a|b', np.nan, 'a|c']).str.get_dummies()
 		   a  b  c
 		0  1  1  0
 		1  0  0  0
 		2  1  0  1
-		
-		See Also
-		--------
-		pandas.get_dummies
 	**/
 	public function get_dummies(?sep:Dynamic):pandas.DataFrame;
 	/**
@@ -985,88 +993,1276 @@ package pandas.core.strings;
 		
 		See Also
 		--------
-		rindex : Return highest indexes in each strings
+		rindex : Return highest indexes in each strings.
 	**/
 	public function index(sub:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
 	/**
-		Check whether all characters in each string in the Series/Index
-		are alphanumeric. Equivalent to :meth:`str.isalnum`.
+		Check whether all characters in each string are alphanumeric.
+		
+		This is equivalent to running the Python string method
+		:meth:`str.isalnum` for each element of the Series/Index. If a string
+		has zero characters, ``False`` is returned for that check.
 		
 		Returns
 		-------
-		is : Series/array of boolean values
+		Series or Index of bool
+		    Series or Index of boolean values with the same length as the original
+		    Series/Index.
+		
+		See Also
+		--------
+		Series.str.isalpha : Check whether all characters are alphabetic.
+		Series.str.isnumeric : Check whether all characters are numeric.
+		Series.str.isalnum : Check whether all characters are alphanumeric.
+		Series.str.isdigit : Check whether all characters are digits.
+		Series.str.isdecimal : Check whether all characters are decimal.
+		Series.str.isspace : Check whether all characters are whitespace.
+		Series.str.islower : Check whether all characters are lowercase.
+		Series.str.isupper : Check whether all characters are uppercase.
+		Series.str.istitle : Check whether all characters are titlecase.
+		
+		Examples
+		--------
+		**Checks for Alphabetic and Numeric Characters**
+		
+		>>> s1 = pd.Series(['one', 'one1', '1', ''])
+		
+		>>> s1.str.isalpha()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isnumeric()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isalnum()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		Note that checks against characters mixed with any additional punctuation
+		or whitespace will evaluate to false for an alphanumeric check.
+		
+		>>> s2 = pd.Series(['A B', '1.5', '3,000'])
+		>>> s2.str.isalnum()
+		0    False
+		1    False
+		2    False
+		dtype: bool
+		
+		**More Detailed Checks for Numeric Characters**
+		
+		There are several different but overlapping sets of numeric characters that
+		can be checked for.
+		
+		>>> s3 = pd.Series(['23', '³', '⅕', ''])
+		
+		The ``s3.str.isdecimal`` method checks for characters used to form numbers
+		in base 10.
+		
+		>>> s3.str.isdecimal()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isdigit`` method is the same as ``s3.str.isdecimal`` but also
+		includes special digits, like superscripted and subscripted digits in
+		unicode.
+		
+		>>> s3.str.isdigit()
+		0     True
+		1     True
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isnumeric`` method is the same as ``s3.str.isdigit`` but also
+		includes other characters that can represent quantities such as unicode
+		fractions.
+		
+		>>> s3.str.isnumeric()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		**Checks for Whitespace**
+		
+		>>> s4 = pd.Series([' ', '\t\r\n ', ''])
+		>>> s4.str.isspace()
+		0     True
+		1     True
+		2    False
+		dtype: bool
+		
+		**Checks for Character Case**
+		
+		>>> s5 = pd.Series(['leopard', 'Golden Eagle', 'SNAKE', ''])
+		
+		>>> s5.str.islower()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s5.str.isupper()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		The ``s5.str.istitle`` method checks for whether all words are in title
+		case (whether only the first letter of each word is capitalized). Words are
+		assumed to be as any sequence of non-numeric characters seperated by
+		whitespace characters.
+		
+		>>> s5.str.istitle()
+		0    False
+		1     True
+		2    False
+		3    False
+		dtype: bool
 	**/
 	public function isalnum():Dynamic;
 	/**
-		Check whether all characters in each string in the Series/Index
-		are alphabetic. Equivalent to :meth:`str.isalpha`.
+		Check whether all characters in each string are alphabetic.
+		
+		This is equivalent to running the Python string method
+		:meth:`str.isalpha` for each element of the Series/Index. If a string
+		has zero characters, ``False`` is returned for that check.
 		
 		Returns
 		-------
-		is : Series/array of boolean values
+		Series or Index of bool
+		    Series or Index of boolean values with the same length as the original
+		    Series/Index.
+		
+		See Also
+		--------
+		Series.str.isalpha : Check whether all characters are alphabetic.
+		Series.str.isnumeric : Check whether all characters are numeric.
+		Series.str.isalnum : Check whether all characters are alphanumeric.
+		Series.str.isdigit : Check whether all characters are digits.
+		Series.str.isdecimal : Check whether all characters are decimal.
+		Series.str.isspace : Check whether all characters are whitespace.
+		Series.str.islower : Check whether all characters are lowercase.
+		Series.str.isupper : Check whether all characters are uppercase.
+		Series.str.istitle : Check whether all characters are titlecase.
+		
+		Examples
+		--------
+		**Checks for Alphabetic and Numeric Characters**
+		
+		>>> s1 = pd.Series(['one', 'one1', '1', ''])
+		
+		>>> s1.str.isalpha()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isnumeric()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isalnum()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		Note that checks against characters mixed with any additional punctuation
+		or whitespace will evaluate to false for an alphanumeric check.
+		
+		>>> s2 = pd.Series(['A B', '1.5', '3,000'])
+		>>> s2.str.isalnum()
+		0    False
+		1    False
+		2    False
+		dtype: bool
+		
+		**More Detailed Checks for Numeric Characters**
+		
+		There are several different but overlapping sets of numeric characters that
+		can be checked for.
+		
+		>>> s3 = pd.Series(['23', '³', '⅕', ''])
+		
+		The ``s3.str.isdecimal`` method checks for characters used to form numbers
+		in base 10.
+		
+		>>> s3.str.isdecimal()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isdigit`` method is the same as ``s3.str.isdecimal`` but also
+		includes special digits, like superscripted and subscripted digits in
+		unicode.
+		
+		>>> s3.str.isdigit()
+		0     True
+		1     True
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isnumeric`` method is the same as ``s3.str.isdigit`` but also
+		includes other characters that can represent quantities such as unicode
+		fractions.
+		
+		>>> s3.str.isnumeric()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		**Checks for Whitespace**
+		
+		>>> s4 = pd.Series([' ', '\t\r\n ', ''])
+		>>> s4.str.isspace()
+		0     True
+		1     True
+		2    False
+		dtype: bool
+		
+		**Checks for Character Case**
+		
+		>>> s5 = pd.Series(['leopard', 'Golden Eagle', 'SNAKE', ''])
+		
+		>>> s5.str.islower()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s5.str.isupper()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		The ``s5.str.istitle`` method checks for whether all words are in title
+		case (whether only the first letter of each word is capitalized). Words are
+		assumed to be as any sequence of non-numeric characters seperated by
+		whitespace characters.
+		
+		>>> s5.str.istitle()
+		0    False
+		1     True
+		2    False
+		3    False
+		dtype: bool
 	**/
 	public function isalpha():Dynamic;
 	/**
-		Check whether all characters in each string in the Series/Index
-		are decimal. Equivalent to :meth:`str.isdecimal`.
+		Check whether all characters in each string are decimal.
+		
+		This is equivalent to running the Python string method
+		:meth:`str.isdecimal` for each element of the Series/Index. If a string
+		has zero characters, ``False`` is returned for that check.
 		
 		Returns
 		-------
-		is : Series/array of boolean values
+		Series or Index of bool
+		    Series or Index of boolean values with the same length as the original
+		    Series/Index.
+		
+		See Also
+		--------
+		Series.str.isalpha : Check whether all characters are alphabetic.
+		Series.str.isnumeric : Check whether all characters are numeric.
+		Series.str.isalnum : Check whether all characters are alphanumeric.
+		Series.str.isdigit : Check whether all characters are digits.
+		Series.str.isdecimal : Check whether all characters are decimal.
+		Series.str.isspace : Check whether all characters are whitespace.
+		Series.str.islower : Check whether all characters are lowercase.
+		Series.str.isupper : Check whether all characters are uppercase.
+		Series.str.istitle : Check whether all characters are titlecase.
+		
+		Examples
+		--------
+		**Checks for Alphabetic and Numeric Characters**
+		
+		>>> s1 = pd.Series(['one', 'one1', '1', ''])
+		
+		>>> s1.str.isalpha()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isnumeric()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isalnum()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		Note that checks against characters mixed with any additional punctuation
+		or whitespace will evaluate to false for an alphanumeric check.
+		
+		>>> s2 = pd.Series(['A B', '1.5', '3,000'])
+		>>> s2.str.isalnum()
+		0    False
+		1    False
+		2    False
+		dtype: bool
+		
+		**More Detailed Checks for Numeric Characters**
+		
+		There are several different but overlapping sets of numeric characters that
+		can be checked for.
+		
+		>>> s3 = pd.Series(['23', '³', '⅕', ''])
+		
+		The ``s3.str.isdecimal`` method checks for characters used to form numbers
+		in base 10.
+		
+		>>> s3.str.isdecimal()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isdigit`` method is the same as ``s3.str.isdecimal`` but also
+		includes special digits, like superscripted and subscripted digits in
+		unicode.
+		
+		>>> s3.str.isdigit()
+		0     True
+		1     True
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isnumeric`` method is the same as ``s3.str.isdigit`` but also
+		includes other characters that can represent quantities such as unicode
+		fractions.
+		
+		>>> s3.str.isnumeric()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		**Checks for Whitespace**
+		
+		>>> s4 = pd.Series([' ', '\t\r\n ', ''])
+		>>> s4.str.isspace()
+		0     True
+		1     True
+		2    False
+		dtype: bool
+		
+		**Checks for Character Case**
+		
+		>>> s5 = pd.Series(['leopard', 'Golden Eagle', 'SNAKE', ''])
+		
+		>>> s5.str.islower()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s5.str.isupper()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		The ``s5.str.istitle`` method checks for whether all words are in title
+		case (whether only the first letter of each word is capitalized). Words are
+		assumed to be as any sequence of non-numeric characters seperated by
+		whitespace characters.
+		
+		>>> s5.str.istitle()
+		0    False
+		1     True
+		2    False
+		3    False
+		dtype: bool
 	**/
 	public function isdecimal():Dynamic;
 	/**
-		Check whether all characters in each string in the Series/Index
-		are digits. Equivalent to :meth:`str.isdigit`.
+		Check whether all characters in each string are digits.
+		
+		This is equivalent to running the Python string method
+		:meth:`str.isdigit` for each element of the Series/Index. If a string
+		has zero characters, ``False`` is returned for that check.
 		
 		Returns
 		-------
-		is : Series/array of boolean values
+		Series or Index of bool
+		    Series or Index of boolean values with the same length as the original
+		    Series/Index.
+		
+		See Also
+		--------
+		Series.str.isalpha : Check whether all characters are alphabetic.
+		Series.str.isnumeric : Check whether all characters are numeric.
+		Series.str.isalnum : Check whether all characters are alphanumeric.
+		Series.str.isdigit : Check whether all characters are digits.
+		Series.str.isdecimal : Check whether all characters are decimal.
+		Series.str.isspace : Check whether all characters are whitespace.
+		Series.str.islower : Check whether all characters are lowercase.
+		Series.str.isupper : Check whether all characters are uppercase.
+		Series.str.istitle : Check whether all characters are titlecase.
+		
+		Examples
+		--------
+		**Checks for Alphabetic and Numeric Characters**
+		
+		>>> s1 = pd.Series(['one', 'one1', '1', ''])
+		
+		>>> s1.str.isalpha()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isnumeric()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isalnum()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		Note that checks against characters mixed with any additional punctuation
+		or whitespace will evaluate to false for an alphanumeric check.
+		
+		>>> s2 = pd.Series(['A B', '1.5', '3,000'])
+		>>> s2.str.isalnum()
+		0    False
+		1    False
+		2    False
+		dtype: bool
+		
+		**More Detailed Checks for Numeric Characters**
+		
+		There are several different but overlapping sets of numeric characters that
+		can be checked for.
+		
+		>>> s3 = pd.Series(['23', '³', '⅕', ''])
+		
+		The ``s3.str.isdecimal`` method checks for characters used to form numbers
+		in base 10.
+		
+		>>> s3.str.isdecimal()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isdigit`` method is the same as ``s3.str.isdecimal`` but also
+		includes special digits, like superscripted and subscripted digits in
+		unicode.
+		
+		>>> s3.str.isdigit()
+		0     True
+		1     True
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isnumeric`` method is the same as ``s3.str.isdigit`` but also
+		includes other characters that can represent quantities such as unicode
+		fractions.
+		
+		>>> s3.str.isnumeric()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		**Checks for Whitespace**
+		
+		>>> s4 = pd.Series([' ', '\t\r\n ', ''])
+		>>> s4.str.isspace()
+		0     True
+		1     True
+		2    False
+		dtype: bool
+		
+		**Checks for Character Case**
+		
+		>>> s5 = pd.Series(['leopard', 'Golden Eagle', 'SNAKE', ''])
+		
+		>>> s5.str.islower()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s5.str.isupper()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		The ``s5.str.istitle`` method checks for whether all words are in title
+		case (whether only the first letter of each word is capitalized). Words are
+		assumed to be as any sequence of non-numeric characters seperated by
+		whitespace characters.
+		
+		>>> s5.str.istitle()
+		0    False
+		1     True
+		2    False
+		3    False
+		dtype: bool
 	**/
 	public function isdigit():Dynamic;
 	/**
-		Check whether all characters in each string in the Series/Index
-		are lowercase. Equivalent to :meth:`str.islower`.
+		Check whether all characters in each string are lowercase.
+		
+		This is equivalent to running the Python string method
+		:meth:`str.islower` for each element of the Series/Index. If a string
+		has zero characters, ``False`` is returned for that check.
 		
 		Returns
 		-------
-		is : Series/array of boolean values
+		Series or Index of bool
+		    Series or Index of boolean values with the same length as the original
+		    Series/Index.
+		
+		See Also
+		--------
+		Series.str.isalpha : Check whether all characters are alphabetic.
+		Series.str.isnumeric : Check whether all characters are numeric.
+		Series.str.isalnum : Check whether all characters are alphanumeric.
+		Series.str.isdigit : Check whether all characters are digits.
+		Series.str.isdecimal : Check whether all characters are decimal.
+		Series.str.isspace : Check whether all characters are whitespace.
+		Series.str.islower : Check whether all characters are lowercase.
+		Series.str.isupper : Check whether all characters are uppercase.
+		Series.str.istitle : Check whether all characters are titlecase.
+		
+		Examples
+		--------
+		**Checks for Alphabetic and Numeric Characters**
+		
+		>>> s1 = pd.Series(['one', 'one1', '1', ''])
+		
+		>>> s1.str.isalpha()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isnumeric()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isalnum()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		Note that checks against characters mixed with any additional punctuation
+		or whitespace will evaluate to false for an alphanumeric check.
+		
+		>>> s2 = pd.Series(['A B', '1.5', '3,000'])
+		>>> s2.str.isalnum()
+		0    False
+		1    False
+		2    False
+		dtype: bool
+		
+		**More Detailed Checks for Numeric Characters**
+		
+		There are several different but overlapping sets of numeric characters that
+		can be checked for.
+		
+		>>> s3 = pd.Series(['23', '³', '⅕', ''])
+		
+		The ``s3.str.isdecimal`` method checks for characters used to form numbers
+		in base 10.
+		
+		>>> s3.str.isdecimal()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isdigit`` method is the same as ``s3.str.isdecimal`` but also
+		includes special digits, like superscripted and subscripted digits in
+		unicode.
+		
+		>>> s3.str.isdigit()
+		0     True
+		1     True
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isnumeric`` method is the same as ``s3.str.isdigit`` but also
+		includes other characters that can represent quantities such as unicode
+		fractions.
+		
+		>>> s3.str.isnumeric()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		**Checks for Whitespace**
+		
+		>>> s4 = pd.Series([' ', '\t\r\n ', ''])
+		>>> s4.str.isspace()
+		0     True
+		1     True
+		2    False
+		dtype: bool
+		
+		**Checks for Character Case**
+		
+		>>> s5 = pd.Series(['leopard', 'Golden Eagle', 'SNAKE', ''])
+		
+		>>> s5.str.islower()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s5.str.isupper()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		The ``s5.str.istitle`` method checks for whether all words are in title
+		case (whether only the first letter of each word is capitalized). Words are
+		assumed to be as any sequence of non-numeric characters seperated by
+		whitespace characters.
+		
+		>>> s5.str.istitle()
+		0    False
+		1     True
+		2    False
+		3    False
+		dtype: bool
 	**/
 	public function islower():Dynamic;
 	/**
-		Check whether all characters in each string in the Series/Index
-		are numeric. Equivalent to :meth:`str.isnumeric`.
+		Check whether all characters in each string are numeric.
+		
+		This is equivalent to running the Python string method
+		:meth:`str.isnumeric` for each element of the Series/Index. If a string
+		has zero characters, ``False`` is returned for that check.
 		
 		Returns
 		-------
-		is : Series/array of boolean values
+		Series or Index of bool
+		    Series or Index of boolean values with the same length as the original
+		    Series/Index.
+		
+		See Also
+		--------
+		Series.str.isalpha : Check whether all characters are alphabetic.
+		Series.str.isnumeric : Check whether all characters are numeric.
+		Series.str.isalnum : Check whether all characters are alphanumeric.
+		Series.str.isdigit : Check whether all characters are digits.
+		Series.str.isdecimal : Check whether all characters are decimal.
+		Series.str.isspace : Check whether all characters are whitespace.
+		Series.str.islower : Check whether all characters are lowercase.
+		Series.str.isupper : Check whether all characters are uppercase.
+		Series.str.istitle : Check whether all characters are titlecase.
+		
+		Examples
+		--------
+		**Checks for Alphabetic and Numeric Characters**
+		
+		>>> s1 = pd.Series(['one', 'one1', '1', ''])
+		
+		>>> s1.str.isalpha()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isnumeric()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isalnum()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		Note that checks against characters mixed with any additional punctuation
+		or whitespace will evaluate to false for an alphanumeric check.
+		
+		>>> s2 = pd.Series(['A B', '1.5', '3,000'])
+		>>> s2.str.isalnum()
+		0    False
+		1    False
+		2    False
+		dtype: bool
+		
+		**More Detailed Checks for Numeric Characters**
+		
+		There are several different but overlapping sets of numeric characters that
+		can be checked for.
+		
+		>>> s3 = pd.Series(['23', '³', '⅕', ''])
+		
+		The ``s3.str.isdecimal`` method checks for characters used to form numbers
+		in base 10.
+		
+		>>> s3.str.isdecimal()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isdigit`` method is the same as ``s3.str.isdecimal`` but also
+		includes special digits, like superscripted and subscripted digits in
+		unicode.
+		
+		>>> s3.str.isdigit()
+		0     True
+		1     True
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isnumeric`` method is the same as ``s3.str.isdigit`` but also
+		includes other characters that can represent quantities such as unicode
+		fractions.
+		
+		>>> s3.str.isnumeric()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		**Checks for Whitespace**
+		
+		>>> s4 = pd.Series([' ', '\t\r\n ', ''])
+		>>> s4.str.isspace()
+		0     True
+		1     True
+		2    False
+		dtype: bool
+		
+		**Checks for Character Case**
+		
+		>>> s5 = pd.Series(['leopard', 'Golden Eagle', 'SNAKE', ''])
+		
+		>>> s5.str.islower()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s5.str.isupper()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		The ``s5.str.istitle`` method checks for whether all words are in title
+		case (whether only the first letter of each word is capitalized). Words are
+		assumed to be as any sequence of non-numeric characters seperated by
+		whitespace characters.
+		
+		>>> s5.str.istitle()
+		0    False
+		1     True
+		2    False
+		3    False
+		dtype: bool
 	**/
 	public function isnumeric():Dynamic;
 	/**
-		Check whether all characters in each string in the Series/Index
-		are whitespace. Equivalent to :meth:`str.isspace`.
+		Check whether all characters in each string are whitespace.
+		
+		This is equivalent to running the Python string method
+		:meth:`str.isspace` for each element of the Series/Index. If a string
+		has zero characters, ``False`` is returned for that check.
 		
 		Returns
 		-------
-		is : Series/array of boolean values
+		Series or Index of bool
+		    Series or Index of boolean values with the same length as the original
+		    Series/Index.
+		
+		See Also
+		--------
+		Series.str.isalpha : Check whether all characters are alphabetic.
+		Series.str.isnumeric : Check whether all characters are numeric.
+		Series.str.isalnum : Check whether all characters are alphanumeric.
+		Series.str.isdigit : Check whether all characters are digits.
+		Series.str.isdecimal : Check whether all characters are decimal.
+		Series.str.isspace : Check whether all characters are whitespace.
+		Series.str.islower : Check whether all characters are lowercase.
+		Series.str.isupper : Check whether all characters are uppercase.
+		Series.str.istitle : Check whether all characters are titlecase.
+		
+		Examples
+		--------
+		**Checks for Alphabetic and Numeric Characters**
+		
+		>>> s1 = pd.Series(['one', 'one1', '1', ''])
+		
+		>>> s1.str.isalpha()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isnumeric()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isalnum()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		Note that checks against characters mixed with any additional punctuation
+		or whitespace will evaluate to false for an alphanumeric check.
+		
+		>>> s2 = pd.Series(['A B', '1.5', '3,000'])
+		>>> s2.str.isalnum()
+		0    False
+		1    False
+		2    False
+		dtype: bool
+		
+		**More Detailed Checks for Numeric Characters**
+		
+		There are several different but overlapping sets of numeric characters that
+		can be checked for.
+		
+		>>> s3 = pd.Series(['23', '³', '⅕', ''])
+		
+		The ``s3.str.isdecimal`` method checks for characters used to form numbers
+		in base 10.
+		
+		>>> s3.str.isdecimal()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isdigit`` method is the same as ``s3.str.isdecimal`` but also
+		includes special digits, like superscripted and subscripted digits in
+		unicode.
+		
+		>>> s3.str.isdigit()
+		0     True
+		1     True
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isnumeric`` method is the same as ``s3.str.isdigit`` but also
+		includes other characters that can represent quantities such as unicode
+		fractions.
+		
+		>>> s3.str.isnumeric()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		**Checks for Whitespace**
+		
+		>>> s4 = pd.Series([' ', '\t\r\n ', ''])
+		>>> s4.str.isspace()
+		0     True
+		1     True
+		2    False
+		dtype: bool
+		
+		**Checks for Character Case**
+		
+		>>> s5 = pd.Series(['leopard', 'Golden Eagle', 'SNAKE', ''])
+		
+		>>> s5.str.islower()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s5.str.isupper()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		The ``s5.str.istitle`` method checks for whether all words are in title
+		case (whether only the first letter of each word is capitalized). Words are
+		assumed to be as any sequence of non-numeric characters seperated by
+		whitespace characters.
+		
+		>>> s5.str.istitle()
+		0    False
+		1     True
+		2    False
+		3    False
+		dtype: bool
 	**/
 	public function isspace():Dynamic;
 	/**
-		Check whether all characters in each string in the Series/Index
-		are titlecase. Equivalent to :meth:`str.istitle`.
+		Check whether all characters in each string are titlecase.
+		
+		This is equivalent to running the Python string method
+		:meth:`str.istitle` for each element of the Series/Index. If a string
+		has zero characters, ``False`` is returned for that check.
 		
 		Returns
 		-------
-		is : Series/array of boolean values
+		Series or Index of bool
+		    Series or Index of boolean values with the same length as the original
+		    Series/Index.
+		
+		See Also
+		--------
+		Series.str.isalpha : Check whether all characters are alphabetic.
+		Series.str.isnumeric : Check whether all characters are numeric.
+		Series.str.isalnum : Check whether all characters are alphanumeric.
+		Series.str.isdigit : Check whether all characters are digits.
+		Series.str.isdecimal : Check whether all characters are decimal.
+		Series.str.isspace : Check whether all characters are whitespace.
+		Series.str.islower : Check whether all characters are lowercase.
+		Series.str.isupper : Check whether all characters are uppercase.
+		Series.str.istitle : Check whether all characters are titlecase.
+		
+		Examples
+		--------
+		**Checks for Alphabetic and Numeric Characters**
+		
+		>>> s1 = pd.Series(['one', 'one1', '1', ''])
+		
+		>>> s1.str.isalpha()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isnumeric()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isalnum()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		Note that checks against characters mixed with any additional punctuation
+		or whitespace will evaluate to false for an alphanumeric check.
+		
+		>>> s2 = pd.Series(['A B', '1.5', '3,000'])
+		>>> s2.str.isalnum()
+		0    False
+		1    False
+		2    False
+		dtype: bool
+		
+		**More Detailed Checks for Numeric Characters**
+		
+		There are several different but overlapping sets of numeric characters that
+		can be checked for.
+		
+		>>> s3 = pd.Series(['23', '³', '⅕', ''])
+		
+		The ``s3.str.isdecimal`` method checks for characters used to form numbers
+		in base 10.
+		
+		>>> s3.str.isdecimal()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isdigit`` method is the same as ``s3.str.isdecimal`` but also
+		includes special digits, like superscripted and subscripted digits in
+		unicode.
+		
+		>>> s3.str.isdigit()
+		0     True
+		1     True
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isnumeric`` method is the same as ``s3.str.isdigit`` but also
+		includes other characters that can represent quantities such as unicode
+		fractions.
+		
+		>>> s3.str.isnumeric()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		**Checks for Whitespace**
+		
+		>>> s4 = pd.Series([' ', '\t\r\n ', ''])
+		>>> s4.str.isspace()
+		0     True
+		1     True
+		2    False
+		dtype: bool
+		
+		**Checks for Character Case**
+		
+		>>> s5 = pd.Series(['leopard', 'Golden Eagle', 'SNAKE', ''])
+		
+		>>> s5.str.islower()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s5.str.isupper()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		The ``s5.str.istitle`` method checks for whether all words are in title
+		case (whether only the first letter of each word is capitalized). Words are
+		assumed to be as any sequence of non-numeric characters seperated by
+		whitespace characters.
+		
+		>>> s5.str.istitle()
+		0    False
+		1     True
+		2    False
+		3    False
+		dtype: bool
 	**/
 	public function istitle():Dynamic;
 	/**
-		Check whether all characters in each string in the Series/Index
-		are uppercase. Equivalent to :meth:`str.isupper`.
+		Check whether all characters in each string are uppercase.
+		
+		This is equivalent to running the Python string method
+		:meth:`str.isupper` for each element of the Series/Index. If a string
+		has zero characters, ``False`` is returned for that check.
 		
 		Returns
 		-------
-		is : Series/array of boolean values
+		Series or Index of bool
+		    Series or Index of boolean values with the same length as the original
+		    Series/Index.
+		
+		See Also
+		--------
+		Series.str.isalpha : Check whether all characters are alphabetic.
+		Series.str.isnumeric : Check whether all characters are numeric.
+		Series.str.isalnum : Check whether all characters are alphanumeric.
+		Series.str.isdigit : Check whether all characters are digits.
+		Series.str.isdecimal : Check whether all characters are decimal.
+		Series.str.isspace : Check whether all characters are whitespace.
+		Series.str.islower : Check whether all characters are lowercase.
+		Series.str.isupper : Check whether all characters are uppercase.
+		Series.str.istitle : Check whether all characters are titlecase.
+		
+		Examples
+		--------
+		**Checks for Alphabetic and Numeric Characters**
+		
+		>>> s1 = pd.Series(['one', 'one1', '1', ''])
+		
+		>>> s1.str.isalpha()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isnumeric()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		>>> s1.str.isalnum()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		Note that checks against characters mixed with any additional punctuation
+		or whitespace will evaluate to false for an alphanumeric check.
+		
+		>>> s2 = pd.Series(['A B', '1.5', '3,000'])
+		>>> s2.str.isalnum()
+		0    False
+		1    False
+		2    False
+		dtype: bool
+		
+		**More Detailed Checks for Numeric Characters**
+		
+		There are several different but overlapping sets of numeric characters that
+		can be checked for.
+		
+		>>> s3 = pd.Series(['23', '³', '⅕', ''])
+		
+		The ``s3.str.isdecimal`` method checks for characters used to form numbers
+		in base 10.
+		
+		>>> s3.str.isdecimal()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isdigit`` method is the same as ``s3.str.isdecimal`` but also
+		includes special digits, like superscripted and subscripted digits in
+		unicode.
+		
+		>>> s3.str.isdigit()
+		0     True
+		1     True
+		2    False
+		3    False
+		dtype: bool
+		
+		The ``s.str.isnumeric`` method is the same as ``s3.str.isdigit`` but also
+		includes other characters that can represent quantities such as unicode
+		fractions.
+		
+		>>> s3.str.isnumeric()
+		0     True
+		1     True
+		2     True
+		3    False
+		dtype: bool
+		
+		**Checks for Whitespace**
+		
+		>>> s4 = pd.Series([' ', '\t\r\n ', ''])
+		>>> s4.str.isspace()
+		0     True
+		1     True
+		2    False
+		dtype: bool
+		
+		**Checks for Character Case**
+		
+		>>> s5 = pd.Series(['leopard', 'Golden Eagle', 'SNAKE', ''])
+		
+		>>> s5.str.islower()
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
+		
+		>>> s5.str.isupper()
+		0    False
+		1    False
+		2     True
+		3    False
+		dtype: bool
+		
+		The ``s5.str.istitle`` method checks for whether all words are in title
+		case (whether only the first letter of each word is capitalized). Words are
+		assumed to be as any sequence of non-numeric characters seperated by
+		whitespace characters.
+		
+		>>> s5.str.istitle()
+		0    False
+		1     True
+		2    False
+		3    False
+		dtype: bool
 	**/
 	public function isupper():Dynamic;
 	/**
@@ -1084,26 +2280,32 @@ package pandas.core.strings;
 		Returns
 		-------
 		Series/Index: object
+		    The list entries concatenated by intervening occurrences of the
+		    delimiter.
 		
-		Notes
-		-----
-		If any of the lists does not contain string objects the result of the join
-		will be `NaN`.
+		Raises
+		-------
+		AttributeError
+		    If the supplied Series contains neither strings nor lists.
 		
 		See Also
 		--------
 		str.join : Standard library version of this method.
 		Series.str.split : Split strings around given separator/delimiter.
 		
+		Notes
+		-----
+		If any of the list items is not a string object, the result of the join
+		will be `NaN`.
+		
 		Examples
 		--------
-		
 		Example with a list that contains non-string elements.
 		
 		>>> s = pd.Series([['lion', 'elephant', 'zebra'],
 		...                [1.1, 2.2, 3.3],
 		...                ['cat', np.nan, 'dog'],
-		...                ['cow', 4.5, 'goat']
+		...                ['cow', 4.5, 'goat'],
 		...                ['duck', ['swan', 'fish'], 'guppy']])
 		>>> s
 		0        [lion, elephant, zebra]
@@ -1113,8 +2315,8 @@ package pandas.core.strings;
 		4    [duck, [swan, fish], guppy]
 		dtype: object
 		
-		Join all lists using an '-', the lists containing object(s) of types other
-		than str will become a NaN.
+		Join all lists using a '-'. The lists containing object(s) of types other
+		than str will produce a NaN.
 		
 		>>> s.str.join('-')
 		0    lion-elephant-zebra
@@ -1126,11 +2328,48 @@ package pandas.core.strings;
 	**/
 	public function join(sep:Dynamic):Dynamic;
 	/**
-		Compute length of each string in the Series/Index.
+		Computes the length of each element in the Series/Index. The element may be
+		a sequence (such as a string, tuple or list) or a collection
+		(such as a dictionary).
 		
 		Returns
 		-------
-		lengths : Series/Index of integer values
+		Series or Index of int
+		    A Series or Index of integer values indicating the length of each
+		    element in the Series or Index.
+		
+		See Also
+		--------
+		str.len : Python built-in function returning the length of an object.
+		Series.size : Returns the length of the Series.
+		
+		Examples
+		--------
+		Returns the length (number of characters) in a string. Returns the
+		number of entries for dictionaries, lists or tuples.
+		
+		>>> s = pd.Series(['dog',
+		...                 '',
+		...                 5,
+		...                 {'foo' : 'bar'},
+		...                 [2, 3, 5, 7],
+		...                 ('one', 'two', 'three')])
+		>>> s
+		0                  dog
+		1
+		2                    5
+		3       {'foo': 'bar'}
+		4         [2, 3, 5, 7]
+		5    (one, two, three)
+		dtype: object
+		>>> s.str.len()
+		0    3.0
+		1    0.0
+		2    NaN
+		3    1.0
+		4    4.0
+		5    3.0
+		dtype: float64
 	**/
 	public function len():Dynamic;
 	/**
@@ -1217,12 +2456,66 @@ package pandas.core.strings;
 	**/
 	public function lower():Dynamic;
 	/**
-		Strip whitespace (including newlines) from each string in the
-		Series/Index from left side. Equivalent to :meth:`str.lstrip`.
+		Remove leading and trailing characters.
+		
+		Strip whitespaces (including newlines) or a set of specified characters
+		from each string in the Series/Index from left side.
+		Equivalent to :meth:`str.lstrip`.
+		
+		Parameters
+		----------
+		to_strip : str or None, default None
+		    Specifying the set of characters to be removed.
+		    All combinations of this set of characters will be stripped.
+		    If None then whitespaces are removed.
 		
 		Returns
 		-------
-		stripped : Series/Index of objects
+		Series/Index of objects
+		
+		See Also
+		--------
+		Series.str.strip : Remove leading and trailing characters in Series/Index.
+		Series.str.lstrip : Remove leading characters in Series/Index.
+		Series.str.rstrip : Remove trailing characters in Series/Index.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['1. Ant.  ', '2. Bee!\n', '3. Cat?\t', np.nan])
+		>>> s
+		0    1. Ant.
+		1    2. Bee!\n
+		2    3. Cat?\t
+		3          NaN
+		dtype: object
+		
+		>>> s.str.strip()
+		0    1. Ant.
+		1    2. Bee!
+		2    3. Cat?
+		3        NaN
+		dtype: object
+		
+		>>> s.str.lstrip('123.')
+		0    Ant.
+		1    Bee!\n
+		2    Cat?\t
+		3       NaN
+		dtype: object
+		
+		>>> s.str.rstrip('.!? \n\t')
+		0    1. Ant
+		1    2. Bee
+		2    3. Cat
+		3       NaN
+		dtype: object
+		
+		>>> s.str.strip('123.!? \n\t')
+		0    Ant
+		1    Bee
+		2    Cat
+		3    NaN
+		dtype: object
 	**/
 	public function lstrip(?to_strip:Dynamic):Dynamic;
 	/**
@@ -1236,9 +2529,7 @@ package pandas.core.strings;
 		    If True, case sensitive
 		flags : int, default 0 (no flags)
 		    re module flags, e.g. re.IGNORECASE
-		na : default NaN, fill value for missing values.
-		as_indexer
-		    .. deprecated:: 0.21.0
+		na : default NaN, fill value for missing values
 		
 		Returns
 		-------
@@ -1246,11 +2537,11 @@ package pandas.core.strings;
 		
 		See Also
 		--------
-		contains : analogous, but less strict, relying on re.search instead of
-		    re.match
-		extract : extract matched groups
+		contains : Analogous, but less strict, relying on re.search instead of
+		    re.match.
+		extract : Extract matched groups.
 	**/
-	public function match(pat:Dynamic, ?_case:Dynamic, ?flags:Dynamic, ?na:Dynamic, ?as_indexer:Dynamic):Dynamic;
+	public function match(pat:Dynamic, ?_case:Dynamic, ?flags:Dynamic, ?na:Dynamic):Dynamic;
 	/**
 		Return the Unicode normal form for the strings in the Series/Index.
 		For more information on the forms, see the
@@ -1267,79 +2558,175 @@ package pandas.core.strings;
 	**/
 	public function normalize(form:Dynamic):Dynamic;
 	/**
-		Pad strings in the Series/Index with an additional character to
-		specified side.
+		Pad strings in the Series/Index up to width.
 		
 		Parameters
 		----------
 		width : int
 		    Minimum width of resulting string; additional characters will be filled
-		    with spaces
+		    with character defined in `fillchar`.
 		side : {'left', 'right', 'both'}, default 'left'
-		fillchar : str
-		    Additional character for filling, default is whitespace
+		    Side from which to fill resulting string.
+		fillchar : str, default ' '
+		    Additional character for filling, default is whitespace.
 		
 		Returns
 		-------
-		padded : Series/Index of objects
+		Series or Index of object
+		    Returns Series or Index with minimum number of char in object.
+		
+		See Also
+		--------
+		Series.str.rjust : Fills the left side of strings with an arbitrary
+		    character. Equivalent to ``Series.str.pad(side='left')``.
+		Series.str.ljust : Fills the right side of strings with an arbitrary
+		    character. Equivalent to ``Series.str.pad(side='right')``.
+		Series.str.center : Fills boths sides of strings with an arbitrary
+		    character. Equivalent to ``Series.str.pad(side='both')``.
+		Series.str.zfill :  Pad strings in the Series/Index by prepending '0'
+		    character. Equivalent to ``Series.str.pad(side='left', fillchar='0')``.
+		
+		Examples
+		--------
+		>>> s = pd.Series(["caribou", "tiger"])
+		>>> s
+		0    caribou
+		1      tiger
+		dtype: object
+		
+		>>> s.str.pad(width=10)
+		0       caribou
+		1         tiger
+		dtype: object
+		
+		>>> s.str.pad(width=10, side='right', fillchar='-')
+		0    caribou---
+		1    tiger-----
+		dtype: object
+		
+		>>> s.str.pad(width=10, side='both', fillchar='-')
+		0    -caribou--
+		1    --tiger---
+		dtype: object
 	**/
 	public function pad(width:Dynamic, ?side:Dynamic, ?fillchar:Dynamic):Dynamic;
 	/**
-		Split the string at the first occurrence of `sep`, and return 3 elements
-		containing the part before the separator, the separator itself,
-		and the part after the separator.
+		Split the string at the first occurrence of `sep`.
+		
+		This method splits the string at the first occurrence of `sep`,
+		and returns 3 elements containing the part before the separator,
+		the separator itself, and the part after the separator.
 		If the separator is not found, return 3 elements containing the string itself, followed by two empty strings.
 		
 		Parameters
 		----------
-		pat : string, default whitespace
+		sep : str, default whitespace
 		    String to split on.
+		pat : str, default whitespace
+		    .. deprecated:: 0.24.0
+		       Use ``sep`` instead
 		expand : bool, default True
-		    * If True, return DataFrame/MultiIndex expanding dimensionality.
-		    * If False, return Series/Index.
+		    If True, return DataFrame/MultiIndex expanding dimensionality.
+		    If False, return Series/Index.
 		
 		Returns
 		-------
-		split : DataFrame/MultiIndex or Series/Index of objects
+		DataFrame/MultiIndex or Series/Index of objects
 		
 		See Also
 		--------
-		rpartition : Split the string at the last occurrence of `sep`
+		rpartition : Split the string at the last occurrence of `sep`.
+		Series.str.split : Split strings around given separators.
+		str.partition : Standard library version.
 		
 		Examples
 		--------
 		
-		>>> s = Series(['A_B_C', 'D_E_F', 'X'])
-		0    A_B_C
-		1    D_E_F
-		2        X
+		>>> s = pd.Series(['Linda van der Berg', 'George Pitt-Rivers'])
+		>>> s
+		0    Linda van der Berg
+		1    George Pitt-Rivers
 		dtype: object
 		
-		>>> s.str.partition('_')
-		   0  1    2
-		0  A  _  B_C
-		1  D  _  E_F
-		2  X
+		>>> s.str.partition()
+		        0  1             2
+		0   Linda     van der Berg
+		1  George      Pitt-Rivers
 		
-		>>> s.str.rpartition('_')
-		     0  1  2
-		0  A_B  _  C
-		1  D_E  _  F
-		2          X
+		To partition by the last space instead of the first one:
+		
+		>>> s.str.rpartition()
+		               0  1            2
+		0  Linda van der            Berg
+		1         George     Pitt-Rivers
+		
+		To partition by something different than a space:
+		
+		>>> s.str.partition('-')
+		                    0  1       2
+		0  Linda van der Berg
+		1         George Pitt  -  Rivers
+		
+		To return a Series containining tuples instead of a DataFrame:
+		
+		>>> s.str.partition('-', expand=False)
+		0    (Linda van der Berg, , )
+		1    (George Pitt, -, Rivers)
+		dtype: object
+		
+		Also available on indices:
+		
+		>>> idx = pd.Index(['X 123', 'Y 999'])
+		>>> idx
+		Index(['X 123', 'Y 999'], dtype='object')
+		
+		Which will create a MultiIndex:
+		
+		>>> idx.str.partition()
+		MultiIndex(levels=[['X', 'Y'], [' '], ['123', '999']],
+		           codes=[[0, 1], [0, 0], [0, 1]])
+		
+		Or an index with tuples with ``expand=False``:
+		
+		>>> idx.str.partition(expand=False)
+		Index([('X', ' ', '123'), ('Y', ' ', '999')], dtype='object')
 	**/
-	public function partition(?pat:Dynamic, ?expand:Dynamic):Dynamic;
+	public function partition(?sep:Dynamic, ?expand:Dynamic):Dynamic;
 	/**
-		Duplicate each string in the Series/Index by indicated number
-		of times.
+		Duplicate each string in the Series or Index.
 		
 		Parameters
 		----------
-		repeats : int or array
-		    Same value for all (int) or different value per (array)
+		repeats : int or sequence of int
+		    Same value for all (int) or different value per (sequence).
 		
 		Returns
 		-------
-		repeated : Series/Index of objects
+		Series or Index of object
+		    Series or Index of repeated string objects specified by
+		    input parameter repeats.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['a', 'b', 'c'])
+		>>> s
+		0    a
+		1    b
+		2    c
+		
+		Single int repeats string in Series
+		
+		>>> s.str.repeat(repeats=2)
+		0    aa
+		1    bb
+		2    cc
+		
+		Sequence of int repeats corresponding string in Series
+		
+		>>> s.str.repeat(repeats=[1, 2, 3])
+		0      a
+		1     bb
+		2    ccc
 	**/
 	public function repeat(repeats:Dynamic):Dynamic;
 	/**
@@ -1382,7 +2769,9 @@ package pandas.core.strings;
 		
 		Returns
 		-------
-		replaced : Series/Index of objects
+		Series or Index of object
+		    A copy of the object with all matching occurrences of `pat` replaced by
+		    `repl`.
 		
 		Raises
 		------
@@ -1479,7 +2868,7 @@ package pandas.core.strings;
 		
 		See Also
 		--------
-		find : Return lowest indexes in each strings
+		find : Return lowest indexes in each strings.
 	**/
 	public function rfind(sub:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
 	/**
@@ -1503,7 +2892,7 @@ package pandas.core.strings;
 		
 		See Also
 		--------
-		index : Return lowest indexes in each strings
+		index : Return lowest indexes in each strings.
 	**/
 	public function rindex(sub:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
 	/**
@@ -1524,90 +2913,330 @@ package pandas.core.strings;
 	**/
 	public function rjust(width:Dynamic, ?fillchar:Dynamic):Dynamic;
 	/**
-		Split the string at the last occurrence of `sep`, and return 3 elements
-		containing the part before the separator, the separator itself,
-		and the part after the separator.
+		Split the string at the last occurrence of `sep`.
+		
+		This method splits the string at the last occurrence of `sep`,
+		and returns 3 elements containing the part before the separator,
+		the separator itself, and the part after the separator.
 		If the separator is not found, return 3 elements containing two empty strings, followed by the string itself.
 		
 		Parameters
 		----------
-		pat : string, default whitespace
+		sep : str, default whitespace
 		    String to split on.
+		pat : str, default whitespace
+		    .. deprecated:: 0.24.0
+		       Use ``sep`` instead
 		expand : bool, default True
-		    * If True, return DataFrame/MultiIndex expanding dimensionality.
-		    * If False, return Series/Index.
+		    If True, return DataFrame/MultiIndex expanding dimensionality.
+		    If False, return Series/Index.
 		
 		Returns
 		-------
-		split : DataFrame/MultiIndex or Series/Index of objects
+		DataFrame/MultiIndex or Series/Index of objects
 		
 		See Also
 		--------
-		partition : Split the string at the first occurrence of `sep`
+		partition : Split the string at the first occurrence of `sep`.
+		Series.str.split : Split strings around given separators.
+		str.partition : Standard library version.
 		
 		Examples
 		--------
 		
-		>>> s = Series(['A_B_C', 'D_E_F', 'X'])
-		0    A_B_C
-		1    D_E_F
-		2        X
+		>>> s = pd.Series(['Linda van der Berg', 'George Pitt-Rivers'])
+		>>> s
+		0    Linda van der Berg
+		1    George Pitt-Rivers
 		dtype: object
 		
-		>>> s.str.partition('_')
-		   0  1    2
-		0  A  _  B_C
-		1  D  _  E_F
-		2  X
+		>>> s.str.partition()
+		        0  1             2
+		0   Linda     van der Berg
+		1  George      Pitt-Rivers
 		
-		>>> s.str.rpartition('_')
-		     0  1  2
-		0  A_B  _  C
-		1  D_E  _  F
-		2          X
+		To partition by the last space instead of the first one:
+		
+		>>> s.str.rpartition()
+		               0  1            2
+		0  Linda van der            Berg
+		1         George     Pitt-Rivers
+		
+		To partition by something different than a space:
+		
+		>>> s.str.partition('-')
+		                    0  1       2
+		0  Linda van der Berg
+		1         George Pitt  -  Rivers
+		
+		To return a Series containining tuples instead of a DataFrame:
+		
+		>>> s.str.partition('-', expand=False)
+		0    (Linda van der Berg, , )
+		1    (George Pitt, -, Rivers)
+		dtype: object
+		
+		Also available on indices:
+		
+		>>> idx = pd.Index(['X 123', 'Y 999'])
+		>>> idx
+		Index(['X 123', 'Y 999'], dtype='object')
+		
+		Which will create a MultiIndex:
+		
+		>>> idx.str.partition()
+		MultiIndex(levels=[['X', 'Y'], [' '], ['123', '999']],
+		           codes=[[0, 1], [0, 0], [0, 1]])
+		
+		Or an index with tuples with ``expand=False``:
+		
+		>>> idx.str.partition(expand=False)
+		Index([('X', ' ', '123'), ('Y', ' ', '999')], dtype='object')
 	**/
-	public function rpartition(?pat:Dynamic, ?expand:Dynamic):Dynamic;
+	public function rpartition(?sep:Dynamic, ?expand:Dynamic):Dynamic;
 	/**
-		Split each string in the Series/Index by the given delimiter
-		string, starting at the end of the string and working to the front.
-		Equivalent to :meth:`str.rsplit`.
+		Split strings around given separator/delimiter.
+		
+		Splits the string in the Series/Index from the end,
+		at the specified delimiter string. Equivalent to :meth:`str.rsplit`.
 		
 		Parameters
 		----------
-		pat : string, default None
-		    Separator to split on. If None, splits on whitespace
+		pat : str, optional
+		    String or regular expression to split on.
+		    If not specified, split on whitespace.
 		n : int, default -1 (all)
-		    None, 0 and -1 will be interpreted as return all splits
+		    Limit number of splits in output.
+		    ``None``, 0 and -1 will be interpreted as return all splits.
 		expand : bool, default False
-		    * If True, return DataFrame/MultiIndex expanding dimensionality.
-		    * If False, return Series/Index.
+		    Expand the splitted strings into separate columns.
+		
+		    * If ``True``, return DataFrame/MultiIndex expanding dimensionality.
+		    * If ``False``, return Series/Index, containing lists of strings.
 		
 		Returns
 		-------
-		split : Series/Index or DataFrame/MultiIndex of objects
+		Series, Index, DataFrame or MultiIndex
+		    Type matches caller unless ``expand=True`` (see Notes).
+		
+		See Also
+		--------
+		 Series.str.split : Split strings around given separator/delimiter.
+		 Series.str.rsplit : Splits string around given separator/delimiter,
+		 starting from the right.
+		 Series.str.join : Join lists contained as elements in the Series/Index
+		 with passed delimiter.
+		 str.split : Standard library version for split.
+		 str.rsplit : Standard library version for rsplit.
+		
+		Notes
+		-----
+		The handling of the `n` keyword depends on the number of found splits:
+		
+		- If found splits > `n`,  make first `n` splits only
+		- If found splits <= `n`, make all splits
+		- If for a certain row the number of found splits < `n`,
+		  append `None` for padding up to `n` if ``expand=True``
+		
+		If using ``expand=True``, Series and Index callers return DataFrame and
+		MultiIndex objects, respectively.
+		
+		Examples
+		--------
+		>>> s = pd.Series(["this is a regular sentence",
+		"https://docs.python.org/3/tutorial/index.html", np.nan])
+		
+		In the default setting, the string is split by whitespace.
+		
+		>>> s.str.split()
+		0                   [this, is, a, regular, sentence]
+		1    [https://docs.python.org/3/tutorial/index.html]
+		2                                                NaN
+		dtype: object
+		
+		Without the `n` parameter, the outputs of `rsplit` and `split`
+		are identical.
+		
+		>>> s.str.rsplit()
+		0                   [this, is, a, regular, sentence]
+		1    [https://docs.python.org/3/tutorial/index.html]
+		2                                                NaN
+		dtype: object
+		
+		The `n` parameter can be used to limit the number of splits on the
+		delimiter. The outputs of `split` and `rsplit` are different.
+		
+		>>> s.str.split(n=2)
+		0                     [this, is, a regular sentence]
+		1    [https://docs.python.org/3/tutorial/index.html]
+		2                                                NaN
+		dtype: object
+		
+		>>> s.str.rsplit(n=2)
+		0                     [this is a, regular, sentence]
+		1    [https://docs.python.org/3/tutorial/index.html]
+		2                                                NaN
+		dtype: object
+		
+		The `pat` parameter can be used to split by other characters.
+		
+		>>> s.str.split(pat = "/")
+		0                         [this is a regular sentence]
+		1    [https:, , docs.python.org, 3, tutorial, index...
+		2                                                  NaN
+		dtype: object
+		
+		When using ``expand=True``, the split elements will expand out into
+		separate columns. If NaN is present, it is propagated throughout
+		the columns during the split.
+		
+		>>> s.str.split(expand=True)
+		                                               0     1     2        3
+		0                                           this    is     a  regular
+		1  https://docs.python.org/3/tutorial/index.html  None  None     None
+		2                                            NaN   NaN   NaN      NaN 
+		             4
+		0     sentence
+		1         None
+		2          NaN
+		
+		For slightly more complex use cases like splitting the html document name
+		from a url, a combination of parameter settings can be used.
+		
+		>>> s.str.rsplit("/", n=1, expand=True)
+		                                    0           1
+		0          this is a regular sentence        None
+		1  https://docs.python.org/3/tutorial  index.html
+		2                                 NaN         NaN
 	**/
 	public function rsplit(?pat:Dynamic, ?n:Dynamic, ?expand:Dynamic):Dynamic;
 	/**
-		Strip whitespace (including newlines) from each string in the
-		Series/Index from right side. Equivalent to :meth:`str.rstrip`.
+		Remove leading and trailing characters.
 		
-		Returns
-		-------
-		stripped : Series/Index of objects
-	**/
-	public function rstrip(?to_strip:Dynamic):Dynamic;
-	/**
-		Slice substrings from each element in the Series/Index
+		Strip whitespaces (including newlines) or a set of specified characters
+		from each string in the Series/Index from right side.
+		Equivalent to :meth:`str.rstrip`.
 		
 		Parameters
 		----------
-		start : int or None
-		stop : int or None
-		step : int or None
+		to_strip : str or None, default None
+		    Specifying the set of characters to be removed.
+		    All combinations of this set of characters will be stripped.
+		    If None then whitespaces are removed.
 		
 		Returns
 		-------
-		sliced : Series/Index of objects
+		Series/Index of objects
+		
+		See Also
+		--------
+		Series.str.strip : Remove leading and trailing characters in Series/Index.
+		Series.str.lstrip : Remove leading characters in Series/Index.
+		Series.str.rstrip : Remove trailing characters in Series/Index.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['1. Ant.  ', '2. Bee!\n', '3. Cat?\t', np.nan])
+		>>> s
+		0    1. Ant.
+		1    2. Bee!\n
+		2    3. Cat?\t
+		3          NaN
+		dtype: object
+		
+		>>> s.str.strip()
+		0    1. Ant.
+		1    2. Bee!
+		2    3. Cat?
+		3        NaN
+		dtype: object
+		
+		>>> s.str.lstrip('123.')
+		0    Ant.
+		1    Bee!\n
+		2    Cat?\t
+		3       NaN
+		dtype: object
+		
+		>>> s.str.rstrip('.!? \n\t')
+		0    1. Ant
+		1    2. Bee
+		2    3. Cat
+		3       NaN
+		dtype: object
+		
+		>>> s.str.strip('123.!? \n\t')
+		0    Ant
+		1    Bee
+		2    Cat
+		3    NaN
+		dtype: object
+	**/
+	public function rstrip(?to_strip:Dynamic):Dynamic;
+	/**
+		Slice substrings from each element in the Series or Index.
+		
+		Parameters
+		----------
+		start : int, optional
+		    Start position for slice operation.
+		stop : int, optional
+		    Stop position for slice operation.
+		step : int, optional
+		    Step size for slice operation.
+		
+		Returns
+		-------
+		Series or Index of object
+		    Series or Index from sliced substring from original string object.
+		
+		See Also
+		--------
+		Series.str.slice_replace : Replace a slice with a string.
+		Series.str.get : Return element at position.
+		    Equivalent to `Series.str.slice(start=i, stop=i+1)` with `i`
+		    being the position.
+		
+		Examples
+		--------
+		>>> s = pd.Series(["koala", "fox", "chameleon"])
+		>>> s
+		0        koala
+		1          fox
+		2    chameleon
+		dtype: object
+		
+		>>> s.str.slice(start=1)
+		0        oala
+		1          ox
+		2    hameleon
+		dtype: object
+		
+		>>> s.str.slice(stop=2)
+		0    ko
+		1    fo
+		2    ch
+		dtype: object
+		
+		>>> s.str.slice(step=2)
+		0      kaa
+		1       fx
+		2    caeen
+		dtype: object
+		
+		>>> s.str.slice(start=0, stop=5, step=3)
+		0    kl
+		1     f
+		2    cm
+		dtype: object
+		
+		Equivalent behaviour to:
+		
+		>>> s.str[0:5:3]
+		0    kl
+		1     f
+		2    cm
+		dtype: object
 	**/
 	public function slice(?start:Dynamic, ?stop:Dynamic, ?step:Dynamic):Dynamic;
 	/**
@@ -1685,8 +3314,8 @@ package pandas.core.strings;
 	/**
 		Split strings around given separator/delimiter.
 		
-		Split each string in the caller's values by given
-		pattern, propagating NaN values. Equivalent to :meth:`str.split`.
+		Splits the string in the Series/Index from the beginning,
+		at the specified delimiter string. Equivalent to :meth:`str.split`.
 		
 		Parameters
 		----------
@@ -1707,6 +3336,16 @@ package pandas.core.strings;
 		Series, Index, DataFrame or MultiIndex
 		    Type matches caller unless ``expand=True`` (see Notes).
 		
+		See Also
+		--------
+		 Series.str.split : Split strings around given separator/delimiter.
+		 Series.str.rsplit : Splits string around given separator/delimiter,
+		 starting from the right.
+		 Series.str.join : Join lists contained as elements in the Series/Index
+		 with passed delimiter.
+		 str.split : Standard library version for split.
+		 str.rsplit : Standard library version for rsplit.
+		
 		Notes
 		-----
 		The handling of the `n` keyword depends on the number of found splits:
@@ -1719,70 +3358,73 @@ package pandas.core.strings;
 		If using ``expand=True``, Series and Index callers return DataFrame and
 		MultiIndex objects, respectively.
 		
-		See Also
-		--------
-		str.split : Standard library version of this method.
-		Series.str.get_dummies : Split each string into dummy variables.
-		Series.str.partition : Split string on a separator, returning
-		    the before, separator, and after components.
-		
 		Examples
 		--------
-		>>> s = pd.Series(["this is good text", "but this is even better"])
+		>>> s = pd.Series(["this is a regular sentence",
+		"https://docs.python.org/3/tutorial/index.html", np.nan])
 		
-		By default, split will return an object of the same size
-		having lists containing the split elements
+		In the default setting, the string is split by whitespace.
 		
 		>>> s.str.split()
-		0           [this, is, good, text]
-		1    [but, this, is, even, better]
+		0                   [this, is, a, regular, sentence]
+		1    [https://docs.python.org/3/tutorial/index.html]
+		2                                                NaN
 		dtype: object
-		>>> s.str.split("random")
-		0          [this is good text]
-		1    [but this is even better]
+		
+		Without the `n` parameter, the outputs of `rsplit` and `split`
+		are identical.
+		
+		>>> s.str.rsplit()
+		0                   [this, is, a, regular, sentence]
+		1    [https://docs.python.org/3/tutorial/index.html]
+		2                                                NaN
+		dtype: object
+		
+		The `n` parameter can be used to limit the number of splits on the
+		delimiter. The outputs of `split` and `rsplit` are different.
+		
+		>>> s.str.split(n=2)
+		0                     [this, is, a regular sentence]
+		1    [https://docs.python.org/3/tutorial/index.html]
+		2                                                NaN
+		dtype: object
+		
+		>>> s.str.rsplit(n=2)
+		0                     [this is a, regular, sentence]
+		1    [https://docs.python.org/3/tutorial/index.html]
+		2                                                NaN
+		dtype: object
+		
+		The `pat` parameter can be used to split by other characters.
+		
+		>>> s.str.split(pat = "/")
+		0                         [this is a regular sentence]
+		1    [https:, , docs.python.org, 3, tutorial, index...
+		2                                                  NaN
 		dtype: object
 		
 		When using ``expand=True``, the split elements will expand out into
-		separate columns.
-		
-		For Series object, output return type is DataFrame.
+		separate columns. If NaN is present, it is propagated throughout
+		the columns during the split.
 		
 		>>> s.str.split(expand=True)
-		      0     1     2     3       4
-		0  this    is  good  text    None
-		1   but  this    is  even  better
-		>>> s.str.split(" is ", expand=True)
-		          0            1
-		0      this    good text
-		1  but this  even better
+		                                               0     1     2        3
+		0                                           this    is     a  regular
+		1  https://docs.python.org/3/tutorial/index.html  None  None     None
+		2                                            NaN   NaN   NaN      NaN 
+		             4
+		0     sentence
+		1         None
+		2          NaN
 		
-		For Index object, output return type is MultiIndex.
+		For slightly more complex use cases like splitting the html document name
+		from a url, a combination of parameter settings can be used.
 		
-		>>> i = pd.Index(["ba 100 001", "ba 101 002", "ba 102 003"])
-		>>> i.str.split(expand=True)
-		MultiIndex(levels=[['ba'], ['100', '101', '102'], ['001', '002', '003']],
-		       labels=[[0, 0, 0], [0, 1, 2], [0, 1, 2]])
-		
-		Parameter `n` can be used to limit the number of splits in the output.
-		
-		>>> s.str.split("is", n=1)
-		0          [th,  is good text]
-		1    [but th,  is even better]
-		dtype: object
-		>>> s.str.split("is", n=1, expand=True)
-		        0                1
-		0      th     is good text
-		1  but th   is even better
-		
-		If NaN is present, it is propagated throughout the columns
-		during the split.
-		
-		>>> s = pd.Series(["this is good text", "but this is even better", np.nan])
-		>>> s.str.split(n=3, expand=True)
-		      0     1     2            3
-		0  this    is  good         text
-		1   but  this    is  even better
-		2   NaN   NaN   NaN          NaN
+		>>> s.str.rsplit("/", n=1, expand=True)
+		                                    0           1
+		0          this is a regular sentence        None
+		1  https://docs.python.org/3/tutorial  index.html
+		2                                 NaN         NaN
 	**/
 	public function split(?pat:Dynamic, ?n:Dynamic, ?expand:Dynamic):Dynamic;
 	/**
@@ -1837,12 +3479,66 @@ package pandas.core.strings;
 	**/
 	public function startswith(pat:Dynamic, ?na:Dynamic):Dynamic;
 	/**
-		Strip whitespace (including newlines) from each string in the
-		Series/Index from left and right sides. Equivalent to :meth:`str.strip`.
+		Remove leading and trailing characters.
+		
+		Strip whitespaces (including newlines) or a set of specified characters
+		from each string in the Series/Index from left and right sides.
+		Equivalent to :meth:`str.strip`.
+		
+		Parameters
+		----------
+		to_strip : str or None, default None
+		    Specifying the set of characters to be removed.
+		    All combinations of this set of characters will be stripped.
+		    If None then whitespaces are removed.
 		
 		Returns
 		-------
-		stripped : Series/Index of objects
+		Series/Index of objects
+		
+		See Also
+		--------
+		Series.str.strip : Remove leading and trailing characters in Series/Index.
+		Series.str.lstrip : Remove leading characters in Series/Index.
+		Series.str.rstrip : Remove trailing characters in Series/Index.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['1. Ant.  ', '2. Bee!\n', '3. Cat?\t', np.nan])
+		>>> s
+		0    1. Ant.
+		1    2. Bee!\n
+		2    3. Cat?\t
+		3          NaN
+		dtype: object
+		
+		>>> s.str.strip()
+		0    1. Ant.
+		1    2. Bee!
+		2    3. Cat?
+		3        NaN
+		dtype: object
+		
+		>>> s.str.lstrip('123.')
+		0    Ant.
+		1    Bee!\n
+		2    Cat?\t
+		3       NaN
+		dtype: object
+		
+		>>> s.str.rstrip('.!? \n\t')
+		0    1. Ant
+		1    2. Bee
+		2    3. Cat
+		3       NaN
+		dtype: object
+		
+		>>> s.str.strip('123.!? \n\t')
+		0    Ant
+		1    Bee
+		2    Cat
+		3    NaN
+		dtype: object
 	**/
 	public function strip(?to_strip:Dynamic):Dynamic;
 	/**
@@ -2126,18 +3822,63 @@ package pandas.core.strings;
 	**/
 	public function wrap(width:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Filling left side of strings in the Series/Index with 0.
-		Equivalent to :meth:`str.zfill`.
+		Pad strings in the Series/Index by prepending '0' characters.
+		
+		Strings in the Series/Index are padded with '0' characters on the
+		left of the string to reach a total string length  `width`. Strings
+		in the Series/Index with length greater or equal to `width` are
+		unchanged.
 		
 		Parameters
 		----------
 		width : int
-		    Minimum width of resulting string; additional characters will be
-		    filled with 0
+		    Minimum length of resulting string; strings with length less
+		    than `width` be prepended with '0' characters.
 		
 		Returns
 		-------
-		filled : Series/Index of objects
+		Series/Index of objects
+		
+		See Also
+		--------
+		Series.str.rjust : Fills the left side of strings with an arbitrary
+		    character.
+		Series.str.ljust : Fills the right side of strings with an arbitrary
+		    character.
+		Series.str.pad : Fills the specified sides of strings with an arbitrary
+		    character.
+		Series.str.center : Fills boths sides of strings with an arbitrary
+		    character.
+		
+		Notes
+		-----
+		Differs from :meth:`str.zfill` which has special handling
+		for '+'/'-' in the string.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['-1', '1', '1000', 10, np.nan])
+		>>> s
+		0      -1
+		1       1
+		2    1000
+		3      10
+		4     NaN
+		dtype: object
+		
+		Note that ``10`` and ``NaN`` are not strings, therefore they are
+		converted to ``NaN``. The minus sign in ``'-1'`` is treated as a
+		regular character and the zero is added to the left of it
+		(:meth:`str.zfill` would have moved it to the left). ``1000``
+		remains unchanged as it is longer than `width`.
+		
+		>>> s.str.zfill(3)
+		0     0-1
+		1     001
+		2    1000
+		3     NaN
+		4     NaN
+		dtype: object
 	**/
 	public function zfill(width:Dynamic):Dynamic;
 }

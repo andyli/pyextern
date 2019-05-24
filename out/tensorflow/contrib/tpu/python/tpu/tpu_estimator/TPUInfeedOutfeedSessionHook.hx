@@ -41,11 +41,11 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(ctx:Dynamic, enqueue_ops:Dynamic, dequeue_ops:Dynamic, ?run_infeed_loop_on_coordinator:Dynamic, ?rendezvous:Dynamic):Dynamic;
+	public function ___init__(ctx:Dynamic, enqueue_ops:Dynamic, dequeue_ops:Dynamic, tpu_compile_op:Dynamic, ?run_infeed_loop_on_coordinator:Dynamic, ?rendezvous:Dynamic, ?master:Dynamic, ?session_config:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(ctx:Dynamic, enqueue_ops:Dynamic, dequeue_ops:Dynamic, ?run_infeed_loop_on_coordinator:Dynamic, ?rendezvous:Dynamic):Void;
+	public function new(ctx:Dynamic, enqueue_ops:Dynamic, dequeue_ops:Dynamic, tpu_compile_op:Dynamic, ?run_infeed_loop_on_coordinator:Dynamic, ?rendezvous:Dynamic, ?master:Dynamic, ?session_config:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -108,7 +108,10 @@ package tensorflow.contrib.tpu.python.tpu.tpu_estimator;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _assertCompilationSucceeded(result:Dynamic, coord:Dynamic):Dynamic;
 	public function _create_infeed_controller(name:Dynamic, target:Dynamic, args:Dynamic):Dynamic;
+	static public var _estimator_api_names : Dynamic;
+	static public var _estimator_api_names_v1 : Dynamic;
 	public function _run_infeed(queue_ctx:Dynamic, session:Dynamic):Dynamic;
 	public function _run_outfeed(queue_ctx:Dynamic, session:Dynamic):Dynamic;
 	static public var _tf_api_names : Dynamic;

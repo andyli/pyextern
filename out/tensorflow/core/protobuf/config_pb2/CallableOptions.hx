@@ -30,11 +30,6 @@ package tensorflow.core.protobuf.config_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FEED_DEVICES_FIELD_NUMBER : Dynamic;
-	static public var FEED_FIELD_NUMBER : Dynamic;
-	static public var FETCH_DEVICES_FIELD_NUMBER : Dynamic;
-	static public var FETCH_FIELD_NUMBER : Dynamic;
-	static public var FETCH_SKIP_SYNC_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -79,7 +74,6 @@ package tensorflow.core.protobuf.config_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var RUN_OPTIONS_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -96,8 +90,10 @@ package tensorflow.core.protobuf.config_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TARGET_FIELD_NUMBER : Dynamic;
-	static public var TENSOR_CONNECTION_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -263,4 +259,36 @@ package tensorflow.core.protobuf.config_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.CallableOptions.feed
+	**/
+	public var feed : Dynamic;
+	/**
+		Field tensorflow.CallableOptions.feed_devices
+	**/
+	public var feed_devices : Dynamic;
+	/**
+		Field tensorflow.CallableOptions.fetch
+	**/
+	public var fetch : Dynamic;
+	/**
+		Field tensorflow.CallableOptions.fetch_devices
+	**/
+	public var fetch_devices : Dynamic;
+	/**
+		Field tensorflow.CallableOptions.fetch_skip_sync
+	**/
+	public var fetch_skip_sync : Dynamic;
+	/**
+		Field tensorflow.CallableOptions.run_options
+	**/
+	public var run_options : Dynamic;
+	/**
+		Field tensorflow.CallableOptions.target
+	**/
+	public var target : Dynamic;
+	/**
+		Field tensorflow.CallableOptions.tensor_connection
+	**/
+	public var tensor_connection : Dynamic;
 }

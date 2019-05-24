@@ -239,7 +239,7 @@ package matplotlib.widgets;
 	**/
 	public function _on_key_press(event:Dynamic):Dynamic;
 	/**
-		Key release event handler
+		Key release event handler.
 	**/
 	public function _on_key_release(event:Dynamic):Dynamic;
 	/**
@@ -264,7 +264,7 @@ package matplotlib.widgets;
 	**/
 	public function _set_active_handle(event:Dynamic):Dynamic;
 	/**
-		Draw a rectangle with lower left at *xy* = (*x*, *y*) with
+		A rectangle with lower left at *xy* = (*x*, *y*) with
 		specified *width*, *height* and rotation *angle*.
 	**/
 	static public function _shape_klass(xy:Dynamic, width:Dynamic, height:Dynamic, ?angle:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -328,7 +328,7 @@ package matplotlib.widgets;
 	**/
 	public function on_key_press(event:Dynamic):Dynamic;
 	/**
-		Key release event handler and validator
+		Key release event handler and validator.
 	**/
 	public function on_key_release(event:Dynamic):Dynamic;
 	/**
@@ -353,7 +353,7 @@ package matplotlib.widgets;
 	**/
 	public function set_active(active:Dynamic):Dynamic;
 	/**
-		Set the visibility of our artists 
+		Set the visibility of our artists.
 	**/
 	public function set_visible(visible:Dynamic):Dynamic;
 	/**

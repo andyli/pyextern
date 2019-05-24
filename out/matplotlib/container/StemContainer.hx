@@ -51,12 +51,24 @@ package matplotlib.container;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Parameters
+		----------
+		markerline_stemlines_baseline : tuple
+		    Tuple of ``(markerline, stemlines, baseline)``.
+		    ``markerline`` contains the `LineCollection` of the markers,
+		    ``stemlines`` is a `LineCollection` of the main lines,
+		    ``baseline`` is the `Line2D` of the baseline.
 	**/
 	@:native("__init__")
 	public function ___init__(markerline_stemlines_baseline:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Parameters
+		----------
+		markerline_stemlines_baseline : tuple
+		    Tuple of ``(markerline, stemlines, baseline)``.
+		    ``markerline`` contains the `LineCollection` of the markers,
+		    ``stemlines`` is a `LineCollection` of the main lines,
+		    ``baseline`` is the `Line2D` of the baseline.
 	**/
 	public function new(markerline_stemlines_baseline:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
@@ -84,7 +96,7 @@ package matplotlib.container;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -94,7 +106,7 @@ package matplotlib.container;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, ?kl:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __new__(cls:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -108,7 +120,7 @@ package matplotlib.container;
 	**/
 	public function __repr__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**
@@ -175,14 +187,17 @@ package matplotlib.container;
 		
 		Parameters
 		----------
-		s : string or anything printable with '%s' conversion.
+		s : object
+		    Any object other than None gets converted to its `str`.
 	**/
 	public function set_label(s:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 3.0
-		    The set_remove_method function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		[*Deprecated*] 
 		
-		\ 
+		Notes
+		-----
+		.. deprecated:: 3.0
+		   \ 
 	**/
 	public function set_remove_method(f:Dynamic):Dynamic;
 }

@@ -5,7 +5,6 @@ package tensorflow.core.debug.debugger_event_metadata_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CHUNK_INDEX_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -23,7 +22,6 @@ package tensorflow.core.debug.debugger_event_metadata_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DEVICE_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -64,8 +62,6 @@ package tensorflow.core.debug.debugger_event_metadata_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NUM_CHUNKS_FIELD_NUMBER : Dynamic;
-	static public var OUTPUT_SLOT_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -86,6 +82,10 @@ package tensorflow.core.debug.debugger_event_metadata_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.core.debug.debugger_event_metadata_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field third_party.tensorflow.core.debug.DebuggerEventMetadata.chunk_index
+	**/
+	public var chunk_index : Dynamic;
+	/**
+		Field third_party.tensorflow.core.debug.DebuggerEventMetadata.device
+	**/
+	public var device : Dynamic;
+	/**
+		Field third_party.tensorflow.core.debug.DebuggerEventMetadata.num_chunks
+	**/
+	public var num_chunks : Dynamic;
+	/**
+		Field third_party.tensorflow.core.debug.DebuggerEventMetadata.output_slot
+	**/
+	public var output_slot : Dynamic;
 }

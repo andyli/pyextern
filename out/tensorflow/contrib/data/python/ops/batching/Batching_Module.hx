@@ -36,7 +36,7 @@ package tensorflow.contrib.data.python.ops.batching;
 	/**
 		A batching transformation that omits the final small batch (if present). (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.Dataset.batch(..., drop_remainder=True)`.
 		
@@ -70,7 +70,7 @@ package tensorflow.contrib.data.python.ops.batching;
 	/**
 		A transformation that batches ragged elements into `tf.SparseTensor`s. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.dense_to_sparse_batch(...)`.
 		
@@ -118,7 +118,7 @@ package tensorflow.contrib.data.python.ops.batching;
 	/**
 		Fused implementation of `map` and `batch`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.map_and_batch(...)`.
 		
@@ -159,7 +159,7 @@ package tensorflow.contrib.data.python.ops.batching;
 	/**
 		A batching and padding transformation that omits the final small batch. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.Dataset.padded_batch(..., drop_remainder=True)`.
 		
@@ -188,7 +188,7 @@ package tensorflow.contrib.data.python.ops.batching;
 	/**
 		Splits elements of a dataset into multiple elements on the batch dimension. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.unbatch()`.
 		

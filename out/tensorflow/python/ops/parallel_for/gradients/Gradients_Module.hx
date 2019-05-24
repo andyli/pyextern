@@ -25,6 +25,8 @@ package tensorflow.python.ops.parallel_for.gradients;
 		  inp: A tensor with shape [b, x1, ..., x_m]
 		  use_pfor: If true, uses pfor for computing the Jacobian. Else uses a
 		    tf.while_loop.
+		  parallel_iterations: A knob to control how many iterations and dispatched in
+		    parallel. This knob can be used to control the total memory usage.
 		
 		Returns:
 		  A tensor `t` with shape [b, y_1, ..., y_n, x1, ..., x_m] where `t[i, ...]`
@@ -34,7 +36,7 @@ package tensorflow.python.ops.parallel_for.gradients;
 		Raises:
 		  ValueError: if first dimension of `output` and `inp` do not match.
 	**/
-	static public function batch_jacobian(output:Dynamic, inp:Dynamic, ?use_pfor:Dynamic):Dynamic;
+	static public function batch_jacobian(output:Dynamic, inp:Dynamic, ?use_pfor:Dynamic, ?parallel_iterations:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Computes jacobian of `output` w.r.t. `inputs`.
@@ -44,6 +46,8 @@ package tensorflow.python.ops.parallel_for.gradients;
 		  inputs: A tensor or a nested structure of tensor objects.
 		  use_pfor: If true, uses pfor for computing the jacobian. Else uses
 		    tf.while_loop.
+		  parallel_iterations: A knob to control how many iterations and dispatched in
+		    parallel. This knob can be used to control the total memory usage.
 		
 		Returns:
 		  A tensor or a nested strucutre of tensors with the same structure as
@@ -52,6 +56,6 @@ package tensorflow.python.ops.parallel_for.gradients;
 		  shape [x_1, ..., x_m], the corresponding jacobian has shape
 		  [y_1, ..., y_n, x_1, ..., x_m].
 	**/
-	static public function jacobian(output:Dynamic, inputs:Dynamic, ?use_pfor:Dynamic):Dynamic;
+	static public function jacobian(output:Dynamic, inputs:Dynamic, ?use_pfor:Dynamic, ?parallel_iterations:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

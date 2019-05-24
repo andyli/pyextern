@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas._libs.tslibs.offsets;
 @:pythonImport("pandas._libs.tslibs.offsets", "BaseOffset") extern class BaseOffset {
+	public function __add__(other:Dynamic):Dynamic;
 	public function __call__(other:Dynamic):Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -14,10 +15,7 @@ package pandas._libs.tslibs.offsets;
 	**/
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
-	/**
-		Return self==value.
-	**/
-	public function __eq__(value:Dynamic):Dynamic;
+	public function __eq__(other:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -31,22 +29,17 @@ package pandas._libs.tslibs.offsets;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	/**
+		Return a pickleable state
+	**/
+	public function __getstate__():Dynamic;
+	/**
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
-	/**
-		Return hash(self).
-	**/
 	public function __hash__():Dynamic;
-	/**
-		Initialize self.  See help(type(self)) for accurate signature.
-	**/
 	@:native("__init__")
-	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Initialize self.  See help(type(self)) for accurate signature.
-	**/
-	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function ___init__(?n:Dynamic, ?normalize:Dynamic):Dynamic;
+	public function new(?n:Dynamic, ?normalize:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -64,10 +57,7 @@ package pandas._libs.tslibs.offsets;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(other:Dynamic):Dynamic;
-	/**
-		Return self!=value.
-	**/
-	public function __ne__(value:Dynamic):Dynamic;
+	public function __ne__(other:Dynamic):Dynamic;
 	public function __neg__():Dynamic;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
@@ -85,10 +75,11 @@ package pandas._libs.tslibs.offsets;
 	public function __repr__():Dynamic;
 	public function __rmul__(other:Dynamic):Dynamic;
 	public function __rsub__(other:Dynamic):Dynamic;
-	/**
-		Implement setattr(self, name, value).
-	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Reconstruct an instance from a pickled state
+	**/
+	public function __setstate__(state:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -98,6 +89,7 @@ package pandas._libs.tslibs.offsets;
 		Return str(self).
 	**/
 	public function __str__():Dynamic;
+	public function __sub__(other:Dynamic):Dynamic;
 	/**
 		Abstract classes can override this to customize issubclass().
 		
@@ -112,11 +104,13 @@ package pandas._libs.tslibs.offsets;
 	**/
 	public var __weakref__ : Dynamic;
 	static public var _attributes : Dynamic;
-	static public var _cacheable : Dynamic;
 	static public var _day_opt : Dynamic;
 	public function _get_offset_day(other:Dynamic):Dynamic;
-	static public var _normalize_cache : Dynamic;
-	public function _should_cache():Dynamic;
+	/**
+		Returns a tuple containing all of the attributes needed to evaluate
+		equality between two DateOffset objects.
+	**/
+	public var _params : Dynamic;
 	static public var _typ : Dynamic;
 	/**
 		Require that `n` be a nonzero integer.
@@ -135,6 +129,11 @@ package pandas._libs.tslibs.offsets;
 		ValueError if n != int(n)
 	**/
 	public function _validate_n(n:Dynamic):Int;
+	/**
+		Returns a copy of the calling offset object with n=1 and all other
+		attributes equal.
+	**/
+	public var base : Dynamic;
 	public function copy():Dynamic;
 	public var kwds : Dynamic;
 }

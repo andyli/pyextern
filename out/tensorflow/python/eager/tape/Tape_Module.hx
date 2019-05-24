@@ -43,6 +43,9 @@ package tensorflow.python.eager.tape;
 	static public function stop_recording():Dynamic;
 	/**
 		Notifies all tapes in the stack that a variable has been accessed.
+		
+		Args:
+		  variable: variable to be watched.
 	**/
 	static public function variable_accessed(variable:Dynamic):Dynamic;
 	/**

@@ -118,7 +118,7 @@ package tensorflow.contrib.quantize.python.fold_batch_norms;
 		Args:
 		  graph: Graph to inspect.
 		
-		Yields:
+		Returns:
 		  _FusedBatchNormMatches.
 	**/
 	static public function _FindFusedBatchNorms(graph:Dynamic):Dynamic;

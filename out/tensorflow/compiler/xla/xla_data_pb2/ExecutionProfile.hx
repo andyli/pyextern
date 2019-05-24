@@ -5,11 +5,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var COMPILATION_CACHE_HIT_FIELD_NUMBER : Dynamic;
-	static public var COMPILE_TIME_MS_FIELD_NUMBER : Dynamic;
-	static public var COMPUTE_AND_TRANSFER_TIME_NS_FIELD_NUMBER : Dynamic;
-	static public var COMPUTE_CYCLE_COUNT_FIELD_NUMBER : Dynamic;
-	static public var COMPUTE_TIME_NS_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -31,7 +26,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EXECUTABLE_SIZE_IN_BYTES_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
@@ -88,6 +82,10 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -253,4 +251,28 @@ package tensorflow.compiler.xla.xla_data_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.ExecutionProfile.compilation_cache_hit
+	**/
+	public var compilation_cache_hit : Dynamic;
+	/**
+		Field xla.ExecutionProfile.compile_time_ms
+	**/
+	public var compile_time_ms : Dynamic;
+	/**
+		Field xla.ExecutionProfile.compute_and_transfer_time_ns
+	**/
+	public var compute_and_transfer_time_ns : Dynamic;
+	/**
+		Field xla.ExecutionProfile.compute_cycle_count
+	**/
+	public var compute_cycle_count : Dynamic;
+	/**
+		Field xla.ExecutionProfile.compute_time_ns
+	**/
+	public var compute_time_ns : Dynamic;
+	/**
+		Field xla.ExecutionProfile.executable_size_in_bytes
+	**/
+	public var executable_size_in_bytes : Dynamic;
 }

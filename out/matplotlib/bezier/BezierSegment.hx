@@ -39,14 +39,14 @@ package matplotlib.bezier;
 	public function __hash__():Dynamic;
 	/**
 		*control_points* : location of contol points. It needs have a
-		 shpae of n * 2, where n is the order of the bezier line. 1<=
+		 shape of n * 2, where n is the order of the bezier line. 1<=
 		 n <= 3 is supported.
 	**/
 	@:native("__init__")
 	public function ___init__(control_points:Dynamic):Dynamic;
 	/**
 		*control_points* : location of contol points. It needs have a
-		 shpae of n * 2, where n is the order of the bezier line. 1<=
+		 shape of n * 2, where n is the order of the bezier line. 1<=
 		 n <= 3 is supported.
 	**/
 	public function new(control_points:Dynamic):Void;

@@ -177,8 +177,8 @@ package scipy.interpolate.interpolate;
 		Construct the piecewise polynomial without making checks.
 		
 		Takes the same parameters as the constructor. Input arguments
-		`c` and `x` must be arrays of the correct shape and type.  The
-		`c` array can only be of dtypes float and complex, and `x`
+		``c`` and ``x`` must be arrays of the correct shape and type.  The
+		``c`` array can only be of dtypes float and complex, and ``x``
 		array must have dtype float.
 	**/
 	static public function construct_fast(c:Dynamic, x:Dynamic, ?extrapolate:Dynamic):Dynamic;

@@ -115,28 +115,20 @@ package matplotlib.axes._base;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Only advance the cycler if the cycler has information that
-		is not specified in any of the supplied tuple of dicts.
-		Ignore any keys specified in the `ignore` set.
-		
-		Returns a copy of defaults dictionary if there are any
-		keys that are not found in any of the supplied dictionaries.
-		If the supplied dictionaries have non-None values for
-		everything the property cycler has, then just return
-		an empty dictionary. Ignored keys are excluded from the
-		returned dictionary.
+		If some keys in the property cycle (excluding those in the set
+		*ignore*) are absent or set to None in the dict *kw*, return a copy
+		of the next entry in the property cycle, excluding keys in *ignore*.
+		Otherwise, don't advance the property cycle, and return an empty dict.
 	**/
-	public function _getdefaults(ignore:Dynamic, ?kwargs:python.VarArgs<Dynamic>):Dynamic;
-	public function _grab_next_args(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _getdefaults(ignore:Dynamic, kw:Dynamic):Dynamic;
 	public function _makefill(x:Dynamic, y:Dynamic, kw:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _makeline(x:Dynamic, y:Dynamic, kw:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _plot_args(tup:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
-		Given a defaults dictionary, and any other dictionaries,
-		update those other dictionaries with information in defaults if
-		none of the other dictionaries contains that information.
+		Add to the dict *kw* the entries in the dict *default* that are absent
+		or set to None in *kw*.
 	**/
-	public function _setdefaults(defaults:Dynamic, ?kwargs:python.VarArgs<Dynamic>):Dynamic;
+	public function _setdefaults(defaults:Dynamic, kw:Dynamic):Dynamic;
 	public function _xy_from_xy(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Return the next color in the cycle.

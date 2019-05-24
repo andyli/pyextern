@@ -37,8 +37,7 @@ package matplotlib.colors;
 		----------
 		levels : sequence of numbers
 		    The quantization levels used to construct the :class:`BoundaryNorm`.
-		    Values ``v`` are quantizized to level ``i`` if
-		    ``lev[i] <= v < lev[i+1]``.
+		    Value ``v`` is quantized to level ``i`` if ``lev[i] <= v < lev[i+1]``.
 		colors : sequence of colors
 		    The fill color to use for each level. If `extend` is "neither" there
 		    must be ``n_level - 1`` colors. For an `extend` of "min" or "max" add
@@ -62,8 +61,7 @@ package matplotlib.colors;
 	static public function hex2color(c:Dynamic):Dynamic;
 	static public var hexColorPattern : Dynamic;
 	/**
-		convert hsv values in a numpy array to rgb values
-		all values assumed to be in range [0, 1]
+		Convert hsv values to rgb.
 		
 		Parameters
 		----------
@@ -109,7 +107,7 @@ package matplotlib.colors;
 	**/
 	static public function rgb2hex(c:Dynamic, ?keep_alpha:Dynamic):Dynamic;
 	/**
-		convert float rgb values (in the range [0, 1]), in a numpy array to hsv
+		Convert float rgb values (in the range [0, 1]), in a numpy array to hsv
 		values.
 		
 		Parameters

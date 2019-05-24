@@ -173,6 +173,26 @@ package scipy.stats._continuous_distns;
 	**/
 	public function _fit_loc_scale_support(data:Dynamic, ?args:python.VarArgs<Dynamic>):Float;
 	public function _fitstart(data:Dynamic, ?args:Dynamic):Dynamic;
+	/**
+		Return the support of the (unscaled, unshifted) distribution.
+		
+		*Must* be overridden by distributions which have support dependent
+		upon the shape parameters of the distribution.  Any such override
+		*must not* set or change any of the class members, as these members
+		are shared amongst all instances of the distribution.
+		
+		Parameters
+		----------
+		arg1, arg2, ... : array_like
+		    The shape parameter(s) for the distribution (see docstring of the
+		    instance object for more information).
+		Returns
+		-------
+		a, b : numeric (float, or int or +/-np.inf)
+		    end-points of the distribution's support for the specified
+		    shape parameters.
+	**/
+	public function _get_support(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _isf(q:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _logcdf(x:Dynamic, c:Dynamic):Dynamic;
 	public function _logpdf(x:Dynamic, c:Dynamic):Dynamic;
@@ -184,7 +204,7 @@ package scipy.stats._continuous_distns;
 	public function _munp(n:Dynamic, c:Dynamic):Dynamic;
 	public function _nnlf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _nnlf_and_penalty(x:Dynamic, args:Dynamic):Dynamic;
-	public function _open_support_mask(x:Dynamic):Dynamic;
+	public function _open_support_mask(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _pdf(x:Dynamic, c:Dynamic):Dynamic;
 	/**
 		Return penalized negative loglikelihood function,
@@ -199,7 +219,7 @@ package scipy.stats._continuous_distns;
 	public function _rvs(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _sf(x:Dynamic, c:Dynamic):Dynamic;
 	public function _stats(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	public function _support_mask(x:Dynamic):Dynamic;
+	public function _support_mask(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _unpack_loc_scale(theta:Dynamic):Dynamic;
 	/**
 		Return the current version of _ctor_param, possibly updated by user.
@@ -407,6 +427,24 @@ package scipy.stats._continuous_distns;
 		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
 	static public function std(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Return the support of the distribution.
+		
+		Parameters
+		----------
+		arg1, arg2, ... : array_like
+		    The shape parameter(s) for the distribution (see docstring of the
+		    instance object for more information).
+		loc : array_like, optional
+		    location parameter, Default is 0.
+		scale : array_like, optional
+		    scale parameter, Default is 1.
+		Returns
+		-------
+		a, b : float
+		    end-points of the distribution's support.
+	**/
+	public function support(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Float;
 	/**
 		`frechet_l` is deprecated!
 		The distribution `frechet_l` is a synonym for `weibull_max`; this historical

@@ -1489,6 +1489,44 @@ package tensorflow.contrib.quantization.python.nn_ops;
 	**/
 	static public function l2_loss_eager_fallback(t:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		Computes rectified linear: `max(features, features * alpha)`.
+		
+		Args:
+		  features: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		  alpha: An optional `float`. Defaults to `0.2`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `features`.
+	**/
+	static public function leaky_relu(features:Dynamic, ?alpha:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function leaky_relu
+	**/
+	static public function leaky_relu_eager_fallback(features:Dynamic, ?alpha:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes rectified linear gradients for a LeakyRelu operation.
+		
+		Args:
+		  gradients: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		    The backpropagated gradients to the corresponding LeakyRelu operation.
+		  features: A `Tensor`. Must have the same type as `gradients`.
+		    The features passed as input to the corresponding LeakyRelu operation,
+		    OR the outputs of that operation (both work equivalently).
+		  alpha: An optional `float`. Defaults to `0.2`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `gradients`.
+	**/
+	static public function leaky_relu_grad(gradients:Dynamic, features:Dynamic, ?alpha:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function leaky_relu_grad
+	**/
+	static public function leaky_relu_grad_eager_fallback(gradients:Dynamic, features:Dynamic, ?alpha:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Computes log softmax activations.
 		
 		For each batch `i` and class `j` we have

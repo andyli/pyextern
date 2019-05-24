@@ -11,7 +11,11 @@ package tensorflow.python.layers.convolutional;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Functional interface for 1D convolution layer (e.g. temporal convolution).
+		Functional interface for 1D convolution layer (e.g. temporal convolution). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv1d instead.
 		
 		This layer creates a convolution kernel that is convolved
 		(actually cross-correlated) with the layer input to produce a tensor of
@@ -70,7 +74,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function conv1d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for the 2D convolution layer.
+		Functional interface for the 2D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv2d instead.
 		
 		This layer creates a convolution kernel that is convolved
 		(actually cross-correlated) with the layer input to produce a tensor of
@@ -136,7 +144,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function conv2d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for transposed 2D convolution layer.
+		Functional interface for transposed 2D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv2d_transpose instead.
 		
 		The need for transposed convolutions generally arises
 		from the desire to use a transformation going in the opposite direction
@@ -192,7 +204,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function conv2d_transpose(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for the 3D convolution layer.
+		Functional interface for the 3D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv3d instead.
 		
 		This layer creates a convolution kernel that is convolved
 		(actually cross-correlated) with the layer input to produce a tensor of
@@ -259,7 +275,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function conv3d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for transposed 3D convolution layer.
+		Functional interface for transposed 3D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv3d_transpose instead.
 		
 		Arguments:
 		  inputs: Input tensor.
@@ -309,7 +329,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function conv3d_transpose(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for 1D convolution layer (e.g. temporal convolution).
+		Functional interface for 1D convolution layer (e.g. temporal convolution). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv1d instead.
 		
 		This layer creates a convolution kernel that is convolved
 		(actually cross-correlated) with the layer input to produce a tensor of
@@ -368,7 +392,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function convolution1d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for the 2D convolution layer.
+		Functional interface for the 2D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv2d instead.
 		
 		This layer creates a convolution kernel that is convolved
 		(actually cross-correlated) with the layer input to produce a tensor of
@@ -434,7 +462,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function convolution2d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for transposed 2D convolution layer.
+		Functional interface for transposed 2D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv2d_transpose instead.
 		
 		The need for transposed convolutions generally arises
 		from the desire to use a transformation going in the opposite direction
@@ -490,7 +522,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function convolution2d_transpose(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for the 3D convolution layer.
+		Functional interface for the 3D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv3d instead.
 		
 		This layer creates a convolution kernel that is convolved
 		(actually cross-correlated) with the layer input to produce a tensor of
@@ -557,7 +593,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function convolution3d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for transposed 3D convolution layer.
+		Functional interface for transposed 3D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv3d_transpose instead.
 		
 		Arguments:
 		  inputs: Input tensor.
@@ -607,7 +647,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function convolution3d_transpose(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for transposed 2D convolution layer.
+		Functional interface for transposed 2D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv2d_transpose instead.
 		
 		The need for transposed convolutions generally arises
 		from the desire to use a transformation going in the opposite direction
@@ -663,7 +707,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function deconv2d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for transposed 3D convolution layer.
+		Functional interface for transposed 3D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv3d_transpose instead.
 		
 		Arguments:
 		  inputs: Input tensor.
@@ -713,7 +761,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function deconv3d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for transposed 2D convolution layer.
+		Functional interface for transposed 2D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv2d_transpose instead.
 		
 		The need for transposed convolutions generally arises
 		from the desire to use a transformation going in the opposite direction
@@ -769,7 +821,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function deconvolution2d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for transposed 3D convolution layer.
+		Functional interface for transposed 3D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv3d_transpose instead.
 		
 		Arguments:
 		  inputs: Input tensor.
@@ -821,7 +877,11 @@ package tensorflow.python.layers.convolutional;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Functional interface for the depthwise separable 1D convolution layer.
+		Functional interface for the depthwise separable 1D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.separable_conv1d instead.
 		
 		This layer performs a depthwise convolution that acts separately on
 		channels, followed by a pointwise convolution that mixes channels.
@@ -889,7 +949,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function separable_conv1d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic, ?depth_multiplier:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?depthwise_initializer:Dynamic, ?pointwise_initializer:Dynamic, ?bias_initializer:Dynamic, ?depthwise_regularizer:Dynamic, ?pointwise_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?depthwise_constraint:Dynamic, ?pointwise_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for the depthwise separable 2D convolution layer.
+		Functional interface for the depthwise separable 2D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.separable_conv2d instead.
 		
 		This layer performs a depthwise convolution that acts separately on
 		channels, followed by a pointwise convolution that mixes channels.
@@ -962,7 +1026,11 @@ package tensorflow.python.layers.convolutional;
 	**/
 	static public function separable_conv2d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic, ?depth_multiplier:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?depthwise_initializer:Dynamic, ?pointwise_initializer:Dynamic, ?bias_initializer:Dynamic, ?depthwise_regularizer:Dynamic, ?pointwise_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?depthwise_constraint:Dynamic, ?pointwise_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for the depthwise separable 2D convolution layer.
+		Functional interface for the depthwise separable 2D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.separable_conv2d instead.
 		
 		This layer performs a depthwise convolution that acts separately on
 		channels, followed by a pointwise convolution that mixes channels.

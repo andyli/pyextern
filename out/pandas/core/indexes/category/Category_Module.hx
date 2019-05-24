@@ -9,39 +9,53 @@ package pandas.core.indexes.category;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _index_doc_kwargs : Dynamic;
 	static public var _index_shared_docs : Dynamic;
 	/**
-		True if two arrays, left and right, have equal non-NaN elements, and NaNs
-		in corresponding locations.  False otherwise. It is assumed that left and
-		right are NumPy arrays of the same dtype. The behavior of this function
-		(particularly with respect to NaNs) is not defined if the dtypes are
-		different.
+		Helper for membership check for ``key`` in ``cat``.
+		
+		This is a helper method for :method:`__contains__`
+		and :class:`CategoricalIndex.__contains__`.
+		
+		Returns True if ``key`` is in ``cat.categories`` and the
+		location of ``key`` in ``categories`` is in ``container``.
 		
 		Parameters
 		----------
-		left, right : ndarrays
-		strict_nan : bool, default False
-		    If True, consider NaN and None to be different.
+		cat : :class:`Categorical`or :class:`categoricalIndex`
+		key : a hashable object
+		    The key to check membership for.
+		container : Container (e.g. list-like or mapping)
+		    The container to check for membership in.
 		
 		Returns
 		-------
-		b : bool
-		    Returns True if the arrays are equivalent.
+		is_in : bool
+		    True if ``key`` is in ``self.categories`` and location of
+		    ``key`` in ``categories`` is in ``container``, else False.
 		
-		Examples
-		--------
-		>>> array_equivalent(
-		...     np.array([1, 2, np.nan]),
-		...     np.array([1, 2, np.nan]))
-		True
-		>>> array_equivalent(
-		...     np.array([1, np.nan, 2]),
-		...     np.array([1, 2, np.nan]))
-		False
+		Notes
+		-----
+		This method does not check for NaN values. Do that separately
+		before calling this method.
 	**/
-	static public function array_equivalent(left:Dynamic, right:Dynamic, ?strict_nan:Dynamic):Bool;
+	static public function contains(cat:Dynamic, key:Dynamic, container:Dynamic):Bool;
+	static public function ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Find the appropriate name to pin to an operation result.  This result
+		should always be either an Index or a Series.
+		
+		Parameters
+		----------
+		left : {Series, Index}
+		right : object
+		
+		Returns
+		-------
+		name : object
+		    Usually a string
+	**/
+	static public function get_op_result_name(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		get_option(pat)
 		
@@ -126,7 +140,7 @@ package pandas.core.indexes.category;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
+		    [default: ANSI_X3.4-1968] [currently: ANSI_X3.4-1968]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -436,7 +450,11 @@ package pandas.core.indexes.category;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -455,28 +473,64 @@ package pandas.core.indexes.category;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -494,8 +548,8 @@ package pandas.core.indexes.category;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		

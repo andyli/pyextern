@@ -114,7 +114,6 @@ package scipy.interpolate.rbf;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _call_norm(x1:Dynamic, x2:Dynamic):Dynamic;
-	public function _euclidean_norm(x1:Dynamic, x2:Dynamic):Dynamic;
 	public function _h_cubic(r:Dynamic):Dynamic;
 	public function _h_gaussian(r:Dynamic):Dynamic;
 	public function _h_inverse_multiquadric(r:Dynamic):Dynamic;

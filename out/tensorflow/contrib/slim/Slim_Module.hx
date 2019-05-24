@@ -6,7 +6,7 @@ package tensorflow.contrib.slim;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
 		Instructions for updating:
 		This file will be removed after the deprecation date.Please switch to third_party/tensorflow/contrib/learn/python/learn/estimators/head.py
 	**/
@@ -123,7 +123,7 @@ package tensorflow.contrib.slim;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.assert_global_step
 	**/
@@ -429,7 +429,7 @@ package tensorflow.contrib.slim;
 	/**
 		Creates a _TargetColumn for binary classification with SVMs. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
 		Instructions for updating:
 		This file will be removed after the deprecation date.Please switch to third_party/tensorflow/contrib/learn/python/learn/estimators/head.py
 		
@@ -1352,7 +1352,7 @@ package tensorflow.contrib.slim;
 	/**
 		Create global step tensor in graph. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.create_global_step
 		
@@ -1830,7 +1830,7 @@ package tensorflow.contrib.slim;
 	/**
 		Returns a dictionary of basic metrics for logistic regression. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
 		Instructions for updating:
 		This file will be removed after the deprecation date.Please switch to third_party/tensorflow/contrib/learn/python/learn/estimators/head.py
 		
@@ -1845,7 +1845,7 @@ package tensorflow.contrib.slim;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.get_global_step
 	**/
@@ -1875,7 +1875,7 @@ package tensorflow.contrib.slim;
 	/**
 		Returns and create (if necessary) the global step tensor. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.train.get_or_create_global_step
 		
@@ -2565,7 +2565,7 @@ package tensorflow.contrib.slim;
 	/**
 		Creates a _TargetColumn for multi class single label classification. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
 		Instructions for updating:
 		This file will be removed after the deprecation date.Please switch to third_party/tensorflow/contrib/learn/python/learn/estimators/head.py
 		
@@ -2887,7 +2887,7 @@ package tensorflow.contrib.slim;
 	/**
 		Creates a _TargetColumn for linear regression. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-12.
 		Instructions for updating:
 		This file will be removed after the deprecation date.Please switch to third_party/tensorflow/contrib/learn/python/learn/estimators/head.py
 		
@@ -3258,7 +3258,7 @@ package tensorflow.contrib.slim;
 	/**
 		Builds inputs for sequence models from `FeatureColumn`s. (experimental)
 		
-		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
+		Warning: THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
 		
 		See documentation for `input_from_feature_columns`. The following types of
 		`FeatureColumn` are permitted in `feature_columns`: `_OneHotColumn`,
@@ -3491,9 +3491,9 @@ package tensorflow.contrib.slim;
 	**/
 	static public function sparse_column_with_vocabulary_file(column_name:Dynamic, vocabulary_file:Dynamic, ?num_oov_buckets:Dynamic, ?vocab_size:Dynamic, ?default_value:Dynamic, ?combiner:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
-		Crosses a list of Tensor or SparseTensor objects. (deprecated arguments)
+		Crosses a list of Tensor or SparseTensor objects. (deprecated argument values)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-11-20.
+		Warning: SOME ARGUMENT VALUES ARE DEPRECATED: `(hash_key=None)`. They will be removed after 2016-11-20.
 		Instructions for updating:
 		The default behavior of sparse_feature_cross is changing, the default
 		value for hash_key will change to SPARSE_FEATURE_CROSS_DEFAULT_HASH_KEY.

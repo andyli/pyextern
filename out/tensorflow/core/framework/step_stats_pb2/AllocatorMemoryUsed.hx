@@ -1,9 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.framework.step_stats_pb2;
 @:pythonImport("tensorflow.core.framework.step_stats_pb2", "AllocatorMemoryUsed") extern class AllocatorMemoryUsed {
-	static public var ALLOCATION_RECORDS_FIELD_NUMBER : Dynamic;
-	static public var ALLOCATOR_BYTES_IN_USE_FIELD_NUMBER : Dynamic;
-	static public var ALLOCATOR_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -53,7 +50,6 @@ package tensorflow.core.framework.step_stats_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LIVE_BYTES_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -66,7 +62,6 @@ package tensorflow.core.framework.step_stats_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var PEAK_BYTES_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -87,7 +82,10 @@ package tensorflow.core.framework.step_stats_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TOTAL_BYTES_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -253,4 +251,28 @@ package tensorflow.core.framework.step_stats_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.AllocatorMemoryUsed.allocation_records
+	**/
+	public var allocation_records : Dynamic;
+	/**
+		Field tensorflow.AllocatorMemoryUsed.allocator_bytes_in_use
+	**/
+	public var allocator_bytes_in_use : Dynamic;
+	/**
+		Field tensorflow.AllocatorMemoryUsed.allocator_name
+	**/
+	public var allocator_name : Dynamic;
+	/**
+		Field tensorflow.AllocatorMemoryUsed.live_bytes
+	**/
+	public var live_bytes : Dynamic;
+	/**
+		Field tensorflow.AllocatorMemoryUsed.peak_bytes
+	**/
+	public var peak_bytes : Dynamic;
+	/**
+		Field tensorflow.AllocatorMemoryUsed.total_bytes
+	**/
+	public var total_bytes : Dynamic;
 }

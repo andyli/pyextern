@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.reshape.tile;
 @:pythonImport("pandas.core.reshape.tile") extern class Tile_Module {
+	static public var _NS_DTYPE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -17,6 +18,21 @@ package pandas.core.reshape.tile;
 	**/
 	static public function _coerce_to_type(x:Dynamic):Dynamic;
 	/**
+		Convert bins to a DatetimeIndex or TimedeltaIndex if the orginal dtype is
+		datelike
+		
+		Parameters
+		----------
+		bins : list-like of bins
+		dtype : dtype of data
+		
+		Returns
+		-------
+		bins : Array-like of bins, DatetimeIndex or TimedeltaIndex if dtype is
+		       datelike
+	**/
+	static public function _convert_bin_to_datelike_type(bins:Dynamic, dtype:Dynamic):Dynamic;
+	/**
 		if the passed bin is of datetime/timedelta type,
 		this method converts it to integer
 		
@@ -30,7 +46,6 @@ package pandas.core.reshape.tile;
 		ValueError if bins are not of a compat dtype to dtype
 	**/
 	static public function _convert_bin_to_numeric_type(bins:Dynamic, dtype:Dynamic):Dynamic;
-	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		based on the dtype, return our labels 
 	**/
@@ -45,7 +60,7 @@ package pandas.core.reshape.tile;
 		we combine the index information if the originally passed
 		datatype was a series
 	**/
-	static public function _postprocess_for_cut(fac:Dynamic, bins:Dynamic, retbins:Dynamic, x_is_series:Dynamic, series_index:Dynamic, name:Dynamic):Dynamic;
+	static public function _postprocess_for_cut(fac:Dynamic, bins:Dynamic, retbins:Dynamic, x_is_series:Dynamic, series_index:Dynamic, name:Dynamic, dtype:Dynamic):Dynamic;
 	/**
 		handles preprocessing for cut where we convert passed
 		input to array, strip the index information and store it
@@ -78,7 +93,8 @@ package pandas.core.reshape.tile;
 		      and maximum values of `x`.
 		    * sequence of scalars : Defines the bin edges allowing for non-uniform
 		      width. No extension of the range of `x` is done.
-		    * IntervalIndex : Defines the exact bins to be used.
+		    * IntervalIndex : Defines the exact bins to be used. Note that
+		      IntervalIndex for `bins` must be non-overlapping.
 		
 		right : bool, default True
 		    Indicates whether `bins` includes the rightmost edge or not. If
@@ -218,6 +234,7 @@ package pandas.core.reshape.tile;
 		Categories (3, interval[int64]): [(0, 1] < (2, 3] < (4, 5]]
 	**/
 	static public function cut(x:Dynamic, bins:Dynamic, ?right:Dynamic, ?labels:Dynamic, ?retbins:Dynamic, ?precision:Dynamic, ?include_lowest:Dynamic, ?duplicates:Dynamic):Dynamic;
+	static public function ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Efficiently infer the type of a passed val, or list-like
 		array of values. Return a string describing the type.
@@ -226,8 +243,7 @@ package pandas.core.reshape.tile;
 		----------
 		value : scalar, list, ndarray, or pandas type
 		skipna : bool, default False
-		    Ignore NaN values when inferring the type. The default of ``False``
-		    will be deprecated in a later version of pandas.
+		    Ignore NaN values when inferring the type.
 		
 		    .. versionadded:: 0.21.0
 		
@@ -404,21 +420,87 @@ package pandas.core.reshape.tile;
 		True
 	**/
 	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether the provided array or dtype is of
+		a timedelta64 or datetime64 dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of a
+		          timedelta64, or datetime64 dtype.
+		
+		Examples
+		--------
+		>>> is_datetime_or_timedelta_dtype(str)
+		False
+		>>> is_datetime_or_timedelta_dtype(int)
+		False
+		>>> is_datetime_or_timedelta_dtype(np.datetime64)
+		True
+		>>> is_datetime_or_timedelta_dtype(np.timedelta64)
+		True
+		>>> is_datetime_or_timedelta_dtype(np.array(['a', 'b']))
+		False
+		>>> is_datetime_or_timedelta_dtype(pd.Series([1, 2]))
+		False
+		>>> is_datetime_or_timedelta_dtype(np.array([], dtype=np.timedelta64))
+		True
+		>>> is_datetime_or_timedelta_dtype(np.array([], dtype=np.datetime64))
+		True
+	**/
+	static public function is_datetime_or_timedelta_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -451,7 +533,7 @@ package pandas.core.reshape.tile;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -469,8 +551,8 @@ package pandas.core.reshape.tile;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -608,7 +690,7 @@ package pandas.core.reshape.tile;
 		      as dateutil).
 		
 		    Warning: yearfirst=True is not strict, but will prefer to parse
-		    with year first (this is a known bug, based on dateutil beahavior).
+		    with year first (this is a known bug, based on dateutil behavior).
 		
 		    .. versionadded:: 0.16.1
 		
@@ -617,7 +699,7 @@ package pandas.core.reshape.tile;
 		    datetime.datetime objects as well).
 		box : boolean, default True
 		
-		    - If True returns a DatetimeIndex
+		    - If True returns a DatetimeIndex or Index-like object
 		    - If False returns ndarray of values.
 		format : string, default None
 		    strftime to parse time, eg "%d/%m/%Y", note that "%f" will parse
@@ -651,8 +733,8 @@ package pandas.core.reshape.tile;
 		    .. versionadded:: 0.20.0
 		cache : boolean, default False
 		    If True, use a cache of unique, converted dates to apply the datetime
-		    conversion. May produce sigificant speed-up when parsing duplicate date
-		    strings, especially ones with timezone offsets.
+		    conversion. May produce significant speed-up when parsing duplicate
+		    date strings, especially ones with timezone offsets.
 		
 		    .. versionadded:: 0.23.0
 		
@@ -669,6 +751,11 @@ package pandas.core.reshape.tile;
 		    any element of input is before Timestamp.min or after Timestamp.max)
 		    return will have datetime.datetime type (or corresponding
 		    array/Series).
+		
+		See Also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
 		
 		Examples
 		--------
@@ -733,33 +820,46 @@ package pandas.core.reshape.tile;
 		0    1960-01-02
 		1    1960-01-03
 		2    1960-01-04
-		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_timedelta : Convert argument to timedelta.
 	**/
 	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 	/**
-		Convert argument to timedelta
+		Convert argument to timedelta.
+		
+		Timedeltas are absolute differences in times, expressed in difference
+		units (e.g. days, hours, minutes, seconds). This method converts
+		an argument from a recognized timedelta format / value into
+		a Timedelta type.
 		
 		Parameters
 		----------
-		arg : string, timedelta, list, tuple, 1-d array, or Series
-		unit : unit of the arg (D,h,m,s,ms,us,ns) denote the unit, which is an
-		    integer/float number
-		box : boolean, default True
-		    - If True returns a Timedelta/TimedeltaIndex of the results
-		    - if False returns a np.timedelta64 or ndarray of values of dtype
-		      timedelta64[ns]
+		arg : str, timedelta, list-like or Series
+		    The data to be converted to timedelta.
+		unit : str, default 'ns'
+		    Denotes the unit of the arg. Possible values:
+		    ('Y', 'M', 'W', 'D', 'days', 'day', 'hours', hour', 'hr',
+		    'h', 'm', 'minute', 'min', 'minutes', 'T', 'S', 'seconds',
+		    'sec', 'second', 'ms', 'milliseconds', 'millisecond',
+		    'milli', 'millis', 'L', 'us', 'microseconds', 'microsecond',
+		    'micro', 'micros', 'U', 'ns', 'nanoseconds', 'nano', 'nanos',
+		    'nanosecond', 'N').
+		box : bool, default True
+		    - If True returns a Timedelta/TimedeltaIndex of the results.
+		    - If False returns a numpy.timedelta64 or numpy.darray of
+		      values of dtype timedelta64[ns].
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
-		    - If 'raise', then invalid parsing will raise an exception
-		    - If 'coerce', then invalid parsing will be set as NaT
-		    - If 'ignore', then invalid parsing will return the input
+		    - If 'raise', then invalid parsing will raise an exception.
+		    - If 'coerce', then invalid parsing will be set as NaT.
+		    - If 'ignore', then invalid parsing will return the input.
 		
 		Returns
 		-------
-		ret : timedelta64/arrays of timedelta64 if parsing succeeded
+		timedelta64 or numpy.array of timedelta64
+		    Output type returned if parsing succeeded.
+		
+		See Also
+		--------
+		DataFrame.astype : Cast argument to a specified dtype.
+		to_datetime : Convert argument to datetime.
 		
 		Examples
 		--------
@@ -787,10 +887,10 @@ package pandas.core.reshape.tile;
 		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
 		               dtype='timedelta64[ns]', freq=None)
 		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_datetime : Convert argument to datetime.
+		Returning an ndarray by using the 'box' keyword argument:
+		
+		>>> pd.to_timedelta(np.arange(5), box=False)
+		array([0, 1, 2, 3, 4], dtype='timedelta64[ns]')
 	**/
 	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
 }

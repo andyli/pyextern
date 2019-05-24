@@ -650,9 +650,9 @@ package scipy.sparse;
 		<3x4 sparse matrix of type '<class 'numpy.float64'>'
 		   with 3 stored elements in Compressed Sparse Row format>
 		>>> matrix.todense()
-		matrix([[ 0.        ,  0.59685016,  0.779691  ,  0.        ],
-		        [ 0.        ,  0.        ,  0.        ,  0.44583275],
-		        [ 0.        ,  0.        ,  0.        ,  0.        ]])
+		matrix([[0.05641158, 0.        , 0.        , 0.65088847],
+		        [0.        , 0.        , 0.        , 0.14286682],
+		        [0.        , 0.        , 0.        , 0.        ]])
 	**/
 	static public function rand(m:Dynamic, n:Dynamic, ?density:Dynamic, ?format:Dynamic, ?dtype:Dynamic, ?random_state:Dynamic):Dynamic;
 	/**
@@ -688,14 +688,20 @@ package scipy.sparse;
 		-------
 		res : sparse matrix
 		
+		Notes
+		-----
+		Only float types are supported for now.
+		
 		Examples
 		--------
 		>>> from scipy.sparse import random
 		>>> from scipy import stats
-		>>> class CustomRandomState(object):
+		
+		>>> class CustomRandomState(np.random.RandomState):
 		...     def randint(self, k):
 		...         i = np.random.randint(k)
 		...         return i - i % 2
+		>>> np.random.seed(12345)
 		>>> rs = CustomRandomState()
 		>>> rvs = stats.poisson(25, loc=10).rvs
 		>>> S = random(3, 4, density=0.25, random_state=rs, data_rvs=rvs)
@@ -713,13 +719,9 @@ package scipy.sparse;
 		>>> Y = X()  # get a frozen version of the distribution
 		>>> S = random(3, 4, density=0.25, random_state=2906, data_rvs=Y.rvs)
 		>>> S.A
-		array([[ 0.        ,  1.9467163 ,  0.13569738, -0.81205367],
-		       [ 0.        ,  0.        ,  0.        ,  0.        ],
+		array([[ 0.        ,  0.        ,  0.        ,  0.        ],
+		       [ 0.13569738,  1.9467163 , -0.81205367,  0.        ],
 		       [ 0.        ,  0.        ,  0.        ,  0.        ]])
-		
-		Notes
-		-----
-		Only float types are supported for now.
 	**/
 	static public function random(m:Dynamic, n:Dynamic, ?density:Dynamic, ?format:Dynamic, ?dtype:Dynamic, ?random_state:Dynamic, ?data_rvs:Dynamic):Dynamic;
 	/**

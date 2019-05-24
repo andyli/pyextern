@@ -38,8 +38,6 @@ package tensorflow.core.util.event_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HEALTH_STATUS_FIELD_NUMBER : Dynamic;
-	static public var HOSTNAME_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -84,7 +82,10 @@ package tensorflow.core.util.event_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var WORKER_LOG_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -250,4 +251,16 @@ package tensorflow.core.util.event_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.WorkerHeartbeatResponse.health_status
+	**/
+	public var health_status : Dynamic;
+	/**
+		Field tensorflow.WorkerHeartbeatResponse.hostname
+	**/
+	public var hostname : Dynamic;
+	/**
+		Field tensorflow.WorkerHeartbeatResponse.worker_log
+	**/
+	public var worker_log : Dynamic;
 }

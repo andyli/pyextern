@@ -12,7 +12,7 @@ package tensorflow.contrib.learn.python.learn.utils.export;
 	/**
 		Creates default input parsing using Estimator's feature signatures. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
 		Instructions for updating:
 		Please use Estimator.export_savedmodel() instead.
 	**/
@@ -20,7 +20,7 @@ package tensorflow.contrib.learn.python.learn.utils.export;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
 		Instructions for updating:
 		Please use Estimator.export_savedmodel() instead.
 	**/
@@ -28,7 +28,7 @@ package tensorflow.contrib.learn.python.learn.utils.export;
 	/**
 		Exports graph via session_bundle, by creating a Session. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
 		Instructions for updating:
 		Please use Estimator.export_savedmodel() instead.
 	**/
@@ -36,7 +36,7 @@ package tensorflow.contrib.learn.python.learn.utils.export;
 	/**
 		Get first element from the collection. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
 		Instructions for updating:
 		Please use Estimator.export_savedmodel() instead.
 	**/
@@ -44,7 +44,7 @@ package tensorflow.contrib.learn.python.learn.utils.export;
 	/**
 		Lazy init and return saver. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
 		Instructions for updating:
 		Please use Estimator.export_savedmodel() instead.
 	**/
@@ -53,7 +53,7 @@ package tensorflow.contrib.learn.python.learn.utils.export;
 	/**
 		Creates classification signature from given examples and predictions. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
 		Instructions for updating:
 		signature_fns are deprecated. For canned Estimators they are no longer needed. For custom Estimators, please return output_alternatives from your model_fn via ModelFnOps.
 		
@@ -73,7 +73,7 @@ package tensorflow.contrib.learn.python.learn.utils.export;
 	/**
 		Classification signature from given examples and predicted probabilities. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
 		Instructions for updating:
 		signature_fns are deprecated. For canned Estimators they are no longer needed. For custom Estimators, please return output_alternatives from your model_fn via ModelFnOps.
 		
@@ -127,7 +127,7 @@ package tensorflow.contrib.learn.python.learn.utils.export;
 	/**
 		Deprecated, please use Estimator.export_savedmodel(). (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-23.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-23.
 		Instructions for updating:
 		Please use Estimator.export_savedmodel() instead.
 	**/
@@ -135,7 +135,7 @@ package tensorflow.contrib.learn.python.learn.utils.export;
 	/**
 		Creates generic signature from given examples and predictions. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
 		Instructions for updating:
 		signature_fns are deprecated. For canned Estimators they are no longer needed. For custom Estimators, please return output_alternatives from your model_fn via ModelFnOps.
 		
@@ -157,7 +157,7 @@ package tensorflow.contrib.learn.python.learn.utils.export;
 	/**
 		Creates logistic regression signature from given examples and predictions. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
 		Instructions for updating:
 		signature_fns are deprecated. For canned Estimators they are no longer needed. For custom Estimators, please return output_alternatives from your model_fn via ModelFnOps.
 		
@@ -179,7 +179,7 @@ package tensorflow.contrib.learn.python.learn.utils.export;
 	/**
 		Creates regression signature from given examples and predictions. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-03-25.
 		Instructions for updating:
 		signature_fns are deprecated. For canned Estimators they are no longer needed. For custom Estimators, please return output_alternatives from your model_fn via ModelFnOps.
 		

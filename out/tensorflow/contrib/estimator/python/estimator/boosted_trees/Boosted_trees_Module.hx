@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.estimator.python.estimator.boosted_trees;
 @:pythonImport("tensorflow.contrib.estimator.python.estimator.boosted_trees") extern class Boosted_trees_Module {
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -59,7 +60,7 @@ package tensorflow.contrib.estimator.python.estimator.boosted_trees;
 		    the model. All items in the set should be instances of classes derived
 		    from `FeatureColumn`.
 		  model_dir: Directory to save model parameters, graph and etc. This can
-		    also be used to load checkpoints from the directory into a estimator
+		    also be used to load checkpoints from the directory into an estimator
 		    to continue training a previously saved model.
 		  n_classes: number of label classes. Default is binary classification.
 		    Multiclass support is not yet implemented.
@@ -102,6 +103,9 @@ package tensorflow.contrib.estimator.python.estimator.boosted_trees;
 		      pruning (build the tree up to a max depth and then prune branches with
 		      negative gain). For pre and post pruning, you MUST provide
 		      tree_complexity >0.
+		  quantile_sketch_epsilon: float between 0 and 1. Error bound for quantile
+		      computation. This is only used for float feature columns, and the number
+		      of buckets generated per float feature is 1/quantile_sketch_epsilon.
 		
 		Returns:
 		  a `BoostedTreesClassifier` instance created with the given arguments and
@@ -111,7 +115,7 @@ package tensorflow.contrib.estimator.python.estimator.boosted_trees;
 		  ValueError: when wrong arguments are given or unsupported functionalities
 		     are requested.
 	**/
-	static public function boosted_trees_classifier_train_in_memory(train_input_fn:Dynamic, feature_columns:Dynamic, ?model_dir:Dynamic, ?n_classes:Dynamic, ?weight_column:Dynamic, ?label_vocabulary:Dynamic, ?n_trees:Dynamic, ?max_depth:Dynamic, ?learning_rate:Dynamic, ?l1_regularization:Dynamic, ?l2_regularization:Dynamic, ?tree_complexity:Dynamic, ?min_node_weight:Dynamic, ?config:Dynamic, ?train_hooks:Dynamic, ?center_bias:Dynamic, ?pruning_mode:Dynamic):Dynamic;
+	static public function boosted_trees_classifier_train_in_memory(train_input_fn:Dynamic, feature_columns:Dynamic, ?model_dir:Dynamic, ?n_classes:Dynamic, ?weight_column:Dynamic, ?label_vocabulary:Dynamic, ?n_trees:Dynamic, ?max_depth:Dynamic, ?learning_rate:Dynamic, ?l1_regularization:Dynamic, ?l2_regularization:Dynamic, ?tree_complexity:Dynamic, ?min_node_weight:Dynamic, ?config:Dynamic, ?train_hooks:Dynamic, ?center_bias:Dynamic, ?pruning_mode:Dynamic, ?quantile_sketch_epsilon:Dynamic):Dynamic;
 	/**
 		Trains a boosted tree regressor with in memory dataset.
 		
@@ -153,7 +157,7 @@ package tensorflow.contrib.estimator.python.estimator.boosted_trees;
 		    the model. All items in the set should be instances of classes derived
 		    from `FeatureColumn`.
 		  model_dir: Directory to save model parameters, graph and etc. This can
-		    also be used to load checkpoints from the directory into a estimator
+		    also be used to load checkpoints from the directory into an estimator
 		    to continue training a previously saved model.
 		  label_dimension: Number of regression targets per example.
 		    Multi-dimensional support is not yet implemented.
@@ -189,6 +193,9 @@ package tensorflow.contrib.estimator.python.estimator.boosted_trees;
 		      pruning (build the tree up to a max depth and then prune branches with
 		      negative gain). For pre and post pruning, you MUST provide
 		      tree_complexity >0.
+		  quantile_sketch_epsilon: float between 0 and 1. Error bound for quantile
+		      computation. This is only used for float feature columns, and the number
+		      of buckets generated per float feature is 1/quantile_sketch_epsilon.
 		
 		Returns:
 		  a `BoostedTreesClassifier` instance created with the given arguments and
@@ -198,7 +205,7 @@ package tensorflow.contrib.estimator.python.estimator.boosted_trees;
 		  ValueError: when wrong arguments are given or unsupported functionalities
 		     are requested.
 	**/
-	static public function boosted_trees_regressor_train_in_memory(train_input_fn:Dynamic, feature_columns:Dynamic, ?model_dir:Dynamic, ?label_dimension:Dynamic, ?weight_column:Dynamic, ?n_trees:Dynamic, ?max_depth:Dynamic, ?learning_rate:Dynamic, ?l1_regularization:Dynamic, ?l2_regularization:Dynamic, ?tree_complexity:Dynamic, ?min_node_weight:Dynamic, ?config:Dynamic, ?train_hooks:Dynamic, ?center_bias:Dynamic, ?pruning_mode:Dynamic):Dynamic;
+	static public function boosted_trees_regressor_train_in_memory(train_input_fn:Dynamic, feature_columns:Dynamic, ?model_dir:Dynamic, ?label_dimension:Dynamic, ?weight_column:Dynamic, ?n_trees:Dynamic, ?max_depth:Dynamic, ?learning_rate:Dynamic, ?l1_regularization:Dynamic, ?l2_regularization:Dynamic, ?tree_complexity:Dynamic, ?min_node_weight:Dynamic, ?config:Dynamic, ?train_hooks:Dynamic, ?center_bias:Dynamic, ?pruning_mode:Dynamic, ?quantile_sketch_epsilon:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 }

@@ -14,7 +14,7 @@ package tensorflow.contrib.distributions.python.ops.vector_diffeomixture;
 	/**
 		Adds inputs; interprets `None` as zero. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 	**/
@@ -22,7 +22,7 @@ package tensorflow.contrib.distributions.python.ops.vector_diffeomixture;
 	/**
 		Concatenates input vectors, statically if possible. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 	**/
@@ -30,7 +30,7 @@ package tensorflow.contrib.distributions.python.ops.vector_diffeomixture;
 	/**
 		Helper to infer batch_shape and event_shape. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 	**/
@@ -39,7 +39,7 @@ package tensorflow.contrib.distributions.python.ops.vector_diffeomixture;
 	/**
 		Helper which interpolates between two locs. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 	**/
@@ -47,7 +47,7 @@ package tensorflow.contrib.distributions.python.ops.vector_diffeomixture;
 	/**
 		Helper which interpolates between two scales. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 	**/
@@ -55,7 +55,7 @@ package tensorflow.contrib.distributions.python.ops.vector_diffeomixture;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 	**/
@@ -63,7 +63,7 @@ package tensorflow.contrib.distributions.python.ops.vector_diffeomixture;
 	/**
 		Helper which checks validity of `loc` and `scale` init args. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 	**/
@@ -72,7 +72,7 @@ package tensorflow.contrib.distributions.python.ops.vector_diffeomixture;
 	/**
 		Use Gauss-Hermite quadrature to form quadrature on `K - 1` simplex. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 		
@@ -110,7 +110,7 @@ package tensorflow.contrib.distributions.python.ops.vector_diffeomixture;
 	/**
 		Use SoftmaxNormal quantiles to form quadrature on `K - 1` simplex. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 		
@@ -145,7 +145,7 @@ package tensorflow.contrib.distributions.python.ops.vector_diffeomixture;
 	/**
 		Equivalent to tf.nn.softmax but works around b/70297725. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 	**/
@@ -153,7 +153,7 @@ package tensorflow.contrib.distributions.python.ops.vector_diffeomixture;
 	/**
 		Computes the outer-product of a (batch of) vector, i.e., x.T x. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 	**/

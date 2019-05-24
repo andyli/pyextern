@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow._api.v1.dtypes;
 @:pythonImport("tensorflow._api.v1.dtypes") extern class Dtypes_Module {
+	static public var QUANTIZED_DTYPES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -54,6 +55,8 @@ package tensorflow._api.v1.dtypes;
 		  A `Tensor` of type `string`.
 	**/
 	static public function as_string(input:Dynamic, ?precision:Dynamic, ?scientific:Dynamic, ?shortest:Dynamic, ?width:Dynamic, ?fill:Dynamic, ?name:Dynamic):Dynamic;
+	static public var bfloat16 : Dynamic;
+	static public var bool : Dynamic;
 	/**
 		Casts a tensor to a new type.
 		
@@ -122,6 +125,23 @@ package tensorflow._api.v1.dtypes;
 		  A `Tensor` of type `complex64` or `complex128`.
 	**/
 	static public function complex(real:Dynamic, imag:Dynamic, ?name:Dynamic):Dynamic;
+	static public var complex128 : Dynamic;
+	static public var complex64 : Dynamic;
+	static public var double : Dynamic;
+	static public var float16 : Dynamic;
+	static public var float32 : Dynamic;
+	static public var float64 : Dynamic;
+	static public var half : Dynamic;
+	static public var int16 : Dynamic;
+	static public var int32 : Dynamic;
+	static public var int64 : Dynamic;
+	static public var int8 : Dynamic;
+	static public var qint16 : Dynamic;
+	static public var qint32 : Dynamic;
+	static public var qint8 : Dynamic;
+	static public var quint16 : Dynamic;
+	static public var quint8 : Dynamic;
+	static public var resource : Dynamic;
 	/**
 		Performs a safe saturating cast of `value` to `dtype`.
 		
@@ -138,4 +158,10 @@ package tensorflow._api.v1.dtypes;
 		  `value` safely cast to `dtype`.
 	**/
 	static public function saturate_cast(value:Dynamic, dtype:Dynamic, ?name:Dynamic):Dynamic;
+	static public var string : Dynamic;
+	static public var uint16 : Dynamic;
+	static public var uint32 : Dynamic;
+	static public var uint64 : Dynamic;
+	static public var uint8 : Dynamic;
+	static public var variant : Dynamic;
 }

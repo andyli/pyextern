@@ -77,7 +77,7 @@ package tensorflow.contrib.learn.python.learn.learn_runner;
 	/**
 		Make and run an experiment. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.estimator.train_and_evaluate.
 		
@@ -166,7 +166,7 @@ package tensorflow.contrib.learn.python.learn.learn_runner;
 	/**
 		Tune an experiment with hyper-parameters. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.estimator.train_and_evaluate.
 		

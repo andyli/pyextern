@@ -11,6 +11,130 @@ package tensorflow.random;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Generate the set of all classes.
+		
+		Deterministically generates and returns the set of all possible classes.
+		For testing purposes.  There is no need to use this, since you might as
+		well use full softmax or full logistic regression.
+		
+		Args:
+		  true_classes: A `Tensor` of type `int64` and shape `[batch_size,
+		    num_true]`. The target classes.
+		  num_true: An `int`.  The number of target classes per training example.
+		  num_sampled: An `int`.  The number of possible classes.
+		  unique: A `bool`. Ignored.
+		    unique.
+		  seed: An `int`. An operation-specific seed. Default is 0.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  sampled_candidates: A tensor of type `int64` and shape `[num_sampled]`.
+		    This operation deterministically returns the entire range
+		    `[0, num_sampled]`.
+		  true_expected_count: A tensor of type `float`.  Same shape as
+		    `true_classes`. The expected counts under the sampling distribution
+		    of each of `true_classes`. All returned values are 1.0.
+		  sampled_expected_count: A tensor of type `float`. Same shape as
+		    `sampled_candidates`. The expected counts under the sampling distribution
+		    of each of `sampled_candidates`. All returned values are 1.0.
+	**/
+	static public function all_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Draws samples from a categorical distribution.
+		
+		Example:
+		
+		```python
+		# samples has shape [1, 5], where each value is either 0 or 1 with equal
+		# probability.
+		samples = tf.random.categorical(tf.log([[10., 10.]]), 5)
+		```
+		
+		Args:
+		  logits: 2-D Tensor with shape `[batch_size, num_classes]`.  Each slice
+		    `[i, :]` represents the unnormalized log-probabilities for all classes.
+		  num_samples: 0-D.  Number of independent samples to draw for each row slice.
+		  dtype: integer type to use for the output. Defaults to int64.
+		  seed: A Python integer. Used to create a random seed for the distribution.
+		    See `tf.set_random_seed` for behavior.
+		  name: Optional name for the operation.
+		
+		Returns:
+		  The drawn samples of shape `[batch_size, num_samples]`.
+	**/
+	static public function categorical(logits:Dynamic, num_samples:Dynamic, ?dtype:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Samples a set of classes using the provided (fixed) base distribution.
+		
+		This operation randomly samples a tensor of sampled classes
+		(`sampled_candidates`) from the range of integers `[0, range_max)`.
+		
+		The elements of `sampled_candidates` are drawn without replacement
+		(if `unique=True`) or with replacement (if `unique=False`) from
+		the base distribution.
+		
+		The base distribution is read from a file or passed in as an
+		in-memory array. There is also an option to skew the distribution by
+		applying a distortion power to the weights.
+		
+		In addition, this operation returns tensors `true_expected_count`
+		and `sampled_expected_count` representing the number of times each
+		of the target classes (`true_classes`) and the sampled
+		classes (`sampled_candidates`) is expected to occur in an average
+		tensor of sampled classes.  These values correspond to `Q(y|x)`
+		defined in [this
+		document](http://www.tensorflow.org/extras/candidate_sampling.pdf).
+		If `unique=True`, then these are post-rejection probabilities and we
+		compute them approximately.
+		
+		Args:
+		  true_classes: A `Tensor` of type `int64` and shape `[batch_size,
+		    num_true]`. The target classes.
+		  num_true: An `int`.  The number of target classes per training example.
+		  num_sampled: An `int`.  The number of classes to randomly sample.
+		  unique: A `bool`. Determines whether all sampled classes in a batch are
+		    unique.
+		  range_max: An `int`. The number of possible classes.
+		  vocab_file: Each valid line in this file (which should have a CSV-like
+		    format) corresponds to a valid word ID. IDs are in sequential order,
+		    starting from num_reserved_ids. The last entry in each line is expected
+		    to be a value corresponding to the count or relative probability. Exactly
+		    one of `vocab_file` and `unigrams` needs to be passed to this operation.
+		  distortion: The distortion is used to skew the unigram probability
+		    distribution.  Each weight is first raised to the distortion's power
+		    before adding to the internal unigram distribution. As a result,
+		    `distortion = 1.0` gives regular unigram sampling (as defined by the vocab
+		    file), and `distortion = 0.0` gives a uniform distribution.
+		  num_reserved_ids: Optionally some reserved IDs can be added in the range
+		    `[0, num_reserved_ids)` by the users. One use case is that a special
+		    unknown word token is used as ID 0. These IDs will have a sampling
+		    probability of 0.
+		  num_shards: A sampler can be used to sample from a subset of the original
+		    range in order to speed up the whole computation through parallelism. This
+		    parameter (together with `shard`) indicates the number of partitions that
+		    are being used in the overall computation.
+		  shard: A sampler can be used to sample from a subset of the original range
+		    in order to speed up the whole computation through parallelism. This
+		    parameter (together with `num_shards`) indicates the particular partition
+		    number of the operation, when partitioning is being used.
+		  unigrams: A list of unigram counts or probabilities, one per ID in
+		    sequential order. Exactly one of `vocab_file` and `unigrams` should be
+		    passed to this operation.
+		  seed: An `int`. An operation-specific seed. Default is 0.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  sampled_candidates: A tensor of type `int64` and shape `[num_sampled]`.
+		    The sampled classes.
+		  true_expected_count: A tensor of type `float`.  Same shape as
+		    `true_classes`. The expected counts under the sampling distribution
+		    of each of `true_classes`.
+		  sampled_expected_count: A tensor of type `float`. Same shape as
+		    `sampled_candidates`. The expected counts under the sampling distribution
+		    of each of `sampled_candidates`.
+	**/
+	static public function fixed_unigram_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?vocab_file:Dynamic, ?distortion:Dynamic, ?num_reserved_ids:Dynamic, ?num_shards:Dynamic, ?shard:Dynamic, ?unigrams:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Draws `shape` samples from each of the given Gamma distribution(s).
 		
 		`alpha` is the shape parameter describing the distribution(s), and `beta` is
@@ -84,7 +208,7 @@ package tensorflow.random;
 		graph, or for only specific operations.
 		
 		For details on how the graph-level seed interacts with op seeds, see
-		`tf.set_random_seed`.
+		`tf.random.set_random_seed`.
 		
 		Args:
 		  op_seed: integer.
@@ -94,6 +218,55 @@ package tensorflow.random;
 		  operation.
 	**/
 	static public function get_seed(op_seed:Dynamic):Dynamic;
+	/**
+		Samples a set of classes from a distribution learned during training.
+		
+		This operation randomly samples a tensor of sampled classes
+		(`sampled_candidates`) from the range of integers `[0, range_max)`.
+		
+		The elements of `sampled_candidates` are drawn without replacement
+		(if `unique=True`) or with replacement (if `unique=False`) from
+		the base distribution.
+		
+		The base distribution for this operation is constructed on the fly
+		during training.  It is a unigram distribution over the target
+		classes seen so far during training.  Every integer in `[0, range_max)`
+		begins with a weight of 1, and is incremented by 1 each time it is
+		seen as a target class.  The base distribution is not saved to checkpoints,
+		so it is reset when the model is reloaded.
+		
+		In addition, this operation returns tensors `true_expected_count`
+		and `sampled_expected_count` representing the number of times each
+		of the target classes (`true_classes`) and the sampled
+		classes (`sampled_candidates`) is expected to occur in an average
+		tensor of sampled classes.  These values correspond to `Q(y|x)`
+		defined in [this
+		document](http://www.tensorflow.org/extras/candidate_sampling.pdf).
+		If `unique=True`, then these are post-rejection probabilities and we
+		compute them approximately.
+		
+		Args:
+		  true_classes: A `Tensor` of type `int64` and shape `[batch_size,
+		    num_true]`. The target classes.
+		  num_true: An `int`.  The number of target classes per training example.
+		  num_sampled: An `int`.  The number of classes to randomly sample.
+		  unique: A `bool`. Determines whether all sampled classes in a batch are
+		    unique.
+		  range_max: An `int`. The number of possible classes.
+		  seed: An `int`. An operation-specific seed. Default is 0.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  sampled_candidates: A tensor of type `int64` and shape `[num_sampled]`.
+		    The sampled classes.
+		  true_expected_count: A tensor of type `float`.  Same shape as
+		    `true_classes`. The expected counts under the sampling distribution
+		    of each of `true_classes`.
+		  sampled_expected_count: A tensor of type `float`. Same shape as
+		    `sampled_candidates`. The expected counts under the sampling distribution
+		    of each of `sampled_candidates`.
+	**/
+	static public function learned_unigram_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Samples a set of classes using a log-uniform (Zipfian) base distribution.
 		
@@ -147,7 +320,11 @@ package tensorflow.random;
 	**/
 	static public function log_uniform_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Draws samples from a multinomial distribution.
+		Draws samples from a multinomial distribution. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.random.categorical instead.
 		
 		Example:
 		
@@ -162,9 +339,7 @@ package tensorflow.random;
 		    `[i, :]` represents the unnormalized log-probabilities for all classes.
 		  num_samples: 0-D.  Number of independent samples to draw for each row slice.
 		  seed: A Python integer. Used to create a random seed for the distribution.
-		    See
-		    `tf.set_random_seed`
-		    for behavior.
+		    See `tf.set_random_seed` for behavior.
 		  name: Optional name for the operation.
 		  output_dtype: integer type to use for the output. Defaults to int64.
 		
@@ -299,7 +474,7 @@ package tensorflow.random;
 		sessions, set a graph-level seed:
 		
 		```python
-		tf.set_random_seed(1234)
+		tf.random.set_random_seed(1234)
 		a = tf.random_uniform([1])
 		b = tf.random_normal([1])
 		
@@ -350,6 +525,160 @@ package tensorflow.random;
 		  dimension.
 	**/
 	static public function shuffle(value:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Draws deterministic pseudorandom samples from a categorical distribution.
+		
+		This is a stateless version of `tf.categorical`: if run twice with the
+		same seeds, it will produce the same pseudorandom numbers.  The output is
+		consistent across multiple runs on the same hardware (and between CPU
+		and GPU), but may change between versions of TensorFlow or on non-CPU/GPU
+		hardware.
+		
+		Example:
+		
+		```python
+		# samples has shape [1, 5], where each value is either 0 or 1 with equal
+		# probability.
+		samples = tf.random.stateless_categorical(
+		    tf.log([[10., 10.]]), 5, seed=[7, 17])
+		```
+		
+		Args:
+		  logits: 2-D Tensor with shape `[batch_size, num_classes]`.  Each slice
+		    `[i, :]` represents the unnormalized log-probabilities for all classes.
+		  num_samples: 0-D.  Number of independent samples to draw for each row slice.
+		  seed: A shape [2] integer Tensor of seeds to the random number generator.
+		  dtype: integer type to use for the output. Defaults to int64.
+		  name: Optional name for the operation.
+		
+		Returns:
+		  The drawn samples of shape `[batch_size, num_samples]`.
+	**/
+	static public function stateless_categorical(logits:Dynamic, num_samples:Dynamic, seed:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Draws deterministic pseudorandom samples from a multinomial distribution. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.random.stateless_categorical instead.
+		
+		This is a stateless version of `tf.multinomial`: if run twice with the
+		same seeds, it will produce the same pseudorandom numbers.  The output is
+		consistent across multiple runs on the same hardware (and between CPU
+		and GPU), but may change between versions of TensorFlow or on non-CPU/GPU
+		hardware.
+		
+		Example:
+		
+		```python
+		# samples has shape [1, 5], where each value is either 0 or 1 with equal
+		# probability.
+		samples = tf.random.stateless_multinomial(
+		    tf.log([[10., 10.]]), 5, seed=[7, 17])
+		```
+		
+		Args:
+		  logits: 2-D Tensor with shape `[batch_size, num_classes]`.  Each slice
+		    `[i, :]` represents the unnormalized log-probabilities for all classes.
+		  num_samples: 0-D.  Number of independent samples to draw for each row slice.
+		  seed: A shape [2] integer Tensor of seeds to the random number generator.
+		  output_dtype: integer type to use for the output. Defaults to int64.
+		  name: Optional name for the operation.
+		
+		Returns:
+		  The drawn samples of shape `[batch_size, num_samples]`.
+	**/
+	static public function stateless_multinomial(logits:Dynamic, num_samples:Dynamic, seed:Dynamic, ?output_dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Outputs deterministic pseudorandom values from a normal distribution.
+		
+		This is a stateless version of `tf.random_normal`: if run twice with the
+		same seeds, it will produce the same pseudorandom numbers.  The output is
+		consistent across multiple runs on the same hardware (and between CPU
+		and GPU), but may change between versions of TensorFlow or on non-CPU/GPU
+		hardware.
+		
+		Args:
+		  shape: A 1-D integer Tensor or Python array. The shape of the output tensor.
+		  seed: A shape [2] integer Tensor of seeds to the random number generator.
+		  mean: A 0-D Tensor or Python value of type `dtype`. The mean of the normal
+		    distribution.
+		  stddev: A 0-D Tensor or Python value of type `dtype`. The standard deviation
+		    of the normal distribution.
+		  dtype: The type of the output.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tensor of the specified shape filled with random normal values.
+	**/
+	static public function stateless_normal(shape:Dynamic, seed:Dynamic, ?mean:Dynamic, ?stddev:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Outputs deterministic pseudorandom values, truncated normally distributed.
+		
+		This is a stateless version of `tf.truncated_normal`: if run twice with the
+		same seeds, it will produce the same pseudorandom numbers.  The output is
+		consistent across multiple runs on the same hardware (and between CPU
+		and GPU), but may change between versions of TensorFlow or on non-CPU/GPU
+		hardware.
+		
+		The generated values follow a normal distribution with specified mean and
+		standard deviation, except that values whose magnitude is more than 2 standard
+		deviations from the mean are dropped and re-picked.
+		
+		Args:
+		  shape: A 1-D integer Tensor or Python array. The shape of the output tensor.
+		  seed: A shape [2] integer Tensor of seeds to the random number generator.
+		  mean: A 0-D Tensor or Python value of type `dtype`. The mean of the
+		    truncated normal distribution.
+		  stddev: A 0-D Tensor or Python value of type `dtype`. The standard deviation
+		    of the normal distribution, before truncation.
+		  dtype: The type of the output.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tensor of the specified shape filled with random truncated normal values.
+	**/
+	static public function stateless_truncated_normal(shape:Dynamic, seed:Dynamic, ?mean:Dynamic, ?stddev:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Outputs deterministic pseudorandom values from a uniform distribution.
+		
+		This is a stateless version of `tf.random_uniform`: if run twice with the
+		same seeds, it will produce the same pseudorandom numbers.  The output is
+		consistent across multiple runs on the same hardware (and between CPU
+		and GPU), but may change between versions of TensorFlow or on non-CPU/GPU
+		hardware.
+		
+		The generated values follow a uniform distribution in the range
+		`[minval, maxval)`. The lower bound `minval` is included in the range, while
+		the upper bound `maxval` is excluded.
+		
+		For floats, the default range is `[0, 1)`.  For ints, at least `maxval` must
+		be specified explicitly.
+		
+		In the integer case, the random integers are slightly biased unless
+		`maxval - minval` is an exact power of two.  The bias is small for values of
+		`maxval - minval` significantly smaller than the range of the output (either
+		`2**32` or `2**64`).
+		
+		Args:
+		  shape: A 1-D integer Tensor or Python array. The shape of the output tensor.
+		  seed: A shape [2] integer Tensor of seeds to the random number generator.
+		  minval: A 0-D Tensor or Python value of type `dtype`. The lower bound on the
+		    range of random values to generate.  Defaults to 0.
+		  maxval: A 0-D Tensor or Python value of type `dtype`. The upper bound on the
+		    range of random values to generate.  Defaults to 1 if `dtype` is floating
+		    point.
+		  dtype: The type of the output: `float16`, `float32`, `float64`, `int32`, or
+		    `int64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tensor of the specified shape filled with random uniform values.
+		
+		Raises:
+		  ValueError: If `dtype` is integral and `maxval` is not specified.
+	**/
+	static public function stateless_uniform(shape:Dynamic, seed:Dynamic, ?minval:Dynamic, ?maxval:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Outputs random values from a truncated normal distribution.
 		

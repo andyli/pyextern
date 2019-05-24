@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 @:pythonImport("tensorflow.contrib.tpu.proto.optimization_parameters_pb2", "MdlAdagradLightParameters") extern class MdlAdagradLightParameters {
-	static public var BENEFIT_REVISIT_SCALE_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -39,7 +38,6 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HARD_LIMIT_MIN_BENEFIT_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -48,27 +46,14 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INITIAL_ACCUMULATOR_FIELD_NUMBER : Dynamic;
-	static public var INITIAL_BENEFIT_FIELD_NUMBER : Dynamic;
-	static public var INITIAL_WEIGHT_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var L2_FIELD_NUMBER : Dynamic;
-	static public var LR_POWER_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAX_EVENT_BENEFIT_FIELD_NUMBER : Dynamic;
-	static public var MAX_TOTAL_BENEFIT_FIELD_NUMBER : Dynamic;
-	static public var MDL_BENEFIT_RAMPUP_COEFF_FIELD_NUMBER : Dynamic;
-	static public var MDL_HARD_LIMIT_FIELD_NUMBER : Dynamic;
-	static public var MDL_MIN_WEIGHT_FIELD_NUMBER : Dynamic;
-	static public var MDL_MIX_IN_MARGIN_FIELD_NUMBER : Dynamic;
-	static public var MDL_REGULARIZE_FIELD_NUMBER : Dynamic;
-	static public var MIN_SERVABLE_MDL_BENEFIT_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -97,6 +82,10 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -262,4 +251,64 @@ package tensorflow.contrib.tpu.proto.optimization_parameters_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.benefit_revisit_scale
+	**/
+	public var benefit_revisit_scale : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.hard_limit_min_benefit
+	**/
+	public var hard_limit_min_benefit : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.initial_accumulator
+	**/
+	public var initial_accumulator : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.initial_benefit
+	**/
+	public var initial_benefit : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.initial_weight
+	**/
+	public var initial_weight : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.l2
+	**/
+	public var l2 : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.lr_power
+	**/
+	public var lr_power : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.max_event_benefit
+	**/
+	public var max_event_benefit : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.max_total_benefit
+	**/
+	public var max_total_benefit : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.mdl_benefit_rampup_coeff
+	**/
+	public var mdl_benefit_rampup_coeff : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.mdl_hard_limit
+	**/
+	public var mdl_hard_limit : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.mdl_min_weight
+	**/
+	public var mdl_min_weight : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.mdl_mix_in_margin
+	**/
+	public var mdl_mix_in_margin : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.mdl_regularize
+	**/
+	public var mdl_regularize : Dynamic;
+	/**
+		Field tensorflow.tpu.MdlAdagradLightParameters.min_servable_mdl_benefit
+	**/
+	public var min_servable_mdl_benefit : Dynamic;
 }

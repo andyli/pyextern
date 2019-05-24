@@ -5,9 +5,6 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CHECKPOINT_STATS_FIELD_NUMBER : Dynamic;
-	static public var COLLATE_EXAMPLES_FIELD_NUMBER : Dynamic;
-	static public var COLLECTION_TYPE_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -25,8 +22,6 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DOMINATE_FRACTION_FIELD_NUMBER : Dynamic;
-	static public var DROP_FINAL_CLASS_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -35,7 +30,6 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FINISH_TYPE_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -44,7 +38,6 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GRAPH_DIR_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -53,21 +46,14 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INEQUALITY_TEST_TYPE_FIELD_NUMBER : Dynamic;
-	static public var INFERENCE_TREE_PATHS_FIELD_NUMBER : Dynamic;
-	static public var INITIALIZE_AVERAGE_SPLITS_FIELD_NUMBER : Dynamic;
-	static public var IS_REGRESSION_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LEAF_TYPE_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAX_NODES_FIELD_NUMBER : Dynamic;
-	static public var MIN_SPLIT_SAMPLES_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -76,13 +62,6 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NUM_CLASSES_TO_TRACK_FIELD_NUMBER : Dynamic;
-	static public var NUM_FEATURES_FIELD_NUMBER : Dynamic;
-	static public var NUM_OUTPUTS_FIELD_NUMBER : Dynamic;
-	static public var NUM_SELECT_FEATURES_FIELD_NUMBER : Dynamic;
-	static public var NUM_SPLITS_TO_CONSIDER_FIELD_NUMBER : Dynamic;
-	static public var NUM_TREES_FIELD_NUMBER : Dynamic;
-	static public var PRUNING_TYPE_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -91,8 +70,6 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SPLIT_AFTER_SAMPLES_FIELD_NUMBER : Dynamic;
-	static public var STATS_TYPE_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -105,7 +82,10 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var USE_RUNNING_STATS_METHOD_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -271,4 +251,100 @@ package tensorflow.contrib.tensor_forest.proto.tensor_forest_params_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.checkpoint_stats
+	**/
+	public var checkpoint_stats : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.collate_examples
+	**/
+	public var collate_examples : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.collection_type
+	**/
+	public var collection_type : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.dominate_fraction
+	**/
+	public var dominate_fraction : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.drop_final_class
+	**/
+	public var drop_final_class : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.finish_type
+	**/
+	public var finish_type : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.graph_dir
+	**/
+	public var graph_dir : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.inequality_test_type
+	**/
+	public var inequality_test_type : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.inference_tree_paths
+	**/
+	public var inference_tree_paths : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.initialize_average_splits
+	**/
+	public var initialize_average_splits : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.is_regression
+	**/
+	public var is_regression : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.leaf_type
+	**/
+	public var leaf_type : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.max_nodes
+	**/
+	public var max_nodes : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.min_split_samples
+	**/
+	public var min_split_samples : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.num_classes_to_track
+	**/
+	public var num_classes_to_track : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.num_features
+	**/
+	public var num_features : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.num_outputs
+	**/
+	public var num_outputs : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.num_select_features
+	**/
+	public var num_select_features : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.num_splits_to_consider
+	**/
+	public var num_splits_to_consider : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.num_trees
+	**/
+	public var num_trees : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.pruning_type
+	**/
+	public var pruning_type : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.split_after_samples
+	**/
+	public var split_after_samples : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.stats_type
+	**/
+	public var stats_type : Dynamic;
+	/**
+		Field tensorflow.tensorforest.TensorForestParams.use_running_stats_method
+	**/
+	public var use_running_stats_method : Dynamic;
 }

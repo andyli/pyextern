@@ -149,7 +149,7 @@ package tensorflow.python.framework.importer;
 	/**
 		Imports the graph from `graph_def` into the current default `Graph`. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(op_dict)`. They will be removed in a future version.
 		Instructions for updating:
 		Please file an issue at https://github.com/tensorflow/tensorflow/issues if you depend on this feature.
 		
@@ -182,7 +182,8 @@ package tensorflow.python.framework.importer;
 		
 		Returns:
 		  A list of `Operation` and/or `Tensor` objects from the imported graph,
-		  corresponding to the names in `return_elements`.
+		  corresponding to the names in `return_elements`,
+		  and None if `returns_elements` is None.
 		
 		Raises:
 		  TypeError: If `graph_def` is not a `GraphDef` proto,

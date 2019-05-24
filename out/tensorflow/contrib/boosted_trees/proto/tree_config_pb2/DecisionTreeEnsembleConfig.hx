@@ -38,7 +38,6 @@ package tensorflow.contrib.boosted_trees.proto.tree_config_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GROWING_METADATA_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -83,9 +82,10 @@ package tensorflow.contrib.boosted_trees.proto.tree_config_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TREES_FIELD_NUMBER : Dynamic;
-	static public var TREE_METADATA_FIELD_NUMBER : Dynamic;
-	static public var TREE_WEIGHTS_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.contrib.boosted_trees.proto.tree_config_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.trees.DecisionTreeEnsembleConfig.growing_metadata
+	**/
+	public var growing_metadata : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.trees.DecisionTreeEnsembleConfig.tree_metadata
+	**/
+	public var tree_metadata : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.trees.DecisionTreeEnsembleConfig.tree_weights
+	**/
+	public var tree_weights : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.trees.DecisionTreeEnsembleConfig.trees
+	**/
+	public var trees : Dynamic;
 }

@@ -2344,7 +2344,11 @@ package numpy.ma.extras;
 		
 		Fit a polynomial ``p(x) = p[0] * x**deg + ... + p[deg]`` of degree `deg`
 		to points `(x, y)`. Returns a vector of coefficients `p` that minimises
-		the squared error.
+		the squared error in the order `deg`, `deg-1`, ... `0`.
+		
+		The `Polynomial.fit <numpy.polynomial.polynomial.Polynomial.fit>` class
+		method is recommended for new code as it is more stable numerically. See
+		the documentation of the method for more information.
 		
 		Parameters
 		----------
@@ -2368,9 +2372,14 @@ package numpy.ma.extras;
 		w : array_like, shape (M,), optional
 		    Weights to apply to the y-coordinates of the sample points. For
 		    gaussian uncertainties, use 1/sigma (not 1/sigma**2).
-		cov : bool, optional
-		    Return the estimate and the covariance matrix of the estimate
-		    If full is True, then cov is not returned.
+		cov : bool or str, optional
+		    If given and not `False`, return not just the estimate but also its
+		    covariance matrix. By default, the covariance are scaled by
+		    chi2/sqrt(N-dof), i.e., the weights are presumed to be unreliable
+		    except in a relative sense and everything is scaled such that the
+		    reduced chi2 is unity. This scaling is omitted if ``cov='unscaled'``,
+		    as is relevant for the case that the weights are 1/sigma**2, with
+		    sigma known to be a reliable estimate of the uncertainty.
 		
 		Returns
 		-------
@@ -2447,9 +2456,9 @@ package numpy.ma.extras;
 		References
 		----------
 		.. [1] Wikipedia, "Curve fitting",
-		       http://en.wikipedia.org/wiki/Curve_fitting
+		       https://en.wikipedia.org/wiki/Curve_fitting
 		.. [2] Wikipedia, "Polynomial interpolation",
-		       http://en.wikipedia.org/wiki/Polynomial_interpolation
+		       https://en.wikipedia.org/wiki/Polynomial_interpolation
 		
 		Examples
 		--------

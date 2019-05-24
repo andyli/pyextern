@@ -44,10 +44,12 @@ package pandas.core.missing;
 		    The result, of length R or length M or M by R,
 	**/
 	static public function _akima_interpolate(xi:Dynamic, yi:Dynamic, x:Dynamic, ?der:Dynamic, ?axis:Dynamic):Dynamic;
-	static public function _backfill_1d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
-	static public function _backfill_2d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
-	static public function _ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Cast values to a dtype that algos.pad and algos.backfill can handle.
+	**/
+	static public function _cast_values_for_fillna(values:Dynamic, dtype:Dynamic):Dynamic;
 	static public var _fill_methods : Dynamic;
+	static public function _fillna_prep(values:Dynamic, ?mask:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Convenience function for interpolate.BPoly.from_derivatives
 		
@@ -104,20 +106,18 @@ package pandas.core.missing;
 		
 		.. code-block:: python
 		
-		   for x in np.where(invalid)[0]:
-		       if invalid[max(0, x - fw_limit):x + bw_limit + 1].all():
-		           yield x
+		    def _interp_limit(invalid, fw_limit, bw_limit):
+		        for x in np.where(invalid)[0]:
+		            if invalid[max(0, x - fw_limit):x + bw_limit + 1].all():
+		                yield x
 	**/
 	static public function _interp_limit(invalid:Dynamic, fw_limit:Dynamic, bw_limit:Dynamic):Dynamic;
-	static public function _interp_wrapper(f:Dynamic, wrap_dtype:Dynamic, ?na_override:Dynamic):Dynamic;
 	/**
 		passed off to scipy.interpolate.interp1d. method is scipy's kind.
 		Returns an array interpolated at new_x.  Add any new methods to
 		the list in _clean_interp_method
 	**/
 	static public function _interpolate_scipy_wrapper(x:Dynamic, y:Dynamic, new_x:Dynamic, method:Dynamic, ?fill_value:Dynamic, ?bounds_error:Dynamic, ?order:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function _pad_1d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
-	static public function _pad_2d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
 	/**
 		[True, True, False, True, False], 2 ->
 		
@@ -150,6 +150,7 @@ package pandas.core.missing;
 		result : ndarray
 	**/
 	static public function dispatch_missing(op:Dynamic, left:Dynamic, right:Dynamic, result:Dynamic):numpy.Ndarray;
+	static public function ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		if this is a reversed op, then flip x,y
 		
@@ -269,6 +270,8 @@ package pandas.core.missing;
 	/**
 		Check whether the provided array or dtype is of a float dtype.
 		
+		This function is internal and should not be exposed in the public API.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -300,6 +303,11 @@ package pandas.core.missing;
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
 		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -319,6 +327,12 @@ package pandas.core.missing;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -377,23 +391,82 @@ package pandas.core.missing;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Check whether an array-like or dtype is of the timedelta64 dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is
+		          of the timedelta64 dtype.
+		
+		Examples
+		--------
+		>>> is_timedelta64_dtype(object)
+		False
+		>>> is_timedelta64_dtype(np.timedelta64)
+		True
+		>>> is_timedelta64_dtype([1, 2, 3])
+		False
+		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
+		True
+		>>> is_timedelta64_dtype('0 days')
+		False
+	**/
+	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -411,8 +484,8 @@ package pandas.core.missing;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		

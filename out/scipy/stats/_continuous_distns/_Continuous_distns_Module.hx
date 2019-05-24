@@ -122,7 +122,7 @@ package scipy.stats._continuous_distns;
 		-----
 		In an interval around lambda=0, this function uses the [4,4] Pade
 		approximation to compute the variance.  Otherwise it uses the standard
-		formula (http://en.wikipedia.org/wiki/Tukey_lambda_distribution).  The
+		formula (https://en.wikipedia.org/wiki/Tukey_lambda_distribution).  The
 		Pade approximation is used because the standard formula has a removable
 		discontinuity at lambda = 0, and does not produce accurate numerical
 		results near lambda = 0.
@@ -186,7 +186,7 @@ package scipy.stats._continuous_distns;
 		    f(x, a) = \frac{1}{x^2 \Phi(a) \sqrt{2\pi}} *
 		              \exp(-\frac{1}{2} (a-1/x)^2)
 		
-		where ``Phi(alpha)`` is the normal CDF, ``x > 0``, and ``a > 0``.
+		where :math:`\Phi` is the normal CDF, :math:`x > 0`, and :math:`a > 0`.
 		
 		`alpha` takes ``a`` as a shape parameter.
 		
@@ -404,7 +404,7 @@ package scipy.stats._continuous_distns;
 		
 		    f(x) = \frac{1}{\pi \sqrt{x (1-x)}}
 		
-		for :math:`0 \le x \le 1`.
+		for :math:`0 < x < 1`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -511,9 +511,9 @@ package scipy.stats._continuous_distns;
 		.. math::
 		
 		    f(x, \chi) = \frac{\chi^3}{\sqrt{2\pi} \Psi(\chi)} x \sqrt{1-x^2}
-		                 \exp(- 0.5 \chi^2 (1 - x^2))
+		                 \exp(-\chi^2 (1 - x^2)/2)
 		
-		    where:
+		for :math:`0 < x < 1`, where
 		
 		.. math::
 		
@@ -636,11 +636,11 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, a, b) = \frac{\gamma(a+b) x^{a-1} (1-x)^{b-1}}
-		                      {\gamma(a) \gamma(b)}
+		    f(x, a, b) = \frac{\Gamma(a+b) x^{a-1} (1-x)^{b-1}}
+		                      {\Gamma(a) \Gamma(b)}
 		
-		for :math:`0 < x < 1`, :math:`a > 0`, :math:`b > 0`, where
-		:math:`\gamma(z)` is the gamma function (`scipy.special.gamma`).
+		for :math:`0 <= x <= 1`, :math:`a > 0`, :math:`b > 0`, where
+		:math:`\Gamma` is the gamma function (`scipy.special.gamma`).
 		
 		`beta` takes :math:`a` and :math:`b` as shape parameters.
 		
@@ -750,8 +750,8 @@ package scipy.stats._continuous_distns;
 		
 		    f(x, a, b) = \frac{x^{a-1} (1+x)^{-a-b}}{\beta(a, b)}
 		
-		for ``x > 0``, ``a > 0``, ``b > 0``, where ``beta(a, b)`` is the beta
-		function (see `scipy.special.beta`).
+		for :math:`x >= 0`, :math:`a > 0`, :math:`b > 0`, where
+		:math:`\beta(a, b)` is the beta function (see `scipy.special.beta`).
 		
 		`betaprime` takes ``a`` and ``b`` as shape parameters.
 		
@@ -859,11 +859,11 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, c) = \frac{c}{k (1+cx)}
+		    f(x, c) = \frac{c}{\log(1+c) (1+cx)}
 		
-		for :math:`0 < x < 1`, :math:`c > 0` and :math:`k = \log(1+c)`.
+		for :math:`0 <= x <= 1` and :math:`c > 0`.
 		
-		`bradford` takes :math:`c` as a shape parameter.
+		`bradford` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -1004,7 +1004,7 @@ package scipy.stats._continuous_distns;
 		
 		See Also
 		--------
-		fisk : a special case of either `burr` or ``burr12`` with ``d = 1``
+		fisk : a special case of either `burr` or `burr12` with ``d=1``
 		burr12 : Burr Type XII distribution
 		
 		Notes
@@ -1015,7 +1015,7 @@ package scipy.stats._continuous_distns;
 		
 		    f(x, c, d) = c d x^{-c-1} (1+x^{-c})^{-d-1}
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0` and :math:`c, d > 0`.
 		
 		`burr` takes :math:`c` and :math:`d` as shape parameters.
 		
@@ -1127,7 +1127,7 @@ package scipy.stats._continuous_distns;
 		
 		See Also
 		--------
-		fisk : a special case of either `burr` or ``burr12`` with ``d = 1``
+		fisk : a special case of either `burr` or `burr12` with ``d=1``
 		burr : Burr Type III distribution
 		
 		Notes
@@ -1138,9 +1138,10 @@ package scipy.stats._continuous_distns;
 		
 		    f(x, c, d) = c d x^{c-1} (1+x^c)^{-d-1}
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0` and :math:`c, d > 0`.
 		
-		`burr12` takes :math:`c` and :math:`d` as shape parameters.
+		`burr12` takes ``c`` and ``d`` as shape parameters for :math:`c`
+		and :math:`d`.
 		
 		This is the PDF corresponding to the twelfth CDF given in Burr's list;
 		specifically, it is equation (20) in Burr's paper [1]_.
@@ -1159,7 +1160,7 @@ package scipy.stats._continuous_distns;
 		.. [1] Burr, I. W. "Cumulative frequency functions", Annals of
 		   Mathematical Statistics, 13(2), pp 215-232 (1942).
 		
-		.. [2] http://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/b12pdf.htm
+		.. [2] https://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/b12pdf.htm
 		
 		Examples
 		--------
@@ -1255,11 +1256,13 @@ package scipy.stats._continuous_distns;
 		
 		Notes
 		-----
-		The probability density function for `cauchy` is:
+		The probability density function for `cauchy` is
 		
 		.. math::
 		
 		    f(x) = \frac{1}{\pi (1 + x^2)}
+		
+		for a real number :math:`x`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -1365,9 +1368,12 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, df) = \frac{x^{df-1} \exp(-x^2/2)}{2^{df/2-1} \gamma(df/2)}
+		    f(x, k) = \frac{1}{2^{k/2-1} \Gamma \left( k/2 \right)}
+		               x^{k-1} \exp \left( -x^2/2 \right)
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0` and :math:`k > 0` (degrees of freedom, denoted ``df``
+		in the implementation). :math:`\Gamma` is the gamma function
+		(`scipy.special.gamma`).
 		
 		Special cases of `chi` are:
 		
@@ -1481,7 +1487,11 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, df) = \frac{1}{(2 \gamma(df/2)} (x/2)^{df/2-1} \exp(-x/2)
+		    f(x, k) = \frac{1}{2^{k/2} \Gamma \left( k/2 \right)}
+		               x^{k/2-1} \exp \left( -x/2 \right)
+		
+		for :math:`x > 0`  and :math:`k > 0` (degrees of freedom, denoted ``df``
+		in the implementation).
 		
 		`chi2` takes ``df`` as a shape parameter.
 		
@@ -1703,12 +1713,13 @@ package scipy.stats._continuous_distns;
 		                        N A (B - x)^{-m}  &\text{for } x \le -\beta
 		                      \end{cases}
 		
-		where :math:`A = (m / |beta|)**n * exp(-beta**2 / 2)`,
-		:math:`B = m/|beta| - |beta|` and :math:`N` is a normalisation constant.
+		where :math:`A = (m / |\beta|)^n  \exp(-\beta^2 / 2)`,
+		:math:`B = m/|\beta| - |\beta|` and :math:`N` is a normalisation constant.
 		
-		`crystalball` takes :math:`\beta` and :math:`m` as shape parameters.
-		:math:`\beta` defines the point where the pdf changes from a power-law to a
-		gaussian distribution :math:`m` is power of the power-law tail.
+		`crystalball` takes :math:`\beta > 0` and :math:`m > 1` as shape
+		parameters.  :math:`\beta` defines the point where the pdf changes
+		from a power-law to a Gaussian distribution.  :math:`m` is the power
+		of the power-law tail.
 		
 		References
 		----------
@@ -1821,11 +1832,12 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, a) = \frac{1}{2\gamma(a)} |x|^{a-1} \exp(-|x|)
+		    f(x, a) = \frac{1}{2\Gamma(a)} |x|^{a-1} \exp(-|x|)
 		
-		for :math:`a > 0`.
+		for a real number :math:`x` and :math:`a > 0`. :math:`\Gamma` is the
+		gamma function (`scipy.special.gamma`).
 		
-		`dgamma` takes :math:`a` as a shape parameter.
+		`dgamma` takes ``a`` as a shape parameter for :math:`a`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -1928,13 +1940,15 @@ package scipy.stats._continuous_distns;
 		
 		Notes
 		-----
-		The probability density function for `dweibull` is:
+		The probability density function for `dweibull` is given by
 		
 		.. math::
 		
 		    f(x, c) = c / 2 |x|^{c-1} \exp(-|x|^c)
 		
-		`dweibull` takes :math:`d` as a shape parameter.
+		for a real number :math:`x` and :math:`c > 0`.
+		
+		`dweibull` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -2214,15 +2228,14 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, K) = \frac{1}{2K} \exp\left(\frac{1}{2 K^2}\right) \exp(-x / K)
+		    f(x, K) = \frac{1}{2K} \exp\left(\frac{1}{2 K^2} - x / K \right)
 		              \text{erfc}\left(-\frac{x - 1/K}{\sqrt{2}}\right)
 		
-		where the shape parameter :math:`K > 0`.
+		where :math:`x` is a real number and :math:`K > 0`.
 		
-		It can be thought of as the sum of a normally distributed random
-		value with mean ``loc`` and sigma ``scale`` and an exponentially
-		distributed random number with a pdf proportional to ``exp(-lambda * x)``
-		where ``lambda = (K * scale)**(-1)``.
+		It can be thought of as the sum of a standard normal random variable
+		and an independent exponentially distributed random variable with rate
+		``1/K``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -2231,7 +2244,7 @@ package scipy.stats._continuous_distns;
 		``y = (x - loc) / scale``.
 		
 		An alternative parameterization of this distribution (for example, in
-		`Wikipedia <http://en.wikipedia.org/wiki/Exponentially_modified_Gaussian_distribution>`_)
+		`Wikipedia <https://en.wikipedia.org/wiki/Exponentially_modified_Gaussian_distribution>`_)
 		involves three parameters, :math:`\mu`, :math:`\lambda` and
 		:math:`\sigma`.
 		In the present parameterization this corresponds to having ``loc`` and
@@ -2340,11 +2353,11 @@ package scipy.stats._continuous_distns;
 		
 		    f(x, b) = b x^{b-1} \exp(1 + x^b - \exp(x^b))
 		
-		for :math:`x \ge 0`, :math:`b > 0``.  Note that this is a different
+		for :math:`x \ge 0`, :math:`b > 0`.  Note that this is a different
 		distribution from the exponential power distribution that is also known
 		under the names "generalized normal" or "generalized Gaussian".
 		
-		`exponpow` takes :math:`b` as a shape parameter.
+		`exponpow` takes ``b`` as a shape parameter for :math:`b`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -2456,7 +2469,7 @@ package scipy.stats._continuous_distns;
 		
 		    f(x, a, c) = a c (1-\exp(-x^c))^{a-1} \exp(-x^c) x^{c-1}
 		
-		for :math:`x > 0`, :math:`a > 0`, :math:`c > 0`.
+		for :math:`x >= 0`, :math:`a > 0`, :math:`c > 0`.
 		
 		`exponweib` takes :math:`a` and :math:`c` as shape parameters.
 		
@@ -2683,11 +2696,11 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, c) = \frac{x+1}{ 2c\sqrt{2\pi x^3} \exp(-\frac{(x-1)^2}{2x c^2}}
+		    f(x, c) = \frac{x+1}{2c\sqrt{2\pi x^3}} \exp(-\frac{(x-1)^2}{2x c^2})
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0` and :math:`c > 0`.
 		
-		`fatiguelife` takes :math:`c` as a shape parameter.
+		`fatiguelife` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -2698,7 +2711,7 @@ package scipy.stats._continuous_distns;
 		References
 		----------
 		.. [1] "Birnbaum-Saunders distribution",
-		       http://en.wikipedia.org/wiki/Birnbaum-Saunders_distribution
+		       https://en.wikipedia.org/wiki/Birnbaum-Saunders_distribution
 		
 		Examples
 		--------
@@ -2747,10 +2760,7 @@ package scipy.stats._continuous_distns;
 	/**
 		A Fisk continuous random variable.
 		
-		The Fisk distribution is also known as the log-logistic distribution, and
-		equals the Burr distribution with ``d == 1``.
-		
-		`fisk` takes :math:`c` as a shape parameter.
+		The Fisk distribution is also known as the log-logistic distribution.
 		
 		As an instance of the `rv_continuous` class, `fisk` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -2805,9 +2815,11 @@ package scipy.stats._continuous_distns;
 		
 		    f(x, c) = c x^{-c-1} (1 + x^{-c})^{-2}
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0` and :math:`c > 0`.
 		
-		`fisk` takes :math:`c` as a shape parameters.
+		`fisk` takes ``c`` as a shape parameter for :math:`c`.
+		
+		`fisk` is a special case of `burr` or `burr12` with ``d=1``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -2988,9 +3000,9 @@ package scipy.stats._continuous_distns;
 		
 		    f(x, c) = \frac{1}{\pi (1+(x-c)^2)} + \frac{1}{\pi (1+(x+c)^2)}
 		
-		for :math:`x \ge 0``.
+		for :math:`x \ge 0`.
 		
-		`foldcauchy` takes :math:`c` as a shape parameter.
+		`foldcauchy` takes ``c`` as a shape parameter for :math:`c`.
 		
 		Examples
 		--------
@@ -3094,7 +3106,7 @@ package scipy.stats._continuous_distns;
 		
 		for :math:`c \ge 0`.
 		
-		`foldnorm` takes :math:`c` as a shape parameter.
+		`foldnorm` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -3147,7 +3159,7 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function foldnorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		A frechet_l continuous random variable.
+		A Frechet left (or Weibull maximum) continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `frechet_l` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -3194,8 +3206,17 @@ package scipy.stats._continuous_distns;
 		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
+		See Also
+		--------
+		weibull_max : The same distribution as `frechet_l`.
+		
 		Notes
 		-----
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``frechet_l.pdf(x, c, loc, scale)`` is identically
+		equivalent to ``frechet_l.pdf(y, c) / scale`` with
+		``y = (x - loc) / scale``.
 		
 		Examples
 		--------
@@ -3205,7 +3226,7 @@ package scipy.stats._continuous_distns;
 		
 		Calculate a few first moments:
 		
-		>>> c = 
+		>>> c = 3.63
 		>>> mean, var, skew, kurt = frechet_l.stats(c, moments='mvsk')
 		
 		Display the probability density function (``pdf``):
@@ -3242,7 +3263,7 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function frechet_l(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		A frechet_r continuous random variable.
+		A Frechet right (or Weibull minimum) continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `frechet_r` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -3289,8 +3310,17 @@ package scipy.stats._continuous_distns;
 		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
+		See Also
+		--------
+		weibull_min : The same distribution as `frechet_r`.
+		
 		Notes
 		-----
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``frechet_r.pdf(x, c, loc, scale)`` is identically
+		equivalent to ``frechet_r.pdf(y, c) / scale`` with
+		``y = (x - loc) / scale``.
 		
 		Examples
 		--------
@@ -3300,7 +3330,7 @@ package scipy.stats._continuous_distns;
 		
 		Calculate a few first moments:
 		
-		>>> c = 
+		>>> c = 1.89
 		>>> mean, var, skew, kurt = frechet_r.stats(c, moments='mvsk')
 		
 		Display the probability density function (``pdf``):
@@ -3399,7 +3429,7 @@ package scipy.stats._continuous_distns;
 		for :math:`x \ge 0`, :math:`a > 0`. Here :math:`\Gamma(a)` refers to the
 		gamma function.
 		
-		`gamma` has a shape parameter `a` which needs to be set explicitly.
+		`gamma` takes ``a`` as a shape parameter for :math:`a`.
 		
 		When :math:`a` is an integer, `gamma` reduces to the Erlang
 		distribution, and when :math:`a=1` to the exponential distribution.
@@ -3511,7 +3541,9 @@ package scipy.stats._continuous_distns;
 		    f(x, a, b, c, z) = C x^{a-1} (1-x)^{b-1} (1+zx)^{-c}
 		
 		for :math:`0 \le x \le 1`, :math:`a > 0`, :math:`b > 0`, and
-		:math:`C = \frac{1}{B(a, b) F[2, 1](c, a; a+b; -z)}`
+		:math:`C = \frac{1}{B(a, b) F[2, 1](c, a; a+b; -z)}`.
+		:math:`F[2, 1]` is the Gauss hypergeometric function
+		`scipy.special.hyp2f1`.
 		
 		`gausshyper` takes :math:`a`, :math:`b`, :math:`c` and :math:`z` as shape
 		parameters.
@@ -3754,7 +3786,7 @@ package scipy.stats._continuous_distns;
 		Note that several sources and software packages use the opposite
 		convention for the sign of the shape parameter :math:`c`.
 		
-		`genextreme` takes :math:`c` as a shape parameter.
+		`genextreme` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -3860,9 +3892,10 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, a, c) = \frac{|c| x^{c a-1} \exp(-x^c)}{\gamma(a)}
+		    f(x, a, c) = \frac{|c| x^{c a-1} \exp(-x^c)}{\Gamma(a)}
 		
 		for :math:`x \ge 0`, :math:`a > 0`, and :math:`c \ne 0`.
+		:math:`\Gamma` is the gamma function (`scipy.special.gamma`).
 		
 		`gengamma` takes :math:`a` and :math:`c` as shape parameters.
 		
@@ -3974,7 +4007,7 @@ package scipy.stats._continuous_distns;
 		
 		for :math:`0 \le x \le 1/c`, and :math:`c > 0`.
 		
-		`genhalflogistic` takes :math:`c` as a shape parameter.
+		`genhalflogistic` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -4083,9 +4116,9 @@ package scipy.stats._continuous_distns;
 		    f(x, c) = c \frac{\exp(-x)}
 		                     {(1 + \exp(-x))^{c+1}}
 		
-		for :math:`x > 0`, :math:`c > 0`.
+		for :math:`x >= 0`, :math:`c > 0`.
 		
-		`genlogistic` takes :math:`c` as a shape parameter.
+		`genlogistic` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -4187,16 +4220,18 @@ package scipy.stats._continuous_distns;
 		
 		Notes
 		-----
-		The probability density function for `gennorm` is [1]_::
+		The probability density function for `gennorm` is [1]_:
 		
-		                                 beta
-		    gennorm.pdf(x, beta) =  ---------------  exp(-|x|**beta)
-		                            2 gamma(1/beta)
+		.. math::
 		
-		`gennorm` takes :math:`\beta` as a shape parameter.
+		    f(x, \beta) = \frac{\beta}{2 \Gamma(1/\beta)} \exp(-|x|^\beta)
+		
+		:math:`\Gamma` is the gamma function (`scipy.special.gamma`).
+		
+		`gennorm` takes ``beta`` as a shape parameter for :math:`\beta`.
 		For :math:`\beta = 1`, it is identical to a Laplace distribution.
-		For ``\beta = 2``, it is identical to a normal distribution
-		(with :math:`scale=1/\sqrt{2}`).
+		For :math:`\beta = 2`, it is identical to a normal distribution
+		(with ``scale=1/sqrt(2)``).
 		
 		See Also
 		--------
@@ -4312,20 +4347,20 @@ package scipy.stats._continuous_distns;
 		defined for :math:`x \ge 0` if :math:`c \ge 0`, and for
 		:math:`0 \le x \le -1/c` if :math:`c < 0`.
 		
-		`genpareto` takes :math:`c` as a shape parameter.
+		`genpareto` takes ``c`` as a shape parameter for :math:`c`.
 		
-		For ``c == 0``, `genpareto` reduces to the exponential
+		For :math:`c=0`, `genpareto` reduces to the exponential
 		distribution, `expon`:
 		
 		.. math::
 		
-		    f(x, c=0) = \exp(-x)
+		    f(x, 0) = \exp(-x)
 		
-		For ``c == -1``, `genpareto` is uniform on ``[0, 1]``:
+		For :math:`c=-1`, `genpareto` is uniform on ``[0, 1]``:
 		
 		.. math::
 		
-		    f(x, c=-1) = x
+		    f(x, -1) = 1
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -4453,7 +4488,7 @@ package scipy.stats._continuous_distns;
 		
 		    f(x) = \frac{1}{x \sqrt{2\pi}} \exp(-\frac{1}{2} (\log(x))^2)
 		
-		`gilbrat` is a special case of `lognorm` with ``s = 1``.
+		`gilbrat` is a special case of `lognorm` with ``s=1``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -4563,7 +4598,7 @@ package scipy.stats._continuous_distns;
 		
 		for :math:`x \ge 0`, :math:`c > 0`.
 		
-		`gompertz` takes :math:`c` as a shape parameter.
+		`gompertz` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -5005,12 +5040,15 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, \beta) = \frac{\beta}{\gamma(1/\beta)} \exp(-|x|^\beta)
+		    f(x, \beta) = \frac{\beta}{\Gamma(1/\beta)} \exp(-|x|^\beta)
 		
-		`gennorm` takes :math:`\beta` as a shape parameter.
+		for :math:`x > 0`. :math:`\Gamma` is the gamma function
+		(`scipy.special.gamma`).
+		
+		`gennorm` takes ``beta`` as a shape parameter for :math:`\beta`.
 		For :math:`\beta = 1`, it is identical to an exponential distribution.
 		For :math:`\beta = 2`, it is identical to a half normal distribution
-		(with :math:`scale=1/\sqrt{2}`).
+		(with ``scale=1/sqrt(2)``).
 		
 		See Also
 		--------
@@ -5122,7 +5160,8 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x) = \frac{ 2 e^{-x} }{ (1+e^{-x})^2 } = \frac{1}{2} sech(x/2)^2
+		    f(x) = \frac{ 2 e^{-x} }{ (1+e^{-x})^2 }
+		         = \frac{1}{2} \text{sech}(x/2)^2
 		
 		for :math:`x \ge 0`.
 		
@@ -5230,11 +5269,11 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x) = \sqrt{2/\pi} e^{-\frac{x^2}{2}}
+		    f(x) = \sqrt{2/\pi} \exp(-x^2 / 2)
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0`.
 		
-		`halfnorm` is a special case of :math`\chi` with ``df == 1``.
+		`halfnorm` is a special case of `chi` with ``df=1``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -5340,7 +5379,9 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x) = \frac{1}{\pi} sech(x)
+		    f(x) = \frac{1}{\pi} \text{sech}(x)
+		
+		for a real number :math:`x`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -5446,13 +5487,14 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, a) = \frac{x^{-a-1}}{\gamma(a)} \exp(-\frac{1}{x})
+		    f(x, a) = \frac{x^{-a-1}}{\Gamma(a)} \exp(-\frac{1}{x})
 		
-		for :math:`x > 0`, :math:`a > 0`.
+		for :math:`x >= 0`, :math:`a > 0`. :math:`\Gamma` is the gamma function
+		(`scipy.special.gamma`).
 		
-		`invgamma` takes :math:`a` as a shape parameter.
+		`invgamma` takes ``a`` as a shape parameter for :math:`a`.
 		
-		`invgamma` is a special case of `gengamma` with ``c == -1``.
+		`invgamma` is a special case of `gengamma` with ``c=-1``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -5561,9 +5603,9 @@ package scipy.stats._continuous_distns;
 		    f(x, \mu) = \frac{1}{\sqrt{2 \pi x^3}}
 		                \exp(-\frac{(x-\mu)^2}{2 x \mu^2})
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0` and :math:`\mu > 0`.
 		
-		`invgauss` takes :math:`\mu` as a shape parameter.
+		`invgauss` takes ``mu`` as a shape parameter for :math:`\mu`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -5678,9 +5720,9 @@ package scipy.stats._continuous_distns;
 		
 		    f(x, c) = c x^{-c-1} \exp(-x^{-c})
 		
-		for :math:`x > 0``, :math:`c > 0``.
+		for :math:`x > 0`, :math:`c > 0`.
 		
-		`invweibull` takes :math:`c`` as a shape parameter.
+		`invweibull` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -5797,7 +5839,7 @@ package scipy.stats._continuous_distns;
 		
 		    f(x, a, b) = \frac{b}{x(1-x)}  \phi(a + b \log \frac{x}{1-x} )
 		
-		for :math:`0 < x < 1` and :math:`a, b > 0`, and :math:`\phi` is the normal
+		for :math:`0 <= x < =1` and :math:`a, b > 0`, and :math:`\phi` is the normal
 		pdf.
 		
 		`johnsonsb` takes :math:`a` and :math:`b` as shape parameters.
@@ -6017,28 +6059,26 @@ package scipy.stats._continuous_distns;
 		
 		Notes
 		-----
-		The probability density function for `kappa` is:
+		The probability density function for `kappa3` is:
 		
 		.. math::
 		
-		    f(x, a) = \begin{cases}
-		                a [a + x^a]^{-(a + 1)/a},     &\text{for } x > 0\\
-		                0.0,                          &\text{for } x \le 0
-		              \end{cases}
+		    f(x, a) = a (a + x^a)^{-(a + 1)/a}
 		
-		`kappa3` takes :math:`a` as a shape parameter and :math:`a > 0`.
+		for :math:`x > 0` and :math:`a > 0`.
+		
+		`kappa3` takes ``a`` as a shape parameter for :math:`a`.
 		
 		References
 		----------
 		P.W. Mielke and E.S. Johnson, "Three-Parameter Kappa Distribution Maximum
 		Likelihood and Likelihood Ratio Tests", Methods in Weather Research,
 		701-707, (September, 1973),
-		http://docs.lib.noaa.gov/rescue/mwr/101/mwr-101-09-0701.pdf
+		https://doi.org/10.1175/1520-0493(1973)101<0701:TKDMLE>2.3.CO;2
 		
 		B. Kumphon, "Maximum Entropy and Maximum Likelihood Estimation for the
 		Three-Parameter Kappa Distribution", Open Journal of Statistics, vol 2,
-		415-419 (2012)
-		http://file.scirp.org/pdf/OJS20120400011_95789012.pdf
+		415-419 (2012), https://doi.org/10.4236/ojs.2012.24050
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -6193,7 +6233,7 @@ package scipy.stats._continuous_distns;
 		    The "fifth" one is the one kappa4 should match which currently
 		    isn't implemented in scipy:
 		    https://en.wikipedia.org/wiki/Talk:Generalized_logistic_distribution
-		    http://www.mathwave.com/help/easyfit/html/analyses/distributions/gen_logistic.html
+		    https://www.mathwave.com/help/easyfit/html/analyses/distributions/gen_logistic.html
 		(2) This distribution is currently not in scipy.
 		
 		References
@@ -6202,7 +6242,7 @@ package scipy.stats._continuous_distns;
 		to the Kolmogorov-Smirnov Test", A Dissertation Submitted to the Graduate
 		Faculty of the Louisiana State University and Agricultural and Mechanical
 		College, (August, 2004),
-		http://digitalcommons.lsu.edu/cgi/viewcontent.cgi?article=4671&context=gradschool_dissertations
+		https://digitalcommons.lsu.edu/gradschool_dissertations/3672
 		
 		J.R.M. Hosking, "The four-parameter kappa distribution". IBM J. Res.
 		Develop. 38 (3), 25 1-258 (1994).
@@ -6210,7 +6250,7 @@ package scipy.stats._continuous_distns;
 		B. Kumphon, A. Kaew-Man, P. Seenoi, "A Rainfall Distribution for the Lampao
 		Site in the Chi River Basin, Thailand", Journal of Water Resource and
 		Protection, vol. 4, 866-869, (2012).
-		http://file.scirp.org/pdf/JWARP20121000009_14676002.pdf
+		https://doi.org/10.4236/jwarp.2012.410101
 		
 		C. Winchester, "On Estimation of the Four-Parameter Kappa Distribution", A
 		Thesis Submitted to Dalhousie University, Halifax, Nova Scotia, (March
@@ -6270,6 +6310,10 @@ package scipy.stats._continuous_distns;
 	/**
 		General Kolmogorov-Smirnov one-sided test.
 		
+		This is the distribution of the one-sided Kolmogorov-Smirnov (KS)
+		statistics :math:`D_n^+` and :math:`D_n^-`
+		for a finite sample size ``n`` (the shape parameter).
+		
 		As an instance of the `rv_continuous` class, `ksone` object inherits from it
 		a collection of generic methods (see below for the full list),
 		and completes them with details specific for this particular distribution.
@@ -6314,6 +6358,36 @@ package scipy.stats._continuous_distns;
 		    Standard deviation of the distribution.
 		interval(alpha, n, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		:math:`D_n^+` and :math:`D_n^-` are given by
+		
+		.. math::
+		
+		    D_n^+ &= \text{sup}_x (F_n(x) - F(x)),\\
+		    D_n^- &= \text{sup}_x (F(x) - F_n(x)),\\
+		
+		where :math:`F` is a CDF and :math:`F_n` is an empirical CDF. `ksone`
+		describes the distribution under the null hypothesis of the KS test
+		that the empirical CDF corresponds to :math:`n` i.i.d. random variates
+		with CDF :math:`F`.
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``ksone.pdf(x, n, loc, scale)`` is identically
+		equivalent to ``ksone.pdf(y, n) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		See Also
+		--------
+		kstwobign, kstest
+		
+		References
+		----------
+		.. [1] Birnbaum, Z. W. and Tingey, F.H. "One-sided confidence contours
+		   for probability distribution functions", The Annals of Mathematical
+		   Statistics, 22(4), pp 592-596 (1951).
 		
 		Examples
 		--------
@@ -6362,6 +6436,10 @@ package scipy.stats._continuous_distns;
 	/**
 		Kolmogorov-Smirnov two-sided test for large N.
 		
+		This is the asymptotic distribution of the two-sided Kolmogorov-Smirnov
+		statistic :math:`\sqrt{n} D_n` that measures the maximum absolute
+		distance of the theoretical CDF from the empirical CDF (see `kstest`).
+		
 		As an instance of the `rv_continuous` class, `kstwobign` object inherits from it
 		a collection of generic methods (see below for the full list),
 		and completes them with details specific for this particular distribution.
@@ -6406,6 +6484,34 @@ package scipy.stats._continuous_distns;
 		    Standard deviation of the distribution.
 		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		:math:`\sqrt{n} D_n` is given by
+		
+		.. math::
+		
+		    D_n = \text{sup}_x |F_n(x) - F(x)|
+		
+		where :math:`F` is a CDF and :math:`F_n` is an empirical CDF. `kstwobign`
+		describes the asymptotic distribution (i.e. the limit of
+		:math:`\sqrt{n} D_n`) under the null hypothesis of the KS test that the
+		empirical CDF corresponds to i.i.d. random variates with CDF :math:`F`.
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``kstwobign.pdf(x, loc, scale)`` is identically
+		equivalent to ``kstwobign.pdf(y) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		See Also
+		--------
+		ksone, kstest
+		
+		References
+		----------
+		.. [1] Marsaglia, G. et al. "Evaluating Kolmogorov's distribution",
+		   Journal of Statistical Software, 8(18), 2003.
 		
 		Examples
 		--------
@@ -6501,11 +6607,13 @@ package scipy.stats._continuous_distns;
 		
 		Notes
 		-----
-		The probability density function for `laplace` is:
+		The probability density function for `laplace` is
 		
 		.. math::
 		
 		    f(x) = \frac{1}{2} \exp(-|x|)
+		
+		for a real number :math:`x`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -6615,9 +6723,9 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x) = \frac{1}{x \sqrt{2\pi x}) \exp(-\frac{1}{2x}}
+		    f(x) = \frac{1}{\sqrt{2\pi x^3}} \exp\left(-\frac{1}{2x}\right)
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0`.
 		
 		This is the same as the Levy-stable distribution with :math:`a=1/2` and
 		:math:`b=1`.
@@ -6729,10 +6837,9 @@ package scipy.stats._continuous_distns;
 		The probability density function for `levy_l` is:
 		
 		.. math::
+		    f(x) = \frac{1}{|x| \sqrt{2\pi |x|}} \exp{ \left(-\frac{1}{2|x|} \right)}
 		
-		    f(x) = \frac{1}{|x| \sqrt{2\pi |x|}} \exp(-\frac{1}{2 |x|})
-		
-		for :math:`x < 0`.
+		for :math:`x <= 0`.
 		
 		This is the same as the Levy-stable distribution with :math:`a=1/2` and
 		:math:`b=-1`.
@@ -6841,8 +6948,120 @@ package scipy.stats._continuous_distns;
 		
 		Notes
 		-----
-		Levy-stable distribution (only random variates available -- ignore other
-		docs)
+		The distribution for `levy_stable` has characteristic function:
+		
+		.. math::
+		
+		    \varphi(t, \alpha, \beta, c, \mu) =
+		    e^{it\mu -|ct|^{\alpha}(1-i\beta \operatorname{sign}(t)\Phi(\alpha, t))}
+		
+		where:
+		
+		.. math::
+		
+		    \Phi = \begin{cases}
+		            \tan \left({\frac {\pi \alpha }{2}}\right)&\alpha \neq 1\\
+		            -{\frac {2}{\pi }}\log |t|&\alpha =1
+		            \end{cases}
+		
+		The probability density function for `levy_stable` is:
+		
+		.. math::
+		
+		    f(x) = \frac{1}{2\pi}\int_{-\infty}^\infty \varphi(t)e^{-ixt}\,dt
+		
+		where :math:`-\infty < t < \infty`. This integral does not have a known closed form.
+		
+		For evaluation of pdf we use either Zolotarev :math:`S_0` parameterization with integration,
+		direct integration of standard parameterization of characteristic function or FFT of
+		characteristic function. If set to other than None and if number of points is greater than
+		``levy_stable.pdf_fft_min_points_threshold`` (defaults to None) we use FFT otherwise we use one
+		of the other methods.
+		
+		The default method is 'best' which uses Zolotarev's method if alpha = 1 and integration of
+		characteristic function otherwise. The default method can be changed by setting
+		``levy_stable.pdf_default_method`` to either 'zolotarev', 'quadrature' or 'best'.
+		
+		To increase accuracy of FFT calculation one can specify ``levy_stable.pdf_fft_grid_spacing``
+		(defaults to 0.001) and ``pdf_fft_n_points_two_power`` (defaults to a value that covers the
+		input range * 4). Setting ``pdf_fft_n_points_two_power`` to 16 should be sufficiently accurate
+		in most cases at the expense of CPU time.
+		
+		For evaluation of cdf we use Zolatarev :math:`S_0` parameterization with integration or integral of
+		the pdf FFT interpolated spline. The settings affecting FFT calculation are the same as
+		for pdf calculation. Setting the threshold to ``None`` (default) will disable FFT. For cdf
+		calculations the Zolatarev method is superior in accuracy, so FFT is disabled by default.
+		
+		Fitting estimate uses quantile estimation method in [MC]. MLE estimation of parameters in
+		fit method uses this quantile estimate initially. Note that MLE doesn't always converge if
+		using FFT for pdf calculations; so it's best that ``pdf_fft_min_points_threshold`` is left unset.
+		
+		.. warning::
+		
+		    For pdf calculations implementation of Zolatarev is unstable for values where alpha = 1 and
+		    beta != 0. In this case the quadrature method is recommended. FFT calculation is also
+		    considered experimental.
+		
+		    For cdf calculations FFT calculation is considered experimental. Use Zolatarev's method
+		    instead (default).
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``levy_stable.pdf(x, alpha, beta, loc, scale)`` is identically
+		equivalent to ``levy_stable.pdf(y, alpha, beta) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		References
+		----------
+		.. [MC] McCulloch, J., 1986. Simple consistent estimators of stable distribution parameters.
+		   Communications in Statistics - Simulation and Computation 15, 11091136.
+		.. [MS] Mittnik, S.T. Rachev, T. Doganoglu, D. Chenyao, 1999. Maximum likelihood estimation
+		   of stable Paretian models, Mathematical and Computer Modelling, Volume 29, Issue 10,
+		   1999, Pages 275-293.
+		.. [BS] Borak, S., Hardle, W., Rafal, W. 2005. Stable distributions, Economic Risk.
+		
+		Examples
+		--------
+		>>> from scipy.stats import levy_stable
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> alpha, beta = 1.8, -0.5
+		>>> mean, var, skew, kurt = levy_stable.stats(alpha, beta, moments='mvsk')
+		
+		Display the probability density function (``pdf``):
+		
+		>>> x = np.linspace(levy_stable.ppf(0.01, alpha, beta),
+		...                 levy_stable.ppf(0.99, alpha, beta), 100)
+		>>> ax.plot(x, levy_stable.pdf(x, alpha, beta),
+		...        'r-', lw=5, alpha=0.6, label='levy_stable pdf')
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape, location and scale parameters. This returns a "frozen"
+		RV object holding the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pdf``:
+		
+		>>> rv = levy_stable(alpha, beta)
+		>>> ax.plot(x, rv.pdf(x), 'k-', lw=2, label='frozen pdf')
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> vals = levy_stable.ppf([0.001, 0.5, 0.999], alpha, beta)
+		>>> np.allclose([0.001, 0.5, 0.999], levy_stable.cdf(vals, alpha, beta))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = levy_stable.rvs(alpha, beta, size=1000)
+		
+		And compare the histogram:
+		
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
 	**/
 	static public function levy_stable(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -6900,11 +7119,12 @@ package scipy.stats._continuous_distns;
 		.. math::
 		
 		    f(x, c) = \frac{\exp(c x - \exp(x))}
-		                   {\gamma(c)}
+		                   {\Gamma(c)}
 		
-		for all :math:`x, c > 0`.
+		for all :math:`x, c > 0`. Here, :math:`\Gamma` is the
+		gamma function (`scipy.special.gamma`).
 		
-		`loggamma` takes :math:`c` as a shape parameter.
+		`loggamma` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -7011,9 +7231,9 @@ package scipy.stats._continuous_distns;
 		.. math::
 		
 		    f(x) = \frac{\exp(-x)}
-		                {(1+exp(-x))^2}
+		                {(1+\exp(-x))^2}
 		
-		`logistic` is a special case of `genlogistic` with ``c == 1``.
+		`logistic` is a special case of `genlogistic` with ``c=1``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -7123,9 +7343,9 @@ package scipy.stats._continuous_distns;
 		                           \frac{c}{2} x^{-c-1}  &\text{for } x \ge 1
 		              \end{cases}
 		
-		for ``c > 0``.
+		for :math:`c > 0`.
 		
-		`loglaplace` takes ``c`` as a shape parameter.
+		`loglaplace` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -7237,11 +7457,11 @@ package scipy.stats._continuous_distns;
 		.. math::
 		
 		    f(x, s) = \frac{1}{s x \sqrt{2\pi}}
-		              \exp(-\frac{1}{2} (\frac{\log(x)}{s})^2)
+		              \exp\left(-\frac{\log^2(x)}{2s^2}\right)
 		
-		for ``x > 0``, ``s > 0``.
+		for :math:`x > 0`, :math:`s > 0`.
 		
-		`lognorm` takes ``s`` as a shape parameter.
+		`lognorm` takes ``s`` as a shape parameter for :math:`s`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -7349,18 +7569,17 @@ package scipy.stats._continuous_distns;
 		
 		Notes
 		-----
-		The Lomax distribution is a special case of the Pareto distribution, with
-		(loc=-1.0).
-		
 		The probability density function for `lomax` is:
 		
 		.. math::
 		
 		    f(x, c) = \frac{c}{(1+x)^{c+1}}
 		
-		for :math:`x \ge 0`, ``c > 0``.
+		for :math:`x \ge 0`, :math:`c > 0`.
 		
-		`lomax` takes :math:`c` as a shape parameter.
+		`lomax` takes ``c`` as a shape parameter for :math:`c`.
+		
+		`lomax` is a special case of `pareto` with ``loc=-1.0``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -7462,7 +7681,7 @@ package scipy.stats._continuous_distns;
 		
 		Notes
 		-----
-		A special case of a `chi` distribution,  with ``df = 3``, ``loc = 0.0``,
+		A special case of a `chi` distribution,  with ``df=3``, ``loc=0.0``,
 		and given ``scale = a``, where ``a`` is the parameter used in the
 		Mathworld description [1]_.
 		
@@ -7472,7 +7691,7 @@ package scipy.stats._continuous_distns;
 		
 		    f(x) = \sqrt{2/\pi}x^2 \exp(-x^2/2)
 		
-		for ``x > 0``.
+		for :math:`x >= 0`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -7529,7 +7748,7 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function maxwell(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		A Mielke's Beta-Kappa continuous random variable.
+		A Mielke Beta-Kappa continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `mielke` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -7584,7 +7803,7 @@ package scipy.stats._continuous_distns;
 		
 		    f(x, k, s) = \frac{k x^{k-1}}{(1+x^s)^{1+k/s}}
 		
-		for ``x > 0``.
+		for :math:`x >= 0` and :math:`k, s > 0`.
 		
 		`mielke` takes ``k`` and ``s`` as shape parameters.
 		
@@ -7594,6 +7813,11 @@ package scipy.stats._continuous_distns;
 		equivalent to ``mielke.pdf(y, k, s) / scale`` with
 		``y = (x - loc) / scale``.
 		
+		References
+		----------
+		.. [1] Mielke, P.W., 1973 "Another Family of Distributions for Describing
+		       and Analyzing Precipitation Data." J. Appl. Meteor., 12, 275-280
+		
 		Examples
 		--------
 		>>> from scipy.stats import mielke
@@ -7602,7 +7826,7 @@ package scipy.stats._continuous_distns;
 		
 		Calculate a few first moments:
 		
-		>>> k, s = 10.4, 3.6
+		>>> k, s = 10.4, 4.6
 		>>> mean, var, skew, kurt = mielke.stats(k, s, moments='mvsk')
 		
 		Display the probability density function (``pdf``):
@@ -7694,6 +7918,8 @@ package scipy.stats._continuous_distns;
 		
 		    f(x) = \exp(-(x + \exp(-x))/2) / \sqrt{2\pi}
 		
+		for a real number :math:`x`.
+		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``moyal.pdf(x, loc, scale)`` is identically
@@ -7711,7 +7937,7 @@ package scipy.stats._continuous_distns;
 		.. [1] J.E. Moyal, "XXX. Theory of ionization fluctuations",
 		       The London, Edinburgh, and Dublin Philosophical Magazine
 		       and Journal of Science, vol 46, 263-280, (1955).
-		       https://doi.org/10.1080/14786440308521076 (gated)
+		       :doi:`10.1080/14786440308521076` (gated)
 		.. [2] G. Cordeiro et al., "The beta Moyal: a useful skew distribution",
 		       International Journal of Research and Reviews in Applied Sciences,
 		       vol 10, 171-192, (2012).
@@ -7719,7 +7945,7 @@ package scipy.stats._continuous_distns;
 		.. [3] C. Walck, "Handbook on Statistical Distributions for
 		       Experimentalists; International Report SUF-PFY/96-01", Chapter 26,
 		       University of Stockholm: Stockholm, Sweden, (2007).
-		       www.stat.rice.edu/~dobelman/textfiles/DistributionsHandbook.pdf
+		       http://www.stat.rice.edu/~dobelman/textfiles/DistributionsHandbook.pdf
 		
 		.. versionadded:: 1.1.0
 		
@@ -7821,11 +8047,11 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, nu) = \frac{2 \nu^\nu}{\Gamma(\nu)} x^{2\nu-1} \exp(-\nu x^2)
+		    f(x, \nu) = \frac{2 \nu^\nu}{\Gamma(\nu)} x^{2\nu-1} \exp(-\nu x^2)
 		
-		for ``x > 0``, ``nu > 0``.
+		for :math:`x >= 0`, :math:`\nu > 0`.
 		
-		`nakagami` takes ``nu`` as a shape parameter.
+		`nakagami` takes ``nu`` as a shape parameter for :math:`\nu`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -7938,7 +8164,7 @@ package scipy.stats._continuous_distns;
 		                      \gamma(n_1/2) \gamma(1+n_2/2) \\
 		                     \frac{L^{\frac{v_1}{2}-1}_{v_2/2}
 		                           (-\lambda v_1 \frac{x}{2(v_1 x+v_2)})}
-		                          {(B(v_1/2, v_2/2)  \gamma(\frac{v_1+v_2}{2})}
+		                          {B(v_1/2, v_2/2)  \gamma(\frac{v_1+v_2}{2})}
 		
 		for :math:`n_1 > 1`, :math:`n_2, \lambda > 0`.  Here :math:`n_1` is the
 		degrees of freedom in the numerator, :math:`n_2` the degrees of freedom in
@@ -7999,7 +8225,7 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function ncf(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		A non-central Student's T continuous random variable.
+		A non-central Student's t continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `nct` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -8048,16 +8274,18 @@ package scipy.stats._continuous_distns;
 		
 		Notes
 		-----
-		The probability density function for `nct` is:
+		If :math:`Y` is a standard normal random variable and :math:`V` is
+		an independent chi-square random variable (`chi2`) with :math:`k` degrees
+		of freedom, then
 		
 		.. math::
 		
-		    f(x, df, nc) = \frac{df^{df/2} \gamma(df+1)}{2^{df}
-		                   \exp(nc^2 / 2) (df+x^2)^{df/2} \gamma(df/2)}
+		    X = \frac{Y + c}{\sqrt{V/k}}
 		
-		for ``df > 0``.
-		
-		`nct` takes ``df`` and ``nc`` as shape parameters.
+		has a non-central Student's t distribution on the real line.
+		The degrees of freedom parameter :math:`k` (denoted ``df`` in the
+		implementation) satisfies :math:`k > 0` and the noncentrality parameter
+		:math:`c` (denoted ``nct`` in the implementation) is a real number.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -8163,10 +8391,14 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, df, nc) = \exp(-\frac{nc+x}{2}) \frac{1}{2} (x/nc)^{(df-2)/4}
-		                   I[(df-2)/2](\sqrt{nc x})
+		    f(x, k, \lambda) = \frac{1}{2} \exp(-(\lambda+x)/2)
+		        (x/\lambda)^{(k-2)/4}  I_{(k-2)/2}(\sqrt{\lambda x})
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0` and :math:`k, \lambda > 0`. :math:`k` specifies the
+		degrees of freedom (denoted ``df`` in the implementation) and
+		:math:`\lambda` is the non-centrality parameter (denoted ``nc`` in the
+		implementation). :math:`I_\nu` denotes the modified Bessel function of
+		first order of degree :math:`\nu` (`scipy.special.iv`).
 		
 		`ncx2` takes ``df`` and ``nc`` as shape parameters.
 		
@@ -8223,8 +8455,8 @@ package scipy.stats._continuous_distns;
 	/**
 		A normal continuous random variable.
 		
-		The location (loc) keyword specifies the mean.
-		The scale (scale) keyword specifies the standard deviation.
+		The location (``loc``) keyword specifies the mean.
+		The scale (``scale``) keyword specifies the standard deviation.
 		
 		As an instance of the `rv_continuous` class, `norm` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -8279,9 +8511,7 @@ package scipy.stats._continuous_distns;
 		
 		    f(x) = \frac{\exp(-x^2/2)}{\sqrt{2\pi}}
 		
-		The survival function, ``norm.sf``, is also referred to as the
-		Q-function in some contexts (see, e.g.,
-		`Wikipedia's <https://en.wikipedia.org/wiki/Q-function>`_ definition).
+		for a real number :math:`x`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -8387,12 +8617,14 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x; a, b) = (a \exp(\sqrt{a^2 - b^2} + b x)) /
-		                 (\pi \sqrt{1 + x^2} \, K_1(a * \sqrt{1 + x^2}))
+		    f(x, a, b) = (a \exp(\sqrt{a^2 - b^2} + b x)) /
+		                 (\pi \sqrt{1 + x^2} \, K_1(a \sqrt{1 + x^2}))
 		
-		where `x` is a real number, the parameter `a` is the tail heaviness
-		and `b` is the asymmetry parameter satisfying `a > 0` and `abs(b) <= a`.
-		`K_1` is the modified Bessel function of second kind (`scipy.special.k1`).
+		where :math:`x` is a real number, the parameter :math:`a` is the tail
+		heaviness and :math:`b` is the asymmetry parameter satisfying
+		:math:`a > 0` and :math:`|b| <= a`.
+		:math:`K_1` is the modified Bessel function of second kind
+		(`scipy.special.k1`).
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -8400,9 +8632,10 @@ package scipy.stats._continuous_distns;
 		equivalent to ``norminvgauss.pdf(y, a, b) / scale`` with
 		``y = (x - loc) / scale``.
 		
-		A normal inverse Gaussian random variable with parameters `a` and `b` can
-		be expressed  as `X = b * V + sqrt(V) * X` where `X` is `norm(0,1)`
-		and `V` is `invgauss(mu=1/sqrt(a**2 - b**2))`. This representation is used
+		A normal inverse Gaussian random variable `Y` with parameters `a` and `b`
+		can be expressed as a normal mean-variance mixture:
+		`Y = b * V + sqrt(V) * X` where `X` is `norm(0,1)` and `V` is
+		`invgauss(mu=1/sqrt(a**2 - b**2))`. This representation is used
 		to generate random variates.
 		
 		References
@@ -8413,7 +8646,7 @@ package scipy.stats._continuous_distns;
 		
 		O. Barndorff-Nielsen, "Normal Inverse Gaussian Distributions and Stochastic
 		Volatility Modelling", Scandinavian Journal of Statistics, Vol. 24,
-		pp. 1–13, 1997.
+		pp. 1-13, 1997.
 		
 		Examples
 		--------
@@ -8518,7 +8751,7 @@ package scipy.stats._continuous_distns;
 		
 		for :math:`x \ge 1`, :math:`b > 0`.
 		
-		`pareto` takes :math:`b` as a shape parameter.
+		`pareto` takes ``b`` as a shape parameter for :math:`b`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -8624,8 +8857,9 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, skew) = \frac{|\beta|}{\gamma(\alpha)}
-		                 (\beta (x - \zeta))^{alpha - 1} \exp(-\beta (x - \zeta))
+		    f(x, skew) = \frac{|\beta|}{\Gamma(\alpha)}
+		                 (\beta (x - \zeta))^{\alpha - 1}
+		                 \exp(-\beta (x - \zeta))
 		
 		where:
 		
@@ -8635,7 +8869,8 @@ package scipy.stats._continuous_distns;
 		        \alpha = (stddev \beta)^2
 		        \zeta = loc - \frac{\alpha}{\beta}
 		
-		`pearson3` takes ``skew`` as a shape parameter.
+		:math:`\Gamma` is the gamma function (`scipy.special.gamma`).
+		`pearson3` takes ``skew`` as a shape parameter for :math:`skew`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -8758,7 +8993,7 @@ package scipy.stats._continuous_distns;
 		
 		for :math:`0 \le x \le 1`, :math:`a > 0`.
 		
-		`powerlaw` takes :math:`a` as a shape parameter.
+		`powerlaw` takes ``a`` as a shape parameter for :math:`a`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -8766,7 +9001,7 @@ package scipy.stats._continuous_distns;
 		equivalent to ``powerlaw.pdf(y, a) / scale`` with
 		``y = (x - loc) / scale``.
 		
-		`powerlaw` is a special case of `beta` with ``b == 1``.
+		`powerlaw` is a special case of `beta` with ``b=1``.
 		
 		Examples
 		--------
@@ -8981,9 +9216,9 @@ package scipy.stats._continuous_distns;
 		    f(x, c) = c \phi(x) (\Phi(-x))^{c-1}
 		
 		where :math:`\phi` is the normal pdf, and :math:`\Phi` is the normal cdf,
-		and :math:`x > 0`, :math:`c > 0`.
+		and :math:`x >= 0`, :math:`c > 0`.
 		
-		`powernorm` takes :math:`c` as a shape parameter.
+		`powernorm` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -9090,11 +9325,11 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(r) = r \exp(-r^2/2)
+		    f(x) = x \exp(-x^2/2)
 		
 		for :math:`x \ge 0`.
 		
-		`rayleigh` is a special case of `chi` with ``df == 2``.
+		`rayleigh` is a special case of `chi` with ``df=2``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -9204,7 +9439,7 @@ package scipy.stats._continuous_distns;
 		
 		for :math:`-1 \le x \le 1`, :math:`c > 0`.
 		
-		`rdist` takes :math:`c` as a shape parameter.
+		`rdist` takes ``c`` as a shape parameter for :math:`c`.
 		
 		This distribution includes the following distribution kernels as
 		special cases::
@@ -9318,11 +9553,12 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, \mu) = \frac{1}{\sqrt{2\pi x}} \frac{\exp(-(1-\mu x)^2}{2x\mu^2)}
+		    f(x, \mu) = \frac{1}{\sqrt{2\pi x}}
+		                \exp\left(\frac{-(1-\mu x)^2}{2\mu^2x}\right)
 		
 		for :math:`x \ge 0`.
 		
-		`recipinvgauss` takes :math:`\mu` as a shape parameter.
+		`recipinvgauss` takes ``mu`` as a shape parameter for :math:`\mu`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -9430,7 +9666,7 @@ package scipy.stats._continuous_distns;
 		
 		    f(x, a, b) = \frac{1}{x \log(b/a)}
 		
-		for :math:`a \le x \le b`, :math:`a, b > 0`.
+		for :math:`a \le x \le b`, :math:`b > a > 0`.
 		
 		`reciprocal` takes :math:`a` and :math:`b` as shape parameters.
 		
@@ -9545,11 +9781,12 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, b) = x \exp(- \frac{x^2 + b^2}{2}) I[0](x b)
+		    f(x, b) = x \exp(- \frac{x^2 + b^2}{2}) I_0(x b)
 		
-		for :math:`x > 0`, :math:`b > 0`.
+		for :math:`x >= 0`, :math:`b > 0`. :math:`I_0` is the modified Bessel
+		function of order zero (`scipy.special.i0`).
 		
-		`rice` takes :math:`b` as a shape parameter.
+		`rice` takes ``b`` as a shape parameter for :math:`b`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -9769,9 +10006,9 @@ package scipy.stats._continuous_distns;
 		
 		    skewnorm.pdf(x, a) = 2 * norm.pdf(x) * norm.cdf(a*x)
 		
-		`skewnorm` takes :math:`a` as a skewness parameter
-		When ``a = 0`` the distribution is identical to a normal distribution.
-		rvs implements the method of [1]_.
+		`skewnorm` takes a real number :math:`a` as a skewness parameter
+		When ``a = 0`` the distribution is identical to a normal distribution
+		(`norm`). `rvs` implements the method of [1]_.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -9831,7 +10068,7 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function skewnorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		A Student's T continuous random variable.
+		A Student's t continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `t` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -9884,12 +10121,14 @@ package scipy.stats._continuous_distns;
 		
 		.. math::
 		
-		    f(x, df) = \frac{\gamma((df+1)/2)}
-		                    {\sqrt{\pi*df} \gamma(df/2) (1+x^2/df)^{(df+1)/2}}
+		    f(x, \nu) = \frac{\Gamma((\nu+1)/2)}
+		                    {\sqrt{\pi \nu} \Gamma(\nu)}
+		                (1+x^2/\nu)^{-(\nu+1)/2}
 		
-		for ``df > 0``.
-		
-		`t` takes ``df`` as a shape parameter.
+		where :math:`x` is a real number and the degrees of freedom parameter
+		:math:`\nu` (denoted ``df`` in the implementation) satisfies
+		:math:`\nu > 0`. :math:`\Gamma` is the gamma function
+		(`scipy.special.gamma`).
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -10103,9 +10342,9 @@ package scipy.stats._continuous_distns;
 		-----
 		The triangular distribution can be represented with an up-sloping line from
 		``loc`` to ``(loc + c*scale)`` and then downsloping for ``(loc + c*scale)``
-		to ``(loc+scale)``.
+		to ``(loc + scale)``.
 		
-		`triang` takes :math:`c` as a shape parameter.
+		`triang` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -10217,9 +10456,9 @@ package scipy.stats._continuous_distns;
 		
 		    f(x, b) = \frac{\exp(-x)}{1 - \exp(-b)}
 		
-		for :math:`0 < x < b`.
+		for :math:`0 <= x <= b`.
 		
-		`truncexpon` takes :math:`b` as a shape parameter.
+		`truncexpon` takes ``b`` as a shape parameter for :math:`b`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -10433,13 +10672,13 @@ package scipy.stats._continuous_distns;
 		A flexible distribution, able to represent and interpolate between the
 		following distributions:
 		
-		- Cauchy                (lam=-1)
-		- logistic              (lam=0.0)
-		- approx Normal         (lam=0.14)
-		- u-shape               (lam = 0.5)
-		- uniform from -1 to 1  (lam = 1)
+		- Cauchy                (:math:`lambda = -1`)
+		- logistic              (:math:`lambda = 0`)
+		- approx Normal         (:math:`lambda = 0.14`)
+		- uniform from -1 to 1  (:math:`lambda = 1`)
 		
-		`tukeylambda` takes ``lam`` as a shape parameter.
+		`tukeylambda` takes a real number :math:`lambda` (denoted ``lam``
+		in the implementation) as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -10494,7 +10733,9 @@ package scipy.stats._continuous_distns;
 	/**
 		A uniform continuous random variable.
 		
-		This distribution is constant between `loc` and ``loc + scale``.
+		In the standard form, the distribution is uniform on ``[0, 1]``. Using
+		the parameters ``loc`` and ``scale``, one obtains the uniform distribution
+		on ``[loc, loc + scale]``.
 		
 		As an instance of the `rv_continuous` class, `uniform` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -10640,29 +10881,30 @@ package scipy.stats._continuous_distns;
 		
 		Notes
 		-----
-		If `x` is not in range or `loc` is not in range it assumes they are angles
-		and converts them to [-\pi, \pi] equivalents.
-		
-		The probability density function for `vonmises` is:
+		The probability density function for `vonmises` and `vonmises_line` is:
 		
 		.. math::
 		
-		    f(x, \kappa) = \frac{ \exp(\kappa \cos(x)) }{ 2 \pi I[0](\kappa) }
+		    f(x, \kappa) = \frac{ \exp(\kappa \cos(x)) }{ 2 \pi I_0(\kappa) }
 		
-		for :math:`-\pi \le x \le \pi`, :math:`\kappa > 0`.
+		for :math:`-\pi \le x \le \pi`, :math:`\kappa > 0`. :math:`I_0` is the
+		modified Bessel function of order zero (`scipy.special.i0`).
 		
-		`vonmises` takes :math:`\kappa` as a shape parameter.
+		`vonmises` is a circular distribution which does not restrict the
+		distribution to a fixed interval. Currently, there is no circular
+		distribution framework in scipy. The ``cdf`` is implemented such that
+		``cdf(x + 2*np.pi) == cdf(x) + 1``.
+		
+		`vonmises_line` is the same distribution, defined on :math:`[-\pi, \pi]`
+		on the real line. This is a regular (i.e. non-circular) distribution.
+		
+		`vonmises` and `vonmises_line` take ``kappa`` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``vonmises.pdf(x, kappa, loc, scale)`` is identically
 		equivalent to ``vonmises.pdf(y, kappa) / scale`` with
 		``y = (x - loc) / scale``.
-		
-		See Also
-		--------
-		vonmises_line : The same distribution, defined on a [-\pi, \pi] segment
-		                of the real line.
 		
 		Examples
 		--------
@@ -10758,29 +11000,30 @@ package scipy.stats._continuous_distns;
 		
 		Notes
 		-----
-		If `x` is not in range or `loc` is not in range it assumes they are angles
-		and converts them to [-\pi, \pi] equivalents.
-		
-		The probability density function for `vonmises` is:
+		The probability density function for `vonmises` and `vonmises_line` is:
 		
 		.. math::
 		
-		    f(x, \kappa) = \frac{ \exp(\kappa \cos(x)) }{ 2 \pi I[0](\kappa) }
+		    f(x, \kappa) = \frac{ \exp(\kappa \cos(x)) }{ 2 \pi I_0(\kappa) }
 		
-		for :math:`-\pi \le x \le \pi`, :math:`\kappa > 0`.
+		for :math:`-\pi \le x \le \pi`, :math:`\kappa > 0`. :math:`I_0` is the
+		modified Bessel function of order zero (`scipy.special.i0`).
 		
-		`vonmises` takes :math:`\kappa` as a shape parameter.
+		`vonmises` is a circular distribution which does not restrict the
+		distribution to a fixed interval. Currently, there is no circular
+		distribution framework in scipy. The ``cdf`` is implemented such that
+		``cdf(x + 2*np.pi) == cdf(x) + 1``.
+		
+		`vonmises_line` is the same distribution, defined on :math:`[-\pi, \pi]`
+		on the real line. This is a regular (i.e. non-circular) distribution.
+		
+		`vonmises` and `vonmises_line` take ``kappa`` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``vonmises_line.pdf(x, kappa, loc, scale)`` is identically
 		equivalent to ``vonmises_line.pdf(y, kappa) / scale`` with
 		``y = (x - loc) / scale``.
-		
-		See Also
-		--------
-		vonmises_line : The same distribution, defined on a [-\pi, \pi] segment
-		                of the real line.
 		
 		Examples
 		--------
@@ -10882,9 +11125,9 @@ package scipy.stats._continuous_distns;
 		
 		    f(x) = \frac{1}{\sqrt{2\pi x^3}} \exp(- \frac{ (x-1)^2 }{ 2x })
 		
-		for :math:`x > 0`.
+		for :math:`x >= 0`.
 		
-		`wald` is a special case of `invgauss` with ``mu == 1``.
+		`wald` is a special case of `invgauss` with ``mu=1``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -10998,7 +11241,7 @@ package scipy.stats._continuous_distns;
 		
 		for :math:`x < 0`, :math:`c > 0`.
 		
-		`weibull_max` takes ``c`` as a shape parameter.
+		`weibull_max` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -11110,9 +11353,9 @@ package scipy.stats._continuous_distns;
 		
 		    f(x, c) = c x^{c-1} \exp(-x^c)
 		
-		for :math:`x > 0`, :math:`c > 0`.
+		for :math:`x >= 0`, :math:`c > 0`.
 		
-		`weibull_min` takes ``c`` as a shape parameter.
+		`weibull_min` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -11222,7 +11465,7 @@ package scipy.stats._continuous_distns;
 		
 		for :math:`0 \le x \le 2\pi`, :math:`0 < c < 1`.
 		
-		`wrapcauchy` takes :math:`c` as a shape parameter.
+		`wrapcauchy` takes ``c`` as a shape parameter for :math:`c`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.

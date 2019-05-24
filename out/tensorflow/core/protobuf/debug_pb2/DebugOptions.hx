@@ -21,7 +21,6 @@ package tensorflow.core.protobuf.debug_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEBUG_TENSOR_WATCH_OPTS_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		Discards the unknown fields.
@@ -39,7 +38,6 @@ package tensorflow.core.protobuf.debug_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GLOBAL_STEP_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -68,7 +66,6 @@ package tensorflow.core.protobuf.debug_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var RESET_DISK_BYTE_USAGE_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -85,6 +82,10 @@ package tensorflow.core.protobuf.debug_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -250,4 +251,16 @@ package tensorflow.core.protobuf.debug_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.DebugOptions.debug_tensor_watch_opts
+	**/
+	public var debug_tensor_watch_opts : Dynamic;
+	/**
+		Field tensorflow.DebugOptions.global_step
+	**/
+	public var global_step : Dynamic;
+	/**
+		Field tensorflow.DebugOptions.reset_disk_byte_usage
+	**/
+	public var reset_disk_byte_usage : Dynamic;
 }

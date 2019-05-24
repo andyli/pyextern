@@ -4,7 +4,7 @@ package tensorflow.python.ops.logging_ops;
 	/**
 		Prints a list of tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-08-20.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-08-20.
 		Instructions for updating:
 		Use tf.print instead of tf.Print. Note that tf.print returns a no-output operator that directly prints the output. Outside of defuns or eager mode, this operator will not be executed unless it is directly specified in session.run or used as a control dependency for other operators. This is only a concern in graph mode. Below is an example of how to ensure tf.print executes in graph mode:
 		```python
@@ -57,11 +57,15 @@ package tensorflow.python.ops.logging_ops;
 		Generate and return a string that does not appear in `x`.
 	**/
 	static public function _generate_placeholder_string(x:Dynamic, ?default_placeholder:Dynamic):Dynamic;
+	/**
+		Returns True if output_stream is a file path.
+	**/
+	static public function _is_filepath(output_stream:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Outputs a `Summary` protocol buffer with audio. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		Please switch to tf.summary.audio. Note that tf.summary.audio uses the node name instead of the tag. This means that TensorFlow will automatically de-duplicate summary names based on the scope they are created in.
 		
@@ -204,7 +208,7 @@ package tensorflow.python.ops.logging_ops;
 	/**
 		Outputs a `Summary` protocol buffer with a histogram. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		Please switch to tf.summary.histogram. Note that tf.summary.histogram uses the node name instead of the tag. This means that TensorFlow will automatically de-duplicate summary names based on the scope they are created in.
 		
@@ -240,7 +244,7 @@ package tensorflow.python.ops.logging_ops;
 	/**
 		Outputs a `Summary` protocol buffer with images. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		Please switch to tf.summary.image. Note that tf.summary.image uses the node name instead of the tag. This means that TensorFlow will automatically de-duplicate summary names based on the scope they are created in. Also, the max_images argument was renamed to max_outputs.
 		
@@ -297,7 +301,7 @@ package tensorflow.python.ops.logging_ops;
 	/**
 		Merges all summaries collected in the default graph. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		Please switch to tf.summary.merge_all.
 		
@@ -317,7 +321,7 @@ package tensorflow.python.ops.logging_ops;
 	/**
 		Merges summaries. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		Please switch to tf.summary.merge.
 		
@@ -427,9 +431,11 @@ package tensorflow.python.ops.logging_ops;
 		    primitives, tensors, data structures such as dicts and lists that
 		    may contain tensors (with the data structures possibly nested in
 		    arbitrary ways), and printable python objects.
-		  output_stream: The output stream or logging level to print to. Defaults to
-		    sys.stderr, but sys.stdout, tf.logging.info, tf.logging.warning, and
-		    tf.logging.error are also supported.
+		  output_stream: The output stream, logging level, or file to print to.
+		    Defaults to sys.stderr, but sys.stdout, tf.logging.info,
+		    tf.logging.warning, and tf.logging.error are also supported. To print to
+		    a file, pass a string started with "file://" followed by the file path,
+		    e.g., "file:///tmp/foo.out".
 		  summarize: The first and last `summarize` elements within each dimension are
 		    recursively printed per Tensor. If None, then the first 3 and last 3
 		    elements of each dimension are printed for each tensor. If set to -1, it
@@ -452,7 +458,7 @@ package tensorflow.python.ops.logging_ops;
 	/**
 		Outputs a `Summary` protocol buffer with scalar values. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-11-30.
 		Instructions for updating:
 		Please switch to tf.summary.scalar. Note that tf.summary.scalar uses the node name instead of the tag. This means that TensorFlow will automatically de-duplicate summary names based on the scope they are created in. Also, passing a tensor or list of tags to a scalar summary op is no longer supported.
 		

@@ -20,7 +20,7 @@ package tensorflow.keras.models;
 		Arguments:
 		    model: Instance of `Model`
 		        (could be a functional model or a Sequential model).
-		    input_tensors: optional list of input tensors
+		    input_tensors: optional list of input tensors or InputLayer objects
 		        to build the model upon. If not provided,
 		        placeholders will be created.
 		

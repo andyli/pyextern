@@ -5,7 +5,6 @@ package tensorflow.core.protobuf.config_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var COST_GRAPH_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -63,7 +62,6 @@ package tensorflow.core.protobuf.config_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var PARTITION_GRAPHS_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -72,7 +70,6 @@ package tensorflow.core.protobuf.config_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var STEP_STATS_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -85,6 +82,10 @@ package tensorflow.core.protobuf.config_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -252,4 +253,16 @@ package tensorflow.core.protobuf.config_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.RunMetadata.cost_graph
+	**/
+	public var cost_graph : Dynamic;
+	/**
+		Field tensorflow.RunMetadata.partition_graphs
+	**/
+	public var partition_graphs : Dynamic;
+	/**
+		Field tensorflow.RunMetadata.step_stats
+	**/
+	public var step_stats : Dynamic;
 }

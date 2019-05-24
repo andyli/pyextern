@@ -167,7 +167,7 @@ package pandas.io.pytables;
 		min_itemsize can be an integer or a dict with this columns name
 		with an integer size 
 	**/
-	public function maybe_set_size(?min_itemsize:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function maybe_set_size(?min_itemsize:Dynamic):Dynamic;
 	/**
 		retrieve the metadata for this columns 
 	**/
@@ -220,8 +220,8 @@ package pandas.io.pytables;
 		if there is a conflict raise/warn as needed 
 	**/
 	public function update_info(info:Dynamic):Dynamic;
-	public function validate(handler:Dynamic, append:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function validate_and_set(handler:Dynamic, append:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function validate(handler:Dynamic, append:Dynamic):Dynamic;
+	public function validate_and_set(handler:Dynamic, append:Dynamic):Dynamic;
 	/**
 		validate that we have the same order as the existing & same dtype
 	**/

@@ -50,7 +50,6 @@ package tensorflow.core.framework.graph_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LIBRARY_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -63,7 +62,6 @@ package tensorflow.core.framework.graph_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NODE_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -84,8 +82,10 @@ package tensorflow.core.framework.graph_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var VERSIONS_FIELD_NUMBER : Dynamic;
-	static public var VERSION_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -253,4 +253,20 @@ package tensorflow.core.framework.graph_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.GraphDef.library
+	**/
+	public var library : Dynamic;
+	/**
+		Field tensorflow.GraphDef.node
+	**/
+	public var node : Dynamic;
+	/**
+		Field tensorflow.GraphDef.version
+	**/
+	public var version : Dynamic;
+	/**
+		Field tensorflow.GraphDef.versions
+	**/
+	public var versions : Dynamic;
 }

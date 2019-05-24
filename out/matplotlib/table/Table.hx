@@ -45,12 +45,40 @@ package matplotlib.table;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Parameters
+		----------
+		ax : `matplotlib.axes.Axes`
+		    The `~.axes.Axes` to plot the table into.
+		loc : str
+		    The position of the cell with respect to *ax*. This must be one of
+		    the `~.Table.codes`.
+		bbox : `.Bbox` or None
+		    A bounding box to draw the table into. If this is not *None*, this
+		    overrides *loc*.
+		
+		Other Parameters
+		----------------
+		**kwargs
+		    `.Artist` properties.
 	**/
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, ?loc:Dynamic, ?bbox:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Parameters
+		----------
+		ax : `matplotlib.axes.Axes`
+		    The `~.axes.Axes` to plot the table into.
+		loc : str
+		    The position of the cell with respect to *ax*. This must be one of
+		    the `~.Table.codes`.
+		bbox : `.Bbox` or None
+		    A bounding box to draw the table into. If this is not *None*, this
+		    overrides *loc*.
+		
+		Other Parameters
+		----------------
+		**kwargs
+		    `.Artist` properties.
 	**/
 	public function new(ax:Dynamic, ?loc:Dynamic, ?bbox:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
@@ -126,9 +154,7 @@ package matplotlib.table;
 	public function _auto_set_column_width(col:Dynamic, renderer:Dynamic):Dynamic;
 	public function _auto_set_font_size(renderer:Dynamic):Dynamic;
 	/**
-		Calculate row heights and column widths.
-		
-		Position cells accordingly.
+		Calculate row heights and column widths; position cells accordingly.
 	**/
 	public function _do_cell_alignment():Dynamic;
 	/**
@@ -148,15 +174,32 @@ package matplotlib.table;
 	public function _set_gc_clip(gc:Dynamic):Dynamic;
 	public function _update_positions(renderer:Dynamic):Dynamic;
 	/**
-		Adds a callback function that will be called whenever one of
-		the :class:`Artist`'s properties changes.
+		Add a callback function that will be called whenever one of the
+		`.Artist`'s properties changes.
 		
-		Returns an *id* that is useful for removing the callback with
-		:meth:`remove_callback` later.
+		Parameters
+		----------
+		func : callable
+		    The callback function. It must have the signature::
+		
+		        def func(artist: Artist) -> Any
+		
+		    where *artist* is the calling `.Artist`. Return values may exist
+		    but are ignored.
+		
+		Returns
+		-------
+		oid : int
+		    The observer id associated with the callback. This id can be
+		    used for removing the callback with `.remove_callback` later.
+		
+		See Also
+		--------
+		remove_callback
 	**/
-	public function add_callback(func:Dynamic):Dynamic;
+	public function add_callback(func:Dynamic):Int;
 	/**
-		Add a cell to the table.
+		Create a cell and add it to the table.
 		
 		Parameters
 		----------
@@ -164,88 +207,135 @@ package matplotlib.table;
 		    Row index.
 		col : int
 		    Column index.
+		*args, **kwargs
+		    All other parameters are passed on to `Cell`.
 		
 		Returns
 		-------
-		`CustomCell`: Automatically created cell
+		cell : `.CustomCell`
+		    The created cell.
 	**/
 	public function add_cell(row:Dynamic, col:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var aname : Dynamic;
+	public var aname : Dynamic;
 	/**
-		Given column indexs in either List, Tuple or int. Will be able to
-		automatically set the columns into optimal sizes.
+		Automatically set the widths of given columns to optimal sizes.
 		
-		Here is the example of the input, which triger automatic adjustment on
-		columns to optimal size by given index numbers.
-		-1: the row labling
-		0: the 1st column
-		1: the 2nd column
-		
-		Args:
-		    col(List): list of indexs
-		    >>>table.auto_set_column_width([-1,0,1])
-		
-		    col(Tuple): tuple of indexs
-		    >>>table.auto_set_column_width((-1,0,1))
-		
-		    col(int): index integer
-		    >>>table.auto_set_column_width(-1)
-		    >>>table.auto_set_column_width(0)
-		    >>>table.auto_set_column_width(1)
+		Parameters
+		----------
+		col : int or sequence of ints
+		    The indices of the columns to auto-scale.
 	**/
 	public function auto_set_column_width(col:Dynamic):Dynamic;
 	/**
-		Automatically set font size. 
+		Automatically set font size.
 	**/
 	public function auto_set_font_size(?value:Dynamic):Dynamic;
 	/**
-		The :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*.
+		The `~.axes.Axes` instance the artist resides in, or *None*.
 	**/
 	public var axes : Dynamic;
 	static public var codes : Dynamic;
 	/**
-		Test whether the mouse event occurred in the table.
+		Test whether the artist contains the mouse event.
 		
-		Returns T/F, {}
+		Parameters
+		----------
+		mouseevent : `matplotlib.backend_bases.MouseEvent`
+		
+		Returns
+		-------
+		contains : bool
+		    Whether any values are within the radius.
+		details : dict
+		    An artist-specific dictionary of details of the event context,
+		    such as which points are contained in the pick radius. See the
+		    individual Artist subclasses for details.
+		
+		See Also
+		--------
+		set_contains, get_contains
 	**/
-	public function contains(mouseevent:Dynamic):Dynamic;
+	public function contains(mouseevent:Dynamic):Bool;
 	/**
-		For artists in an axes, if the xaxis has units support,
-		convert *x* using xaxis unit type
+		Convert *x* using the unit type of the xaxis.
+		
+		If the artist is not in contained in an Axes or if the xaxis does not
+		have units, *x* itself is returned.
 	**/
 	public function convert_xunits(x:Dynamic):Dynamic;
 	/**
-		For artists in an axes, if the yaxis has units support,
-		convert *y* using yaxis unit type
+		Convert *y* using the unit type of the yaxis.
+		
+		If the artist is not in contained in an Axes or if the yaxis does not
+		have units, *y* itself is returned.
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
 	/**
-		Derived classes drawing method
+		Draw the Artist using the given renderer.
+		
+		This method will be overridden in the Artist subclasses. Typically,
+		it is implemented to not have any effect if the Artist is not visible
+		(`.Artist.get_visible` is *False*).
+		
+		Parameters
+		----------
+		renderer : `.RendererBase` subclass.
 	**/
 	public function draw(renderer:Dynamic):Dynamic;
+	/**
+		The default value of `~.CustomCell.visible_edges` for newly added
+		cells using `.add_cell`.
+		
+		Notes
+		-----
+		This setting does currently only affect newly created cells using
+		`.add_cell`.
+		
+		To change existing cells, you have to set their edges explicitly::
+		
+		    for c in tab.get_celld().values():
+		        c.visible_edges = 'horizontal'
+	**/
 	public var edges : Dynamic;
 	/**
 		Find artist objects.
 		
-		Recursively find all :class:`~matplotlib.artist.Artist` instances
-		contained in self.
+		Recursively find all `.Artist` instances contained in the artist.
 		
-		*match* can be
+		Parameters
+		----------
+		match
+		    A filter criterion for the matches. This can be
 		
-		  - None: return all objects contained in artist.
+		    - *None*: Return all objects contained in artist.
+		    - A function with signature ``def match(artist: Artist) -> bool``.
+		      The result will only contain artists for which the function
+		      returns *True*.
+		    - A class instance: e.g., `.Line2D`. The result will only contain
+		      artists of this class or its subclasses (``isinstance`` check).
 		
-		  - function with signature ``boolean = match(artist)``
-		    used to filter matches
+		include_self : bool
+		    Include *self* in the list to be checked for a match.
 		
-		  - class instance: e.g., Line2D.  Only return artists of class type.
-		
-		If *include_self* is True (default), include self in the list to be
-		checked for a match.
+		Returns
+		-------
+		artists : list of `.Artist`
 	**/
 	public function findobj(?match:Dynamic, ?include_self:Dynamic):Dynamic;
 	/**
-		Return *cursor data* string formatted.
+		Return a string representation of *data*.
+		
+		.. note::
+		    This method is intended to be overridden by artist subclasses.
+		    As an end-user of Matplotlib you will most likely not call this
+		    method yourself.
+		
+		The default implementation converts ints and floats and arrays of ints
+		and floats into a comma-separated string enclosed in square brackets.
+		
+		See Also
+		--------
+		get_cursor_data
 	**/
 	public function format_cursor_data(data:Dynamic):Dynamic;
 	/**
@@ -258,18 +348,28 @@ package matplotlib.table;
 	**/
 	public function get_alpha():Dynamic;
 	/**
-		Return the artist's animated state
+		Return the animated state.
 	**/
 	public function get_animated():Dynamic;
 	/**
-		Return a dict of cells in the table.
+		Return a dict of cells in the table mapping *(row, column)* to
+		`.Cell`\s.
+		
+		Notes
+		-----
+		You can also directly index into the Table object to access individual
+		cells::
+		
+		    cell = table[row, col]
 	**/
 	public function get_celld():Dynamic;
 	/**
-		.. deprecated:: 3.0
-		    The get_children function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		[*Deprecated*] Return the Artists contained by the table.
 		
-		Return the Artists contained by the table.
+		Notes
+		-----
+		.. deprecated:: 3.0
+		   
 	**/
 	public function get_child_artists():Dynamic;
 	/**
@@ -277,23 +377,51 @@ package matplotlib.table;
 	**/
 	public function get_children():Dynamic;
 	/**
-		Return artist clipbox
+		Return the clipbox.
 	**/
 	public function get_clip_box():Dynamic;
 	/**
-		Return whether artist uses clipping
+		Return whether the artist uses clipping.
 	**/
 	public function get_clip_on():Dynamic;
 	/**
-		Return artist clip path
+		Return the clip path.
 	**/
 	public function get_clip_path():Dynamic;
 	/**
-		Return the _contains test used by the artist, or *None* for default.
+		Return the custom contains function of the artist if set, or *None*.
+		
+		See Also
+		--------
+		set_contains
 	**/
 	public function get_contains():Dynamic;
 	/**
-		Get the cursor data for a given event.
+		Return the cursor data for a given event.
+		
+		.. note::
+		    This method is intended to be overridden by artist subclasses.
+		    As an end-user of Matplotlib you will most likely not call this
+		    method yourself.
+		
+		Cursor data can be used by Artists to provide additional context
+		information for a given event. The default implementation just returns
+		*None*.
+		
+		Subclasses can override the method and return arbitrary data. However,
+		when doing so, they must ensure that `.format_cursor_data` can convert
+		the data to a string representation.
+		
+		The only current use case is displaying the z-value of an `.AxesImage`
+		in the status bar of a plot window, while moving the mouse.
+		
+		Parameters
+		----------
+		event : `matplotlib.backend_bases.MouseEvent`
+		
+		See Also
+		--------
+		format_cursor_data
 	**/
 	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
@@ -301,7 +429,7 @@ package matplotlib.table;
 	**/
 	public function get_figure():Dynamic;
 	/**
-		Returns the group id.
+		Return the group id.
 	**/
 	public function get_gid():Dynamic;
 	/**
@@ -314,12 +442,18 @@ package matplotlib.table;
 	**/
 	public function get_in_layout():Dynamic;
 	/**
-		Get the label used for this artist in the legend.
+		Return the label used for this artist in the legend.
 	**/
 	public function get_label():Dynamic;
 	public function get_path_effects():Dynamic;
 	/**
-		Return the picker object used by this artist.
+		Return the picking behavior of the artist.
+		
+		The possible values are described in `.set_picker`.
+		
+		See Also
+		--------
+		set_picker, pickable, pick
 	**/
 	public function get_picker():Dynamic;
 	/**
@@ -331,32 +465,23 @@ package matplotlib.table;
 		
 		Returns
 		-------
-		sketch_params : tuple or `None`
+		sketch_params : tuple or None
 		
 		    A 3-tuple with the following elements:
 		
-		      * `scale`: The amplitude of the wiggle perpendicular to the
-		        source line.
+		    - *scale*: The amplitude of the wiggle perpendicular to the
+		      source line.
+		    - *length*: The length of the wiggle along the line.
+		    - *randomness*: The scale factor by which the length is
+		      shrunken or expanded.
 		
-		      * `length`: The length of the wiggle along the line.
-		
-		      * `randomness`: The scale factor by which the length is
-		        shrunken or expanded.
-		
-		    May return `None` if no sketch parameters were set.
+		    Returns *None* if no sketch parameters were set.
 	**/
 	public function get_sketch_params():Dynamic;
 	/**
-		Returns the snap setting which may be:
+		Returns the snap setting.
 		
-		  * True: snap vertices to the nearest pixel center
-		
-		  * False: leave vertices as-is
-		
-		  * None: (auto) If the path contains only rectilinear line
-		    segments, round to the nearest pixel center
-		
-		Only supported by the Agg and MacOSX backends.
+		See `.set_snap` for details.
 	**/
 	public function get_snap():Dynamic;
 	/**
@@ -370,13 +495,12 @@ package matplotlib.table;
 		
 		Returns
 		-------
-		bbox : `.BboxBase`
-		    containing the bounding box (in figure pixel co-ordinates).
+		bbox : `.BBox`
+		    The enclosing bounding box (in figure pixel co-ordinates).
 	**/
 	public function get_tightbbox(renderer:Dynamic):Dynamic;
 	/**
-		Return the :class:`~matplotlib.transforms.Transform`
-		instance used by this artist.
+		Return the `.Transform` instance used by this artist.
 	**/
 	public function get_transform():Dynamic;
 	/**
@@ -386,11 +510,11 @@ package matplotlib.table;
 	**/
 	public function get_transformed_clip_path_and_affine():Dynamic;
 	/**
-		Returns the url.
+		Return the url.
 	**/
 	public function get_url():Dynamic;
 	/**
-		Return the artist's visiblity
+		Return the visibility.
 	**/
 	public function get_visible():Dynamic;
 	/**
@@ -402,79 +526,77 @@ package matplotlib.table;
 	**/
 	public function get_zorder():Dynamic;
 	/**
-		Return *True* if units are set on the *x* or *y* axes
+		Return *True* if units are set on the *x* or *y* axes.
 	**/
 	public function have_units():Dynamic;
 	/**
-		.. deprecated:: 2.2
-		    The hitlist function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		Return whether the Artist has an explicitly set transform.
 		
-		List the children of the artist which contain the mouse event *event*.
-	**/
-	public function hitlist(event:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 2.2
-		    artist.figure is not None
-		
-		Returns whether the artist is assigned to a `.Figure`.
-	**/
-	public function is_figure_set():Dynamic;
-	/**
-		Returns *True* if :class:`Artist` has a transform explicitly
-		set.
+		This is *True* after `.set_transform` has been called.
 	**/
 	public function is_transform_set():Dynamic;
 	public var mouseover : Dynamic;
 	/**
-		Fire an event when property changed, calling all of the
-		registered callbacks.
+		Call all of the registered callbacks.
+		
+		This function is triggered internally when a property is changed.
+		
+		See Also
+		--------
+		add_callback
+		remove_callback
 	**/
 	public function pchanged():Dynamic;
 	/**
-		Process pick event
+		Process a pick event.
 		
-		each child artist will fire a pick event if *mouseevent* is over
-		the artist and the artist has picker set
+		Each child artist will fire a pick event if *mouseevent* is over
+		the artist and the artist has picker set.
+		
+		See Also
+		--------
+		set_picker, get_picker, pickable
 	**/
 	public function pick(mouseevent:Dynamic):Dynamic;
 	/**
-		Return *True* if :class:`Artist` is pickable.
+		Return whether the artist is pickable.
+		
+		See Also
+		--------
+		set_picker, get_picker, pick
 	**/
 	public function pickable():Dynamic;
 	/**
-		return a dictionary mapping property name -> value for all Artist props
+		Return a dictionary of all the properties of the artist.
 	**/
 	public function properties():Dynamic;
 	/**
-		Remove the artist from the figure if possible.  The effect
-		will not be visible until the figure is redrawn, e.g., with
-		:meth:`matplotlib.axes.Axes.draw_idle`.  Call
-		:meth:`matplotlib.axes.Axes.relim` to update the axes limits
-		if desired.
+		Remove the artist from the figure if possible.
 		
-		Note: :meth:`~matplotlib.axes.Axes.relim` will not see
-		collections even if the collection was added to axes with
-		*autolim* = True.
+		The effect will not be visible until the figure is redrawn, e.g.,
+		with `.FigureCanvasBase.draw_idle`.  Call `~.axes.Axes.relim` to
+		update the axes limits if desired.
+		
+		Note: `~.axes.Axes.relim` will not see collections even if the
+		collection was added to the axes with *autolim* = True.
 		
 		Note: there is no support for removing the artist's legend entry.
 	**/
 	public function remove():Dynamic;
 	/**
-		Remove a callback based on its *id*.
+		Remove a callback based on its observer id.
 		
-		.. seealso::
-		
-		    :meth:`add_callback`
-		       For adding callbacks
+		See Also
+		--------
+		add_callback
 	**/
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
-		Scale column widths by xscale and row heights by yscale. 
+		Scale column widths by *xscale* and row heights by *yscale*.
 	**/
 	public function scale(xscale:Dynamic, yscale:Dynamic):Dynamic;
 	/**
-		A property batch setter. Pass *kwargs* to set properties.
-		        
+		A property batch setter.  Pass *kwargs* to set properties.
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -515,7 +637,7 @@ package matplotlib.table;
 	**/
 	public function set_clip_box(clipbox:Dynamic):Dynamic;
 	/**
-		Set whether artist uses clipping.
+		Set whether the artist uses clipping.
 		
 		When False artists will be visible out side of the axes which
 		can lead to unexpected results.
@@ -543,19 +665,26 @@ package matplotlib.table;
 	**/
 	public function set_clip_path(path:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
-		Replace the contains test used by this artist. The new picker
-		should be a callable function which determines whether the
-		artist is hit by the mouse event::
+		Define a custom contains test for the artist.
 		
-		    hit, props = picker(artist, mouseevent)
-		
-		If the mouse event is over the artist, return *hit* = *True*
-		and *props* is a dictionary of properties you want returned
-		with the contains test.
+		The provided callable replaces the default `.contains` method
+		of the artist.
 		
 		Parameters
 		----------
 		picker : callable
+		    A custom picker function to evaluate if an event is within the
+		    artist. The function must have the signature::
+		
+		        def contains(artist: Artist, event: MouseEvent) -> bool, dict
+		
+		    that returns:
+		
+		    - a bool indicating if the event is within the artist
+		    - a dict of additional information. The dict should at least
+		      return the same information as the default ``contains()``
+		      implementation of the respective artist, but may provide
+		      additional information.
 	**/
 	public function set_contains(picker:Dynamic):Dynamic;
 	/**
@@ -572,10 +701,23 @@ package matplotlib.table;
 		Parameters
 		----------
 		size : float
+		
+		Notes
+		-----
+		As long as auto font size has not been disabled, the value will be
+		clipped such that the text fits horizontally into the cell.
+		
+		You can disable this behavior using `.auto_set_font_size`.
+		
+		>>> the_table.auto_set_font_size(False)
+		>>> the_table.set_fontsize(20)
+		
+		However, there is no automatic scaling of the row height so that the
+		text may exceed the cell boundary.
 	**/
 	public function set_fontsize(size:Dynamic):Dynamic;
 	/**
-		Sets the (group) id for the artist.
+		Set the (group) id for the artist.
 		
 		Parameters
 		----------
@@ -594,7 +736,7 @@ package matplotlib.table;
 	**/
 	public function set_in_layout(in_layout:Dynamic):Dynamic;
 	/**
-		Set the label to *s* for auto legend.
+		Set a label that will be displayed in the legend.
 		
 		Parameters
 		----------
@@ -611,37 +753,36 @@ package matplotlib.table;
 	**/
 	public function set_path_effects(path_effects:Dynamic):Dynamic;
 	/**
-		Set the epsilon for picking used by this artist
-		
-		*picker* can be one of the following:
-		
-		  * *None*: picking is disabled for this artist (default)
-		
-		  * A boolean: if *True* then picking will be enabled and the
-		    artist will fire a pick event if the mouse event is over
-		    the artist
-		
-		  * A float: if picker is a number it is interpreted as an
-		    epsilon tolerance in points and the artist will fire
-		    off an event if it's data is within epsilon of the mouse
-		    event.  For some artists like lines and patch collections,
-		    the artist may provide additional data to the pick event
-		    that is generated, e.g., the indices of the data within
-		    epsilon of the pick event
-		
-		  * A function: if picker is callable, it is a user supplied
-		    function which determines whether the artist is hit by the
-		    mouse event::
-		
-		      hit, props = picker(artist, mouseevent)
-		
-		    to determine the hit test.  if the mouse event is over the
-		    artist, return *hit=True* and props is a dictionary of
-		    properties you want added to the PickEvent attributes.
+		Define the picking behavior of the artist.
 		
 		Parameters
 		----------
 		picker : None or bool or float or callable
+		    This can be one of the following:
+		
+		    - *None*: Picking is disabled for this artist (default).
+		
+		    - A boolean: If *True* then picking will be enabled and the
+		      artist will fire a pick event if the mouse event is over
+		      the artist.
+		
+		    - A float: If picker is a number it is interpreted as an
+		      epsilon tolerance in points and the artist will fire
+		      off an event if it's data is within epsilon of the mouse
+		      event.  For some artists like lines and patch collections,
+		      the artist may provide additional data to the pick event
+		      that is generated, e.g., the indices of the data within
+		      epsilon of the pick event
+		
+		    - A function: If picker is callable, it is a user supplied
+		      function which determines whether the artist is hit by the
+		      mouse event::
+		
+		        hit, props = picker(artist, mouseevent)
+		
+		      to determine the hit test.  if the mouse event is over the
+		      artist, return *hit=True* and props is a dictionary of
+		      properties you want added to the PickEvent attributes.
 	**/
 	public function set_picker(picker:Dynamic):Dynamic;
 	/**
@@ -677,20 +818,28 @@ package matplotlib.table;
 	**/
 	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
 	/**
-		Sets the snap setting which may be:
+		Set the snapping behavior.
 		
-		  * True: snap vertices to the nearest pixel center
+		Snapping aligns positions with the pixel grid, which results in
+		clearer images. For example, if a black line of 1px width was
+		defined at a position in between two pixels, the resulting image
+		would contain the interpolated value of that line in the pixel grid,
+		which would be a grey value on both adjacent pixel positions. In
+		contrast, snapping will move the line to the nearest integer pixel
+		value, so that the resulting image will really contain a 1px wide
+		black line.
 		
-		  * False: leave vertices as-is
-		
-		  * None: (auto) If the path contains only rectilinear line
-		    segments, round to the nearest pixel center
-		
-		Only supported by the Agg and MacOSX backends.
+		Snapping is currently only supported by the Agg and MacOSX backends.
 		
 		Parameters
 		----------
 		snap : bool or None
+		    Possible values:
+		
+		    - *True*: Snap vertices to the nearest pixel center.
+		    - *False*: Do not modify vertex positions.
+		    - *None*: (auto) If the path contains only rectilinear line
+		      segments, round to the nearest pixel center.
 	**/
 	public function set_snap(snap:Dynamic):Dynamic;
 	/**
@@ -702,7 +851,7 @@ package matplotlib.table;
 	**/
 	public function set_transform(t:Dynamic):Dynamic;
 	/**
-		Sets the url for the artist.
+		Set the url for the artist.
 		
 		Parameters
 		----------
@@ -727,21 +876,21 @@ package matplotlib.table;
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
 	/**
-		If the artist is 'stale' and needs to be re-drawn for the output to
-		match the internal state of the artist.
+		Whether the artist is 'stale' and needs to be re-drawn for the output
+		to match the internal state of the artist.
 	**/
 	public var stale : Dynamic;
 	/**
-		`x` and `y` sticky edge lists.
+		``x`` and ``y`` sticky edge lists for autoscaling.
 		
 		When performing autoscaling, if a data limit coincides with a value in
 		the corresponding sticky_edges list, then no margin will be added--the
-		view limit "sticks" to the edge. A typical usecase is histograms,
+		view limit "sticks" to the edge. A typical use case is histograms,
 		where one usually expects no margin on the bottom edge (0) of the
 		histogram.
 		
-		This attribute cannot be assigned to; however, the `x` and `y` lists
-		can be modified in place as needed.
+		This attribute cannot be assigned to; however, the ``x`` and ``y``
+		lists can be modified in place as needed.
 		
 		Examples
 		--------
@@ -751,7 +900,7 @@ package matplotlib.table;
 	**/
 	public var sticky_edges : Dynamic;
 	/**
-		Update this artist's properties from the dictionary *prop*.
+		Update this artist's properties from the dictionary *props*.
 	**/
 	public function update(props:Dynamic):Dynamic;
 	/**

@@ -13,7 +13,11 @@ package tensorflow.python.saved_model.simple_save;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Convenience function to build a SavedModel suitable for serving.
+		Convenience function to build a SavedModel suitable for serving. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This function will only be available through the v1 compatibility library as tf.compat.v1.saved_model.simple_save.
 		
 		In many common cases, saving models for serving will be as simple as:
 		

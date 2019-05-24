@@ -18,15 +18,7 @@ package numpy.core.getlimits;
 		    
 	**/
 	static public function _discovered_machar(ftype:Dynamic):Dynamic;
-	static public var _epsneg_f128 : Dynamic;
-	static public var _epsneg_f64 : Dynamic;
-	static public var _epsneg_f80 : Dynamic;
-	static public var _float128_ma : Dynamic;
-	static public var _float16_ma : Dynamic;
-	static public var _float32_ma : Dynamic;
-	static public var _float64_ma : Dynamic;
-	static public var _float80_ma : Dynamic;
-	static public var _float_dd_ma : Dynamic;
+	static public var _float_ma : Dynamic;
 	/**
 		fix rank-0 --> rank-1
 	**/
@@ -59,12 +51,8 @@ package numpy.core.getlimits;
 		    known float types.
 	**/
 	static public function _get_machar(ftype:Dynamic):Dynamic;
-	static public var _huge_dd : Dynamic;
-	static public var _huge_f128 : Dynamic;
-	static public var _huge_f80 : Dynamic;
-	static public var _tiny_f128 : Dynamic;
-	static public var _tiny_f64 : Dynamic;
-	static public var _tiny_f80 : Dynamic;
+	static public function _register_known_types():Dynamic;
+	static public function _register_type(machar:Dynamic, bytepat:Dynamic):Dynamic;
 	static public var _title_fmt : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
@@ -275,7 +263,7 @@ package numpy.core.getlimits;
 		----------
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+		.. [2] Wikipedia, "Logarithm". https://en.wikipedia.org/wiki/Logarithm
 		
 		Examples
 		--------
@@ -284,4 +272,16 @@ package numpy.core.getlimits;
 	**/
 	static public function log10(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
 }

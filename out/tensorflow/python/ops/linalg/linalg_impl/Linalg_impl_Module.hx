@@ -347,7 +347,6 @@ package tensorflow.python.ops.linalg.linalg_impl;
 		* Ellipses (subscripts like `ij...,jk...->ik...`)
 		* Subscripts where an axis appears more than once for a single input
 		  (e.g. `ijj,k->ik`).
-		* Subscripts that are summed across multiple inputs (e.g., `ij,ij,jk->ik`).
 		
 		Args:
 		  equation: a `str` describing the contraction, in the same format as
@@ -537,6 +536,41 @@ package tensorflow.python.ops.linalg.linalg_impl;
 	**/
 	static public function lstsq(matrix:Dynamic, rhs:Dynamic, ?l2_regularizer:Dynamic, ?fast:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Computes the LU decomposition of one or more square matrices.
+		
+		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
+		form square matrices.
+		
+		The input has to be invertible.
+		
+		The output consists of two tensors LU and P containing the LU decomposition
+		of all input submatrices `[..., :, :]`. LU encodes the lower triangular and
+		upper triangular factors.
+		
+		For each input submatrix of shape `[M, M]`, L is a lower triangular matrix of
+		shape `[M, M]` with unit diagonal whose entries correspond to the strictly lower
+		triangular part of LU. U is a upper triangular matrix of shape `[M, M]` whose
+		entries correspond to the upper triangular part, including the diagonal, of LU.
+		
+		P represents a permutation matrix encoded as a list of indices each between `0`
+		and `M-1`, inclusive. If P_mat denotes the permutation matrix corresponding to
+		P, then the L, U and P satisfies P_mat * input = L * U.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
+		    A tensor of shape `[..., M, M]` whose inner-most 2 dimensions form matrices of
+		    size `[M, M]`.
+		  output_idx_type: An optional `tf.DType` from: `tf.int32, tf.int64`. Defaults to `tf.int32`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (lu, p).
+		
+		  lu: A `Tensor`. Has the same type as `input`.
+		  p: A `Tensor` of type `output_idx_type`.
+	**/
+	static public function lu(input:Dynamic, ?output_idx_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Computes the matrix exponential of one or more square matrices.
 		
 		exp(A) = \sum_{n=0}^\infty A^n/n!
@@ -569,7 +603,7 @@ package tensorflow.python.ops.linalg.linalg_impl;
 	/**
 		Computes the norm of vectors, matrices, and tensors. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		keep_dims is deprecated, use keepdims instead
 		
@@ -737,6 +771,34 @@ package tensorflow.python.ops.linalg.linalg_impl;
 	**/
 	static public function solve(matrix:Dynamic, rhs:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Computes the matrix square root of one or more square matrices:
+		
+		matmul(sqrtm(A), sqrtm(A)) = A
+		
+		The input matrix should be invertible. If the input matrix is real, it should
+		have no eigenvalues which are real and negative (pairs of complex conjugate
+		eigenvalues are allowed).
+		
+		The matrix square root is computed by first reducing the matrix to 
+		quasi-triangular form with the real Schur decomposition. The square root 
+		of the quasi-triangular matrix is then computed directly. Details of 
+		the algorithm can be found in: Nicholas J. Higham, "Computing real 
+		square roots of a real matrix", Linear Algebra Appl., 1987.
+		
+		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
+		form square matrices. The output is a tensor of the same shape as the input
+		containing the matrix square root for all input submatrices `[..., :, :]`.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
+		    Shape is `[..., M, M]`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function sqrtm(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Computes the singular value decompositions of one or more matrices.
 		
 		Computes the SVD of each inner matrix in `tensor` such that
@@ -829,12 +891,11 @@ package tensorflow.python.ops.linalg.linalg_impl;
 		  a: `Tensor` of type `float32` or `float64`.
 		  b: `Tensor` with the same type as `a`.
 		  axes: Either a scalar `N`, or a list or an `int32` `Tensor` of shape [2, k].
-		   If axes is a scalar, sum over the last N axes of a and the first N axes
-		   of b in order.
-		   If axes is a list or `Tensor` the first and second row contain the set of
-		   unique integers specifying axes along which the contraction is computed,
-		   for `a` and `b`, respectively. The number of axes for `a` and `b` must
-		   be equal.
+		    If axes is a scalar, sum over the last N axes of a and the first N axes of
+		    b in order. If axes is a list or `Tensor` the first and second row contain
+		    the set of unique integers specifying axes along which the contraction is
+		    computed, for `a` and `b`, respectively. The number of axes for `a` and
+		    `b` must be equal.
 		  name: A name for the operation (optional).
 		
 		Returns:

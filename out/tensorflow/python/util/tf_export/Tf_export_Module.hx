@@ -4,6 +4,7 @@ package tensorflow.python.util.tf_export;
 	static public var API_ATTRS : Dynamic;
 	static public var API_ATTRS_V1 : Dynamic;
 	static public var ESTIMATOR_API_NAME : Dynamic;
+	static public var SUBPACKAGE_NAMESPACES : Dynamic;
 	static public var TENSORFLOW_API_NAME : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -17,30 +18,76 @@ package tensorflow.python.util.tf_export;
 	static public var division : Dynamic;
 	static public function estimator_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Get first non-deprecated endpoint name.
+		Get preferred endpoint name.
 		
 		Args:
 		  api_names: API names iterable.
 		  deprecated_api_names: Deprecated API names iterable.
 		Returns:
-		  Canonical name if there is at least one non-deprecated endpoint.
-		  Otherwise returns None.
+		  Returns one of the following in decreasing preference:
+		  - first non-deprecated endpoint
+		  - first endpoint
+		  - None
 	**/
 	static public function get_canonical_name(api_names:Dynamic, deprecated_api_names:Dynamic):Dynamic;
 	/**
 		Get canonical name for the API symbol.
 		
-		Canonical name is the first non-deprecated endpoint name.
-		
 		Args:
 		  symbol: API function or class.
 		  api_name: API name (tensorflow or estimator).
+		  add_prefix_to_v1_names: Specifies whether a name available only in V1
+		    should be prefixed with compat.v1.
 		
 		Returns:
 		  Canonical name for the API symbol (for e.g. initializers.zeros) if
 		  canonical name could be determined. Otherwise, returns None.
 	**/
-	static public function get_canonical_name_for_symbol(symbol:Dynamic, ?api_name:Dynamic):Dynamic;
+	static public function get_canonical_name_for_symbol(symbol:Dynamic, ?api_name:Dynamic, ?add_prefix_to_v1_names:Dynamic):Dynamic;
+	/**
+		Get a list of TF 1.* constants in this module.
+		
+		Args:
+		  module: TensorFlow module.
+		
+		Returns:
+		  List of all API constants under the given module including TensorFlow and
+		  Estimator constants.
+	**/
+	static public function get_v1_constants(module:Dynamic):Dynamic;
+	/**
+		Get a list of TF 1.* names for this symbol.
+		
+		Args:
+		  symbol: symbol to get API names for.
+		
+		Returns:
+		  List of all API names for this symbol including TensorFlow and
+		  Estimator names.
+	**/
+	static public function get_v1_names(symbol:Dynamic):Dynamic;
+	/**
+		Get a list of TF 2.0 constants in this module.
+		
+		Args:
+		  module: TensorFlow module.
+		
+		Returns:
+		  List of all API constants under the given module including TensorFlow and
+		  Estimator constants.
+	**/
+	static public function get_v2_constants(module:Dynamic):Dynamic;
+	/**
+		Get a list of TF 2.0 names for this symbol.
+		
+		Args:
+		  symbol: symbol to get API names for.
+		
+		Returns:
+		  List of all API names for this symbol including TensorFlow and
+		  Estimator names.
+	**/
+	static public function get_v2_names(symbol:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -14,7 +14,7 @@ package tensorflow.contrib.ffmpeg;
 	/**
 		Create an op that decodes the contents of an audio file. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-09-04.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-09-04.
 		Instructions for updating:
 		This will be deleted and should not be used.
 		
@@ -50,7 +50,7 @@ package tensorflow.contrib.ffmpeg;
 	/**
 		Create an op that decodes the contents of a video file. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-09-04.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-09-04.
 		Instructions for updating:
 		This will be deleted and should not be used.
 		
@@ -65,7 +65,7 @@ package tensorflow.contrib.ffmpeg;
 	/**
 		Creates an op that encodes an audio file using sampled audio from a tensor. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-09-04.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-09-04.
 		Instructions for updating:
 		This will be deleted and should not be used.
 		

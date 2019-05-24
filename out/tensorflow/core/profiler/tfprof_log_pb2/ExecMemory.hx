@@ -1,9 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.profiler.tfprof_log_pb2;
 @:pythonImport("tensorflow.core.profiler.tfprof_log_pb2", "ExecMemory") extern class ExecMemory {
-	static public var ACCELERATOR_PERSISTENT_BYTES_FIELD_NUMBER : Dynamic;
-	static public var ACCELERATOR_TEMP_BYTES_FIELD_NUMBER : Dynamic;
-	static public var ALLOCATOR_BYTES_IN_USE_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -41,8 +38,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HOST_PERSISTENT_BYTES_FIELD_NUMBER : Dynamic;
-	static public var HOST_TEMP_BYTES_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -59,7 +54,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MEMORY_MICROS_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -68,19 +62,14 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var OUTPUT_BYTES_FIELD_NUMBER : Dynamic;
-	static public var OUTPUT_MEMORY_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
 	public function OutputMemoryEntry(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var PEAK_BYTES_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var REQUESTED_BYTES_FIELD_NUMBER : Dynamic;
-	static public var RESIDUAL_BYTES_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -97,6 +86,10 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -262,4 +255,48 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecMemory.accelerator_persistent_bytes
+	**/
+	public var accelerator_persistent_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecMemory.accelerator_temp_bytes
+	**/
+	public var accelerator_temp_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecMemory.allocator_bytes_in_use
+	**/
+	public var allocator_bytes_in_use : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecMemory.host_persistent_bytes
+	**/
+	public var host_persistent_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecMemory.host_temp_bytes
+	**/
+	public var host_temp_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecMemory.memory_micros
+	**/
+	public var memory_micros : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecMemory.output_bytes
+	**/
+	public var output_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecMemory.output_memory
+	**/
+	public var output_memory : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecMemory.peak_bytes
+	**/
+	public var peak_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecMemory.requested_bytes
+	**/
+	public var requested_bytes : Dynamic;
+	/**
+		Field tensorflow.tfprof.ExecMemory.residual_bytes
+	**/
+	public var residual_bytes : Dynamic;
 }

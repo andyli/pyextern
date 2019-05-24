@@ -82,7 +82,7 @@ package numpy.core.multiarray;
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -106,7 +106,7 @@ package numpy.core.multiarray;
 	**/
 	public function __repr__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**

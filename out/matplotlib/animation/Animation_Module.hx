@@ -4,6 +4,7 @@ package matplotlib.animation;
 	static public var DISPLAY_TEMPLATE : Dynamic;
 	static public var INCLUDED_FRAMES : Dynamic;
 	static public var JS_INCLUDE : Dynamic;
+	static public var STYLE_INCLUDE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

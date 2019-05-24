@@ -30,11 +30,11 @@ package scipy.ndimage.morphology;
 		    is generated with a square connectivity equal to one (i.e., only
 		    nearest neighbors are connected to the center, diagonally-connected
 		    elements are not considered neighbors).
-		iterations : {int, float}, optional
+		iterations : int, optional
 		    The dilation step of the closing, then the erosion step are each
 		    repeated `iterations` times (one, by default). If iterations is
 		    less than 1, each operations is repeated until the result does
-		    not change anymore.
+		    not change anymore. Only an integer of iterations is accepted.
 		output : ndarray, optional
 		    Array of the same shape as input, into which the output is placed.
 		    By default, a new array is created.
@@ -80,8 +80,8 @@ package scipy.ndimage.morphology;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Closing_%28morphology%29
-		.. [2] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Closing_%28morphology%29
+		.. [2] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -158,10 +158,11 @@ package scipy.ndimage.morphology;
 		    Structuring element used for the dilation. Non-zero elements are
 		    considered True. If no structuring element is provided an element
 		    is generated with a square connectivity equal to one.
-		iterations : {int, float}, optional
+		iterations : int, optional
 		    The dilation is repeated `iterations` times (one, by default).
 		    If iterations is less than 1, the dilation is repeated until the
-		    result does not change anymore.
+		    result does not change anymore. Only an integer of iterations is
+		    accepted.
 		mask : array_like, optional
 		    If a mask is given, only those elements with a True value at
 		    the corresponding mask element are modified at each iteration.
@@ -199,8 +200,8 @@ package scipy.ndimage.morphology;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Dilation_%28morphology%29
-		.. [2] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Dilation_%28morphology%29
+		.. [2] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -273,7 +274,7 @@ package scipy.ndimage.morphology;
 		    Structuring element used for the erosion. Non-zero elements are
 		    considered True. If no structuring element is provided, an element
 		    is generated with a square connectivity equal to one.
-		iterations : {int, float}, optional
+		iterations : int, optional
 		    The erosion is repeated `iterations` times (one, by default).
 		    If iterations is less than 1, the erosion is repeated until the
 		    result does not change anymore.
@@ -314,8 +315,8 @@ package scipy.ndimage.morphology;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Erosion_%28morphology%29
-		.. [2] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Erosion_%28morphology%29
+		.. [2] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -389,7 +390,7 @@ package scipy.ndimage.morphology;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		
 		Examples
@@ -456,11 +457,11 @@ package scipy.ndimage.morphology;
 		
 		See also
 		--------
-		ndimage.morphology, binary_erosion
+		binary_erosion
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Hit-or-miss_transform
+		.. [1] https://en.wikipedia.org/wiki/Hit-or-miss_transform
 		
 		Examples
 		--------
@@ -519,11 +520,11 @@ package scipy.ndimage.morphology;
 		    is generated with a square connectivity equal to one (i.e., only
 		    nearest neighbors are connected to the center, diagonally-connected
 		    elements are not considered neighbors).
-		iterations : {int, float}, optional
+		iterations : int, optional
 		    The erosion step of the opening, then the dilation step are each
 		    repeated `iterations` times (one, by default). If `iterations` is
 		    less than 1, each operation is repeated until the result does
-		    not change anymore.
+		    not change anymore. Only an integer of iterations is accepted.
 		output : ndarray, optional
 		    Array of the same shape as input, into which the output is placed.
 		    By default, a new array is created.
@@ -569,8 +570,8 @@ package scipy.ndimage.morphology;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Opening_%28morphology%29
-		.. [2] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Opening_%28morphology%29
+		.. [2] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -1104,7 +1105,7 @@ package scipy.ndimage.morphology;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -1171,7 +1172,7 @@ package scipy.ndimage.morphology;
 		See also
 		--------
 		binary_dilation, grey_erosion, grey_closing, grey_opening
-		generate_binary_structure, ndimage.maximum_filter
+		generate_binary_structure, maximum_filter
 		
 		Notes
 		-----
@@ -1188,8 +1189,8 @@ package scipy.ndimage.morphology;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Dilation_%28morphology%29
-		.. [2] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Dilation_%28morphology%29
+		.. [2] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -1287,7 +1288,7 @@ package scipy.ndimage.morphology;
 		See also
 		--------
 		binary_erosion, grey_dilation, grey_opening, grey_closing
-		generate_binary_structure, ndimage.minimum_filter
+		generate_binary_structure, minimum_filter
 		
 		Notes
 		-----
@@ -1304,8 +1305,8 @@ package scipy.ndimage.morphology;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Erosion_%28morphology%29
-		.. [2] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Erosion_%28morphology%29
+		.. [2] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -1394,7 +1395,7 @@ package scipy.ndimage.morphology;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------
@@ -1509,7 +1510,7 @@ package scipy.ndimage.morphology;
 		
 		See also
 		--------
-		grey_dilation, grey_erosion, ndimage.gaussian_gradient_magnitude
+		grey_dilation, grey_erosion, gaussian_gradient_magnitude
 		
 		Notes
 		-----
@@ -1520,7 +1521,7 @@ package scipy.ndimage.morphology;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Mathematical_morphology
+		.. [1] https://en.wikipedia.org/wiki/Mathematical_morphology
 		
 		Examples
 		--------

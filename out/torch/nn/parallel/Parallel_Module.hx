@@ -17,10 +17,10 @@ package torch.nn.parallel;
 		This is the functional version of the DataParallel module.
 		
 		Args:
-		    module: the module to evaluate in parallel
-		    inputs: inputs to the module
-		    device_ids: GPU ids on which to replicate module
-		    output_device: GPU location of the output  Use -1 to indicate the CPU.
+		    module (Module): the module to evaluate in parallel
+		    inputs (tensor): inputs to the module
+		    device_ids (list of int or torch.device): GPU ids on which to replicate module
+		    output_device (list of int or torch.device): GPU location of the output  Use -1 to indicate the CPU.
 		        (default: device_ids[0])
 		Returns:
 		    a Tensor containing the result of module(input) located on
@@ -36,6 +36,11 @@ package torch.nn.parallel;
 		Applies each `module` in :attr:`modules` in parallel on arguments
 		contained in :attr:`inputs` (positional) and :attr:`kwargs_tup` (keyword)
 		on each of :attr:`devices`.
+		
+		Args:
+		    modules (Module): modules to be parallelized
+		    inputs (tensor): inputs to the modules
+		    devices (list of int or torch.device): CUDA devices
 		
 		:attr:`modules`, :attr:`inputs`, :attr:`kwargs_tup` (if given), and
 		:attr:`devices` (if given) should all have same length. Moreover, each

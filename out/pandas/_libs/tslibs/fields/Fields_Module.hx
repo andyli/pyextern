@@ -2,12 +2,14 @@
 package pandas._libs.tslibs.fields;
 @:pythonImport("pandas._libs.tslibs.fields") extern class Fields_Module {
 	static public var DAYS_FULL : Dynamic;
+	static public var DAY_SECONDS : Dynamic;
 	static public var MONTHS_FULL : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	/**

@@ -164,6 +164,10 @@ package torch._c;
 	**/
 	public function g_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		getSourceLocation(self: torch._C.Node) -> object
+	**/
+	public function getSourceLocation(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		gs(self: torch._C.Node, arg0: str) -> List[torch._C.Graph]
 	**/
 	public function gs(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -212,6 +216,10 @@ package torch._c;
 	**/
 	@:native("is")
 	public function _is(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		isNondeterministic(self: torch._C.Node) -> bool
+	**/
+	public function isNondeterministic(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		is_(self: torch._C.Node, arg0: str, arg1: List[int]) -> torch._C.Node
 	**/
@@ -293,10 +301,6 @@ package torch._c;
 	**/
 	public function scopeName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setStage(self: torch._C.Node, arg0: int) -> torch._C.Node
-	**/
-	public function setStage(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		ss(self: torch._C.Node, arg0: str) -> List[str]
 	**/
 	public function ss(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -304,10 +308,6 @@ package torch._c;
 		ss_(self: torch._C.Node, arg0: str, arg1: List[str]) -> torch._C.Node
 	**/
 	public function ss_(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		stage(self: torch._C.Node) -> int
-	**/
-	public function stage(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		t(self: torch._C.Node, arg0: str) -> torch::autograd::Variable
 	**/

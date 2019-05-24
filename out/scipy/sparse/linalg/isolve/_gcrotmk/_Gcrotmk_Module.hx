@@ -65,6 +65,9 @@ package scipy.sparse.linalg.isolve._gcrotmk;
 		----------
 		A : {sparse matrix, dense matrix, LinearOperator}
 		    The real or complex N-by-N matrix of the linear system.
+		    Alternatively, ``A`` can be a linear operator which can
+		    produce ``Ax`` using, e.g.,
+		    ``scipy.sparse.linalg.LinearOperator``.
 		b : {array, matrix}
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		x0  : {array, matrix}
@@ -192,9 +195,9 @@ package scipy.sparse.linalg.isolve._gcrotmk;
 		Parameters
 		----------
 		a : (M, N) array_like
-		    Left hand side matrix (2-D array).
+		    Left hand side array
 		b : (M,) or (M, K) array_like
-		    Right hand side matrix or vector (1-D or 2-D array).
+		    Right hand side array
 		cond : float, optional
 		    Cutoff for 'small' singular values; used to determine effective
 		    rank of a. Singular values smaller than
@@ -220,16 +223,15 @@ package scipy.sparse.linalg.isolve._gcrotmk;
 		-------
 		x : (N,) or (N, K) ndarray
 		    Least-squares solution.  Return shape matches shape of `b`.
-		residues : (0,) or () or (K,) ndarray
-		    Sums of residues, squared 2-norm for each column in ``b - a x``.
-		    If rank of matrix a is ``< N`` or ``N > M``, or ``'gelsy'`` is used,
-		    this is a length zero array. If b was 1-D, this is a () shape array
-		    (numpy scalar), otherwise the shape is (K,).
+		residues : (K,) ndarray or float
+		    Square of the 2-norm for each column in ``b - a x``, if ``M > N`` and
+		    ``ndim(A) == n`` (returns a scalar if b is 1-D). Otherwise a
+		    (0,)-shaped array is returned.
 		rank : int
-		    Effective rank of matrix `a`.
-		s : (min(M,N),) ndarray or None
+		    Effective rank of `a`.
+		s : (min(M, N),) ndarray or None
 		    Singular values of `a`. The condition number of a is
-		    ``abs(s[0] / s[-1])``. None is returned when ``'gelsy'`` is used.
+		    ``abs(s[0] / s[-1])``.
 		
 		Raises
 		------
@@ -237,11 +239,16 @@ package scipy.sparse.linalg.isolve._gcrotmk;
 		    If computation does not converge.
 		
 		ValueError
-		    When parameters are wrong.
+		    When parameters are not compatible.
 		
 		See Also
 		--------
-		optimize.nnls : linear least squares with non-negativity constraint
+		scipy.optimize.nnls : linear least squares with non-negativity constraint
+		
+		Notes
+		-----
+		When ``'gelsy'`` is used as a driver, `residues` is set to a (0,)-shaped
+		array and `s` is always ``None``.
 		
 		Examples
 		--------
@@ -339,7 +346,7 @@ package scipy.sparse.linalg.isolve._gcrotmk;
 		    Determines what information is to be returned: either both Q and R
 		    ('full', default), only R ('r') or both Q and R but computed in
 		    economy-size ('economic', see Notes). The final option 'raw'
-		    (added in Scipy 0.11) makes the function return two matrices
+		    (added in SciPy 0.11) makes the function return two matrices
 		    (Q, TAU) in the internal format used by LAPACK.
 		pivoting : bool, optional
 		    Whether or not factorization should include pivoting for rank-revealing
@@ -409,7 +416,7 @@ package scipy.sparse.linalg.isolve._gcrotmk;
 	**/
 	static public function qr(a:Dynamic, ?overwrite_a:Dynamic, ?lwork:Dynamic, ?mode:Dynamic, ?pivoting:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
-		qr_insert(Q, R, u, k, which='row', rcond=None, overwrite_qru=False, check_finite=True)
+		qr_insert(Q, R, u, k, which=u'row', rcond=None, overwrite_qru=False, check_finite=True)
 		
 		QR update on row or column insertions
 		

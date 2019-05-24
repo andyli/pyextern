@@ -5,7 +5,6 @@ package tensorflow.contrib.tensor_forest.proto.fertile_stats_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CLASSIFICATION_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -75,7 +74,6 @@ package tensorflow.contrib.tensor_forest.proto.fertile_stats_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var REGRESSION_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -92,7 +90,10 @@ package tensorflow.contrib.tensor_forest.proto.fertile_stats_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var WEIGHT_SUM_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -258,4 +259,16 @@ package tensorflow.contrib.tensor_forest.proto.fertile_stats_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tensorforest.LeafStat.classification
+	**/
+	public var classification : Dynamic;
+	/**
+		Field tensorflow.tensorforest.LeafStat.regression
+	**/
+	public var regression : Dynamic;
+	/**
+		Field tensorflow.tensorforest.LeafStat.weight_sum
+	**/
+	public var weight_sum : Dynamic;
 }

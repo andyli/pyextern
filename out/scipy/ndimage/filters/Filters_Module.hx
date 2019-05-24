@@ -15,6 +15,7 @@ package scipy.ndimage.filters;
 		Computes a 1D Gaussian convolution kernel.
 	**/
 	static public function _gaussian_kernel1d(sigma:Dynamic, order:Dynamic, radius:Dynamic):Dynamic;
+	static public function _invalid_origin(origin:Dynamic, lenw:Dynamic):Dynamic;
 	static public function _min_or_max_filter(input:Dynamic, size:Dynamic, footprint:Dynamic, structure:Dynamic, output:Dynamic, mode:Dynamic, cval:Dynamic, origin:Dynamic, minimum:Dynamic):Dynamic;
 	static public function _rank_filter(input:Dynamic, rank:Dynamic, ?size:Dynamic, ?footprint:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic, ?operation:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
@@ -89,7 +90,7 @@ package scipy.ndimage.filters;
 		--------
 		Perhaps the simplest case to understand is ``mode='constant', cval=0.0``,
 		because in this case borders (i.e. where the `weights` kernel, centered
-		on any one value, extends beyond an edge of `input`.
+		on any one value, extends beyond an edge of `input`) are treated as zeros.
 		
 		>>> a = np.array([[1, 2, 0, 0],
 		...               [5, 3, 0, 4],
@@ -170,8 +171,8 @@ package scipy.ndimage.filters;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -286,8 +287,8 @@ package scipy.ndimage.filters;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -440,8 +441,8 @@ package scipy.ndimage.filters;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -744,8 +745,8 @@ package scipy.ndimage.filters;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -1071,8 +1072,8 @@ package scipy.ndimage.filters;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -1302,8 +1303,8 @@ package scipy.ndimage.filters;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last
@@ -1725,8 +1726,8 @@ package scipy.ndimage.filters;
 		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the input array is extended
-		    when the filter overlaps a border. Default is 'reflect'. Behavior
-		    for each valid value is as follows:
+		    beyond its boundaries. Default is 'reflect'. Behavior for each valid
+		    value is as follows:
 		
 		    'reflect' (`d c b a | a b c d | d c b a`)
 		        The input is extended by reflecting about the edge of the last

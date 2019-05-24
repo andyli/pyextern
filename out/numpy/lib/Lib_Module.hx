@@ -83,6 +83,9 @@ package numpy.lib;
 		angle : ndarray or scalar
 		    The counterclockwise angle from the positive real axis on
 		    the complex plane, with dtype as numpy.float64.
+		    
+		    ..versionchanged:: 1.16.0
+		        This function works on subclasses of ndarray like `ma.array`.
 		
 		See Also
 		--------
@@ -410,6 +413,10 @@ package numpy.lib;
 	/**
 		Convert an array of size 1 to its scalar equivalent.
 		
+		.. deprecated:: 1.16
+		
+		    Deprecated, use `numpy.ndarray.item()` instead.
+		
 		Parameters
 		----------
 		a : ndarray
@@ -461,12 +468,17 @@ package numpy.lib;
 		
 		Returns
 		-------
-		average, [sum_of_weights] : array_type or double
-		    Return the average along the specified axis. When returned is `True`,
+		retval, [sum_of_weights] : array_type or double
+		    Return the average along the specified axis. When `returned` is `True`,
 		    return a tuple with the average as the first element and the sum
-		    of the weights as the second element. The return type is `Float`
-		    if `a` is of integer type, otherwise it is of the same type as `a`.
-		    `sum_of_weights` is of the same type as `average`.
+		    of the weights as the second element. `sum_of_weights` is of the
+		    same type as `retval`. The result dtype follows a genereal pattern.
+		    If `weights` is None, the result dtype will be that of `a` , or ``float64``
+		    if `a` is integral. Otherwise, if `weights` is not None and `a` is non-
+		    integral, the result type will be the type of lowest precision capable of
+		    representing values of both `a` and `weights`. If `a` happens to be
+		    integral, the previous rules still applies but the result dtype will
+		    at least be ``float64``.
 		
 		Raises
 		------
@@ -483,6 +495,8 @@ package numpy.lib;
 		
 		ma.average : average for masked arrays -- useful if your data contains
 		             "missing" values
+		numpy.result_type : Returns the type that results from applying the
+		                    numpy type promotion rules to the arguments.
 		
 		Examples
 		--------
@@ -502,9 +516,16 @@ package numpy.lib;
 		>>> np.average(data, axis=1, weights=[1./4, 3./4])
 		array([ 0.75,  2.75,  4.75])
 		>>> np.average(data, weights=[1./4, 3./4])
+		
 		Traceback (most recent call last):
 		...
 		TypeError: Axis must be specified when shapes of a and weights differ.
+		
+		>>> a = np.ones(5, dtype=np.float128)
+		>>> w = np.ones(5, dtype=np.complex64)
+		>>> avg = np.average(a, weights=w)
+		>>> print(avg.dtype)
+		complex256
 	**/
 	static public function average(a:Dynamic, ?axis:Dynamic, ?weights:Dynamic, ?returned:Dynamic):Dynamic;
 	/**
@@ -559,7 +580,7 @@ package numpy.lib;
 		.. [3] A.V. Oppenheim and R.W. Schafer, "Discrete-Time Signal
 		       Processing", Prentice-Hall, 1999, pp. 468-471.
 		.. [4] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function
+		       https://en.wikipedia.org/wiki/Window_function
 		.. [5] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
 		       "Numerical Recipes", Cambridge University Press, 1986, page 429.
 		
@@ -723,6 +744,7 @@ package numpy.lib;
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> np.blackman(12)
 		array([ -1.38777878e-17,   3.26064346e-02,   1.59903635e-01,
 		         4.14397981e-01,   7.36045180e-01,   9.67046769e-01,
@@ -787,23 +809,19 @@ package numpy.lib;
 		Examples
 		--------
 		>>> x = np.array([[1,2,3]])
-		>>> y = np.array([[1],[2],[3]])
+		>>> y = np.array([[4],[5]])
 		>>> np.broadcast_arrays(x, y)
 		[array([[1, 2, 3],
-		       [1, 2, 3],
-		       [1, 2, 3]]), array([[1, 1, 1],
-		       [2, 2, 2],
-		       [3, 3, 3]])]
+		       [1, 2, 3]]), array([[4, 4, 4],
+		       [5, 5, 5]])]
 		
 		Here is a useful idiom for getting contiguous copies instead of
 		non-contiguous views.
 		
 		>>> [np.array(a) for a in np.broadcast_arrays(x, y)]
 		[array([[1, 2, 3],
-		       [1, 2, 3],
-		       [1, 2, 3]]), array([[1, 1, 1],
-		       [2, 2, 2],
-		       [3, 3, 3]])]
+		       [1, 2, 3]]), array([[4, 4, 4],
+		       [5, 5, 5]])]
 	**/
 	static public function broadcast_arrays(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1443,6 +1461,12 @@ package numpy.lib;
 		axis : int, optional
 		    The axis along which the difference is taken, default is the
 		    last axis.
+		prepend, append : array_like, optional
+		    Values to prepend or append to "a" along axis prior to
+		    performing the difference.  Scalar values are expanded to
+		    arrays with length 1 in the direction of axis and the shape
+		    of the input array in along all other axes.  Otherwise the
+		    dimension and shape must match "a" except along axis.
 		
 		Returns
 		-------
@@ -1500,10 +1524,8 @@ package numpy.lib;
 		>>> np.diff(x)
 		array([1, 1], dtype='timedelta64[D]')
 	**/
-	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):numpy.Ndarray;
+	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?prepend:Dynamic, ?append:Dynamic):numpy.Ndarray;
 	/**
-		digitize(x, bins, right=False)
-		
 		Return the indices of the bins to which each value in input array belongs.
 		
 		=========  =============  ============================
@@ -1592,7 +1614,7 @@ package numpy.lib;
 		>>> np.digitize(x,bins,right=False)
 		array([1, 3, 3, 4, 5])
 	**/
-	static public function digitize(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function digitize(x:Dynamic, bins:Dynamic, ?right:Dynamic):Dynamic;
 	/**
 		Display a message on a device.
 		
@@ -2458,7 +2480,7 @@ package numpy.lib;
 		References
 		----------
 		.. [1] NumPy User Guide, section `I/O with NumPy
-		       <http://docs.scipy.org/doc/numpy/user/basics.io.genfromtxt.html>`_.
+		       <https://docs.scipy.org/doc/numpy/user/basics.io.genfromtxt.html>`_.
 		
 		Examples
 		---------
@@ -2744,7 +2766,7 @@ package numpy.lib;
 		.. [2] E.R. Kanasewich, "Time Sequence Analysis in Geophysics", The
 		       University of Alberta Press, 1975, pp. 109-110.
 		.. [3] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function
+		       https://en.wikipedia.org/wiki/Window_function
 		.. [4] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
 		       "Numerical Recipes", Cambridge University Press, 1986, page 425.
 		
@@ -2757,6 +2779,7 @@ package numpy.lib;
 		
 		Plot the window and the frequency response:
 		
+		>>> import matplotlib.pyplot as plt
 		>>> from numpy.fft import fft, fftshift
 		>>> window = np.hamming(51)
 		>>> plt.plot(window)
@@ -2835,7 +2858,7 @@ package numpy.lib;
 		.. [2] E.R. Kanasewich, "Time Sequence Analysis in Geophysics",
 		       The University of Alberta Press, 1975, pp. 106-108.
 		.. [3] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function
+		       https://en.wikipedia.org/wiki/Window_function
 		.. [4] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
 		       "Numerical Recipes", Cambridge University Press, 1986, page 425.
 		
@@ -2848,6 +2871,7 @@ package numpy.lib;
 		
 		Plot the window and its frequency response:
 		
+		>>> import matplotlib.pyplot as plt
 		>>> from numpy.fft import fft, fftshift
 		>>> window = np.hanning(51)
 		>>> plt.plot(window)
@@ -2890,8 +2914,8 @@ package numpy.lib;
 		bins : int or sequence of scalars or str, optional
 		    If `bins` is an int, it defines the number of equal-width
 		    bins in the given range (10, by default). If `bins` is a
-		    sequence, it defines the bin edges, including the rightmost
-		    edge, allowing for non-uniform bin widths.
+		    sequence, it defines a monotonically increasing array of bin edges,
+		    including the rightmost edge, allowing for non-uniform bin widths.
 		
 		    .. versionadded:: 1.11.0
 		
@@ -3062,7 +3086,7 @@ package numpy.lib;
 		
 		Examples
 		--------
-		>>> import matplotlib as mpl
+		>>> from matplotlib.image import NonUniformImage
 		>>> import matplotlib.pyplot as plt
 		
 		Construct a 2-D histogram with variable bin width. First define the bin
@@ -3097,7 +3121,7 @@ package numpy.lib;
 		
 		>>> ax = fig.add_subplot(133, title='NonUniformImage: interpolated',
 		...         aspect='equal', xlim=xedges[[0, -1]], ylim=yedges[[0, -1]])
-		>>> im = mpl.image.NonUniformImage(ax, interpolation='bilinear')
+		>>> im = NonUniformImage(ax, interpolation='bilinear')
 		>>> xcenters = (xedges[:-1] + xedges[1:]) / 2
 		>>> ycenters = (yedges[:-1] + yedges[1:]) / 2
 		>>> im.set_data(xcenters, ycenters, H)
@@ -3143,6 +3167,11 @@ package numpy.lib;
 		    'scott'
 		        Less robust estimator that that takes into account data
 		        variability and data size.
+		
+		    'stone'
+		        Estimator based on leave-one-out cross-validation estimate of
+		        the integrated squared error. Can be regarded as a generalization
+		        of Scott's rule.
 		
 		    'rice'
 		        Estimator does not take variability into account, only data
@@ -3313,7 +3342,8 @@ package numpy.lib;
 		bins : sequence or int, optional
 		    The bin specification:
 		
-		    * A sequence of arrays describing the bin edges along each dimension.
+		    * A sequence of arrays describing the monotonically increasing bin
+		      edges along each dimension.
 		    * The number of bins for each dimension (nx, ny, ... =bins)
 		    * The number of bins for all dimensions (nx=ny=...=bins).
 		
@@ -4116,6 +4146,14 @@ package numpy.lib;
 		       [ True,  False]])
 		>>> element[mask]
 		array([2, 4])
+		
+		The indices of the matched values can be obtained with `nonzero`:
+		
+		>>> np.nonzero(mask)
+		(array([0, 1]), array([1, 0]))
+		
+		The test can also be inverted:
+		
 		>>> mask = np.isin(element, test_elements, invert=True)
 		>>> mask
 		array([[ True, False],
@@ -4173,7 +4211,8 @@ package numpy.lib;
 		(IEEE 754).
 		
 		Errors result if the second argument is also supplied when x is a scalar
-		input, or if first and second arguments have different shapes.
+		input, if first and second arguments have different shapes, or if the
+		first argument has complex values.
 		
 		Examples
 		--------
@@ -4227,8 +4266,9 @@ package numpy.lib;
 		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
-		Errors result if the second argument is also supplied when `x` is a
-		scalar input, or if first and second arguments have different shapes.
+		Errors result if the second argument is also supplied when x is a scalar
+		input, if first and second arguments have different shapes, or if the
+		first argument has complex values
 		
 		Examples
 		--------
@@ -4543,10 +4583,11 @@ package numpy.lib;
 		.. [2] E.R. Kanasewich, "Time Sequence Analysis in Geophysics", The
 		       University of Alberta Press, 1975, pp. 177-178.
 		.. [3] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function
+		       https://en.wikipedia.org/wiki/Window_function
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> np.kaiser(12, 14)
 		array([  7.72686684e-06,   3.46009194e-03,   4.65200189e-02,
 		         2.29737120e-01,   5.99885316e-01,   9.45674898e-01,
@@ -4675,8 +4716,11 @@ package numpy.lib;
 		    Allow loading pickled object arrays stored in npy files. Reasons for
 		    disallowing pickles include security, as loading pickled data can
 		    execute arbitrary code. If pickles are disallowed, loading object
-		    arrays will fail.
-		    Default: True
+		    arrays will fail. Default: False
+		
+		    .. versionchanged:: 1.16.3
+		        Made default False in response to CVE-2019-6446.
+		
 		fix_imports : bool, optional
 		    Only useful when loading Python 2 generated pickled files on Python 3,
 		    which includes npy/npz files containing object arrays. If `fix_imports`
@@ -4817,6 +4861,11 @@ package numpy.lib;
 		    the system default is used. The default value is 'bytes'.
 		
 		    .. versionadded:: 1.14.0
+		max_rows : int, optional
+		    Read `max_rows` lines of content after `skiprows` lines. The default
+		    is to read all the lines.
+		
+		    .. versionadded:: 1.16.0
 		
 		Returns
 		-------
@@ -4861,7 +4910,7 @@ package numpy.lib;
 		>>> y
 		array([ 2.,  4.])
 	**/
-	static public function loadtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?converters:Dynamic, ?skiprows:Dynamic, ?usecols:Dynamic, ?unpack:Dynamic, ?ndmin:Dynamic, ?encoding:Dynamic):numpy.Ndarray;
+	static public function loadtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?converters:Dynamic, ?skiprows:Dynamic, ?usecols:Dynamic, ?unpack:Dynamic, ?ndmin:Dynamic, ?encoding:Dynamic, ?max_rows:Dynamic):numpy.Ndarray;
 	/**
 		Do a keyword search on docstrings.
 		
@@ -5156,53 +5205,15 @@ package numpy.lib;
 		
 		`meshgrid` is very useful to evaluate functions on a grid.
 		
+		>>> import matplotlib.pyplot as plt
 		>>> x = np.arange(-5, 5, 0.1)
 		>>> y = np.arange(-5, 5, 0.1)
 		>>> xx, yy = np.meshgrid(x, y, sparse=True)
 		>>> z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2)
 		>>> h = plt.contourf(x,y,z)
+		>>> plt.show()
 	**/
 	static public function meshgrid(?xi:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
-	/**
-		`nd_grid` instance which returns a dense multi-dimensional "meshgrid".
-		
-		An instance of `numpy.lib.index_tricks.nd_grid` which returns an dense
-		(or fleshed out) mesh-grid when indexed, so that each returned argument
-		has the same shape.  The dimensions and number of the output arrays are
-		equal to the number of indexing dimensions.  If the step length is not a
-		complex number, then the stop is not inclusive.
-		
-		However, if the step length is a **complex number** (e.g. 5j), then
-		the integer part of its magnitude is interpreted as specifying the
-		number of points to create between the start and stop values, where
-		the stop value **is inclusive**.
-		
-		Returns
-		----------
-		mesh-grid `ndarrays` all of the same dimensions
-		
-		See Also
-		--------
-		numpy.lib.index_tricks.nd_grid : class of `ogrid` and `mgrid` objects
-		ogrid : like mgrid but returns open (not fleshed out) mesh grids
-		r_ : array concatenator
-		
-		Examples
-		--------
-		>>> np.mgrid[0:5,0:5]
-		array([[[0, 0, 0, 0, 0],
-		        [1, 1, 1, 1, 1],
-		        [2, 2, 2, 2, 2],
-		        [3, 3, 3, 3, 3],
-		        [4, 4, 4, 4, 4]],
-		       [[0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4],
-		        [0, 1, 2, 3, 4]]])
-		>>> np.mgrid[-1:1:5j]
-		array([-1. , -0.5,  0. ,  0.5,  1. ])
-	**/
 	static public var mgrid : Dynamic;
 	/**
 		Return the character for the minimum-size type to which given types can
@@ -6058,13 +6069,15 @@ package numpy.lib;
 		    This optional parameter specifies the interpolation method to
 		    use when the desired quantile lies between two data points
 		    ``i < j``:
-		        * linear: ``i + (j - i) * fraction``, where ``fraction``
-		          is the fractional part of the index surrounded by ``i``
-		          and ``j``.
-		        * lower: ``i``.
-		        * higher: ``j``.
-		        * nearest: ``i`` or ``j``, whichever is nearest.
-		        * midpoint: ``(i + j) / 2``.
+		
+		    * linear: ``i + (j - i) * fraction``, where ``fraction``
+		      is the fractional part of the index surrounded by ``i``
+		      and ``j``.
+		    * lower: ``i``.
+		    * higher: ``j``.
+		    * nearest: ``i`` or ``j``, whichever is nearest.
+		    * midpoint: ``(i + j) / 2``.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left in
 		    the result as dimensions with size one. With this option, the
@@ -6493,42 +6506,6 @@ package numpy.lib;
 		(Compare with the Example given for numpy.lib.financial.irr)
 	**/
 	static public function npv(rate:Dynamic, values:Dynamic):Float;
-	/**
-		`nd_grid` instance which returns an open multi-dimensional "meshgrid".
-		
-		An instance of `numpy.lib.index_tricks.nd_grid` which returns an open
-		(i.e. not fleshed out) mesh-grid when indexed, so that only one dimension
-		of each returned array is greater than 1.  The dimension and number of the
-		output arrays are equal to the number of indexing dimensions.  If the step
-		length is not a complex number, then the stop is not inclusive.
-		
-		However, if the step length is a **complex number** (e.g. 5j), then
-		the integer part of its magnitude is interpreted as specifying the
-		number of points to create between the start and stop values, where
-		the stop value **is inclusive**.
-		
-		Returns
-		----------
-		mesh-grid `ndarrays` with only one dimension :math:`\neq 1`
-		
-		See Also
-		--------
-		np.lib.index_tricks.nd_grid : class of `ogrid` and `mgrid` objects
-		mgrid : like `ogrid` but returns dense (or fleshed out) mesh grids
-		r_ : array concatenator
-		
-		Examples
-		--------
-		>>> from numpy import ogrid
-		>>> ogrid[-1:1:5j]
-		array([-1. , -0.5,  0. ,  0.5,  1. ])
-		>>> ogrid[0:5,0:5]
-		[array([[0],
-		        [1],
-		        [2],
-		        [3],
-		        [4]]), array([[0, 1, 2, 3, 4]])]
-	**/
 	static public var ogrid : Dynamic;
 	/**
 		packbits(myarray, axis=None)
@@ -6777,9 +6754,9 @@ package numpy.lib;
 	**/
 	static public function pad(array:Dynamic, pad_width:Dynamic, mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
-		Compute the qth percentile of the data along the specified axis.
+		Compute the q-th percentile of the data along the specified axis.
 		
-		Returns the qth percentile(s) of the array elements.
+		Returns the q-th percentile(s) of the array elements.
 		
 		Parameters
 		----------
@@ -6846,7 +6823,7 @@ package numpy.lib;
 		
 		Notes
 		-----
-		Given a vector ``V`` of length ``N``, the ``q``-th percentile of
+		Given a vector ``V`` of length ``N``, the q-th percentile of
 		``V`` is the value ``q/100`` of the way from the minimum to the
 		maximum in a sorted copy of ``V``. The values and distances of
 		the two nearest neighbors as well as the `interpolation` parameter
@@ -7344,7 +7321,11 @@ package numpy.lib;
 		
 		Fit a polynomial ``p(x) = p[0] * x**deg + ... + p[deg]`` of degree `deg`
 		to points `(x, y)`. Returns a vector of coefficients `p` that minimises
-		the squared error.
+		the squared error in the order `deg`, `deg-1`, ... `0`.
+		
+		The `Polynomial.fit <numpy.polynomial.polynomial.Polynomial.fit>` class
+		method is recommended for new code as it is more stable numerically. See
+		the documentation of the method for more information.
 		
 		Parameters
 		----------
@@ -7368,9 +7349,14 @@ package numpy.lib;
 		w : array_like, shape (M,), optional
 		    Weights to apply to the y-coordinates of the sample points. For
 		    gaussian uncertainties, use 1/sigma (not 1/sigma**2).
-		cov : bool, optional
-		    Return the estimate and the covariance matrix of the estimate
-		    If full is True, then cov is not returned.
+		cov : bool or str, optional
+		    If given and not `False`, return not just the estimate but also its
+		    covariance matrix. By default, the covariance are scaled by
+		    chi2/sqrt(N-dof), i.e., the weights are presumed to be unreliable
+		    except in a relative sense and everything is scaled such that the
+		    reduced chi2 is unity. This scaling is omitted if ``cov='unscaled'``,
+		    as is relevant for the case that the weights are 1/sigma**2, with
+		    sigma known to be a reliable estimate of the uncertainty.
 		
 		Returns
 		-------
@@ -7442,9 +7428,9 @@ package numpy.lib;
 		References
 		----------
 		.. [1] Wikipedia, "Curve fitting",
-		       http://en.wikipedia.org/wiki/Curve_fitting
+		       https://en.wikipedia.org/wiki/Curve_fitting
 		.. [2] Wikipedia, "Polynomial interpolation",
-		       http://en.wikipedia.org/wiki/Polynomial_interpolation
+		       https://en.wikipedia.org/wiki/Polynomial_interpolation
 		
 		Examples
 		--------
@@ -7500,7 +7486,7 @@ package numpy.lib;
 		Parameters
 		----------
 		p : array_like or poly1d
-		    Polynomial to differentiate.
+		    Polynomial to integrate.
 		    A sequence is interpreted as polynomial coefficients, see `poly1d`.
 		m : int, optional
 		    Order of the antiderivative. (Default: 1)
@@ -7868,7 +7854,7 @@ package numpy.lib;
 	**/
 	static public function pv(rate:Dynamic, nper:Dynamic, pmt:Dynamic, ?fv:Dynamic, ?when:Dynamic):Dynamic;
 	/**
-		Compute the `q`th quantile of the data along the specified axis.
+		Compute the q-th quantile of the data along the specified axis.
 		..versionadded:: 1.15.0
 		
 		Parameters
@@ -7894,6 +7880,7 @@ package numpy.lib;
 		    This optional parameter specifies the interpolation method to
 		    use when the desired quantile lies between two data points
 		    ``i < j``:
+		
 		        * linear: ``i + (j - i) * fraction``, where ``fraction``
 		          is the fractional part of the index surrounded by ``i``
 		          and ``j``.
@@ -7927,7 +7914,7 @@ package numpy.lib;
 		
 		Notes
 		-----
-		Given a vector ``V`` of length ``N``, the ``q``-th quantile of
+		Given a vector ``V`` of length ``N``, the q-th quantile of
 		``V`` is the value ``q`` of the way from the minimum to the
 		maximum in a sorted copy of ``V``. The values and distances of
 		the two nearest neighbors as well as the `interpolation` parameter
@@ -8531,8 +8518,8 @@ package numpy.lib;
 		References
 		----------
 		.. [1] `Format Specification Mini-Language
-		       <http://docs.python.org/library/string.html#
-		       format-specification-mini-language>`_, Python Documentation.
+		       <https://docs.python.org/library/string.html#format-specification-mini-language>`_,
+		       Python Documentation.
 		
 		Examples
 		--------
@@ -8716,7 +8703,7 @@ package numpy.lib;
 	/**
 		Find the set difference of two arrays.
 		
-		Return the sorted, unique values in `ar1` that are not in `ar2`.
+		Return the unique values in `ar1` that are not in `ar2`.
 		
 		Parameters
 		----------
@@ -8731,7 +8718,9 @@ package numpy.lib;
 		Returns
 		-------
 		setdiff1d : ndarray
-		    Sorted 1D array of values in `ar1` that are not in `ar2`.
+		    1D array of values in `ar1` that are not in `ar2`. The result
+		    is sorted when `assume_unique=False`, but otherwise only sorted
+		    if the input is sorted.
 		
 		See Also
 		--------
@@ -8808,10 +8797,11 @@ package numpy.lib;
 		.. [1] Weisstein, Eric W. "Sinc Function." From MathWorld--A Wolfram Web
 		       Resource. http://mathworld.wolfram.com/SincFunction.html
 		.. [2] Wikipedia, "Sinc function",
-		       http://en.wikipedia.org/wiki/Sinc_function
+		       https://en.wikipedia.org/wiki/Sinc_function
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> x = np.linspace(-4, 4, 41)
 		>>> np.sinc(x)
 		array([ -3.89804309e-17,  -4.92362781e-02,  -8.40918587e-02,
@@ -9181,10 +9171,10 @@ package numpy.lib;
 		
 		References
 		----------
-		.. [1] Wikipedia page: http://en.wikipedia.org/wiki/Trapezoidal_rule
+		.. [1] Wikipedia page: https://en.wikipedia.org/wiki/Trapezoidal_rule
 		
 		.. [2] Illustration image:
-		       http://en.wikipedia.org/wiki/File:Composite_trapezoidal_rule_illustration.png
+		       https://en.wikipedia.org/wiki/File:Composite_trapezoidal_rule_illustration.png
 		
 		Examples
 		--------
@@ -9758,7 +9748,7 @@ package numpy.lib;
 	**/
 	static public function unpackbits(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		unravel_index(indices, dims, order='C')
+		unravel_index(indices, shape, order='C')
 		
 		Converts a flat index or array of flat indices into a tuple
 		of coordinate arrays.
@@ -9767,10 +9757,14 @@ package numpy.lib;
 		----------
 		indices : array_like
 		    An integer array whose elements are indices into the flattened
-		    version of an array of dimensions ``dims``. Before version 1.6.0,
+		    version of an array of dimensions ``shape``. Before version 1.6.0,
 		    this function accepted just one index value.
-		dims : tuple of ints
+		shape : tuple of ints
 		    The shape of the array to use for unraveling ``indices``.
+		
+		    .. versionchanged:: 1.16.0
+		        Renamed from ``dims`` to ``shape``.
+		
 		order : {'C', 'F'}, optional
 		    Determines whether the indices should be viewed as indexing in
 		    row-major (C-style) or column-major (Fortran-style) order.

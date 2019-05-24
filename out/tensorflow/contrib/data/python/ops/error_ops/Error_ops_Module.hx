@@ -14,7 +14,7 @@ package tensorflow.contrib.data.python.ops.error_ops;
 	/**
 		Creates a `Dataset` from another `Dataset` and silently ignores any errors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.ignore_errors()`.
 		

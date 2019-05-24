@@ -20,7 +20,7 @@ package tensorflow.python.ops.math_ops;
 	/**
 		Returns range(0, rank(x)) if reduction_indices is None.
 	**/
-	static public function _ReductionDims(x:Dynamic, axis:Dynamic, reduction_indices:Dynamic):Dynamic;
+	static public function _ReductionDims(x:Dynamic, axis:Dynamic, ?reduction_indices:Dynamic):Dynamic;
 	static public var _TRUEDIV_TABLE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -86,7 +86,7 @@ package tensorflow.python.ops.math_ops;
 	/**
 		Set a reduction's output shape to be a scalar if we are certain.
 	**/
-	static public function _may_reduce_to_scalar(keepdims:Dynamic, axis:Dynamic, reduction_indices:Dynamic, output:Dynamic):Dynamic;
+	static public function _may_reduce_to_scalar(keepdims:Dynamic, axis:Dynamic, output:Dynamic):Dynamic;
 	/**
 		Returns x * y element-wise.
 		
@@ -102,7 +102,7 @@ package tensorflow.python.ops.math_ops;
 		    A `Tensor`. Has the same type as `x`.
 		  DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		`tf.mul(x, y)` is deprecated, please use `tf.multiply(x, y)` or `x * y`
 	**/
@@ -114,7 +114,7 @@ package tensorflow.python.ops.math_ops;
 	/**
 		Computes numerical negative value element-wise. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		`tf.neg(x)` is deprecated, please use `tf.negative(x)` or `-x`
 		
@@ -149,7 +149,7 @@ package tensorflow.python.ops.math_ops;
 		    A `Tensor`. Has the same type as `x`.
 		  DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		`tf.sub(x, y)` is deprecated, please use `tf.subtract(x, y)` or `x - y`
 	**/
@@ -182,6 +182,9 @@ package tensorflow.python.ops.math_ops;
 		    values.
 		  Note, for `complex64` or `complex128` input, the returned `Tensor` will be
 		    of type `float32` or `float64`, respectively.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.abs(x.values, ...), x.dense_shape)`
 	**/
 	static public function abs(x:Dynamic, ?name:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
@@ -308,6 +311,8 @@ package tensorflow.python.ops.math_ops;
 	/**
 		Adds all input tensors element-wise.
 		
+		Converts `IndexedSlices` objects into dense tensors prior to adding.
+		
 		Args:
 		  inputs: A list of `Tensor` or `IndexedSlices` objects, each with same shape
 		    and type.
@@ -401,9 +406,9 @@ package tensorflow.python.ops.math_ops;
 	/**
 		Returns the index with the largest value across dimensions of a tensor. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
-		Use `argmax` instead
+		Use `tf.math.argmax` instead
 		
 		Note that in case of ties the identity of the return value is not guaranteed.
 		
@@ -428,9 +433,9 @@ package tensorflow.python.ops.math_ops;
 	/**
 		Returns the index with the smallest value across dimensions of a tensor. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
-		Use `argmin` instead
+		Use `tf.math.argmin` instead
 		
 		Note that in case of ties the identity of the return value is not guaranteed.
 		
@@ -455,7 +460,7 @@ package tensorflow.python.ops.math_ops;
 	/**
 		Returns the index with the largest value across axes of a tensor. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(dimension)`. They will be removed in a future version.
 		Instructions for updating:
 		Use the `axis` argument instead
 		
@@ -475,9 +480,30 @@ package tensorflow.python.ops.math_ops;
 	**/
 	static public function argmax(input:Dynamic, ?axis:Dynamic, ?name:Dynamic, ?dimension:Dynamic, ?output_type:Dynamic):Dynamic;
 	/**
+		Returns the index with the largest value across axes of a tensor.
+		
+		Note that in case of ties the identity of the return value is not guaranteed.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`,
+		  `int32`, `uint8`, `int16`, `int8`, `complex64`, `int64`, `qint8`, `quint8`,
+		  `qint32`, `bfloat16`, `uint16`, `complex128`, `half`, `uint32`, `uint64`.
+		  axis: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    int32 or int64, must be in the range `-rank(input), rank(input))`.
+		    Describes which axis of the input Tensor to reduce across. For vectors,
+		    use axis = 0.
+		  output_type: An optional `tf.DType` from: `tf.int32, tf.int64`.
+		    Defaults to `tf.int64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `output_type`.
+	**/
+	static public function argmax_v2(input:Dynamic, ?axis:Dynamic, ?output_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Returns the index with the smallest value across axes of a tensor. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(dimension)`. They will be removed in a future version.
 		Instructions for updating:
 		Use the `axis` argument instead
 		
@@ -496,6 +522,27 @@ package tensorflow.python.ops.math_ops;
 		  A `Tensor` of type `output_type`.
 	**/
 	static public function argmin(input:Dynamic, ?axis:Dynamic, ?name:Dynamic, ?dimension:Dynamic, ?output_type:Dynamic):Dynamic;
+	/**
+		Returns the index with the smallest value across axes of a tensor.
+		
+		Note that in case of ties the identity of the return value is not guaranteed.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`,
+		  `int32`, `uint8`, `int16`, `int8`, `complex64`, `int64`, `qint8`, `quint8`,
+		  `qint32`, `bfloat16`, `uint16`, `complex128`, `half`, `uint32`, `uint64`.
+		  axis: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    int32 or int64, must be in the range `-rank(input), rank(input))`.
+		    Describes which axis of the input Tensor to reduce across. For vectors,
+		    use axis = 0.
+		  output_type: An optional `tf.DType` from: `tf.int32, tf.int64`.
+		    Defaults to `tf.int64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `output_type`.
+	**/
+	static public function argmin_v2(input:Dynamic, ?axis:Dynamic, ?output_type:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes asin of x element-wise.
 		
@@ -606,7 +653,7 @@ package tensorflow.python.ops.math_ops;
 		    output[..., :, :] = matrix(x[..., :, :]) * matrix(y[..., :, :])
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `complex64`, `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
 		    2-D or higher with shape `[..., r_x, c_x]`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		    2-D or higher with shape `[..., r_y, c_y]`.
@@ -634,16 +681,14 @@ package tensorflow.python.ops.math_ops;
 		This function is faster and numerically stabler than `bessel_i0(x)`.
 		
 		Args:
-		  x: A `Tensor` or `SparseTensor`. Must be one of the following types: `half`,
-		    `float32`, `float64`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` or `SparseTensor`, respectively. Has the same type as `x`.
+		  A `Tensor`. Has the same type as `x`.
 		
-		@compatibility(scipy)
-		Equivalent to scipy.special.i0e
-		@end_compatibility
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.bessel_i0e(x.values, ...), x.dense_shape)`
 	**/
 	static public function bessel_i0e(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -654,22 +699,20 @@ package tensorflow.python.ops.math_ops;
 	/**
 		Computes the Bessel i1e function of `x` element-wise.
 		
-		Exponentially scaled modified Bessel function of order 1 defined as
+		Exponentially scaled modified Bessel function of order 0 defined as
 		`bessel_i1e(x) = exp(-abs(x)) bessel_i1(x)`.
 		
 		This function is faster and numerically stabler than `bessel_i1(x)`.
 		
 		Args:
-		  x: A `Tensor` or `SparseTensor`. Must be one of the following types: `half`,
-		    `float32`, `float64`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` or `SparseTensor`, respectively. Has the same type as `x`.
+		  A `Tensor`. Has the same type as `x`.
 		
-		@compatibility(scipy)
-		Equivalent to scipy.special.i1e
-		@end_compatibility
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.bessel_i1e(x.values, ...), x.dense_shape)`
 	**/
 	static public function bessel_i1e(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -721,24 +764,50 @@ package tensorflow.python.ops.math_ops;
 		Args:
 		  arr: An int32 tensor of non-negative values.
 		  weights: If non-None, must be the same shape as arr. For each value in
-		      `arr`, the bin will be incremented by the corresponding weight instead
-		      of 1.
+		    `arr`, the bin will be incremented by the corresponding weight instead of
+		    1.
 		  minlength: If given, ensures the output has length at least `minlength`,
-		      padding with zeros at the end if necessary.
+		    padding with zeros at the end if necessary.
 		  maxlength: If given, skips values in `arr` that are equal or greater than
-		      `maxlength`, ensuring that the output has length at most `maxlength`.
+		    `maxlength`, ensuring that the output has length at most `maxlength`.
+		  dtype: If `weights` is None, determines the type of the output bins.
+		  name: A name scope for the associated operations (optional).
+		
+		Returns:
+		  A vector with the same dtype as `weights` or the given `dtype`. The bin
+		  values.
+	**/
+	static public function bincount(arr:Dynamic, ?weights:Dynamic, ?minlength:Dynamic, ?maxlength:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function bincount
+	**/
+	static public function bincount_eager_fallback(arr:Dynamic, size:Dynamic, weights:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Counts the number of occurrences of each value in an integer array.
+		
+		If `minlength` and `maxlength` are not given, returns a vector with length
+		`tf.reduce_max(arr) + 1` if `arr` is non-empty, and length 0 otherwise.
+		If `weights` are non-None, then index `i` of the output stores the sum of the
+		value in `weights` at each index where the corresponding value in `arr` is
+		`i`.
+		
+		Args:
+		  arr: An int32 tensor of non-negative values.
+		  weights: If non-None, must be the same shape as arr. For each value in
+		    `arr`, the bin will be incremented by the corresponding weight instead of
+		    1.
+		  minlength: If given, ensures the output has length at least `minlength`,
+		    padding with zeros at the end if necessary.
+		  maxlength: If given, skips values in `arr` that are equal or greater than
+		    `maxlength`, ensuring that the output has length at most `maxlength`.
 		  dtype: If `weights` is None, determines the type of the output bins.
 		
 		Returns:
 		  A vector with the same dtype as `weights` or the given `dtype`. The bin
 		  values.
 	**/
-	static public function bincount(arr:Dynamic, ?weights:Dynamic, ?minlength:Dynamic, ?maxlength:Dynamic, ?dtype:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function bincount
-	**/
-	static public function bincount_eager_fallback(arr:Dynamic, size:Dynamic, weights:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function bincount_v1(arr:Dynamic, ?weights:Dynamic, ?minlength:Dynamic, ?maxlength:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Bucketizes 'input' based on 'boundaries'.
 		
@@ -991,7 +1060,7 @@ package tensorflow.python.ops.math_ops;
 	/**
 		Computes number of nonzero elements across dimensions of a tensor. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		keep_dims is deprecated, use keepdims instead
 		
@@ -1043,6 +1112,55 @@ package tensorflow.python.ops.math_ops;
 		  The reduced tensor (number of nonzero values).
 	**/
 	static public function count_nonzero(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	/**
+		Computes number of nonzero elements across dimensions of a tensor.
+		
+		Reduces `input` along the dimensions given in `axis`.
+		Unless `keepdims` is true, the rank of the tensor is reduced by 1 for each
+		entry in `axis`. If `keepdims` is true, the reduced dimensions
+		are retained with length 1.
+		
+		If `axis` has no entries, all dimensions are reduced, and a
+		tensor with a single element is returned.
+		
+		**NOTE** Floating point comparison to zero is done by exact floating point
+		equality check.  Small values are **not** rounded to zero for purposes of
+		the nonzero check.
+		
+		For example:
+		
+		```python
+		x = tf.constant([[0, 1, 0], [1, 1, 0]])
+		tf.count_nonzero(x)  # 3
+		tf.count_nonzero(x, 0)  # [1, 2, 0]
+		tf.count_nonzero(x, 1)  # [1, 2]
+		tf.count_nonzero(x, 1, keepdims=True)  # [[1], [2]]
+		tf.count_nonzero(x, [0, 1])  # 3
+		```
+		
+		**NOTE** Strings are compared against zero-length empty string `""`. Any
+		string with a size greater than zero is already considered as nonzero.
+		
+		For example:
+		```python
+		x = tf.constant(["", "a", "  ", "b", ""])
+		tf.count_nonzero(x) # 3, with "a", "  ", and "b" as nonzero strings.
+		```
+		
+		Args:
+		  input: The tensor to reduce. Should be of numeric type, `bool`,
+		    or `string`.
+		  axis: The dimensions to reduce. If `None` (the default),
+		    reduces all dimensions. Must be in the range
+		    `[-rank(input), rank(input))`.
+		  keepdims: If true, retains reduced dimensions with length 1.
+		  dtype: The output dtype; defaults to `tf.int64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The reduced tensor (number of nonzero values).
+	**/
+	static public function count_nonzero_v2(input:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Compute the pairwise cross product.
 		
@@ -1204,7 +1322,11 @@ package tensorflow.python.ops.math_ops;
 	**/
 	static public function digamma_eager_fallback(x:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Divides x / y elementwise (using Python 2 division operator semantics).
+		Divides x / y elementwise (using Python 2 division operator semantics). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Deprecated in favor of operator or tf.math.divide.
 		
 		NOTE: Prefer using the Tensor division operator or tf.divide which obey Python
 		division operator semantics.
@@ -1272,12 +1394,14 @@ package tensorflow.python.ops.math_ops;
 		Computes the Gauss error function of `x` element-wise.
 		
 		Args:
-		  x: A `Tensor` or `SparseTensor`. Must be one of the following types: `half`,
-		    `float32`, `float64`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` or `SparseTensor`, respectively. Has the same type as `x`.
+		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.erf(x.values, ...), x.dense_shape)`
 	**/
 	static public function erf(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -1336,51 +1460,6 @@ package tensorflow.python.ops.math_ops;
 	**/
 	static public function expm1_eager_fallback(x:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Fast Fourier transform.
-		
-		Computes the 1-dimensional discrete Fourier transform over the inner-most
-		dimension of `input`.
-		
-		Args:
-		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
-		    A complex64 tensor.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `input`.
-	**/
-	static public function fft(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		2D fast Fourier transform.
-		
-		Computes the 2-dimensional discrete Fourier transform over the inner-most
-		2 dimensions of `input`.
-		
-		Args:
-		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
-		    A complex64 tensor.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `input`.
-	**/
-	static public function fft2d(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		3D fast Fourier transform.
-		
-		Computes the 3-dimensional discrete Fourier transform over the inner-most 3
-		dimensions of `input`.
-		
-		Args:
-		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
-		    A complex64 tensor.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `input`.
-	**/
-	static public function fft3d(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
 		Returns element-wise largest integer not greater than x.
 		
 		Args:
@@ -1394,7 +1473,7 @@ package tensorflow.python.ops.math_ops;
 	/**
 		Returns x // y element-wise.
 		
-		*NOTE*: `FloorDiv` supports broadcasting. More about broadcasting
+		*NOTE*: `floor_div` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -1422,7 +1501,7 @@ package tensorflow.python.ops.math_ops;
 		true, this follows Python semantics in that the result here is consistent
 		with a flooring divide. E.g. `floor(x / y) * y + mod(x, y) = x`.
 		
-		*NOTE*: `FloorMod` supports broadcasting. More about broadcasting
+		*NOTE*: `floormod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -1469,7 +1548,7 @@ package tensorflow.python.ops.math_ops;
 		true, this follows Python semantics in that the result here is consistent
 		with a flooring divide. E.g. `floor(x / y) * y + mod(x, y) = x`.
 		
-		*NOTE*: `FloorMod` supports broadcasting. More about broadcasting
+		*NOTE*: `floormod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -1521,51 +1600,6 @@ package tensorflow.python.ops.math_ops;
 		This is for function greater_equal
 	**/
 	static public function greater_equal_eager_fallback(x:Dynamic, y:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		Inverse fast Fourier transform.
-		
-		Computes the inverse 1-dimensional discrete Fourier transform over the
-		inner-most dimension of `input`.
-		
-		Args:
-		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
-		    A complex64 tensor.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `input`.
-	**/
-	static public function ifft(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Inverse 2D fast Fourier transform.
-		
-		Computes the inverse 2-dimensional discrete Fourier transform over the
-		inner-most 2 dimensions of `input`.
-		
-		Args:
-		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
-		    A complex64 tensor.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `input`.
-	**/
-	static public function ifft2d(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Inverse 3D fast Fourier transform.
-		
-		Computes the inverse 3-dimensional discrete Fourier transform over the
-		inner-most 3 dimensions of `input`.
-		
-		Args:
-		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
-		    A complex64 tensor.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor`. Has the same type as `input`.
-	**/
-	static public function ifft3d(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Compute the lower regularized incomplete Gamma function `P(a, x)`.
 		
@@ -2005,7 +2039,7 @@ package tensorflow.python.ops.math_ops;
 		cublas.
 		
 		Args:
-		  a: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `complex64`, `complex128`.
+		  a: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
 		  b: A `Tensor`. Must have the same type as `a`.
 		  transpose_a: An optional `bool`. Defaults to `False`.
 		    If true, "a" is transposed before multiplication.
@@ -2125,6 +2159,87 @@ package tensorflow.python.ops.math_ops;
 	**/
 	static public function matmul(a:Dynamic, b:Dynamic, ?transpose_a:Dynamic, ?transpose_b:Dynamic, ?adjoint_a:Dynamic, ?adjoint_b:Dynamic, ?a_is_sparse:Dynamic, ?b_is_sparse:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Multiplies matrix `a` by vector `b`, producing `a` * `b`.
+		
+		The matrix `a` must, following any transpositions, be a tensor of rank >= 2,
+		and we must have `shape(b) = shape(a)[:-2] + [shape(a)[-1]]`.
+		
+		Both `a` and `b` must be of the same type. The supported types are:
+		`float16`, `float32`, `float64`, `int32`, `complex64`, `complex128`.
+		
+		Matrix `a` can be transposed or adjointed (conjugated and transposed) on
+		the fly by setting one of the corresponding flag to `True`. These are `False`
+		by default.
+		
+		If one or both of the inputs contain a lot of zeros, a more efficient
+		multiplication algorithm can be used by setting the corresponding
+		`a_is_sparse` or `b_is_sparse` flag to `True`. These are `False` by default.
+		This optimization is only available for plain matrices/vectors (rank-2/1
+		tensors) with datatypes `bfloat16` or `float32`.
+		
+		For example:
+		
+		```python
+		# 2-D tensor `a`
+		# [[1, 2, 3],
+		#  [4, 5, 6]]
+		a = tf.constant([1, 2, 3, 4, 5, 6], shape=[2, 3])
+		
+		# 1-D tensor `b`
+		# [7, 9, 11]
+		b = tf.constant([7, 9, 11], shape=[3])
+		
+		# `a` * `b`
+		# [ 58,  64]
+		c = tf.matvec(a, b)
+		
+		
+		# 3-D tensor `a`
+		# [[[ 1,  2,  3],
+		#   [ 4,  5,  6]],
+		#  [[ 7,  8,  9],
+		#   [10, 11, 12]]]
+		a = tf.constant(np.arange(1, 13, dtype=np.int32),
+		                shape=[2, 2, 3])
+		
+		# 2-D tensor `b`
+		# [[13, 14, 15],
+		#  [16, 17, 18]]
+		b = tf.constant(np.arange(13, 19, dtype=np.int32),
+		                shape=[2, 3])
+		
+		# `a` * `b`
+		# [[ 86, 212],
+		#  [410, 563]]
+		c = tf.matvec(a, b)
+		```
+		
+		Args:
+		  a: `Tensor` of type `float16`, `float32`, `float64`, `int32`, `complex64`,
+		    `complex128` and rank > 1.
+		  b: `Tensor` with same type and rank = `rank(a) - 1`.
+		  transpose_a: If `True`, `a` is transposed before multiplication.
+		  adjoint_a: If `True`, `a` is conjugated and transposed before
+		    multiplication.
+		  a_is_sparse: If `True`, `a` is treated as a sparse matrix.
+		  b_is_sparse: If `True`, `b` is treated as a sparse matrix.
+		  name: Name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of the same type as `a` and `b` where each inner-most vector is
+		  the product of the corresponding matrices in `a` and vectors in `b`, e.g. if
+		  all transpose or adjoint attributes are `False`:
+		
+		  `output`[..., i] = sum_k (`a`[..., i, k] * `b`[..., k]), for all indices i.
+		
+		  Note: This is matrix-vector product, not element-wise product.
+		
+		
+		Raises:
+		  ValueError: If transpose_a and adjoint_a are both set to True.
+	**/
+	static public function matvec(a:Dynamic, b:Dynamic, ?transpose_a:Dynamic, ?adjoint_a:Dynamic, ?a_is_sparse:Dynamic, ?b_is_sparse:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Returns the max of x and y (i.e. x > y ? x : y) element-wise.
 		
 		*NOTE*: `math.maximum` supports broadcasting. More about broadcasting
@@ -2197,7 +2312,7 @@ package tensorflow.python.ops.math_ops;
 		true, this follows Python semantics in that the result here is consistent
 		with a flooring divide. E.g. `floor(x / y) * y + mod(x, y) = x`.
 		
-		*NOTE*: `FloorMod` supports broadcasting. More about broadcasting
+		*NOTE*: `floormod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -2260,6 +2375,9 @@ package tensorflow.python.ops.math_ops;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.negative(x.values, ...), x.dense_shape)`
 	**/
 	static public function neg(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -2270,15 +2388,17 @@ package tensorflow.python.ops.math_ops;
 	/**
 		Computes numerical negative value element-wise.
 		
-		I.e., \(y = -x\).
+		I.e., \\(y = -x\\).
 		
 		Args:
-		  x: A `Tensor` or `SparseTensor`. Must be one of the following types: `half`,
-		    `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` or `SparseTensor`, respectively. Has the same type as `x`.
+		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.negative(x.values, ...), x.dense_shape)`
 	**/
 	static public function negative(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -2711,9 +2831,45 @@ package tensorflow.python.ops.math_ops;
 	**/
 	static public function reciprocal_grad_eager_fallback(y:Dynamic, dy:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		Computes the "logical and" of elements across dimensions of a tensor.
+		
+		Reduces `input_tensor` along the dimensions given in `axis`.
+		Unless `keepdims` is true, the rank of the tensor is reduced by 1 for each
+		entry in `axis`. If `keepdims` is true, the reduced dimensions
+		are retained with length 1.
+		
+		If `axis` is None, all dimensions are reduced, and a
+		tensor with a single element is returned.
+		
+		For example:
+		
+		```python
+		x = tf.constant([[True,  True], [False, False]])
+		tf.reduce_all(x)  # False
+		tf.reduce_all(x, 0)  # [False, False]
+		tf.reduce_all(x, 1)  # [True, False]
+		```
+		
+		Args:
+		  input_tensor: The boolean tensor to reduce.
+		  axis: The dimensions to reduce. If `None` (the default), reduces all
+		    dimensions. Must be in the range `[-rank(input_tensor),
+		    rank(input_tensor))`.
+		  keepdims: If true, retains reduced dimensions with length 1.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The reduced tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.all
+		@end_compatibility
+	**/
+	static public function reduce_all(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Computes the "logical and" of elements across dimensions of a tensor. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		keep_dims is deprecated, use keepdims instead
 		
@@ -2736,9 +2892,9 @@ package tensorflow.python.ops.math_ops;
 		
 		Args:
 		  input_tensor: The boolean tensor to reduce.
-		  axis: The dimensions to reduce. If `None` (the default),
-		    reduces all dimensions. Must be in the range
-		    `[-rank(input_tensor), rank(input_tensor))`.
+		  axis: The dimensions to reduce. If `None` (the default), reduces all
+		    dimensions. Must be in the range `[-rank(input_tensor),
+		    rank(input_tensor))`.
 		  keepdims: If true, retains reduced dimensions with length 1.
 		  name: A name for the operation (optional).
 		  reduction_indices: The old (deprecated) name for axis.
@@ -2751,11 +2907,47 @@ package tensorflow.python.ops.math_ops;
 		Equivalent to np.all
 		@end_compatibility
 	**/
-	static public function reduce_all(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	static public function reduce_all_v1(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	/**
+		Computes the "logical or" of elements across dimensions of a tensor.
+		
+		Reduces `input_tensor` along the dimensions given in `axis`.
+		Unless `keepdims` is true, the rank of the tensor is reduced by 1 for each
+		entry in `axis`. If `keepdims` is true, the reduced dimensions
+		are retained with length 1.
+		
+		If `axis` is None, all dimensions are reduced, and a
+		tensor with a single element is returned.
+		
+		For example:
+		
+		```python
+		x = tf.constant([[True,  True], [False, False]])
+		tf.reduce_any(x)  # True
+		tf.reduce_any(x, 0)  # [True, True]
+		tf.reduce_any(x, 1)  # [True, False]
+		```
+		
+		Args:
+		  input_tensor: The boolean tensor to reduce.
+		  axis: The dimensions to reduce. If `None` (the default), reduces all
+		    dimensions. Must be in the range `[-rank(input_tensor),
+		    rank(input_tensor))`.
+		  keepdims: If true, retains reduced dimensions with length 1.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The reduced tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.any
+		@end_compatibility
+	**/
+	static public function reduce_any(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes the "logical or" of elements across dimensions of a tensor. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		keep_dims is deprecated, use keepdims instead
 		
@@ -2778,9 +2970,9 @@ package tensorflow.python.ops.math_ops;
 		
 		Args:
 		  input_tensor: The boolean tensor to reduce.
-		  axis: The dimensions to reduce. If `None` (the default),
-		    reduces all dimensions. Must be in the range
-		    `[-rank(input_tensor), rank(input_tensor))`.
+		  axis: The dimensions to reduce. If `None` (the default), reduces all
+		    dimensions. Must be in the range `[-rank(input_tensor),
+		    rank(input_tensor))`.
 		  keepdims: If true, retains reduced dimensions with length 1.
 		  name: A name for the operation (optional).
 		  reduction_indices: The old (deprecated) name for axis.
@@ -2793,11 +2985,49 @@ package tensorflow.python.ops.math_ops;
 		Equivalent to np.any
 		@end_compatibility
 	**/
-	static public function reduce_any(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	static public function reduce_any_v1(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	/**
+		Computes log(sum(exp(elements across dimensions of a tensor))).
+		
+		Reduces `input_tensor` along the dimensions given in `axis`.
+		Unless `keepdims` is true, the rank of the tensor is reduced by 1 for each
+		entry in `axis`. If `keepdims` is true, the reduced dimensions
+		are retained with length 1.
+		
+		If `axis` has no entries, all dimensions are reduced, and a
+		tensor with a single element is returned.
+		
+		This function is more numerically stable than log(sum(exp(input))). It avoids
+		overflows caused by taking the exp of large inputs and underflows caused by
+		taking the log of small inputs.
+		
+		For example:
+		
+		```python
+		x = tf.constant([[0., 0., 0.], [0., 0., 0.]])
+		tf.reduce_logsumexp(x)  # log(6)
+		tf.reduce_logsumexp(x, 0)  # [log(2), log(2), log(2)]
+		tf.reduce_logsumexp(x, 1)  # [log(3), log(3)]
+		tf.reduce_logsumexp(x, 1, keepdims=True)  # [[log(3)], [log(3)]]
+		tf.reduce_logsumexp(x, [0, 1])  # log(6)
+		```
+		
+		Args:
+		  input_tensor: The tensor to reduce. Should have numeric type.
+		  axis: The dimensions to reduce. If `None` (the default), reduces all
+		    dimensions. Must be in the range `[-rank(input_tensor),
+		    rank(input_tensor))`.
+		  keepdims: If true, retains reduced dimensions with length 1.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The reduced tensor.
+	**/
+	static public function reduce_logsumexp(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes log(sum(exp(elements across dimensions of a tensor))). (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		keep_dims is deprecated, use keepdims instead
 		
@@ -2826,9 +3056,9 @@ package tensorflow.python.ops.math_ops;
 		
 		Args:
 		  input_tensor: The tensor to reduce. Should have numeric type.
-		  axis: The dimensions to reduce. If `None` (the default),
-		    reduces all dimensions. Must be in the range
-		    `[-rank(input_tensor), rank(input_tensor))`.
+		  axis: The dimensions to reduce. If `None` (the default), reduces all
+		    dimensions. Must be in the range `[-rank(input_tensor),
+		    rank(input_tensor))`.
 		  keepdims: If true, retains reduced dimensions with length 1.
 		  name: A name for the operation (optional).
 		  reduction_indices: The old (deprecated) name for axis.
@@ -2837,11 +3067,38 @@ package tensorflow.python.ops.math_ops;
 		Returns:
 		  The reduced tensor.
 	**/
-	static public function reduce_logsumexp(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	static public function reduce_logsumexp_v1(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	/**
+		Computes the maximum of elements across dimensions of a tensor.
+		
+		Reduces `input_tensor` along the dimensions given in `axis`.
+		Unless `keepdims` is true, the rank of the tensor is reduced by 1 for each
+		entry in `axis`. If `keepdims` is true, the reduced dimensions
+		are retained with length 1.
+		
+		If `axis` is None, all dimensions are reduced, and a
+		tensor with a single element is returned.
+		
+		Args:
+		  input_tensor: The tensor to reduce. Should have real numeric type.
+		  axis: The dimensions to reduce. If `None` (the default), reduces all
+		    dimensions. Must be in the range `[-rank(input_tensor),
+		    rank(input_tensor))`.
+		  keepdims: If true, retains reduced dimensions with length 1.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The reduced tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.max
+		@end_compatibility
+	**/
+	static public function reduce_max(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes the maximum of elements across dimensions of a tensor. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		keep_dims is deprecated, use keepdims instead
 		
@@ -2870,13 +3127,58 @@ package tensorflow.python.ops.math_ops;
 		Equivalent to np.max
 		@end_compatibility
 	**/
-	static public function reduce_max(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	static public function reduce_max_v1(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
 	/**
-		Computes the mean of elements across dimensions of a tensor. (deprecated arguments)
+		Computes the mean of elements across dimensions of a tensor.
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
-		Instructions for updating:
-		keep_dims is deprecated, use keepdims instead
+		Reduces `input_tensor` along the dimensions given in `axis`.
+		Unless `keepdims` is true, the rank of the tensor is reduced by 1 for each
+		entry in `axis`. If `keepdims` is true, the reduced dimensions
+		are retained with length 1.
+		
+		If `axis` is None, all dimensions are reduced, and a
+		tensor with a single element is returned.
+		
+		For example:
+		
+		```python
+		x = tf.constant([[1., 1.], [2., 2.]])
+		tf.reduce_mean(x)  # 1.5
+		tf.reduce_mean(x, 0)  # [1.5, 1.5]
+		tf.reduce_mean(x, 1)  # [1.,  2.]
+		```
+		
+		Args:
+		  input_tensor: The tensor to reduce. Should have numeric type.
+		  axis: The dimensions to reduce. If `None` (the default), reduces all
+		    dimensions. Must be in the range `[-rank(input_tensor),
+		    rank(input_tensor))`.
+		  keepdims: If true, retains reduced dimensions with length 1.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The reduced tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.mean
+		
+		Please note that `np.mean` has a `dtype` parameter that could be used to
+		specify the output type. By default this is `dtype=float64`. On the other
+		hand, `tf.reduce_mean` has an aggressive type inference from `input_tensor`,
+		for example:
+		
+		```python
+		x = tf.constant([1, 0, 1, 0])
+		tf.reduce_mean(x)  # 0
+		y = tf.constant([1., 0., 1., 0.])
+		tf.reduce_mean(y)  # 0.5
+		```
+		
+		@end_compatibility
+	**/
+	static public function reduce_mean(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the mean of elements across dimensions of a tensor.
 		
 		Reduces `input_tensor` along the dimensions given in `axis`.
 		Unless `keepdims` is true, the rank of the tensor is reduced by 1 for each
@@ -2925,11 +3227,38 @@ package tensorflow.python.ops.math_ops;
 		
 		@end_compatibility
 	**/
-	static public function reduce_mean(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	static public function reduce_mean_v1(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	/**
+		Computes the minimum of elements across dimensions of a tensor.
+		
+		Reduces `input_tensor` along the dimensions given in `axis`.
+		Unless `keepdims` is true, the rank of the tensor is reduced by 1 for each
+		entry in `axis`. If `keepdims` is true, the reduced dimensions
+		are retained with length 1.
+		
+		If `axis` is None, all dimensions are reduced, and a
+		tensor with a single element is returned.
+		
+		Args:
+		  input_tensor: The tensor to reduce. Should have real numeric type.
+		  axis: The dimensions to reduce. If `None` (the default), reduces all
+		    dimensions. Must be in the range `[-rank(input_tensor),
+		    rank(input_tensor))`.
+		  keepdims: If true, retains reduced dimensions with length 1.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The reduced tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.min
+		@end_compatibility
+	**/
+	static public function reduce_min(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes the minimum of elements across dimensions of a tensor. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		keep_dims is deprecated, use keepdims instead
 		
@@ -2943,9 +3272,9 @@ package tensorflow.python.ops.math_ops;
 		
 		Args:
 		  input_tensor: The tensor to reduce. Should have real numeric type.
-		  axis: The dimensions to reduce. If `None` (the default),
-		    reduces all dimensions. Must be in the range
-		    `[-rank(input_tensor), rank(input_tensor))`.
+		  axis: The dimensions to reduce. If `None` (the default), reduces all
+		    dimensions. Must be in the range `[-rank(input_tensor),
+		    rank(input_tensor))`.
 		  keepdims: If true, retains reduced dimensions with length 1.
 		  name: A name for the operation (optional).
 		  reduction_indices: The old (deprecated) name for axis.
@@ -2958,13 +3287,9 @@ package tensorflow.python.ops.math_ops;
 		Equivalent to np.min
 		@end_compatibility
 	**/
-	static public function reduce_min(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	static public function reduce_min_v1(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
 	/**
-		Computes the product of elements across dimensions of a tensor. (deprecated arguments)
-		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
-		Instructions for updating:
-		keep_dims is deprecated, use keepdims instead
+		Computes the product of elements across dimensions of a tensor.
 		
 		Reduces `input_tensor` along the dimensions given in `axis`.
 		Unless `keepdims` is true, the rank of the tensor is reduced by 1 for each
@@ -2981,6 +3306,37 @@ package tensorflow.python.ops.math_ops;
 		    `[-rank(input_tensor), rank(input_tensor))`.
 		  keepdims: If true, retains reduced dimensions with length 1.
 		  name: A name for the operation (optional).
+		
+		Returns:
+		  The reduced tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.prod
+		@end_compatibility
+	**/
+	static public function reduce_prod(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the product of elements across dimensions of a tensor. (deprecated arguments)
+		
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
+		Instructions for updating:
+		keep_dims is deprecated, use keepdims instead
+		
+		Reduces `input_tensor` along the dimensions given in `axis`.
+		Unless `keepdims` is true, the rank of the tensor is reduced by 1 for each
+		entry in `axis`. If `keepdims` is true, the reduced dimensions
+		are retained with length 1.
+		
+		If `axis` is None, all dimensions are reduced, and a
+		tensor with a single element is returned.
+		
+		Args:
+		  input_tensor: The tensor to reduce. Should have numeric type.
+		  axis: The dimensions to reduce. If `None` (the default), reduces all
+		    dimensions. Must be in the range `[-rank(input_tensor),
+		    rank(input_tensor))`.
+		  keepdims: If true, retains reduced dimensions with length 1.
+		  name: A name for the operation (optional).
 		  reduction_indices: The old (deprecated) name for axis.
 		  keep_dims: Deprecated alias for `keepdims`.
 		
@@ -2991,11 +3347,90 @@ package tensorflow.python.ops.math_ops;
 		Equivalent to np.prod
 		@end_compatibility
 	**/
-	static public function reduce_prod(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	static public function reduce_prod_v1(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	/**
+		Computes the standard deviation of elements across dimensions of a tensor.
+		
+		Reduces `input_tensor` along the dimensions given in `axis`.
+		Unless `keepdims` is true, the rank of the tensor is reduced by 1 for each
+		entry in `axis`. If `keepdims` is true, the reduced dimensions
+		are retained with length 1.
+		
+		If `axis` is None, all dimensions are reduced, and a
+		tensor with a single element is returned.
+		
+		For example:
+		
+		```python
+		x = tf.constant([[1., 2.], [3., 4.]])
+		tf.reduce_std(x)  # 1.1180339887498949
+		tf.reduce_std(x, 0)  # [1., 1.]
+		tf.reduce_std(x, 1)  # [0.5,  0.5]
+		```
+		
+		Args:
+		  input_tensor: The tensor to reduce. Should have numeric type.
+		  axis: The dimensions to reduce. If `None` (the default), reduces all
+		    dimensions. Must be in the range `[-rank(input_tensor),
+		    rank(input_tensor))`.
+		  keepdims: If true, retains reduced dimensions with length 1.
+		  name: A name scope for the associated operations (optional).
+		
+		Returns:
+		  The reduced tensor, of the same dtype as the input_tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.std
+		
+		Please note that `np.std` has a `dtype` parameter that could be used to
+		specify the output type. By default this is `dtype=float64`. On the other
+		hand, `tf.reduce_std` has an aggressive type inference from `input_tensor`,
+		@end_compatibility
+	**/
+	static public function reduce_std(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the sum of elements across dimensions of a tensor.
+		
+		Reduces `input_tensor` along the dimensions given in `axis`.
+		Unless `keepdims` is true, the rank of the tensor is reduced by 1 for each
+		entry in `axis`. If `keepdims` is true, the reduced dimensions
+		are retained with length 1.
+		
+		If `axis` is None, all dimensions are reduced, and a
+		tensor with a single element is returned.
+		
+		For example:
+		
+		```python
+		x = tf.constant([[1, 1, 1], [1, 1, 1]])
+		tf.reduce_sum(x)  # 6
+		tf.reduce_sum(x, 0)  # [2, 2, 2]
+		tf.reduce_sum(x, 1)  # [3, 3]
+		tf.reduce_sum(x, 1, keepdims=True)  # [[3], [3]]
+		tf.reduce_sum(x, [0, 1])  # 6
+		```
+		
+		Args:
+		  input_tensor: The tensor to reduce. Should have numeric type.
+		  axis: The dimensions to reduce. If `None` (the default), reduces all
+		    dimensions. Must be in the range `[-rank(input_tensor),
+		    rank(input_tensor))`.
+		  keepdims: If true, retains reduced dimensions with length 1.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The reduced tensor, of the same dtype as the input_tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.sum apart the fact that numpy upcast uint8 and int32 to
+		int64 while tensorflow returns the same dtype as the input.
+		@end_compatibility
+	**/
+	static public function reduce_sum(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes the sum of elements across dimensions of a tensor. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		keep_dims is deprecated, use keepdims instead
 		
@@ -3036,7 +3471,48 @@ package tensorflow.python.ops.math_ops;
 		int64 while tensorflow returns the same dtype as the input.
 		@end_compatibility
 	**/
-	static public function reduce_sum(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	static public function reduce_sum_v1(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?reduction_indices:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	/**
+		Computes the variance of elements across dimensions of a tensor.
+		
+		Reduces `input_tensor` along the dimensions given in `axis`.
+		Unless `keepdims` is true, the rank of the tensor is reduced by 1 for each
+		entry in `axis`. If `keepdims` is true, the reduced dimensions
+		are retained with length 1.
+		
+		If `axis` is None, all dimensions are reduced, and a
+		tensor with a single element is returned.
+		
+		For example:
+		
+		```python
+		x = tf.constant([[1., 2.], [3., 4.]])
+		tf.reduce_variance(x)  # 1.25
+		tf.reduce_variance(x, 0)  # [1., 1.]
+		tf.reduce_variance(x, 1)  # [0.25,  0.25]
+		```
+		
+		Args:
+		  input_tensor: The tensor to reduce. Should have numeric type.
+		  axis: The dimensions to reduce. If `None` (the default), reduces all
+		    dimensions. Must be in the range `[-rank(input_tensor),
+		    rank(input_tensor))`.
+		  keepdims: If true, retains reduced dimensions with length 1.
+		  name: A name scope for the associated operations (optional).
+		
+		Returns:
+		  The reduced tensor, of the same dtype as the input_tensor.
+		
+		@compatibility(numpy)
+		Equivalent to np.var
+		
+		Please note that `np.var` has a `dtype` parameter that could be used to
+		specify the output type. By default this is `dtype=float64`. On the other
+		hand, `tf.reduce_variance` has an aggressive type inference from
+		`input_tensor`,
+		@end_compatibility
+	**/
+	static public function reduce_variance(input_tensor:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Helper function for reduction ops.
 		
@@ -3226,6 +3702,7 @@ package tensorflow.python.ops.math_ops;
 		Args:
 		  scalar: A 0-D scalar `Tensor`. Must have known shape.
 		  x: A `Tensor` or `IndexedSlices` to be scaled.
+		  name: A name for the operation (optional).
 		
 		Returns:
 		  `scalar * x` of the same type (`Tensor` or `IndexedSlices`) as `x`.
@@ -3233,7 +3710,26 @@ package tensorflow.python.ops.math_ops;
 		Raises:
 		  ValueError: if scalar is not a 0-D `scalar`.
 	**/
-	static public function scalar_mul(scalar:Dynamic, x:Dynamic):Dynamic;
+	static public function scalar_mul(scalar:Dynamic, x:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Multiplies a scalar times a `Tensor` or `IndexedSlices` object.
+		
+		Intended for use in gradient code which might deal with `IndexedSlices`
+		objects, which are easy to multiply by a scalar but more expensive to
+		multiply with arbitrary tensors.
+		
+		Args:
+		  scalar: A 0-D scalar `Tensor`. Must have known shape.
+		  x: A `Tensor` or `IndexedSlices` to be scaled.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  `scalar * x` of the same type (`Tensor` or `IndexedSlices`) as `x`.
+		
+		Raises:
+		  ValueError: if scalar is not a 0-D `scalar`.
+	**/
+	static public function scalar_mul_v2(scalar:Dynamic, x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes the maximum along segments of a tensor.
 		
@@ -3505,23 +4001,19 @@ package tensorflow.python.ops.math_ops;
 	/**
 		Returns an element-wise indication of the sign of a number.
 		
-		`y = sign(x) = -1` if `x < 0`; 0 if `x == 0` or `tf.is_nan(x)`; 1 if `x > 0`.
-		
-		Zero is returned for NaN inputs.
+		`y = sign(x) = -1` if `x < 0`; 0 if `x == 0`; 1 if `x > 0`.
 		
 		For complex numbers, `y = sign(x) = x / |x|` if `x != 0`, otherwise `y = 0`.
 		
 		Args:
-		  x: A `Tensor` or `SparseTensor`. Must be one of the following types: `half`,
-		    `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` or `SparseTensor`, respectively. Has the same type as `x`.
+		  A `Tensor`. Has the same type as `x`.
 		
-		@compatibility(numpy)
-		Equivalent to numpy.sign except for the behavior for input values of NaN.
-		@end_compatibility
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.sign(x.values, ...), x.dense_shape)`
 	**/
 	static public function sign(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -3593,7 +4085,11 @@ package tensorflow.python.ops.math_ops;
 	**/
 	static public function sparse_mat_mul_eager_fallback(a:Dynamic, b:Dynamic, ?transpose_a:Dynamic, ?transpose_b:Dynamic, ?a_is_sparse:Dynamic, ?b_is_sparse:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Multiply matrix "a" by matrix "b".
+		Multiply matrix "a" by matrix "b". (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use `tf.linalg.matmul` instead
 		
 		The inputs must be two-dimensional matrices and the inner dimension of "a" must
 		match the outer dimension of "b". Both "a" and "b" must be `Tensor`s not
@@ -3681,6 +4177,35 @@ package tensorflow.python.ops.math_ops;
 	/**
 		Computes the mean along sparse segments of a tensor.
 		
+		Read [the section on
+		segmentation](https://tensorflow.org/api_guides/python/math_ops#Segmentation)
+		for an explanation of segments.
+		
+		Like `SegmentMean`, but `segment_ids` can have rank less than `data`'s first
+		dimension, selecting a subset of dimension 0, specified by `indices`.
+		`segment_ids` is allowed to have missing ids, in which case the output will
+		be zeros at those indices. In those cases `num_segments` is used to determine
+		the size of the output.
+		
+		Args:
+		  data: A `Tensor` with data that will be assembled in the output.
+		  indices: A 1-D `Tensor` with indices into `data`. Has same rank as
+		    `segment_ids`.
+		  segment_ids: A 1-D `Tensor` with indices into the output `Tensor`. Values
+		    should be sorted and can be repeated.
+		  num_segments: An optional int32 scalar. Indicates the size of the output
+		    `Tensor`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `tensor` of the shape as data, except for dimension 0 which
+		  has size `k`, the number of segments specified via `num_segments` or
+		  inferred for the last element in `segments_ids`.
+	**/
+	static public function sparse_segment_mean_v2(data:Dynamic, indices:Dynamic, segment_ids:Dynamic, ?num_segments:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the mean along sparse segments of a tensor.
+		
 		Like `SparseSegmentMean`, but allows missing ids in `segment_ids`. If an id is
 		misisng, the `output` tensor at that position will be zeroed.
 		
@@ -3759,6 +4284,27 @@ package tensorflow.python.ops.math_ops;
 		This is for function sparse_segment_sqrt_n_grad
 	**/
 	static public function sparse_segment_sqrt_n_grad_eager_fallback(grad:Dynamic, indices:Dynamic, segment_ids:Dynamic, output_dim0:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the sum along sparse segments of a tensor divided by the sqrt(N).
+		
+		`N` is the size of the segment being reduced.
+		
+		Args:
+		  data: A `Tensor` with data that will be assembled in the output.
+		  indices: A 1-D `Tensor` with indices into `data`. Has same rank as
+		    `segment_ids`.
+		  segment_ids: A 1-D `Tensor` with indices into the output `Tensor`. Values
+		    should be sorted and can be repeated.
+		  num_segments: An optional int32 scalar. Indicates the size of the output
+		    `Tensor`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `tensor` of the shape as data, except for dimension 0 which
+		  has size `k`, the number of segments specified via `num_segments` or
+		  inferred for the last element in `segments_ids`.
+	**/
+	static public function sparse_segment_sqrt_n_v2(data:Dynamic, indices:Dynamic, segment_ids:Dynamic, ?num_segments:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes the sum along sparse segments of a tensor divided by the sqrt of N.
 		
@@ -3855,6 +4401,7 @@ package tensorflow.python.ops.math_ops;
 		This is for function sparse_segment_sum
 	**/
 	static public function sparse_segment_sum_eager_fallback(data:Dynamic, indices:Dynamic, segment_ids:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function sparse_segment_sum_v2(data:Dynamic, indices:Dynamic, segment_ids:Dynamic, ?num_segments:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes the sum along sparse segments of a tensor.
 		
@@ -3911,12 +4458,14 @@ package tensorflow.python.ops.math_ops;
 		I.e., \\(y = \sqrt{x} = x^{1/2}\\).
 		
 		Args:
-		  x: A `Tensor` or `SparseTensor`. Must be one of the following types: `half`,
-		    `float32`, `float64`, `complex64`, `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `complex64`, `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` or `SparseTensor`, respectively. Has the same type as `x`.
+		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.sqrt(x.values, ...), x.dense_shape)`
 	**/
 	static public function sqrt(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -3950,12 +4499,14 @@ package tensorflow.python.ops.math_ops;
 		I.e., \\(y = x * x = x^2\\).
 		
 		Args:
-		  x: A `Tensor` or `SparseTensor`. Must be one of the following types: `half`,
-		    `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` or `SparseTensor`. Has the same type as `x`.
+		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.square(x.values, ...), x.dense_shape)`
 	**/
 	static public function square(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -4038,12 +4589,14 @@ package tensorflow.python.ops.math_ops;
 		Computes hyperbolic tangent of `x` element-wise.
 		
 		Args:
-		  x: A Tensor or SparseTensor with type `float16`, `float32`, `double`,
-		    `complex64`, or `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `complex64`, `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A Tensor or SparseTensor respectively with the same type as `x`.
+		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.tanh(x.values, ...), x.dense_shape)`
 	**/
 	static public function tanh(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -4103,12 +4656,11 @@ package tensorflow.python.ops.math_ops;
 		  a: `Tensor` of type `float32` or `float64`.
 		  b: `Tensor` with the same type as `a`.
 		  axes: Either a scalar `N`, or a list or an `int32` `Tensor` of shape [2, k].
-		   If axes is a scalar, sum over the last N axes of a and the first N axes
-		   of b in order.
-		   If axes is a list or `Tensor` the first and second row contain the set of
-		   unique integers specifying axes along which the contraction is computed,
-		   for `a` and `b`, respectively. The number of axes for `a` and `b` must
-		   be equal.
+		    If axes is a scalar, sum over the last N axes of a and the first N axes of
+		    b in order. If axes is a list or `Tensor` the first and second row contain
+		    the set of unique integers specifying axes along which the contraction is
+		    computed, for `a` and `b`, respectively. The number of axes for `a` and
+		    `b` must be equal.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -4122,7 +4674,11 @@ package tensorflow.python.ops.math_ops;
 	static public function tensordot(a:Dynamic, b:Dynamic, axes:Dynamic, ?name:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Casts a tensor to type `bfloat16`.
+		Casts a tensor to type `bfloat16`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.cast instead.
 		
 		Args:
 		  x: A `Tensor` or `SparseTensor` or `IndexedSlices`.
@@ -4137,7 +4693,11 @@ package tensorflow.python.ops.math_ops;
 	**/
 	static public function to_bfloat16(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Casts a tensor to type `complex128`.
+		Casts a tensor to type `complex128`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.cast instead.
 		
 		Args:
 		  x: A `Tensor` or `SparseTensor` or `IndexedSlices`.
@@ -4152,7 +4712,11 @@ package tensorflow.python.ops.math_ops;
 	**/
 	static public function to_complex128(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Casts a tensor to type `complex64`.
+		Casts a tensor to type `complex64`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.cast instead.
 		
 		Args:
 		  x: A `Tensor` or `SparseTensor` or `IndexedSlices`.
@@ -4167,7 +4731,11 @@ package tensorflow.python.ops.math_ops;
 	**/
 	static public function to_complex64(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Casts a tensor to type `float64`.
+		Casts a tensor to type `float64`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.cast instead.
 		
 		Args:
 		  x: A `Tensor` or `SparseTensor` or `IndexedSlices`.
@@ -4182,7 +4750,11 @@ package tensorflow.python.ops.math_ops;
 	**/
 	static public function to_double(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Casts a tensor to type `float32`.
+		Casts a tensor to type `float32`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.cast instead.
 		
 		Args:
 		  x: A `Tensor` or `SparseTensor` or `IndexedSlices`.
@@ -4197,7 +4769,11 @@ package tensorflow.python.ops.math_ops;
 	**/
 	static public function to_float(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Casts a tensor to type `int32`.
+		Casts a tensor to type `int32`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.cast instead.
 		
 		Args:
 		  x: A `Tensor` or `SparseTensor` or `IndexedSlices`.
@@ -4212,7 +4788,11 @@ package tensorflow.python.ops.math_ops;
 	**/
 	static public function to_int32(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Casts a tensor to type `int64`.
+		Casts a tensor to type `int64`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.cast instead.
 		
 		Args:
 		  x: A `Tensor` or `SparseTensor` or `IndexedSlices`.
@@ -4300,7 +4880,7 @@ package tensorflow.python.ops.math_ops;
 		than Python semantics. See `FloorDiv` for a division function that matches
 		Python Semantics.
 		
-		*NOTE*: `TruncateDiv` supports broadcasting. More about broadcasting
+		*NOTE*: `truncatediv` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -4323,7 +4903,7 @@ package tensorflow.python.ops.math_ops;
 		the result here is consistent with a truncating divide. E.g. `truncate(x / y) *
 		y + truncate_mod(x, y) = x`.
 		
-		*NOTE*: `TruncateMod` supports broadcasting. More about broadcasting
+		*NOTE*: `truncatemod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -4348,7 +4928,7 @@ package tensorflow.python.ops.math_ops;
 		than Python semantics. See `FloorDiv` for a division function that matches
 		Python Semantics.
 		
-		*NOTE*: `TruncateDiv` supports broadcasting. More about broadcasting
+		*NOTE*: `truncatediv` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -4366,7 +4946,7 @@ package tensorflow.python.ops.math_ops;
 		the result here is consistent with a truncating divide. E.g. `truncate(x / y) *
 		y + truncate_mod(x, y) = x`.
 		
-		*NOTE*: `TruncateMod` supports broadcasting. More about broadcasting
+		*NOTE*: `truncatemod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:

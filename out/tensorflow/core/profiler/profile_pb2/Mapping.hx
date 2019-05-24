@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.profiler.profile_pb2;
 @:pythonImport("tensorflow.core.profiler.profile_pb2", "Mapping") extern class Mapping {
-	static public var BUILD_ID_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -31,8 +30,6 @@ package tensorflow.core.profiler.profile_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FILENAME_FIELD_NUMBER : Dynamic;
-	static public var FILE_OFFSET_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -41,10 +38,6 @@ package tensorflow.core.profiler.profile_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HAS_FILENAMES_FIELD_NUMBER : Dynamic;
-	static public var HAS_FUNCTIONS_FIELD_NUMBER : Dynamic;
-	static public var HAS_INLINE_FRAMES_FIELD_NUMBER : Dynamic;
-	static public var HAS_LINE_NUMBERS_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -53,7 +46,6 @@ package tensorflow.core.profiler.profile_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ID_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -62,8 +54,6 @@ package tensorflow.core.profiler.profile_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MEMORY_LIMIT_FIELD_NUMBER : Dynamic;
-	static public var MEMORY_START_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -92,6 +82,10 @@ package tensorflow.core.profiler.profile_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -257,4 +251,44 @@ package tensorflow.core.profiler.profile_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Mapping.build_id
+	**/
+	public var build_id : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Mapping.file_offset
+	**/
+	public var file_offset : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Mapping.filename
+	**/
+	public var filename : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Mapping.has_filenames
+	**/
+	public var has_filenames : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Mapping.has_functions
+	**/
+	public var has_functions : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Mapping.has_inline_frames
+	**/
+	public var has_inline_frames : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Mapping.has_line_numbers
+	**/
+	public var has_line_numbers : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Mapping.id
+	**/
+	public var id : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Mapping.memory_limit
+	**/
+	public var memory_limit : Dynamic;
+	/**
+		Field tensorflow.tfprof.pprof.Mapping.memory_start
+	**/
+	public var memory_start : Dynamic;
 }

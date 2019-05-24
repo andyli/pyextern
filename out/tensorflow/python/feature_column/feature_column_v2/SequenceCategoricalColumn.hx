@@ -2,10 +2,28 @@
 package tensorflow.python.feature_column.feature_column_v2;
 @:pythonImport("tensorflow.python.feature_column.feature_column_v2", "SequenceCategoricalColumn") extern class SequenceCategoricalColumn {
 	/**
+		IdWeightPair(id_tensor, weight_tensor)
+	**/
+	static public function IdWeightPair(id_tensor:Dynamic, weight_tensor:Dynamic):Dynamic;
+	static public var __abstractmethods__ : Dynamic;
+	/**
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Metaclass for defining Abstract Base Classes (ABCs).
+		
+		Use this metaclass to create an ABC.  An ABC can be subclassed
+		directly, and then acts as a mix-in class.  You can also register
+		unrelated concrete classes (even built-in classes) and unrelated
+		ABCs as 'virtual subclasses' -- these and their descendants will
+		be considered subclasses of the registering ABC by the built-in
+		issubclass() function, but the registering ABC won't show up in
+		their MRO (Method Resolution Order) nor will method
+		implementations defined by the registering ABC be callable (not
+		even via super()).
+	**/
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -85,23 +103,9 @@ package tensorflow.python.feature_column.feature_column_v2;
 		Return self<value.
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
-	/**
-		Metaclass for defining Abstract Base Classes (ABCs).
-		
-		Use this metaclass to create an ABC.  An ABC can be subclassed
-		directly, and then acts as a mix-in class.  You can also register
-		unrelated concrete classes (even built-in classes) and unrelated
-		ABCs as 'virtual subclasses' -- these and their descendants will
-		be considered subclasses of the registering ABC by the built-in
-		issubclass() function, but the registering ABC won't show up in
-		their MRO (Method Resolution Order) nor will method
-		implementations defined by the registering ABC be callable (not
-		even via super()).
-	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -109,7 +113,7 @@ package tensorflow.python.feature_column.feature_column_v2;
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
 	/**
-		Create new instance of SequenceCategoricalColumn(categorical_column,)
+		Create new instance of _SequenceCategoricalColumn(categorical_column,)
 	**/
 	static public function __new__(_cls:Dynamic, categorical_column:Dynamic):Dynamic;
 	/**
@@ -125,7 +129,7 @@ package tensorflow.python.feature_column.feature_column_v2;
 	**/
 	public function __repr__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**
@@ -155,20 +159,85 @@ package tensorflow.python.feature_column.feature_column_v2;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _abc_cache : Dynamic;
+	static public var _abc_negative_cache : Dynamic;
+	static public var _abc_negative_cache_version : Dynamic;
+	static public var _abc_registry : Dynamic;
 	/**
 		Return a new OrderedDict which maps field names to their values.
 	**/
 	public function _asdict():Dynamic;
 	static public var _fields : Dynamic;
 	/**
-		Make a new SequenceCategoricalColumn object from a sequence or iterable
+		See 'FeatureColumn` base class.
+	**/
+	static public function _from_config(config:Dynamic, ?custom_objects:Dynamic, ?columns_by_name:Dynamic):Dynamic;
+	/**
+		See 'FeatureColumn` base class.
+	**/
+	public function _get_config():Dynamic;
+	/**
+		DEPRECATED FUNCTION
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-11-30.
+		Instructions for updating:
+		The old _FeatureColumn APIs are being deprecated. Please use the new FeatureColumn APIs instead.
+	**/
+	public function _get_sparse_tensors(inputs:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic):Dynamic;
+	public function _get_sparse_tensors_helper(sparse_tensors:Dynamic):Dynamic;
+	/**
+		Returns whether this FeatureColumn is fully conformant to the new API.
+		
+		This is needed for composition type cases where an EmbeddingColumn etc.
+		might take in old categorical columns as input and then we want to use the
+		old API.
+	**/
+	public var _is_v2_column : Dynamic;
+	/**
+		Make a new _SequenceCategoricalColumn object from a sequence or iterable
 	**/
 	static public function _make(iterable:Dynamic, ?_new:Dynamic, ?len:Dynamic):Dynamic;
 	/**
-		Return a new SequenceCategoricalColumn object replacing specified fields with new values
+		DEPRECATED FUNCTION
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-11-30.
+		Instructions for updating:
+		The old _FeatureColumn APIs are being deprecated. Please use the new FeatureColumn APIs instead.
+	**/
+	public var _num_buckets : Dynamic;
+	/**
+		DEPRECATED FUNCTION
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-11-30.
+		Instructions for updating:
+		The old _FeatureColumn APIs are being deprecated. Please use the new FeatureColumn APIs instead.
+	**/
+	public var _parse_example_spec : Dynamic;
+	/**
+		Return a new _SequenceCategoricalColumn object replacing specified fields with new values
 	**/
 	static public function _replace(_self:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Resets the configuration in the column.
+		
+		Some feature columns e.g. embedding or shared embedding columns might
+		have some state that is needed to be reset sometimes. Use this method
+		in that scenario.
+	**/
+	public function _reset_config():Dynamic;
 	static public var _source : Dynamic;
+	/**
+		DEPRECATED FUNCTION
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-11-30.
+		Instructions for updating:
+		The old _FeatureColumn APIs are being deprecated. Please use the new FeatureColumn APIs instead.
+	**/
+	public function _transform_feature(inputs:Dynamic):Dynamic;
+	/**
+		Returns string. Used for variable_scope. Defaults to self.name.
+	**/
+	public var _var_scope_name : Dynamic;
 	/**
 		Alias for field number 0
 	**/
@@ -204,7 +273,7 @@ package tensorflow.python.feature_column.feature_column_v2;
 		  state_manager: A `StateManager` to create / access resources such as
 		    lookup tables.
 	**/
-	public function get_sequence_sparse_tensors(transformation_cache:Dynamic, state_manager:Dynamic):Dynamic;
+	public function get_sparse_tensors(transformation_cache:Dynamic, state_manager:Dynamic):Dynamic;
 	/**
 		T.index(value, [start, [stop]]) -> integer -- return first index of value.
 		Raises ValueError if the value is not present.
@@ -218,6 +287,10 @@ package tensorflow.python.feature_column.feature_column_v2;
 		Returns number of buckets in this sparse feature.
 	**/
 	public var num_buckets : Dynamic;
+	/**
+		See 'FeatureColumn` base class.
+	**/
+	public var parents : Dynamic;
 	/**
 		See `FeatureColumn` base class.
 	**/

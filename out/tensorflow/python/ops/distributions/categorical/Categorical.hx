@@ -52,7 +52,11 @@ package tensorflow.python.ops.distributions.categorical;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize Categorical distributions using class log-probabilities.
+		Initialize Categorical distributions using class log-probabilities. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		Args:
 		  logits: An N-D `Tensor`, `N >= 1`, representing the log probabilities
@@ -79,7 +83,11 @@ package tensorflow.python.ops.distributions.categorical;
 	@:native("__init__")
 	public function ___init__(?logits:Dynamic, ?probs:Dynamic, ?dtype:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Initialize Categorical distributions using class log-probabilities.
+		Initialize Categorical distributions using class log-probabilities. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		Args:
 		  logits: An N-D `Tensor`, `N >= 1`, representing the log probabilities

@@ -73,7 +73,7 @@ package numpy;
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -97,7 +97,7 @@ package numpy;
 	**/
 	public function __repr__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**
@@ -176,13 +176,13 @@ package numpy;
 	**/
 	public var char : Dynamic;
 	/**
-		PEP3118 interface description of the data-type.
+		`__array_interface__` description of the data-type.
 		
 		The format is that required by the 'descr' key in the
-		PEP3118 `__array_interface__` attribute.
+		`__array_interface__` attribute.
 		
-		Warning: This attribute exists specifically for PEP3118 compliance, and
-		is not a datatype description compatible with `np.dtype`.
+		Warning: This attribute exists specifically for `__array_interface__`,
+		and is not a datatype description compatible with `np.dtype`.
 	**/
 	public var descr : Dynamic;
 	/**
@@ -193,6 +193,7 @@ package numpy;
 		
 		  (dtype, offset[, title])
 		
+		Offset is limited to C int, which is signed and usually 32 bits.
 		If present, the optional title can be any object (if it is a string
 		or unicode then it will also be a key in the fields dictionary,
 		otherwise it's meta-data). Notice also that the first two elements

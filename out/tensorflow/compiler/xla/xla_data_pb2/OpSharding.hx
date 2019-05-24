@@ -85,13 +85,12 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TILE_ASSIGNMENT_DEVICES_FIELD_NUMBER : Dynamic;
-	static public var TILE_ASSIGNMENT_DIMENSIONS_FIELD_NUMBER : Dynamic;
-	static public var TILE_SHAPE_FIELD_NUMBER : Dynamic;
 	static public var TUPLE : Dynamic;
-	static public var TUPLE_SHARDINGS_FIELD_NUMBER : Dynamic;
-	static public var TYPE_FIELD_NUMBER : Dynamic;
 	static public var Type : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -257,4 +256,24 @@ package tensorflow.compiler.xla.xla_data_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.OpSharding.tile_assignment_devices
+	**/
+	public var tile_assignment_devices : Dynamic;
+	/**
+		Field xla.OpSharding.tile_assignment_dimensions
+	**/
+	public var tile_assignment_dimensions : Dynamic;
+	/**
+		Field xla.OpSharding.tile_shape
+	**/
+	public var tile_shape : Dynamic;
+	/**
+		Field xla.OpSharding.tuple_shardings
+	**/
+	public var tuple_shardings : Dynamic;
+	/**
+		Field xla.OpSharding.type
+	**/
+	public var type : Dynamic;
 }

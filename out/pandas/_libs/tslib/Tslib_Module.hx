@@ -1,24 +1,52 @@
 /* This file is generated, do not edit! */
 package pandas._libs.tslib;
 @:pythonImport("pandas._libs.tslib") extern class Tslib_Module {
-	static public var NaT : Dynamic;
 	static public var UTC : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
-	/**
-		Take a datetime/Timestamp in UTC and localizes to timezone tz.
-	**/
-	static public function _localize_pydatetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		TESTING ONLY: Parse string into Timestamp using iso8601 parser. Used
 		only for testing, actual construction uses `convert_str_to_tsobject`
 	**/
 	static public function _test_parse_iso8601(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Converts a 1D array of date-like values to a numpy array of either:
+		    1) datetime64[ns] data
+		    2) datetime.datetime objects, if OutOfBoundsDatetime or TypeError
+		       is encountered
+		
+		Also returns a pytz.FixedOffset if an array of strings with the same
+		timezone offset is passed and utc=True is not passed. Otherwise, None
+		is returned
+		
+		Handles datetime.date, datetime.datetime, np.datetime64 objects, numeric,
+		strings
+		
+		Parameters
+		----------
+		values : ndarray of object
+		     date-like objects to convert
+		errors : str, default 'raise'
+		     error behavior when parsing
+		dayfirst : bool, default False
+		     dayfirst parsing behavior when encountering datetime strings
+		yearfirst : bool, default False
+		     yearfirst parsing behavior when encountering datetime strings
+		utc : bool, default None
+		     indicator whether the dates should be UTC
+		require_iso8601 : bool, default False
+		     indicator whether the datetime string should be iso8601
+		
+		Returns
+		-------
+		tuple (ndarray, tzoffset)
+	**/
 	static public function array_to_datetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		convert the ndarray according to the unit
@@ -65,18 +93,7 @@ package pandas._libs.tslib;
 		result : array of dtype specified by box
 	**/
 	static public function ints_to_pydatetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function ints_to_pytimedelta(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function monthrange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var nat_strings : Dynamic;
-	/**
-		Normalize datetime.datetime value to midnight. Returns datetime.date as a
-		datetime.datetime at midnight
-		
-		Returns
-		-------
-		normalized : datetime.datetime or Timestamp
-	**/
-	static public function normalize_date(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		parse datetime string, only returns datetime.
 		Also cares special handling matching time patterns.
@@ -86,20 +103,4 @@ package pandas._libs.tslib;
 		datetime
 	**/
 	static public function parse_datetime_string(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Convert the val (in i8) from timezone1 to timezone2
-		
-		This is a single timezone version of tz_convert
-		
-		Parameters
-		----------
-		val : int64
-		tz1 : string / timezone object
-		tz2 : string / timezone object
-		
-		Returns
-		-------
-		int64 converted
-	**/
-	static public function tz_convert_single(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

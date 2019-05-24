@@ -116,9 +116,11 @@ package tensorflow.python.autograph.converters.control_flow;
 	public var __weakref__ : Dynamic;
 	public function _create_cond_branch(body_name:Dynamic, aliased_orig_names:Dynamic, aliased_new_names:Dynamic, body:Dynamic, returns:Dynamic):Dynamic;
 	public function _create_cond_expr(results:Dynamic, test:Dynamic, body_name:Dynamic, orelse_name:Dynamic):Dynamic;
-	public function _fmt_symbol_list(symbol_set:Dynamic):Dynamic;
+	public function _determine_aliased_symbols(scope:Dynamic, node_defined_in:Dynamic, block:Dynamic):Dynamic;
+	public function _fmt_symbols(symbol_set:Dynamic):Dynamic;
+	public function _get_loop_state(node:Dynamic):Dynamic;
 	public function _get_source(node:Dynamic):Dynamic;
-	public function _validate_no_live_vars_created(node:Dynamic):Dynamic;
+	public function _state_constructs(loop_state:Dynamic, reserved_symbols:Dynamic):Dynamic;
 	/**
 		Applies a function to each individual assignment.
 		
@@ -152,6 +154,7 @@ package tensorflow.python.autograph.converters.control_flow;
 		      apply_fn(target, value), no return value.
 	**/
 	public function apply_to_single_assignments(targets:Dynamic, values:Dynamic, apply_fn:Dynamic):Dynamic;
+	public function create_assignment(target:Dynamic, expression:Dynamic):Dynamic;
 	/**
 		Helper method useful for debugging.
 	**/
@@ -184,14 +187,22 @@ package tensorflow.python.autograph.converters.control_flow;
 	**/
 	public function generic_visit(node:Dynamic):Dynamic;
 	/**
-		Returns the unique directive for a symbol, or a default if none exist.
+		Returns the unique directive argument for a symbol.
 		
 		See lang/directives.py for details on directives.
 		
+		Example:
+		   # Given a directive in the code:
+		   ag.foo_directive(bar, baz=1)
+		
+		   # One can write for an AST node Name(id='bar'):
+		   get_definition_directive(node, ag.foo_directive, 'baz')
+		
 		Args:
-		  node: ast.AST
-		  directive: Callable[..., Any]
-		  arg: str
+		  node: ast.AST, the node representing the symbol for which the directive
+		    argument is needed.
+		  directive: Callable[..., Any], the directive to search.
+		  arg: str, the directive argument to return.
 		  default: Any
 		
 		Raises:
@@ -248,15 +259,16 @@ package tensorflow.python.autograph.converters.control_flow;
 		        return node, None
 		
 		Args:
-		  nodes: enumerable of AST node objects
+		  nodes: enumerable of AST node objects. If None, the function returns None.
 		  before_visit: optional callable that is called before visiting each item
-		      in nodes
-		  after_visit: optional callable that takes in an AST node and
-		      returns a tuple (new_node, new_destination). It is called after
-		      visiting each item in nodes. Is used in the same was as the
+		    in nodes
+		  after_visit: optional callable that takes in an AST node and returns a
+		    tuple (new_node, new_destination). It is called after visiting each item
+		    in nodes. Is used in the same was as the
 		      visit_* methods: new_node will replace the node; if not None,
-		      new_destination must be a list, and subsequent nodes will be placed
-		      in this list instead of the list returned by visit_block.
+		        new_destination must be a list, and subsequent nodes will be placed
+		        in this list instead of the list returned by visit_block.
+		
 		Returns:
 		  A list of AST node objects containing the transformed items fron nodes,
 		  except those nodes that have been relocated using after_visit.

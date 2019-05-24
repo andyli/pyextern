@@ -142,7 +142,7 @@ package matplotlib.transforms;
 		
 		Parameters
 		----------
-		c :
+		c : (float, float) or str
 		    May be either:
 		
 		    * A sequence (*cx*, *cy*) where *cx* and *cy* range from 0
@@ -161,28 +161,27 @@ package matplotlib.transforms;
 	**/
 	public function anchored(c:Dynamic, ?container:Dynamic):Dynamic;
 	/**
-		Returns (:attr:`x0`, :attr:`y0`, :attr:`width`,
-		:attr:`height`).
+		Return (:attr:`x0`, :attr:`y0`, :attr:`width`, :attr:`height`).
 	**/
 	public var bounds : Dynamic;
 	static public var coefs : Dynamic;
 	/**
-		Returns whether ``(x, y)`` is in the bounding box or on its edge.
+		Return whether ``(x, y)`` is in the bounding box or on its edge.
 	**/
 	public function contains(x:Dynamic, y:Dynamic):Dynamic;
 	/**
-		Returns whether *x* is in the closed (:attr:`x0`, :attr:`x1`) interval.
+		Return whether *x* is in the closed (:attr:`x0`, :attr:`x1`) interval.
 	**/
 	public function containsx(x:Dynamic):Dynamic;
 	/**
-		Returns whether *y* is in the closed (:attr:`y0`, :attr:`y1`) interval.
+		Return whether *y* is in the closed (:attr:`y0`, :attr:`y1`) interval.
 	**/
 	public function containsy(y:Dynamic):Dynamic;
 	/**
-		Return an array of points which are the four corners of this
-		rectangle.  For example, if this :class:`Bbox` is defined by
-		the points (*a*, *b*) and (*c*, *d*), :meth:`corners` returns
-		(*a*, *b*), (*a*, *d*), (*c*, *b*) and (*c*, *d*).
+		Return the corners of this rectangle as an array of points.
+		
+		Specifically, this returns the array
+		``[[x0, y0], [x0, y1], [x1, y0], [x1, y1]]``.
 	**/
 	public function corners():Dynamic;
 	/**
@@ -203,14 +202,12 @@ package matplotlib.transforms;
 	**/
 	public function count_overlaps(bboxes:Dynamic):Dynamic;
 	/**
-		Return a new :class:`Bbox` which is this :class:`Bbox`
-		expanded around its center by the given factors *sw* and
-		*sh*.
+		Construct a `Bbox` by expanding this one around its center by the
+		factors *sw* and *sh*.
 	**/
 	public function expanded(sw:Dynamic, sh:Dynamic):Dynamic;
 	/**
-		Returns (:attr:`x0`, :attr:`y0`, :attr:`x1`,
-		:attr:`y1`).
+		Return (:attr:`x0`, :attr:`y0`, :attr:`x1`, :attr:`y1`).
 	**/
 	public var extents : Dynamic;
 	/**
@@ -222,19 +219,19 @@ package matplotlib.transforms;
 	**/
 	public function frozen():Dynamic;
 	/**
-		Returns whether ``x, y`` is in the bounding box, but not on its edge.
+		Return whether ``x, y`` is in the bounding box, but not on its edge.
 	**/
 	public function fully_contains(x:Dynamic, y:Dynamic):Dynamic;
 	/**
-		Returns whether *x* is in the open (:attr:`x0`, :attr:`x1`) interval.
+		Return whether *x* is in the open (:attr:`x0`, :attr:`x1`) interval.
 	**/
 	public function fully_containsx(x:Dynamic):Dynamic;
 	/**
-		Returns whether *y* is in the open (:attr:`y0`, :attr:`y1`) interval.
+		Return whether *y* is in the open (:attr:`y0`, :attr:`y1`) interval.
 	**/
 	public function fully_containsy(y:Dynamic):Dynamic;
 	/**
-		Returns whether this bounding box overlaps with the other bounding box,
+		Return whether this bounding box overlaps with the other bounding box,
 		not including the edges.
 		
 		Parameters
@@ -244,24 +241,24 @@ package matplotlib.transforms;
 	public function fully_overlaps(other:Dynamic):Dynamic;
 	public function get_points():Dynamic;
 	/**
-		The height of the bounding box.  It may be negative if
-		:attr:`y1` < :attr:`y0`.
+		The (signed) height of the bounding box.
 	**/
 	public var height : Dynamic;
 	/**
-		Return the intersection of the two bboxes or None
-		if they do not intersect.
+		Return the intersection of *bbox1* and *bbox2* if they intersect, or
+		None if they don't.
 	**/
 	static public function intersection(bbox1:Dynamic, bbox2:Dynamic):Dynamic;
 	/**
-		:attr:`intervalx` is the pair of *x* coordinates that define
-		the bounding box. It is not guaranteed to be sorted from left to right.
+		The pair of *x* coordinates that define the bounding box.
+		
+		This is not guaranteed to be sorted from left to right.
 	**/
 	public var intervalx : Dynamic;
 	/**
-		:attr:`intervaly` is the pair of *y* coordinates that define
-		the bounding box.  It is not guaranteed to be sorted from bottom to
-		top.
+		The pair of *y* coordinates that define the bounding box.
+		
+		This is not guaranteed to be sorted from bottom to top.
 	**/
 	public var intervaly : Dynamic;
 	/**
@@ -271,27 +268,26 @@ package matplotlib.transforms;
 	**/
 	public function invalidate():Dynamic;
 	/**
-		Return a new :class:`Bbox` object, statically transformed by
-		the inverse of the given transform.
+		Construct a `Bbox` by statically transforming this one by the inverse
+		of *transform*.
 	**/
 	public function inverse_transformed(transform:Dynamic):Dynamic;
 	static public var is_affine : Dynamic;
 	static public var is_bbox : Dynamic;
 	/**
-		Returns True if the :class:`Bbox` is the unit bounding box
-		from (0, 0) to (1, 1).
+		Return whether this is the unit box (from (0, 0) to (1, 1)).
 	**/
 	public function is_unit():Dynamic;
 	/**
-		:attr:`max` is the top-right corner of the bounding box.
+		The top-right corner of the bounding box.
 	**/
 	public var max : Dynamic;
 	/**
-		:attr:`min` is the bottom-left corner of the bounding box.
+		The bottom-left corner of the bounding box.
 	**/
 	public var min : Dynamic;
 	/**
-		Returns whether this bounding box overlaps with the other bounding box.
+		Return whether this bounding box overlaps with the other bounding box.
 		
 		Parameters
 		----------
@@ -299,20 +295,21 @@ package matplotlib.transforms;
 	**/
 	public function overlaps(other:Dynamic):Dynamic;
 	/**
-		:attr:`p0` is the first pair of (*x*, *y*) coordinates that
-		define the bounding box.  It is not guaranteed to be the bottom-left
-		corner.  For that, use :attr:`min`.
+		The first pair of (*x*, *y*) coordinates that define the bounding box.
+		
+		This is not guaranteed to be the bottom-left corner (for that, use
+		:attr:`min`).
 	**/
 	public var p0 : Dynamic;
 	/**
-		:attr:`p1` is the second pair of (*x*, *y*) coordinates that
-		define the bounding box.  It is not guaranteed to be the top-right
-		corner.  For that, use :attr:`max`.
+		The second pair of (*x*, *y*) coordinates that define the bounding box.
+		
+		This is not guaranteed to be the top-right corner (for that, use
+		:attr:`max`).
 	**/
 	public var p1 : Dynamic;
 	/**
-		Return a new :class:`Bbox` that is padded on all four sides by
-		the given value.
+		Construct a `Bbox` by padding this one on all four sides by *p*.
 	**/
 	public function padded(p:Dynamic):Dynamic;
 	static public var pass_through : Dynamic;
@@ -347,83 +344,77 @@ package matplotlib.transforms;
 	**/
 	public function shrunk_to_aspect(box_aspect:Dynamic, ?container:Dynamic, ?fig_aspect:Dynamic):Dynamic;
 	/**
-		The width and height of the bounding box.  May be negative,
-		in the same way as :attr:`width` and :attr:`height`.
+		The (signed) width and height of the bounding box.
 	**/
 	public var size : Dynamic;
 	/**
-		e.g., ``bbox.splitx(f1, f2, ...)``
-		
-		Returns a list of new :class:`Bbox` objects formed by
-		splitting the original one with vertical lines at fractional
-		positions *f1*, *f2*, ...
+		Return a list of new `Bbox` objects formed by splitting the original
+		one with vertical lines at fractional positions given by *args*.
 	**/
 	public function splitx(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		e.g., ``bbox.splitx(f1, f2, ...)``
-		
-		Returns a list of new :class:`Bbox` objects formed by
-		splitting the original one with horizontal lines at fractional
-		positions *f1*, *f2*, ...
+		Return a list of new `Bbox` objects formed by splitting the original
+		one with horizontal lines at fractional positions given by *args*.
 	**/
 	public function splity(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Return a new :class:`Bbox` object, statically transformed by
-		the given transform.
+		Construct a `Bbox` by statically transforming this one by *transform*.
 	**/
 	public function transformed(transform:Dynamic):Dynamic;
 	/**
-		Return a copy of the :class:`Bbox`, statically translated by
-		*tx* and *ty*.
+		Construct a `Bbox` by translating this one by *tx* and *ty*.
 	**/
 	public function translated(tx:Dynamic, ty:Dynamic):Dynamic;
 	/**
-		Return a :class:`Bbox` that contains all of the given bboxes.
+		Return a `Bbox` that contains all of the given *bboxes*.
 	**/
 	static public function union(bboxes:Dynamic):Dynamic;
 	/**
-		The width of the bounding box.  It may be negative if
-		:attr:`x1` < :attr:`x0`.
+		The (signed) width of the bounding box.
 	**/
 	public var width : Dynamic;
 	/**
-		:attr:`x0` is the first of the pair of *x* coordinates that
-		define the bounding box. :attr:`x0` is not guaranteed to be less than
-		:attr:`x1`.  If you require that, use :attr:`xmin`.
+		The first of the pair of *x* coordinates that define the bounding box.
+		
+		This is not guaranteed to be less than :attr:`x1` (for that, use
+		:attr:`xmin`).
 	**/
 	public var x0 : Dynamic;
 	/**
-		:attr:`x1` is the second of the pair of *x* coordinates that
-		define the bounding box. :attr:`x1` is not guaranteed to be greater
-		than :attr:`x0`.  If you require that, use :attr:`xmax`.
+		The second of the pair of *x* coordinates that define the bounding box.
+		
+		This is not guaranteed to be greater than :attr:`x0` (for that, use
+		:attr:`xmax`).
 	**/
 	public var x1 : Dynamic;
 	/**
-		:attr:`xmax` is the right edge of the bounding box.
+		The right edge of the bounding box.
 	**/
 	public var xmax : Dynamic;
 	/**
-		:attr:`xmin` is the left edge of the bounding box.
+		The left edge of the bounding box.
 	**/
 	public var xmin : Dynamic;
 	/**
-		:attr:`y0` is the first of the pair of *y* coordinates that
-		define the bounding box. :attr:`y0` is not guaranteed to be less than
-		:attr:`y1`.  If you require that, use :attr:`ymin`.
+		The first of the pair of *y* coordinates that define the bounding box.
+		
+		This is not guaranteed to be less than :attr:`y1` (for that, use
+		:attr:`ymin`).
 	**/
 	public var y0 : Dynamic;
 	/**
-		:attr:`y1` is the second of the pair of *y* coordinates that
-		define the bounding box. :attr:`y1` is not guaranteed to be greater
-		than :attr:`y0`.  If you require that, use :attr:`ymax`.
+		The second of the pair of *y* coordinates that define the bounding box.
+		
+		This is not guaranteed to be greater than :attr:`y0` (for that, use
+		:attr:`ymax`).
 	**/
 	public var y1 : Dynamic;
 	/**
-		:attr:`ymax` is the top edge of the bounding box.
+		The top edge of the bounding box.
 	**/
 	public var ymax : Dynamic;
 	/**
-		:attr:`ymin` is the bottom edge of the bounding box.
+		The bottom edge of the bounding box.
 	**/
 	public var ymin : Dynamic;
 }

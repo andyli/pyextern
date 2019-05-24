@@ -1,7 +1,21 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.linalg.linear_operator_zeros;
 @:pythonImport("tensorflow.python.ops.linalg.linear_operator_zeros", "LinearOperatorZeros") extern class LinearOperatorZeros {
-	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var __abstractmethods__ : Dynamic;
+	/**
+		Metaclass for defining Abstract Base Classes (ABCs).
+		
+		Use this metaclass to create an ABC.  An ABC can be subclassed
+		directly, and then acts as a mix-in class.  You can also register
+		unrelated concrete classes (even built-in classes) and unrelated
+		ABCs as 'virtual subclasses' -- these and their descendants will
+		be considered subclasses of the registering ABC by the built-in
+		issubclass() function, but the registering ABC won't show up in
+		their MRO (Method Resolution Order) nor will method
+		implementations defined by the registering ABC be callable (not
+		even via super()).
+	**/
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -141,20 +155,6 @@ package tensorflow.python.ops.linalg.linear_operator_zeros;
 		Return self<value.
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
-	/**
-		Metaclass for defining Abstract Base Classes (ABCs).
-		
-		Use this metaclass to create an ABC.  An ABC can be subclassed
-		directly, and then acts as a mix-in class.  You can also register
-		unrelated concrete classes (even built-in classes) and unrelated
-		ABCs as 'virtual subclasses' -- these and their descendants will
-		be considered subclasses of the registering ABC by the built-in
-		issubclass() function, but the registering ABC won't show up in
-		their MRO (Method Resolution Order) nor will method
-		implementations defined by the registering ABC be callable (not
-		even via super()).
-	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -202,6 +202,10 @@ package tensorflow.python.ops.linalg.linear_operator_zeros;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _abc_cache : Dynamic;
+	static public var _abc_negative_cache : Dynamic;
+	static public var _abc_negative_cache_version : Dynamic;
+	static public var _abc_registry : Dynamic;
 	public function _add_to_tensor(x:Dynamic):Dynamic;
 	/**
 		Private default implementation of _assert_non_singular.
@@ -351,17 +355,36 @@ package tensorflow.python.ops.linalg.linear_operator_zeros;
 		`[B1,...,Bb]`.
 		
 		Args:
-		  name:  A name for this `Op.
+		  name:  A name for this `Op`.
 		
 		Returns:
 		  `int32` `Tensor`
 	**/
 	public function batch_shape_tensor(?name:Dynamic):Dynamic;
 	/**
+		Returns a Cholesky factor as a `LinearOperator`.
+		
+		Given `A` representing this `LinearOperator`, if `A` is positive definite
+		self-adjoint, return `L`, where `A = L L^T`, i.e. the cholesky
+		decomposition.
+		
+		Args:
+		  name:  A name for this `Op`.
+		
+		Returns:
+		  `LinearOperator` which represents the lower triangular matrix
+		  in the Cholesky decomposition.
+		
+		Raises:
+		  ValueError: When the `LinearOperator` is not hinted to be positive
+		    definite and self adjoint.
+	**/
+	public function cholesky(?name:Dynamic):Dynamic;
+	/**
 		Determinant for every batch member.
 		
 		Args:
-		  name:  A name for this `Op.
+		  name:  A name for this `Op`.
 		
 		Returns:
 		  `Tensor` with shape `self.batch_shape` and same `dtype` as `self`.
@@ -440,7 +463,7 @@ package tensorflow.python.ops.linalg.linear_operator_zeros;
 		Log absolute value of determinant for every batch member.
 		
 		Args:
-		  name:  A name for this `Op.
+		  name:  A name for this `Op`.
 		
 		Returns:
 		  `Tensor` with shape `self.batch_shape` and same `dtype` as `self`.
@@ -467,15 +490,16 @@ package tensorflow.python.ops.linalg.linear_operator_zeros;
 		```
 		
 		Args:
-		  x: `Tensor` with compatible shape and same `dtype` as `self`.
-		    See class docstring for definition of compatibility.
+		  x: `LinearOperator` or `Tensor` with compatible shape and same `dtype` as
+		    `self`. See class docstring for definition of compatibility.
 		  adjoint: Python `bool`.  If `True`, left multiply by the adjoint: `A^H x`.
 		  adjoint_arg:  Python `bool`.  If `True`, compute `A x^H` where `x^H` is
 		    the hermitian transpose (transposition and complex conjugation).
-		  name:  A name for this `Op.
+		  name:  A name for this `Op`.
 		
 		Returns:
-		  A `Tensor` with shape `[..., M, R]` and same `dtype` as `self`.
+		  A `LinearOperator` or `Tensor` with shape `[..., M, R]` and same `dtype`
+		    as `self`.
 	**/
 	public function matmul(x:Dynamic, ?adjoint:Dynamic, ?adjoint_arg:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -500,7 +524,7 @@ package tensorflow.python.ops.linalg.linear_operator_zeros;
 		    dimensions, the last dimension defines a vector.
 		    See class docstring for definition of compatibility.
 		  adjoint: Python `bool`.  If `True`, left multiply by the adjoint: `A^H x`.
-		  name:  A name for this `Op.
+		  name:  A name for this `Op`.
 		
 		Returns:
 		  A `Tensor` with shape `[..., M]` and same `dtype` as `self`.
@@ -554,7 +578,7 @@ package tensorflow.python.ops.linalg.linear_operator_zeros;
 		`[B1,...,Bb, M, N]`, equivalent to `tf.shape(A)`.
 		
 		Args:
-		  name:  A name for this `Op.
+		  name:  A name for this `Op`.
 		
 		Returns:
 		  `int32` `Tensor`
@@ -649,7 +673,7 @@ package tensorflow.python.ops.linalg.linear_operator_zeros;
 		`A.shape = [B1,...,Bb, M, N]`, then this returns `b + 2`.
 		
 		Args:
-		  name:  A name for this `Op.
+		  name:  A name for this `Op`.
 		
 		Returns:
 		  Python integer, or None if the tensor rank is undefined.
@@ -662,7 +686,7 @@ package tensorflow.python.ops.linalg.linear_operator_zeros;
 		`A.shape = [B1,...,Bb, M, N]`, then this returns `b + 2`.
 		
 		Args:
-		  name:  A name for this `Op.
+		  name:  A name for this `Op`.
 		
 		Returns:
 		  `int32` `Tensor`, determined at runtime.

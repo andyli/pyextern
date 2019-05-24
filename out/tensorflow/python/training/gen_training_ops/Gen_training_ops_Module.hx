@@ -46,6 +46,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function apply_ada_max(_var:Dynamic, m:Dynamic, v:Dynamic, beta1_power:Dynamic, lr:Dynamic, beta1:Dynamic, beta2:Dynamic, epsilon:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function apply_ada_max_eager_fallback(_var:Dynamic, m:Dynamic, v:Dynamic, beta1_power:Dynamic, lr:Dynamic, beta1:Dynamic, beta2:Dynamic, epsilon:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' according to the adadelta scheme.
 		
@@ -77,6 +78,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function apply_adadelta(_var:Dynamic, accum:Dynamic, accum_update:Dynamic, lr:Dynamic, rho:Dynamic, epsilon:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function apply_adadelta_eager_fallback(_var:Dynamic, accum:Dynamic, accum_update:Dynamic, lr:Dynamic, rho:Dynamic, epsilon:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' according to the adagrad scheme.
 		
@@ -130,6 +132,8 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function apply_adagrad_da(_var:Dynamic, gradient_accumulator:Dynamic, gradient_squared_accumulator:Dynamic, grad:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, global_step:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function apply_adagrad_da_eager_fallback(_var:Dynamic, gradient_accumulator:Dynamic, gradient_squared_accumulator:Dynamic, grad:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, global_step:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function apply_adagrad_eager_fallback(_var:Dynamic, accum:Dynamic, lr:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?update_slots:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' according to the Adam algorithm.
 		
@@ -170,6 +174,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function apply_adam(_var:Dynamic, m:Dynamic, v:Dynamic, beta1_power:Dynamic, beta2_power:Dynamic, lr:Dynamic, beta1:Dynamic, beta2:Dynamic, epsilon:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?use_nesterov:Dynamic, ?name:Dynamic):Dynamic;
+	static public function apply_adam_eager_fallback(_var:Dynamic, m:Dynamic, v:Dynamic, beta1_power:Dynamic, beta2_power:Dynamic, lr:Dynamic, beta1:Dynamic, beta2:Dynamic, epsilon:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?use_nesterov:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' according to the AddSign update.
 		
@@ -199,6 +204,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function apply_add_sign(_var:Dynamic, m:Dynamic, lr:Dynamic, alpha:Dynamic, sign_decay:Dynamic, beta:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function apply_add_sign_eager_fallback(_var:Dynamic, m:Dynamic, lr:Dynamic, alpha:Dynamic, sign_decay:Dynamic, beta:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' according to the centered RMSProp algorithm.
 		
@@ -248,6 +254,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function apply_centered_rms_prop(_var:Dynamic, mg:Dynamic, ms:Dynamic, mom:Dynamic, lr:Dynamic, rho:Dynamic, momentum:Dynamic, epsilon:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function apply_centered_rms_prop_eager_fallback(_var:Dynamic, mg:Dynamic, ms:Dynamic, mom:Dynamic, lr:Dynamic, rho:Dynamic, momentum:Dynamic, epsilon:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' according to the Ftrl-proximal scheme.
 		
@@ -283,6 +290,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function apply_ftrl(_var:Dynamic, accum:Dynamic, linear:Dynamic, grad:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, lr_power:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function apply_ftrl_eager_fallback(_var:Dynamic, accum:Dynamic, linear:Dynamic, grad:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, lr_power:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' according to the Ftrl-proximal scheme.
 		
@@ -321,6 +329,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function apply_ftrl_v2(_var:Dynamic, accum:Dynamic, linear:Dynamic, grad:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, l2_shrinkage:Dynamic, lr_power:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function apply_ftrl_v2_eager_fallback(_var:Dynamic, accum:Dynamic, linear:Dynamic, grad:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, l2_shrinkage:Dynamic, lr_power:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' by subtracting 'alpha' * 'delta' from it.
 		
@@ -339,6 +348,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function apply_gradient_descent(_var:Dynamic, alpha:Dynamic, delta:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function apply_gradient_descent_eager_fallback(_var:Dynamic, alpha:Dynamic, delta:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' according to the momentum scheme. Set use_nesterov = True if you
 		
@@ -371,6 +381,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function apply_momentum(_var:Dynamic, accum:Dynamic, lr:Dynamic, grad:Dynamic, momentum:Dynamic, ?use_locking:Dynamic, ?use_nesterov:Dynamic, ?name:Dynamic):Dynamic;
+	static public function apply_momentum_eager_fallback(_var:Dynamic, accum:Dynamic, lr:Dynamic, grad:Dynamic, momentum:Dynamic, ?use_locking:Dynamic, ?use_nesterov:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' according to the AddSign update.
 		
@@ -400,6 +411,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function apply_power_sign(_var:Dynamic, m:Dynamic, lr:Dynamic, logbase:Dynamic, sign_decay:Dynamic, beta:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function apply_power_sign_eager_fallback(_var:Dynamic, m:Dynamic, lr:Dynamic, logbase:Dynamic, sign_decay:Dynamic, beta:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' and '*accum' according to FOBOS with Adagrad learning rate.
 		
@@ -428,6 +440,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function apply_proximal_adagrad(_var:Dynamic, accum:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function apply_proximal_adagrad_eager_fallback(_var:Dynamic, accum:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' as FOBOS algorithm with fixed learning rate.
 		
@@ -453,6 +466,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function apply_proximal_gradient_descent(_var:Dynamic, alpha:Dynamic, l1:Dynamic, l2:Dynamic, delta:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function apply_proximal_gradient_descent_eager_fallback(_var:Dynamic, alpha:Dynamic, l1:Dynamic, l2:Dynamic, delta:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' according to the RMSProp algorithm.
 		
@@ -492,6 +506,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function apply_rms_prop(_var:Dynamic, ms:Dynamic, mom:Dynamic, lr:Dynamic, rho:Dynamic, momentum:Dynamic, epsilon:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function apply_rms_prop_eager_fallback(_var:Dynamic, ms:Dynamic, mom:Dynamic, lr:Dynamic, rho:Dynamic, momentum:Dynamic, epsilon:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Decorator for marking endpoints deprecated.
 		
@@ -683,6 +698,48 @@ package tensorflow.python.training.gen_training_ops;
 	**/
 	static public function resource_apply_adam_eager_fallback(_var:Dynamic, m:Dynamic, v:Dynamic, beta1_power:Dynamic, beta2_power:Dynamic, lr:Dynamic, beta1:Dynamic, beta2:Dynamic, epsilon:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?use_nesterov:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		Update '*var' according to the Adam algorithm.
+		
+		$$lr_t := \text{learning\_rate} * \sqrt{1 - beta_2^t} / (1 - beta_1^t)$$
+		$$m_t := beta_1 * m_{t-1} + (1 - beta_1) * g$$
+		$$v_t := beta_2 * v_{t-1} + (1 - beta_2) * g * g$$
+		$$vhat_t := max{vhat_{t-1}, v_t}$$
+		$$variable := variable - lr_t * m_t / (\sqrt{vhat_t} + \epsilon)$$
+		
+		Args:
+		  var: A `Tensor` of type `resource`. Should be from a Variable().
+		  m: A `Tensor` of type `resource`. Should be from a Variable().
+		  v: A `Tensor` of type `resource`. Should be from a Variable().
+		  vhat: A `Tensor` of type `resource`. Should be from a Variable().
+		  beta1_power: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `complex64`, `int64`, `qint8`, `quint8`, `qint32`, `bfloat16`, `uint16`, `complex128`, `half`, `uint32`, `uint64`.
+		    Must be a scalar.
+		  beta2_power: A `Tensor`. Must have the same type as `beta1_power`.
+		    Must be a scalar.
+		  lr: A `Tensor`. Must have the same type as `beta1_power`.
+		    Scaling factor. Must be a scalar.
+		  beta1: A `Tensor`. Must have the same type as `beta1_power`.
+		    Momentum factor. Must be a scalar.
+		  beta2: A `Tensor`. Must have the same type as `beta1_power`.
+		    Momentum factor. Must be a scalar.
+		  epsilon: A `Tensor`. Must have the same type as `beta1_power`.
+		    Ridge term. Must be a scalar.
+		  grad: A `Tensor`. Must have the same type as `beta1_power`. The gradient.
+		  use_locking: An optional `bool`. Defaults to `False`.
+		    If `True`, updating of the var, m, and v tensors will be protected
+		    by a lock; otherwise the behavior is undefined, but may exhibit less
+		    contention.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The created Operation.
+	**/
+	static public function resource_apply_adam_with_amsgrad(_var:Dynamic, m:Dynamic, v:Dynamic, vhat:Dynamic, beta1_power:Dynamic, beta2_power:Dynamic, lr:Dynamic, beta1:Dynamic, beta2:Dynamic, epsilon:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function resource_apply_adam_with_amsgrad
+	**/
+	static public function resource_apply_adam_with_amsgrad_eager_fallback(_var:Dynamic, m:Dynamic, v:Dynamic, vhat:Dynamic, beta1_power:Dynamic, beta2_power:Dynamic, lr:Dynamic, beta1:Dynamic, beta2:Dynamic, epsilon:Dynamic, grad:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Update '*var' according to the AddSign update.
 		
 		m_t <- beta1 * m_{t-1} + (1 - beta1) * g
@@ -864,6 +921,41 @@ package tensorflow.python.training.gen_training_ops;
 		This is for function resource_apply_gradient_descent
 	**/
 	static public function resource_apply_gradient_descent_eager_fallback(_var:Dynamic, alpha:Dynamic, delta:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Update '*var' according to the momentum scheme. Set use_nesterov = True if you
+		
+		want to use Nesterov momentum.
+		
+		accum = accum * momentum - lr * grad
+		var += accum
+		
+		Args:
+		  var: A `Tensor` of type `resource`. Should be from a Variable().
+		  accum: A `Tensor` of type `resource`. Should be from a Variable().
+		  lr: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `complex64`, `int64`, `qint8`, `quint8`, `qint32`, `bfloat16`, `uint16`, `complex128`, `half`, `uint32`, `uint64`.
+		    Scaling factor. Must be a scalar.
+		  grad: A `Tensor`. Must have the same type as `lr`. The gradient.
+		  momentum: A `Tensor`. Must have the same type as `lr`.
+		    Momentum. Must be a scalar.
+		  use_locking: An optional `bool`. Defaults to `False`.
+		    If `True`, updating of the var and accum tensors will be protected
+		    by a lock; otherwise the behavior is undefined, but may exhibit less
+		    contention.
+		  use_nesterov: An optional `bool`. Defaults to `False`.
+		    If `True`, the tensor passed to compute grad will be
+		    var + momentum * accum, so in the end, the var you get is actually
+		    var + momentum * accum.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The created Operation.
+	**/
+	static public function resource_apply_keras_momentum(_var:Dynamic, accum:Dynamic, lr:Dynamic, grad:Dynamic, momentum:Dynamic, ?use_locking:Dynamic, ?use_nesterov:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function resource_apply_keras_momentum
+	**/
+	static public function resource_apply_keras_momentum_eager_fallback(_var:Dynamic, accum:Dynamic, lr:Dynamic, grad:Dynamic, momentum:Dynamic, ?use_locking:Dynamic, ?use_nesterov:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' according to the momentum scheme. Set use_nesterov = True if you
 		
@@ -1270,6 +1362,45 @@ package tensorflow.python.training.gen_training_ops;
 		
 		That is for rows we have grad for, we update var and accum as follows:
 		
+		accum = accum * momentum - lr * grad
+		var += accum
+		
+		Args:
+		  var: A `Tensor` of type `resource`. Should be from a Variable().
+		  accum: A `Tensor` of type `resource`. Should be from a Variable().
+		  lr: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `complex64`, `int64`, `qint8`, `quint8`, `qint32`, `bfloat16`, `uint16`, `complex128`, `half`, `uint32`, `uint64`.
+		    Learning rate. Must be a scalar.
+		  grad: A `Tensor`. Must have the same type as `lr`. The gradient.
+		  indices: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    A vector of indices into the first dimension of var and accum.
+		  momentum: A `Tensor`. Must have the same type as `lr`.
+		    Momentum. Must be a scalar.
+		  use_locking: An optional `bool`. Defaults to `False`.
+		    If `True`, updating of the var and accum tensors will be protected
+		    by a lock; otherwise the behavior is undefined, but may exhibit less
+		    contention.
+		  use_nesterov: An optional `bool`. Defaults to `False`.
+		    If `True`, the tensor passed to compute grad will be
+		    var + momentum * accum, so in the end, the var you get is actually
+		    var + momentum * accum.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The created Operation.
+	**/
+	static public function resource_sparse_apply_keras_momentum(_var:Dynamic, accum:Dynamic, lr:Dynamic, grad:Dynamic, indices:Dynamic, momentum:Dynamic, ?use_locking:Dynamic, ?use_nesterov:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function resource_sparse_apply_keras_momentum
+	**/
+	static public function resource_sparse_apply_keras_momentum_eager_fallback(_var:Dynamic, accum:Dynamic, lr:Dynamic, grad:Dynamic, indices:Dynamic, momentum:Dynamic, ?use_locking:Dynamic, ?use_nesterov:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Update relevant entries in '*var' and '*accum' according to the momentum scheme.
+		
+		Set use_nesterov = True if you want to use Nesterov momentum.
+		
+		That is for rows we have grad for, we update var and accum as follows:
+		
 		accum = accum * momentum + grad
 		var -= lr * accum
 		
@@ -1439,6 +1570,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function sparse_apply_adadelta(_var:Dynamic, accum:Dynamic, accum_update:Dynamic, lr:Dynamic, rho:Dynamic, epsilon:Dynamic, grad:Dynamic, indices:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sparse_apply_adadelta_eager_fallback(_var:Dynamic, accum:Dynamic, accum_update:Dynamic, lr:Dynamic, rho:Dynamic, epsilon:Dynamic, grad:Dynamic, indices:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update relevant entries in '*var' and '*accum' according to the adagrad scheme.
 		
@@ -1497,6 +1629,8 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function sparse_apply_adagrad_da(_var:Dynamic, gradient_accumulator:Dynamic, gradient_squared_accumulator:Dynamic, grad:Dynamic, indices:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, global_step:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sparse_apply_adagrad_da_eager_fallback(_var:Dynamic, gradient_accumulator:Dynamic, gradient_squared_accumulator:Dynamic, grad:Dynamic, indices:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, global_step:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function sparse_apply_adagrad_eager_fallback(_var:Dynamic, accum:Dynamic, lr:Dynamic, grad:Dynamic, indices:Dynamic, ?use_locking:Dynamic, ?update_slots:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' according to the centered RMSProp algorithm.
 		
@@ -1546,6 +1680,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function sparse_apply_centered_rms_prop(_var:Dynamic, mg:Dynamic, ms:Dynamic, mom:Dynamic, lr:Dynamic, rho:Dynamic, momentum:Dynamic, epsilon:Dynamic, grad:Dynamic, indices:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sparse_apply_centered_rms_prop_eager_fallback(_var:Dynamic, mg:Dynamic, ms:Dynamic, mom:Dynamic, lr:Dynamic, rho:Dynamic, momentum:Dynamic, epsilon:Dynamic, grad:Dynamic, indices:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update relevant entries in '*var' according to the Ftrl-proximal scheme.
 		
@@ -1584,6 +1719,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function sparse_apply_ftrl(_var:Dynamic, accum:Dynamic, linear:Dynamic, grad:Dynamic, indices:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, lr_power:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sparse_apply_ftrl_eager_fallback(_var:Dynamic, accum:Dynamic, linear:Dynamic, grad:Dynamic, indices:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, lr_power:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update relevant entries in '*var' according to the Ftrl-proximal scheme.
 		
@@ -1625,6 +1761,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function sparse_apply_ftrl_v2(_var:Dynamic, accum:Dynamic, linear:Dynamic, grad:Dynamic, indices:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, l2_shrinkage:Dynamic, lr_power:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sparse_apply_ftrl_v2_eager_fallback(_var:Dynamic, accum:Dynamic, linear:Dynamic, grad:Dynamic, indices:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, l2_shrinkage:Dynamic, lr_power:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update relevant entries in '*var' and '*accum' according to the momentum scheme.
 		
@@ -1661,6 +1798,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function sparse_apply_momentum(_var:Dynamic, accum:Dynamic, lr:Dynamic, grad:Dynamic, indices:Dynamic, momentum:Dynamic, ?use_locking:Dynamic, ?use_nesterov:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sparse_apply_momentum_eager_fallback(_var:Dynamic, accum:Dynamic, lr:Dynamic, grad:Dynamic, indices:Dynamic, momentum:Dynamic, ?use_locking:Dynamic, ?use_nesterov:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Sparse update entries in '*var' and '*accum' according to FOBOS algorithm.
 		
@@ -1693,6 +1831,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function sparse_apply_proximal_adagrad(_var:Dynamic, accum:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, grad:Dynamic, indices:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sparse_apply_proximal_adagrad_eager_fallback(_var:Dynamic, accum:Dynamic, lr:Dynamic, l1:Dynamic, l2:Dynamic, grad:Dynamic, indices:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Sparse update '*var' as FOBOS algorithm with fixed learning rate.
 		
@@ -1721,6 +1860,7 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function sparse_apply_proximal_gradient_descent(_var:Dynamic, alpha:Dynamic, l1:Dynamic, l2:Dynamic, grad:Dynamic, indices:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sparse_apply_proximal_gradient_descent_eager_fallback(_var:Dynamic, alpha:Dynamic, l1:Dynamic, l2:Dynamic, grad:Dynamic, indices:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Update '*var' according to the RMSProp algorithm.
 		
@@ -1762,5 +1902,6 @@ package tensorflow.python.training.gen_training_ops;
 		  A mutable `Tensor`. Has the same type as `var`.
 	**/
 	static public function sparse_apply_rms_prop(_var:Dynamic, ms:Dynamic, mom:Dynamic, lr:Dynamic, rho:Dynamic, momentum:Dynamic, epsilon:Dynamic, grad:Dynamic, indices:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sparse_apply_rms_prop_eager_fallback(_var:Dynamic, ms:Dynamic, mom:Dynamic, lr:Dynamic, rho:Dynamic, momentum:Dynamic, epsilon:Dynamic, grad:Dynamic, indices:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -46,6 +46,16 @@ package tensorflow.python.keras.engine.sequential;
 		    model = Model(x, y)
 		    ```
 		
+		    Note that even if eager execution is enabled,
+		    `Input` produces a symbolic tensor (i.e. a placeholder).
+		    This symbolic tensor can be used with other
+		    TensorFlow ops, as such:
+		
+		    ```python
+		    x = Input(shape=(32,))
+		    y = tf.square(x)
+		    ```
+		
 		Raises:
 		  ValueError: in case of invalid arguments.
 	**/
@@ -60,20 +70,6 @@ package tensorflow.python.keras.engine.sequential;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
-	/**
-		Retrieve input shape and input dtype of layer if applicable.
-		
-		Args:
-		  layer: Layer (or model) instance.
-		
-		Returns:
-		  Tuple (input_shape, input_dtype). Both could be None if the layer
-		    does not have a defined input shape.
-		
-		Raises:
-		  ValueError: in case an empty Sequential or Graph Network is passed.
-	**/
-	static public function get_input_shape_and_dtype(layer:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

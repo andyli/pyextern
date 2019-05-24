@@ -114,8 +114,12 @@ package matplotlib.ticker;
 	public var __weakref__ : Dynamic;
 	public function _compute_offset():Dynamic;
 	public function _formatSciNotation(s:Dynamic):Dynamic;
-	public function _set_format(vmin:Dynamic, vmax:Dynamic):Dynamic;
-	public function _set_orderOfMagnitude(range:Dynamic):Dynamic;
+	public function _set_format():Dynamic;
+	/**
+		Subclasses may want to override this to set a locator.
+	**/
+	public function _set_locator(locator:Dynamic):Dynamic;
+	public function _set_order_of_magnitude():Dynamic;
 	static public var axis : Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -131,6 +135,10 @@ package matplotlib.ticker;
 	**/
 	public function format_data_short(value:Dynamic):Dynamic;
 	/**
+		Return the tick labels for all the ticks at once.
+	**/
+	public function format_ticks(values:Dynamic):Dynamic;
+	/**
 		Return scientific notation, plus offset.
 	**/
 	public function get_offset():Dynamic;
@@ -138,6 +146,14 @@ package matplotlib.ticker;
 	public function get_useMathText():Dynamic;
 	public function get_useOffset():Dynamic;
 	static public var locs : Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	public function pprint_val(x:Dynamic):Dynamic;
 	public function set_axis(axis:Dynamic):Dynamic;
 	public function set_bounds(vmin:Dynamic, vmax:Dynamic):Dynamic;
@@ -160,13 +176,17 @@ package matplotlib.ticker;
 		    pre-2007 default in which scientific notation is used for
 		    numbers less than 1e-3 or greater than 1e4.
 		
-		.. seealso:: Method :meth:`set_scientific`
+		See Also
+		--------
+		ScalarFormatter.set_scientific
 	**/
 	public function set_powerlimits(lims:Dynamic):Dynamic;
 	/**
 		Turn scientific notation on or off.
 		
-		.. seealso:: Method :meth:`set_powerlimits`
+		See Also
+		--------
+		ScalarFormatter.set_powerlimits
 	**/
 	public function set_scientific(b:Dynamic):Dynamic;
 	public function set_useLocale(val:Dynamic):Dynamic;

@@ -11,7 +11,6 @@ package pandas.core.window;
 	static public var __spec__ : Dynamic;
 	static public var _bias_template : Dynamic;
 	static public var _doc_template : Dynamic;
-	static public function _ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _flex_binary_moment(arg1:Dynamic, arg2:Dynamic, f:Dynamic, ?pairwise:Dynamic):Dynamic;
 	static public function _get_center_of_mass(comass:Dynamic, span:Dynamic, halflife:Dynamic, alpha:Dynamic):Dynamic;
 	static public function _offset(window:Dynamic, center:Dynamic):Dynamic;
@@ -36,8 +35,9 @@ package pandas.core.window;
 	**/
 	static public function dedent(text:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	static public function ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Provides exponential weighted functions
+		Provides exponential weighted functions.
 		
 		.. versionadded:: 0.18.0
 		
@@ -61,10 +61,10 @@ package pandas.core.window;
 		min_periods : int, default 0
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
-		adjust : boolean, default True
+		adjust : bool, default True
 		    Divide by decaying adjustment factor in beginning periods to account
 		    for imbalance in relative weightings (viewing EWMA as a moving average)
-		ignore_na : boolean, default False
+		ignore_na : bool, default False
 		    Ignore missing values when calculating weights;
 		    specify True to reproduce pre-0.15.0 behavior
 		
@@ -72,24 +72,10 @@ package pandas.core.window;
 		-------
 		a Window sub-classed for the particular operation
 		
-		Examples
+		See Also
 		--------
-		
-		>>> df = DataFrame({'B': [0, 1, 2, np.nan, 4]})
-		     B
-		0  0.0
-		1  1.0
-		2  2.0
-		3  NaN
-		4  4.0
-		
-		>>> df.ewm(com=0.5).mean()
-		          B
-		0  0.000000
-		1  0.750000
-		2  1.615385
-		3  1.615385
-		4  3.670213
+		rolling : Provides rolling window calculations.
+		expanding : Provides expanding transformations.
 		
 		Notes
 		-----
@@ -118,10 +104,24 @@ package pandas.core.window;
 		More details can be found at
 		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-windows
 		
-		See Also
+		Examples
 		--------
-		rolling : Provides rolling window calculations
-		expanding : Provides expanding transformations.
+		
+		>>> df = pd.DataFrame({'B': [0, 1, 2, np.nan, 4]})
+		     B
+		0  0.0
+		1  1.0
+		2  2.0
+		3  NaN
+		4  4.0
+		
+		>>> df.ewm(com=0.5).mean()
+		          B
+		0  0.000000
+		1  0.750000
+		2  1.615385
+		3  1.615385
+		4  3.670213
 	**/
 	static public function ewm(obj:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -134,18 +134,28 @@ package pandas.core.window;
 		min_periods : int, default 1
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
-		center : boolean, default False
+		center : bool, default False
 		    Set the labels at the center of the window.
-		axis : int or string, default 0
+		axis : int or str, default 0
 		
 		Returns
 		-------
 		a Window sub-classed for the particular operation
 		
+		See Also
+		--------
+		rolling : Provides rolling window calculations.
+		ewm : Provides exponential weighted functions.
+		
+		Notes
+		-----
+		By default, the result is set to the right edge of the window. This can be
+		changed to the center of the window by setting ``center=True``.
+		
 		Examples
 		--------
 		
-		>>> df = DataFrame({'B': [0, 1, 2, np.nan, 4]})
+		>>> df = pd.DataFrame({'B': [0, 1, 2, np.nan, 4]})
 		     B
 		0  0.0
 		1  1.0
@@ -160,21 +170,13 @@ package pandas.core.window;
 		2  3.0
 		3  3.0
 		4  7.0
-		
-		Notes
-		-----
-		By default, the result is set to the right edge of the window. This can be
-		changed to the center of the window by setting ``center=True``.
-		
-		See Also
-		--------
-		rolling : Provides rolling window calculations
-		ewm : Provides exponential weighted functions
 	**/
 	static public function expanding(obj:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a float dtype.
+		
+		This function is internal and should not be exposed in the public API.
 		
 		Parameters
 		----------
@@ -207,6 +209,11 @@ package pandas.core.window;
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
 		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -226,6 +233,12 @@ package pandas.core.window;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -251,7 +264,11 @@ package pandas.core.window;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -270,22 +287,58 @@ package pandas.core.window;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -366,16 +419,18 @@ package pandas.core.window;
 		min_periods : int, default None
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA). For a window that is specified by an offset,
-		    this will default to 1.
-		center : boolean, default False
+		    `min_periods` will default to 1. Otherwise, `min_periods` will default
+		    to the size of the window.
+		center : bool, default False
 		    Set the labels at the center of the window.
-		win_type : string, default None
+		win_type : str, default None
 		    Provide a window type. If ``None``, all points are evenly weighted.
 		    See the notes below for further information.
-		on : string, optional
+		on : str, optional
 		    For a DataFrame, column on which to calculate
 		    the rolling window, rather than the index
-		closed : string, default None
+		axis : int or str, default 0
+		closed : str, default None
 		    Make the interval closed on the 'right', 'left', 'both' or
 		    'neither' endpoints.
 		    For offset-based windows, it defaults to 'right'.
@@ -384,11 +439,43 @@ package pandas.core.window;
 		
 		    .. versionadded:: 0.20.0
 		
-		axis : int or string, default 0
-		
 		Returns
 		-------
 		a Window or Rolling sub-classed for the particular operation
+		
+		See Also
+		--------
+		expanding : Provides expanding transformations.
+		ewm : Provides exponential weighted functions.
+		
+		Notes
+		-----
+		By default, the result is set to the right edge of the window. This can be
+		changed to the center of the window by setting ``center=True``.
+		
+		To learn more about the offsets & frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
+		
+		The recognized win_types are:
+		
+		* ``boxcar``
+		* ``triang``
+		* ``blackman``
+		* ``hamming``
+		* ``bartlett``
+		* ``parzen``
+		* ``bohman``
+		* ``blackmanharris``
+		* ``nuttall``
+		* ``barthann``
+		* ``kaiser`` (needs beta)
+		* ``gaussian`` (needs std)
+		* ``general_gaussian`` (needs power, width)
+		* ``slepian`` (needs width).
+		
+		If ``win_type=None`` all points are evenly weighted. To learn more about
+		different window types see `scipy.signal window functions
+		<https://docs.scipy.org/doc/scipy/reference/signal.html#window-functions>`__.
 		
 		Examples
 		--------
@@ -451,7 +538,6 @@ package pandas.core.window;
 		2013-01-01 09:00:05  NaN
 		2013-01-01 09:00:06  4.0
 		
-		
 		Contrasting to an integer rolling window, this will roll a variable
 		length window corresponding to the time period.
 		The default for min_periods is 1.
@@ -463,40 +549,6 @@ package pandas.core.window;
 		2013-01-01 09:00:03  3.0
 		2013-01-01 09:00:05  NaN
 		2013-01-01 09:00:06  4.0
-		
-		Notes
-		-----
-		By default, the result is set to the right edge of the window. This can be
-		changed to the center of the window by setting ``center=True``.
-		
-		To learn more about the offsets & frequency strings, please see `this link
-		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
-		
-		The recognized win_types are:
-		
-		* ``boxcar``
-		* ``triang``
-		* ``blackman``
-		* ``hamming``
-		* ``bartlett``
-		* ``parzen``
-		* ``bohman``
-		* ``blackmanharris``
-		* ``nuttall``
-		* ``barthann``
-		* ``kaiser`` (needs beta)
-		* ``gaussian`` (needs std)
-		* ``general_gaussian`` (needs power, width)
-		* ``slepian`` (needs width).
-		
-		If ``win_type=None`` all points are evenly weighted. To learn more about
-		different window types see `scipy.signal window functions
-		<https://docs.scipy.org/doc/scipy/reference/signal.html#window-functions>`__.
-		
-		See Also
-		--------
-		expanding : Provides expanding transformations.
-		ewm : Provides exponential weighted functions
 	**/
 	static public function rolling(obj:Dynamic, ?win_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 }

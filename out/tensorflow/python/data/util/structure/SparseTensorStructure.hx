@@ -1,7 +1,21 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.data.util.structure;
 @:pythonImport("tensorflow.python.data.util.structure", "SparseTensorStructure") extern class SparseTensorStructure {
-	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var __abstractmethods__ : Dynamic;
+	/**
+		Metaclass for defining Abstract Base Classes (ABCs).
+		
+		Use this metaclass to create an ABC.  An ABC can be subclassed
+		directly, and then acts as a mix-in class.  You can also register
+		unrelated concrete classes (even built-in classes) and unrelated
+		ABCs as 'virtual subclasses' -- these and their descendants will
+		be considered subclasses of the registering ABC by the built-in
+		issubclass() function, but the registering ABC won't show up in
+		their MRO (Method Resolution Order) nor will method
+		implementations defined by the registering ABC be callable (not
+		even via super()).
+	**/
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -61,20 +75,6 @@ package tensorflow.python.data.util.structure;
 		Return self<value.
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
-	/**
-		Metaclass for defining Abstract Base Classes (ABCs).
-		
-		Use this metaclass to create an ABC.  An ABC can be subclassed
-		directly, and then acts as a mix-in class.  You can also register
-		unrelated concrete classes (even built-in classes) and unrelated
-		ABCs as 'virtual subclasses' -- these and their descendants will
-		be considered subclasses of the registering ABC by the built-in
-		issubclass() function, but the registering ABC won't show up in
-		their MRO (Method Resolution Order) nor will method
-		implementations defined by the registering ABC be callable (not
-		even via super()).
-	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -122,6 +122,21 @@ package tensorflow.python.data.util.structure;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _abc_cache : Dynamic;
+	static public var _abc_negative_cache : Dynamic;
+	static public var _abc_negative_cache_version : Dynamic;
+	static public var _abc_registry : Dynamic;
+	/**
+		Returns a structure representing a batch of objects with this structure.
+		
+		Args:
+		  batch_size: An `int` representing the number of elements in a batch,
+		    or `None` if the batch size may vary.
+		
+		Returns:
+		  A `Structure` representing a batch of objects with this structure.
+	**/
+	public function _batch(batch_size:Dynamic):Dynamic;
 	/**
 		A list of shapes matching the shapes of `self._to_tensor_list()`.
 		
@@ -137,41 +152,33 @@ package tensorflow.python.data.util.structure;
 	**/
 	public var _flat_types : Dynamic;
 	/**
-		Returns a `Structure` that represents the given legacy structure.
+		A version of `_from_tensor_list()` that may avoid performing checks.
 		
-		This method provides a way to convert from the existing `Dataset` and
-		`Iterator` structure-related properties to a `Structure` object.
-		
-		TODO(b/110122868): Remove this method once `Structure` is used throughout
-		`tf.data`.
-		
-		Args:
-		  output_types: A nested structure of `tf.DType` objects corresponding to
-		    each component of a structured value.
-		  output_shapes: A nested structure of `tf.TensorShape` objects
-		    corresponding to each component a structured value.
-		  output_classes: A nested structure of Python `type` objects corresponding
-		    to each component of a structured value.
-		
-		Returns:
-		  A `Structure`.
-		
-		Raises:
-		  TypeError: If a structure cannot be built the arguments, because one of
-		    the component classes in `output_classes` is not supported.
-	**/
-	static public function _from_legacy_structure(output_types:Dynamic, output_shapes:Dynamic, output_classes:Dynamic):Dynamic;
-	/**
-		Builds a flat list of `tf.Tensor` into a value matching this structure.
-		
-		Requires: The shapes and types of the tensors in `flat_value` must be
-		compatible with `self._flat_shapes` and `self._flat_types` respectively.
+		NOTE: This method should be used to avoid checks for performance reasons,
+		when the validity of `flat_value` has been validated by other means.
+		The shapes and types of the tensors in `flat_value` must be compatible with
+		`self._flat_shapes` and `self._flat_types` respectively. The behavior is
+		undefined if this requirement is not met.
 		
 		Args:
 		  flat_value: A list of `tf.Tensor` with compatible flat structure.
 		
 		Returns:
 		  A structured object matching this structure.
+	**/
+	public function _from_compatible_tensor_list(flat_value:Dynamic):Dynamic;
+	/**
+		Builds a flat list of `tf.Tensor` into a value matching this structure.
+		
+		Args:
+		  flat_value: A list of `tf.Tensor` with compatible flat structure.
+		
+		Returns:
+		  A structured object matching this structure.
+		
+		Raises:
+		  ValueError: If the shapes and types of the tensors in `flat_value` are not
+		    compatible with `self._flat_shapes` and `self._flat_types` respectively.
 	**/
 	public function _from_tensor_list(flat_value:Dynamic):Dynamic;
 	/**
@@ -184,6 +191,29 @@ package tensorflow.python.data.util.structure;
 		    type represented by `type_object`) and returns a `Structure`.
 	**/
 	static public function _register_custom_converter(type_object:Dynamic, converter_fn:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Returns a flat list of rank >= 1 `tf.Tensor` representing `value`.
+		
+		This method can be used, along with `self._flat_shapes` and
+		`self._flat_types` to represent structured values in lower level APIs
+		(such as plain TensorFlow operations) that do not understand structure,
+		*and* that require that the plain tensors have a rank of at least one
+		(e.g. for the purpose of slicing the tensors).
+		
+		Requires: `self.is_compatible_with(Structure.from_value(value))`.
+		
+		Args:
+		  value: A value with compatible structure.
+		
+		Returns:
+		  A flat list of `tf.Tensor` representing `value`.
+	**/
+	public function _to_batched_tensor_list(value:Dynamic):Dynamic;
+	public function _to_legacy_output_classes():Dynamic;
+	public function _to_legacy_output_shapes():Dynamic;
+	public function _to_legacy_output_types():Dynamic;
 	/**
 		Returns a flat list of `tf.Tensor` representing `value`.
 		
@@ -200,6 +230,7 @@ package tensorflow.python.data.util.structure;
 		  A flat list of `tf.Tensor` representing `value`.
 	**/
 	public function _to_tensor_list(value:Dynamic):Dynamic;
+	public function _unbatch():Dynamic;
 	/**
 		Returns a `Structure` that represents the given `value`.
 		

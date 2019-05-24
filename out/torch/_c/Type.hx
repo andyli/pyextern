@@ -13,9 +13,9 @@ package torch._c;
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
-		Return self==value.
+		__eq__(self: torch._C.Type, arg0: torch._C.Type) -> bool
 	**/
-	public function __eq__(value:Dynamic):Dynamic;
+	public function __eq__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -104,9 +104,13 @@ package torch._c;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		contiguous(self: torch._C.Type) -> torch::jit::TensorType
+		contiguous(self: torch._C.Type) -> torch._C.Type
 	**/
 	public function contiguous(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		isSubtypeOf(self: torch._C.Type, arg0: torch._C.Type) -> bool
+	**/
+	public function isSubtypeOf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		kind(self: torch._C.Type) -> str
 	**/
@@ -119,6 +123,10 @@ package torch._c;
 		sizes(self: torch._C.Type) -> List[int]
 	**/
 	public function sizes(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		str(self: torch._C.Type) -> str
+	**/
+	public function str(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		strides(self: torch._C.Type) -> List[int]
 	**/

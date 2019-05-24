@@ -51,7 +51,6 @@ package numpy.lib._iotools;
 	static public function _to_filehandle(fname:Dynamic, ?flag:Dynamic, ?return_opened:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public function asbytes(s:Dynamic):Dynamic;
-	static public function asbytes_nested(x:Dynamic):Dynamic;
 	static public function asunicode(s:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**

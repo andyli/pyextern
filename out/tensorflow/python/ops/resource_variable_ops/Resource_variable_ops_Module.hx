@@ -114,6 +114,43 @@ package tensorflow.python.ops.resource_variable_ops;
 	**/
 	static public function consume_mutex_lock_eager_fallback(mutex_lock:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		Copies an existing variable to a new graph, with no initializer.
+	**/
+	static public function copy_to_graph_uninitialized(_var:Dynamic):Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
+	/**
 		Decorator for marking endpoints deprecated.
 		
 		This decorator does not print deprecation messages.
@@ -611,27 +648,7 @@ package tensorflow.python.ops.resource_variable_ops;
 		This is for function var_is_initialized_op
 	**/
 	static public function var_is_initialized_op_eager_fallback(resource:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		Returns the shape of the variable pointed to by `resource`.
-		
-		This operation returns a 1-D integer tensor representing the shape of `input`.
-		
-		For example:
-		
-		```
-		# 't' is [[[1, 1, 1], [2, 2, 2]], [[3, 3, 3], [4, 4, 4]]]
-		shape(t) ==> [2, 2, 3]
-		```
-		
-		Args:
-		  input: A `Tensor` of type `resource`.
-		  out_type: An optional `tf.DType` from: `tf.int32, tf.int64`. Defaults to `tf.int32`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `out_type`.
-	**/
-	static public function variable_shape(input:Dynamic, ?out_type:Dynamic, ?name:Dynamic):Dynamic;
+	static public function variable_shape(handle:Dynamic, ?out_type:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function variable_shape

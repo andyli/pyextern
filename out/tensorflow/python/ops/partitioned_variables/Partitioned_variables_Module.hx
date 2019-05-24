@@ -12,7 +12,11 @@ package tensorflow.python.ops.partitioned_variables;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Create a list of partitioned variables according to the given `slicing`.
+		Create a list of partitioned variables according to the given `slicing`. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.get_variable with a partitioner set.
 		
 		Currently only one dimension of the full variable can be sliced, and the
 		full variable can be reconstructed by the concatenation of the returned
@@ -64,7 +68,7 @@ package tensorflow.python.ops.partitioned_variables;
 		
 		Returns:
 		  A partition function usable as the `partitioner` argument to
-		  `variable_scope`, `get_variable`, and `get_partitioned_variable_list`.
+		  `variable_scope` and `get_variable`.
 	**/
 	static public function fixed_size_partitioner(num_shards:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -85,7 +89,7 @@ package tensorflow.python.ops.partitioned_variables;
 		
 		Returns:
 		  A partition function usable as the `partitioner` argument to
-		  `variable_scope`, `get_variable`, and `get_partitioned_variable_list`.
+		  `variable_scope` and `get_variable`.
 	**/
 	static public function min_max_variable_partitioner(?max_partitions:Dynamic, ?axis:Dynamic, ?min_slice_size:Dynamic, ?bytes_per_string_element:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
@@ -116,7 +120,7 @@ package tensorflow.python.ops.partitioned_variables;
 		
 		Returns:
 		  A partition function usable as the `partitioner` argument to
-		  `variable_scope`, `get_variable`, and `get_partitioned_variable_list`.
+		  `variable_scope` and `get_variable`.
 		
 		Raises:
 		  ValueError: If any of the byte counts are non-positive.

@@ -11,11 +11,10 @@ package scipy.signal._peak_finding_utils;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	/**
-		Find indices of local maxima in a 1D array.
+		Find local maxima in a 1D array.
 		
-		This function finds all local maxima in a 1D array and returns their
-		indices. For maxima who are wider than one sample the index of the center
-		sample is returned (rounded down in case the number of samples is even).
+		This function finds all local maxima in a 1D array and returns the indices
+		for their edges and midpoints (rounded down for even plateau sizes).
 		
 		Parameters
 		----------
@@ -24,12 +23,12 @@ package scipy.signal._peak_finding_utils;
 		
 		Returns
 		-------
-		maxima : ndarray
-		    Indices of local maxima in `x`.
-		
-		See Also
-		--------
-		argrelmax
+		midpoints : ndarray
+		    Indices of midpoints of local maxima in `x`.
+		left_edges : ndarray
+		    Indices of edges to the left of local maxima in `x`.
+		right_edges : ndarray
+		    Indices of edges to the right of local maxima in `x`.
 		
 		Notes
 		-----
@@ -37,11 +36,11 @@ package scipy.signal._peak_finding_utils;
 		  detect maxima that are more than one sample wide. However this comes at
 		  the cost of being only applicable to 1D arrays.
 		- A maxima is defined as one or more samples of equal value that are
-		  surrounded on both sides by atleast one smaller sample.
+		  surrounded on both sides by at least one smaller sample.
 		
 		.. versionadded:: 1.1.0
 	**/
-	static public function _argmaxima1d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _local_maxima_1d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Calculate the prominence of each peak in a signal.
 		
@@ -66,7 +65,12 @@ package scipy.signal._peak_finding_utils;
 		Raises
 		------
 		ValueError
-		    If an index in `peaks` doesn't point to a local maximum in `x`.
+		    If a value in `peaks` is an invalid index for `x`.
+		
+		Warns
+		-----
+		PeakPropertyWarning
+		    If a prominence of 0 was calculated for any peak.
 		
 		Notes
 		-----
@@ -109,6 +113,12 @@ package scipy.signal._peak_finding_utils;
 		    If the supplied prominence data doesn't satisfy the condition
 		    ``0 <= left_base <= peak <= right_base < x.shape[0]`` for each peak or
 		    if `peaks`, `left_bases` and `right_bases` don't share the same shape.
+		    Or if `rel_height` is not at least 0.
+		
+		Warnings
+		--------
+		PeakPropertyWarning
+		    If a width of 0 was calculated for any peak.
 		
 		Notes
 		-----

@@ -125,6 +125,10 @@ package pandas.plotting._converter;
 	static public var axis : Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Modify the endpoints of a range as needed to avoid singularities.
+	**/
+	public function nonsingular(v0:Dynamic, v1:Dynamic):Dynamic;
+	/**
 		Pan numticks (can be positive or negative)
 	**/
 	public function pan(numsteps:Dynamic):Dynamic;
@@ -141,7 +145,7 @@ package pandas.plotting._converter;
 	public function set_bounds(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function set_data_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
-		Do nothing, and rase a warning. Any locator class not supporting the
+		Do nothing, and raise a warning. Any locator class not supporting the
 		set_params() function will call this.
 	**/
 	public function set_params(?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -161,10 +165,9 @@ package pandas.plotting._converter;
 	**/
 	public function tick_values(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
-		select a scale for the range from vmin to vmax
+		Select a scale for the range from vmin to vmax.
 		
-		Normally this method is overridden by subclasses to
-		change locator behaviour.
+		Subclasses should override this method to change locator behaviour.
 	**/
 	public function view_limits(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**

@@ -159,7 +159,7 @@ package numpy;
 	**/
 	public function __mod__(value:Dynamic):Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -223,7 +223,7 @@ package numpy;
 	**/
 	public function __rmod__(value:Dynamic):Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**

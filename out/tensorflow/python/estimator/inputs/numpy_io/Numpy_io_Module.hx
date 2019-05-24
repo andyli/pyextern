@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.estimator.inputs.numpy_io;
 @:pythonImport("tensorflow.python.estimator.inputs.numpy_io") extern class Numpy_io_Module {
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var _TARGET_KEY : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;

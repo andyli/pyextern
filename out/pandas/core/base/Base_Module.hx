@@ -13,68 +13,73 @@ package pandas.core.base;
 	static public var _indexops_doc_kwargs : Dynamic;
 	static public var _shared_docs : Dynamic;
 	/**
-		Decorator to deprecate a keyword argument of a function.
+		Check whether the provided array or dtype is of the datetime64[ns] dtype.
 		
 		Parameters
 		----------
-		old_arg_name : str
-		    Name of argument in function to deprecate
-		new_arg_name : str or None
-		    Name of preferred argument in function. Use None to raise warning that
-		    ``old_arg_name`` keyword is deprecated.
-		mapping : dict or callable
-		    If mapping is present, use it to translate old arguments to
-		    new arguments. A callable must do its own value checking;
-		    values not found in a dict will be forwarded unchanged.
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of the datetime64[ns] dtype.
 		
 		Examples
 		--------
-		The following deprecates 'cols', using 'columns' instead
-		
-		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name='columns')
-		... def f(columns=''):
-		...     print(columns)
-		...
-		>>> f(columns='should work ok')
-		should work ok
-		
-		>>> f(cols='should raise warning')
-		FutureWarning: cols is deprecated, use columns instead
-		  warnings.warn(msg, FutureWarning)
-		should raise warning
-		
-		>>> f(cols='should error', columns="can't pass do both")
-		TypeError: Can only specify 'cols' or 'columns', not both
-		
-		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
-		... def f(new=False):
-		...     print('yes!' if new else 'no!')
-		...
-		>>> f(old='yes')
-		FutureWarning: old='yes' is deprecated, use new=True instead
-		  warnings.warn(msg, FutureWarning)
-		yes!
-		
-		
-		To raise a warning that a keyword will be removed entirely in the future
-		
-		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
-		... def f(cols='', another_param=''):
-		...     print(cols)
-		...
-		>>> f(cols='should raise warning')
-		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
-		future version please takes steps to stop use of 'cols'
-		should raise warning
-		>>> f(another_param='should not raise warning')
-		should not raise warning
-		
-		>>> f(cols='should raise warning', another_param='')
-		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
-		future version please takes steps to stop use of 'cols'
-		should raise warning
+		>>> is_datetime64_ns_dtype(str)
+		False
+		>>> is_datetime64_ns_dtype(int)
+		False
+		>>> is_datetime64_ns_dtype(np.datetime64)  # no unit
+		False
+		>>> is_datetime64_ns_dtype(DatetimeTZDtype("ns", "US/Eastern"))
+		True
+		>>> is_datetime64_ns_dtype(np.array(['a', 'b']))
+		False
+		>>> is_datetime64_ns_dtype(np.array([1, 2]))
+		False
+		>>> is_datetime64_ns_dtype(np.array([], dtype=np.datetime64))  # no unit
+		False
+		>>> is_datetime64_ns_dtype(np.array([],
+		                           dtype="datetime64[ps]"))  # wrong unit
+		False
+		>>> is_datetime64_ns_dtype(pd.DatetimeIndex([1, 2, 3],
+		                           dtype=np.datetime64))  # has 'ns' unit
+		True
 	**/
-	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
+	static public function is_datetime64_ns_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of a DatetimeTZDtype dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of
+		          a DatetimeTZDtype dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64tz_dtype(object)
+		False
+		>>> is_datetime64tz_dtype([1, 2, 3])
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3]))  # tz-naive
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+		
+		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
+		>>> s = pd.Series([], dtype=dtype)
+		>>> is_datetime64tz_dtype(dtype)
+		True
+		>>> is_datetime64tz_dtype(s)
+		True
+	**/
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check whether an array-like is a datetime-like array-like.
 		
@@ -116,13 +121,18 @@ package pandas.core.base;
 	/**
 		Check if an object is a pandas extension array type.
 		
+		See the :ref:`Use Guide <extending.extension-types>` for more.
+		
 		Parameters
 		----------
 		arr_or_dtype : object
+		    For array-like input, the ``.dtype`` attribute will
+		    be extracted.
 		
 		Returns
 		-------
 		bool
+		    Whether the `arr_or_dtype` is an extension array type.
 		
 		Notes
 		-----
@@ -130,9 +140,27 @@ package pandas.core.base;
 		array interface. In pandas, this includes:
 		
 		* Categorical
+		* Sparse
+		* Interval
+		* Period
+		* DatetimeArray
+		* TimedeltaArray
 		
 		Third-party libraries may implement arrays or types satisfying
 		this interface as well.
+		
+		Examples
+		--------
+		>>> from pandas.api.types import is_extension_array_dtype
+		>>> arr = pd.Categorical(['a', 'b'])
+		>>> is_extension_array_dtype(arr)
+		True
+		>>> is_extension_array_dtype(arr.dtype)
+		True
+		
+		>>> arr = np.array(['a', 'b'])
+		>>> is_extension_array_dtype(arr.dtype)
+		False
 	**/
 	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
@@ -194,7 +222,11 @@ package pandas.core.base;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -213,8 +245,12 @@ package pandas.core.base;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Check whether an array-like or dtype is of the object dtype.
 		
@@ -244,23 +280,83 @@ package pandas.core.base;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Check whether the provided array or dtype is of the timedelta64[ns] dtype.
+		
+		This is a very specific dtype, so generic ones like `np.timedelta64`
+		will return False if passed into this function.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of the
+		          timedelta64[ns] dtype.
+		
+		Examples
+		--------
+		>>> is_timedelta64_ns_dtype(np.dtype('m8[ns]'))
+		True
+		>>> is_timedelta64_ns_dtype(np.dtype('m8[ps]'))  # Wrong frequency
+		False
+		>>> is_timedelta64_ns_dtype(np.array([1, 2], dtype='m8[ns]'))
+		True
+		>>> is_timedelta64_ns_dtype(np.array([1, 2], dtype=np.timedelta64))
+		False
+	**/
+	static public function is_timedelta64_ns_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -278,8 +374,8 @@ package pandas.core.base;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		

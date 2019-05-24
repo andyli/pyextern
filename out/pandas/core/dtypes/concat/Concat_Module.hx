@@ -98,7 +98,7 @@ package pandas.core.dtypes.concat;
 	static public function _convert_datetimelike_to_object(x:Dynamic):Dynamic;
 	/**
 		return appropriate class of DataFrame-like concat
-		if all blocks are SparseBlock, return SparseDataFrame
+		if all blocks are sparse, return SparseDataFrame
 		otherwise, return 1st obj
 	**/
 	static public function _get_frame_result_type(result:Dynamic, objs:Dynamic):Dynamic;
@@ -107,21 +107,6 @@ package pandas.core.dtypes.concat;
 		input is either dict or array-like
 	**/
 	static public function _get_series_result_type(result:Dynamic, ?objs:Dynamic):Dynamic;
-	/**
-		return appropriate class of Series. When data is sparse
-		it will return a SparseSeries, otherwise it will return
-		the Series.
-		
-		Parameters
-		----------
-		data : array-like
-		obj : DataFrame
-		
-		Returns
-		-------
-		Series or SparseSeries
-	**/
-	static public function _get_sliced_frame_result_type(data:Dynamic, obj:Dynamic):Dynamic;
 	/**
 		Parameters
 		----------
@@ -144,6 +129,11 @@ package pandas.core.dtypes.concat;
 		-------
 		boolean : Whether or not the array or dtype is of a boolean dtype.
 		
+		Notes
+		-----
+		An ExtensionArray is considered boolean when the ``_is_boolean``
+		attribute is set to True.
+		
 		Examples
 		--------
 		>>> is_bool_dtype(str)
@@ -159,6 +149,10 @@ package pandas.core.dtypes.concat;
 		>>> is_bool_dtype(pd.Series([1, 2]))
 		False
 		>>> is_bool_dtype(np.array([True, False]))
+		True
+		>>> is_bool_dtype(pd.Categorical([True, False]))
+		True
+		>>> is_bool_dtype(pd.SparseArray([True, False]))
 		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -217,42 +211,37 @@ package pandas.core.dtypes.concat;
 	**/
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Check whether an array-like is a datetime array-like with a timezone
-		component in its dtype.
+		Check whether an array-like or dtype is of a DatetimeTZDtype dtype.
 		
 		Parameters
 		----------
-		arr : array-like
-		    The array-like to check.
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
 		
 		Returns
 		-------
-		boolean : Whether or not the array-like is a datetime array-like with
-		          a timezone component in its dtype.
+		boolean : Whether or not the array-like or dtype is of
+		          a DatetimeTZDtype dtype.
 		
 		Examples
 		--------
-		>>> is_datetimetz([1, 2, 3])
+		>>> is_datetime64tz_dtype(object)
 		False
-		
-		Although the following examples are both DatetimeIndex objects,
-		the first one returns False because it has no timezone component
-		unlike the second one, which returns True.
-		
-		>>> is_datetimetz(pd.DatetimeIndex([1, 2, 3]))
+		>>> is_datetime64tz_dtype([1, 2, 3])
 		False
-		>>> is_datetimetz(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3]))  # tz-naive
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
 		True
-		
-		The object need not be a DatetimeIndex object. It just needs to have
-		a dtype which has a timezone component.
 		
 		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
 		>>> s = pd.Series([], dtype=dtype)
-		>>> is_datetimetz(s)
+		>>> is_datetime64tz_dtype(dtype)
+		True
+		>>> is_datetime64tz_dtype(s)
 		True
 	**/
-	static public function is_datetimetz(arr:Dynamic):Dynamic;
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check if two dtypes are equal.
 		
@@ -282,13 +271,18 @@ package pandas.core.dtypes.concat;
 	/**
 		Check if an object is a pandas extension array type.
 		
+		See the :ref:`Use Guide <extending.extension-types>` for more.
+		
 		Parameters
 		----------
 		arr_or_dtype : object
+		    For array-like input, the ``.dtype`` attribute will
+		    be extracted.
 		
 		Returns
 		-------
 		bool
+		    Whether the `arr_or_dtype` is an extension array type.
 		
 		Notes
 		-----
@@ -296,9 +290,27 @@ package pandas.core.dtypes.concat;
 		array interface. In pandas, this includes:
 		
 		* Categorical
+		* Sparse
+		* Interval
+		* Period
+		* DatetimeArray
+		* TimedeltaArray
 		
 		Third-party libraries may implement arrays or types satisfying
 		this interface as well.
+		
+		Examples
+		--------
+		>>> from pandas.api.types import is_extension_array_dtype
+		>>> arr = pd.Categorical(['a', 'b'])
+		>>> is_extension_array_dtype(arr)
+		True
+		>>> is_extension_array_dtype(arr.dtype)
+		True
+		
+		>>> arr = np.array(['a', 'b'])
+		>>> is_extension_array_dtype(arr.dtype)
+		False
 	**/
 	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
@@ -328,58 +340,59 @@ package pandas.core.dtypes.concat;
 	**/
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Check whether an array-like or dtype is of the Period dtype.
+		Check whether an array-like is a 1-D pandas sparse array.
 		
-		Parameters
-		----------
-		arr_or_dtype : array-like
-		    The array-like or dtype to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array-like or dtype is of the Period dtype.
-		
-		Examples
-		--------
-		>>> is_period_dtype(object)
-		False
-		>>> is_period_dtype(PeriodDtype(freq="D"))
-		True
-		>>> is_period_dtype([1, 2, 3])
-		False
-		>>> is_period_dtype(pd.Period("2017-01-01"))
-		False
-		>>> is_period_dtype(pd.PeriodIndex([], freq="A"))
-		True
-	**/
-	static public function is_period_dtype(arr_or_dtype:Dynamic):Dynamic;
-	/**
-		Check whether an array-like is a pandas sparse array.
+		Check that the one-dimensional array-like is a pandas sparse array.
+		Returns True if it is a pandas sparse array, not another type of
+		sparse array.
 		
 		Parameters
 		----------
 		arr : array-like
-		    The array-like to check.
+		    Array-like to check.
 		
 		Returns
 		-------
-		boolean : Whether or not the array-like is a pandas sparse array.
+		bool
+		    Whether or not the array-like is a pandas sparse array.
+		
+		See Also
+		--------
+		DataFrame.to_sparse : Convert DataFrame to a SparseDataFrame.
+		Series.to_sparse : Convert Series to SparseSeries.
+		Series.to_dense : Return dense representation of a Series.
 		
 		Examples
 		--------
-		>>> is_sparse(np.array([1, 2, 3]))
-		False
-		>>> is_sparse(pd.SparseArray([1, 2, 3]))
+		Returns `True` if the parameter is a 1-D pandas sparse array.
+		
+		>>> is_sparse(pd.SparseArray([0, 0, 1, 0]))
 		True
-		>>> is_sparse(pd.SparseSeries([1, 2, 3]))
+		>>> is_sparse(pd.SparseSeries([0, 0, 1, 0]))
 		True
 		
-		This function checks only for pandas sparse array instances, so
-		sparse arrays from other libraries will return False.
+		Returns `False` if the parameter is not sparse.
+		
+		>>> is_sparse(np.array([0, 0, 1, 0]))
+		False
+		>>> is_sparse(pd.Series([0, 1, 0, 0]))
+		False
+		
+		Returns `False` if the parameter is not a pandas sparse array.
 		
 		>>> from scipy.sparse import bsr_matrix
-		>>> is_sparse(bsr_matrix([1, 2, 3]))
+		>>> is_sparse(bsr_matrix([0, 1, 0, 0]))
 		False
+		
+		Returns `False` if the parameter has more than one dimension.
+		
+		>>> df = pd.SparseDataFrame([389., 24., 80.5, np.nan],
+		                            columns=['max_speed'],
+		                            index=['falcon', 'parrot', 'lion', 'monkey'])
+		>>> is_sparse(df)
+		False
+		>>> is_sparse(df.max_speed)
+		True
 	**/
 	static public function is_sparse(arr:Dynamic):Dynamic;
 	/**
@@ -422,7 +435,7 @@ package pandas.core.dtypes.concat;
 		sort_categories : boolean, default False
 		    If true, resulting categories will be lexsorted, otherwise
 		    they will be ordered as they appear in the data.
-		ignore_order: boolean, default False
+		ignore_order : boolean, default False
 		    If true, the ordered attribute of the Categoricals will be ignored.
 		    Results in an unordered categorical.
 		

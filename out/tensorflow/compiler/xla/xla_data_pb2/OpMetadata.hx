@@ -62,8 +62,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var OP_NAME_FIELD_NUMBER : Dynamic;
-	static public var OP_TYPE_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -72,8 +70,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SOURCE_FILE_FIELD_NUMBER : Dynamic;
-	static public var SOURCE_LINE_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -86,6 +82,10 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.compiler.xla.xla_data_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.OpMetadata.op_name
+	**/
+	public var op_name : Dynamic;
+	/**
+		Field xla.OpMetadata.op_type
+	**/
+	public var op_type : Dynamic;
+	/**
+		Field xla.OpMetadata.source_file
+	**/
+	public var source_file : Dynamic;
+	/**
+		Field xla.OpMetadata.source_line
+	**/
+	public var source_line : Dynamic;
 }

@@ -41,11 +41,11 @@ package pandas.io.formats.html;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(formatter:Dynamic, ?classes:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?notebook:Dynamic, ?border:Dynamic, ?table_id:Dynamic):Dynamic;
+	public function ___init__(formatter:Dynamic, ?classes:Dynamic, ?border:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(formatter:Dynamic, ?classes:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?notebook:Dynamic, ?border:Dynamic, ?table_id:Dynamic):Void;
+	public function new(formatter:Dynamic, ?classes:Dynamic, ?border:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -111,16 +111,29 @@ package pandas.io.formats.html;
 	public function _get_formatter(i:Dynamic):Dynamic;
 	public function _write_body(indent:Dynamic):Dynamic;
 	public function _write_cell(s:Dynamic, ?kind:Dynamic, ?indent:Dynamic, ?tags:Dynamic):Dynamic;
+	public function _write_col_header(indent:Dynamic):Dynamic;
 	public function _write_header(indent:Dynamic):Dynamic;
 	public function _write_hierarchical_rows(fmt_values:Dynamic, indent:Dynamic):Dynamic;
 	public function _write_regular_rows(fmt_values:Dynamic, indent:Dynamic):Dynamic;
+	public function _write_row_header(indent:Dynamic):Dynamic;
+	public function _write_table(?indent:Dynamic):Dynamic;
 	static public var indent_delta : Dynamic;
-	static public var is_truncated : Dynamic;
+	/**
+		bool(x) -> bool
+		
+		Returns True when the argument x is true, False otherwise.
+		The builtins True and False are the only two instances of the class bool.
+		The class bool is a subclass of the class int, and cannot be subclassed.
+	**/
+	public var is_truncated : Dynamic;
+	public var ncols : Dynamic;
+	public function render():Dynamic;
+	public var row_levels : Dynamic;
 	public var should_show_dimensions : Dynamic;
+	public var show_col_idx_names : Dynamic;
 	static public var show_dimensions : Dynamic;
+	public var show_row_idx_names : Dynamic;
 	public function write(s:Dynamic, ?indent:Dynamic):Dynamic;
-	public function write_result(buf:Dynamic):Dynamic;
-	public function write_style():Dynamic;
 	public function write_td(s:Dynamic, ?indent:Dynamic, ?tags:Dynamic):Dynamic;
 	public function write_th(s:Dynamic, ?indent:Dynamic, ?tags:Dynamic):Dynamic;
 	public function write_tr(line:Dynamic, ?indent:Dynamic, ?indent_delta:Dynamic, ?header:Dynamic, ?align:Dynamic, ?tags:Dynamic, ?nindex_levels:Dynamic):Dynamic;

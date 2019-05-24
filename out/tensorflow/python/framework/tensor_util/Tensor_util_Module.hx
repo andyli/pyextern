@@ -132,7 +132,7 @@ package tensorflow.python.framework.tensor_util;
 		
 		Check whether an object is a tensor. This check is equivalent to calling
 		`isinstance(x, (tf.Tensor, tf.SparseTensor, tf.Variable))` and also checks
-		if all the component variables of a MirroredVariable or a TowerLocalVariable
+		if all the component variables of a MirroredVariable or a ReplicaLocalVariable
 		are tensors.
 		
 		Args:
@@ -150,6 +150,8 @@ package tensorflow.python.framework.tensor_util;
 		  dtype:          Optional tensor_pb2 DataType value.
 		  shape:          List of integers representing the dimensions of tensor.
 		  verify_shape:   Boolean that enables verification of a shape of values.
+		  allow_broadcast:Boolean that enables allowing scalars and 1 length vector
+		      broadcasting. Cannot be true when verify_shape is true.
 		
 		Returns:
 		  A `TensorProto`. Depending on the type, it may contain data in the
@@ -185,7 +187,7 @@ package tensorflow.python.framework.tensor_util;
 		Otherwise, "shape" specifies the tensor's shape and the numpy array
 		can not have more elements than what "shape" specifies.
 	**/
-	static public function make_tensor_proto(values:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?verify_shape:Dynamic):Dynamic;
+	static public function make_tensor_proto(values:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?verify_shape:Dynamic, ?allow_broadcast:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

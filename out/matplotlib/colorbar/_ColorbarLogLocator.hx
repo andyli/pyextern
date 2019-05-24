@@ -133,6 +133,9 @@ package matplotlib.colorbar;
 	**/
 	public function base(base:Dynamic):Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Modify the endpoints of a range as needed to avoid singularities.
+	**/
 	public function nonsingular(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
 		Pan numticks (can be positive or negative)

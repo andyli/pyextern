@@ -70,7 +70,6 @@ package tensorflow.contrib.tpu.proto.tpu_embedding_output_layout_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var OUTPUT_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -95,7 +94,6 @@ package tensorflow.contrib.tpu.proto.tpu_embedding_output_layout_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TABLE_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -104,6 +102,10 @@ package tensorflow.contrib.tpu.proto.tpu_embedding_output_layout_pb2;
 		A ProtocolMessage
 	**/
 	public function TwoDOutputTensor(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -269,4 +271,12 @@ package tensorflow.contrib.tpu.proto.tpu_embedding_output_layout_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tpu.TPUEmbeddingOutputLayout.output
+	**/
+	public var output : Dynamic;
+	/**
+		Field tensorflow.tpu.TPUEmbeddingOutputLayout.table
+	**/
+	public var table : Dynamic;
 }

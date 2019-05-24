@@ -109,17 +109,6 @@ package tensorflow.python.keras.engine.training_utils;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Returns provided inputs, potentially transformed.
-		
-		Inputs are returned in the same format they were provided i.e. lists
-		are returned as lists, single entries as single entries (unless
-		`return_single_as_list` is true), dictionaries as dictionaries.
-		
-		Args:
-		  return_single_as_list: Returns a list of size 1 for single entry case.
-	**/
-	public function _get(?return_single_as_list:Dynamic):Dynamic;
-	/**
 		An iterable over a dictionary version of inputs.
 	**/
 	public function as_dict():Dynamic;
@@ -134,10 +123,6 @@ package tensorflow.python.keras.engine.training_utils;
 		key 'input_%d'. For dictionary case, we return a sorted list of keys.
 	**/
 	public function get_input_names():Dynamic;
-	/**
-		Returns input values passed in.
-	**/
-	public function get_input_values():Dynamic;
 	/**
 		Returns inputs to be set as self.inputs for a model.
 	**/

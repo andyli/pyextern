@@ -10,15 +10,24 @@ package numpy.lib.arraysetops;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _ediff1d_dispatcher(ary:Dynamic, ?to_end:Dynamic, ?to_begin:Dynamic):Dynamic;
+	static public function _in1d_dispatcher(ar1:Dynamic, ar2:Dynamic, ?assume_unique:Dynamic, ?invert:Dynamic):Dynamic;
+	static public function _intersect1d_dispatcher(ar1:Dynamic, ar2:Dynamic, ?assume_unique:Dynamic, ?return_indices:Dynamic):Dynamic;
+	static public function _isin_dispatcher(element:Dynamic, test_elements:Dynamic, ?assume_unique:Dynamic, ?invert:Dynamic):Dynamic;
+	static public function _setdiff1d_dispatcher(ar1:Dynamic, ar2:Dynamic, ?assume_unique:Dynamic):Dynamic;
+	static public function _setxor1d_dispatcher(ar1:Dynamic, ar2:Dynamic, ?assume_unique:Dynamic):Dynamic;
+	static public function _union1d_dispatcher(ar1:Dynamic, ar2:Dynamic):Dynamic;
 	/**
 		Find the unique elements of an array, ignoring shape.
 	**/
 	static public function _unique1d(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):Dynamic;
+	static public function _unique_dispatcher(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Unpacks one-element tuples for use as return values 
 	**/
 	static public function _unpack_tuple(x:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		The differences between consecutive elements of an array.
@@ -248,6 +257,14 @@ package numpy.lib.arraysetops;
 		       [ True,  False]])
 		>>> element[mask]
 		array([2, 4])
+		
+		The indices of the matched values can be obtained with `nonzero`:
+		
+		>>> np.nonzero(mask)
+		(array([0, 1]), array([1, 0]))
+		
+		The test can also be inverted:
+		
 		>>> mask = np.isin(element, test_elements, invert=True)
 		>>> mask
 		array([[ True, False],
@@ -274,7 +291,7 @@ package numpy.lib.arraysetops;
 	/**
 		Find the set difference of two arrays.
 		
-		Return the sorted, unique values in `ar1` that are not in `ar2`.
+		Return the unique values in `ar1` that are not in `ar2`.
 		
 		Parameters
 		----------
@@ -289,7 +306,9 @@ package numpy.lib.arraysetops;
 		Returns
 		-------
 		setdiff1d : ndarray
-		    Sorted 1D array of values in `ar1` that are not in `ar2`.
+		    1D array of values in `ar1` that are not in `ar2`. The result
+		    is sorted when `assume_unique=False`, but otherwise only sorted
+		    if the input is sorted.
 		
 		See Also
 		--------

@@ -212,7 +212,7 @@ package matplotlib.ft2font;
 	/**
 		get_sfnt(name)
 		
-		Get all values from the SFNT names table.  Result is a dictionary whosekey is the platform-ID, ISO-encoding-scheme, language-code, anddescription.
+		Get all values from the SFNT names table.  Result is a dictionary whose key is the platform-ID, ISO-encoding-scheme, language-code, and description.
 	**/
 	public function get_sfnt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

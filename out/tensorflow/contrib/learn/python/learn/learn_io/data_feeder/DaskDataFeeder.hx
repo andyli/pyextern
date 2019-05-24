@@ -40,7 +40,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	/**
 		Initializes a DaskDataFeeder instance. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please feed input to tf.data to support dask.
 		
@@ -73,7 +73,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	/**
 		Initializes a DaskDataFeeder instance. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please feed input to tf.data to support dask.
 		

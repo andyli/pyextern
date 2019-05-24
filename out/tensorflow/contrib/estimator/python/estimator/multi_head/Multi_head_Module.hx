@@ -2,6 +2,7 @@
 package tensorflow.contrib.estimator.python.estimator.multi_head;
 @:pythonImport("tensorflow.contrib.estimator.python.estimator.multi_head") extern class Multi_head_Module {
 	static public var _DEFAULT_SERVING_KEY : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

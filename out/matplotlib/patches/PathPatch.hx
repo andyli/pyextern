@@ -42,18 +42,18 @@ package matplotlib.patches;
 		*path* is a :class:`matplotlib.path.Path` object.
 		
 		Valid kwargs are:
-		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array
 		  alpha: float or None
 		  animated: bool
-		  antialiased: unknown
+		  antialiased or aa: unknown
 		  capstyle: {'butt', 'round', 'projecting'}
 		  clip_box: `.Bbox`
 		  clip_on: bool
-		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 		  color: color
 		  contains: callable
-		  edgecolor: color or None or 'auto'
-		  facecolor: color or None
+		  edgecolor or ec: color or None or 'auto'
+		  facecolor or fc: color or None
 		  figure: `.Figure`
 		  fill: bool
 		  gid: str
@@ -61,22 +61,17 @@ package matplotlib.patches;
 		  in_layout: bool
 		  joinstyle: {'miter', 'round', 'bevel'}
 		  label: object
-		  linestyle: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
-		  linewidth: float or None for default 
+		  linestyle or ls: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
+		  linewidth or lw: float or None
 		  path_effects: `.AbstractPathEffect`
 		  picker: None or bool or float or callable
 		  rasterized: bool or None
-		  sketch_params: (scale: float, length: float, randomness: float) 
+		  sketch_params: (scale: float, length: float, randomness: float)
 		  snap: bool or None
 		  transform: `.Transform`
 		  url: str
 		  visible: bool
 		  zorder: float
-		
-		.. seealso::
-		
-		    :class:`Patch`
-		        For additional kwargs
 	**/
 	@:native("__init__")
 	public function ___init__(path:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -84,18 +79,18 @@ package matplotlib.patches;
 		*path* is a :class:`matplotlib.path.Path` object.
 		
 		Valid kwargs are:
-		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array
 		  alpha: float or None
 		  animated: bool
-		  antialiased: unknown
+		  antialiased or aa: unknown
 		  capstyle: {'butt', 'round', 'projecting'}
 		  clip_box: `.Bbox`
 		  clip_on: bool
-		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 		  color: color
 		  contains: callable
-		  edgecolor: color or None or 'auto'
-		  facecolor: color or None
+		  edgecolor or ec: color or None or 'auto'
+		  facecolor or fc: color or None
 		  figure: `.Figure`
 		  fill: bool
 		  gid: str
@@ -103,22 +98,17 @@ package matplotlib.patches;
 		  in_layout: bool
 		  joinstyle: {'miter', 'round', 'bevel'}
 		  label: object
-		  linestyle: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
-		  linewidth: float or None for default 
+		  linestyle or ls: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
+		  linewidth or lw: float or None
 		  path_effects: `.AbstractPathEffect`
 		  picker: None or bool or float or callable
 		  rasterized: bool or None
-		  sketch_params: (scale: float, length: float, randomness: float) 
+		  sketch_params: (scale: float, length: float, randomness: float)
 		  snap: bool or None
 		  transform: `.Transform`
 		  url: str
 		  visible: bool
 		  zorder: float
-		
-		.. seealso::
-		
-		    :class:`Patch`
-		        For additional kwargs
 	**/
 	public function new(path:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
@@ -184,6 +174,19 @@ package matplotlib.patches;
 	**/
 	public var __weakref__ : Dynamic;
 	static public var _alias_map : Dynamic;
+	/**
+		``draw()`` helper factored out for sharing with `FancyArrowPatch`.
+		
+		Yields a callable ``dp`` such that calling ``dp(*args, **kwargs)`` is
+		equivalent to calling ``renderer1.draw_path(gc, *args, **kwargs)``
+		where ``renderer1`` and ``gc`` have been suitably set from ``renderer``
+		and the artist's properties.
+	**/
+	public function _bind_draw_path_function(renderer:Dynamic):Dynamic;
+	/**
+		Convert x and y units for a tuple (x, y)
+	**/
+	public function _convert_xy_units(xy:Dynamic):Dynamic;
 	static public var _edge_default : Dynamic;
 	public function _process_radius(radius:Dynamic):Dynamic;
 	static public var _prop_order : Dynamic;
@@ -194,23 +197,41 @@ package matplotlib.patches;
 	**/
 	public function _set_gc_clip(gc:Dynamic):Dynamic;
 	/**
-		Adds a callback function that will be called whenever one of
-		the :class:`Artist`'s properties changes.
+		Add a callback function that will be called whenever one of the
+		`.Artist`'s properties changes.
 		
-		Returns an *id* that is useful for removing the callback with
-		:meth:`remove_callback` later.
+		Parameters
+		----------
+		func : callable
+		    The callback function. It must have the signature::
+		
+		        def func(artist: Artist) -> Any
+		
+		    where *artist* is the calling `.Artist`. Return values may exist
+		    but are ignored.
+		
+		Returns
+		-------
+		oid : int
+		    The observer id associated with the callback. This id can be
+		    used for removing the callback with `.remove_callback` later.
+		
+		See Also
+		--------
+		remove_callback
 	**/
-	public function add_callback(func:Dynamic):Dynamic;
-	static public var aname : Dynamic;
+	public function add_callback(func:Dynamic):Int;
+	public var aname : Dynamic;
 	/**
-		The :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*.
+		The `~.axes.Axes` instance the artist resides in, or *None*.
 	**/
 	public var axes : Dynamic;
 	/**
 		Test whether the mouse event occurred in the patch.
 		
-		Returns T/F, {}
+		Returns
+		-------
+		(bool, empty dict)
 	**/
 	public function contains(mouseevent:Dynamic, ?radius:Dynamic):Dynamic;
 	/**
@@ -230,13 +251,17 @@ package matplotlib.patches;
 	**/
 	public function contains_points(points:Dynamic, ?radius:Dynamic):Dynamic;
 	/**
-		For artists in an axes, if the xaxis has units support,
-		convert *x* using xaxis unit type
+		Convert *x* using the unit type of the xaxis.
+		
+		If the artist is not in contained in an Axes or if the xaxis does not
+		have units, *x* itself is returned.
 	**/
 	public function convert_xunits(x:Dynamic):Dynamic;
 	/**
-		For artists in an axes, if the yaxis has units support,
-		convert *y* using yaxis unit type
+		Convert *y* using the unit type of the yaxis.
+		
+		If the artist is not in contained in an Axes or if the yaxis does not
+		have units, *y* itself is returned.
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
 	/**
@@ -250,30 +275,48 @@ package matplotlib.patches;
 	/**
 		Find artist objects.
 		
-		Recursively find all :class:`~matplotlib.artist.Artist` instances
-		contained in self.
+		Recursively find all `.Artist` instances contained in the artist.
 		
-		*match* can be
+		Parameters
+		----------
+		match
+		    A filter criterion for the matches. This can be
 		
-		  - None: return all objects contained in artist.
+		    - *None*: Return all objects contained in artist.
+		    - A function with signature ``def match(artist: Artist) -> bool``.
+		      The result will only contain artists for which the function
+		      returns *True*.
+		    - A class instance: e.g., `.Line2D`. The result will only contain
+		      artists of this class or its subclasses (``isinstance`` check).
 		
-		  - function with signature ``boolean = match(artist)``
-		    used to filter matches
+		include_self : bool
+		    Include *self* in the list to be checked for a match.
 		
-		  - class instance: e.g., Line2D.  Only return artists of class type.
-		
-		If *include_self* is True (default), include self in the list to be
-		checked for a match.
+		Returns
+		-------
+		artists : list of `.Artist`
 	**/
 	public function findobj(?match:Dynamic, ?include_self:Dynamic):Dynamic;
 	/**
-		Return *cursor data* string formatted.
+		Return a string representation of *data*.
+		
+		.. note::
+		    This method is intended to be overridden by artist subclasses.
+		    As an end-user of Matplotlib you will most likely not call this
+		    method yourself.
+		
+		The default implementation converts ints and floats and arrays of ints
+		and floats into a comma-separated string enclosed in square brackets.
+		
+		See Also
+		--------
+		get_cursor_data
 	**/
 	public function format_cursor_data(data:Dynamic):Dynamic;
 	/**
-		alias for `get_antialiased`
+		Alias for `get_antialiased`.
 	**/
-	public function get_aa(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_aa():Dynamic;
 	/**
 		Return filter function to be used for agg filter.
 	**/
@@ -284,7 +327,7 @@ package matplotlib.patches;
 	**/
 	public function get_alpha():Dynamic;
 	/**
-		Return the artist's animated state
+		Return the animated state.
 	**/
 	public function get_animated():Dynamic;
 	/**
@@ -296,28 +339,55 @@ package matplotlib.patches;
 	**/
 	public function get_capstyle():Dynamic;
 	/**
-		Return a list of the child :class:`Artist`s this
-		:class:`Artist` contains.
+		Return a list of the child `.Artist`\s of this `.Artist`.
 	**/
 	public function get_children():Dynamic;
 	/**
-		Return artist clipbox
+		Return the clipbox.
 	**/
 	public function get_clip_box():Dynamic;
 	/**
-		Return whether artist uses clipping
+		Return whether the artist uses clipping.
 	**/
 	public function get_clip_on():Dynamic;
 	/**
-		Return artist clip path
+		Return the clip path.
 	**/
 	public function get_clip_path():Dynamic;
 	/**
-		Return the _contains test used by the artist, or *None* for default.
+		Return the custom contains function of the artist if set, or *None*.
+		
+		See Also
+		--------
+		set_contains
 	**/
 	public function get_contains():Dynamic;
 	/**
-		Get the cursor data for a given event.
+		Return the cursor data for a given event.
+		
+		.. note::
+		    This method is intended to be overridden by artist subclasses.
+		    As an end-user of Matplotlib you will most likely not call this
+		    method yourself.
+		
+		Cursor data can be used by Artists to provide additional context
+		information for a given event. The default implementation just returns
+		*None*.
+		
+		Subclasses can override the method and return arbitrary data. However,
+		when doing so, they must ensure that `.format_cursor_data` can convert
+		the data to a string representation.
+		
+		The only current use case is displaying the z-value of an `.AxesImage`
+		in the status bar of a plot window, while moving the mouse.
+		
+		Parameters
+		----------
+		event : `matplotlib.backend_bases.MouseEvent`
+		
+		See Also
+		--------
+		format_cursor_data
 	**/
 	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
@@ -326,9 +396,9 @@ package matplotlib.patches;
 	**/
 	public function get_data_transform():Dynamic;
 	/**
-		alias for `get_edgecolor`
+		Alias for `get_edgecolor`.
 	**/
-	public function get_ec(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_ec():Dynamic;
 	/**
 		Return the edge color of the :class:`Patch`.
 	**/
@@ -343,9 +413,9 @@ package matplotlib.patches;
 	**/
 	public function get_facecolor():Dynamic;
 	/**
-		alias for `get_facecolor`
+		Alias for `get_facecolor`.
 	**/
-	public function get_fc(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_fc():Dynamic;
 	/**
 		Return the `.Figure` instance the artist belongs to.
 	**/
@@ -355,7 +425,7 @@ package matplotlib.patches;
 	**/
 	public function get_fill():Dynamic;
 	/**
-		Returns the group id.
+		Return the group id.
 	**/
 	public function get_gid():Dynamic;
 	/**
@@ -376,7 +446,7 @@ package matplotlib.patches;
 	**/
 	public function get_joinstyle():Dynamic;
 	/**
-		Get the label used for this artist in the legend.
+		Return the label used for this artist in the legend.
 	**/
 	public function get_label():Dynamic;
 	/**
@@ -388,13 +458,13 @@ package matplotlib.patches;
 	**/
 	public function get_linewidth():Dynamic;
 	/**
-		alias for `get_linestyle`
+		Alias for `get_linestyle`.
 	**/
-	public function get_ls(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_ls():Dynamic;
 	/**
-		alias for `get_linewidth`
+		Alias for `get_linewidth`.
 	**/
-	public function get_lw(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_lw():Dynamic;
 	/**
 		Return the :class:`~matplotlib.transforms.Transform` instance which
 		takes patch coordinates to data coordinates.
@@ -410,7 +480,13 @@ package matplotlib.patches;
 	public function get_path():Dynamic;
 	public function get_path_effects():Dynamic;
 	/**
-		Return the picker object used by this artist.
+		Return the picking behavior of the artist.
+		
+		The possible values are described in `.set_picker`.
+		
+		See Also
+		--------
+		set_picker, pickable, pick
 	**/
 	public function get_picker():Dynamic;
 	/**
@@ -422,32 +498,23 @@ package matplotlib.patches;
 		
 		Returns
 		-------
-		sketch_params : tuple or `None`
+		sketch_params : tuple or None
 		
 		    A 3-tuple with the following elements:
 		
-		      * `scale`: The amplitude of the wiggle perpendicular to the
-		        source line.
+		    - *scale*: The amplitude of the wiggle perpendicular to the
+		      source line.
+		    - *length*: The length of the wiggle along the line.
+		    - *randomness*: The scale factor by which the length is
+		      shrunken or expanded.
 		
-		      * `length`: The length of the wiggle along the line.
-		
-		      * `randomness`: The scale factor by which the length is
-		        shrunken or expanded.
-		
-		    May return `None` if no sketch parameters were set.
+		    Returns *None* if no sketch parameters were set.
 	**/
 	public function get_sketch_params():Dynamic;
 	/**
-		Returns the snap setting which may be:
+		Returns the snap setting.
 		
-		  * True: snap vertices to the nearest pixel center
-		
-		  * False: leave vertices as-is
-		
-		  * None: (auto) If the path contains only rectilinear line
-		    segments, round to the nearest pixel center
-		
-		Only supported by the Agg and MacOSX backends.
+		See `.set_snap` for details.
 	**/
 	public function get_snap():Dynamic;
 	/**
@@ -461,8 +528,8 @@ package matplotlib.patches;
 		
 		Returns
 		-------
-		bbox : `.BboxBase`
-		    containing the bounding box (in figure pixel co-ordinates).
+		bbox : `.BBox`
+		    The enclosing bounding box (in figure pixel co-ordinates).
 	**/
 	public function get_tightbbox(renderer:Dynamic):Dynamic;
 	/**
@@ -477,7 +544,7 @@ package matplotlib.patches;
 	**/
 	public function get_transformed_clip_path_and_affine():Dynamic;
 	/**
-		Returns the url.
+		Return the url.
 	**/
 	public function get_url():Dynamic;
 	/**
@@ -489,11 +556,14 @@ package matplotlib.patches;
 	**/
 	public function get_verts():Dynamic;
 	/**
-		Return the artist's visiblity
+		Return the visibility.
 	**/
 	public function get_visible():Dynamic;
 	/**
 		Get the axes bounding box in display space.
+		
+		The bounding box' width and height are nonnegative.
+		
 		Subclasses should override for inclusion in the bounding box
 		"tight" calculation. Default is to return an empty bounding
 		box at 0, 0.
@@ -512,81 +582,79 @@ package matplotlib.patches;
 	**/
 	public function get_zorder():Dynamic;
 	/**
-		Return *True* if units are set on the *x* or *y* axes
+		Return *True* if units are set on the *x* or *y* axes.
 	**/
 	public function have_units():Dynamic;
 	/**
-		.. deprecated:: 2.2
-		    The hitlist function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		Return whether the Artist has an explicitly set transform.
 		
-		List the children of the artist which contain the mouse event *event*.
-	**/
-	public function hitlist(event:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 2.2
-		    artist.figure is not None
-		
-		Returns whether the artist is assigned to a `.Figure`.
-	**/
-	public function is_figure_set():Dynamic;
-	/**
-		Returns *True* if :class:`Artist` has a transform explicitly
-		set.
+		This is *True* after `.set_transform` has been called.
 	**/
 	public function is_transform_set():Dynamic;
 	public var mouseover : Dynamic;
 	/**
-		Fire an event when property changed, calling all of the
-		registered callbacks.
+		Call all of the registered callbacks.
+		
+		This function is triggered internally when a property is changed.
+		
+		See Also
+		--------
+		add_callback
+		remove_callback
 	**/
 	public function pchanged():Dynamic;
 	/**
-		Process pick event
+		Process a pick event.
 		
-		each child artist will fire a pick event if *mouseevent* is over
-		the artist and the artist has picker set
+		Each child artist will fire a pick event if *mouseevent* is over
+		the artist and the artist has picker set.
+		
+		See Also
+		--------
+		set_picker, get_picker, pickable
 	**/
 	public function pick(mouseevent:Dynamic):Dynamic;
 	/**
-		Return *True* if :class:`Artist` is pickable.
+		Return whether the artist is pickable.
+		
+		See Also
+		--------
+		set_picker, get_picker, pick
 	**/
 	public function pickable():Dynamic;
 	/**
-		return a dictionary mapping property name -> value for all Artist props
+		Return a dictionary of all the properties of the artist.
 	**/
 	public function properties():Dynamic;
 	/**
-		Remove the artist from the figure if possible.  The effect
-		will not be visible until the figure is redrawn, e.g., with
-		:meth:`matplotlib.axes.Axes.draw_idle`.  Call
-		:meth:`matplotlib.axes.Axes.relim` to update the axes limits
-		if desired.
+		Remove the artist from the figure if possible.
 		
-		Note: :meth:`~matplotlib.axes.Axes.relim` will not see
-		collections even if the collection was added to axes with
-		*autolim* = True.
+		The effect will not be visible until the figure is redrawn, e.g.,
+		with `.FigureCanvasBase.draw_idle`.  Call `~.axes.Axes.relim` to
+		update the axes limits if desired.
+		
+		Note: `~.axes.Axes.relim` will not see collections even if the
+		collection was added to the axes with *autolim* = True.
 		
 		Note: there is no support for removing the artist's legend entry.
 	**/
 	public function remove():Dynamic;
 	/**
-		Remove a callback based on its *id*.
+		Remove a callback based on its observer id.
 		
-		.. seealso::
-		
-		    :meth:`add_callback`
-		       For adding callbacks
+		See Also
+		--------
+		add_callback
 	**/
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
-		A property batch setter. Pass *kwargs* to set properties.
-		        
+		A property batch setter.  Pass *kwargs* to set properties.
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for `set_antialiased`
+		Alias for `set_antialiased`.
 	**/
-	public function set_aa(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_aa(aa:Dynamic):Dynamic;
 	/**
 		Set the agg filter.
 		
@@ -641,7 +709,7 @@ package matplotlib.patches;
 	**/
 	public function set_clip_box(clipbox:Dynamic):Dynamic;
 	/**
-		Set whether artist uses clipping.
+		Set whether the artist uses clipping.
 		
 		When False artists will be visible out side of the axes which
 		can lead to unexpected results.
@@ -671,36 +739,43 @@ package matplotlib.patches;
 	/**
 		Set both the edgecolor and the facecolor.
 		
-		.. seealso::
-		
-		    :meth:`set_facecolor`, :meth:`set_edgecolor`
-		       For setting the edge or face color individually.
-		
 		Parameters
 		----------
 		c : color
+		
+		See Also
+		--------
+		Patch.set_facecolor, Patch.set_edgecolor
+		    For setting the edge or face color individually.
 	**/
 	public function set_color(c:Dynamic):Dynamic;
 	/**
-		Replace the contains test used by this artist. The new picker
-		should be a callable function which determines whether the
-		artist is hit by the mouse event::
+		Define a custom contains test for the artist.
 		
-		    hit, props = picker(artist, mouseevent)
-		
-		If the mouse event is over the artist, return *hit* = *True*
-		and *props* is a dictionary of properties you want returned
-		with the contains test.
+		The provided callable replaces the default `.contains` method
+		of the artist.
 		
 		Parameters
 		----------
 		picker : callable
+		    A custom picker function to evaluate if an event is within the
+		    artist. The function must have the signature::
+		
+		        def contains(artist: Artist, event: MouseEvent) -> bool, dict
+		
+		    that returns:
+		
+		    - a bool indicating if the event is within the artist
+		    - a dict of additional information. The dict should at least
+		      return the same information as the default ``contains()``
+		      implementation of the respective artist, but may provide
+		      additional information.
 	**/
 	public function set_contains(picker:Dynamic):Dynamic;
 	/**
-		alias for `set_edgecolor`
+		Alias for `set_edgecolor`.
 	**/
-	public function set_ec(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_ec(color:Dynamic):Dynamic;
 	/**
 		Set the patch edge color.
 		
@@ -718,9 +793,9 @@ package matplotlib.patches;
 	**/
 	public function set_facecolor(color:Dynamic):Dynamic;
 	/**
-		alias for `set_facecolor`
+		Alias for `set_facecolor`.
 	**/
-	public function set_fc(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_fc(color:Dynamic):Dynamic;
 	/**
 		Set the `.Figure` instance the artist belongs to.
 		
@@ -738,7 +813,7 @@ package matplotlib.patches;
 	**/
 	public function set_fill(b:Dynamic):Dynamic;
 	/**
-		Sets the (group) id for the artist.
+		Set the (group) id for the artist.
 		
 		Parameters
 		----------
@@ -793,7 +868,7 @@ package matplotlib.patches;
 	**/
 	public function set_joinstyle(s:Dynamic):Dynamic;
 	/**
-		Set the label to *s* for auto legend.
+		Set a label that will be displayed in the legend.
 		
 		Parameters
 		----------
@@ -826,19 +901,21 @@ package matplotlib.patches;
 	**/
 	public function set_linestyle(ls:Dynamic):Dynamic;
 	/**
-		Set the patch linewidth in points
+		Set the patch linewidth in points.
 		
-		ACCEPTS: float or None for default
+		Parameters
+		----------
+		w : float or None
 	**/
 	public function set_linewidth(w:Dynamic):Dynamic;
 	/**
-		alias for `set_linestyle`
+		Alias for `set_linestyle`.
 	**/
-	public function set_ls(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_ls(ls:Dynamic):Dynamic;
 	/**
-		alias for `set_linewidth`
+		Alias for `set_linewidth`.
 	**/
-	public function set_lw(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_lw(w:Dynamic):Dynamic;
 	/**
 		Set the path effects.
 		
@@ -848,37 +925,36 @@ package matplotlib.patches;
 	**/
 	public function set_path_effects(path_effects:Dynamic):Dynamic;
 	/**
-		Set the epsilon for picking used by this artist
-		
-		*picker* can be one of the following:
-		
-		  * *None*: picking is disabled for this artist (default)
-		
-		  * A boolean: if *True* then picking will be enabled and the
-		    artist will fire a pick event if the mouse event is over
-		    the artist
-		
-		  * A float: if picker is a number it is interpreted as an
-		    epsilon tolerance in points and the artist will fire
-		    off an event if it's data is within epsilon of the mouse
-		    event.  For some artists like lines and patch collections,
-		    the artist may provide additional data to the pick event
-		    that is generated, e.g., the indices of the data within
-		    epsilon of the pick event
-		
-		  * A function: if picker is callable, it is a user supplied
-		    function which determines whether the artist is hit by the
-		    mouse event::
-		
-		      hit, props = picker(artist, mouseevent)
-		
-		    to determine the hit test.  if the mouse event is over the
-		    artist, return *hit=True* and props is a dictionary of
-		    properties you want added to the PickEvent attributes.
+		Define the picking behavior of the artist.
 		
 		Parameters
 		----------
 		picker : None or bool or float or callable
+		    This can be one of the following:
+		
+		    - *None*: Picking is disabled for this artist (default).
+		
+		    - A boolean: If *True* then picking will be enabled and the
+		      artist will fire a pick event if the mouse event is over
+		      the artist.
+		
+		    - A float: If picker is a number it is interpreted as an
+		      epsilon tolerance in points and the artist will fire
+		      off an event if it's data is within epsilon of the mouse
+		      event.  For some artists like lines and patch collections,
+		      the artist may provide additional data to the pick event
+		      that is generated, e.g., the indices of the data within
+		      epsilon of the pick event
+		
+		    - A function: If picker is callable, it is a user supplied
+		      function which determines whether the artist is hit by the
+		      mouse event::
+		
+		        hit, props = picker(artist, mouseevent)
+		
+		      to determine the hit test.  if the mouse event is over the
+		      artist, return *hit=True* and props is a dictionary of
+		      properties you want added to the PickEvent attributes.
 	**/
 	public function set_picker(picker:Dynamic):Dynamic;
 	/**
@@ -914,20 +990,28 @@ package matplotlib.patches;
 	**/
 	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
 	/**
-		Sets the snap setting which may be:
+		Set the snapping behavior.
 		
-		  * True: snap vertices to the nearest pixel center
+		Snapping aligns positions with the pixel grid, which results in
+		clearer images. For example, if a black line of 1px width was
+		defined at a position in between two pixels, the resulting image
+		would contain the interpolated value of that line in the pixel grid,
+		which would be a grey value on both adjacent pixel positions. In
+		contrast, snapping will move the line to the nearest integer pixel
+		value, so that the resulting image will really contain a 1px wide
+		black line.
 		
-		  * False: leave vertices as-is
-		
-		  * None: (auto) If the path contains only rectilinear line
-		    segments, round to the nearest pixel center
-		
-		Only supported by the Agg and MacOSX backends.
+		Snapping is currently only supported by the Agg and MacOSX backends.
 		
 		Parameters
 		----------
 		snap : bool or None
+		    Possible values:
+		
+		    - *True*: Snap vertices to the nearest pixel center.
+		    - *False*: Do not modify vertex positions.
+		    - *None*: (auto) If the path contains only rectilinear line
+		      segments, round to the nearest pixel center.
 	**/
 	public function set_snap(snap:Dynamic):Dynamic;
 	/**
@@ -939,7 +1023,7 @@ package matplotlib.patches;
 	**/
 	public function set_transform(t:Dynamic):Dynamic;
 	/**
-		Sets the url for the artist.
+		Set the url for the artist.
 		
 		Parameters
 		----------
@@ -964,21 +1048,21 @@ package matplotlib.patches;
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
 	/**
-		If the artist is 'stale' and needs to be re-drawn for the output to
-		match the internal state of the artist.
+		Whether the artist is 'stale' and needs to be re-drawn for the output
+		to match the internal state of the artist.
 	**/
 	public var stale : Dynamic;
 	/**
-		`x` and `y` sticky edge lists.
+		``x`` and ``y`` sticky edge lists for autoscaling.
 		
 		When performing autoscaling, if a data limit coincides with a value in
 		the corresponding sticky_edges list, then no margin will be added--the
-		view limit "sticks" to the edge. A typical usecase is histograms,
+		view limit "sticks" to the edge. A typical use case is histograms,
 		where one usually expects no margin on the bottom edge (0) of the
 		histogram.
 		
-		This attribute cannot be assigned to; however, the `x` and `y` lists
-		can be modified in place as needed.
+		This attribute cannot be assigned to; however, the ``x`` and ``y``
+		lists can be modified in place as needed.
 		
 		Examples
 		--------
@@ -988,7 +1072,7 @@ package matplotlib.patches;
 	**/
 	public var sticky_edges : Dynamic;
 	/**
-		Update this artist's properties from the dictionary *prop*.
+		Update this artist's properties from the dictionary *props*.
 	**/
 	public function update(props:Dynamic):Dynamic;
 	/**

@@ -15,7 +15,7 @@ package matplotlib.animation;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -148,11 +148,11 @@ package matplotlib.animation;
 		
 		Parameters
 		----------
-		fig: `matplotlib.figure.Figure` instance
+		fig : `matplotlib.figure.Figure` instance
 		    The figure object that contains the information for frames
-		outfile: string
+		outfile : string
 		    The filename of the resulting movie file
-		dpi: int, optional
+		dpi : int, optional
 		    The DPI (or resolution) for the file.  This controls the size
 		    in pixels of the resulting movie file. Default is ``fig.dpi``.
 	**/

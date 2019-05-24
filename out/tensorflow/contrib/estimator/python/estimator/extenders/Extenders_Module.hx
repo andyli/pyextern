@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.estimator.python.estimator.extenders;
 @:pythonImport("tensorflow.contrib.estimator.python.estimator.extenders") extern class Extenders_Module {
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var _VALID_METRIC_FN_ARGS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;

@@ -50,7 +50,6 @@ package tensorflow.core.framework.log_memory_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var KERNEL_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -71,7 +70,6 @@ package tensorflow.core.framework.log_memory_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var STEP_ID_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -84,7 +82,10 @@ package tensorflow.core.framework.log_memory_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TENSOR_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -250,4 +251,16 @@ package tensorflow.core.framework.log_memory_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.MemoryLogTensorAllocation.kernel_name
+	**/
+	public var kernel_name : Dynamic;
+	/**
+		Field tensorflow.MemoryLogTensorAllocation.step_id
+	**/
+	public var step_id : Dynamic;
+	/**
+		Field tensorflow.MemoryLogTensorAllocation.tensor
+	**/
+	public var tensor : Dynamic;
 }

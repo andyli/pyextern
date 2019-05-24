@@ -11,29 +11,11 @@ package pandas.core.strings;
 	static public var __spec__ : Dynamic;
 	static public var _cpython_optimized_decoders : Dynamic;
 	static public var _cpython_optimized_encoders : Dynamic;
-	/**
-		Auxiliary function for :func:`str_cat`
-		
-		Parameters
-		----------
-		arr : ndarray
-		    The left-most ndarray of the concatenation
-		others : list, ndarray, Series
-		    The rest of the content to concatenate. If list of list-likes,
-		    all elements must be passable to ``np.asarray``.
-		
-		Returns
-		-------
-		list
-		    List of all necessary arrays
-	**/
-	static public function _get_array_list(arr:Dynamic, others:Dynamic):Dynamic;
 	static public function _get_single_group_name(rx:Dynamic):Dynamic;
 	/**
 		Used in both extract_noexpand and extract_frame
 	**/
 	static public function _groups_or_na_fun(regex:Dynamic):Dynamic;
-	static public function _length_check(others:Dynamic):Dynamic;
 	static public function _map(f:Dynamic, arr:Dynamic, ?na_mask:Dynamic, ?na_value:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function _na_map(f:Dynamic, arr:Dynamic, ?na_result:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function _noarg_wrapper(f:Dynamic, ?docstring:Dynamic, ?kargs:python.KwArgs<Dynamic>):Dynamic;
@@ -53,9 +35,89 @@ package pandas.core.strings;
 	**/
 	static public function _str_extract_noexpand(arr:Dynamic, pat:Dynamic, ?flags:Dynamic):Dynamic;
 	/**
+		Auxiliary function for :meth:`str.cat`
+		
+		Parameters
+		----------
+		list_of_columns : list of numpy arrays
+		    List of arrays to be concatenated with sep;
+		    these arrays may not contain NaNs!
+		sep : string
+		    The separator string for concatenating the columns
+		
+		Returns
+		-------
+		nd.array
+		    The concatenation of list_of_columns with sep
+	**/
+	static public function cat_core(list_of_columns:Dynamic, sep:Dynamic):Dynamic;
+	/**
 		Copy a docstring from another source function (if present)
 	**/
 	static public function copy(source:Dynamic):Dynamic;
+	/**
+		Decorator to deprecate a keyword argument of a function.
+		
+		Parameters
+		----------
+		old_arg_name : str
+		    Name of argument in function to deprecate
+		new_arg_name : str or None
+		    Name of preferred argument in function. Use None to raise warning that
+		    ``old_arg_name`` keyword is deprecated.
+		mapping : dict or callable
+		    If mapping is present, use it to translate old arguments to
+		    new arguments. A callable must do its own value checking;
+		    values not found in a dict will be forwarded unchanged.
+		
+		Examples
+		--------
+		The following deprecates 'cols', using 'columns' instead
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name='columns')
+		... def f(columns=''):
+		...     print(columns)
+		...
+		>>> f(columns='should work ok')
+		should work ok
+		
+		>>> f(cols='should raise warning')
+		FutureWarning: cols is deprecated, use columns instead
+		  warnings.warn(msg, FutureWarning)
+		should raise warning
+		
+		>>> f(cols='should error', columns="can't pass do both")
+		TypeError: Can only specify 'cols' or 'columns', not both
+		
+		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
+		... def f(new=False):
+		...     print('yes!' if new else 'no!')
+		...
+		>>> f(old='yes')
+		FutureWarning: old='yes' is deprecated, use new=True instead
+		  warnings.warn(msg, FutureWarning)
+		yes!
+		
+		To raise a warning that a keyword will be removed entirely in the future
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
+		... def f(cols='', another_param=''):
+		...     print(cols)
+		...
+		>>> f(cols='should raise warning')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+		>>> f(another_param='should not raise warning')
+		should not raise warning
+		
+		>>> f(cols='should raise warning', another_param='')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+	**/
+	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
+	static public function ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a boolean dtype.
 		
@@ -67,6 +129,11 @@ package pandas.core.strings;
 		Returns
 		-------
 		boolean : Whether or not the array or dtype is of a boolean dtype.
+		
+		Notes
+		-----
+		An ExtensionArray is considered boolean when the ``_is_boolean``
+		attribute is set to True.
 		
 		Examples
 		--------
@@ -83,6 +150,10 @@ package pandas.core.strings;
 		>>> is_bool_dtype(pd.Series([1, 2]))
 		False
 		>>> is_bool_dtype(np.array([True, False]))
+		True
+		>>> is_bool_dtype(pd.Categorical([True, False]))
+		True
+		>>> is_bool_dtype(pd.SparseArray([True, False]))
 		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -124,7 +195,11 @@ package pandas.core.strings;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -143,8 +218,12 @@ package pandas.core.strings;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Check whether an array-like or dtype is of the object dtype.
 		
@@ -176,7 +255,7 @@ package pandas.core.strings;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -194,17 +273,49 @@ package pandas.core.strings;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -212,7 +323,7 @@ package pandas.core.strings;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Examples
 		--------
@@ -230,7 +341,7 @@ package pandas.core.strings;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -248,8 +359,8 @@ package pandas.core.strings;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -302,105 +413,6 @@ package pandas.core.strings;
 	**/
 	static public function isna(obj:Dynamic):Dynamic;
 	/**
-		Detect non-missing values for an array-like object.
-		
-		This function takes a scalar or array-like object and indictates
-		whether values are valid (not missing, which is ``NaN`` in numeric
-		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
-		
-		Parameters
-		----------
-		obj : array-like or object value
-		    Object to check for *not* null or *non*-missing values.
-		
-		Returns
-		-------
-		bool or array-like of bool
-		    For scalar input, returns a scalar boolean.
-		    For array input, returns an array of boolean indicating whether each
-		    corresponding element is valid.
-		
-		See Also
-		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
-		DataFrame.notna : Detect valid values in a DataFrame.
-		Index.notna : Detect valid values in an Index.
-		
-		Examples
-		--------
-		Scalar arguments (including strings) result in a scalar boolean.
-		
-		>>> pd.notna('dog')
-		True
-		
-		>>> pd.notna(np.nan)
-		False
-		
-		ndarrays result in an ndarray of booleans.
-		
-		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
-		>>> array
-		array([[ 1., nan,  3.],
-		       [ 4.,  5., nan]])
-		>>> pd.notna(array)
-		array([[ True, False,  True],
-		       [ True,  True, False]])
-		
-		For indexes, an ndarray of booleans is returned.
-		
-		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
-		...                          "2017-07-08"])
-		>>> index
-		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
-		              dtype='datetime64[ns]', freq=None)
-		>>> pd.notna(index)
-		array([ True,  True, False,  True])
-		
-		For Series and DataFrame, the same type is returned, containing booleans.
-		
-		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
-		>>> df
-		     0     1    2
-		0  ant   bee  cat
-		1  dog  None  fly
-		>>> pd.notna(df)
-		      0      1     2
-		0  True   True  True
-		1  True  False  True
-		
-		>>> pd.notna(df[1])
-		0     True
-		1    False
-		Name: 1, dtype: bool
-	**/
-	static public function notna(obj:Dynamic):Dynamic;
-	/**
-		Auxiliary function for :meth:`str.cat`
-		
-		If `others` is specified, this function concatenates the Series/Index
-		and elements of `others` element-wise.
-		If `others` is not being passed then all values in the Series are
-		concatenated in a single string with a given `sep`.
-		
-		Parameters
-		----------
-		others : list-like, or list of list-likes, optional
-		    List-likes (or a list of them) of the same length as calling object.
-		    If None, returns str concatenating strings of the Series.
-		sep : string or None, default None
-		    If None, concatenates without any separator.
-		na_rep : string or None, default None
-		    If None, NA in the series are ignored.
-		
-		Returns
-		-------
-		concat
-		    ndarray containing concatenated results (if `others is not None`)
-		    or str (if `others is None`)
-	**/
-	static public function str_cat(arr:Dynamic, ?others:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic):Dynamic;
-	/**
 		Test if pattern or regex is contained within a string of a Series or Index.
 		
 		Return boolean Series or Index based on whether a given pattern or regex is
@@ -430,7 +442,10 @@ package pandas.core.strings;
 		
 		See Also
 		--------
-		match : analogous, but stricter, relying on re.match instead of re.search
+		match : Analogous, but stricter, relying on re.match instead of re.search.
+		Series.str.startswith : Test if the start of each string element matches a
+		    pattern.
+		Series.str.endswith : Same as startswith, but tests the end of string.
 		
 		Examples
 		--------
@@ -474,11 +489,11 @@ package pandas.core.strings;
 		4    False
 		dtype: bool
 		
-		Returning 'house' and 'parrot' within same string.
+		Returning 'house' or 'dog' when either expression occurs in a string.
 		
-		>>> s1.str.contains('house|parrot', regex=True)
+		>>> s1.str.contains('house|dog', regex=True)
 		0    False
-		1    False
+		1     True
 		2     True
 		3    False
 		4      NaN
@@ -535,23 +550,23 @@ package pandas.core.strings;
 		    Flags for the `re` module. For a complete list, `see here
 		    <https://docs.python.org/3/howto/regex.html#compilation-flags>`_.
 		**kwargs
-		    For compatability with other string methods. Not used.
+		    For compatibility with other string methods. Not used.
 		
 		Returns
 		-------
 		counts : Series or Index
 		    Same type as the calling object containing the integer counts.
 		
+		See Also
+		--------
+		re : Standard library module for regular expressions.
+		str.count : Standard library version, without regular expression support.
+		
 		Notes
 		-----
 		Some characters need to be escaped when passing in `pat`.
 		eg. ``'$'`` has a special meaning in regex and must be escaped when
 		finding this literal character.
-		
-		See Also
-		--------
-		re : Standard library module for regular expressions.
-		str.count : Standard library version, without regular expression support.
 		
 		Examples
 		--------
@@ -665,42 +680,48 @@ package pandas.core.strings;
 	**/
 	static public function str_endswith(arr:Dynamic, pat:Dynamic, ?na:Dynamic):Dynamic;
 	/**
+		Extract capture groups in the regex `pat` as columns in a DataFrame.
+		
 		For each subject string in the Series, extract groups from the
-		first match of regular expression pat.
+		first match of regular expression `pat`.
 		
 		Parameters
 		----------
 		pat : string
-		    Regular expression pattern with capturing groups
+		    Regular expression pattern with capturing groups.
 		flags : int, default 0 (no flags)
-		    re module flags, e.g. re.IGNORECASE
-		
+		    Flags from the ``re`` module, e.g. ``re.IGNORECASE``, that
+		    modify regular expression matching for things like case,
+		    spaces, etc. For more details, see :mod:`re`.
 		expand : bool, default True
-		    * If True, return DataFrame.
-		    * If False, return Series/Index/DataFrame.
+		    If True, return DataFrame with one column per capture group.
+		    If False, return a Series/Index if there is one capture group
+		    or DataFrame if there are multiple capture groups.
 		
 		    .. versionadded:: 0.18.0
 		
 		Returns
 		-------
-		DataFrame with one row for each subject string, and one column for
-		each group. Any capture group names in regular expression pat will
-		be used for column names; otherwise capture group numbers will be
-		used. The dtype of each result column is always object, even when
-		no match is found. If expand=False and pat has only one capture group,
-		then return a Series (if subject is a Series) or Index (if subject
-		is an Index).
+		DataFrame or Series or Index
+		    A DataFrame with one row for each subject string, and one
+		    column for each group. Any capture group names in regular
+		    expression pat will be used for column names; otherwise
+		    capture group numbers will be used. The dtype of each result
+		    column is always object, even when no match is found. If
+		    ``expand=False`` and pat has only one capture group, then
+		    return a Series (if subject is a Series) or Index (if subject
+		    is an Index).
 		
 		See Also
 		--------
-		extractall : returns all matches (not just the first match)
+		extractall : Returns all matches (not just the first match).
 		
 		Examples
 		--------
 		A pattern with two groups will return a DataFrame with two columns.
 		Non-matches will be NaN.
 		
-		>>> s = Series(['a1', 'b2', 'c3'])
+		>>> s = pd.Series(['a1', 'b2', 'c3'])
 		>>> s.str.extract(r'([ab])(\d)')
 		     0    1
 		0    a    1
@@ -751,30 +772,34 @@ package pandas.core.strings;
 		
 		Parameters
 		----------
-		pat : string
-		    Regular expression pattern with capturing groups
+		pat : str
+		    Regular expression pattern with capturing groups.
 		flags : int, default 0 (no flags)
-		    re module flags, e.g. re.IGNORECASE
+		    A ``re`` module flag, for example ``re.IGNORECASE``. These allow
+		    to modify regular expression matching for things like case, spaces,
+		    etc. Multiple flags can be combined with the bitwise OR operator,
+		    for example ``re.IGNORECASE | re.MULTILINE``.
 		
 		Returns
 		-------
-		A DataFrame with one row for each match, and one column for each
-		group. Its rows have a MultiIndex with first levels that come from
-		the subject Series. The last level is named 'match' and indicates
-		the order in the subject. Any capture group names in regular
-		expression pat will be used for column names; otherwise capture
-		group numbers will be used.
+		DataFrame
+		    A ``DataFrame`` with one row for each match, and one column for each
+		    group. Its rows have a ``MultiIndex`` with first levels that come from
+		    the subject ``Series``. The last level is named 'match' and indexes the
+		    matches in each item of the ``Series``. Any capture group names in
+		    regular expression pat will be used for column names; otherwise capture
+		    group numbers will be used.
 		
 		See Also
 		--------
-		extract : returns first match only (not all matches)
+		extract : Returns first match only (not all matches).
 		
 		Examples
 		--------
 		A pattern with one group will return a DataFrame with one column.
 		Indices with no matches will not appear in the result.
 		
-		>>> s = Series(["a1a2", "b1", "c1"], index=["A", "B", "C"])
+		>>> s = pd.Series(["a1a2", "b1", "c1"], index=["A", "B", "C"])
 		>>> s.str.extractall(r"[ab](\d)")
 		         0
 		  match
@@ -984,23 +1009,23 @@ package pandas.core.strings;
 		-------
 		dummies : DataFrame
 		
+		See Also
+		--------
+		get_dummies
+		
 		Examples
 		--------
-		>>> Series(['a|b', 'a', 'a|c']).str.get_dummies()
+		>>> pd.Series(['a|b', 'a', 'a|c']).str.get_dummies()
 		   a  b  c
 		0  1  1  0
 		1  1  0  0
 		2  1  0  1
 		
-		>>> Series(['a|b', np.nan, 'a|c']).str.get_dummies()
+		>>> pd.Series(['a|b', np.nan, 'a|c']).str.get_dummies()
 		   a  b  c
 		0  1  1  0
 		1  0  0  0
 		2  1  0  1
-		
-		See Also
-		--------
-		pandas.get_dummies
 	**/
 	static public function str_get_dummies(arr:Dynamic, ?sep:Dynamic):pandas.DataFrame;
 	static public function str_index(arr:Dynamic, sub:Dynamic, ?start:Dynamic, ?end:Dynamic, ?side:Dynamic):Dynamic;
@@ -1019,26 +1044,32 @@ package pandas.core.strings;
 		Returns
 		-------
 		Series/Index: object
+		    The list entries concatenated by intervening occurrences of the
+		    delimiter.
 		
-		Notes
-		-----
-		If any of the lists does not contain string objects the result of the join
-		will be `NaN`.
+		Raises
+		-------
+		AttributeError
+		    If the supplied Series contains neither strings nor lists.
 		
 		See Also
 		--------
 		str.join : Standard library version of this method.
 		Series.str.split : Split strings around given separator/delimiter.
 		
+		Notes
+		-----
+		If any of the list items is not a string object, the result of the join
+		will be `NaN`.
+		
 		Examples
 		--------
-		
 		Example with a list that contains non-string elements.
 		
 		>>> s = pd.Series([['lion', 'elephant', 'zebra'],
 		...                [1.1, 2.2, 3.3],
 		...                ['cat', np.nan, 'dog'],
-		...                ['cow', 4.5, 'goat']
+		...                ['cow', 4.5, 'goat'],
 		...                ['duck', ['swan', 'fish'], 'guppy']])
 		>>> s
 		0        [lion, elephant, zebra]
@@ -1048,8 +1079,8 @@ package pandas.core.strings;
 		4    [duck, [swan, fish], guppy]
 		dtype: object
 		
-		Join all lists using an '-', the lists containing object(s) of types other
-		than str will become a NaN.
+		Join all lists using a '-'. The lists containing object(s) of types other
+		than str will produce a NaN.
 		
 		>>> s.str.join('-')
 		0    lion-elephant-zebra
@@ -1071,9 +1102,7 @@ package pandas.core.strings;
 		    If True, case sensitive
 		flags : int, default 0 (no flags)
 		    re module flags, e.g. re.IGNORECASE
-		na : default NaN, fill value for missing values.
-		as_indexer
-		    .. deprecated:: 0.21.0
+		na : default NaN, fill value for missing values
 		
 		Returns
 		-------
@@ -1081,41 +1110,99 @@ package pandas.core.strings;
 		
 		See Also
 		--------
-		contains : analogous, but less strict, relying on re.search instead of
-		    re.match
-		extract : extract matched groups
+		contains : Analogous, but less strict, relying on re.search instead of
+		    re.match.
+		extract : Extract matched groups.
 	**/
-	static public function str_match(arr:Dynamic, pat:Dynamic, ?_case:Dynamic, ?flags:Dynamic, ?na:Dynamic, ?as_indexer:Dynamic):Dynamic;
+	static public function str_match(arr:Dynamic, pat:Dynamic, ?_case:Dynamic, ?flags:Dynamic, ?na:Dynamic):Dynamic;
 	/**
-		Pad strings in the Series/Index with an additional character to
-		specified side.
+		Pad strings in the Series/Index up to width.
 		
 		Parameters
 		----------
 		width : int
 		    Minimum width of resulting string; additional characters will be filled
-		    with spaces
+		    with character defined in `fillchar`.
 		side : {'left', 'right', 'both'}, default 'left'
-		fillchar : str
-		    Additional character for filling, default is whitespace
+		    Side from which to fill resulting string.
+		fillchar : str, default ' '
+		    Additional character for filling, default is whitespace.
 		
 		Returns
 		-------
-		padded : Series/Index of objects
+		Series or Index of object
+		    Returns Series or Index with minimum number of char in object.
+		
+		See Also
+		--------
+		Series.str.rjust : Fills the left side of strings with an arbitrary
+		    character. Equivalent to ``Series.str.pad(side='left')``.
+		Series.str.ljust : Fills the right side of strings with an arbitrary
+		    character. Equivalent to ``Series.str.pad(side='right')``.
+		Series.str.center : Fills boths sides of strings with an arbitrary
+		    character. Equivalent to ``Series.str.pad(side='both')``.
+		Series.str.zfill :  Pad strings in the Series/Index by prepending '0'
+		    character. Equivalent to ``Series.str.pad(side='left', fillchar='0')``.
+		
+		Examples
+		--------
+		>>> s = pd.Series(["caribou", "tiger"])
+		>>> s
+		0    caribou
+		1      tiger
+		dtype: object
+		
+		>>> s.str.pad(width=10)
+		0       caribou
+		1         tiger
+		dtype: object
+		
+		>>> s.str.pad(width=10, side='right', fillchar='-')
+		0    caribou---
+		1    tiger-----
+		dtype: object
+		
+		>>> s.str.pad(width=10, side='both', fillchar='-')
+		0    -caribou--
+		1    --tiger---
+		dtype: object
 	**/
 	static public function str_pad(arr:Dynamic, width:Dynamic, ?side:Dynamic, ?fillchar:Dynamic):Dynamic;
 	/**
-		Duplicate each string in the Series/Index by indicated number
-		of times.
+		Duplicate each string in the Series or Index.
 		
 		Parameters
 		----------
-		repeats : int or array
-		    Same value for all (int) or different value per (array)
+		repeats : int or sequence of int
+		    Same value for all (int) or different value per (sequence).
 		
 		Returns
 		-------
-		repeated : Series/Index of objects
+		Series or Index of object
+		    Series or Index of repeated string objects specified by
+		    input parameter repeats.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['a', 'b', 'c'])
+		>>> s
+		0    a
+		1    b
+		2    c
+		
+		Single int repeats string in Series
+		
+		>>> s.str.repeat(repeats=2)
+		0    aa
+		1    bb
+		2    cc
+		
+		Sequence of int repeats corresponding string in Series
+		
+		>>> s.str.repeat(repeats=[1, 2, 3])
+		0      a
+		1     bb
+		2    ccc
 	**/
 	static public function str_repeat(arr:Dynamic, repeats:Dynamic):Dynamic;
 	/**
@@ -1158,7 +1245,9 @@ package pandas.core.strings;
 		
 		Returns
 		-------
-		replaced : Series/Index of objects
+		Series or Index of object
+		    A copy of the object with all matching occurrences of `pat` replaced by
+		    `repl`.
 		
 		Raises
 		------
@@ -1235,38 +1324,71 @@ package pandas.core.strings;
 		dtype: object
 	**/
 	static public function str_replace(arr:Dynamic, pat:Dynamic, repl:Dynamic, ?n:Dynamic, ?_case:Dynamic, ?flags:Dynamic, ?regex:Dynamic):Dynamic;
-	/**
-		Split each string in the Series/Index by the given delimiter
-		string, starting at the end of the string and working to the front.
-		Equivalent to :meth:`str.rsplit`.
-		
-		Parameters
-		----------
-		pat : string, default None
-		    Separator to split on. If None, splits on whitespace
-		n : int, default -1 (all)
-		    None, 0 and -1 will be interpreted as return all splits
-		expand : bool, default False
-		    * If True, return DataFrame/MultiIndex expanding dimensionality.
-		    * If False, return Series/Index.
-		
-		Returns
-		-------
-		split : Series/Index or DataFrame/MultiIndex of objects
-	**/
 	static public function str_rsplit(arr:Dynamic, ?pat:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		Slice substrings from each element in the Series/Index
+		Slice substrings from each element in the Series or Index.
 		
 		Parameters
 		----------
-		start : int or None
-		stop : int or None
-		step : int or None
+		start : int, optional
+		    Start position for slice operation.
+		stop : int, optional
+		    Stop position for slice operation.
+		step : int, optional
+		    Step size for slice operation.
 		
 		Returns
 		-------
-		sliced : Series/Index of objects
+		Series or Index of object
+		    Series or Index from sliced substring from original string object.
+		
+		See Also
+		--------
+		Series.str.slice_replace : Replace a slice with a string.
+		Series.str.get : Return element at position.
+		    Equivalent to `Series.str.slice(start=i, stop=i+1)` with `i`
+		    being the position.
+		
+		Examples
+		--------
+		>>> s = pd.Series(["koala", "fox", "chameleon"])
+		>>> s
+		0        koala
+		1          fox
+		2    chameleon
+		dtype: object
+		
+		>>> s.str.slice(start=1)
+		0        oala
+		1          ox
+		2    hameleon
+		dtype: object
+		
+		>>> s.str.slice(stop=2)
+		0    ko
+		1    fo
+		2    ch
+		dtype: object
+		
+		>>> s.str.slice(step=2)
+		0      kaa
+		1       fx
+		2    caeen
+		dtype: object
+		
+		>>> s.str.slice(start=0, stop=5, step=3)
+		0    kl
+		1     f
+		2    cm
+		dtype: object
+		
+		Equivalent behaviour to:
+		
+		>>> s.str[0:5:3]
+		0    kl
+		1     f
+		2    cm
+		dtype: object
 	**/
 	static public function str_slice(arr:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?step:Dynamic):Dynamic;
 	/**
@@ -1341,108 +1463,6 @@ package pandas.core.strings;
 		dtype: object
 	**/
 	static public function str_slice_replace(arr:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?repl:Dynamic):Dynamic;
-	/**
-		Split strings around given separator/delimiter.
-		
-		Split each string in the caller's values by given
-		pattern, propagating NaN values. Equivalent to :meth:`str.split`.
-		
-		Parameters
-		----------
-		pat : str, optional
-		    String or regular expression to split on.
-		    If not specified, split on whitespace.
-		n : int, default -1 (all)
-		    Limit number of splits in output.
-		    ``None``, 0 and -1 will be interpreted as return all splits.
-		expand : bool, default False
-		    Expand the splitted strings into separate columns.
-		
-		    * If ``True``, return DataFrame/MultiIndex expanding dimensionality.
-		    * If ``False``, return Series/Index, containing lists of strings.
-		
-		Returns
-		-------
-		Series, Index, DataFrame or MultiIndex
-		    Type matches caller unless ``expand=True`` (see Notes).
-		
-		Notes
-		-----
-		The handling of the `n` keyword depends on the number of found splits:
-		
-		- If found splits > `n`,  make first `n` splits only
-		- If found splits <= `n`, make all splits
-		- If for a certain row the number of found splits < `n`,
-		  append `None` for padding up to `n` if ``expand=True``
-		
-		If using ``expand=True``, Series and Index callers return DataFrame and
-		MultiIndex objects, respectively.
-		
-		See Also
-		--------
-		str.split : Standard library version of this method.
-		Series.str.get_dummies : Split each string into dummy variables.
-		Series.str.partition : Split string on a separator, returning
-		    the before, separator, and after components.
-		
-		Examples
-		--------
-		>>> s = pd.Series(["this is good text", "but this is even better"])
-		
-		By default, split will return an object of the same size
-		having lists containing the split elements
-		
-		>>> s.str.split()
-		0           [this, is, good, text]
-		1    [but, this, is, even, better]
-		dtype: object
-		>>> s.str.split("random")
-		0          [this is good text]
-		1    [but this is even better]
-		dtype: object
-		
-		When using ``expand=True``, the split elements will expand out into
-		separate columns.
-		
-		For Series object, output return type is DataFrame.
-		
-		>>> s.str.split(expand=True)
-		      0     1     2     3       4
-		0  this    is  good  text    None
-		1   but  this    is  even  better
-		>>> s.str.split(" is ", expand=True)
-		          0            1
-		0      this    good text
-		1  but this  even better
-		
-		For Index object, output return type is MultiIndex.
-		
-		>>> i = pd.Index(["ba 100 001", "ba 101 002", "ba 102 003"])
-		>>> i.str.split(expand=True)
-		MultiIndex(levels=[['ba'], ['100', '101', '102'], ['001', '002', '003']],
-		       labels=[[0, 0, 0], [0, 1, 2], [0, 1, 2]])
-		
-		Parameter `n` can be used to limit the number of splits in the output.
-		
-		>>> s.str.split("is", n=1)
-		0          [th,  is good text]
-		1    [but th,  is even better]
-		dtype: object
-		>>> s.str.split("is", n=1, expand=True)
-		        0                1
-		0      th     is good text
-		1  but th   is even better
-		
-		If NaN is present, it is propagated throughout the columns
-		during the split.
-		
-		>>> s = pd.Series(["this is good text", "but this is even better", np.nan])
-		>>> s.str.split(n=3, expand=True)
-		      0     1     2            3
-		0  this    is  good         text
-		1   but  this    is  even better
-		2   NaN   NaN   NaN          NaN
-	**/
 	static public function str_split(arr:Dynamic, ?pat:Dynamic, ?n:Dynamic):Dynamic;
 	/**
 		Test if the start of each string element matches a pattern.

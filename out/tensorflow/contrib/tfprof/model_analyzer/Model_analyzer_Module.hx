@@ -62,7 +62,7 @@ package tensorflow.contrib.tfprof.model_analyzer;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-01-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-01-01.
 		Instructions for updating:
 		Use `tf.profiler.advise(graph, run_meta, options)`. See README.md
 	**/
@@ -105,7 +105,7 @@ package tensorflow.contrib.tfprof.model_analyzer;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-01-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-01-01.
 		Instructions for updating:
 		Use `tf.profiler.profile(graph, run_meta, op_log, cmd, options)`. Build `options` with `tf.profiler.ProfileOptionBuilder`. See README.md for details
 	**/

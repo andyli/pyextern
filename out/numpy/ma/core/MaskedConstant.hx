@@ -28,6 +28,7 @@ package numpy.ma.core;
 		Finalizes the masked array.
 	**/
 	public function __array_finalize__(obj:Dynamic):Dynamic;
+	public function __array_function__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Array protocol: Python side.
 	**/
@@ -1141,46 +1142,17 @@ package numpy.ma.core;
 		in "Guide to NumPy" (we have omitted undocumented public attributes,
 		as well as documented private attributes):
 		
-		* data: A pointer to the memory area of the array as a Python integer.
-		  This memory area may contain data that is not aligned, or not in correct
-		  byte-order. The memory area may not even be writeable. The array
-		  flags and data-type of this array should be respected when passing this
-		  attribute to arbitrary C-code to avoid trouble that can include Python
-		  crashing. User Beware! The value of this attribute is exactly the same
-		  as self._array_interface_['data'][0].
+		.. autoattribute:: numpy.core._internal._ctypes.data
 		
-		* shape (c_intp*self.ndim): A ctypes array of length self.ndim where
-		  the basetype is the C-integer corresponding to dtype('p') on this
-		  platform. This base-type could be c_int, c_long, or c_longlong
-		  depending on the platform. The c_intp type is defined accordingly in
-		  numpy.ctypeslib. The ctypes array contains the shape of the underlying
-		  array.
+		.. autoattribute:: numpy.core._internal._ctypes.shape
 		
-		* strides (c_intp*self.ndim): A ctypes array of length self.ndim where
-		  the basetype is the same as for the shape attribute. This ctypes array
-		  contains the strides information from the underlying array. This strides
-		  information is important for showing how many bytes must be jumped to
-		  get to the next element in the array.
+		.. autoattribute:: numpy.core._internal._ctypes.strides
 		
-		* data_as(obj): Return the data pointer cast to a particular c-types object.
-		  For example, calling self._as_parameter_ is equivalent to
-		  self.data_as(ctypes.c_void_p). Perhaps you want to use the data as a
-		  pointer to a ctypes array of floating-point data:
-		  self.data_as(ctypes.POINTER(ctypes.c_double)).
+		.. automethod:: numpy.core._internal._ctypes.data_as
 		
-		* shape_as(obj): Return the shape tuple as an array of some other c-types
-		  type. For example: self.shape_as(ctypes.c_short).
+		.. automethod:: numpy.core._internal._ctypes.shape_as
 		
-		* strides_as(obj): Return the strides tuple as an array of some other
-		  c-types type. For example: self.strides_as(ctypes.c_longlong).
-		
-		Be careful using the ctypes attribute - especially on temporary
-		arrays or arrays constructed on the fly. For example, calling
-		``(a+b).ctypes.data_as(ctypes.c_void_p)`` returns a pointer to memory
-		that is invalid because the array created as (a+b) is deallocated
-		before the next Python statement. You can avoid this problem using
-		either ``c=a+b`` or ``ct=(a+b).ctypes``. In the latter case, ct will
-		hold a reference to the array until ct is deleted or re-assigned.
+		.. automethod:: numpy.core._internal._ctypes.strides_as
 		
 		If the ctypes module is not available, then the ctypes attribute
 		of array objects still returns something useful, but ctypes objects
@@ -2659,7 +2631,7 @@ package numpy.ma.core;
 		
 		Notes
 		-----
-		`a.size` returns a standard arbitrary precision Python integer. This 
+		`a.size` returns a standard arbitrary precision Python integer. This
 		may not be the case with other methods of obtaining the same value
 		(like the suggested ``np.prod(a.shape)``, which returns an instance
 		of ``np.int_``), and may be relevant if the value is used further in

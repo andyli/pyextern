@@ -38,16 +38,12 @@ package matplotlib.backends.backend_ps;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Although postscript itself is dpi independent, we need to
-		imform the image code about a requested dpi to generate high
-		res images and them scale them before embeddin them
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
 	public function ___init__(width:Dynamic, height:Dynamic, pswriter:Dynamic, ?imagedpi:Dynamic):Dynamic;
 	/**
-		Although postscript itself is dpi independent, we need to
-		imform the image code about a requested dpi to generate high
-		res images and them scale them before embeddin them
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(width:Dynamic, height:Dynamic, pswriter:Dynamic, ?imagedpi:Dynamic):Void;
 	/**
@@ -112,9 +108,10 @@ package matplotlib.backends.backend_ps;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _afm_font_dir : Dynamic;
 	public function _convert_path(path:Dynamic, transform:Dynamic, ?clip:Dynamic, ?simplify:Dynamic):Dynamic;
 	/**
-		Emit the PostScript sniplet 'ps' with all the attributes from 'gc'
+		Emit the PostScript snippet 'ps' with all the attributes from 'gc'
 		applied.  'ps' must consist of PostScript commands to construct a path.
 		
 		The fill and/or stroke kwargs can be set to False if the
@@ -124,46 +121,36 @@ package matplotlib.backends.backend_ps;
 	**/
 	public function _draw_ps(ps:Dynamic, gc:Dynamic, rgbFace:Dynamic, ?fill:Dynamic, ?stroke:Dynamic, ?command:Dynamic):Dynamic;
 	/**
-		draw the text by converting them to paths using textpath module.
+		Draw the text by converting them to paths using textpath module.
 		
 		Parameters
 		----------
 		prop : `matplotlib.font_manager.FontProperties`
-		  font property
-		
+		    The font property.
 		s : str
-		  text to be converted
-		
+		    The text to be converted.
 		usetex : bool
-		  If True, use matplotlib usetex mode.
-		
-		ismath : bool
-		  If True, use mathtext parser. If "TeX", use *usetex* mode.
+		    Whether to use matplotlib usetex mode.
+		ismath : bool or "TeX"
+		    If True, use mathtext parser. If "TeX", use *usetex* mode.
 	**/
 	public function _draw_text_as_path(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ismath:Dynamic):Dynamic;
 	public function _get_clip_path(clippath:Dynamic, clippath_transform:Dynamic):Dynamic;
 	public function _get_font_afm(prop:Dynamic):Dynamic;
 	public function _get_font_ttf(prop:Dynamic):Dynamic;
-	public function _get_image_h_w_bits_command(im:Dynamic):Dynamic;
 	/**
-		return the text path and transform
+		Return the text path and transform.
 		
 		Parameters
 		----------
 		prop : `matplotlib.font_manager.FontProperties`
-		  font property
-		
+		    The font property.
 		s : str
-		  text to be converted
-		
-		usetex : bool
-		  If True, use matplotlib usetex mode.
-		
-		ismath : bool
-		  If True, use mathtext parser. If "TeX", use *usetex* mode.
+		    The text to be converted.
+		ismath : bool or "TeX"
+		    If True, use mathtext parser. If "TeX", use *usetex* mode.
 	**/
 	public function _get_text_path_transform(x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ismath:Dynamic):Dynamic;
-	public function _hex_lines(s:Dynamic, ?chars_per_line:Dynamic):Dynamic;
 	/**
 		This is a helper method (along with
 		:meth:`_iter_collection_raw_paths`) to make it easier to write
@@ -215,11 +202,20 @@ package matplotlib.backends.backend_ps;
 		is not the same for every path.
 	**/
 	public function _iter_collection_uses_per_path(paths:Dynamic, all_transforms:Dynamic, offsets:Dynamic, facecolors:Dynamic, edgecolors:Dynamic):Dynamic;
-	public function _rgb(rgba:Dynamic):Dynamic;
-	static public var afmfontd : Dynamic;
+	static public var _use_afm_rc_name : Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
+	public var afmfontd : Dynamic;
 	/**
 		Close a grouping element with label *s*
-		Is only currently used by :mod:`~matplotlib.backends.backend_svg`
+		
+		Only used by the SVG renderer.
 	**/
 	public function close_group(s:Dynamic):Dynamic;
 	public function create_hatch(hatch:Dynamic):Dynamic;
@@ -254,23 +250,66 @@ package matplotlib.backends.backend_ps;
 	**/
 	public function draw_gouraud_triangles(gc:Dynamic, points:Dynamic, colors:Dynamic, trans:Dynamic):Dynamic;
 	/**
-		Draw the Image instance into the current axes; x is the
-		distance in pixels from the left hand side of the canvas and y
-		is the distance from bottom
+		Draw an RGBA image.
+		
+		Parameters
+		----------
+		gc : `GraphicsContextBase`
+		    a graphics context with clipping information.
+		
+		x : scalar
+		    the distance in physical units (i.e., dots or pixels) from the left
+		    hand side of the canvas.
+		
+		y : scalar
+		    the distance in physical units (i.e., dots or pixels) from the
+		    bottom side of the canvas.
+		
+		im : array_like, shape=(N, M, 4), dtype=np.uint8
+		    An array of RGBA pixels.
+		
+		transform : `matplotlib.transforms.Affine2DBase`
+		    If and only if the concrete backend is written such that
+		    :meth:`option_scale_image` returns ``True``, an affine
+		    transformation *may* be passed to :meth:`draw_image`. It takes the
+		    form of a :class:`~matplotlib.transforms.Affine2DBase` instance.
+		    The translation vector of the transformation is given in physical
+		    units (i.e., dots or pixels). Note that the transformation does not
+		    override `x` and `y`, and has to be applied *before* translating
+		    the result by `x` and `y` (this can be accomplished by adding `x`
+		    and `y` to the translation vector defined by `transform`).
 	**/
 	public function draw_image(gc:Dynamic, x:Dynamic, y:Dynamic, im:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
-		Draw the markers defined by path at each of the positions in x
-		and y.  path coordinates are points, x and y coords will be
-		transformed by the transform
+		Draws a marker at each of the vertices in path.  This includes
+		all vertices, including control points on curves.  To avoid
+		that behavior, those vertices should be removed before calling
+		this function.
+		
+		This provides a fallback implementation of draw_markers that
+		makes multiple calls to :meth:`draw_path`.  Some backends may
+		want to override this method in order to draw the marker only
+		once and reuse it multiple times.
+		
+		Parameters
+		----------
+		gc : `GraphicsContextBase`
+		    The graphics context
+		
+		marker_trans : `matplotlib.transforms.Transform`
+		    An affine transform applied to the marker.
+		
+		trans : `matplotlib.transforms.Transform`
+		    An affine transform applied to the path.
 	**/
 	public function draw_markers(gc:Dynamic, marker_path:Dynamic, marker_trans:Dynamic, path:Dynamic, trans:Dynamic, ?rgbFace:Dynamic):Dynamic;
 	/**
-		Draw the math text using matplotlib.mathtext
+		Draw the math text using matplotlib.mathtext.
 	**/
 	public function draw_mathtext(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic):Dynamic;
 	/**
-		Draws a Path instance using the given affine transform.
+		Draws a :class:`~matplotlib.path.Path` instance using the
+		given affine transform.
 	**/
 	public function draw_path(gc:Dynamic, path:Dynamic, transform:Dynamic, ?rgbFace:Dynamic):Dynamic;
 	/**
@@ -302,19 +341,51 @@ package matplotlib.backends.backend_ps;
 	**/
 	public function draw_quad_mesh(gc:Dynamic, master_transform:Dynamic, meshWidth:Dynamic, meshHeight:Dynamic, coordinates:Dynamic, offsets:Dynamic, offsetTrans:Dynamic, facecolors:Dynamic, antialiased:Dynamic, edgecolors:Dynamic):Dynamic;
 	/**
-		draw a Text instance
+		        
 	**/
 	public function draw_tex(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ?ismath:Dynamic, ?mtext:Dynamic):Dynamic;
 	/**
-		Draw a Text instance.
+		Draw the text instance.
+		
+		Parameters
+		----------
+		gc : `GraphicsContextBase`
+		    The graphics context.
+		x : scalar
+		    The x location of the text in display coords.
+		y : scalar
+		    The y location of the text baseline in display coords.
+		s : str
+		    The text string.
+		prop : `matplotlib.font_manager.FontProperties`
+		    The font properties.
+		angle : scalar
+		    The rotation angle in degrees.
+		mtext : `matplotlib.text.Text`
+		    The original text object to be rendered.
+		
+		Notes
+		-----
+		**backend implementers note**
+		
+		When you are trying to determine if you have gotten your bounding box
+		right (which is what enables the text layout/alignment to work
+		properly), it helps to change the line in text.py::
+		
+		    if 0: bbox_artist(self, renderer)
+		
+		to if 1, and then the actual bounding box will be plotted along with
+		your text.
 	**/
 	public function draw_text(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ?ismath:Dynamic, ?mtext:Dynamic):Dynamic;
 	/**
-		return true if small y numbers are top for renderer
+		Return whether y values increase from top to bottom.
+		
+		Note that this only affects drawing of texts and images.
 	**/
 	public function flipy():Dynamic;
 	/**
-		return the canvas width and height in display coords
+		Return the canvas width and height in display coords.
 	**/
 	public function get_canvas_width_height():Dynamic;
 	/**
@@ -324,36 +395,41 @@ package matplotlib.backends.backend_ps;
 	**/
 	public function get_image_magnification():Dynamic;
 	/**
-		return the :class:`matplotlib.texmanager.TexManager` instance
+		Return the `.TexManager` instance.
 	**/
 	public function get_texmanager():Dynamic;
 	/**
-		get the width and height in display coords of the string s
-		with FontPropertry prop
+		Get the width, height, and descent (offset from the bottom
+		to the baseline), in display coords, of the string *s* with
+		:class:`~matplotlib.font_manager.FontProperties` *prop*
 	**/
 	public function get_text_width_height_descent(s:Dynamic, prop:Dynamic, ismath:Dynamic):Dynamic;
 	public function merge_used_characters(other:Dynamic):Dynamic;
 	/**
-		Return an instance of a :class:`GraphicsContextBase`
+		Return an instance of a `GraphicsContextBase`.
 	**/
 	public function new_gc():Dynamic;
 	/**
-		Open a grouping element with label *s*. If *gid* is given, use
-		*gid* as the id of the group. Is only currently used by
-		:mod:`~matplotlib.backends.backend_svg`.
+		Open a grouping element with label *s* and *gid* (if set) as id.
+		
+		Only used by the SVG renderer.
 	**/
 	public function open_group(s:Dynamic, ?gid:Dynamic):Dynamic;
 	/**
-		return whether to generate a composite image from multiple images on
-		a set of axes
+		Return whether image composition by Matplotlib should be skipped.
+		
+		Raster backends should usually return False (letting the C-level
+		rasterizer take care of image composition); vector backends should
+		usually return ``not rcParams["image.composite_image"]``.
 	**/
 	public function option_image_nocomposite():Dynamic;
 	/**
-		ps backend support arbitrary scaling of image.
+		Return whether arbitrary affine transformations in :meth:`draw_image`
+		are supported (True for most vector backends).
 	**/
 	public function option_scale_image():Dynamic;
 	/**
-		Convert points to display units
+		Convert points to display units.
 		
 		You need to override this function (unless your backend
 		doesn't have a dpi, e.g., postscript or svg).  Some imaging
@@ -378,31 +454,43 @@ package matplotlib.backends.backend_ps;
 	public function set_linejoin(linejoin:Dynamic, ?store:Dynamic):Dynamic;
 	public function set_linewidth(linewidth:Dynamic, ?store:Dynamic):Dynamic;
 	/**
-		Used in AggRenderer. Switch to a temporary renderer for image
-		filtering effects.
+		Switch to a temporary renderer for image filtering effects.
+		
+		Currently only supported by the agg renderer.
 	**/
 	public function start_filter():Dynamic;
 	/**
-		Used in MixedModeRenderer. Switch to the raster renderer.
+		Switch to the raster renderer.
+		
+		Used by `MixedModeRenderer`.
 	**/
 	public function start_rasterizing():Dynamic;
 	/**
-		Used in AggRenderer. Switch back to the original renderer.
-		The contents of the temporary renderer is processed with the
-		*filter_func* and is drawn on the original renderer as an
-		image.
+		Switch back to the original renderer.  The contents of the temporary
+		renderer is processed with the *filter_func* and is drawn on the
+		original renderer as an image.
+		
+		Currently only supported by the agg renderer.
 	**/
 	public function stop_filter(filter_func:Dynamic):Dynamic;
 	/**
-		Used in MixedModeRenderer. Switch back to the vector renderer
-		and draw the contents of the raster renderer as an image on
-		the vector renderer.
+		Switch back to the vector renderer and draw the contents of the raster
+		renderer as an image on the vector renderer.
+		
+		Used by `MixedModeRenderer`.
 	**/
 	public function stop_rasterizing():Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	public function strip_math(s:Dynamic):Dynamic;
 	/**
-		Keeps track of which characters are required from
-		each font.
+		Keeps track of which characters are required from each font.
 	**/
 	public function track_characters(font:Dynamic, s:Dynamic):Dynamic;
 }

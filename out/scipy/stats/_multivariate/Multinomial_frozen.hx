@@ -129,7 +129,6 @@ package scipy.stats._multivariate;
 		----------
 		x : array_like
 		    Quantiles, with the last axis of `x` denoting the components.
-		    Each quantile must be a symmetric positive definite matrix.
 		
 		
 		Returns
@@ -162,7 +161,6 @@ package scipy.stats._multivariate;
 		----------
 		x : array_like
 		    Quantiles, with the last axis of `x` denoting the components.
-		    Each quantile must be a symmetric positive definite matrix.
 		
 		
 		Returns

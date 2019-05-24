@@ -44,24 +44,28 @@ package tensorflow.python.ops.while_v2;
 	/**
 		Construct a new FuncGraph.
 		
-		The graph will inherit its graph key, collections, seed, device stack, and
-		distribution strategy stack from the current context or graph.
+		The graph will inherit its graph key, collections, seed, and distribution
+		strategy stack from the current context or graph.
 		
 		Args:
 		  name: the name of the function.
+		  read_only_collections: whether to not write function graph collections
+		    back to default graph. Defaults to True.
 	**/
 	@:native("__init__")
-	public function ___init__(name:Dynamic, forward_graph:Dynamic):Dynamic;
+	public function ___init__(name:Dynamic, forward_cond_graph:Dynamic, forward_body_graph:Dynamic, max_iters:Dynamic):Dynamic;
 	/**
 		Construct a new FuncGraph.
 		
-		The graph will inherit its graph key, collections, seed, device stack, and
-		distribution strategy stack from the current context or graph.
+		The graph will inherit its graph key, collections, seed, and distribution
+		strategy stack from the current context or graph.
 		
 		Args:
 		  name: the name of the function.
+		  read_only_collections: whether to not write function graph collections
+		    back to default graph. Defaults to True.
 	**/
-	public function new(name:Dynamic, forward_graph:Dynamic):Void;
+	public function new(name:Dynamic, forward_cond_graph:Dynamic, forward_body_graph:Dynamic, max_iters:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -398,10 +402,6 @@ package tensorflow.python.ops.while_v2;
 	**/
 	public function _kernel_label_map(op_to_kernel_label_map:Dynamic):Dynamic;
 	public var _last_id : Dynamic;
-	/**
-		Return detailed error message about device conflict due to colocation.
-	**/
-	public function _make_colocation_conflict_message(op:Dynamic, colocation_op:Dynamic):Dynamic;
 	/**
 		Returns a lock to guard code that creates & mutates ops.
 		
@@ -1168,6 +1168,8 @@ package tensorflow.python.ops.while_v2;
 		    above.
 	**/
 	public function name_scope(name:Dynamic):Dynamic;
+	public var output_shapes : Dynamic;
+	public var output_types : Dynamic;
 	/**
 		Marks the given `tensor` as unfeedable in this graph.
 	**/
@@ -1243,4 +1245,5 @@ package tensorflow.python.ops.while_v2;
 		   An integer version that increases as ops are added to the graph.
 	**/
 	public var version : Dynamic;
+	public var while_op_needs_rewrite : Dynamic;
 }

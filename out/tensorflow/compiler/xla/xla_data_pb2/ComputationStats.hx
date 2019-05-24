@@ -30,7 +30,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FLOP_COUNT_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -83,7 +82,10 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TRANSCENDENTAL_COUNT_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -249,4 +251,12 @@ package tensorflow.compiler.xla.xla_data_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.ComputationStats.flop_count
+	**/
+	public var flop_count : Dynamic;
+	/**
+		Field xla.ComputationStats.transcendental_count
+	**/
+	public var transcendental_count : Dynamic;
 }

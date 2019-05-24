@@ -65,6 +65,41 @@ package scipy.stats.mstats_basic;
 	**/
 	static public function argstoarray(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
+		Computes the Brunner-Munzel test on samples x and y
+		
+		Missing values in `x` and/or `y` are discarded.
+		
+		Parameters
+		----------
+		x, y : array_like
+		    Array of samples, should be one-dimensional.
+		alternative :  'less', 'two-sided', or 'greater', optional
+		    Whether to get the p-value for the one-sided hypothesis ('less'
+		    or 'greater') or for the two-sided hypothesis ('two-sided').
+		    Defaults value is 'two-sided' .
+		distribution: 't' or 'normal', optional
+		    Whether to get the p-value by t-distribution or by standard normal
+		    distribution.
+		    Defaults value is 't' .
+		
+		Returns
+		-------
+		statistic : float
+		    The Brunner-Munzer W statistic.
+		pvalue : float
+		    p-value assuming an t distribution. One-sided or
+		    two-sided, depending on the choice of `alternative` and `distribution`.
+		
+		See Also
+		--------
+		mannwhitneyu : Mann-Whitney rank test on two samples.
+		
+		Notes
+		-------
+		For more details on `brunnermunzel`, see `stats.brunnermunzel`.
+	**/
+	static public function brunnermunzel(x:Dynamic, y:Dynamic, ?alternative:Dynamic, ?distribution:Dynamic):Float;
+	/**
 		Counts the number of tied values.
 		
 		Parameters
@@ -204,7 +239,6 @@ package scipy.stats.mstats_basic;
 		    the associated p-value.
 	**/
 	static public function friedmanchisquare(?args:python.VarArgs<Dynamic>):Float;
-	static public var genmissingvaldoc : Dynamic;
 	/**
 		Return an iterator over the (key, value) pairs of a dictionary.
 	**/
@@ -223,6 +257,12 @@ package scipy.stats.mstats_basic;
 		use_missing : {False, True}, optional
 		    Whether missing data should be allocated a rank of 0 (False) or the
 		    average rank (True)
+		method: {'auto', 'asymptotic', 'exact'}, optional
+		    Defines which method is used to calculate the p-value [1]_.
+		    'asymptotic' uses a normal approximation valid for large samples.
+		    'exact' computes the exact p-value, but can only be used if no ties
+		    are present. 'auto' is the default and selects the appropriate
+		    method based on a trade-off between speed and accuracy.
 		
 		Returns
 		-------
@@ -230,8 +270,13 @@ package scipy.stats.mstats_basic;
 		    Kendall tau
 		pvalue : float
 		    Approximate 2-side p-value.
+		
+		References
+		----------
+		.. [1] Maurice G. Kendall, "Rank Correlation Methods" (4th Edition),
+		       Charles Griffin & Co., 1970.
 	**/
-	static public function kendalltau(x:Dynamic, y:Dynamic, ?use_ties:Dynamic, ?use_missing:Dynamic):Float;
+	static public function kendalltau(x:Dynamic, y:Dynamic, ?use_ties:Dynamic, ?use_missing:Dynamic, ?method:Dynamic):Float;
 	/**
 		Computes a multivariate Kendall's rank correlation tau, for seasonal data.
 		
@@ -261,6 +306,26 @@ package scipy.stats.mstats_basic;
 		Notes
 		-----
 		For more details on `kruskal`, see `stats.kruskal`.
+		
+		Examples
+		--------
+		>>> from scipy.stats.mstats import kruskal
+		
+		Random samples from three different brands of batteries were tested
+		to see how long the charge lasted. Results were as follows:
+		
+		>>> a = [6.3, 5.4, 5.7, 5.2, 5.0]
+		>>> b = [6.9, 7.0, 6.1, 7.9]
+		>>> c = [7.2, 6.9, 6.1, 6.5]
+		
+		Test the hypotesis that the distribution functions for all of the brands'
+		durations are identical. Use 5% level of significance.
+		
+		>>> kruskal(a, b, c)
+		KruskalResult(statistic=7.113812154696133, pvalue=0.028526948491942164)
+		
+		The null hypothesis is rejected at the 5% level of significance
+		because the returned p-value is less than the critical value of 5%.
 	**/
 	static public function kruskal(?args:python.VarArgs<Dynamic>):Float;
 	/**
@@ -283,6 +348,26 @@ package scipy.stats.mstats_basic;
 		Notes
 		-----
 		For more details on `kruskal`, see `stats.kruskal`.
+		
+		Examples
+		--------
+		>>> from scipy.stats.mstats import kruskal
+		
+		Random samples from three different brands of batteries were tested
+		to see how long the charge lasted. Results were as follows:
+		
+		>>> a = [6.3, 5.4, 5.7, 5.2, 5.0]
+		>>> b = [6.9, 7.0, 6.1, 7.9]
+		>>> c = [7.2, 6.9, 6.1, 6.5]
+		
+		Test the hypotesis that the distribution functions for all of the brands'
+		durations are identical. Use 5% level of significance.
+		
+		>>> kruskal(a, b, c)
+		KruskalResult(statistic=7.113812154696133, pvalue=0.028526948491942164)
+		
+		The null hypothesis is rejected at the 5% level of significance
+		because the returned p-value is less than the critical value of 5%.
 	**/
 	static public function kruskalwallis(?args:python.VarArgs<Dynamic>):Float;
 	/**
@@ -389,67 +474,12 @@ package scipy.stats.mstats_basic;
 	**/
 	static public function kurtosistest(a:Dynamic, ?axis:Dynamic):Float;
 	/**
-		Calculate a linear least-squares regression for two sets of measurements.
+		Linear regression calculation
 		
-		Parameters
-		----------
-		x, y : array_like
-		    Two sets of measurements.  Both arrays should have the same length.
-		    If only x is given (and y=None), then it must be a two-dimensional
-		    array where one dimension has length 2.  The two sets of measurements
-		    are then found by splitting the array along the length-2 dimension.
-		
-		Returns
-		-------
-		slope : float
-		    slope of the regression line
-		intercept : float
-		    intercept of the regression line
-		rvalue : float
-		    correlation coefficient
-		pvalue : float
-		    two-sided p-value for a hypothesis test whose null hypothesis is
-		    that the slope is zero, using Wald Test with t-distribution of
-		    the test statistic.
-		stderr : float
-		    Standard error of the estimated gradient.
-		
-		See also
-		--------
-		:func:`scipy.optimize.curve_fit` : Use non-linear
-		 least squares to fit a function to data.
-		:func:`scipy.optimize.leastsq` : Minimize the sum of
-		 squares of a set of equations.
-		
-		Examples
-		--------
-		>>> import matplotlib.pyplot as plt
-		>>> from scipy import stats
-		>>> np.random.seed(12345678)
-		>>> x = np.random.random(10)
-		>>> y = np.random.random(10)
-		>>> slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
-		
-		To get coefficient of determination (r_squared)
-		
-		>>> print("r-squared:", r_value**2)
-		r-squared: 0.08040226853902833
-		
-		Plot the data along with the fitted line
-		
-		>>> plt.plot(x, y, 'o', label='original data')
-		>>> plt.plot(x, intercept + slope*x, 'r', label='fitted line')
-		>>> plt.legend()
-		>>> plt.show()
-		
-		
-		
-		Notes
-		-----
-		Missing values are considered pair-wise: if a value is missing in x,
-		the corresponding value in y is masked.
+		Note that the non-masked version is used, and that this docstring is
+		replaced by the non-masked docstring + some info on missing data.
 	**/
-	static public function linregress(x:Dynamic, ?y:Dynamic):Float;
+	static public function linregress(x:Dynamic, ?y:Dynamic):Dynamic;
 	/**
 		Computes the Mann-Whitney statistic
 		
@@ -535,6 +565,16 @@ package scipy.stats.mstats_basic;
 		Notes
 		-----
 		For more details, see `stats.mode`.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> from scipy.stats import mstats
+		>>> m_arr = np.ma.array([1, 1, 0, 0, 0, 0], mask=[0, 0, 1, 1, 1, 0])
+		>>> stats.mode(m_arr)
+		ModeResult(mode=array([0]), count=array([4]))
+		>>> mstats.mode(m_arr)
+		ModeResult(mode=array([1.]), count=array([2.]))
 	**/
 	static public function mode(a:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -897,6 +937,42 @@ package scipy.stats.mstats_basic;
 	static public function sem(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Dynamic;
 	static public function sen_seasonal_slopes(x:Dynamic):Dynamic;
 	/**
+		Computes the Siegel estimator for a set of points (x, y).
+		
+		`siegelslopes` implements a method for robust linear regression
+		using repeated medians to fit a line to the points (x, y).
+		The method is robust to outliers with an asymptotic breakdown point
+		of 50%.
+		
+		Parameters
+		----------
+		y : array_like
+		    Dependent variable.
+		x : array_like or None, optional
+		    Independent variable. If None, use ``arange(len(y))`` instead.
+		method : {'hierarchical', 'separate'}
+		    If 'hierarchical', estimate the intercept using the estimated
+		    slope ``medslope`` (default option).
+		    If 'separate', estimate the intercept independent of the estimated
+		    slope. See Notes for details.
+		
+		Returns
+		-------
+		medslope : float
+		    Estimate of the slope of the regression line.
+		medintercept : float
+		    Estimate of the intercept of the regression line.
+		
+		See also
+		--------
+		theilslopes : a similar technique without repeated medians
+		
+		Notes
+		-----
+		For more details on `siegelslopes`, see `scipy.stats.siegelslopes`.
+	**/
+	static public function siegelslopes(y:Dynamic, ?x:Dynamic, ?method:Dynamic):Float;
+	/**
 		Computes the skewness of a data set.
 		
 		Parameters
@@ -966,12 +1042,23 @@ package scipy.stats.mstats_basic;
 		
 		Parameters
 		----------
-		x : array_like
-		    The length of `x` must be > 2.
-		y : array_like
-		    The length of `y` must be > 2.
+		x, y : 1D or 2D array_like, y is optional
+		    One or two 1-D or 2-D arrays containing multiple variables and
+		    observations. When these are 1-D, each represents a vector of
+		    observations of a single variable. For the behavior in the 2-D case,
+		    see under ``axis``, below.
 		use_ties : bool, optional
-		    Whether the correction for ties should be computed.
+		    DO NOT USE.  Does not do anything, keyword is only left in place for
+		    backwards compatibility reasons.
+		axis : int or None, optional
+		    If axis=0 (default), then each column represents a variable, with
+		    observations in the rows. If axis=1, the relationship is transposed:
+		    each row represents a variable, while the columns contain observations.
+		    If axis=None, then both arrays will be raveled.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -984,28 +1071,30 @@ package scipy.stats.mstats_basic;
 		----------
 		[CRCProbStat2000] section 14.7
 	**/
-	static public function spearmanr(x:Dynamic, y:Dynamic, ?use_ties:Dynamic):Float;
+	static public function spearmanr(x:Dynamic, ?y:Dynamic, ?use_ties:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Float;
 	/**
 		Calculate a linear least-squares regression for two sets of measurements.
 		
 		Parameters
 		----------
 		x, y : array_like
-		    Two sets of measurements.  Both arrays should have the same length.
-		    If only x is given (and y=None), then it must be a two-dimensional
+		    Two sets of measurements.  Both arrays should have the same length.  If
+		    only `x` is given (and ``y=None``), then it must be a two-dimensional
 		    array where one dimension has length 2.  The two sets of measurements
-		    are then found by splitting the array along the length-2 dimension.
+		    are then found by splitting the array along the length-2 dimension.  In
+		    the case where ``y=None`` and `x` is a 2x2 array, ``linregress(x)`` is
+		    equivalent to ``linregress(x[0], x[1])``.
 		
 		Returns
 		-------
 		slope : float
-		    slope of the regression line
+		    Slope of the regression line.
 		intercept : float
-		    intercept of the regression line
+		    Intercept of the regression line.
 		rvalue : float
-		    correlation coefficient
+		    Correlation coefficient.
 		pvalue : float
-		    two-sided p-value for a hypothesis test whose null hypothesis is
+		    Two-sided p-value for a hypothesis test whose null hypothesis is
 		    that the slope is zero, using Wald Test with t-distribution of
 		    the test statistic.
 		stderr : float
@@ -1018,28 +1107,133 @@ package scipy.stats.mstats_basic;
 		:func:`scipy.optimize.leastsq` : Minimize the sum of
 		 squares of a set of equations.
 		
+		Notes
+		-----
+		Missing values are considered pair-wise: if a value is missing in `x`,
+		the corresponding value in `y` is masked.
+		
 		Examples
 		--------
 		>>> import matplotlib.pyplot as plt
 		>>> from scipy import stats
+		
+		Generate some data:
+		
 		>>> np.random.seed(12345678)
 		>>> x = np.random.random(10)
-		>>> y = np.random.random(10)
+		>>> y = 1.6*x + np.random.random(10)
+		
+		Perform the linear regression:
+		
 		>>> slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
+		>>> print("slope: %f    intercept: %f" % (slope, intercept))
+		slope: 1.944864    intercept: 0.268578
 		
-		To get coefficient of determination (r_squared)
+		To get coefficient of determination (R-squared):
 		
-		>>> print("r-squared:", r_value**2)
-		r-squared: 0.08040226853902833
+		>>> print("R-squared: %f" % r_value**2)
+		R-squared: 0.735498
 		
-		Plot the data along with the fitted line
+		Plot the data along with the fitted line:
 		
 		>>> plt.plot(x, y, 'o', label='original data')
 		>>> plt.plot(x, intercept + slope*x, 'r', label='fitted line')
 		>>> plt.legend()
 		>>> plt.show()
+		
+		Example for the case where only x is provided as a 2x2 array:
+		
+		>>> x = np.array([[0, 1], [0, 2]])
+		>>> r = stats.linregress(x)
+		>>> r.slope, r.intercept
+		(2.0, 0.0)
 	**/
 	static public function stats_linregress(x:Dynamic, ?y:Dynamic):Float;
+	/**
+		Computes the Siegel estimator for a set of points (x, y).
+		
+		`siegelslopes` implements a method for robust linear regression
+		using repeated medians (see [1]_) to fit a line to the points (x, y).
+		The method is robust to outliers with an asymptotic breakdown point
+		of 50%.
+		
+		Parameters
+		----------
+		y : array_like
+		    Dependent variable.
+		x : array_like or None, optional
+		    Independent variable. If None, use ``arange(len(y))`` instead.
+		method : {'hierarchical', 'separate'}
+		    If 'hierarchical', estimate the intercept using the estimated
+		    slope ``medslope`` (default option).
+		    If 'separate', estimate the intercept independent of the estimated
+		    slope. See Notes for details.
+		
+		Returns
+		-------
+		medslope : float
+		    Estimate of the slope of the regression line.
+		medintercept : float
+		    Estimate of the intercept of the regression line.
+		
+		See also
+		--------
+		theilslopes : a similar technique without repeated medians
+		
+		Notes
+		-----
+		With ``n = len(y)``, compute ``m_j`` as the median of
+		the slopes from the point ``(x[j], y[j])`` to all other `n-1` points.
+		``medslope`` is then the median of all slopes ``m_j``.
+		Two ways are given to estimate the intercept in [1]_ which can be chosen
+		via the parameter ``method``.
+		The hierarchical approach uses the estimated slope ``medslope``
+		and computes ``medintercept`` as the median of ``y - medslope*x``.
+		The other approach estimates the intercept separately as follows: for
+		each point ``(x[j], y[j])``, compute the intercepts of all the `n-1`
+		lines through the remaining points and take the median ``i_j``.
+		``medintercept`` is the median of the ``i_j``.
+		
+		The implementation computes `n` times the median of a vector of size `n`
+		which can be slow for large vectors. There are more efficient algorithms
+		(see [2]_) which are not implemented here.
+		
+		References
+		----------
+		.. [1] A. Siegel, "Robust Regression Using Repeated Medians",
+		       Biometrika, Vol. 69, pp. 242-244, 1982.
+		
+		.. [2] A. Stein and M. Werman, "Finding the repeated median regression
+		       line", Proceedings of the Third Annual ACM-SIAM Symposium on
+		       Discrete Algorithms, pp. 409-413, 1992.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> import matplotlib.pyplot as plt
+		
+		>>> x = np.linspace(-5, 5, num=150)
+		>>> y = x + np.random.normal(size=x.size)
+		>>> y[11:15] += 10  # add outliers
+		>>> y[-5:] -= 7
+		
+		Compute the slope and intercept.  For comparison, also compute the
+		least-squares fit with `linregress`:
+		
+		>>> res = stats.siegelslopes(y, x)
+		>>> lsq_res = stats.linregress(x, y)
+		
+		Plot the results. The Siegel regression line is shown in red. The green
+		line shows the least-squares fit for comparison.
+		
+		>>> fig = plt.figure()
+		>>> ax = fig.add_subplot(111)
+		>>> ax.plot(x, y, 'b.')
+		>>> ax.plot(x, res[1] + res[0] * x, 'r-')
+		>>> ax.plot(x, lsq_res[1] + lsq_res[0] * x, 'g-')
+		>>> plt.show()
+	**/
+	static public function stats_siegelslopes(y:Dynamic, ?x:Dynamic, ?method:Dynamic):Float;
 	/**
 		Computes the Theil-Sen estimator for a set of points (x, y).
 		
@@ -1067,6 +1261,10 @@ package scipy.stats.mstats_basic;
 		    Lower bound of the confidence interval on `medslope`.
 		up_slope : float
 		    Upper bound of the confidence interval on `medslope`.
+		
+		See also
+		--------
+		siegelslopes : a similar technique using repeated medians
 		
 		Notes
 		-----
@@ -1160,6 +1358,11 @@ package scipy.stats.mstats_basic;
 		up_slope : float
 		    Upper bound of the confidence interval on `medslope`.
 		
+		See also
+		--------
+		siegelslopes : a similar technique with repeated medians
+		
+		
 		Notes
 		-----
 		For more details on `theilslopes`, see `stats.theilslopes`.
@@ -1193,6 +1396,21 @@ package scipy.stats.mstats_basic;
 		Notes
 		-----
 		For more details on `tmax`, see `stats.tmax`.
+		
+		Examples
+		--------
+		>>> from scipy.stats import mstats
+		>>> a = np.array([[6, 8, 3, 0],
+		...               [3, 9, 1, 2],
+		...               [8, 7, 8, 2],
+		...               [5, 6, 0, 2],
+		...               [4, 5, 5, 2]])
+		...
+		...
+		>>> mstats.tmax(a, 4)
+		masked_array(data=[4, --, 3, 2],
+		             mask=[False,  True, False, False],
+		       fill_value=999999)
 	**/
 	static public function tmax(a:Dynamic, ?upperlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Dynamic;
 	/**
@@ -1222,6 +1440,23 @@ package scipy.stats.mstats_basic;
 		Notes
 		-----
 		For more details on `tmean`, see `stats.tmean`.
+		
+		Examples
+		--------
+		>>> from scipy.stats import mstats
+		>>> a = np.array([[6, 8, 3, 0],
+		...               [3, 9, 1, 2],
+		...               [8, 7, 8, 2],
+		...               [5, 6, 0, 2],
+		...               [4, 5, 5, 2]])
+		...
+		...
+		>>> mstats.tmean(a, (2,5))
+		3.3
+		>>> mstats.tmean(a, (2,5), axis=0)
+		masked_array(data=[4.0, 5.0, 4.0, 2.0],
+		             mask=[False, False, False, False],
+		       fill_value=1e+20)
 	**/
 	static public function tmean(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic, ?axis:Dynamic):Float;
 	/**
@@ -1249,6 +1484,20 @@ package scipy.stats.mstats_basic;
 		Notes
 		-----
 		For more details on `tmin`, see `stats.tmin`.
+		
+		Examples
+		--------
+		>>> from scipy.stats import mstats
+		>>> a = np.array([[6, 8, 3, 0],
+		...               [3, 2, 1, 2],
+		...               [8, 1, 8, 2],
+		...               [5, 3, 0, 2],
+		...               [4, 7, 5, 2]])
+		...
+		>>> mstats.tmin(a, 5)
+		masked_array(data=[5, 7, 5, --],
+		             mask=[False, False, False,  True],
+		       fill_value=999999)
 	**/
 	static public function tmin(a:Dynamic, ?lowerlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Dynamic;
 	/**
@@ -1532,6 +1781,7 @@ package scipy.stats.mstats_basic;
 		    population variances.
 		    If False, perform Welch's t-test, which does not assume equal population
 		    variance.
+		
 		    .. versionadded:: 0.17.0
 		
 		Returns

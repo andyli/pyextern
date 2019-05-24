@@ -15,7 +15,7 @@ package numpy.lib.npyio;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __contains__(key:Dynamic):Dynamic;
 	public function __del__():Dynamic;
 	/**

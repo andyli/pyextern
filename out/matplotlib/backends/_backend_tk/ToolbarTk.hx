@@ -663,7 +663,7 @@ package matplotlib.backends._backend_tk;
 	**/
 	public function image_names():Dynamic;
 	/**
-		Return a list of all available image types (e.g. phote bitmap).
+		Return a list of all available image types (e.g. photo bitmap).
 	**/
 	public function image_types():Dynamic;
 	/**
@@ -1010,7 +1010,7 @@ package matplotlib.backends._backend_tk;
 		
 		Parameters
 		----------
-		name : String
+		name : string
 		    Name (id) of the tool triggered from within the container
 	**/
 	public function trigger_tool(name:Dynamic):Dynamic;
@@ -1127,7 +1127,7 @@ package matplotlib.backends._backend_tk;
 	**/
 	public function winfo_ismapped():Dynamic;
 	/**
-		Return the window mananger name for this widget.
+		Return the window manager name for this widget.
 	**/
 	public function winfo_manager():Dynamic;
 	/**

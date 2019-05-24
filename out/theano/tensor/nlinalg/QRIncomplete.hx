@@ -220,7 +220,7 @@ package theano.tensor.nlinalg;
 		dorgqr, and zungqr.
 		
 		For more information on the qr factorization, see for example:
-		http://en.wikipedia.org/wiki/QR_factorization
+		https://en.wikipedia.org/wiki/QR_factorization
 		
 		Subclasses of `ndarray` are preserved except for the 'raw' mode. So if
 		`a` is of type `matrix`, all the return values will be matrices too.

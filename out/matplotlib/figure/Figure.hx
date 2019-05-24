@@ -58,7 +58,7 @@ package matplotlib.figure;
 		    patch).
 		
 		frameon : bool, default: :rc:`figure.frameon`
-		    If ``False``, suppress drawing the figure frame.
+		    If ``False``, suppress drawing the figure background patch.
 		
 		subplotpars : :class:`SubplotParams`
 		    Subplot parameters. If not given, the default subplot
@@ -102,7 +102,7 @@ package matplotlib.figure;
 		    patch).
 		
 		frameon : bool, default: :rc:`figure.frameon`
-		    If ``False``, suppress drawing the figure frame.
+		    If ``False``, suppress drawing the figure background patch.
 		
 		subplotpars : :class:`SubplotParams`
 		    Subplot parameters. If not given, the default subplot
@@ -189,6 +189,10 @@ package matplotlib.figure;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		Private helper for `add_axes` and `add_subplot`.
+	**/
+	public function _add_axes_internal(key:Dynamic, ax:Dynamic):Dynamic;
+	/**
 		Helper for :func:`~matplotlib.pyplot.gci`. Do not use elsewhere.
 	**/
 	public function _gci():Dynamic;
@@ -198,6 +202,14 @@ package matplotlib.figure;
 		Make a hashable key out of args and kwargs.
 	**/
 	public function _make_key(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Handle the args/kwargs to add_axes/add_subplot/gca, returning::
+		
+		    (axes_proj_class, proj_class_kwargs, proj_stack_key)
+		
+		which can be used for new axes initialization/identification.
+	**/
+	public function _process_projection_requirements(?args:python.VarArgs<Dynamic>, ?polar:Dynamic, ?projection:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _prop_order : Dynamic;
 	public function _remove_ax(ax:Dynamic):Dynamic;
 	public function _repr_html_():Dynamic;
@@ -279,7 +291,7 @@ package matplotlib.figure;
 		    arguments if another projection is used, see the actual axes
 		    class.
 		      adjustable: {'box', 'datalim'}
-		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array
 		  alpha: float
 		  anchor: 2-tuple of floats or {'C', 'SW', 'S', 'SE', ...}
 		  animated: bool
@@ -291,7 +303,7 @@ package matplotlib.figure;
 		  axisbelow: bool or 'line'
 		  clip_box: `.Bbox`
 		  clip_on: bool
-		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 		  contains: callable
 		  facecolor: color
 		  fc: color
@@ -307,7 +319,7 @@ package matplotlib.figure;
 		  position: [left, bottom, width, height] or `~matplotlib.transforms.Bbox`
 		  rasterization_zorder: float or None
 		  rasterized: bool or None
-		  sketch_params: (scale: float, length: float, randomness: float) 
+		  sketch_params: (scale: float, length: float, randomness: float)
 		  snap: bool or None
 		  title: str
 		  transform: `.Transform`
@@ -365,7 +377,7 @@ package matplotlib.figure;
 		Some simple examples::
 		
 		    rect = l, b, w, h
-		    fig = plt.figure(1)
+		    fig = plt.figure()
 		    fig.add_axes(rect,label=label1)
 		    fig.add_axes(rect,label=label2)
 		    fig.add_axes(rect, frameon=False, facecolor='g')
@@ -380,13 +392,30 @@ package matplotlib.figure;
 	**/
 	public function add_axobserver(func:Dynamic):Dynamic;
 	/**
-		Adds a callback function that will be called whenever one of
-		the :class:`Artist`'s properties changes.
+		Add a callback function that will be called whenever one of the
+		`.Artist`'s properties changes.
 		
-		Returns an *id* that is useful for removing the callback with
-		:meth:`remove_callback` later.
+		Parameters
+		----------
+		func : callable
+		    The callback function. It must have the signature::
+		
+		        def func(artist: Artist) -> Any
+		
+		    where *artist* is the calling `.Artist`. Return values may exist
+		    but are ignored.
+		
+		Returns
+		-------
+		oid : int
+		    The observer id associated with the callback. This id can be
+		    used for removing the callback with `.remove_callback` later.
+		
+		See Also
+		--------
+		remove_callback
 	**/
-	public function add_callback(func:Dynamic):Dynamic;
+	public function add_callback(func:Dynamic):Int;
 	/**
 		Return a `.GridSpec` that has this figure as a parent.  This allows
 		complex layout of axes in the figure.
@@ -405,7 +434,8 @@ package matplotlib.figure;
 		
 		Other Parameters
 		----------------
-		*kwargs* are passed to `.GridSpec`.
+		**kwargs
+		    Keyword arguments are passed to `.GridSpec`.
 		
 		See Also
 		--------
@@ -431,6 +461,7 @@ package matplotlib.figure;
 		   add_subplot(nrows, ncols, index, **kwargs)
 		   add_subplot(pos, **kwargs)
 		   add_subplot(ax)
+		   add_subplot()
 		
 		Parameters
 		----------
@@ -447,6 +478,12 @@ package matplotlib.figure;
 		    the index of the subplot. i.e. fig.add_subplot(235) is the same as
 		    fig.add_subplot(2, 3, 5). Note that all integers must be less than
 		    10 for this form to work.
+		
+		    If no positional arguments are passed, defaults to (1, 1, 1).
+		
+		    In rare circumstances, `.add_subplot` may be called with a single
+		    argument, a subplot axes instance already created in the
+		    present figure but not in the figure's list of axes.
 		
 		projection : {None, 'aitoff', 'hammer', 'lambert', 'mollweide', 'polar', 'rectilinear', str}, optional
 		    The projection type of the subplot (`~.axes.Axes`). *str* is the
@@ -473,7 +510,7 @@ package matplotlib.figure;
 		    the following table but there might also be other keyword
 		    arguments if another projection is used.
 		      adjustable: {'box', 'datalim'}
-		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array
 		  alpha: float
 		  anchor: 2-tuple of floats or {'C', 'SW', 'S', 'SE', ...}
 		  animated: bool
@@ -485,7 +522,7 @@ package matplotlib.figure;
 		  axisbelow: bool or 'line'
 		  clip_box: `.Bbox`
 		  clip_on: bool
-		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 		  contains: callable
 		  facecolor: color
 		  fc: color
@@ -501,7 +538,7 @@ package matplotlib.figure;
 		  position: [left, bottom, width, height] or `~matplotlib.transforms.Bbox`
 		  rasterization_zorder: float or None
 		  rasterized: bool or None
-		  sketch_params: (scale: float, length: float, randomness: float) 
+		  sketch_params: (scale: float, length: float, randomness: float)
 		  snap: bool or None
 		  title: str
 		  transform: `.Transform`
@@ -525,7 +562,7 @@ package matplotlib.figure;
 		
 		Returns
 		-------
-		axes : an `.axes.SubplotBase` subclass of `~.axes.Axes` (or a                subclass of `~.axes.Axes`)
+		axes : `.axes.SubplotBase`, or another subclass of `~.axes.Axes`
 		
 		    The axes of the subplot. The returned axes base class depends on
 		    the projection used. It is `~.axes.Axes` if rectilinear projection
@@ -539,14 +576,10 @@ package matplotlib.figure;
 		*kwargs*) then it will simply make that subplot current and
 		return it.  This behavior is deprecated. Meanwhile, if you do
 		not want this behavior (i.e., you want to force the creation of a
-		new suplot), you must use a unique set of args and kwargs.  The axes
+		new subplot), you must use a unique set of args and kwargs.  The axes
 		*label* attribute has been exposed for this purpose: if you want
 		two subplots that are otherwise identical to be added to the figure,
 		make sure you give them unique labels.
-		
-		In rare circumstances, `.add_subplot` may be called with a single
-		argument, a subplot axes instance already created in the
-		present figure but not in the figure's list of axes.
 		
 		See Also
 		--------
@@ -560,14 +593,14 @@ package matplotlib.figure;
 		--------
 		::
 		
-		    fig=plt.figure(1)
+		    fig = plt.figure()
 		    fig.add_subplot(221)
 		
 		    # equivalent but more general
-		    ax1=fig.add_subplot(2, 2, 1)
+		    ax1 = fig.add_subplot(2, 2, 1)
 		
 		    # add a subplot with no frame
-		    ax2=fig.add_subplot(222, frameon=False)
+		    ax2 = fig.add_subplot(222, frameon=False)
 		
 		    # add a polar subplot
 		    fig.add_subplot(223, projection='polar')
@@ -686,7 +719,7 @@ package matplotlib.figure;
 		    fig.align_ylabels()
 	**/
 	public function align_ylabels(?axs:Dynamic):Dynamic;
-	static public var aname : Dynamic;
+	public var aname : Dynamic;
 	/**
 		Date ticklabels often overlap, so it is useful to rotate them
 		and right align them.  Also, a common use case is a number of
@@ -745,13 +778,17 @@ package matplotlib.figure;
 		
 		Parameters
 		----------
-		mappable :
-		    The :class:`~matplotlib.image.Image`,
-		    :class:`~matplotlib.contour.ContourSet`, etc. to
-		    which the colorbar applies; this argument is mandatory for the Figure
-		    :meth:`~matplotlib.figure.Figure.colorbar` method but optional for the
-		    pyplot :func:`~matplotlib.pyplot.colorbar` function, which sets the
-		    default to the current image.
+		mappable
+		    The `matplotlib.cm.ScalarMappable` (i.e., `~matplotlib.image.Image`,
+		    `~matplotlib.contour.ContourSet`, etc.) described by this colorbar.
+		    This argument is mandatory for the `.Figure.colorbar` method but optional
+		    for the `.pyplot.colorbar` function, which sets the default to the current
+		    image.
+		
+		    Note that one can create a `ScalarMappable` "on-the-fly" to generate
+		    colorbars not attached to a previously drawn artist, e.g. ::
+		
+		        fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax)
 		
 		cax : :class:`~matplotlib.axes.Axes` object, optional
 		    Axes into which the colorbar will be drawn.
@@ -762,18 +799,15 @@ package matplotlib.figure;
 		    colorbar axes.
 		
 		use_gridspec : bool, optional
-		    If *cax* is ``None``, a new *cax* is created as an instance of
-		    Axes. If *ax* is an instance of Subplot and *use_gridspec* is ``True``,
-		    *cax* is created as an instance of Subplot using the
-		    grid_spec module.
-		
+		    If *cax* is ``None``, a new *cax* is created as an instance of Axes.  If
+		    *ax* is an instance of Subplot and *use_gridspec* is ``True``, *cax* is
+		    created as an instance of Subplot using the :mod:`~.gridspec` module.
 		
 		Returns
 		-------
-		:class:`~matplotlib.colorbar.Colorbar` instance
-		    See also its base class, :class:`~matplotlib.colorbar.ColorbarBase`.
-		    Call the :meth:`~matplotlib.colorbar.ColorbarBase.set_label` method
-		    to label the colorbar.
+		colorbar : `~matplotlib.colorbar.Colorbar`
+		    See also its base class, `~matplotlib.colorbar.ColorbarBase`.  Use
+		    `~.ColorbarBase.set_label` to label the colorbar.
 		
 		Notes
 		-----
@@ -868,25 +902,25 @@ package matplotlib.figure;
 		kwarg is included automatically.
 		
 		The *shrink* kwarg provides a simple way to scale the colorbar with respect
-		to the axes. Note that if *cax* is specified it determines the size of the
+		to the axes. Note that if *cax* is specified, it determines the size of the
 		colorbar and *shrink* and *aspect* kwargs are ignored.
 		
 		For more precise control, you can manually specify the positions of
 		the axes objects in which the mappable and the colorbar are drawn.  In
 		this case, do not use any of the axes properties kwargs.
 		
-		It is known that some vector graphics viewer (svg and pdf) renders white gaps
-		between segments of the colorbar. This is due to bugs in the viewers not
-		matplotlib. As a workaround the colorbar can be rendered with overlapping
+		It is known that some vector graphics viewers (svg and pdf) renders white gaps
+		between segments of the colorbar.  This is due to bugs in the viewers, not
+		Matplotlib.  As a workaround, the colorbar can be rendered with overlapping
 		segments::
 		
 		    cbar = colorbar()
 		    cbar.solids.set_edgecolor("face")
 		    draw()
 		
-		However this has negative consequences in other circumstances. Particularly
-		with semi transparent images (alpha < 1) and colorbar extensions and is not
-		enabled by default see (issue #1188).
+		However this has negative consequences in other circumstances, e.g. with
+		semi-transparent images (alpha < 1) and colorbar extensions; therefore, this
+		workaround is not used by default (see issue #1188).
 	**/
 	public function colorbar(mappable:Dynamic, ?cax:Dynamic, ?ax:Dynamic, ?use_gridspec:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -898,13 +932,17 @@ package matplotlib.figure;
 	**/
 	public function contains(mouseevent:Dynamic):Dynamic;
 	/**
-		For artists in an axes, if the xaxis has units support,
-		convert *x* using xaxis unit type
+		Convert *x* using the unit type of the xaxis.
+		
+		If the artist is not in contained in an Axes or if the xaxis does not
+		have units, *x* itself is returned.
 	**/
 	public function convert_xunits(x:Dynamic):Dynamic;
 	/**
-		For artists in an axes, if the yaxis has units support,
-		convert *y* using yaxis unit type
+		Convert *y* using the unit type of the yaxis.
+		
+		If the artist is not in contained in an Axes or if the yaxis does not
+		have units, *y* itself is returned.
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
 	/**
@@ -1002,26 +1040,50 @@ package matplotlib.figure;
 	/**
 		Find artist objects.
 		
-		Recursively find all :class:`~matplotlib.artist.Artist` instances
-		contained in self.
+		Recursively find all `.Artist` instances contained in the artist.
 		
-		*match* can be
+		Parameters
+		----------
+		match
+		    A filter criterion for the matches. This can be
 		
-		  - None: return all objects contained in artist.
+		    - *None*: Return all objects contained in artist.
+		    - A function with signature ``def match(artist: Artist) -> bool``.
+		      The result will only contain artists for which the function
+		      returns *True*.
+		    - A class instance: e.g., `.Line2D`. The result will only contain
+		      artists of this class or its subclasses (``isinstance`` check).
 		
-		  - function with signature ``boolean = match(artist)``
-		    used to filter matches
+		include_self : bool
+		    Include *self* in the list to be checked for a match.
 		
-		  - class instance: e.g., Line2D.  Only return artists of class type.
-		
-		If *include_self* is True (default), include self in the list to be
-		checked for a match.
+		Returns
+		-------
+		artists : list of `.Artist`
 	**/
 	public function findobj(?match:Dynamic, ?include_self:Dynamic):Dynamic;
 	/**
-		Return *cursor data* string formatted.
+		Return a string representation of *data*.
+		
+		.. note::
+		    This method is intended to be overridden by artist subclasses.
+		    As an end-user of Matplotlib you will most likely not call this
+		    method yourself.
+		
+		The default implementation converts ints and floats and arrays of ints
+		and floats into a comma-separated string enclosed in square brackets.
+		
+		See Also
+		--------
+		get_cursor_data
 	**/
 	public function format_cursor_data(data:Dynamic):Dynamic;
+	/**
+		Return the figure's background patch visibility, i.e.
+		whether the figure background will be drawn. Equivalent to
+		``Figure.patch.get_visible()``.
+	**/
+	public var frameon : Dynamic;
 	/**
 		Get the current axes, creating one if necessary.
 		
@@ -1030,7 +1092,7 @@ package matplotlib.figure;
 		the active axes does not exist:
 		
 		  adjustable: {'box', 'datalim'}
-		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array
 		  alpha: float
 		  anchor: 2-tuple of floats or {'C', 'SW', 'S', 'SE', ...}
 		  animated: bool
@@ -1042,7 +1104,7 @@ package matplotlib.figure;
 		  axisbelow: bool or 'line'
 		  clip_box: `.Bbox`
 		  clip_on: bool
-		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 		  contains: callable
 		  facecolor: color
 		  fc: color
@@ -1058,7 +1120,7 @@ package matplotlib.figure;
 		  position: [left, bottom, width, height] or `~matplotlib.transforms.Bbox`
 		  rasterization_zorder: float or None
 		  rasterized: bool or None
-		  sketch_params: (scale: float, length: float, randomness: float) 
+		  sketch_params: (scale: float, length: float, randomness: float)
 		  snap: bool or None
 		  title: str
 		  transform: `.Transform`
@@ -1091,7 +1153,7 @@ package matplotlib.figure;
 	**/
 	public function get_alpha():Dynamic;
 	/**
-		Return the artist's animated state
+		Return the animated state.
 	**/
 	public function get_animated():Dynamic;
 	/**
@@ -1109,15 +1171,15 @@ package matplotlib.figure;
 	**/
 	public function get_children():Dynamic;
 	/**
-		Return artist clipbox
+		Return the clipbox.
 	**/
 	public function get_clip_box():Dynamic;
 	/**
-		Return whether artist uses clipping
+		Return whether the artist uses clipping.
 	**/
 	public function get_clip_on():Dynamic;
 	/**
-		Return artist clip path
+		Return the clip path.
 	**/
 	public function get_clip_path():Dynamic;
 	/**
@@ -1142,11 +1204,39 @@ package matplotlib.figure;
 	**/
 	public function get_constrained_layout_pads(?relative:Dynamic):Dynamic;
 	/**
-		Return the _contains test used by the artist, or *None* for default.
+		Return the custom contains function of the artist if set, or *None*.
+		
+		See Also
+		--------
+		set_contains
 	**/
 	public function get_contains():Dynamic;
 	/**
-		Get the cursor data for a given event.
+		Return the cursor data for a given event.
+		
+		.. note::
+		    This method is intended to be overridden by artist subclasses.
+		    As an end-user of Matplotlib you will most likely not call this
+		    method yourself.
+		
+		Cursor data can be used by Artists to provide additional context
+		information for a given event. The default implementation just returns
+		*None*.
+		
+		Subclasses can override the method and return arbitrary data. However,
+		when doing so, they must ensure that `.format_cursor_data` can convert
+		the data to a string representation.
+		
+		The only current use case is displaying the z-value of an `.AxesImage`
+		in the status bar of a plot window, while moving the mouse.
+		
+		Parameters
+		----------
+		event : `matplotlib.backend_bases.MouseEvent`
+		
+		See Also
+		--------
+		format_cursor_data
 	**/
 	public function get_cursor_data(event:Dynamic):Dynamic;
 	public function get_default_bbox_extra_artists():Dynamic;
@@ -1175,11 +1265,13 @@ package matplotlib.figure;
 	**/
 	public function get_figwidth():Dynamic;
 	/**
-		Return whether the figure frame will be drawn.
+		Return the figure's background patch visibility, i.e.
+		whether the figure background will be drawn. Equivalent to
+		``Figure.patch.get_visible()``.
 	**/
 	public function get_frameon():Dynamic;
 	/**
-		Returns the group id.
+		Return the group id.
 	**/
 	public function get_gid():Dynamic;
 	/**
@@ -1192,12 +1284,18 @@ package matplotlib.figure;
 	**/
 	public function get_in_layout():Dynamic;
 	/**
-		Get the label used for this artist in the legend.
+		Return the label used for this artist in the legend.
 	**/
 	public function get_label():Dynamic;
 	public function get_path_effects():Dynamic;
 	/**
-		Return the picker object used by this artist.
+		Return the picking behavior of the artist.
+		
+		The possible values are described in `.set_picker`.
+		
+		See Also
+		--------
+		set_picker, pickable, pick
 	**/
 	public function get_picker():Dynamic;
 	/**
@@ -1222,32 +1320,23 @@ package matplotlib.figure;
 		
 		Returns
 		-------
-		sketch_params : tuple or `None`
+		sketch_params : tuple or None
 		
 		    A 3-tuple with the following elements:
 		
-		      * `scale`: The amplitude of the wiggle perpendicular to the
-		        source line.
+		    - *scale*: The amplitude of the wiggle perpendicular to the
+		      source line.
+		    - *length*: The length of the wiggle along the line.
+		    - *randomness*: The scale factor by which the length is
+		      shrunken or expanded.
 		
-		      * `length`: The length of the wiggle along the line.
-		
-		      * `randomness`: The scale factor by which the length is
-		        shrunken or expanded.
-		
-		    May return `None` if no sketch parameters were set.
+		    Returns *None* if no sketch parameters were set.
 	**/
 	public function get_sketch_params():Dynamic;
 	/**
-		Returns the snap setting which may be:
+		Returns the snap setting.
 		
-		  * True: snap vertices to the nearest pixel center
-		
-		  * False: leave vertices as-is
-		
-		  * None: (auto) If the path contains only rectilinear line
-		    segments, round to the nearest pixel center
-		
-		Only supported by the Agg and MacOSX backends.
+		See `.set_snap` for details.
 	**/
 	public function get_snap():Dynamic;
 	/**
@@ -1278,8 +1367,7 @@ package matplotlib.figure;
 	**/
 	public function get_tightbbox(renderer:Dynamic, ?bbox_extra_artists:Dynamic):Dynamic;
 	/**
-		Return the :class:`~matplotlib.transforms.Transform`
-		instance used by this artist.
+		Return the `.Transform` instance used by this artist.
 	**/
 	public function get_transform():Dynamic;
 	/**
@@ -1289,11 +1377,11 @@ package matplotlib.figure;
 	**/
 	public function get_transformed_clip_path_and_affine():Dynamic;
 	/**
-		Returns the url.
+		Return the url.
 	**/
 	public function get_url():Dynamic;
 	/**
-		Return the artist's visiblity
+		Return the visibility.
 	**/
 	public function get_visible():Dynamic;
 	/**
@@ -1310,11 +1398,20 @@ package matplotlib.figure;
 		Wait until the user clicks *n* times on the figure, and return the
 		coordinates of each click in a list.
 		
-		The buttons used for the various actions (adding points, removing
-		points, terminating the inputs) can be overridden via the
-		arguments *mouse_add*, *mouse_pop* and *mouse_stop*, that give
-		the associated mouse button: 1 for left, 2 for middle, 3 for
-		right.
+		There are three possible interactions:
+		
+		- Add a point.
+		- Remove the most recently added point.
+		- Stop the interaction and return the points added so far.
+		
+		The actions are assigned to mouse buttons via the arguments
+		*mouse_add*, *mouse_pop* and *mouse_stop*. Mouse buttons are defined
+		by the numbers:
+		
+		- 1: left mouse button
+		- 2: middle mouse button
+		- 3: right mouse button
+		- None: no mouse button
 		
 		Parameters
 		----------
@@ -1326,11 +1423,11 @@ package matplotlib.figure;
 		    will never timeout.
 		show_clicks : bool, optional, default: False
 		    If True, show a red cross at the location of each click.
-		mouse_add : int, one of (1, 2, 3), optional, default: 1 (left click)
+		mouse_add : {1, 2, 3, None}, optional, default: 1 (left click)
 		    Mouse button used to add points.
-		mouse_pop : int, one of (1, 2, 3), optional, default: 3 (right click)
+		mouse_pop : {1, 2, 3, None}, optional, default: 3 (right click)
 		    Mouse button used to remove the most recently added point.
-		mouse_stop : int, one of (1, 2, 3), optional, default: 2 (middle click)
+		mouse_stop : {1, 2, 3, None}, optional, default: 2 (middle click)
 		    Mouse button used to stop input.
 		
 		Returns
@@ -1348,30 +1445,17 @@ package matplotlib.figure;
 	**/
 	public function ginput(?n:Dynamic, ?timeout:Dynamic, ?show_clicks:Dynamic, ?mouse_add:Dynamic, ?mouse_pop:Dynamic, ?mouse_stop:Dynamic):Dynamic;
 	/**
-		Return *True* if units are set on the *x* or *y* axes
+		Return *True* if units are set on the *x* or *y* axes.
 	**/
 	public function have_units():Dynamic;
-	/**
-		.. deprecated:: 2.2
-		    The hitlist function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
-		
-		List the children of the artist which contain the mouse event *event*.
-	**/
-	public function hitlist(event:Dynamic):Dynamic;
 	/**
 		Initialize the layoutbox for use in constrained_layout.
 	**/
 	public function init_layoutbox():Dynamic;
 	/**
-		.. deprecated:: 2.2
-		    artist.figure is not None
+		Return whether the Artist has an explicitly set transform.
 		
-		Returns whether the artist is assigned to a `.Figure`.
-	**/
-	public function is_figure_set():Dynamic;
-	/**
-		Returns *True* if :class:`Artist` has a transform explicitly
-		set.
+		This is *True* after `.set_transform` has been called.
 	**/
 	public function is_transform_set():Dynamic;
 	/**
@@ -1383,15 +1467,17 @@ package matplotlib.figure;
 		
 		To make a legend for a list of lines and labels::
 		
-		  legend( (line1, line2, line3),
-		          ('label1', 'label2', 'label3'),
-		          loc='upper right')
+		  legend(
+		      (line1, line2, line3),
+		      ('label1', 'label2', 'label3'),
+		      loc='upper right')
 		
 		These can also be specified by keyword::
 		
-		  legend(handles=(line1, line2, line3),
-		        labels=('label1', 'label2', 'label3'),
-		        loc='upper right')
+		  legend(
+		      handles=(line1, line2, line3),
+		      labels=('label1', 'label2', 'label3'),
+		      loc='upper right')
 		
 		Parameters
 		----------
@@ -1415,8 +1501,32 @@ package matplotlib.figure;
 		----------------
 		
 		
-		loc : int or string or pair of floats, default: :rc:`legend.loc` ('best' for axes, 'upper right' for figures)
-		    The location of the legend. Possible codes are:
+		loc : str or pair of floats, default: :rc:`legend.loc` ('best' for axes, 'upper right' for figures)
+		    The location of the legend.
+		
+		    The strings
+		    ``'upper left', 'upper right', 'lower left', 'lower right'``
+		    place the legend at the corresponding corner of the axes/figure.
+		
+		    The strings
+		    ``'upper center', 'lower center', 'center left', 'center right'``
+		    place the legend at the center of the corresponding edge of the
+		    axes/figure.
+		
+		    The string ``'center'`` places the legend at the center of the axes/figure.
+		
+		    The string ``'best'`` places the legend at the location, among the nine
+		    locations defined so far, with the minimum overlap with other drawn
+		    artists.  This option can be quite slow for plots with large amounts of
+		    data; your plotting speed may benefit from providing a specific location.
+		
+		    The location can also be a 2-tuple giving the coordinates of the lower-left
+		    corner of the legend in axes coordinates (in which case *bbox_to_anchor*
+		    will be ignored).
+		
+		    For back-compatibility, ``'center right'`` (but no other location) can also
+		    be spelled ``'right'``, and each "string" locations can also be given as a
+		    numeric value:
 		
 		        ===============   =============
 		        Location String   Location Code
@@ -1433,15 +1543,6 @@ package matplotlib.figure;
 		        'upper center'    9
 		        'center'          10
 		        ===============   =============
-		
-		
-		    Alternatively can be a 2-tuple giving ``x, y`` of the lower-left
-		    corner of the legend in axes coordinates (in which case
-		    ``bbox_to_anchor`` will be ignored).
-		
-		    The 'best' option can be quite slow for plots with large amounts
-		    of data. Your plotting speed may benefit from providing a specific
-		    location.
 		
 		bbox_to_anchor : `.BboxBase`, 2-tuple, or 4-tuple of floats
 		    Box that is used to position the legend in conjunction with *loc*.
@@ -1616,46 +1717,58 @@ package matplotlib.figure;
 	public function legend(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var mouseover : Dynamic;
 	/**
-		Fire an event when property changed, calling all of the
-		registered callbacks.
+		Call all of the registered callbacks.
+		
+		This function is triggered internally when a property is changed.
+		
+		See Also
+		--------
+		add_callback
+		remove_callback
 	**/
 	public function pchanged():Dynamic;
 	/**
-		Process pick event
+		Process a pick event.
 		
-		each child artist will fire a pick event if *mouseevent* is over
-		the artist and the artist has picker set
+		Each child artist will fire a pick event if *mouseevent* is over
+		the artist and the artist has picker set.
+		
+		See Also
+		--------
+		set_picker, get_picker, pickable
 	**/
 	public function pick(mouseevent:Dynamic):Dynamic;
 	/**
-		Return *True* if :class:`Artist` is pickable.
+		Return whether the artist is pickable.
+		
+		See Also
+		--------
+		set_picker, get_picker, pick
 	**/
 	public function pickable():Dynamic;
 	/**
-		return a dictionary mapping property name -> value for all Artist props
+		Return a dictionary of all the properties of the artist.
 	**/
 	public function properties():Dynamic;
 	/**
-		Remove the artist from the figure if possible.  The effect
-		will not be visible until the figure is redrawn, e.g., with
-		:meth:`matplotlib.axes.Axes.draw_idle`.  Call
-		:meth:`matplotlib.axes.Axes.relim` to update the axes limits
-		if desired.
+		Remove the artist from the figure if possible.
 		
-		Note: :meth:`~matplotlib.axes.Axes.relim` will not see
-		collections even if the collection was added to axes with
-		*autolim* = True.
+		The effect will not be visible until the figure is redrawn, e.g.,
+		with `.FigureCanvasBase.draw_idle`.  Call `~.axes.Axes.relim` to
+		update the axes limits if desired.
+		
+		Note: `~.axes.Axes.relim` will not see collections even if the
+		collection was added to the axes with *autolim* = True.
 		
 		Note: there is no support for removing the artist's legend entry.
 	**/
 	public function remove():Dynamic;
 	/**
-		Remove a callback based on its *id*.
+		Remove a callback based on its observer id.
 		
-		.. seealso::
-		
-		    :meth:`add_callback`
-		       For adding callbacks
+		See Also
+		--------
+		add_callback
 	**/
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
@@ -1673,17 +1786,17 @@ package matplotlib.figure;
 		Parameters
 		----------
 		
-		fname : str or file-like object
-		    A string containing a path to a filename, or a Python
-		    file-like object, or possibly some backend-dependent object
-		    such as :class:`~matplotlib.backends.backend_pdf.PdfPages`.
+		fname : str or PathLike or file-like object
+		    A path, or a Python file-like object, or
+		    possibly some backend-dependent object such as
+		    `matplotlib.backends.backend_pdf.PdfPages`.
 		
-		    If *format* is *None* and *fname* is a string, the output
-		    format is deduced from the extension of the filename. If
-		    the filename has no extension, :rc:`savefig.format` is used.
+		    If *format* is not set, then the output format is inferred from
+		    the extension of *fname*, if any, and from :rc:`savefig.format`
+		    otherwise.  If *format* is set, it determines the output format.
 		
-		    If *fname* is not a string, remember to specify *format* to
-		    ensure that the correct backend is used.
+		    Hence, if *fname* is not a path or has no extension, remember to
+		    specify *format* to ensure that the correct backend is used.
 		
 		Other Parameters
 		----------------
@@ -1698,6 +1811,17 @@ package matplotlib.figure;
 		    If *None*, defaults to :rc:`savefig.jpeg_quality` (95 by default).
 		    Values above 95 should be avoided; 100 completely disables the
 		    JPEG quantization stage.
+		
+		optimize : bool
+		    If *True*, indicates that the JPEG encoder should make an extra
+		    pass over the image in order to select optimal encoder settings.
+		    Applicable only if *format* is jpg or jpeg, ignored otherwise.
+		    Is *False* by default.
+		
+		progressive : bool
+		    If *True*, indicates that this image should be stored as a
+		    progressive JPEG file. Applicable only if *format* is jpg or
+		    jpeg, ignored otherwise. Is *False* by default.
 		
 		facecolor : color spec or None, optional
 		    The facecolor of the figure; if *None*, defaults to
@@ -1716,8 +1840,8 @@ package matplotlib.figure;
 		    output.
 		
 		format : str
-		    One of the file extensions supported by the active
-		    backend.  Most backends support png, pdf, ps, eps and svg.
+		    The file format, e.g. 'png', 'pdf', 'svg', ... The behavior when
+		    this is unset is documented under *fname*.
 		
 		transparent : bool
 		    If *True*, the axes patches will all be transparent; the
@@ -1727,11 +1851,6 @@ package matplotlib.figure;
 		    a plot on top of a colored background on a web page.  The
 		    transparency of these patches will be restored to their
 		    original values upon exit of this function.
-		
-		frameon : bool
-		    If *True*, the figure patch will be colored, if *False*, the
-		    figure background will be transparent.  If not provided, the
-		    rcParam 'savefig.frameon' will be used.
 		
 		bbox_inches : str or `~matplotlib.transforms.Bbox`, optional
 		    Bbox in inches. Only the given portion of the figure is
@@ -1755,15 +1874,20 @@ package matplotlib.figure;
 		    - 'pdf' with pdf backend: See the parameter ``metadata`` of
 		      `~.backend_pdf.PdfPages`.
 		    - 'eps' and 'ps' with PS backend: Only 'Creator' is supported.
+		
+		pil_kwargs : dict, optional
+		    Additional keyword arguments that are passed to `PIL.Image.save`
+		    when saving the figure.  Only applicable for formats that are saved
+		    using Pillow, i.e. JPEG, TIFF, and (if the keyword is set to a
+		    non-None value) PNG.
 	**/
-	public function savefig(fname:Dynamic, ?frameon:Dynamic, ?transparent:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function savefig(fname:Dynamic, ?transparent:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the current axes to be a and return a.
 	**/
 	public function sca(a:Dynamic):Dynamic;
 	/**
-		A property batch setter. Pass *kwargs* to set properties.
-		        
+		A property batch setter.  Pass *kwargs* to set properties.
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1812,7 +1936,7 @@ package matplotlib.figure;
 	**/
 	public function set_clip_box(clipbox:Dynamic):Dynamic;
 	/**
-		Set whether artist uses clipping.
+		Set whether the artist uses clipping.
 		
 		When False artists will be visible out side of the axes which
 		can lead to unexpected results.
@@ -1872,29 +1996,36 @@ package matplotlib.figure;
 		h_pad : scalar
 		    Height padding in inches. Defaults to 3 pts.
 		
-		wspace: scalar
+		wspace : scalar
 		    Width padding between subplots, expressed as a fraction of the
 		    subplot width.  The total padding ends up being w_pad + wspace.
 		
-		hspace: scalar
+		hspace : scalar
 		    Height padding between subplots, expressed as a fraction of the
 		    subplot width. The total padding ends up being h_pad + hspace.
 	**/
 	public function set_constrained_layout_pads(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Replace the contains test used by this artist. The new picker
-		should be a callable function which determines whether the
-		artist is hit by the mouse event::
+		Define a custom contains test for the artist.
 		
-		    hit, props = picker(artist, mouseevent)
-		
-		If the mouse event is over the artist, return *hit* = *True*
-		and *props* is a dictionary of properties you want returned
-		with the contains test.
+		The provided callable replaces the default `.contains` method
+		of the artist.
 		
 		Parameters
 		----------
 		picker : callable
+		    A custom picker function to evaluate if an event is within the
+		    artist. The function must have the signature::
+		
+		        def contains(artist: Artist, event: MouseEvent) -> bool, dict
+		
+		    that returns:
+		
+		    - a bool indicating if the event is within the artist
+		    - a dict of additional information. The dict should at least
+		      return the same information as the default ``contains()``
+		      implementation of the respective artist, but may provide
+		      additional information.
 	**/
 	public function set_contains(picker:Dynamic):Dynamic;
 	/**
@@ -1924,7 +2055,10 @@ package matplotlib.figure;
 	/**
 		Set the height of the figure in inches.
 		
-		.. ACCEPTS: float
+		Parameters
+		----------
+		val : float
+		forward : bool
 	**/
 	public function set_figheight(val:Dynamic, ?forward:Dynamic):Dynamic;
 	/**
@@ -1938,11 +2072,16 @@ package matplotlib.figure;
 	/**
 		Set the width of the figure in inches.
 		
-		.. ACCEPTS: float
+		Parameters
+		----------
+		val : float
+		forward : bool
 	**/
 	public function set_figwidth(val:Dynamic, ?forward:Dynamic):Dynamic;
 	/**
-		Set whether the figure frame (background) is displayed or invisible.
+		Set the figure's background patch visibility, i.e.
+		whether the figure background will be drawn. Equivalent to
+		``Figure.patch.set_visible()``.
 		
 		Parameters
 		----------
@@ -1950,7 +2089,7 @@ package matplotlib.figure;
 	**/
 	public function set_frameon(b:Dynamic):Dynamic;
 	/**
-		Sets the (group) id for the artist.
+		Set the (group) id for the artist.
 		
 		Parameters
 		----------
@@ -1969,7 +2108,7 @@ package matplotlib.figure;
 	**/
 	public function set_in_layout(in_layout:Dynamic):Dynamic;
 	/**
-		Set the label to *s* for auto legend.
+		Set a label that will be displayed in the legend.
 		
 		Parameters
 		----------
@@ -1986,37 +2125,36 @@ package matplotlib.figure;
 	**/
 	public function set_path_effects(path_effects:Dynamic):Dynamic;
 	/**
-		Set the epsilon for picking used by this artist
-		
-		*picker* can be one of the following:
-		
-		  * *None*: picking is disabled for this artist (default)
-		
-		  * A boolean: if *True* then picking will be enabled and the
-		    artist will fire a pick event if the mouse event is over
-		    the artist
-		
-		  * A float: if picker is a number it is interpreted as an
-		    epsilon tolerance in points and the artist will fire
-		    off an event if it's data is within epsilon of the mouse
-		    event.  For some artists like lines and patch collections,
-		    the artist may provide additional data to the pick event
-		    that is generated, e.g., the indices of the data within
-		    epsilon of the pick event
-		
-		  * A function: if picker is callable, it is a user supplied
-		    function which determines whether the artist is hit by the
-		    mouse event::
-		
-		      hit, props = picker(artist, mouseevent)
-		
-		    to determine the hit test.  if the mouse event is over the
-		    artist, return *hit=True* and props is a dictionary of
-		    properties you want added to the PickEvent attributes.
+		Define the picking behavior of the artist.
 		
 		Parameters
 		----------
 		picker : None or bool or float or callable
+		    This can be one of the following:
+		
+		    - *None*: Picking is disabled for this artist (default).
+		
+		    - A boolean: If *True* then picking will be enabled and the
+		      artist will fire a pick event if the mouse event is over
+		      the artist.
+		
+		    - A float: If picker is a number it is interpreted as an
+		      epsilon tolerance in points and the artist will fire
+		      off an event if it's data is within epsilon of the mouse
+		      event.  For some artists like lines and patch collections,
+		      the artist may provide additional data to the pick event
+		      that is generated, e.g., the indices of the data within
+		      epsilon of the pick event
+		
+		    - A function: If picker is callable, it is a user supplied
+		      function which determines whether the artist is hit by the
+		      mouse event::
+		
+		        hit, props = picker(artist, mouseevent)
+		
+		      to determine the hit test.  if the mouse event is over the
+		      artist, return *hit=True* and props is a dictionary of
+		      properties you want added to the PickEvent attributes.
 	**/
 	public function set_picker(picker:Dynamic):Dynamic;
 	/**
@@ -2071,20 +2209,28 @@ package matplotlib.figure;
 	**/
 	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
 	/**
-		Sets the snap setting which may be:
+		Set the snapping behavior.
 		
-		  * True: snap vertices to the nearest pixel center
+		Snapping aligns positions with the pixel grid, which results in
+		clearer images. For example, if a black line of 1px width was
+		defined at a position in between two pixels, the resulting image
+		would contain the interpolated value of that line in the pixel grid,
+		which would be a grey value on both adjacent pixel positions. In
+		contrast, snapping will move the line to the nearest integer pixel
+		value, so that the resulting image will really contain a 1px wide
+		black line.
 		
-		  * False: leave vertices as-is
-		
-		  * None: (auto) If the path contains only rectilinear line
-		    segments, round to the nearest pixel center
-		
-		Only supported by the Agg and MacOSX backends.
+		Snapping is currently only supported by the Agg and MacOSX backends.
 		
 		Parameters
 		----------
 		snap : bool or None
+		    Possible values:
+		
+		    - *True*: Snap vertices to the nearest pixel center.
+		    - *False*: Do not modify vertex positions.
+		    - *None*: (auto) If the path contains only rectilinear line
+		      segments, round to the nearest pixel center.
 	**/
 	public function set_snap(snap:Dynamic):Dynamic;
 	/**
@@ -2108,7 +2254,7 @@ package matplotlib.figure;
 	**/
 	public function set_transform(t:Dynamic):Dynamic;
 	/**
-		Sets the url for the artist.
+		Set the url for the artist.
 		
 		Parameters
 		----------
@@ -2140,6 +2286,18 @@ package matplotlib.figure;
 		:class:`~matplotlib.backend_bases.FigureManagerBase`, and
 		will raise an AttributeError.
 		
+		.. warning::
+		    This does not manage an GUI event loop. Consequently, the figure
+		    may only be shown briefly or not shown at all if you or your
+		    environment are not managing an event loop.
+		
+		    Proper use cases for `.Figure.show` include running this from a
+		    GUI application or an IPython shell.
+		
+		    If you're running a pure python shell or executing a non-GUI
+		    python script, you should use `matplotlib.pyplot.show` instead,
+		    which takes care of managing the event loop for you.
+		
 		Parameters
 		----------
 		warn : bool
@@ -2148,21 +2306,21 @@ package matplotlib.figure;
 	**/
 	public function show(?warn:Dynamic):Dynamic;
 	/**
-		If the artist is 'stale' and needs to be re-drawn for the output to
-		match the internal state of the artist.
+		Whether the artist is 'stale' and needs to be re-drawn for the output
+		to match the internal state of the artist.
 	**/
 	public var stale : Dynamic;
 	/**
-		`x` and `y` sticky edge lists.
+		``x`` and ``y`` sticky edge lists for autoscaling.
 		
 		When performing autoscaling, if a data limit coincides with a value in
 		the corresponding sticky_edges list, then no margin will be added--the
-		view limit "sticks" to the edge. A typical usecase is histograms,
+		view limit "sticks" to the edge. A typical use case is histograms,
 		where one usually expects no margin on the bottom edge (0) of the
 		histogram.
 		
-		This attribute cannot be assigned to; however, the `x` and `y` lists
-		can be modified in place as needed.
+		This attribute cannot be assigned to; however, the ``x`` and ``y``
+		lists can be modified in place as needed.
 		
 		Examples
 		--------
@@ -2241,7 +2399,7 @@ package matplotlib.figure;
 		    y = np.sin(x**2)
 		
 		    # Create a figure
-		    plt.figure(1, clear=True)
+		    plt.figure()
 		
 		    # Creates a subplot
 		    ax = fig.subplots()
@@ -2364,44 +2522,43 @@ package matplotlib.figure;
 		----------------
 		**kwargs : `~matplotlib.text.Text` properties
 		    Other miscellaneous text parameters.
-		      agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		      agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array
 		  alpha: float
 		  animated: bool
 		  backgroundcolor: color
 		  bbox: dict with properties for `.patches.FancyBboxPatch`
-		  clip_box: `matplotlib.transforms.Bbox`
+		  clip_box: `.Bbox`
 		  clip_on: bool
-		  clip_path: { (`.path.Path`, `.transforms.Transform`), `.patches.Patch`, None } 
-		  color: color
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
+		  color or c: color
 		  contains: callable
 		  figure: `.Figure`
-		  fontfamily: {FONTNAME, 'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace'}
-		  fontname: {FONTNAME, 'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace'}
-		  fontproperties: `.font_manager.FontProperties`
-		  fontsize: {size in points, 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'}
-		  fontstretch: {a numeric value in range 0-1000, 'ultra-condensed', 'extra-condensed', 'condensed', 'semi-condensed', 'normal', 'semi-expanded', 'expanded', 'extra-expanded', 'ultra-expanded'}
-		  fontstyle: {'normal', 'italic', 'oblique'}
-		  fontvariant: {'normal', 'small-caps'}
-		  fontweight: {a numeric value in range 0-1000, 'ultralight', 'light', 'normal', 'regular', 'book', 'medium', 'roman', 'semibold', 'demibold', 'demi', 'bold', 'heavy', 'extra bold', 'black'}
+		  fontfamily or family: {FONTNAME, 'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace'}
+		  fontproperties or font_properties: `.font_manager.FontProperties`
+		  fontsize or size: {size in points, 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'}
+		  fontstretch or stretch: {a numeric value in range 0-1000, 'ultra-condensed', 'extra-condensed', 'condensed', 'semi-condensed', 'normal', 'semi-expanded', 'expanded', 'extra-expanded', 'ultra-expanded'}
+		  fontstyle or style: {'normal', 'italic', 'oblique'}
+		  fontvariant or variant: {'normal', 'small-caps'}
+		  fontweight or weight: {a numeric value in range 0-1000, 'ultralight', 'light', 'normal', 'regular', 'book', 'medium', 'roman', 'semibold', 'demibold', 'demi', 'bold', 'heavy', 'extra bold', 'black'}
 		  gid: str
-		  horizontalalignment: {'center', 'right', 'left'}
+		  horizontalalignment or ha: {'center', 'right', 'left'}
 		  in_layout: bool
 		  label: object
 		  linespacing: float (multiple of font size)
-		  multialignment: {'left', 'right', 'center'}
+		  multialignment or ma: {'left', 'right', 'center'}
 		  path_effects: `.AbstractPathEffect`
 		  picker: None or bool or float or callable
 		  position: (float, float)
 		  rasterized: bool or None
 		  rotation: {angle in degrees, 'vertical', 'horizontal'}
 		  rotation_mode: {None, 'default', 'anchor'}
-		  sketch_params: (scale: float, length: float, randomness: float) 
+		  sketch_params: (scale: float, length: float, randomness: float)
 		  snap: bool or None
-		  text: string or object castable to string (but ``None`` becomes ``''``)
+		  text: object
 		  transform: `.Transform`
 		  url: str
 		  usetex: bool or None
-		  verticalalignment: {'center', 'top', 'bottom', 'baseline', 'center_baseline'}
+		  verticalalignment or va: {'center', 'top', 'bottom', 'baseline', 'center_baseline'}
 		  visible: bool
 		  wrap: bool
 		  x: float
@@ -2448,7 +2605,7 @@ package matplotlib.figure;
 	**/
 	public function tight_layout(?renderer:Dynamic, ?pad:Dynamic, ?h_pad:Dynamic, ?w_pad:Dynamic, ?rect:Dynamic):Dynamic;
 	/**
-		Update this artist's properties from the dictionary *prop*.
+		Update this artist's properties from the dictionary *props*.
 	**/
 	public function update(props:Dynamic):Dynamic;
 	/**

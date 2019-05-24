@@ -10,7 +10,7 @@ package pandas.io.json.normalize;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Helper function that converts json lists to line delimited json.
+		Helper function that converts JSON lists to line delimited JSON.
 	**/
 	static public function _convert_to_line_delimits(s:Dynamic):Dynamic;
 	/**
@@ -19,7 +19,7 @@ package pandas.io.json.normalize;
 	**/
 	static public function convert_json_to_lines(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		"Normalize" semi-structured JSON data into a flat table
+		Normalize semi-structured JSON data into a flat table.
 		
 		Parameters
 		----------
@@ -30,10 +30,10 @@ package pandas.io.json.normalize;
 		    assumed to be an array of records
 		meta : list of paths (string or list of strings), default None
 		    Fields to use as metadata for each record in resulting table
+		meta_prefix : string, default None
 		record_prefix : string, default None
 		    If True, prefix records with dotted (?) path, e.g. foo.bar.field if
 		    path to records is ['foo', 'bar']
-		meta_prefix : string, default None
 		errors : {'raise', 'ignore'}, default 'raise'
 		
 		    * 'ignore' : will ignore KeyError if keys listed in meta are not
@@ -48,7 +48,6 @@ package pandas.io.json.normalize;
 		    e.g., for sep='.', { 'foo' : { 'bar' : 0 } } -> foo.bar
 		
 		    .. versionadded:: 0.20.0
-		
 		
 		Returns
 		-------
@@ -100,9 +99,9 @@ package pandas.io.json.normalize;
 	**/
 	static public function json_normalize(data:Dynamic, ?record_path:Dynamic, ?meta:Dynamic, ?meta_prefix:Dynamic, ?record_prefix:Dynamic, ?errors:Dynamic, ?sep:Dynamic):pandas.DataFrame;
 	/**
-		a simplified json_normalize
+		A simplified json_normalize.
 		
-		converts a nested dict into a flat dict ("record"), unlike json_normalize,
+		Converts a nested dict into a flat dict ("record"), unlike json_normalize,
 		it does not attempt to extract a subset of the data.
 		
 		Parameters

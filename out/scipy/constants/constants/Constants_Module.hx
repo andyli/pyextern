@@ -35,11 +35,6 @@ package scipy.constants.constants;
 		value : float
 		    Value in `physical_constants` corresponding to `key`
 		
-		See Also
-		--------
-		codata : Contains the description of `physical_constants`, which, as a
-		    dictionary literal object, does not itself possess a docstring.
-		
 		Examples
 		--------
 		>>> from scipy import constants

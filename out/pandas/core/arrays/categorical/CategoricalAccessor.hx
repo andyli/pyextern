@@ -129,7 +129,7 @@ package pandas.core.arrays.categorical;
 	public var __weakref__ : Dynamic;
 	static public var _accessors : Dynamic;
 	/**
-		add accessors to cls from the delegate class
+		Add accessors to cls from the delegate class.
 		
 		Parameters
 		----------
@@ -172,12 +172,6 @@ package pandas.core.arrays.categorical;
 		`new_categories` will be included at the last/highest place in the
 		categories and will be unused directly after this call.
 		
-		Raises
-		------
-		ValueError
-		    If the new categories include old categories or do not validate as
-		    categories
-		
 		Parameters
 		----------
 		new_categories : category or list-like of category
@@ -190,7 +184,13 @@ package pandas.core.arrays.categorical;
 		-------
 		cat : Categorical with new categories added or None if inplace.
 		
-		See also
+		Raises
+		------
+		ValueError
+		    If the new categories include old categories or do not validate as
+		    categories
+		
+		See Also
 		--------
 		rename_categories
 		reorder_categories
@@ -200,7 +200,7 @@ package pandas.core.arrays.categorical;
 	**/
 	public function add_categories(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Sets the Categorical to be ordered
+		Set the Categorical to be ordered.
 		
 		Parameters
 		----------
@@ -210,7 +210,7 @@ package pandas.core.arrays.categorical;
 	**/
 	public function as_ordered(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Sets the Categorical to be unordered
+		Set the Categorical to be unordered.
 		
 		Parameters
 		----------
@@ -219,6 +219,7 @@ package pandas.core.arrays.categorical;
 		   of this categorical with ordered set to False
 	**/
 	public function as_unordered(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public var categorical : Dynamic;
 	/**
 		The categories of this categorical.
 		
@@ -237,7 +238,7 @@ package pandas.core.arrays.categorical;
 		    If the new categories do not validate as categories or if the
 		    number of new categories is unequal the number of old categories
 		
-		See also
+		See Also
 		--------
 		rename_categories
 		reorder_categories
@@ -247,9 +248,14 @@ package pandas.core.arrays.categorical;
 		set_categories
 	**/
 	public var categories : Dynamic;
-	public var codes : Dynamic;
 	/**
-		Whether the categories have an ordered relationship
+		Return Series of codes as well as the index.
+	**/
+	public var codes : Dynamic;
+	public var index : Dynamic;
+	public var name : Dynamic;
+	/**
+		Whether the categories have an ordered relationship.
 	**/
 	public var ordered : Dynamic;
 	/**
@@ -257,11 +263,6 @@ package pandas.core.arrays.categorical;
 		
 		`removals` must be included in the old categories. Values which were in
 		the removed categories will be set to NaN
-		
-		Raises
-		------
-		ValueError
-		    If the removals are not contained in the categories
 		
 		Parameters
 		----------
@@ -275,7 +276,12 @@ package pandas.core.arrays.categorical;
 		-------
 		cat : Categorical with removed categories or None if inplace.
 		
-		See also
+		Raises
+		------
+		ValueError
+		    If the removals are not contained in the categories
+		
+		See Also
 		--------
 		rename_categories
 		reorder_categories
@@ -297,7 +303,7 @@ package pandas.core.arrays.categorical;
 		-------
 		cat : Categorical with unused categories dropped or None if inplace.
 		
-		See also
+		See Also
 		--------
 		rename_categories
 		reorder_categories
@@ -308,12 +314,6 @@ package pandas.core.arrays.categorical;
 	public function remove_unused_categories(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Renames categories.
-		
-		Raises
-		------
-		ValueError
-		    If new categories are list-like and do not have the same number of
-		    items than the current categories or do not validate as categories
 		
 		Parameters
 		----------
@@ -349,7 +349,13 @@ package pandas.core.arrays.categorical;
 		   With ``inplace=False``, the new categorical is returned.
 		   With ``inplace=True``, there is no return value.
 		
-		See also
+		Raises
+		------
+		ValueError
+		    If new categories are list-like and do not have the same number of
+		    items than the current categories or do not validate as categories
+		
+		See Also
 		--------
 		reorder_categories
 		add_categories
@@ -359,7 +365,7 @@ package pandas.core.arrays.categorical;
 		
 		Examples
 		--------
-		>>> c = Categorical(['a', 'a', 'b'])
+		>>> c = pd.Categorical(['a', 'a', 'b'])
 		>>> c.rename_categories([0, 1])
 		[0, 0, 1]
 		Categories (2, int64): [0, 1]
@@ -384,12 +390,6 @@ package pandas.core.arrays.categorical;
 		`new_categories` need to include all old categories and no new category
 		items.
 		
-		Raises
-		------
-		ValueError
-		    If the new categories do not contain all old category items or any
-		    new ones
-		
 		Parameters
 		----------
 		new_categories : Index-like
@@ -405,7 +405,13 @@ package pandas.core.arrays.categorical;
 		-------
 		cat : Categorical with reordered categories or None if inplace.
 		
-		See also
+		Raises
+		------
+		ValueError
+		    If the new categories do not contain all old category items or any
+		    new ones
+		
+		See Also
 		--------
 		rename_categories
 		add_categories
@@ -433,11 +439,6 @@ package pandas.core.arrays.categorical;
 		dtypes on python3, which does not considers a S1 string equal to a
 		single char python string.
 		
-		Raises
-		------
-		ValueError
-		    If new_categories does not validate as categories
-		
 		Parameters
 		----------
 		new_categories : Index-like
@@ -456,7 +457,12 @@ package pandas.core.arrays.categorical;
 		-------
 		cat : Categorical with reordered categories or None if inplace.
 		
-		See also
+		Raises
+		------
+		ValueError
+		    If new_categories does not validate as categories
+		
+		See Also
 		--------
 		rename_categories
 		reorder_categories

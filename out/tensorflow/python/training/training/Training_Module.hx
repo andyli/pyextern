@@ -72,7 +72,7 @@ package tensorflow.python.training.training;
 	/**
 		Adds a `QueueRunner` to a collection in the graph. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		To construct input pipelines, use the `tf.data` module.
 		
@@ -121,7 +121,7 @@ package tensorflow.python.training.training;
 	/**
 		Creates batches of tensors in `tensors`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.batch(batch_size)` (or `padded_batch(...)` if `dynamic_pad=True`).
 		
@@ -204,7 +204,7 @@ package tensorflow.python.training.training;
 	/**
 		Runs a list of tensors to fill a queue to create batches of examples. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.interleave(...).batch(batch_size)` (or `padded_batch(...)` if `dynamic_pad=True`).
 		
@@ -297,7 +297,11 @@ package tensorflow.python.training.training;
 	**/
 	static public function batch_join(tensors_list:Dynamic, batch_size:Dynamic, ?capacity:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?dynamic_pad:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Checks whether a V1 or V2 checkpoint exists with the specified prefix.
+		Checks whether a V1 or V2 checkpoint exists with the specified prefix. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use standard file APIs to check for files with this prefix.
 		
 		This is the recommended way to check if a checkpoint exists, since it takes
 		into account the naming difference between V1 and V2 formats.
@@ -430,7 +434,7 @@ package tensorflow.python.training.training;
 	/**
 		A general quantization scheme is being developed in `tf.contrib.quantize`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		GraphDef quantized training rewriter is deprecated in the long term
 		
@@ -570,7 +574,11 @@ package tensorflow.python.training.training;
 	**/
 	static public function generate_checkpoint_state_proto(save_dir:Dynamic, model_checkpoint_path:Dynamic, ?all_model_checkpoint_paths:Dynamic, ?all_model_checkpoint_timestamps:Dynamic, ?last_preserved_timestamp:Dynamic):Dynamic;
 	/**
-		Returns the mtimes (modification timestamps) of the checkpoints.
+		Returns the mtimes (modification timestamps) of the checkpoints. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use standard file utilities to get mtimes.
 		
 		Globs for the checkpoints pointed to by `checkpoint_prefixes`.  If the files
 		exist, collect their mtime.  Both V2 and V1 checkpoints are considered, in
@@ -739,6 +747,37 @@ package tensorflow.python.training.training;
 		NOTE: Restarting training from saved `meta_graph` only works if the
 		device assignments have not changed.
 		
+		Example 2:
+		Variables, placeholders, and independent operations can also be stored, as
+		shown in the following example.
+		
+		```Python
+		# Saving contents and operations.
+		v1 = tf.placeholder(tf.float32, name="v1")
+		v2 = tf.placeholder(tf.float32, name="v2")
+		v3 = tf.mul(v1, v2)
+		vx = tf.Variable(10.0, name="vx")
+		v4 = tf.add(v3, vx, name="v4")
+		saver = tf.train.Saver([vx])
+		sess = tf.Session()
+		sess.run(tf.initialize_all_variables())
+		sess.run(vx.assign(tf.add(vx, vx)))
+		result = sess.run(v4, feed_dict={v1:12.0, v2:3.3})
+		print(result)
+		saver.save(sess, "./model_ex1")
+		```
+		
+		Later this model can be restored and contents loaded.
+		
+		```Python
+		# Restoring variables and running operations.
+		saver = tf.train.import_meta_graph("./model_ex1.meta")
+		sess = tf.Session()
+		saver.restore(sess, "./model_ex1")
+		result = sess.run("v4:0", feed_dict={"v1:0": 12.0, "v2:0": 3.3})
+		print(result)
+		```
+		
 		Args:
 		  meta_graph_or_file: `MetaGraphDef` protocol buffer or filename (including
 		    the path) containing a `MetaGraphDef`.
@@ -764,7 +803,10 @@ package tensorflow.python.training.training;
 	**/
 	static public function import_meta_graph(meta_graph_or_file:Dynamic, ?clear_devices:Dynamic, ?import_scope:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Initializes current variables with tensors loaded from given checkpoint.
+		Replaces `tf.Variable` initializers so they load from a checkpoint file.
+		
+		Values are not loaded immediately, but when the initializer is run
+		(typically by running a `tf.global_variables_initializer` op).
 		
 		Note: This overrides default initialization ops of specified variables and
 		redefines dtype.
@@ -845,7 +887,7 @@ package tensorflow.python.training.training;
 	/**
 		Output the rows of `input_tensor` to a queue for an input pipeline. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.from_tensor_slices(input_tensor).shuffle(tf.shape(input_tensor, out_type=tf.int64)[0]).repeat(num_epochs)`. If `shuffle=False`, omit the `.shuffle(...)`.
 		
@@ -972,7 +1014,7 @@ package tensorflow.python.training.training;
 	/**
 		Returns tensor `num_epochs` times and then raises an `OutOfRange` error. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.from_tensors(tensor).repeat(num_epochs)`.
 		
@@ -1108,7 +1150,7 @@ package tensorflow.python.training.training;
 	/**
 		Conditionally creates batches of tensors based on `keep_input`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.filter(...).batch(batch_size)` (or `padded_batch(...)` if `dynamic_pad=True`).
 		
@@ -1149,7 +1191,7 @@ package tensorflow.python.training.training;
 	/**
 		Runs a list of tensors to conditionally fill a queue to create batches. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.interleave(...).filter(...).batch(batch_size)` (or `padded_batch(...)` if `dynamic_pad=True`).
 		
@@ -1190,7 +1232,7 @@ package tensorflow.python.training.training;
 	/**
 		Creates batches by randomly shuffling conditionally-enqueued tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.filter(...).shuffle(min_after_dequeue).batch(batch_size)`.
 		
@@ -1235,7 +1277,7 @@ package tensorflow.python.training.training;
 	/**
 		Create batches by randomly shuffling conditionally-enqueued tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.interleave(...).filter(...).shuffle(min_after_dequeue).batch(batch_size)`.
 		
@@ -1538,7 +1580,7 @@ package tensorflow.python.training.training;
 	/**
 		Produces the integers from 0 to limit-1 in a queue. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.range(limit).shuffle(limit).repeat(num_epochs)`. If `shuffle=False`, omit the `.shuffle(...)`.
 		
@@ -1729,7 +1771,7 @@ package tensorflow.python.training.training;
 	/**
 		Creates batches by randomly shuffling tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.shuffle(min_after_dequeue).batch(batch_size)`.
 		
@@ -1816,7 +1858,7 @@ package tensorflow.python.training.training;
 	/**
 		Create batches by randomly shuffling tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.interleave(...).shuffle(min_after_dequeue).batch(batch_size)`.
 		
@@ -1897,7 +1939,7 @@ package tensorflow.python.training.training;
 	/**
 		Produces a slice of each `Tensor` in `tensor_list`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.from_tensor_slices(tuple(tensor_list)).shuffle(tf.shape(input_tensor, out_type=tf.int64)[0]).repeat(num_epochs)`. If `shuffle=False`, omit the `.shuffle(...)`.
 		
@@ -1936,7 +1978,7 @@ package tensorflow.python.training.training;
 	/**
 		Starts all queue runners collected in the graph. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		To construct input pipelines, use the `tf.data` module.
 		
@@ -1974,7 +2016,7 @@ package tensorflow.python.training.training;
 	/**
 		Output strings (e.g. filenames) to a queue for an input pipeline. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.from_tensor_slices(string_tensor).shuffle(tf.shape(input_tensor, out_type=tf.int64)[0]).repeat(num_epochs)`. If `shuffle=False`, omit the `.shuffle(...)`.
 		
@@ -2055,7 +2097,11 @@ package tensorflow.python.training.training;
 	static public function summary_iterator(path:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Updates the content of the 'checkpoint' file.
+		Updates the content of the 'checkpoint' file. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.train.CheckpointManager to manage checkpoints rather than manually editing the Checkpoint proto.
 		
 		This updates the checkpoint file containing a CheckpointState
 		proto.
@@ -2095,23 +2141,32 @@ package tensorflow.python.training.training;
 		
 		    - A regular expression (string) that captures which variables to
 		      warm-start (see tf.get_collection).  This expression will only consider
-		      variables in the TRAINABLE_VARIABLES collection.
-		    - A list of Variables to warm-start.
-		    - A list of strings, each representing a full variable name to warm-start.
+		      variables in the TRAINABLE_VARIABLES collection -- if you need to
+		      warm-start non_TRAINABLE vars (such as optimizer accumulators or batch
+		      norm statistics), please use the below option.
+		    - A list of Variables to warm-start.  If you do not have access to the
+		      `Variable` objects at the call site, please use the below option.
+		    - A list of strings, each a regex scope provided to tf.get_collection with
+		      GLOBAL_VARIABLES (please see tf.get_collection).  For backwards
+		      compatibility reasons, this is separate from the single-string argument
+		      type.
 		    - `None`, in which case only variables specified in
 		      `var_name_to_vocab_info` will be warm-started.
 		
 		    Defaults to `'.*'`, which warm-starts all variables in the
-		    TRAINABLE_VARIABLES collection.  Note that this excludes variables such as
-		    accumulators and moving statistics from batch norm.
+		    TRAINABLE_VARIABLES collection.  Note that this excludes variables such
+		    as accumulators and moving statistics from batch norm.
 		  var_name_to_vocab_info: [Optional] Dict of variable names (strings) to
-		    VocabInfo. The variable names should be "full" variables, not the names
-		    of the partitions.  If not explicitly provided, the variable is assumed to
-		    have no vocabulary.
+		    `tf.estimator.VocabInfo`. The variable names should be "full" variables,
+		    not the names of the partitions.  If not explicitly provided, the variable
+		    is assumed to have no (changes to) vocabulary.
 		  var_name_to_prev_var_name: [Optional] Dict of variable names (strings) to
 		    name of the previously-trained variable in `ckpt_to_initialize_from`. If
 		    not explicitly provided, the name of the variable is assumed to be same
-		    between previous checkpoint and current model.
+		    between previous checkpoint and current model.  Note that this has no
+		    effect on the set of variables that is warm-started, and only controls
+		    name mapping (use `vars_to_warm_start` for controlling what variables to
+		    warm-start).
 		Raises:
 		  ValueError: If the WarmStartSettings contains prev_var_name or VocabInfo
 		    configuration for variable names that are not used.  This is to ensure

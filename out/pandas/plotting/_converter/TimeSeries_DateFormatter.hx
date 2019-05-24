@@ -117,6 +117,10 @@ package pandas.plotting._converter;
 		Returns the default ticks spacing.
 	**/
 	public function _set_default_format(vmin:Dynamic, vmax:Dynamic):Dynamic;
+	/**
+		Subclasses may want to override this to set a locator.
+	**/
+	public function _set_locator(locator:Dynamic):Dynamic;
 	static public var axis : Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -144,6 +148,10 @@ package pandas.plotting._converter;
 		Defaults to the position-independent long value.
 	**/
 	public function format_data_short(value:Dynamic):Dynamic;
+	/**
+		Return the tick labels for all the ticks at once.
+	**/
+	public function format_ticks(values:Dynamic):Dynamic;
 	public function get_offset():Dynamic;
 	static public var locs : Dynamic;
 	public function set_axis(axis:Dynamic):Dynamic;

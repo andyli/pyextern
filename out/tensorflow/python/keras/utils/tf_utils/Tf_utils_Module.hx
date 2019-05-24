@@ -9,7 +9,9 @@ package tensorflow.python.keras.utils.tf_utils;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _user_convertible_tensor_types : Dynamic;
 	static public var absolute_import : Dynamic;
+	static public function are_all_symbolic_tensors(tensors:Dynamic):Dynamic;
 	/**
 		Return the bool value for `pred`, or None if `pred` had a dynamic value.
 		
@@ -41,8 +43,51 @@ package tensorflow.python.keras.utils.tf_utils;
 		  A set of tensors reachable from the inputs (includes the inputs themselves).
 	**/
 	static public function get_reachable_from_inputs(inputs:Dynamic, ?targets:Dynamic):Dynamic;
+	/**
+		Returns whether a tensor is symbolic (from a TF graph) or an eager tensor.
+		
+		A Variable can be seen as either: it is considered symbolic
+		when we are in a graph scope, and eager when we are in an eager scope.
+		
+		Arguments:
+		  tensor: A tensor instance to test.
+		
+		Returns:
+		  True for symbolic tensors, False for eager tensors.
+	**/
+	static public function is_symbolic_tensor(tensor:Dynamic):Dynamic;
 	static public function is_tensor_or_tensor_list(v:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Allows users to specify types regarded as symbolic `Tensor`s.
+		
+		Used in conjunction with `tf.register_tensor_conversion_function`, calling
+		`tf.keras.utils.register_symbolic_tensor_type(cls)` allows non-`Tensor`
+		objects to be plumbed through Keras layers.
+		
+		Example:
+		
+		```python
+		# One-time setup.
+		class Foo(object):
+		  def __init__(self, input_):
+		    self._input = input_
+		  def value(self):
+		    return tf.constant(42.)
+		
+		tf.register_tensor_conversion_function(
+		    Foo, lambda x, *args, **kwargs: x.value())
+		
+		tf.keras.utils.register_symbolic_tensor_type(Foo)
+		
+		# User-land.
+		layer = tf.keras.layers.Lambda(lambda input_: Foo(input_))
+		```
+		
+		Arguments:
+		  cls: A `class` type which shall be regarded as a symbolic `Tensor`.
+	**/
+	static public function register_symbolic_tensor_type(cls:Dynamic):Dynamic;
 	/**
 		Decorator that handles tuple/TensorShape conversion.
 		

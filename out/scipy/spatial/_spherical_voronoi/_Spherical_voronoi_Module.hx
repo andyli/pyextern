@@ -41,7 +41,7 @@ package scipy.spatial._spherical_voronoi;
 		    The distance metric to use. The distance function can
 		    be 'braycurtis', 'canberra', 'chebyshev', 'cityblock',
 		    'correlation', 'cosine', 'dice', 'euclidean', 'hamming',
-		    'jaccard', 'kulsinski', 'mahalanobis', 'matching',
+		    'jaccard', 'jensenshannon', 'kulsinski', 'mahalanobis', 'matching',
 		    'minkowski', 'rogerstanimoto', 'russellrao', 'seuclidean',
 		    'sokalmichener', 'sokalsneath', 'sqeuclidean', 'yule'.
 		*args : tuple. Deprecated.

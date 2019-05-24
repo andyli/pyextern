@@ -53,7 +53,7 @@ package tensorflow.python.autograph.impl.conversion;
 	/**
 		Specialization of `entity_to_graph` for callable functions.
 	**/
-	static public function function_to_graph(f:Dynamic, program_ctx:Dynamic, arg_values:Dynamic, arg_types:Dynamic, ?owner_type:Dynamic, ?rewrite_errors:Dynamic):Dynamic;
+	static public function function_to_graph(f:Dynamic, program_ctx:Dynamic, arg_values:Dynamic, arg_types:Dynamic, ?owner_type:Dynamic):Dynamic;
 	/**
 		Check whether an entity is whitelisted for use in graph mode.
 		
@@ -72,7 +72,6 @@ package tensorflow.python.autograph.impl.conversion;
 		Args:
 		  node: AST, the code to convert.
 		  context: converter.EntityContext
-		  rewrite_errors: Boolean, whether or not to rewrite the error traceback.
 		
 		Returns:
 		  A tuple (node, deps):
@@ -80,6 +79,6 @@ package tensorflow.python.autograph.impl.conversion;
 		      * deps: A set of strings, the fully qualified names of entity
 		          dependencies that this node has.
 	**/
-	static public function node_to_graph(node:Dynamic, context:Dynamic, ?rewrite_errors:Dynamic):Dynamic;
+	static public function node_to_graph(node:Dynamic, context:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

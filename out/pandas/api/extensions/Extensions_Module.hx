@@ -19,6 +19,10 @@ package pandas.api.extensions;
 		    Name under which the accessor should be registered. A warning is issued
 		    if this name conflicts with a preexisting attribute.
 		
+		See Also
+		--------
+		register_series_accessor, register_index_accessor
+		
 		Notes
 		-----
 		When accessed, your accessor will be initialized with the pandas object
@@ -26,7 +30,8 @@ package pandas.api.extensions;
 		
 		.. code-block:: python
 		
-		    def __init__(self, pandas_object):
+		    def __init__(self, pandas_object):  # noqa: E999
+		        ...
 		
 		For consistency with pandas methods, you should raise an ``AttributeError``
 		if the data passed to your accessor has an incorrect dtype.
@@ -67,12 +72,25 @@ package pandas.api.extensions;
 		    (5.0, 10.0)
 		    >>> ds.geo.plot()
 		    # plots data on a map
-		
-		See also
-		--------
-		register_series_accessor, register_index_accessor
 	**/
 	static public function register_dataframe_accessor(name:Dynamic):Dynamic;
+	/**
+		Class decorator to register an ExtensionType with pandas.
+		
+		.. versionadded:: 0.24.0
+		
+		This enables operations like ``.astype(name)`` for the name
+		of the ExtensionDtype.
+		
+		Examples
+		--------
+		>>> from pandas.api.extensions import register_extension_dtype
+		>>> from pandas.api.extensions import ExtensionDtype
+		>>> @register_extension_dtype
+		... class MyExtensionDtype(ExtensionDtype):
+		...     pass
+	**/
+	static public function register_extension_dtype(cls:Dynamic):Dynamic;
 	/**
 		Register a custom accessor on Index objects.
 		
@@ -82,6 +100,10 @@ package pandas.api.extensions;
 		    Name under which the accessor should be registered. A warning is issued
 		    if this name conflicts with a preexisting attribute.
 		
+		See Also
+		--------
+		register_dataframe_accessor, register_series_accessor
+		
 		Notes
 		-----
 		When accessed, your accessor will be initialized with the pandas object
@@ -89,7 +111,8 @@ package pandas.api.extensions;
 		
 		.. code-block:: python
 		
-		    def __init__(self, pandas_object):
+		    def __init__(self, pandas_object):  # noqa: E999
+		        ...
 		
 		For consistency with pandas methods, you should raise an ``AttributeError``
 		if the data passed to your accessor has an incorrect dtype.
@@ -130,10 +153,6 @@ package pandas.api.extensions;
 		    (5.0, 10.0)
 		    >>> ds.geo.plot()
 		    # plots data on a map
-		
-		See also
-		--------
-		register_dataframe_accessor, register_series_accessor
 	**/
 	static public function register_index_accessor(name:Dynamic):Dynamic;
 	/**
@@ -145,6 +164,10 @@ package pandas.api.extensions;
 		    Name under which the accessor should be registered. A warning is issued
 		    if this name conflicts with a preexisting attribute.
 		
+		See Also
+		--------
+		register_dataframe_accessor, register_index_accessor
+		
 		Notes
 		-----
 		When accessed, your accessor will be initialized with the pandas object
@@ -152,7 +175,8 @@ package pandas.api.extensions;
 		
 		.. code-block:: python
 		
-		    def __init__(self, pandas_object):
+		    def __init__(self, pandas_object):  # noqa: E999
+		        ...
 		
 		For consistency with pandas methods, you should raise an ``AttributeError``
 		if the data passed to your accessor has an incorrect dtype.
@@ -193,10 +217,6 @@ package pandas.api.extensions;
 		    (5.0, 10.0)
 		    >>> ds.geo.plot()
 		    # plots data on a map
-		
-		See also
-		--------
-		register_dataframe_accessor, register_index_accessor
 	**/
 	static public function register_series_accessor(name:Dynamic):Dynamic;
 	/**
@@ -207,7 +227,7 @@ package pandas.api.extensions;
 		Parameters
 		----------
 		arr : sequence
-		    Non array-likes (sequences without a dtype) are coereced
+		    Non array-likes (sequences without a dtype) are coerced
 		    to an ndarray.
 		indices : sequence of integers
 		    Indices to be taken.

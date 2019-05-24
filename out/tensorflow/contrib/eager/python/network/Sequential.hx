@@ -66,7 +66,7 @@ package tensorflow.contrib.eager.python.network;
 	/**
 		Configure the `Network`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please inherit from `tf.keras.Model`, and see its documentation for details. `tf.keras.Model` should be a drop-in replacement for `tfe.Network` in most cases, but note that `track_layer` is no longer necessary or supported. Instead, `Layer` instances are tracked on attribute assignment (see the section of `tf.keras.Model`'s documentation on subclassing). Since the output of `track_layer` is often assigned to an attribute anyway, most code can be ported by simply removing the `track_layer` calls.
 		
@@ -92,7 +92,7 @@ package tensorflow.contrib.eager.python.network;
 	/**
 		Configure the `Network`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please inherit from `tf.keras.Model`, and see its documentation for details. `tf.keras.Model` should be a drop-in replacement for `tfe.Network` in most cases, but note that `track_layer` is no longer necessary or supported. Instead, `Layer` instances are tracked on attribute assignment (see the section of `tf.keras.Model`'s documentation on subclassing). Since the output of `track_layer` is often assigned to an attribute anyway, most code can be ported by simply removing the `track_layer` calls.
 		
@@ -213,20 +213,6 @@ package tensorflow.contrib.eager.python.network;
 	**/
 	public function _add_variable_with_custom_getter(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?getter:Dynamic, ?overwrite:Dynamic, ?kwargs_for_getter:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Checks compatibility between the layer and provided inputs.
-		
-		This checks that the tensor(s) `inputs` verify the input assumptions
-		of the layer (if any). If not, a clear and actional exception gets raised.
-		
-		Arguments:
-		    inputs: input tensor or list of input tensors.
-		
-		Raises:
-		    ValueError: in case of mismatch between
-		        the provided inputs and the expectations of the layer.
-	**/
-	public function _assert_input_compatibility(inputs:Dynamic):Dynamic;
-	/**
 		All dependencies of this object.
 		
 		May be overridden to include conditional dependencies.
@@ -250,7 +236,9 @@ package tensorflow.contrib.eager.python.network;
 		  objects.
 	**/
 	public var _deferred_dependencies : Dynamic;
+	public function _eager_add_metric(value:Dynamic, ?aggregation:Dynamic, ?name:Dynamic):Dynamic;
 	public function _finalize_name(parent_network:Dynamic):Dynamic;
+	public function _gather_children_attribute(attribute:Dynamic):Dynamic;
 	/**
 		Returns a dictionary of values to checkpoint with this object.
 		
@@ -281,6 +269,7 @@ package tensorflow.contrib.eager.python.network;
 		   SaveableObject(name=name, ...)}
 	**/
 	public function _gather_saveables_for_checkpoint():Dynamic;
+	public function _get_existing_metric(?name:Dynamic):Dynamic;
 	/**
 		Private utility to retrieves an attribute (e.g. inputs) from a node.
 		
@@ -360,6 +349,7 @@ package tensorflow.contrib.eager.python.network;
 	**/
 	public function _lookup_dependency(name:Dynamic):Dynamic;
 	public function _make_unique_name(?name_uid_map:Dynamic, ?avoid_names:Dynamic, ?namespace:Dynamic, ?zero_based:Dynamic):Dynamic;
+	public function _maybe_build(inputs:Dynamic):Dynamic;
 	/**
 		Initialize dependency management.
 		
@@ -407,7 +397,6 @@ package tensorflow.contrib.eager.python.network;
 	**/
 	public function _restore_from_checkpoint_position(checkpoint_position:Dynamic):Dynamic;
 	public function _set_connectivity_metadata_(inputs:Dynamic, outputs:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	public function _set_learning_phase_metadata(inputs:Dynamic, outputs:Dynamic):Dynamic;
 	public function _set_mask_metadata(inputs:Dynamic, outputs:Dynamic, previous_mask:Dynamic):Dynamic;
 	public function _set_scope(?scope:Dynamic):Dynamic;
 	public function _set_scope_for_nonnetwork_sublayer(sublayer:Dynamic):Dynamic;
@@ -415,6 +404,22 @@ package tensorflow.contrib.eager.python.network;
 		Restore this object, and either queue its dependencies or defer them.
 	**/
 	public function _single_restoration_from_checkpoint_position(checkpoint_position:Dynamic, visit_queue:Dynamic):Dynamic;
+	/**
+		Whether the layer can be called to create a static graph.
+		
+		Because of nesting, there are two components to being "graph-friendly":
+		  1) all inner layers are graph-friendly
+		  2) the way they are composed is graph-friendly.
+		We denote the latter as "_call_is_graph_friendly", and define
+		"_static_graph_friendly" as being the combination of
+		"_call_is_graph_friendly" and "all inner layers are _static_graph_friendly".
+		For atomic layers (no inner layers), this is just "_call_is_graph_friendly".
+		
+		Returns:
+		  Boolean.
+	**/
+	public var _static_graph_friendly : Dynamic;
+	public function _symbolic_add_metric(value:Dynamic, ?aggregation:Dynamic, ?name:Dynamic):Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
 	/**
@@ -469,21 +474,33 @@ package tensorflow.contrib.eager.python.network;
 		
 		Arguments:
 		  losses: Loss tensor, or list/tuple of tensors. Rather than tensors, losses
-		    may also be zero-argument callables which create a loss tensor. Only
-		    callable losses are supported when executing eagerly.
-		  inputs: If anything other than None is passed, it signals the losses
-		    are conditional on some of the layer's inputs,
-		    and thus they should only be run where these inputs are available.
-		    This is the case for activity regularization losses, for instance.
-		    If `None` is passed, the losses are assumed
+		    may also be zero-argument callables which create a loss tensor.
+		  inputs: Ignored when executing eagerly. If anything other than None is
+		    passed, it signals the losses are conditional on some of the layer's
+		    inputs, and thus they should only be run where these inputs are
+		    available. This is the case for activity regularization losses, for
+		    instance. If `None` is passed, the losses are assumed
 		    to be unconditional, and will apply across all dataflows of the layer
 		    (e.g. weight regularization losses).
-		
-		Raises:
-		  RuntimeError: If called in Eager mode with a `Tensor` rather than a
-		    callable, or if `inputs` is not None.
 	**/
 	public function add_loss(losses:Dynamic, ?inputs:Dynamic):Dynamic;
+	/**
+		Adds metric tensor to the layer.
+		
+		Args:
+		  value: Metric tensor.
+		  aggregation: Sample-wise metric reduction function. If `aggregation=None`,
+		    it indicates that the metric tensor provided has been aggregated
+		    already. eg, `model.add_metric(BinaryAccuracy(name='acc')(y_true,
+		    y_pred))`. If aggregation='mean', the given metric tensor will be
+		    sample-wise reduced using `mean` function. eg, `model.add_metric(
+		    tf.reduce_mean(outputs), name='output_mean', aggregation='mean')`.
+		  name: String metric name.
+		
+		Raises:
+		  ValueError: If `aggregation` is anything other than None or `mean`.
+	**/
+	public function add_metric(value:Dynamic, ?aggregation:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Add update op(s), potentially dependent on layer inputs.
 		
@@ -568,7 +585,7 @@ package tensorflow.contrib.eager.python.network;
 	/**
 		Apply the layer on a input.
 		
-		This simply wraps `self.__call__`.
+		This is an alias of `self.__call__`.
 		
 		Arguments:
 		  inputs: Input tensor(s).
@@ -580,7 +597,18 @@ package tensorflow.contrib.eager.python.network;
 	**/
 	public function apply(inputs:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Creates the variables of the layer.
+		Creates the variables of the layer (optional, for subclass implementers).
+		
+		This is a method that implementers of subclasses of `Layer` or `Model`
+		can override if they need a state-creation step in-between
+		layer instantiation and layer call.
+		
+		This is typically used to create the weights of `Layer` subclasses.
+		
+		Arguments:
+		  input_shape: Instance of `TensorShape`, or list of instances of
+		    `TensorShape` if the layer expects a list of inputs
+		    (one instance per input).
 	**/
 	public function build(input_shape:Dynamic):Dynamic;
 	/**
@@ -964,6 +992,8 @@ package tensorflow.contrib.eager.python.network;
 	public var updates : Dynamic;
 	/**
 		Returns the list of all layer variables/weights.
+		
+		Alias of `self.weights`.
 		
 		Returns:
 		  A list of variables.

@@ -120,7 +120,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.graph_io;
 	/**
 		Speeds up parsing by using queues to do it asynchronously. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -159,7 +159,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.graph_io;
 	/**
 		Adds operations to read, queue, batch `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -206,7 +206,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.graph_io;
 	/**
 		Adds operations to read, queue, batch and parse `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -261,7 +261,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.graph_io;
 	/**
 		Reads TFRecord, queues, batches and parses `Example` proto. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -294,7 +294,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.graph_io;
 	/**
 		Adds operations to read, queue, batch `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -343,7 +343,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.graph_io;
 	/**
 		Adds operations to read, queue, batch `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -395,7 +395,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.graph_io;
 	/**
 		Adds operations to read, queue, batch and parse `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -451,7 +451,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.graph_io;
 	/**
 		Adds operations to read, queue, batch and parse `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		

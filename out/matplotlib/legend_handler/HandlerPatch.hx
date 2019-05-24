@@ -48,8 +48,8 @@ package matplotlib.legend_handler;
 		                       xdescent=xdescent, ydescent=ydescent,
 		                       width=width, height=height, fontsize=fontsize)
 		
-		    Subsequently the created artist will have its ``update_prop`` method
-		    called and the appropriate transform will be applied.
+		    Subsequently the created artist will have its ``update_prop``
+		    method called and the appropriate transform will be applied.
 		
 		Notes
 		-----
@@ -68,8 +68,8 @@ package matplotlib.legend_handler;
 		                       xdescent=xdescent, ydescent=ydescent,
 		                       width=width, height=height, fontsize=fontsize)
 		
-		    Subsequently the created artist will have its ``update_prop`` method
-		    called and the appropriate transform will be applied.
+		    Subsequently the created artist will have its ``update_prop``
+		    method called and the appropriate transform will be applied.
 		
 		Notes
 		-----

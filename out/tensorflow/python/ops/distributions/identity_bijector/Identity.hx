@@ -15,7 +15,7 @@ package tensorflow.python.ops.distributions.identity_bijector;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,84 +52,20 @@ package tensorflow.python.ops.distributions.identity_bijector;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Constructs Bijector.
+		DEPRECATED FUNCTION
 		
-		A `Bijector` transforms random variables into new random variables.
-		
-		Examples:
-		
-		```python
-		# Create the Y = g(X) = X transform.
-		identity = Identity()
-		
-		# Create the Y = g(X) = exp(X) transform.
-		exp = Exp()
-		```
-		
-		See `Bijector` subclass docstring for more details and specific examples.
-		
-		Args:
-		  graph_parents: Python list of graph prerequisites of this `Bijector`.
-		  is_constant_jacobian: Python `bool` indicating that the Jacobian matrix is
-		    not a function of the input.
-		  validate_args: Python `bool`, default `False`. Whether to validate input
-		    with asserts. If `validate_args` is `False`, and the inputs are invalid,
-		    correct behavior is not guaranteed.
-		  dtype: `tf.dtype` supported by this `Bijector`. `None` means dtype is not
-		    enforced.
-		  forward_min_event_ndims: Python `integer` indicating the minimum number of
-		    dimensions `forward` operates on.
-		  inverse_min_event_ndims: Python `integer` indicating the minimum number of
-		    dimensions `inverse` operates on. Will be set to
-		    `forward_min_event_ndims` by default, if no value is provided.
-		  name: The name to give Ops created by the initializer.
-		
-		Raises:
-		  ValueError:  If neither `forward_min_event_ndims` and
-		    `inverse_min_event_ndims` are specified, or if either of them is
-		    negative.
-		  ValueError:  If a member of `graph_parents` is not a `Tensor`.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 	**/
 	@:native("__init__")
 	public function ___init__(?validate_args:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Constructs Bijector.
+		DEPRECATED FUNCTION
 		
-		A `Bijector` transforms random variables into new random variables.
-		
-		Examples:
-		
-		```python
-		# Create the Y = g(X) = X transform.
-		identity = Identity()
-		
-		# Create the Y = g(X) = exp(X) transform.
-		exp = Exp()
-		```
-		
-		See `Bijector` subclass docstring for more details and specific examples.
-		
-		Args:
-		  graph_parents: Python list of graph prerequisites of this `Bijector`.
-		  is_constant_jacobian: Python `bool` indicating that the Jacobian matrix is
-		    not a function of the input.
-		  validate_args: Python `bool`, default `False`. Whether to validate input
-		    with asserts. If `validate_args` is `False`, and the inputs are invalid,
-		    correct behavior is not guaranteed.
-		  dtype: `tf.dtype` supported by this `Bijector`. `None` means dtype is not
-		    enforced.
-		  forward_min_event_ndims: Python `integer` indicating the minimum number of
-		    dimensions `forward` operates on.
-		  inverse_min_event_ndims: Python `integer` indicating the minimum number of
-		    dimensions `inverse` operates on. Will be set to
-		    `forward_min_event_ndims` by default, if no value is provided.
-		  name: The name to give Ops created by the initializer.
-		
-		Raises:
-		  ValueError:  If neither `forward_min_event_ndims` and
-		    `inverse_min_event_ndims` are specified, or if either of them is
-		    negative.
-		  ValueError:  If a member of `graph_parents` is not a `Tensor`.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 	**/
 	public function new(?validate_args:Dynamic, ?name:Dynamic):Void;
 	/**

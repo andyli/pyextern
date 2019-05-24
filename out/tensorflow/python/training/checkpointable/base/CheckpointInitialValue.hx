@@ -24,6 +24,9 @@ package tensorflow.python.training.checkpointable.base;
 		    values.
 		  Note, for `complex64` or `complex128` input, the returned `Tensor` will be
 		    of type `float32` or `float64`, respectively.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.abs(x.values, ...), x.dense_shape)`
 	**/
 	static public function __abs__(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -208,7 +211,8 @@ package tensorflow.python.training.checkpointable.base;
 		
 		Raises:
 		  ValueError: If a slice range is negative size.
-		  TypeError: If the slice indices aren't int, slice, or Ellipsis.
+		  TypeError: If the slice indices aren't int, slice, ellipsis,
+		    tf.newaxis or scalar int32/int64 tensors.
 	**/
 	static public function __getitem__(tensor:Dynamic, slice_spec:Dynamic, ?_var:Dynamic):Dynamic;
 	/**
@@ -414,7 +418,7 @@ package tensorflow.python.training.checkpointable.base;
 		true, this follows Python semantics in that the result here is consistent
 		with a flooring divide. E.g. `floor(x / y) * y + mod(x, y) = x`.
 		
-		*NOTE*: `FloorMod` supports broadcasting. More about broadcasting
+		*NOTE*: `floormod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -446,6 +450,9 @@ package tensorflow.python.training.checkpointable.base;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.negative(x.values, ...), x.dense_shape)`
 	**/
 	static public function __neg__(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -684,7 +691,7 @@ package tensorflow.python.training.checkpointable.base;
 		true, this follows Python semantics in that the result here is consistent
 		with a flooring divide. E.g. `floor(x / y) * y + mod(x, y) = x`.
 		
-		*NOTE*: `FloorMod` supports broadcasting. More about broadcasting
+		*NOTE*: `floormod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:

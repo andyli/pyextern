@@ -109,22 +109,21 @@ package pandas.core.resample;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		dispatch to _upsample; we are stripping all of the _upsample kwargs and
-		performing the original function call on the grouped object
+		Dispatch to _upsample; we are stripping all of the _upsample kwargs and
+		performing the original function call on the grouped object.
 	**/
-	public function _apply(f:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _apply(f:Dynamic, ?grouper:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		dispatch to apply 
+		Dispatch to apply.
 	**/
 	static public function _dispatch(name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		dispatch to _upsample; we are stripping all of the _upsample kwargs and
-		performing the original function call on the grouped object
+		Dispatch to _upsample; we are stripping all of the _upsample kwargs and
+		performing the original function call on the grouped object.
 	**/
-	public function _downsample(f:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _downsample(f:Dynamic, ?grouper:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		sub-classes to define
-		return a sliced object
+		Sub-classes to define. Return a sliced object.
 		
 		Parameters
 		----------
@@ -136,13 +135,13 @@ package pandas.core.resample;
 	**/
 	public function _gotitem(key:Dynamic, ndim:Dynamic, ?subset:Dynamic):Dynamic;
 	/**
-		dispatch to _upsample; we are stripping all of the _upsample kwargs and
-		performing the original function call on the grouped object
+		Dispatch to _upsample; we are stripping all of the _upsample kwargs and
+		performing the original function call on the grouped object.
 	**/
-	public function _groupby_and_aggregate(f:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _groupby_and_aggregate(f:Dynamic, ?grouper:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		dispatch to _upsample; we are stripping all of the _upsample kwargs and
-		performing the original function call on the grouped object
+		Dispatch to _upsample; we are stripping all of the _upsample kwargs and
+		performing the original function call on the grouped object.
 	**/
-	public function _upsample(f:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _upsample(f:Dynamic, ?grouper:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

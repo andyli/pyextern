@@ -1,3 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.matlib;
-typedef ComplexWarning = numpy.core.numeric.ComplexWarning;
+typedef ComplexWarning = numpy.ComplexWarning;

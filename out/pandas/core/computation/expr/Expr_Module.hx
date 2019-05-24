@@ -20,6 +20,14 @@ package pandas.core.computation.expr;
 	static public var _boolop_nodes : Dynamic;
 	static public var _cmp_op_nodes : Dynamic;
 	static public var _cmp_ops_syms : Dynamic;
+	/**
+		Compose 2 or more callables
+	**/
+	static public function _compose(?funcs:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Compose 2 callables
+	**/
+	static public function _compose2(f:Dynamic, g:Dynamic):Dynamic;
 	static public var _comprehension_nodes : Dynamic;
 	static public var _expr_context_nodes : Dynamic;
 	static public var _expr_nodes : Dynamic;
@@ -143,10 +151,6 @@ package pandas.core.computation.expr;
 		Decorator to add default implementation of ops.
 	**/
 	static public function add_ops(op_classes:Dynamic):Dynamic;
-	/**
-		Compose 2 or more callables
-	**/
-	static public function compose(?funcs:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Decorator to disallow certain nodes from parsing. Raises a
 		NotImplementedError instead.

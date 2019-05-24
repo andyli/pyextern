@@ -22,7 +22,6 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DTYPE_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -63,7 +62,6 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -72,7 +70,6 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SHAPE_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -85,6 +82,10 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -250,4 +251,16 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.GraphTransferGraphInputNodeInfo.dtype
+	**/
+	public var dtype : Dynamic;
+	/**
+		Field tensorflow.GraphTransferGraphInputNodeInfo.name
+	**/
+	public var name : Dynamic;
+	/**
+		Field tensorflow.GraphTransferGraphInputNodeInfo.shape
+	**/
+	public var shape : Dynamic;
 }

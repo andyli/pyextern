@@ -137,5 +137,6 @@ package pandas._libs.parsers;
 	public var skiprows : Dynamic;
 	public var table_width : Dynamic;
 	public var tupleize_cols : Dynamic;
+	public var unnamed_cols : Dynamic;
 	public var usecols : Dynamic;
 }

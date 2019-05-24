@@ -10,6 +10,10 @@ package scipy.integrate._ivp.lsoda;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Assert that first_step is valid and return it.
+	**/
+	static public function validate_first_step(first_step:Dynamic, t0:Dynamic, t_bound:Dynamic):Dynamic;
+	/**
 		Validate tolerance values.
 	**/
 	static public function validate_tol(rtol:Dynamic, atol:Dynamic, n:Dynamic):Dynamic;

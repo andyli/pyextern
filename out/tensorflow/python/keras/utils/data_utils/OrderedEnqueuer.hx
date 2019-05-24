@@ -109,11 +109,21 @@ package tensorflow.python.keras.utils.data_utils;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		Gets the Pool initializer for multiprocessing.
+		
+		Arguments:
+		    workers: Number of workers.
+		
+		Returns:
+		    Function, a Function to initialize the pool
+	**/
+	public function _get_executor_init(workers:Dynamic):Dynamic;
+	/**
 		Submits request to the executor and queue the `Future` objects.
 	**/
 	public function _run():Dynamic;
 	/**
-		Send current Sequence to all workers.
+		Sends current Iterable to all workers.
 	**/
 	public function _send_sequence():Dynamic;
 	static public var _tf_api_names : Dynamic;
@@ -135,10 +145,10 @@ package tensorflow.python.keras.utils.data_utils;
 	public function get():Dynamic;
 	public function is_running():Dynamic;
 	/**
-		Start the handler's workers.
+		Starts the handler's workers.
 		
 		Arguments:
-		    workers: number of worker threads
+		    workers: Number of workers.
 		    max_queue_size: queue size
 		        (when full, workers could block on `put()`)
 	**/

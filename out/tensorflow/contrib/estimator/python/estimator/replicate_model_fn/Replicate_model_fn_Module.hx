@@ -2,6 +2,7 @@
 package tensorflow.contrib.estimator.python.estimator.replicate_model_fn;
 @:pythonImport("tensorflow.contrib.estimator.python.estimator.replicate_model_fn") extern class Replicate_model_fn_Module {
 	static public var _DEFAULT_NAME_SCOPE_PATTERN : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -107,7 +108,7 @@ package tensorflow.contrib.estimator.python.estimator.replicate_model_fn;
 	/**
 		Replicate `Estimator.model_fn` over GPUs. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-05-31.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-05-31.
 		Instructions for updating:
 		Please use `tf.contrib.distribute.MirroredStrategy` instead.
 		

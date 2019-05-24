@@ -326,7 +326,27 @@ package tensorflow.python.eager.context;
 		  A RunMetadata protocol buffer. Or None if not enabled.
 	**/
 	public function export_run_metadata():Dynamic;
+	/**
+		Context manager for setting function call options of current thread.
+		
+		Args:
+		  set_options_func: A callable that takes one argument of type
+		    FunctionCallOptions. It should set the properties of that
+		    FunctionCallOptions.
+		
+		Yields:
+		  Nothing.
+	**/
+	public function function_call_options(set_options_func:Dynamic):Dynamic;
 	public function get_execution_mode():Dynamic;
+	/**
+		Returns function call options for current thread.
+		
+		Note that the returned object is still referenced by the eager context.
+		
+		Returns: the FunctionCallOptions for current thread.
+	**/
+	public function get_function_call_options():Dynamic;
 	/**
 		The number of GPUs available to execute operations.
 	**/

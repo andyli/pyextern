@@ -54,9 +54,6 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MAX_NUMBER_OF_UNIQUE_FEATURE_COLUMNS_FIELD_NUMBER : Dynamic;
-	static public var MAX_TREE_DEPTH_FIELD_NUMBER : Dynamic;
-	static public var MIN_NODE_WEIGHT_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -85,6 +82,10 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -250,4 +251,16 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.TreeConstraintsConfig.max_number_of_unique_feature_columns
+	**/
+	public var max_number_of_unique_feature_columns : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.TreeConstraintsConfig.max_tree_depth
+	**/
+	public var max_tree_depth : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.TreeConstraintsConfig.min_node_weight
+	**/
+	public var min_node_weight : Dynamic;
 }

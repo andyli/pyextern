@@ -119,19 +119,17 @@ package matplotlib.textpath;
 	**/
 	public function _get_char_id_ps(font:Dynamic, ccode:Dynamic):Dynamic;
 	/**
-		find a ttf font.
+		Find the `FT2Font` matching font properties *prop*, with its size set.
 	**/
 	public function _get_font(prop:Dynamic):Dynamic;
 	public function _get_hinting_flag():Dynamic;
 	static public function _get_ps_font_and_encoding(texname:Dynamic):Dynamic;
 	/**
-		convert the string *s* to vertices and codes by parsing it with
-		mathtext.
+		Parse mathtext string *s* and convert it to a (vertices, codes) pair.
 	**/
 	public function get_glyphs_mathtext(prop:Dynamic, s:Dynamic, ?glyph_map:Dynamic, ?return_new_glyphs_only:Dynamic):Dynamic;
 	/**
-		convert the string *s* to vertices and codes using matplotlib's usetex
-		mode.
+		Convert the string *s* to vertices and codes using usetex mode.
 	**/
 	public function get_glyphs_tex(prop:Dynamic, s:Dynamic, ?glyph_map:Dynamic, ?return_new_glyphs_only:Dynamic):Dynamic;
 	/**
@@ -139,7 +137,7 @@ package matplotlib.textpath;
 	**/
 	public function get_glyphs_with_font(font:Dynamic, s:Dynamic, ?glyph_map:Dynamic, ?return_new_glyphs_only:Dynamic):Dynamic;
 	/**
-		return the :class:`matplotlib.texmanager.TexManager` instance
+		Return the cached `~.texmanager.TexManager` instance.
 	**/
 	public function get_texmanager():Dynamic;
 	/**
@@ -155,12 +153,11 @@ package matplotlib.textpath;
 		s : str
 		    The text to be converted.
 		
-		usetex : bool, optional
-		    Whether to use tex rendering. Defaults to ``False``.
+		ismath : {False, True, "TeX"}
+		    If True, use mathtext parser.  If "TeX", use tex for renderering.
 		
-		ismath : bool, optional
-		    If True, use mathtext parser. Effective only if
-		    ``usetex == False``.
+		usetex : bool, optional
+		    If set, forces *ismath* to True.  This parameter is deprecated.
 		
 		Returns
 		-------
@@ -188,14 +185,21 @@ package matplotlib.textpath;
 	public function get_text_path(prop:Dynamic, s:Dynamic, ?ismath:Dynamic, ?usetex:Dynamic):Dynamic;
 	public function get_text_width_height_descent(s:Dynamic, prop:Dynamic, ismath:Dynamic):Dynamic;
 	/**
-		convert the ft2font glyph to vertices and codes.
+		[*Deprecated*] Convert the *font*'s current glyph to a (vertices, codes) pair.
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	public function glyph_to_path(font:Dynamic, ?currx:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 3.0
-		    The tex_font_map function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		[*Deprecated*] 
 		
-		\ 
+		Notes
+		-----
+		.. deprecated:: 3.0
+		   \ 
 	**/
 	public var tex_font_map : Dynamic;
 }

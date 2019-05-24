@@ -16,7 +16,11 @@ package tensorflow.python.framework.load_library;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
-		Loads a TensorFlow plugin, containing file system implementation.
+		Loads a TensorFlow plugin, containing file system implementation. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.load_library instead.
 		
 		Pass `library_filename` to a platform-specific mechanism for dynamically
 		loading a library. The rules for determining the exact location of the

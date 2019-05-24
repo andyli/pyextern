@@ -21,7 +21,6 @@ package tensorflow.core.debug.debug_service_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEBUG_OP_STATE_CHANGES_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		A ProtocolMessage
@@ -87,7 +86,10 @@ package tensorflow.core.debug.debug_service_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TENSOR_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -253,4 +255,12 @@ package tensorflow.core.debug.debug_service_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.EventReply.debug_op_state_changes
+	**/
+	public var debug_op_state_changes : Dynamic;
+	/**
+		Field tensorflow.EventReply.tensor
+	**/
+	public var tensor : Dynamic;
 }

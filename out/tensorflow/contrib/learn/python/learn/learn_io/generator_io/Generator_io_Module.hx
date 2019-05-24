@@ -82,7 +82,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.generator_io;
 	/**
 		Returns input function that returns dicts of numpy arrays (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.data.
 		

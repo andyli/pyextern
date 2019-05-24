@@ -15,25 +15,24 @@ package matplotlib.path;
 	**/
 	static public function _to_unmasked_float_array(x:Dynamic):Dynamic;
 	/**
-		Given a sequence of :class:`Path` objects,
-		:class:`~matplotlib.transforms.Transform` objects and offsets, as
-		found in a :class:`~matplotlib.collections.PathCollection`,
-		returns the bounding box that encapsulates all of them.
+		Given a sequence of `Path`\s, `~.Transform`\s objects, and offsets, as
+		found in a `~.PathCollection`, returns the bounding box that encapsulates
+		all of them.
 		
-		*master_transform* is a global transformation to apply to all paths
+		Parameters
+		----------
+		master_transform : `~.Transform`
+		    Global transformation applied to all paths.
+		paths : list of `Path`
+		transform : list of `~.Affine2D`
+		offsets : (N, 2) array-like
+		offset_transform : `~.Affine2D`
+		    Transform applied to the offsets before offsetting the path.
 		
-		*paths* is a sequence of :class:`Path` instances.
-		
-		*transforms* is a sequence of
-		:class:`~matplotlib.transforms.Affine2D` instances.
-		
-		*offsets* is a sequence of (x, y) offsets (or an Nx2 array)
-		
-		*offset_transform* is a :class:`~matplotlib.transforms.Affine2D`
-		to apply to the offsets before applying the offset to the path.
-		
+		Notes
+		-----
 		The way that *paths*, *transforms* and *offsets* are combined
-		follows the same method as for collections.  Each is iterated over
+		follows the same method as for collections:  Each is iterated over
 		independently, so if you have 3 paths, 2 transforms and 1 offset,
 		their combinations are as follows:
 		
@@ -41,7 +40,7 @@ package matplotlib.path;
 	**/
 	static public function get_path_collection_extents(master_transform:Dynamic, paths:Dynamic, transforms:Dynamic, offsets:Dynamic, offset_transform:Dynamic):Dynamic;
 	/**
-		Given a sequence of :class:`Path` objects and optional
+		[*Deprecated*] Given a sequence of :class:`Path` objects and optional
 		:class:`~matplotlib.transforms.Transform` objects, returns the
 		bounding box that encapsulates all of them.
 		
@@ -50,6 +49,11 @@ package matplotlib.path;
 		*transforms* is an optional sequence of
 		:class:`~matplotlib.transforms.Affine2D` instances to apply to
 		each path.
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function get_paths_extents(paths:Dynamic, ?transforms:Dynamic):Dynamic;
 	/**

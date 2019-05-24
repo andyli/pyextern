@@ -15,7 +15,7 @@ package tensorflow.python.training.checkpointable.data_structures;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __contains__(key:Dynamic):Dynamic;
 	public function __copy__():Dynamic;
 	public function __deepcopy__(memo:Dynamic):Dynamic;
@@ -240,6 +240,10 @@ package tensorflow.python.training.checkpointable.data_structures;
 	**/
 	public function _handle_deferred_dependencies(name:Dynamic, checkpointable:Dynamic):Dynamic;
 	/**
+		All Layers and Layer containers, including empty containers.
+	**/
+	public var _layers : Dynamic;
+	/**
 		Look up a dependency by name.
 		
 		May be overridden to include conditional dependencies.
@@ -327,6 +331,10 @@ package tensorflow.python.training.checkpointable.data_structures;
 		Add a dependency on `value`.
 	**/
 	public function _track_value(value:Dynamic, name:Dynamic):Dynamic;
+	/**
+		An iterable/sequence which may contain checkpointable objects.
+	**/
+	public var _values : Dynamic;
 	/**
 		D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
 	**/

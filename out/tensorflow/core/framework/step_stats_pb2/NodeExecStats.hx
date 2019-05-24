@@ -1,10 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.framework.step_stats_pb2;
 @:pythonImport("tensorflow.core.framework.step_stats_pb2", "NodeExecStats") extern class NodeExecStats {
-	static public var ALL_END_REL_MICROS_FIELD_NUMBER : Dynamic;
-	static public var ALL_END_REL_NANOS_FIELD_NUMBER : Dynamic;
-	static public var ALL_START_MICROS_FIELD_NUMBER : Dynamic;
-	static public var ALL_START_NANOS_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -58,8 +54,6 @@ package tensorflow.core.framework.step_stats_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MEMORY_FIELD_NUMBER : Dynamic;
-	static public var MEMORY_STATS_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -68,23 +62,14 @@ package tensorflow.core.framework.step_stats_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NODE_NAME_FIELD_NUMBER : Dynamic;
-	static public var OP_END_REL_MICROS_FIELD_NUMBER : Dynamic;
-	static public var OP_END_REL_NANOS_FIELD_NUMBER : Dynamic;
-	static public var OP_START_REL_MICROS_FIELD_NUMBER : Dynamic;
-	static public var OP_START_REL_NANOS_FIELD_NUMBER : Dynamic;
-	static public var OUTPUT_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var REFERENCED_TENSOR_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SCHEDULED_MICROS_FIELD_NUMBER : Dynamic;
-	static public var SCHEDULED_NANOS_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -97,8 +82,10 @@ package tensorflow.core.framework.step_stats_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var THREAD_ID_FIELD_NUMBER : Dynamic;
-	static public var TIMELINE_LABEL_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -264,4 +251,72 @@ package tensorflow.core.framework.step_stats_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.all_end_rel_micros
+	**/
+	public var all_end_rel_micros : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.all_end_rel_nanos
+	**/
+	public var all_end_rel_nanos : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.all_start_micros
+	**/
+	public var all_start_micros : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.all_start_nanos
+	**/
+	public var all_start_nanos : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.memory
+	**/
+	public var memory : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.memory_stats
+	**/
+	public var memory_stats : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.node_name
+	**/
+	public var node_name : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.op_end_rel_micros
+	**/
+	public var op_end_rel_micros : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.op_end_rel_nanos
+	**/
+	public var op_end_rel_nanos : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.op_start_rel_micros
+	**/
+	public var op_start_rel_micros : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.op_start_rel_nanos
+	**/
+	public var op_start_rel_nanos : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.output
+	**/
+	public var output : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.referenced_tensor
+	**/
+	public var referenced_tensor : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.scheduled_micros
+	**/
+	public var scheduled_micros : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.scheduled_nanos
+	**/
+	public var scheduled_nanos : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.thread_id
+	**/
+	public var thread_id : Dynamic;
+	/**
+		Field tensorflow.NodeExecStats.timeline_label
+	**/
+	public var timeline_label : Dynamic;
 }

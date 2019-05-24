@@ -139,25 +139,27 @@ package tensorflow.python.framework.tensor_spec;
 	public var _name : Dynamic;
 	public var _shape : Dynamic;
 	public var _shape_tuple : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Returns the `dtype` of elements in the tensor.
 	**/
 	public var dtype : Dynamic;
 	static public function from_spec(spec:Dynamic):Dynamic;
 	static public function from_tensor(tensor:Dynamic, ?name:Dynamic):Dynamic;
-	static public function is_bounded():Dynamic;
 	/**
-		True if the shape and dtype of `spec_or_tensor` are compatible.
+		Returns True if spec_or_tensor is compatible with this TensorSpec.
+		
+		Two tensors are considered compatible if they have the same dtype
+		and their shapes are compatible (see `tf.TensorShape.is_compatible_with`).
+		
+		Args:
+		  spec_or_tensor: A tf.TensorSpec or a tf.Tensor
+		
+		Returns:
+		  True if spec_or_tensor is compatible with self.
 	**/
 	public function is_compatible_with(spec_or_tensor:Dynamic):Dynamic;
-	/**
-		Whether spec is continuous.
-	**/
-	public var is_continuous : Dynamic;
-	/**
-		Whether spec is discrete.
-	**/
-	public var is_discrete : Dynamic;
 	/**
 		Returns a NumPy array specifying the maximum bounds (inclusive).
 	**/
@@ -167,7 +169,7 @@ package tensorflow.python.framework.tensor_spec;
 	**/
 	public var minimum : Dynamic;
 	/**
-		Returns the name of the described tensor.
+		Returns the (optionally provided) name of the described tensor.
 	**/
 	public var name : Dynamic;
 	/**

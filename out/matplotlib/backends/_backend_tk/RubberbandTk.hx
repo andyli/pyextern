@@ -41,11 +41,11 @@ package matplotlib.backends._backend_tk;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(toolmanager:Dynamic, name:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(toolmanager:Dynamic, name:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -108,6 +108,13 @@ package matplotlib.backends._backend_tk;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Return a placeholder object with a single `canvas` attribute.
+		
+		This is useful to reuse the implementations of tools already provided
+		by the classic Toolbars.
+	**/
+	public function _make_classic_style_pseudo_toolbar():Dynamic;
 	public var canvas : Dynamic;
 	static public var default_keymap : Dynamic;
 	static public var description : Dynamic;
@@ -141,7 +148,7 @@ package matplotlib.backends._backend_tk;
 		
 		Parameters
 		----------
-		figure: `Figure`
+		figure : `Figure`
 	**/
 	public function set_figure(figure:Dynamic):Dynamic;
 	public var toolmanager : Dynamic;

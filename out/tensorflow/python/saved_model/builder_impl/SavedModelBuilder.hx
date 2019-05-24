@@ -119,8 +119,8 @@ package tensorflow.python.saved_model.builder_impl;
 		moved elsewhere.
 		
 		Args:
-		  train_op: Op or group of ops that are used for training. These are
-		    stored as a collection with key TRAIN_OP_KEY, but not executed.
+		  train_op: Op or group of ops that are used for training. These are stored
+		    as a collection with key TRAIN_OP_KEY, but not executed.
 		
 		Raises:
 		  TypeError if Train op is not of type `Operation`.
@@ -130,8 +130,8 @@ package tensorflow.python.saved_model.builder_impl;
 		Adds main op to the SavedModel.
 		
 		Args:
-		  main_op: Main op to run as part of graph initialization. If None, no
-		    main op will be added to the graph.
+		  main_op: Main op to run as part of graph initialization. If None, no main
+		    op will be added to the graph.
 		
 		Raises:
 		  TypeError: if main op is provided but is not of type `Operation`.
@@ -164,16 +164,20 @@ package tensorflow.python.saved_model.builder_impl;
 	public function _tag_and_add_meta_graph(meta_graph_def:Dynamic, tags:Dynamic, signature_def_map:Dynamic):Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
-	static public var _tf_deprecated_api_names : Dynamic;
 	/**
 		Validates the `SignatureDef` entries in the signature def map.
 		
 		Validation of entries in the signature def map includes ensuring that the
 		`name` and `dtype` fields of the TensorInfo protos of the `inputs` and
-		`outputs` of each `SignatureDef` are populated.
+		`outputs` of each `SignatureDef` are populated. Also ensures that reserved
+		SigantureDef keys for the initialization and train ops are not used.
 		
 		Args:
 		  signature_def_map: The map of signature defs to be validated.
+		
+		Raises:
+		  AssertionError: If a TensorInfo is not valid.
+		  KeyError: If a reserved signature key is used in the map.
 	**/
 	public function _validate_signature_def_map(signature_def_map:Dynamic):Dynamic;
 	/**
@@ -191,11 +195,7 @@ package tensorflow.python.saved_model.builder_impl;
 	**/
 	public function _validate_tensor_info(tensor_info:Dynamic):Dynamic;
 	/**
-		Adds the current meta graph to the SavedModel. (deprecated arguments)
-		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
-		Instructions for updating:
-		Pass your op to the equivalent parameter main_op instead.
+		Adds the current meta graph to the SavedModel.
 		
 		Creates a Saver in the current scope and uses the Saver to export the meta
 		graph def. Invoking this API requires the `add_meta_graph_and_variables()`
@@ -205,19 +205,17 @@ package tensorflow.python.saved_model.builder_impl;
 		  tags: The set of tags to annotate the meta graph def with.
 		  signature_def_map: The map of signature defs to be added to the meta graph
 		      def.
-		  assets_collection: Assets collection to be saved with SavedModel. Note
-		      that this collection should be a subset of the assets saved as part of
+		  assets_collection: Assets to be saved with SavedModel. Note
+		      that this list should be a subset of the assets saved as part of
 		      the first meta graph in the SavedModel.
-		  legacy_init_op: Legacy support for op or group of ops to execute after the
-		      restore op upon a load. Deprecated; please use main_op instead.
 		  clear_devices: Set to true if the device info on the default graph should
 		      be cleared.
-		  main_op: Op or group of ops to execute when the graph is loaded. Note
-		      that when the main_op is specified it is run after the restore op at
+		  init_op: Op or group of ops to execute when the graph is loaded. Note
+		      that when the init_op is specified it is run after the restore op at
 		      load-time.
-		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
-		    removed from the NodeDefs. For a detailed guide, see
-		    [Stripping Default-Valued Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
+		  train_op: Op or group of opts that trains the model when run. This will
+		    not be run automatically when the graph is loaded, instead saved in
+		    a SignatureDef accessible through the exported MetaGraph.
 		  saver: An instance of tf.train.Saver that will be used to export the
 		    metagraph. If None, a sharded Saver that restores all variables will
 		    be used.
@@ -228,11 +226,7 @@ package tensorflow.python.saved_model.builder_impl;
 	**/
 	public function add_meta_graph(tags:Dynamic, ?signature_def_map:Dynamic, ?assets_collection:Dynamic, ?legacy_init_op:Dynamic, ?clear_devices:Dynamic, ?main_op:Dynamic, ?strip_default_attrs:Dynamic, ?saver:Dynamic):Dynamic;
 	/**
-		Adds the current meta graph to the SavedModel and saves variables. (deprecated arguments)
-		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
-		Instructions for updating:
-		Pass your op to the equivalent parameter main_op instead.
+		Adds the current meta graph to the SavedModel and saves variables.
 		
 		Creates a Saver to save the variables from the provided session. Exports the
 		corresponding meta graph def. This function assumes that the variables to be
@@ -246,14 +240,15 @@ package tensorflow.python.saved_model.builder_impl;
 		  tags: The set of tags with which to save the meta graph.
 		  signature_def_map: The map of signature def map to add to the meta graph
 		    def.
-		  assets_collection: Assets collection to be saved with SavedModel.
-		  legacy_init_op: Legacy support for op or group of ops to execute after the
-		      restore op upon a load. Deprecated; please use main_op instead.
+		  assets_collection: Assets to be saved with SavedModel.
 		  clear_devices: Set to true if the device info on the default graph should
 		      be cleared.
-		  main_op: Op or group of ops to execute when the graph is loaded. Note
-		      that when the main_op is specified it is run after the restore op at
+		  init_op: Op or group of ops to execute when the graph is loaded. Note
+		      that when the init_op is specified it is run after the restore op at
 		      load-time.
+		  train_op: Op or group of ops that trains the model when run. This will
+		    not be run automatically when the graph is loaded, instead saved in
+		    a SignatureDef accessible through the exported MetaGraph.
 		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
 		    removed from the NodeDefs. For a detailed guide, see
 		    [Stripping Default-Valued Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).

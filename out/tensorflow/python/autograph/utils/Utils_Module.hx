@@ -59,21 +59,6 @@ package tensorflow.python.autograph.utils;
 	static public function is_tensor(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Type-dependent functional conditional.
-		
-		Args:
-		  condition: A Tensor or Python bool.
-		  true_fn: A Python callable implementing the true branch of the conditional.
-		  false_fn: A Python callable implementing the false branch of the
-		    conditional.
-		
-		Returns:
-		  result: The result of calling the appropriate branch. If condition is a
-		  Tensor, tf.cond will be used. Otherwise, a standard Python if statement will
-		  be ran.
-	**/
-	static public function run_cond(condition:Dynamic, true_fn:Dynamic, false_fn:Dynamic):Dynamic;
-	/**
 		Helper that wraps a callable to py_func.
 		
 		The helper passes tensor arguments through the py_func interface. Non-tensor

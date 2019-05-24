@@ -10,14 +10,48 @@ package numpy.lib.stride_tricks;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _broadcast_arrays_dispatcher(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns the shape of the arrays that would result from broadcasting the
 		supplied arrays against each other.
 	**/
 	static public function _broadcast_shape(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function _broadcast_to(array:Dynamic, shape:Dynamic, subok:Dynamic, readonly:Dynamic):Dynamic;
+	static public function _broadcast_to_dispatcher(array:Dynamic, shape:Dynamic, ?subok:Dynamic):Dynamic;
 	static public function _maybe_view_as_subclass(original_array:Dynamic, new_array:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Decorator for adding dispatch with the __array_function__ protocol.
+		
+		See NEP-18 for example usage.
+		
+		Parameters
+		----------
+		dispatcher : callable
+		    Function that when called like ``dispatcher(*args, **kwargs)`` with
+		    arguments from the NumPy function call returns an iterable of
+		    array-like arguments to check for ``__array_function__``.
+		module : str, optional
+		    __module__ attribute to set on new function, e.g., ``module='numpy'``.
+		    By default, module is copied from the decorated function.
+		verify : bool, optional
+		    If True, verify the that the signature of the dispatcher and decorated
+		    function signatures match exactly: all required and optional arguments
+		    should appear in order with the same names, but the default values for
+		    all optional arguments should be ``None``. Only disable verification
+		    if the dispatcher's signature needs to deviate for some particular
+		    reason, e.g., because the function has a signature like
+		    ``func(*args, **kwargs)``.
+		docs_from_dispatcher : bool, optional
+		    If True, copy docs from the dispatcher function onto the dispatched
+		    function, rather than from the implementation. This is useful for
+		    functions defined in C, which otherwise don't have docstrings.
+		
+		Returns
+		-------
+		Function suitable for decorating the implementation of a NumPy function.
+	**/
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	/**
 		Create a view into the array with the given shape and strides.
 		
@@ -97,23 +131,19 @@ package numpy.lib.stride_tricks;
 		Examples
 		--------
 		>>> x = np.array([[1,2,3]])
-		>>> y = np.array([[1],[2],[3]])
+		>>> y = np.array([[4],[5]])
 		>>> np.broadcast_arrays(x, y)
 		[array([[1, 2, 3],
-		       [1, 2, 3],
-		       [1, 2, 3]]), array([[1, 1, 1],
-		       [2, 2, 2],
-		       [3, 3, 3]])]
+		       [1, 2, 3]]), array([[4, 4, 4],
+		       [5, 5, 5]])]
 		
 		Here is a useful idiom for getting contiguous copies instead of
 		non-contiguous views.
 		
 		>>> [np.array(a) for a in np.broadcast_arrays(x, y)]
 		[array([[1, 2, 3],
-		       [1, 2, 3],
-		       [1, 2, 3]]), array([[1, 1, 1],
-		       [2, 2, 2],
-		       [3, 3, 3]])]
+		       [1, 2, 3]]), array([[4, 4, 4],
+		       [5, 5, 5]])]
 	**/
 	static public function broadcast_arrays(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

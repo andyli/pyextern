@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.estimator.estimator_lib;
 @:pythonImport("tensorflow.python.estimator.estimator_lib") extern class Estimator_lib_Module {
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,6 +11,89 @@ package tensorflow.python.estimator.estimator_lib;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Creates a new `tf.estimator.Estimator` which has given metrics.
+		
+		Example:
+		
+		```python
+		  # Use tf.metrics (to be deprecated)
+		  def my_auc(labels, predictions):
+		    return {'auc': tf.metrics.auc(labels, predictions['logistic'])}
+		  # TODO(b/117774910): add an example of new AUC Metric when it's available
+		  # Or use tf.keras.Metrics
+		  # def my_auc(labels, predictions):
+		  #  return {'auc': tf.keras.metrics.AUC(labels, predictions['logistic'])}
+		
+		  estimator = tf.estimator.DNNClassifier(...)
+		  estimator = tf.estimator.add_metrics(estimator, my_auc)
+		  estimator.train(...)
+		  estimator.evaluate(...)
+		```
+		Example usage of custom metric which uses features:
+		
+		```python
+		  def my_auc(features, labels, predictions):
+		    return {'auc': tf.metrics.auc(
+		      labels, predictions['logistic'], weights=features['weight'])}
+		  # TODO(b/117774910): add an example of new AUC Metric when it's available
+		  # Or use tf.keras.Metrics
+		  # def my_auc(labels, predictions):
+		  #  return {'auc': tf.keras.metrics.AUC(labels, predictions['logistic'])}
+		
+		  estimator = tf.estimator.DNNClassifier(...)
+		  estimator = tf.estimator.add_metrics(estimator, my_auc)
+		  estimator.train(...)
+		  estimator.evaluate(...)
+		```
+		
+		Args:
+		  estimator: A `tf.estimator.Estimator` object.
+		  metric_fn: A function which should obey the following signature:
+		    - Args: can only have following four arguments in any order:
+		      * predictions: Predictions `Tensor` or dict of `Tensor` created by given
+		        `estimator`.
+		      * features: Input `dict` of `Tensor` objects created by `input_fn` which
+		        is given to `estimator.evaluate` as an argument.
+		      * labels:  Labels `Tensor` or dict of `Tensor` created by `input_fn`
+		        which is given to `estimator.evaluate` as an argument.
+		      * config: config attribute of the `estimator`.
+		     - Returns:
+		       Dict of metric results keyed by name. Final metrics are a union of this
+		       and `estimator's` existing metrics. If there is a name conflict between
+		       this and `estimator`s existing metrics, this will override the existing
+		       one. The values of the dict are the results of calling a metric
+		       function, namely a `(metric_tensor, update_op)` tuple.
+		
+		Returns:
+		    A new `tf.estimator.Estimator` which has a union of original metrics with
+		      given ones.
+	**/
+	static public function add_metrics(estimator:Dynamic, metric_fn:Dynamic):Dynamic;
+	/**
+		Calls logit_fn (experimental).
+		
+		THIS FUNCTION IS EXPERIMENTAL. Keras layers/models are the recommended APIs
+		for logit and model composition.
+		
+		A utility function that calls the provided logit_fn with the relevant subset
+		of provided arguments. Similar to tf.estimator._call_model_fn().
+		
+		Args:
+		  logit_fn: A logit_fn as defined above.
+		  features: The features dict.
+		  mode: TRAIN / EVAL / PREDICT ModeKeys.
+		  params: The hyperparameter dict.
+		  config: The configuration object.
+		
+		Returns:
+		  A logit Tensor, the output of logit_fn.
+		
+		Raises:
+		  ValueError: if logit_fn does not return a Tensor or a dictionary mapping
+		    strings to Tensors.
+	**/
+	static public function call_logit_fn(logit_fn:Dynamic, features:Dynamic, mode:Dynamic, params:Dynamic, config:Dynamic):Dynamic;
 	/**
 		Generates parsing spec for tf.parse_example to be used with classifiers.
 		
@@ -118,6 +202,85 @@ package tensorflow.python.estimator.estimator_lib;
 	**/
 	static public function classifier_parse_example_spec(feature_columns:Dynamic, label_key:Dynamic, ?label_dtype:Dynamic, ?label_default:Dynamic, ?weight_column:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Function builder for a dnn logit_fn.
+		
+		Args:
+		  units: An int indicating the dimension of the logit layer.  In the
+		    MultiHead case, this should be the sum of all component Heads' logit
+		    dimensions.
+		  hidden_units: Iterable of integer number of hidden units per layer.
+		  feature_columns: Iterable of `feature_column._FeatureColumn` model inputs.
+		  activation_fn: Activation function applied to each layer.
+		  dropout: When not `None`, the probability we will drop out a given
+		    coordinate.
+		  input_layer_partitioner: Partitioner for input layer.
+		  batch_norm: Whether to use batch normalization after each hidden layer.
+		
+		Returns:
+		  A logit_fn (see below).
+		
+		Raises:
+		  ValueError: If units is not an int.
+	**/
+	static public function dnn_logit_fn_builder(units:Dynamic, hidden_units:Dynamic, feature_columns:Dynamic, activation_fn:Dynamic, dropout:Dynamic, input_layer_partitioner:Dynamic, batch_norm:Dynamic):Dynamic;
+	/**
+		Function builder for a linear logit_fn.
+		
+		Args:
+		  units: An int indicating the dimension of the logit layer.
+		  feature_columns: An iterable containing all the feature columns used by
+		    the model.
+		  sparse_combiner: A string specifying how to reduce if a categorical column
+		    is multivalent.  One of "mean", "sqrtn", and "sum".
+		
+		Returns:
+		  A logit_fn (see below).
+	**/
+	static public function linear_logit_fn_builder(units:Dynamic, feature_columns:Dynamic, ?sparse_combiner:Dynamic):Dynamic;
+	/**
+		Creates early-stopping hook.
+		
+		Returns a `SessionRunHook` that stops training when `should_stop_fn` returns
+		`True`.
+		
+		Usage example:
+		
+		```python
+		estimator = ...
+		hook = early_stopping.make_early_stopping_hook(
+		    estimator, should_stop_fn=make_stop_fn(...))
+		train_spec = tf.estimator.TrainSpec(..., hooks=[hook])
+		tf.estimator.train_and_evaluate(estimator, train_spec, ...)
+		```
+		
+		Caveat: Current implementation supports early-stopping both training and
+		evaluation in local mode. In distributed mode, training can be stopped but
+		evaluation (where it's a separate job) will indefinitely wait for new model
+		checkpoints to evaluate, so you will need other means to detect and stop it.
+		Early-stopping evaluation in distributed mode requires changes in
+		`train_and_evaluate` API and will be addressed in a future revision.
+		
+		Args:
+		  estimator: A `tf.estimator.Estimator` instance.
+		  should_stop_fn: `callable`, function that takes no arguments and returns a
+		    `bool`. If the function returns `True`, stopping will be initiated by the
+		    chief.
+		  run_every_secs: If specified, calls `should_stop_fn` at an interval of
+		    `run_every_secs` seconds. Defaults to 60 seconds. Either this or
+		    `run_every_steps` must be set.
+		  run_every_steps: If specified, calls `should_stop_fn` every
+		    `run_every_steps` steps. Either this or `run_every_secs` must be set.
+		
+		Returns:
+		  A `SessionRunHook` that periodically executes `should_stop_fn` and initiates
+		  early stopping if the function returns `True`.
+		
+		Raises:
+		  TypeError: If `estimator` is not of type `tf.estimator.Estimator`.
+		  ValueError: If both `run_every_secs` and `run_every_steps` are set.
+	**/
+	static public function make_early_stopping_hook(estimator:Dynamic, should_stop_fn:Dynamic, ?run_every_secs:Dynamic, ?run_every_steps:Dynamic):Dynamic;
 	/**
 		Constructs an `Estimator` instance from given keras model.
 		
@@ -249,6 +412,46 @@ package tensorflow.python.estimator.estimator_lib;
 		  ValueError: if label_key is None.
 	**/
 	static public function regressor_parse_example_spec(feature_columns:Dynamic, label_key:Dynamic, ?label_dtype:Dynamic, ?label_default:Dynamic, ?label_dimension:Dynamic, ?weight_column:Dynamic):Dynamic;
+	/**
+		Creates hook to stop if the given metric is higher than the threshold.
+		
+		Usage example:
+		
+		```python
+		estimator = ...
+		# Hook to stop training if accuracy becomes higher than 0.9.
+		hook = early_stopping.stop_if_higher_hook(estimator, "accuracy", 0.9)
+		train_spec = tf.estimator.TrainSpec(..., hooks=[hook])
+		tf.estimator.train_and_evaluate(estimator, train_spec, ...)
+		```
+		
+		Caveat: Current implementation supports early-stopping both training and
+		evaluation in local mode. In distributed mode, training can be stopped but
+		evaluation (where it's a separate job) will indefinitely wait for new model
+		checkpoints to evaluate, so you will need other means to detect and stop it.
+		Early-stopping evaluation in distributed mode requires changes in
+		`train_and_evaluate` API and will be addressed in a future revision.
+		
+		Args:
+		  estimator: A `tf.estimator.Estimator` instance.
+		  metric_name: `str`, metric to track. "loss", "accuracy", etc.
+		  threshold: Numeric threshold for the given metric.
+		  eval_dir: If set, directory containing summary files with eval metrics. By
+		    default, `estimator.eval_dir()` will be used.
+		  min_steps: `int`, stop is never requested if global step is less than this
+		    value. Defaults to 0.
+		  run_every_secs: If specified, calls `should_stop_fn` at an interval of
+		    `run_every_secs` seconds. Defaults to 60 seconds. Either this or
+		    `run_every_steps` must be set.
+		  run_every_steps: If specified, calls `should_stop_fn` every
+		    `run_every_steps` steps. Either this or `run_every_secs` must be set.
+		
+		Returns:
+		  An early-stopping hook of type `SessionRunHook` that periodically checks
+		  if the given metric is higher than specified threshold and initiates
+		  early stopping if true.
+	**/
+	static public function stop_if_higher_hook(estimator:Dynamic, metric_name:Dynamic, threshold:Dynamic, ?eval_dir:Dynamic, ?min_steps:Dynamic, ?run_every_secs:Dynamic, ?run_every_steps:Dynamic):Dynamic;
 	/**
 		Train and evaluate the `estimator`.
 		

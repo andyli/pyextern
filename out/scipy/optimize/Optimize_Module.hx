@@ -430,7 +430,7 @@ package scipy.optimize;
 	**/
 	static public function basinhopping(func:Dynamic, x0:Dynamic, ?niter:Dynamic, ?T:Dynamic, ?stepsize:Dynamic, ?minimizer_kwargs:Dynamic, ?take_step:Dynamic, ?accept_test:Dynamic, ?callback:Dynamic, ?interval:Dynamic, ?disp:Dynamic, ?niter_success:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
-		Find root of a function within an interval.
+		Find root of a function within an interval using bisection.
 		
 		Basic bisection routine to find a zero of the function `f` between the
 		arguments `a` and `b`. `f(a)` and `f(b)` cannot have the same signs.
@@ -441,9 +441,9 @@ package scipy.optimize;
 		f : function
 		    Python function returning a number.  `f` must be continuous, and
 		    f(a) and f(b) must have opposite signs.
-		a : number
+		a : scalar
 		    One end of the bracketing interval [a,b].
-		b : number
+		b : scalar
 		    The other end of the bracketing interval [a,b].
 		xtol : number, optional
 		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
@@ -454,7 +454,7 @@ package scipy.optimize;
 		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
 		    parameter cannot be smaller than its default value of
 		    ``4*np.finfo(float).eps``.
-		maxiter : number, optional
+		maxiter : int, optional
 		    if convergence is not achieved in `maxiter` iterations, an error is
 		    raised.  Must be >= 0.
 		args : tuple, optional
@@ -466,12 +466,14 @@ package scipy.optimize;
 		    a `RootResults` object.
 		disp : bool, optional
 		    If True, raise RuntimeError if the algorithm didn't converge.
+		    Otherwise the convergence status is recorded in a `RootResults`
+		    return object.
 		
 		Returns
 		-------
 		x0 : float
 		    Zero of `f` between `a` and `b`.
-		r : RootResults (present if ``full_output = True``)
+		r : `RootResults` (present if ``full_output = True``)
 		    Object containing information about the convergence.  In particular,
 		    ``r.converged`` is True if the routine converged.
 		
@@ -600,7 +602,8 @@ package scipy.optimize;
 	**/
 	static public function brent(func:Dynamic, ?args:Dynamic, ?brack:Dynamic, ?tol:Dynamic, ?full_output:Dynamic, ?maxiter:Dynamic):Dynamic;
 	/**
-		Find root of f in [a,b].
+		Find a root of a function in a bracketing interval using Brent's
+		method with hyperbolic extrapolation.
 		
 		A variation on the classic Brent routine to find a zero of the function f
 		between the arguments a and b that uses hyperbolic extrapolation instead of
@@ -615,9 +618,9 @@ package scipy.optimize;
 		f : function
 		    Python function returning a number.  f must be continuous, and f(a) and
 		    f(b) must have opposite signs.
-		a : number
+		a : scalar
 		    One end of the bracketing interval [a,b].
-		b : number
+		b : scalar
 		    The other end of the bracketing interval [a,b].
 		xtol : number, optional
 		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
@@ -632,8 +635,8 @@ package scipy.optimize;
 		    ``4*np.finfo(float).eps``. As with `brentq`, for nice functions
 		    the method will often satisfy the above condition with
 		    ``xtol/2`` and ``rtol/2``.
-		maxiter : number, optional
-		    if convergence is not achieved in maxiter iterations, an error is
+		maxiter : int, optional
+		    if convergence is not achieved in `maxiter` iterations, an error is
 		    raised.  Must be >= 0.
 		args : tuple, optional
 		    containing extra arguments for the function `f`.
@@ -641,15 +644,17 @@ package scipy.optimize;
 		full_output : bool, optional
 		    If `full_output` is False, the root is returned.  If `full_output` is
 		    True, the return value is ``(x, r)``, where `x` is the root, and `r` is
-		    a RootResults object.
+		    a `RootResults` object.
 		disp : bool, optional
 		    If True, raise RuntimeError if the algorithm didn't converge.
+		    Otherwise the convergence status is recorded in any `RootResults`
+		    return object.
 		
 		Returns
 		-------
 		x0 : float
 		    Zero of `f` between `a` and `b`.
-		r : RootResults (present if ``full_output = True``)
+		r : `RootResults` (present if ``full_output = True``)
 		    Object containing information about the convergence.  In particular,
 		    ``r.converged`` is True if the routine converged.
 		
@@ -701,7 +706,7 @@ package scipy.optimize;
 		
 		[Brent1973]_ provides the classic description of the algorithm.  Another
 		description can be found in a recent edition of Numerical Recipes, including
-		[PressEtal1992]_.  Another description is at
+		[PressEtal1992]_.  A third description is at
 		http://mathworld.wolfram.com/BrentsMethod.html.  It should be easy to
 		understand the algorithm just by reading our code.  Our code diverges a bit
 		from standard presentations: we choose a different formula for the
@@ -713,9 +718,9 @@ package scipy.optimize;
 		    Python function returning a number.  The function :math:`f`
 		    must be continuous, and :math:`f(a)` and :math:`f(b)` must
 		    have opposite signs.
-		a : number
+		a : scalar
 		    One end of the bracketing interval :math:`[a, b]`.
-		b : number
+		b : scalar
 		    The other end of the bracketing interval :math:`[a, b]`.
 		xtol : number, optional
 		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
@@ -730,8 +735,8 @@ package scipy.optimize;
 		    ``4*np.finfo(float).eps``. For nice functions, Brent's
 		    method will often satisfy the above condition with ``xtol/2``
 		    and ``rtol/2``. [Brent1973]_
-		maxiter : number, optional
-		    if convergence is not achieved in maxiter iterations, an error is
+		maxiter : int, optional
+		    if convergence is not achieved in `maxiter` iterations, an error is
 		    raised.  Must be >= 0.
 		args : tuple, optional
 		    containing extra arguments for the function `f`.
@@ -739,20 +744,26 @@ package scipy.optimize;
 		full_output : bool, optional
 		    If `full_output` is False, the root is returned.  If `full_output` is
 		    True, the return value is ``(x, r)``, where `x` is the root, and `r` is
-		    a RootResults object.
+		    a `RootResults` object.
 		disp : bool, optional
 		    If True, raise RuntimeError if the algorithm didn't converge.
+		    Otherwise the convergence status is recorded in any `RootResults`
+		    return object.
 		
 		Returns
 		-------
 		x0 : float
 		    Zero of `f` between `a` and `b`.
-		r : RootResults (present if ``full_output = True``)
+		r : `RootResults` (present if ``full_output = True``)
 		    Object containing information about the convergence.  In particular,
 		    ``r.converged`` is True if the routine converged.
 		
-		See Also
-		--------
+		Notes
+		-----
+		`f` must be continuous.  f(a) and f(b) must have opposite signs.
+		
+		Related functions fall into several classes:
+		
 		multivariate local optimizers
 		  `fmin`, `fmin_powell`, `fmin_cg`, `fmin_bfgs`, `fmin_ncg`
 		nonlinear least squares minimizer
@@ -770,9 +781,18 @@ package scipy.optimize;
 		scalar fixed-point finder
 		  `fixed_point`
 		
-		Notes
-		-----
-		`f` must be continuous.  f(a) and f(b) must have opposite signs.
+		References
+		----------
+		.. [Brent1973]
+		   Brent, R. P.,
+		   *Algorithms for Minimization Without Derivatives*.
+		   Englewood Cliffs, NJ: Prentice-Hall, 1973. Ch. 3-4.
+		
+		.. [PressEtal1992]
+		   Press, W. H.; Flannery, B. P.; Teukolsky, S. A.; and Vetterling, W. T.
+		   *Numerical Recipes in FORTRAN: The Art of Scientific Computing*, 2nd ed.
+		   Cambridge, England: Cambridge University Press, pp. 352-355, 1992.
+		   Section 9.3:  "Van Wijngaarden-Dekker-Brent Method."
 		
 		Examples
 		--------
@@ -788,19 +808,6 @@ package scipy.optimize;
 		>>> root = optimize.brentq(f, 0, 2)
 		>>> root
 		1.0
-		
-		References
-		----------
-		.. [Brent1973]
-		   Brent, R. P.,
-		   *Algorithms for Minimization Without Derivatives*.
-		   Englewood Cliffs, NJ: Prentice-Hall, 1973. Ch. 3-4.
-		
-		.. [PressEtal1992]
-		   Press, W. H.; Flannery, B. P.; Teukolsky, S. A.; and Vetterling, W. T.
-		   *Numerical Recipes in FORTRAN: The Art of Scientific Computing*, 2nd ed.
-		   Cambridge, England: Cambridge University Press, pp. 352-355, 1992.
-		   Section 9.3:  "Van Wijngaarden-Dekker-Brent Method."
 	**/
 	static public function brentq(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	/**
@@ -892,7 +899,7 @@ package scipy.optimize;
 		   systems of nonlinear equations\". Mathematisch Instituut,
 		   Universiteit Leiden, The Netherlands (2003).
 		
-		   http://www.math.leidenuniv.nl/scripties/Rotten.pdf
+		   https://web.archive.org/web/20161022015821/http://www.math.leidenuniv.nl/scripties/Rotten.pdf
 	**/
 	static public function broyden1(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?reduction_method:Dynamic, ?max_rank:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -981,7 +988,7 @@ package scipy.optimize;
 		   systems of nonlinear equations". Mathematisch Instituut,
 		   Universiteit Leiden, The Netherlands (2003).
 		
-		   http://www.math.leidenuniv.nl/scripties/Rotten.pdf
+		   https://web.archive.org/web/20161022015821/http://www.math.leidenuniv.nl/scripties/Rotten.pdf
 	**/
 	static public function broyden2(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?reduction_method:Dynamic, ?max_rank:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1034,7 +1041,18 @@ package scipy.optimize;
 		    and/or `disp` as keyword arguments.  Use None if no "polishing"
 		    function is to be used. See Notes for more details.
 		disp : bool, optional
-		    Set to True to print convergence messages.
+		    Set to True to print convergence messages from the `finish` callable.
+		workers : int or map-like callable, optional
+		    If `workers` is an int the grid is subdivided into `workers`
+		    sections and evaluated in parallel (uses
+		    `multiprocessing.Pool <multiprocessing>`).
+		    Supply `-1` to use all cores available to the Process.
+		    Alternatively supply a map-like callable, such as
+		    `multiprocessing.Pool.map` for evaluating the grid in parallel.
+		    This evaluation is carried out as ``workers(func, iterable)``.
+		    Requires that `func` be pickleable.
+		
+		    .. versionadded:: 1.3.0
 		
 		Returns
 		-------
@@ -1143,7 +1161,7 @@ package scipy.optimize;
 		Note that if `finish` had been set to None, we would have gotten the
 		gridpoint [-1.0 1.75] where the rounded function value is -2.892.
 	**/
-	static public function brute(func:Dynamic, ranges:Dynamic, ?args:Dynamic, ?Ns:Dynamic, ?full_output:Dynamic, ?finish:Dynamic, ?disp:Dynamic):Dynamic;
+	static public function brute(func:Dynamic, ranges:Dynamic, ?args:Dynamic, ?Ns:Dynamic, ?full_output:Dynamic, ?finish:Dynamic, ?disp:Dynamic, ?workers:Dynamic):Dynamic;
 	/**
 		Check the correctness of a gradient function by comparing it against a
 		(forward) finite-difference approximation of the gradient.
@@ -1196,15 +1214,17 @@ package scipy.optimize;
 		    The model function, f(x, ...).  It must take the independent
 		    variable as the first argument and the parameters to fit as
 		    separate remaining arguments.
-		xdata : An M-length sequence or an (k,M)-shaped array for functions with k predictors
+		xdata : array_like
 		    The independent variable where the data is measured.
-		ydata : M-length sequence
-		    The dependent data --- nominally f(xdata, ...)
-		p0 : None, scalar, or N-length sequence, optional
-		    Initial guess for the parameters.  If None, then the initial
-		    values will all be 1 (if the number of parameters for the function
-		    can be determined using introspection, otherwise a ValueError
-		    is raised).
+		    Must be an M-length sequence or an (k,M)-shaped array for functions
+		    with k predictors.
+		ydata : array_like
+		    The dependent data, a length M array - nominally ``f(xdata, ...)``.
+		p0 : array_like, optional
+		    Initial guess for the parameters (length N).  If None, then the
+		    initial values will all be 1 (if the number of parameters for the
+		    function can be determined using introspection, otherwise a
+		    ValueError is raised).
 		sigma : None or M-length sequence or MxM array, optional
 		    Determines the uncertainty in `ydata`. If we define residuals as
 		    ``r = ydata - f(xdata, *popt)``, then the interpretation of `sigma`
@@ -1314,7 +1334,6 @@ package scipy.optimize;
 		
 		Examples
 		--------
-		>>> import numpy as np
 		>>> import matplotlib.pyplot as plt
 		>>> from scipy.optimize import curve_fit
 		
@@ -1415,6 +1434,7 @@ package scipy.optimize;
 	static public function diagbroyden(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Finds the global minimum of a multivariate function.
+		
 		Differential Evolution is stochastic in nature (does not use gradient
 		methods) to find the minimium, and can search large areas of candidate
 		space, but often requires larger numbers of function evaluations than
@@ -1429,11 +1449,13 @@ package scipy.optimize;
 		    ``f(x, *args)``, where ``x`` is the argument in the form of a 1-D array
 		    and ``args`` is a  tuple of any additional fixed parameters needed to
 		    completely specify the function.
-		bounds : sequence
-		    Bounds for variables.  ``(min, max)`` pairs for each element in ``x``,
-		    defining the lower and upper bounds for the optimizing argument of
-		    `func`. It is required to have ``len(bounds) == len(x)``.
-		    ``len(bounds)`` is used to determine the number of parameters in ``x``.
+		bounds : sequence or `Bounds`, optional
+		    Bounds for variables.  There are two ways to specify the bounds:
+		    1. Instance of `Bounds` class.
+		    2. ``(min, max)`` pairs for each element in ``x``, defining the finite
+		    lower and upper bounds for the optimizing argument of `func`. It is
+		    required to have ``len(bounds) == len(x)``. ``len(bounds)`` is used
+		    to determine the number of parameters in ``x``.
 		args : tuple, optional
 		    Any additional fixed parameters needed to
 		    completely specify the objective function.
@@ -1525,6 +1547,30 @@ package scipy.optimize;
 		    ``np.std(pop) <= atol + tol * np.abs(np.mean(population_energies))``,
 		    where and `atol` and `tol` are the absolute and relative tolerance
 		    respectively.
+		updating : {'immediate', 'deferred'}, optional
+		    If ``'immediate'``, the best solution vector is continuously updated
+		    within a single generation [4]_. This can lead to faster convergence as
+		    trial vectors can take advantage of continuous improvements in the best
+		    solution.
+		    With ``'deferred'``, the best solution vector is updated once per
+		    generation. Only ``'deferred'`` is compatible with parallelization, and
+		    the `workers` keyword can over-ride this option.
+		
+		    .. versionadded:: 1.2.0
+		
+		workers : int or map-like callable, optional
+		    If `workers` is an int the population is subdivided into `workers`
+		    sections and evaluated in parallel
+		    (uses `multiprocessing.Pool <multiprocessing>`).
+		    Supply -1 to use all available CPU cores.
+		    Alternatively supply a map-like callable, such as
+		    `multiprocessing.Pool.map` for evaluating the population in parallel.
+		    This evaluation is carried out as ``workers(func, iterable)``.
+		    This option will override the `updating` keyword to
+		    ``updating='deferred'`` if ``workers != 1``.
+		    Requires that `func` be pickleable.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -1555,12 +1601,12 @@ package scipy.optimize;
 		
 		A trial vector is then constructed. Starting with a randomly chosen 'i'th
 		parameter the trial is sequentially filled (in modulo) with parameters from
-		`b'` or the original candidate. The choice of whether to use `b'` or the
+		``b'`` or the original candidate. The choice of whether to use ``b'`` or the
 		original candidate is made with a binomial distribution (the 'bin' in
 		'best1bin') - a random number in [0, 1) is generated.  If this number is
 		less than the `recombination` constant then the parameter is loaded from
-		`b'`, otherwise it is loaded from the original candidate.  The final
-		parameter is always loaded from `b'`.  Once the trial candidate is built
+		``b'``, otherwise it is loaded from the original candidate.  The final
+		parameter is always loaded from ``b'``.  Once the trial candidate is built
 		its fitness is assessed. If the trial is better than the original candidate
 		then it takes its place. If it is also better than the best overall
 		candidate it also replaces that.
@@ -1568,6 +1614,12 @@ package scipy.optimize;
 		values, with higher `mutation` and (dithering), but lower `recombination`
 		values. This has the effect of widening the search radius, but slowing
 		convergence.
+		By default the best solution vector is updated continuously within a single
+		iteration (``updating='immediate'``). This is a modification [4]_ of the
+		original differential evolution algorithm which can lead to faster
+		convergence as trial vectors can immediately benefit from improved
+		solutions. To use the original Storn and Price behaviour, updating the best
+		solution once per iteration, set ``updating='deferred'``.
 		
 		.. versionadded:: 0.15.0
 		
@@ -1582,8 +1634,16 @@ package scipy.optimize;
 		>>> result.x, result.fun
 		(array([1., 1., 1., 1., 1.]), 1.9216496320061384e-19)
 		
+		Now repeat, but with parallelization.
+		
+		>>> bounds = [(0,2), (0, 2), (0, 2), (0, 2), (0, 2)]
+		>>> result = differential_evolution(rosen, bounds, updating='deferred',
+		...                                 workers=2)
+		>>> result.x, result.fun
+		(array([1., 1., 1., 1., 1.]), 1.9216496320061384e-19)
+		
 		Next find the minimum of the Ackley function
-		(http://en.wikipedia.org/wiki/Test_functions_for_optimization).
+		(https://en.wikipedia.org/wiki/Test_functions_for_optimization).
 		
 		>>> from scipy.optimize import differential_evolution
 		>>> import numpy as np
@@ -1603,9 +1663,182 @@ package scipy.optimize;
 		       Journal of Global Optimization, 1997, 11, 341 - 359.
 		.. [2] http://www1.icsi.berkeley.edu/~storn/code.html
 		.. [3] http://en.wikipedia.org/wiki/Differential_evolution
+		.. [4] Wormington, M., Panaccione, C., Matney, K. M., Bowen, D. K., -
+		       Characterization of structures from X-ray scattering data using
+		       genetic algorithms, Phil. Trans. R. Soc. Lond. A, 1999, 357,
+		       2827-2848
 	**/
-	static public function differential_evolution(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?strategy:Dynamic, ?maxiter:Dynamic, ?popsize:Dynamic, ?tol:Dynamic, ?mutation:Dynamic, ?recombination:Dynamic, ?seed:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?polish:Dynamic, ?init:Dynamic, ?atol:Dynamic):Dynamic;
+	static public function differential_evolution(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?strategy:Dynamic, ?maxiter:Dynamic, ?popsize:Dynamic, ?tol:Dynamic, ?mutation:Dynamic, ?recombination:Dynamic, ?seed:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?polish:Dynamic, ?init:Dynamic, ?atol:Dynamic, ?updating:Dynamic, ?workers:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Find the global minimum of a function using Dual Annealing.
+		
+		Parameters
+		----------
+		func : callable
+		    The objective function to be minimized.  Must be in the form
+		    ``f(x, *args)``, where ``x`` is the argument in the form of a 1-D array
+		    and ``args`` is a  tuple of any additional fixed parameters needed to
+		    completely specify the function.
+		bounds : sequence, shape (n, 2)
+		    Bounds for variables.  ``(min, max)`` pairs for each element in ``x``,
+		    defining bounds for the objective function parameter.
+		args : tuple, optional
+		    Any additional fixed parameters needed to completely specify the
+		    objective function.
+		maxiter : int, optional
+		    The maximum number of global search iterations. Default value is 1000.
+		local_search_options : dict, optional
+		    Extra keyword arguments to be passed to the local minimizer
+		    (`minimize`). Some important options could be:
+		    ``method`` for the minimizer method to use and ``args`` for
+		    objective function additional arguments.
+		initial_temp : float, optional
+		    The initial temperature, use higher values to facilitates a wider
+		    search of the energy landscape, allowing dual_annealing to escape
+		    local minima that it is trapped in. Default value is 5230. Range is
+		    (0.01, 5.e4].
+		restart_temp_ratio : float, optional
+		    During the annealing process, temperature is decreasing, when it
+		    reaches ``initial_temp * restart_temp_ratio``, the reannealing process
+		    is triggered. Default value of the ratio is 2e-5. Range is (0, 1).
+		visit : float, optional
+		    Parameter for visiting distribution. Default value is 2.62. Higher
+		    values give the visiting distribution a heavier tail, this makes
+		    the algorithm jump to a more distant region. The value range is (0, 3].
+		accept : float, optional
+		    Parameter for acceptance distribution. It is used to control the
+		    probability of acceptance. The lower the acceptance parameter, the
+		    smaller the probability of acceptance. Default value is -5.0 with
+		    a range (-1e4, -5].
+		maxfun : int, optional
+		    Soft limit for the number of objective function calls. If the
+		    algorithm is in the middle of a local search, this number will be
+		    exceeded, the algorithm will stop just after the local search is
+		    done. Default value is 1e7.
+		seed : {int or `numpy.random.RandomState` instance}, optional
+		    If `seed` is not specified the `numpy.random.RandomState` singleton is
+		    used.
+		    If `seed` is an int, a new ``RandomState`` instance is used,
+		    seeded with `seed`.
+		    If `seed` is already a ``RandomState`` instance, then that
+		    instance is used.
+		    Specify `seed` for repeatable minimizations. The random numbers
+		    generated with this seed only affect the visiting distribution
+		    function and new coordinates generation.
+		no_local_search : bool, optional
+		    If `no_local_search` is set to True, a traditional Generalized
+		    Simulated Annealing will be performed with no local search
+		    strategy applied.
+		callback : callable, optional
+		    A callback function with signature ``callback(x, f, context)``,
+		    which will be called for all minima found.
+		    ``x`` and ``f`` are the coordinates and function value of the
+		    latest minimum found, and ``context`` has value in [0, 1, 2], with the
+		    following meaning:
+		
+		        - 0: minimum detected in the annealing process.
+		        - 1: detection occured in the local search process.
+		        - 2: detection done in the dual annealing process.
+		
+		    If the callback implementation returns True, the algorithm will stop.
+		x0 : ndarray, shape(n,), optional
+		    Coordinates of a single n-dimensional starting point. 
+		
+		Returns
+		-------
+		res : OptimizeResult
+		    The optimization result represented as a `OptimizeResult` object.
+		    Important attributes are: ``x`` the solution array, ``fun`` the value
+		    of the function at the solution, and ``message`` which describes the
+		    cause of the termination.
+		    See `OptimizeResult` for a description of other attributes.
+		
+		Notes
+		-----
+		This function implements the Dual Annealing optimization. This stochastic
+		approach derived from [3]_ combines the generalization of CSA (Classical
+		Simulated Annealing) and FSA (Fast Simulated Annealing) [1]_ [2]_ coupled
+		to a strategy for applying a local search on accepted locations [4]_.
+		An alternative implementation of this same algorithm is described in [5]_
+		and benchmarks are presented in [6]_. This approach introduces an advanced
+		method to refine the solution found by the generalized annealing
+		process. This algorithm uses a distorted Cauchy-Lorentz visiting
+		distribution, with its shape controlled by the parameter :math:`q_{v}`
+		
+		.. math::
+		
+		    g_{q_{v}}(\Delta x(t)) \propto \frac{ \
+		    \left[T_{q_{v}}(t) \right]^{-\frac{D}{3-q_{v}}}}{ \
+		    \left[{1+(q_{v}-1)\frac{(\Delta x(t))^{2}} { \
+		    \left[T_{q_{v}}(t)\right]^{\frac{2}{3-q_{v}}}}}\right]^{ \
+		    \frac{1}{q_{v}-1}+\frac{D-1}{2}}}
+		
+		Where :math:`t` is the artificial time. This visiting distribution is used
+		to generate a trial jump distance :math:`\Delta x(t)` of variable
+		:math:`x(t)` under artificial temperature :math:`T_{q_{v}}(t)`.
+		
+		From the starting point, after calling the visiting distribution
+		function, the acceptance probability is computed as follows:
+		
+		.. math::
+		
+		    p_{q_{a}} = \min{\{1,\left[1-(1-q_{a}) \beta \Delta E \right]^{ \
+		    \frac{1}{1-q_{a}}}\}}
+		
+		Where :math:`q_{a}` is a acceptance parameter. For :math:`q_{a}<1`, zero
+		acceptance probability is assigned to the cases where
+		
+		.. math::
+		
+		    [1-(1-q_{a}) \beta \Delta E] < 0
+		
+		The artificial temperature :math:`T_{q_{v}}(t)` is decreased according to
+		
+		.. math::
+		
+		    T_{q_{v}}(t) = T_{q_{v}}(1) \frac{2^{q_{v}-1}-1}{\left( \
+		    1 + t\right)^{q_{v}-1}-1}
+		
+		Where :math:`q_{v}` is the visiting parameter.
+		
+		.. versionadded:: 1.2.0
+		
+		References
+		----------
+		.. [1] Tsallis C. Possible generalization of Boltzmann-Gibbs
+		    statistics. Journal of Statistical Physics, 52, 479-487 (1998).
+		.. [2] Tsallis C, Stariolo DA. Generalized Simulated Annealing.
+		    Physica A, 233, 395-406 (1996).
+		.. [3] Xiang Y, Sun DY, Fan W, Gong XG. Generalized Simulated
+		    Annealing Algorithm and Its Application to the Thomson Model.
+		    Physics Letters A, 233, 216-220 (1997).
+		.. [4] Xiang Y, Gong XG. Efficiency of Generalized Simulated
+		    Annealing. Physical Review E, 62, 4473 (2000).
+		.. [5] Xiang Y, Gubian S, Suomela B, Hoeng J. Generalized
+		    Simulated Annealing for Efficient Global Optimization: the GenSA
+		    Package for R. The R Journal, Volume 5/1 (2013).
+		.. [6] Mullen, K. Continuous Global Optimization in R. Journal of
+		    Statistical Software, 60(6), 1 - 45, (2014). DOI:10.18637/jss.v060.i06
+		
+		Examples
+		--------
+		The following example is a 10-dimensional problem, with many local minima.
+		The function involved is called Rastrigin
+		(https://en.wikipedia.org/wiki/Rastrigin_function)
+		
+		>>> from scipy.optimize import dual_annealing
+		>>> func = lambda x: np.sum(x*x - 10*np.cos(2*np.pi*x)) + 10*np.size(x)
+		>>> lw = [-5.12] * 10
+		>>> up = [5.12] * 10
+		>>> ret = dual_annealing(func, bounds=list(zip(lw, up)), seed=1234)
+		>>> print("global minimum: xmin = {0}, f(xmin) = {1:.6f}".format(
+		...       ret.x, ret.fun))
+		global minimum: xmin = [-4.26437714e-09 -3.91699361e-09 -1.86149218e-09 -3.97165720e-09
+		 -6.29151648e-09 -6.53145322e-09 -3.93616815e-09 -6.55623025e-09
+		-6.05775280e-09 -5.00668935e-09], f(xmin) = 0.000000
+	**/
+	static public function dual_annealing(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?maxiter:Dynamic, ?local_search_options:Dynamic, ?initial_temp:Dynamic, ?restart_temp_ratio:Dynamic, ?visit:Dynamic, ?accept:Dynamic, ?maxfun:Dynamic, ?seed:Dynamic, ?no_local_search:Dynamic, ?callback:Dynamic, ?x0:Dynamic):Dynamic;
 	/**
 		Find a root of a function, using a tuned diagonal Jacobian approximation.
 		
@@ -2338,8 +2571,9 @@ package scipy.optimize;
 	**/
 	static public function fmin_ncg(f:Dynamic, x0:Dynamic, fprime:Dynamic, ?fhess_p:Dynamic, ?fhess:Dynamic, ?args:Dynamic, ?avextol:Dynamic, ?epsilon:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic, ?retall:Dynamic, ?callback:Dynamic):Dynamic;
 	/**
-		Minimize a function using modified Powell's method. This method
-		only uses function values, not derivatives.
+		Minimize a function using modified Powell's method.
+		
+		This method only uses function values, not derivatives.
 		
 		Parameters
 		----------
@@ -2349,12 +2583,6 @@ package scipy.optimize;
 		    Initial guess.
 		args : tuple, optional
 		    Extra arguments passed to func.
-		callback : callable, optional
-		    An optional user-supplied function, called after each
-		    iteration.  Called as ``callback(xk)``, where ``xk`` is the
-		    current parameter vector.
-		direc : ndarray, optional
-		    Initial direction set.
 		xtol : float, optional
 		    Line-search error tolerance.
 		ftol : float, optional
@@ -2364,12 +2592,25 @@ package scipy.optimize;
 		maxfun : int, optional
 		    Maximum number of function evaluations to make.
 		full_output : bool, optional
-		    If True, fopt, xi, direc, iter, funcalls, and
-		    warnflag are returned.
+		    If True, ``fopt``, ``xi``, ``direc``, ``iter``, ``funcalls``, and
+		    ``warnflag`` are returned.
 		disp : bool, optional
 		    If True, print convergence messages.
 		retall : bool, optional
 		    If True, return a list of the solution at each iteration.
+		callback : callable, optional
+		    An optional user-supplied function, called after each
+		    iteration.  Called as ``callback(xk)``, where ``xk`` is the
+		    current parameter vector.
+		direc : ndarray, optional
+		    Initial fitting step and parameter order set as an (N, N) array, where N
+		    is the number of fitting parameters in `x0`.  Defaults to step size 1.0
+		    fitting all parameters simultaneously (``np.ones((N, N))``).  To
+		    prevent initial consideration of values in a step or to change initial
+		    step size, set to 0 or desired step size in the Jth position in the Mth
+		    block, where J is the position in `x0` and M is the desired evaluation
+		    step, with steps being evaluated in index order.  Step size and ordering
+		    will change freely as minimization proceeds.
 		
 		Returns
 		-------
@@ -2393,7 +2634,7 @@ package scipy.optimize;
 		See also
 		--------
 		minimize: Interface to unconstrained minimization algorithms for
-		    multivariate functions. See the 'Powell' `method` in particular.
+		    multivariate functions. See the 'Powell' method in particular.
 		
 		Notes
 		-----
@@ -2401,13 +2642,12 @@ package scipy.optimize;
 		a function of N variables. Powell's method is a conjugate
 		direction method.
 		
-		The algorithm has two loops. The outer loop
-		merely iterates over the inner loop. The inner loop minimizes
-		over each current direction in the direction set. At the end
-		of the inner loop, if certain conditions are met, the direction
-		that gave the largest decrease is dropped and replaced with
-		the difference between the current estimated x and the estimated
-		x from the beginning of the inner-loop.
+		The algorithm has two loops.  The outer loop merely iterates over the inner
+		loop. The inner loop minimizes over each current direction in the direction
+		set. At the end of the inner loop, if certain conditions are met, the
+		direction that gave the largest decrease is dropped and replaced with the
+		difference between the current estimated x and the estimated x from the
+		beginning of the inner-loop.
 		
 		The technical conditions for replacing the direction of greatest
 		increase amount to checking that
@@ -2417,6 +2657,15 @@ package scipy.optimize;
 		2. The direction of greatest increase accounted for a large sufficient
 		   fraction of the decrease in the function value from that iteration of
 		   the inner loop.
+		
+		References
+		----------
+		Powell M.J.D. (1964) An efficient method for finding the minimum of a
+		function of several variables without calculating derivatives,
+		Computer Journal, 7 (2):155-162.
+		
+		Press W., Teukolsky S.A., Vetterling W.T., and Flannery B.P.:
+		Numerical Recipes (any edition), Cambridge University Press
 		
 		Examples
 		--------
@@ -2432,15 +2681,6 @@ package scipy.optimize;
 		         Function evaluations: 18
 		>>> minimum
 		array(0.0)
-		
-		References
-		----------
-		Powell M.J.D. (1964) An efficient method for finding the minimum of a
-		function of several variables without calculating derivatives,
-		Computer Journal, 7 (2):155-162.
-		
-		Press W., Teukolsky S.A., Vetterling W.T., and Flannery B.P.:
-		Numerical Recipes (any edition), Cambridge University Press
 	**/
 	static public function fmin_powell(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfun:Dynamic, ?full_output:Dynamic, ?disp:Dynamic, ?retall:Dynamic, ?callback:Dynamic, ?direc:Dynamic):Dynamic;
 	/**
@@ -2849,7 +3089,7 @@ package scipy.optimize;
 		See Also
 		--------
 		root : Interface to root finding algorithms for multivariate
-		functions. See the 'hybr' `method` in particular.
+		       functions. See the ``method=='hybr'`` in particular.
 		
 		Notes
 		-----
@@ -2945,15 +3185,14 @@ package scipy.optimize;
 		    element (i, j) is the partial derivative of f[i] with respect to
 		    x[j]). The keywords select a finite difference scheme for numerical
 		    estimation. The scheme '3-point' is more accurate, but requires
-		    twice as much operations compared to '2-point' (default). The
-		    scheme 'cs' uses complex steps, and while potentially the most
-		    accurate, it is applicable only when `fun` correctly handles
-		    complex inputs and can be analytically continued to the complex
-		    plane. Method 'lm' always uses the '2-point' scheme. If callable,
-		    it is used as ``jac(x, *args, **kwargs)`` and should return a
-		    good approximation (or the exact value) for the Jacobian as an
-		    array_like (np.atleast_2d is applied), a sparse matrix or a
-		    `scipy.sparse.linalg.LinearOperator`.
+		    twice as many operations as '2-point' (default). The scheme 'cs'
+		    uses complex steps, and while potentially the most accurate, it is
+		    applicable only when `fun` correctly handles complex inputs and
+		    can be analytically continued to the complex plane. Method 'lm'
+		    always uses the '2-point' scheme. If callable, it is used as
+		    ``jac(x, *args, **kwargs)`` and should return a good approximation
+		    (or the exact value) for the Jacobian as an array_like (np.atleast_2d
+		    is applied), a sparse matrix or a `scipy.sparse.linalg.LinearOperator`.
 		bounds : 2-tuple of array_like, optional
 		    Lower and upper bounds on independent variables. Defaults to no bounds.
 		    Each array must match the size of `x0` or be a scalar, in the latter
@@ -2972,12 +3211,13 @@ package scipy.optimize;
 		          efficient method for small unconstrained problems.
 		
 		    Default is 'trf'. See Notes for more information.
-		ftol : float, optional
+		ftol : float or None, optional
 		    Tolerance for termination by the change of the cost function. Default
 		    is 1e-8. The optimization process is stopped when  ``dF < ftol * F``,
 		    and there was an adequate agreement between a local quadratic model and
-		    the true model in the last step.
-		xtol : float, optional
+		    the true model in the last step. If None, the termination by this
+		    condition is disabled.
+		xtol : float or None, optional
 		    Tolerance for termination by the change of the independent variables.
 		    Default is 1e-8. The exact condition depends on the `method` used:
 		
@@ -2986,7 +3226,8 @@ package scipy.optimize;
 		          a trust-region radius and ``xs`` is the value of ``x``
 		          scaled according to `x_scale` parameter (see below).
 		
-		gtol : float, optional
+		    If None, the termination by this condition is disabled.
+		gtol : float or None, optional
 		    Tolerance for termination by the norm of the gradient. Default is 1e-8.
 		    The exact condition depends on a `method` used:
 		
@@ -3000,6 +3241,7 @@ package scipy.optimize;
 		          between columns of the Jacobian and the residual vector is less
 		          than `gtol`, or the residual vector is zero.
 		
+		    If None, the termination by this condition is disabled.
 		x_scale : array_like or 'jac', optional
 		    Characteristic scale of each variable. Setting `x_scale` is equivalent
 		    to reformulating the problem in scaled variables ``xs = x / x_scale``.
@@ -3470,14 +3712,13 @@ package scipy.optimize;
 		    The solution (or the result of the last iteration for an unsuccessful
 		    call).
 		cov_x : ndarray
-		    Uses the fjac and ipvt optional outputs to construct an
-		    estimate of the jacobian around the solution. None if a
-		    singular matrix encountered (indicates very flat curvature in
-		    some direction).  This matrix must be multiplied by the
-		    residual variance to get the covariance of the
-		    parameter estimates -- see curve_fit.
+		    The inverse of the Hessian. `fjac` and `ipvt` are used to construct an
+		    estimate of the Hessian. A value of None indicates a singular matrix,
+		    which means the curvature in parameters `x` is numerically flat. To
+		    obtain the covariance matrix of the parameters `x`, `cov_x` must be
+		    multiplied by the variance of the residuals -- see curve_fit.
 		infodict : dict
-		    a dictionary of optional outputs with the key s:
+		    a dictionary of optional outputs with the keys:
 		
 		    ``nfev``
 		        The number of function calls
@@ -3724,119 +3965,241 @@ package scipy.optimize;
 	**/
 	static public function linearmixing(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Minimize a linear objective function subject to linear
+		Linear programming: minimize a linear objective function subject to linear
 		equality and inequality constraints.
 		
-		Linear Programming is intended to solve the following problem form::
+		Linear programming solves problems of the following form:
 		
-		    Minimize:     c^T * x
+		.. math::
 		
-		    Subject to:   A_ub * x <= b_ub
-		                  A_eq * x == b_eq
+		    \min_x \ & c^T x \\
+		    \mbox{such that} \ & A_{ub} x \leq b_{ub},\\
+		    & A_{eq} x = b_{eq},\\
+		    & l \leq x \leq u ,
+		
+		where :math:`x` is a vector of decision variables; :math:`c`,
+		:math:`b_{ub}`, :math:`b_{eq}`, :math:`l`, and :math:`u` are vectors; and
+		:math:`A_{ub}` and :math:`A_{eq}` are matrices.
+		
+		Informally, that's:
+		
+		minimize::
+		
+		    c @ x
+		
+		such that::
+		
+		    A_ub @ x <= b_ub
+		    A_eq @ x == b_eq
+		    lb <= x <= ub
+		
+		Note that by default ``lb = 0`` and ``ub = None`` unless specified with
+		``bounds``.
 		
 		Parameters
 		----------
-		c : array_like
-		    Coefficients of the linear objective function to be minimized.
-		A_ub : array_like, optional
-		    2-D array which, when matrix-multiplied by ``x``, gives the values of
-		    the upper-bound inequality constraints at ``x``.
-		b_ub : array_like, optional
-		    1-D array of values representing the upper-bound of each inequality
-		    constraint (row) in ``A_ub``.
-		A_eq : array_like, optional
-		    2-D array which, when matrix-multiplied by ``x``, gives the values of
-		    the equality constraints at ``x``.
-		b_eq : array_like, optional
-		    1-D array of values representing the RHS of each equality constraint
-		    (row) in ``A_eq``.
+		c : 1D array
+		    The coefficients of the linear objective function to be minimized.
+		A_ub : 2D array, optional
+		    The inequality constraint matrix. Each row of ``A_ub`` specifies the
+		    coefficients of a linear inequality constraint on ``x``.
+		b_ub : 1D array, optional
+		    The inequality constraint vector. Each element represents an
+		    upper bound on the corresponding value of ``A_ub @ x``.
+		A_eq : 2D array, optional
+		    The equality constraint matrix. Each row of ``A_eq`` specifies the
+		    coefficients of a linear equality constraint on ``x``.
+		b_eq : 1D array, optional
+		    The equality constraint vector. Each element of ``A_eq @ x`` must equal
+		    the corresponding element of ``b_eq``.
 		bounds : sequence, optional
-		    ``(min, max)`` pairs for each element in ``x``, defining
-		    the bounds on that parameter. Use None for one of ``min`` or
-		    ``max`` when there is no bound in that direction. By default
-		    bounds are ``(0, None)`` (non-negative)
-		    If a sequence containing a single tuple is provided, then ``min`` and
-		    ``max`` will be applied to all variables in the problem.
-		method : str, optional
-		    Type of solver.  :ref:`'simplex' <optimize.linprog-simplex>`
-		    and :ref:`'interior-point' <optimize.linprog-interior-point>`
+		    A sequence of ``(min, max)`` pairs for each element in ``x``, defining
+		    the minimum and maximum values of that decision variable. Use ``None`` to
+		    indicate that there is no bound. By default, bounds are ``(0, None)``
+		    (all decision variables are non-negative).
+		    If a single tuple ``(min, max)`` is provided, then ``min`` and
+		    ``max`` will serve as bounds for all decision variables.
+		method : {'interior-point', 'revised simplex', 'simplex'}, optional
+		    The algorithm used to solve the standard form problem.
+		    :ref:`'interior-point' <optimize.linprog-interior-point>` (default),
+		    :ref:`'revised simplex' <optimize.linprog-revised_simplex>`, and
+		    :ref:`'simplex' <optimize.linprog-simplex>` (legacy)
 		    are supported.
-		callback : callable, optional (simplex only)
-		    If a callback function is provide, it will be called within each
-		    iteration of the simplex algorithm. The callback must have the
-		    signature ``callback(xk, **kwargs)`` where ``xk`` is the current
-		    solution vector and ``kwargs`` is a dictionary containing the
-		    following::
+		callback : callable, optional
+		    If a callback function is provided, it will be called at least once per
+		    iteration of the algorithm. The callback function must accept a single
+		    `scipy.optimize.OptimizeResult` consisting of the following fields:
 		
-		        "tableau" : The current Simplex algorithm tableau
-		        "nit" : The current iteration.
-		        "pivot" : The pivot (row, column) used for the next iteration.
-		        "phase" : Whether the algorithm is in Phase 1 or Phase 2.
-		        "basis" : The indices of the columns of the basic variables.
+		        x : 1D array
+		            The current solution vector.
+		        fun : float
+		            The current value of the objective function ``c @ x``.
+		        success : bool
+		            ``True`` when the algorithm has completed successfully.
+		        slack : 1D array
+		            The (nominally positive) values of the slack,
+		            ``b_ub - A_ub @ x``.
+		        con : 1D array
+		            The (nominally zero) residuals of the equality constraints,
+		            ``b_eq - A_eq @ x``.
+		        phase : int
+		            The phase of the algorithm being executed.
+		        status : int
+		            An integer representing the status of the algorithm.
+		
+		            ``0`` : Optimization proceeding nominally.
+		
+		            ``1`` : Iteration limit reached.
+		
+		            ``2`` : Problem appears to be infeasible.
+		
+		            ``3`` : Problem appears to be unbounded.
+		
+		            ``4`` : Numerical difficulties encountered.
+		
+		        nit : int
+		            The current iteration number.
+		        message : str
+		            A string descriptor of the algorithm status.
 		
 		options : dict, optional
 		    A dictionary of solver options. All methods accept the following
-		    generic options:
+		    options:
 		
 		        maxiter : int
 		            Maximum number of iterations to perform.
 		        disp : bool
-		            Set to True to print convergence messages.
+		            Set to ``True`` to print convergence messages.
 		
-		    For method-specific options, see :func:`show_options('linprog')`.
+		    For method-specific options, see
+		    :func:`show_options('linprog') <show_options>`.
+		
+		x0 : 1D array, optional
+		    Guess values of the decision variables, which will be refined by
+		    the optimization algorithm. This argument is currently used only by the
+		    'revised simplex' method, and can only be used if `x0` represents a
+		    basic feasible solution.
+		
 		
 		Returns
 		-------
-		A `scipy.optimize.OptimizeResult` consisting of the following fields:
+		res : OptimizeResult
+		    A :class:`scipy.optimize.OptimizeResult` consisting of the fields:
 		
-		    x : ndarray
-		        The independent variable vector which optimizes the linear
-		        programming problem.
-		    fun : float
-		        Value of the objective function.
-		    slack : ndarray
-		        The values of the slack variables.  Each slack variable corresponds
-		        to an inequality constraint.  If the slack is zero, then the
-		        corresponding constraint is active.
-		    success : bool
-		        Returns True if the algorithm succeeded in finding an optimal
-		        solution.
-		    status : int
-		        An integer representing the exit status of the optimization::
+		        x : 1D array
+		            The values of the decision variables that minimizes the
+		            objective function while satisfying the constraints.
+		        fun : float
+		            The optimal value of the objective function ``c @ x``.
+		        slack : 1D array
+		            The (nominally positive) values of the slack variables,
+		            ``b_ub - A_ub @ x``.
+		        con : 1D array
+		            The (nominally zero) residuals of the equality constraints,
+		            ``b_eq - A_eq @ x``.
+		        success : bool
+		            ``True`` when the algorithm succeeds in finding an optimal
+		            solution.
+		        status : int
+		            An integer representing the exit status of the algorithm.
 		
-		             0 : Optimization terminated successfully
-		             1 : Iteration limit reached
-		             2 : Problem appears to be infeasible
-		             3 : Problem appears to be unbounded
+		            ``0`` : Optimization terminated successfully.
 		
-		    nit : int
-		        The number of iterations performed.
-		    message : str
-		        A string descriptor of the exit status of the optimization.
+		            ``1`` : Iteration limit reached.
+		
+		            ``2`` : Problem appears to be infeasible.
+		
+		            ``3`` : Problem appears to be unbounded.
+		
+		            ``4`` : Numerical difficulties encountered.
+		
+		        nit : int
+		            The total number of iterations performed in all phases.
+		        message : str
+		            A string descriptor of the exit status of the algorithm.
 		
 		See Also
 		--------
-		show_options : Additional options accepted by the solvers
+		show_options : Additional options accepted by the solvers.
 		
 		Notes
 		-----
 		This section describes the available solvers that can be selected by the
-		'method' parameter. The default method
-		is :ref:`Simplex <optimize.linprog-simplex>`.
-		:ref:`Interior point <optimize.linprog-interior-point>` is also available.
+		'method' parameter.
 		
-		Method *simplex* uses the simplex algorithm (as it relates to linear
-		programming, NOT the Nelder-Mead simplex) [1]_, [2]_. This algorithm
-		should be reasonably reliable and fast for small problems.
+		:ref:`'interior-point' <optimize.linprog-interior-point>` is the default
+		as it is typically the fastest and most robust method.
+		:ref:`'revised simplex' <optimize.linprog-revised_simplex>` is more
+		accurate for the problems it solves.
+		:ref:`'simplex' <optimize.linprog-simplex>` is the legacy method and is
+		included for backwards compatibility and educational purposes.
+		
+		Method *interior-point* uses the primal-dual path following algorithm
+		as outlined in [4]_. This algorithm supports sparse constraint matrices and
+		is typically faster than the simplex methods, especially for large, sparse
+		problems. Note, however, that the solution returned may be slightly less
+		accurate than those of the simplex methods and will not, in general,
+		correspond with a vertex of the polytope defined by the constraints.
+		
+		.. versionadded:: 1.0.0
+		
+		Method *revised simplex* uses the revised simplex method as decribed in
+		[9]_, except that a factorization [11]_ of the basis matrix, rather than
+		its inverse, is efficiently maintained and used to solve the linear systems
+		at each iteration of the algorithm.
+		
+		.. versionadded:: 1.3.0
+		
+		Method *simplex* uses a traditional, full-tableau implementation of
+		Dantzig's simplex algorithm [1]_, [2]_ (*not* the
+		Nelder-Mead simplex). This algorithm is included for backwards
+		compatibility and educational purposes.
 		
 		.. versionadded:: 0.15.0
 		
-		Method *interior-point* uses the primal-dual path following algorithm
-		as outlined in [4]_. This algorithm is intended to provide a faster
-		and more reliable alternative to *simplex*, especially for large,
-		sparse problems. Note, however, that the solution returned may be slightly
-		less accurate than that of the simplex method and may not correspond with a
-		vertex of the polytope defined by the constraints.
+		Before applying any method, a presolve procedure based on [8]_ attempts
+		to identify trivial infeasibilities, trivial unboundedness, and potential
+		problem simplifications. Specifically, it checks for:
+		
+		- rows of zeros in ``A_eq`` or ``A_ub``, representing trivial constraints;
+		- columns of zeros in ``A_eq`` `and` ``A_ub``, representing unconstrained
+		  variables;
+		- column singletons in ``A_eq``, representing fixed variables; and
+		- column singletons in ``A_ub``, representing simple bounds.
+		
+		If presolve reveals that the problem is unbounded (e.g. an unconstrained
+		and unbounded variable has negative cost) or infeasible (e.g. a row of
+		zeros in ``A_eq`` corresponds with a nonzero in ``b_eq``), the solver
+		terminates with the appropriate status code. Note that presolve terminates
+		as soon as any sign of unboundedness is detected; consequently, a problem
+		may be reported as unbounded when in reality the problem is infeasible
+		(but infeasibility has not been detected yet). Therefore, if it is
+		important to know whether the problem is actually infeasible, solve the
+		problem again with option ``presolve=False``.
+		
+		If neither infeasibility nor unboundedness are detected in a single pass
+		of the presolve, bounds are tightened where possible and fixed
+		variables are removed from the problem. Then, linearly dependent rows
+		of the ``A_eq`` matrix are removed, (unless they represent an
+		infeasibility) to avoid numerical difficulties in the primary solve
+		routine. Note that rows that are nearly linearly dependent (within a
+		prescribed tolerance) may also be removed, which can change the optimal
+		solution in rare cases. If this is a concern, eliminate redundancy from
+		your problem formulation and run with option ``rr=False`` or
+		``presolve=False``.
+		
+		Several potential improvements can be made here: additional presolve
+		checks outlined in [8]_ should be implemented, the presolve routine should
+		be run multiple times (until no further simplifications can be made), and
+		more of the efficiency improvements from [5]_ should be implemented in the
+		redundancy removal routines.
+		
+		After presolve, the problem is transformed to standard form by converting
+		the (tightened) simple bounds to upper bound constraints, introducing
+		non-negative slack variables for inequality constraints, and expressing
+		unbounded variables as the difference between two non-negative variables.
+		The selected algorithm solves the standard form problem, and a
+		postprocessing routine converts this to a solution to the original problem.
 		
 		References
 		----------
@@ -3868,29 +4231,29 @@ package scipy.optimize;
 		.. [10] Andersen, Erling D., et al. Implementation of interior point
 		        methods for large scale linear programming. HEC/Universite de
 		        Geneve, 1996.
+		.. [11] Bartels, Richard H. "A stabilization of the simplex method."
+		        Journal in  Numerische Mathematik 16.5 (1971): 414-434.
 		
 		Examples
 		--------
 		Consider the following problem:
 		
-		Minimize: f = -1*x[0] + 4*x[1]
+		.. math::
 		
-		Subject to: -3*x[0] + 1*x[1] <= 6
-		             1*x[0] + 2*x[1] <= 4
-		                        x[1] >= -3
+		    \min_{x_0, x_1} \ -x_0 + 4x_1 & \\
+		    \mbox{such that} \ -3x_0 + x_1 & \leq 6,\\
+		    -x_0 - 2x_1 & \geq -4,\\
+		    x_1 & \geq -3.
 		
-		where:  -inf <= x[0] <= inf
-		
-		This problem deviates from the standard linear programming problem.
-		In standard form, linear programming problems assume the variables x are
-		non-negative.  Since the variables don't have standard bounds where
-		0 <= x <= inf, the bounds of the variables must be explicitly set.
-		
-		There are two upper-bound constraints, which can be expressed as
-		
-		dot(A_ub, x) <= b_ub
-		
-		The input for this problem is as follows:
+		The problem is not presented in the form accepted by `linprog`. This is
+		easily remedied by converting the "greater than" inequality
+		constraint to a "less than" inequality constraint by
+		multiplying both sides by a factor of :math:`-1`. Note also that the last
+		constraint is really the simple bound :math:`-3 \leq x_1 \leq \infty`.
+		Finally, since there are no bounds on :math:`x_0`, we must explicitly
+		specify the bounds :math:`-\infty \leq x_0 \leq \infty`, as the
+		default is for variables to be non-negative. After collecting coeffecients
+		into arrays and tuples, the input for this problem is:
 		
 		>>> c = [-1, 4]
 		>>> A = [[-3, 1], [1, 2]]
@@ -3898,24 +4261,35 @@ package scipy.optimize;
 		>>> x0_bounds = (None, None)
 		>>> x1_bounds = (-3, None)
 		>>> from scipy.optimize import linprog
-		>>> res = linprog(c, A_ub=A, b_ub=b, bounds=(x0_bounds, x1_bounds),
-		...               options={"disp": True})
-		Optimization terminated successfully.
-		     Current function value: -22.000000
-		     Iterations: 1
+		>>> res = linprog(c, A_ub=A, b_ub=b, bounds=[x0_bounds, x1_bounds])
+		
+		Note that the default method for `linprog` is 'interior-point', which is
+		approximate by nature.
+		
 		>>> print(res)
-		     fun: -22.0
+		     con: array([], dtype=float64)
+		     fun: -21.99999984082494 # may vary
 		 message: 'Optimization terminated successfully.'
-		     nit: 1
-		   slack: array([39.,  0.])
+		     nit: 6 # may vary
+		   slack: array([3.89999997e+01, 8.46872439e-08] # may vary
 		  status: 0
 		 success: True
-		       x: array([10., -3.])
+		       x: array([ 9.99999989, -2.99999999]) # may vary
 		
-		Note the actual objective value is 11.428571.  In this case we minimized
-		the negative of the objective function.
+		If you need greater accuracy, try 'revised simplex'.
+		
+		>>> res = linprog(c, A_ub=A, b_ub=b, bounds=[x0_bounds, x1_bounds], method='revised simplex')
+		>>> print(res)
+		     con: array([], dtype=float64)
+		     fun: -22.0 # may vary
+		 message: 'Optimization terminated successfully.'
+		     nit: 1 # may vary
+		   slack: array([39.,  0.]) # may vary
+		  status: 0
+		 success: True
+		       x: array([10., -3.]) # may vary
 	**/
-	static public function linprog(c:Dynamic, ?A_ub:Dynamic, ?b_ub:Dynamic, ?A_eq:Dynamic, ?b_eq:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?callback:Dynamic, ?options:Dynamic):Dynamic;
+	static public function linprog(c:Dynamic, ?A_ub:Dynamic, ?b_ub:Dynamic, ?A_eq:Dynamic, ?b_eq:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?callback:Dynamic, ?options:Dynamic, ?x0:Dynamic):Dynamic;
 	/**
 		A sample callback function demonstrating the linprog callback interface.
 		This callback produces detailed output to sys.stdout before each iteration
@@ -3923,29 +4297,41 @@ package scipy.optimize;
 		
 		Parameters
 		----------
-		xk : array_like
-		    The current solution vector.
-		**kwargs : dict
-		    A dictionary containing the following parameters:
+		res : A `scipy.optimize.OptimizeResult` consisting of the following fields:
 		
-		    tableau : array_like
-		        The current tableau of the simplex algorithm.
-		        Its structure is defined in _solve_simplex.
+		    x : 1D array
+		        The independent variable vector which optimizes the linear
+		        programming problem.
+		    fun : float
+		        Value of the objective function.
+		    success : bool
+		        True if the algorithm succeeded in finding an optimal solution.
+		    slack : 1D array
+		        The values of the slack variables. Each slack variable corresponds
+		        to an inequality constraint. If the slack is zero, then the
+		        corresponding constraint is active.
+		    con : 1D array
+		        The (nominally zero) residuals of the equality constraints, that is,
+		        ``b - A_eq @ x``
 		    phase : int
-		        The current Phase of the simplex algorithm (1 or 2)
+		        The phase of the optimization being executed. In phase 1 a basic
+		        feasible solution is sought and the T has an additional row
+		        representing an alternate objective function.
+		    status : int
+		        An integer representing the exit status of the optimization::
+		
+		             0 : Optimization terminated successfully
+		             1 : Iteration limit reached
+		             2 : Problem appears to be infeasible
+		             3 : Problem appears to be unbounded
+		             4 : Serious numerical difficulties encountered
+		
 		    nit : int
-		        The current iteration number.
-		    pivot : tuple(int, int)
-		        The index of the tableau selected as the next pivot,
-		        or nan if no pivot exists
-		    basis : array(int)
-		        A list of the current basic variables.
-		        Each element contains the name of a basic variable and its value.
-		    complete : bool
-		        True if the simplex algorithm has completed
-		        (and this is the final call to callback), otherwise False.
+		        The number of iterations performed.
+		    message : str
+		        A string descriptor of the exit status of the optimization.
 	**/
-	static public function linprog_verbose_callback(xk:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function linprog_verbose_callback(res:Dynamic):Dynamic;
 	/**
 		Solve a linear least-squares problem with bounds on the variables.
 		
@@ -4292,7 +4678,6 @@ package scipy.optimize;
 		    ``message`` which describes the cause of the termination. See
 		    `OptimizeResult` for a description of other attributes.
 		
-		
 		See also
 		--------
 		minimize_scalar : Interface to minimization algorithms for scalar
@@ -4436,7 +4821,7 @@ package scipy.optimize;
 		its contents also passed as `method` parameters pair by pair.  Also, if
 		`jac` has been passed as a bool type, `jac` and `fun` are mangled so that
 		`fun` returns just the function values and `jac` is converted to a function
-		returning the Jacobian.  The method shall return an ``OptimizeResult``
+		returning the Jacobian.  The method shall return an `OptimizeResult`
 		object.
 		
 		The provided `method` callable must be able to accept (and possibly ignore)
@@ -4643,7 +5028,7 @@ package scipy.optimize;
 		where ``kwargs`` corresponds to any other parameters passed to `minimize`
 		(such as `bracket`, `tol`, etc.), except the `options` dict, which has
 		its contents also passed as `method` parameters pair by pair.  The method
-		shall return an ``OptimizeResult`` object.
+		shall return an `OptimizeResult` object.
 		
 		The provided `method` callable must be able to accept (and possibly ignore)
 		arbitrary parameters; the set of parameters accepted by `minimize` may
@@ -4675,71 +5060,121 @@ package scipy.optimize;
 	**/
 	static public function minimize_scalar(fun:Dynamic, ?bracket:Dynamic, ?bounds:Dynamic, ?args:Dynamic, ?method:Dynamic, ?tol:Dynamic, ?options:Dynamic):Dynamic;
 	/**
-		Find a zero using the Newton-Raphson or secant method.
+		Find a zero of a real or complex function using the Newton-Raphson
+		(or secant or Halley's) method.
 		
 		Find a zero of the function `func` given a nearby starting point `x0`.
 		The Newton-Raphson method is used if the derivative `fprime` of `func`
 		is provided, otherwise the secant method is used.  If the second order
-		derivative `fprime2` of `func` is provided, then Halley's method is used.
+		derivative `fprime2` of `func` is also provided, then Halley's method is
+		used.
+		
+		If `x0` is a sequence with more than one item, then `newton` returns an
+		array, and `func` must be vectorized and return a sequence or array of the
+		same shape as its first argument. If `fprime` or `fprime2` is given then
+		its return must also have the same shape.
 		
 		Parameters
 		----------
-		func : function
+		func : callable
 		    The function whose zero is wanted. It must be a function of a
-		    single variable of the form f(x,a,b,c...), where a,b,c... are extra
-		    arguments that can be passed in the `args` parameter.
-		x0 : float
+		    single variable of the form ``f(x,a,b,c...)``, where ``a,b,c...``
+		    are extra arguments that can be passed in the `args` parameter.
+		x0 : float, sequence, or ndarray
 		    An initial estimate of the zero that should be somewhere near the
-		    actual zero.
-		fprime : function, optional
+		    actual zero. If not scalar, then `func` must be vectorized and return
+		    a sequence or array of the same shape as its first argument.
+		fprime : callable, optional
 		    The derivative of the function when available and convenient. If it
 		    is None (default), then the secant method is used.
 		args : tuple, optional
 		    Extra arguments to be used in the function call.
 		tol : float, optional
-		    The allowable error of the zero value.
+		    The allowable error of the zero value.  If `func` is complex-valued,
+		    a larger `tol` is recommended as both the real and imaginary parts
+		    of `x` contribute to ``|x - x0|``.
 		maxiter : int, optional
 		    Maximum number of iterations.
-		fprime2 : function, optional
+		fprime2 : callable, optional
 		    The second order derivative of the function when available and
 		    convenient. If it is None (default), then the normal Newton-Raphson
 		    or the secant method is used. If it is not None, then Halley's method
 		    is used.
+		x1 : float, optional
+		    Another estimate of the zero that should be somewhere near the
+		    actual zero.  Used if `fprime` is not provided.
+		rtol : float, optional
+		    Tolerance (relative) for termination.
+		full_output : bool, optional
+		    If `full_output` is False (default), the root is returned.
+		    If True and `x0` is scalar, the return value is ``(x, r)``, where ``x``
+		    is the root and ``r`` is a `RootResults` object.
+		    If True and `x0` is non-scalar, the return value is ``(x, converged,
+		    zero_der)`` (see Returns section for details).
+		disp : bool, optional
+		    If True, raise a RuntimeError if the algorithm didn't converge, with
+		    the error message containing the number of iterations and current
+		    function value.  Otherwise the convergence status is recorded in a
+		    `RootResults` return object.
+		    Ignored if `x0` is not scalar.
+		    *Note: this has little to do with displaying, however
+		    the `disp` keyword cannot be renamed for backwards compatibility.*
 		
 		Returns
 		-------
-		zero : float
+		root : float, sequence, or ndarray
 		    Estimated location where function is zero.
+		r : `RootResults`, optional
+		    Present if ``full_output=True`` and `x0` is scalar.
+		    Object containing information about the convergence.  In particular,
+		    ``r.converged`` is True if the routine converged.
+		converged : ndarray of bool, optional
+		    Present if ``full_output=True`` and `x0` is non-scalar.
+		    For vector functions, indicates which elements converged successfully.
+		zero_der : ndarray of bool, optional
+		    Present if ``full_output=True`` and `x0` is non-scalar.
+		    For vector functions, indicates which elements had a zero derivative.
 		
 		See Also
 		--------
 		brentq, brenth, ridder, bisect
-		fsolve : find zeroes in n dimensions.
+		fsolve : find zeros in n dimensions.
 		
 		Notes
 		-----
 		The convergence rate of the Newton-Raphson method is quadratic,
 		the Halley method is cubic, and the secant method is
 		sub-quadratic.  This means that if the function is well behaved
-		the actual error in the estimated zero is approximately the square
-		(cube for Halley) of the requested tolerance up to roundoff
-		error. However, the stopping criterion used here is the step size
-		and there is no guarantee that a zero has been found. Consequently
-		the result should be verified. Safer algorithms are brentq,
-		brenth, ridder, and bisect, but they all require that the root
-		first be bracketed in an interval where the function changes
-		sign. The brentq algorithm is recommended for general use in one
-		dimensional problems when such an interval has been found.
+		the actual error in the estimated zero after the n-th iteration
+		is approximately the square (cube for Halley) of the error
+		after the (n-1)-th step.  However, the stopping criterion used
+		here is the step size and there is no guarantee that a zero
+		has been found. Consequently the result should be verified.
+		Safer algorithms are brentq, brenth, ridder, and bisect,
+		but they all require that the root first be bracketed in an
+		interval where the function changes sign. The brentq algorithm
+		is recommended for general use in one dimensional problems
+		when such an interval has been found.
+		
+		When `newton` is used with arrays, it is best suited for the following
+		types of problems:
+		
+		* The initial guesses, `x0`, are all relatively the same distance from
+		  the roots.
+		* Some or all of the extra arguments, `args`, are also arrays so that a
+		  class of similar problems can be solved together.
+		* The size of the initial guesses, `x0`, is larger than O(100) elements.
+		  Otherwise, a naive loop may perform as well or better than a vector.
 		
 		Examples
 		--------
+		>>> from scipy import optimize
+		>>> import matplotlib.pyplot as plt
 		
 		>>> def f(x):
 		...     return (x**3 - 1)  # only one real root at x = 1
 		
-		>>> from scipy import optimize
-		
-		``fprime`` not provided, use secant method
+		``fprime`` is not provided, use the secant method:
 		
 		>>> root = optimize.newton(f, 1.5)
 		>>> root
@@ -4748,20 +5183,49 @@ package scipy.optimize;
 		>>> root
 		1.0000000000000016
 		
-		Only ``fprime`` provided, use Newton Raphson method
+		Only ``fprime`` is provided, use the Newton-Raphson method:
 		
 		>>> root = optimize.newton(f, 1.5, fprime=lambda x: 3 * x**2)
 		>>> root
 		1.0
 		
-		Both ``fprime2`` and ``fprime`` provided, use Halley's method
+		Both ``fprime2`` and ``fprime`` are provided, use Halley's method:
 		
 		>>> root = optimize.newton(f, 1.5, fprime=lambda x: 3 * x**2,
 		...                        fprime2=lambda x: 6 * x)
 		>>> root
 		1.0
+		
+		When we want to find zeros for a set of related starting values and/or
+		function parameters, we can provide both of those as an array of inputs:
+		
+		>>> f = lambda x, a: x**3 - a
+		>>> fder = lambda x, a: 3 * x**2
+		>>> np.random.seed(4321)
+		>>> x = np.random.randn(100)
+		>>> a = np.arange(-50, 50)
+		>>> vec_res = optimize.newton(f, x, fprime=fder, args=(a, ))
+		
+		The above is the equivalent of solving for each value in ``(x, a)``
+		separately in a for-loop, just faster:
+		
+		>>> loop_res = [optimize.newton(f, x0, fprime=fder, args=(a0,))
+		...             for x0, a0 in zip(x, a)]
+		>>> np.allclose(vec_res, loop_res)
+		True
+		
+		Plot the results found for all values of ``a``:
+		
+		>>> analytical_result = np.sign(a) * np.abs(a)**(1/3)
+		>>> fig = plt.figure()
+		>>> ax = fig.add_subplot(111)
+		>>> ax.plot(a, analytical_result, 'o')
+		>>> ax.plot(a, vec_res, '.')
+		>>> ax.set_xlabel('$a$')
+		>>> ax.set_ylabel('$x$ where $f(x, a)=0$')
+		>>> plt.show()
 	**/
-	static public function newton(func:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?fprime2:Dynamic):Float;
+	static public function newton(func:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?fprime2:Dynamic, ?x1:Dynamic, ?rtol:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Dynamic;
 	/**
 		Find a root of a function, using Krylov approximation for inverse Jacobian.
 		
@@ -4857,7 +5321,7 @@ package scipy.optimize;
 		Due to the use of iterative matrix inverses, these methods can
 		deal with large nonlinear problems.
 		
-		Scipy's `scipy.sparse.linalg` module offers a selection of Krylov
+		SciPy's `scipy.sparse.linalg` module offers a selection of Krylov
 		solvers to choose from. The default here is `lgmres`, which is a
 		variant of restarted GMRES iteration that reuses some of the
 		information obtained in the previous Newton steps to invert
@@ -4909,16 +5373,16 @@ package scipy.optimize;
 	static public function nnls(A:Dynamic, b:Dynamic, ?maxiter:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Find a root of a function in an interval.
+		Find a root of a function in an interval using Ridder's method.
 		
 		Parameters
 		----------
 		f : function
 		    Python function returning a number.  f must be continuous, and f(a) and
 		    f(b) must have opposite signs.
-		a : number
+		a : scalar
 		    One end of the bracketing interval [a,b].
-		b : number
+		b : scalar
 		    The other end of the bracketing interval [a,b].
 		xtol : number, optional
 		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
@@ -4929,8 +5393,8 @@ package scipy.optimize;
 		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
 		    parameter cannot be smaller than its default value of
 		    ``4*np.finfo(float).eps``.
-		maxiter : number, optional
-		    if convergence is not achieved in maxiter iterations, an error is
+		maxiter : int, optional
+		    if convergence is not achieved in `maxiter` iterations, an error is
 		    raised.  Must be >= 0.
 		args : tuple, optional
 		    containing extra arguments for the function `f`.
@@ -4938,15 +5402,17 @@ package scipy.optimize;
 		full_output : bool, optional
 		    If `full_output` is False, the root is returned.  If `full_output` is
 		    True, the return value is ``(x, r)``, where `x` is the root, and `r` is
-		    a RootResults object.
+		    a `RootResults` object.
 		disp : bool, optional
 		    If True, raise RuntimeError if the algorithm didn't converge.
+		    Otherwise the convergence status is recorded in any `RootResults`
+		    return object.
 		
 		Returns
 		-------
 		x0 : float
 		    Zero of `f` between `a` and `b`.
-		r : RootResults (present if ``full_output = True``)
+		r : `RootResults` (present if ``full_output = True``)
 		    Object containing information about the convergence.
 		    In particular, ``r.converged`` is True if the routine converged.
 		
@@ -4966,6 +5432,13 @@ package scipy.optimize;
 		The routine used here diverges slightly from standard presentations in
 		order to be a bit more careful of tolerance.
 		
+		References
+		----------
+		.. [Ridders1979]
+		   Ridders, C. F. J. "A New Algorithm for Computing a
+		   Single Root of a Real Continuous Function."
+		   IEEE Trans. Circuits Systems 26, 979-980, 1979.
+		
 		Examples
 		--------
 		
@@ -4981,13 +5454,6 @@ package scipy.optimize;
 		>>> root = optimize.ridder(f, -2, 0)
 		>>> root
 		-1.0
-		
-		References
-		----------
-		.. [Ridders1979]
-		   Ridders, C. F. J. "A New Algorithm for Computing a
-		   Single Root of a Real Continuous Function."
-		   IEEE Trans. Circuits Systems 26, 979-980, 1979.
 	**/
 	static public function ridder(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	/**
@@ -5091,7 +5557,7 @@ package scipy.optimize;
 		   1980. User Guide for MINPACK-1.
 		.. [2] C. T. Kelley. 1995. Iterative Methods for Linear and Nonlinear
 		   Equations. Society for Industrial and Applied Mathematics.
-		   <http://www.siam.org/books/kelley/fr16/index.php>
+		   <https://archive.siam.org/books/kelley/fr16/>
 		.. [3] W. La Cruz, J.M. Martinez, M. Raydan. Math. Comp. 75, 1429 (2006).
 		
 		Examples
@@ -5118,6 +5584,120 @@ package scipy.optimize;
 	**/
 	static public function root(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?method:Dynamic, ?jac:Dynamic, ?tol:Dynamic, ?callback:Dynamic, ?options:Dynamic):Dynamic;
 	/**
+		Find a root of a scalar function.
+		
+		Parameters
+		----------
+		f : callable
+		    A function to find a root of.
+		args : tuple, optional
+		    Extra arguments passed to the objective function and its derivative(s).
+		method : str, optional
+		    Type of solver.  Should be one of
+		
+		        - 'bisect'    :ref:`(see here) <optimize.root_scalar-bisect>`
+		        - 'brentq'    :ref:`(see here) <optimize.root_scalar-brentq>`
+		        - 'brenth'    :ref:`(see here) <optimize.root_scalar-brenth>`
+		        - 'ridder'    :ref:`(see here) <optimize.root_scalar-ridder>`
+		        - 'toms748'    :ref:`(see here) <optimize.root_scalar-toms748>`
+		        - 'newton'    :ref:`(see here) <optimize.root_scalar-newton>`
+		        - 'secant'    :ref:`(see here) <optimize.root_scalar-secant>`
+		        - 'halley'    :ref:`(see here) <optimize.root_scalar-halley>`
+		
+		bracket: A sequence of 2 floats, optional
+		    An interval bracketing a root.  `f(x, *args)` must have different
+		    signs at the two endpoints.
+		x0 : float, optional
+		    Initial guess.
+		x1 : float, optional
+		    A second guess.
+		fprime : bool or callable, optional
+		    If `fprime` is a boolean and is True, `f` is assumed to return the
+		    value of the objective function and of the derivative.
+		    `fprime` can also be a callable returning the derivative of `f`. In
+		    this case, it must accept the same arguments as `f`.
+		fprime2 : bool or callable, optional
+		    If `fprime2` is a boolean and is True, `f` is assumed to return the
+		    value of the objective function and of the
+		    first and second derivatives.
+		    `fprime2` can also be a callable returning the second derivative of `f`.
+		    In this case, it must accept the same arguments as `f`.
+		xtol : float, optional
+		    Tolerance (absolute) for termination.
+		rtol : float, optional
+		    Tolerance (relative) for termination.
+		maxiter : int, optional
+		    Maximum number of iterations.
+		options : dict, optional
+		    A dictionary of solver options. E.g. ``k``, see
+		    :obj:`show_options()` for details.
+		
+		Returns
+		-------
+		sol : RootResults
+		    The solution represented as a ``RootResults`` object.
+		    Important attributes are: ``root`` the solution , ``converged`` a
+		    boolean flag indicating if the algorithm exited successfully and
+		    ``flag`` which describes the cause of the termination. See
+		    `RootResults` for a description of other attributes.
+		
+		See also
+		--------
+		show_options : Additional options accepted by the solvers
+		root : Find a root of a vector function.
+		
+		Notes
+		-----
+		This section describes the available solvers that can be selected by the
+		'method' parameter.
+		
+		The default is to use the best method available for the situation
+		presented.
+		If a bracket is provided, it may use one of the bracketing methods.
+		If a derivative and an initial value are specified, it may
+		select one of the derivative-based methods.
+		If no method is judged applicable, it will raise an Exception.
+		
+		
+		Examples
+		--------
+		
+		Find the root of a simple cubic
+		
+		>>> from scipy import optimize
+		>>> def f(x):
+		...     return (x**3 - 1)  # only one real root at x = 1
+		
+		>>> def fprime(x):
+		...     return 3*x**2
+		
+		The `brentq` method takes as input a bracket
+		
+		>>> sol = optimize.root_scalar(f, bracket=[0, 3], method='brentq')
+		>>> sol.root, sol.iterations, sol.function_calls
+		(1.0, 10, 11)
+		
+		The `newton` method takes as input a single point and uses the derivative(s)
+		
+		>>> sol = optimize.root_scalar(f, x0=0.2, fprime=fprime, method='newton')
+		>>> sol.root, sol.iterations, sol.function_calls
+		(1.0, 11, 22)
+		
+		The function can provide the value and derivative(s) in a single call.
+		
+		>>> def f_p_pp(x):
+		...     return (x**3 - 1), 3*x**2, 6*x
+		
+		>>> sol = optimize.root_scalar(f_p_pp, x0=0.2, fprime=True, method='newton')
+		>>> sol.root, sol.iterations, sol.function_calls
+		(1.0, 11, 11)
+		
+		>>> sol = optimize.root_scalar(f_p_pp, x0=0.2, fprime=True, fprime2=True, method='halley')
+		>>> sol.root, sol.iterations, sol.function_calls
+		(1.0, 7, 8)
+	**/
+	static public function root_scalar(f:Dynamic, ?args:Dynamic, ?method:Dynamic, ?bracket:Dynamic, ?fprime:Dynamic, ?fprime2:Dynamic, ?x0:Dynamic, ?x1:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?options:Dynamic):Dynamic;
+	/**
 		The Rosenbrock function.
 		
 		The function computed is::
@@ -5137,6 +5717,13 @@ package scipy.optimize;
 		See Also
 		--------
 		rosen_der, rosen_hess, rosen_hess_prod
+		
+		Examples
+		--------
+		>>> from scipy.optimize import rosen
+		>>> X = 0.1 * np.arange(10)
+		>>> rosen(X)
+		76.56
 	**/
 	static public function rosen(x:Dynamic):Float;
 	/**
@@ -5155,6 +5742,13 @@ package scipy.optimize;
 		See Also
 		--------
 		rosen, rosen_hess, rosen_hess_prod
+		
+		Examples
+		--------
+		>>> from scipy.optimize import rosen_der
+		>>> X = 0.1 * np.arange(9)
+		>>> rosen_der(X)
+		array([ -2. ,  10.6,  15.6,  13.4,   6.4,  -3. , -12.4, -19.4,  62. ])
 	**/
 	static public function rosen_der(x:Dynamic):Dynamic;
 	/**
@@ -5173,6 +5767,16 @@ package scipy.optimize;
 		See Also
 		--------
 		rosen, rosen_der, rosen_hess_prod
+		
+		Examples
+		--------
+		>>> from scipy.optimize import rosen_hess
+		>>> X = 0.1 * np.arange(4)
+		>>> rosen_hess(X)
+		array([[-38.,   0.,   0.,   0.],
+		       [  0., 134., -40.,   0.],
+		       [  0., -40., 130., -80.],
+		       [  0.,   0., -80., 200.]])
 	**/
 	static public function rosen_hess(x:Dynamic):Dynamic;
 	/**
@@ -5194,8 +5798,410 @@ package scipy.optimize;
 		See Also
 		--------
 		rosen, rosen_der, rosen_hess
+		
+		Examples
+		--------
+		>>> from scipy.optimize import rosen_hess_prod
+		>>> X = 0.1 * np.arange(9)
+		>>> p = 0.5 * np.arange(9)
+		>>> rosen_hess_prod(X, p)
+		array([  -0.,   27.,  -10.,  -95., -192., -265., -278., -195., -180.])
 	**/
 	static public function rosen_hess_prod(x:Dynamic, p:Dynamic):Dynamic;
+	/**
+		Finds the global minimum of a function using SHG optimization.
+		
+		SHGO stands for "simplicial homology global optimization".
+		
+		Parameters
+		----------
+		func : callable
+		    The objective function to be minimized.  Must be in the form
+		    ``f(x, *args)``, where ``x`` is the argument in the form of a 1-D array
+		    and ``args`` is a tuple of any additional fixed parameters needed to
+		    completely specify the function.
+		bounds : sequence
+		    Bounds for variables.  ``(min, max)`` pairs for each element in ``x``,
+		    defining the lower and upper bounds for the optimizing argument of
+		    `func`. It is required to have ``len(bounds) == len(x)``.
+		    ``len(bounds)`` is used to determine the number of parameters in ``x``.
+		    Use ``None`` for one of min or max when there is no bound in that
+		    direction. By default bounds are ``(None, None)``.
+		args : tuple, optional
+		    Any additional fixed parameters needed to completely specify the
+		    objective function.
+		constraints : dict or sequence of dict, optional
+		    Constraints definition.
+		    Function(s) ``R**n`` in the form::
+		
+		        g(x) <= 0 applied as g : R^n -> R^m
+		        h(x) == 0 applied as h : R^n -> R^p
+		
+		    Each constraint is defined in a dictionary with fields:
+		
+		        type : str
+		            Constraint type: 'eq' for equality, 'ineq' for inequality.
+		        fun : callable
+		            The function defining the constraint.
+		        jac : callable, optional
+		            The Jacobian of `fun` (only for SLSQP).
+		        args : sequence, optional
+		            Extra arguments to be passed to the function and Jacobian.
+		
+		    Equality constraint means that the constraint function result is to
+		    be zero whereas inequality means that it is to be non-negative.
+		    Note that COBYLA only supports inequality constraints.
+		
+		    .. note::
+		
+		       Only the COBYLA and SLSQP local minimize methods currently
+		       support constraint arguments. If the ``constraints`` sequence
+		       used in the local optimization problem is not defined in
+		       ``minimizer_kwargs`` and a constrained method is used then the
+		       global ``constraints`` will be used.
+		       (Defining a ``constraints`` sequence in ``minimizer_kwargs``
+		       means that ``constraints`` will not be added so if equality
+		       constraints and so forth need to be added then the inequality
+		       functions in ``constraints`` need to be added to
+		       ``minimizer_kwargs`` too).
+		
+		n : int, optional
+		    Number of sampling points used in the construction of the simplicial
+		    complex. Note that this argument is only used for ``sobol`` and other
+		    arbitrary `sampling_methods`.
+		iters : int, optional
+		    Number of iterations used in the construction of the simplicial complex.
+		callback : callable, optional
+		    Called after each iteration, as ``callback(xk)``, where ``xk`` is the
+		    current parameter vector.
+		minimizer_kwargs : dict, optional
+		    Extra keyword arguments to be passed to the minimizer
+		    ``scipy.optimize.minimize`` Some important options could be:
+		
+		        * method : str
+		            The minimization method (e.g. ``SLSQP``).
+		        * args : tuple
+		            Extra arguments passed to the objective function (``func``) and
+		            its derivatives (Jacobian, Hessian).
+		        * options : dict, optional
+		            Note that by default the tolerance is specified as
+		            ``{ftol: 1e-12}``
+		
+		options : dict, optional
+		    A dictionary of solver options. Many of the options specified for the
+		    global routine are also passed to the scipy.optimize.minimize routine.
+		    The options that are also passed to the local routine are marked with
+		    "(L)".
+		
+		    Stopping criteria, the algorithm will terminate if any of the specified
+		    criteria are met. However, the default algorithm does not require any to
+		    be specified:
+		
+		    * maxfev : int (L)
+		        Maximum number of function evaluations in the feasible domain.
+		        (Note only methods that support this option will terminate
+		        the routine at precisely exact specified value. Otherwise the
+		        criterion will only terminate during a global iteration)
+		    * f_min
+		        Specify the minimum objective function value, if it is known.
+		    * f_tol : float
+		        Precision goal for the value of f in the stopping
+		        criterion. Note that the global routine will also
+		        terminate if a sampling point in the global routine is
+		        within this tolerance.
+		    * maxiter : int
+		        Maximum number of iterations to perform.
+		    * maxev : int
+		        Maximum number of sampling evaluations to perform (includes
+		        searching in infeasible points).
+		    * maxtime : float
+		        Maximum processing runtime allowed
+		    * minhgrd : int
+		        Minimum homology group rank differential. The homology group of the
+		        objective function is calculated (approximately) during every
+		        iteration. The rank of this group has a one-to-one correspondence
+		        with the number of locally convex subdomains in the objective
+		        function (after adequate sampling points each of these subdomains
+		        contain a unique global minimum). If the difference in the hgr is 0
+		        between iterations for ``maxhgrd`` specified iterations the
+		        algorithm will terminate.
+		
+		    Objective function knowledge:
+		
+		    * symmetry : bool
+		        Specify True if the objective function contains symmetric variables.
+		        The search space (and therefore performance) is decreased by O(n!).
+		
+		    * jac : bool or callable, optional
+		        Jacobian (gradient) of objective function. Only for CG, BFGS,
+		        Newton-CG, L-BFGS-B, TNC, SLSQP, dogleg, trust-ncg. If ``jac`` is a
+		        boolean and is True, ``fun`` is assumed to return the gradient along
+		        with the objective function. If False, the gradient will be
+		        estimated numerically. ``jac`` can also be a callable returning the
+		        gradient of the objective. In this case, it must accept the same
+		        arguments as ``fun``. (Passed to `scipy.optimize.minmize` automatically)
+		
+		    * hess, hessp : callable, optional
+		        Hessian (matrix of second-order derivatives) of objective function
+		        or Hessian of objective function times an arbitrary vector p.
+		        Only for Newton-CG, dogleg, trust-ncg. Only one of ``hessp`` or
+		        ``hess`` needs to be given. If ``hess`` is provided, then
+		        ``hessp`` will be ignored. If neither ``hess`` nor ``hessp`` is
+		        provided, then the Hessian product will be approximated using
+		        finite differences on ``jac``. ``hessp`` must compute the Hessian
+		        times an arbitrary vector. (Passed to `scipy.optimize.minmize`
+		        automatically)
+		
+		    Algorithm settings:
+		
+		    * minimize_every_iter : bool
+		        If True then promising global sampling points will be passed to a
+		        local minimisation routine every iteration. If False then only the
+		        final minimiser pool will be run. Defaults to False.
+		    * local_iter : int
+		        Only evaluate a few of the best minimiser pool candidates every
+		        iteration. If False all potential points are passed to the local
+		        minimisation routine.
+		    * infty_constraints: bool
+		        If True then any sampling points generated which are outside will
+		        the feasible domain will be saved and given an objective function
+		        value of ``inf``. If False then these points will be discarded.
+		        Using this functionality could lead to higher performance with
+		        respect to function evaluations before the global minimum is found,
+		        specifying False will use less memory at the cost of a slight
+		        decrease in performance. Defaults to True.
+		
+		    Feedback:
+		
+		    * disp : bool (L)
+		        Set to True to print convergence messages.
+		
+		sampling_method : str or function, optional
+		    Current built in sampling method options are ``sobol`` and
+		    ``simplicial``. The default ``simplicial`` uses less memory and provides
+		    the theoretical guarantee of convergence to the global minimum in finite
+		    time. The ``sobol`` method is faster in terms of sampling point
+		    generation at the cost of higher memory resources and the loss of
+		    guaranteed convergence. It is more appropriate for most "easier"
+		    problems where the convergence is relatively fast.
+		    User defined sampling functions must accept two arguments of ``n``
+		    sampling points of dimension ``dim`` per call and output an array of
+		    sampling points with shape `n x dim`. 
+		
+		Returns
+		-------
+		res : OptimizeResult
+		    The optimization result represented as a `OptimizeResult` object.
+		    Important attributes are:
+		    ``x`` the solution array corresponding to the global minimum,
+		    ``fun`` the function output at the global solution,
+		    ``xl`` an ordered list of local minima solutions,
+		    ``funl`` the function output at the corresponding local solutions,
+		    ``success`` a Boolean flag indicating if the optimizer exited
+		    successfully,
+		    ``message`` which describes the cause of the termination,
+		    ``nfev`` the total number of objective function evaluations including
+		    the sampling calls,
+		    ``nlfev`` the total number of objective function evaluations
+		    culminating from all local search optimisations,
+		    ``nit`` number of iterations performed by the global routine.
+		
+		Notes
+		-----
+		Global optimization using simplicial homology global optimisation [1]_.
+		Appropriate for solving general purpose NLP and blackbox optimisation
+		problems to global optimality (low dimensional problems).
+		
+		In general, the optimization problems are of the form::
+		
+		    minimize f(x) subject to
+		
+		    g_i(x) >= 0,  i = 1,...,m
+		    h_j(x)  = 0,  j = 1,...,p
+		
+		where x is a vector of one or more variables. ``f(x)`` is the objective
+		function ``R^n -> R``, ``g_i(x)`` are the inequality constraints, and
+		``h_j(x)`` are the equality constraints.
+		
+		Optionally, the lower and upper bounds for each element in x can also be
+		specified using the `bounds` argument.
+		
+		While most of the theoretical advantages of SHGO are only proven for when
+		``f(x)`` is a Lipschitz smooth function. The algorithm is also proven to
+		converge to the global optimum for the more general case where ``f(x)`` is
+		non-continuous, non-convex and non-smooth, if the default sampling method
+		is used [1]_.
+		
+		The local search method may be specified using the ``minimizer_kwargs``
+		parameter which is passed on to ``scipy.optimize.minimize``. By default
+		the ``SLSQP`` method is used. In general it is recommended to use the
+		``SLSQP`` or ``COBYLA`` local minimization if inequality constraints
+		are defined for the problem since the other methods do not use constraints.
+		
+		The ``sobol`` method points are generated using the Sobol (1967) [2]_
+		sequence. The primitive polynomials and various sets of initial direction
+		numbers for generating Sobol sequences is provided by [3]_ by Frances Kuo
+		and Stephen Joe. The original program sobol.cc (MIT) is available and
+		described at http://web.maths.unsw.edu.au/~fkuo/sobol/ translated to
+		Python 3 by Carl Sandrock 2016-03-31.
+		
+		References
+		----------
+		.. [1] Endres, SC, Sandrock, C, Focke, WW (2018) "A simplicial homology
+		       algorithm for lipschitz optimisation", Journal of Global Optimization.
+		.. [2] Sobol, IM (1967) "The distribution of points in a cube and the
+		       approximate evaluation of integrals", USSR Comput. Math. Math. Phys.
+		       7, 86-112.
+		.. [3] Joe, SW and Kuo, FY (2008) "Constructing Sobol sequences with
+		       better  two-dimensional projections", SIAM J. Sci. Comput. 30,
+		       2635-2654.
+		.. [4] Hoch, W and Schittkowski, K (1981) "Test examples for nonlinear
+		       programming codes", Lecture Notes in Economics and mathematical
+		       Systems, 187. Springer-Verlag, New York.
+		       http://www.ai7.uni-bayreuth.de/test_problem_coll.pdf
+		.. [5] Wales, DJ (2015) "Perspective: Insight into reaction coordinates and
+		       dynamics from the potential energy landscape",
+		       Journal of Chemical Physics, 142(13), 2015.
+		
+		Examples
+		--------
+		First consider the problem of minimizing the Rosenbrock function, `rosen`:
+		
+		>>> from scipy.optimize import rosen, shgo
+		>>> bounds = [(0,2), (0, 2), (0, 2), (0, 2), (0, 2)]
+		>>> result = shgo(rosen, bounds)
+		>>> result.x, result.fun
+		(array([ 1.,  1.,  1.,  1.,  1.]), 2.9203923741900809e-18)
+		
+		Note that bounds determine the dimensionality of the objective
+		function and is therefore a required input, however you can specify
+		empty bounds using ``None`` or objects like ``np.inf`` which will be
+		converted to large float numbers.
+		
+		>>> bounds = [(None, None), ]*4
+		>>> result = shgo(rosen, bounds)
+		>>> result.x
+		array([ 0.99999851,  0.99999704,  0.99999411,  0.9999882 ])
+		
+		Next we consider the Eggholder function, a problem with several local
+		minima and one global minimum. We will demonstrate the use of arguments and
+		the capabilities of `shgo`.
+		(https://en.wikipedia.org/wiki/Test_functions_for_optimization)
+		
+		>>> def eggholder(x):
+		...     return (-(x[1] + 47.0)
+		...             * np.sin(np.sqrt(abs(x[0]/2.0 + (x[1] + 47.0))))
+		...             - x[0] * np.sin(np.sqrt(abs(x[0] - (x[1] + 47.0))))
+		...             )
+		...
+		>>> bounds = [(-512, 512), (-512, 512)]
+		
+		`shgo` has two built-in low discrepancy sampling sequences.  First we will
+		input 30 initial sampling points of the Sobol sequence:
+		
+		>>> result = shgo(eggholder, bounds, n=30, sampling_method='sobol')
+		>>> result.x, result.fun
+		(array([ 512.        ,  404.23180542]), -959.64066272085051)
+		
+		`shgo` also has a return for any other local minima that was found, these
+		can be called using:
+		
+		>>> result.xl
+		array([[ 512.        ,  404.23180542],
+		       [ 283.07593402, -487.12566542],
+		       [-294.66820039, -462.01964031],
+		       [-105.87688985,  423.15324143],
+		       [-242.97923629,  274.38032063],
+		       [-506.25823477,    6.3131022 ],
+		       [-408.71981195, -156.10117154],
+		       [ 150.23210485,  301.31378508],
+		       [  91.00922754, -391.28375925],
+		       [ 202.8966344 , -269.38042147],
+		       [ 361.66625957, -106.96490692],
+		       [-219.40615102, -244.06022436],
+		       [ 151.59603137, -100.61082677]])
+		
+		>>> result.funl
+		array([-959.64066272, -718.16745962, -704.80659592, -565.99778097,
+		       -559.78685655, -557.36868733, -507.87385942, -493.9605115 ,
+		       -426.48799655, -421.15571437, -419.31194957, -410.98477763,
+		       -202.53912972])
+		
+		These results are useful in applications where there are many global minima
+		and the values of other global minima are desired or where the local minima
+		can provide insight into the system (for example morphologies
+		in physical chemistry [5]_).
+		
+		If we want to find a larger number of local minima, we can increase the
+		number of sampling points or the number of iterations. We'll increase the
+		number of sampling points to 60 and the number of iterations from the
+		default of 1 to 5. This gives us 60 x 5 = 300 initial sampling points.
+		
+		>>> result_2 = shgo(eggholder, bounds, n=60, iters=5, sampling_method='sobol')
+		>>> len(result.xl), len(result_2.xl)
+		(13, 39)
+		
+		Note the difference between, e.g., ``n=180, iters=1`` and ``n=60, iters=3``.
+		In the first case the promising points contained in the minimiser pool
+		is processed only once. In the latter case it is processed every 60 sampling
+		points for a total of 3 times.
+		
+		To demonstrate solving problems with non-linear constraints consider the
+		following example from Hock and Schittkowski problem 73 (cattle-feed) [4]_::
+		
+		    minimize: f = 24.55 * x_1 + 26.75 * x_2 + 39 * x_3 + 40.50 * x_4
+		
+		    subject to: 2.3 * x_1 + 5.6 * x_2 + 11.1 * x_3 + 1.3 * x_4 - 5     >= 0,
+		
+		                12 * x_1 + 11.9 * x_2 + 41.8 * x_3 + 52.1 * x_4 - 21
+		                    -1.645 * sqrt(0.28 * x_1**2 + 0.19 * x_2**2 +
+		                                  20.5 * x_3**2 + 0.62 * x_4**2)       >= 0,
+		
+		                x_1 + x_2 + x_3 + x_4 - 1                              == 0,
+		
+		                1 >= x_i >= 0 for all i
+		
+		The approximate answer given in [4]_ is::
+		
+		    f([0.6355216, -0.12e-11, 0.3127019, 0.05177655]) = 29.894378
+		
+		>>> def f(x):  # (cattle-feed)
+		...     return 24.55*x[0] + 26.75*x[1] + 39*x[2] + 40.50*x[3]
+		...
+		>>> def g1(x):
+		...     return 2.3*x[0] + 5.6*x[1] + 11.1*x[2] + 1.3*x[3] - 5  # >=0
+		...
+		>>> def g2(x):
+		...     return (12*x[0] + 11.9*x[1] +41.8*x[2] + 52.1*x[3] - 21
+		...             - 1.645 * np.sqrt(0.28*x[0]**2 + 0.19*x[1]**2
+		...                             + 20.5*x[2]**2 + 0.62*x[3]**2)
+		...             ) # >=0
+		...
+		>>> def h1(x):
+		...     return x[0] + x[1] + x[2] + x[3] - 1  # == 0
+		...
+		>>> cons = ({'type': 'ineq', 'fun': g1},
+		...         {'type': 'ineq', 'fun': g2},
+		...         {'type': 'eq', 'fun': h1})
+		>>> bounds = [(0, 1.0),]*4
+		>>> res = shgo(f, bounds, iters=3, constraints=cons)
+		>>> res
+		     fun: 29.894378159142136
+		    funl: array([29.89437816])
+		 message: 'Optimization terminated successfully.'
+		    nfev: 119
+		     nit: 3
+		   nlfev: 40
+		   nlhev: 0
+		   nljev: 5
+		 success: True
+		       x: array([6.35521569e-01, 1.13700270e-13, 3.12701881e-01, 5.17765506e-02])
+		      xl: array([[6.35521569e-01, 1.13700270e-13, 3.12701881e-01, 5.17765506e-02]])
+		
+		>>> g1(res.x), g2(res.x), h1(res.x)
+		(-5.0626169922907138e-14, -2.9594104944408173e-12, 0.0)
+	**/
+	static public function shgo(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?constraints:Dynamic, ?n:Dynamic, ?iters:Dynamic, ?callback:Dynamic, ?minimizer_kwargs:Dynamic, ?options:Dynamic, ?sampling_method:Dynamic):Dynamic;
 	/**
 		Show documentation for additional options of optimization solvers.
 		
@@ -5218,7 +6224,7 @@ package scipy.optimize;
 		Returns
 		-------
 		text
-		    Either None (for disp=False) or the text string (disp=True)
+		    Either None (for disp=True) or the text string (disp=False)
 		
 		Notes
 		-----
@@ -5264,4 +6270,108 @@ package scipy.optimize;
 	**/
 	static public function show_options(?solver:Dynamic, ?method:Dynamic, ?disp:Dynamic):Dynamic;
 	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?tests:Dynamic):Dynamic;
+	/**
+		Find a zero using TOMS Algorithm 748 method.
+		
+		Implements the Algorithm 748 method of Alefeld, Potro and Shi to find a
+		zero of the function `f` on the interval `[a , b]`, where `f(a)` and
+		`f(b)` must have opposite signs.
+		
+		It uses a mixture of inverse cubic interpolation and
+		"Newton-quadratic" steps. [APS1995].
+		
+		Parameters
+		----------
+		f : function
+		    Python function returning a scalar.  The function :math:`f`
+		    must be continuous, and :math:`f(a)` and :math:`f(b)`
+		    have opposite signs.
+		a : scalar,
+		    lower boundary of the search interval
+		b : scalar,
+		    upper boundary of the search interval
+		args : tuple, optional
+		    containing extra arguments for the function `f`.
+		    `f` is called by ``f(x, *args)``.
+		k : int, optional
+		    The number of Newton quadratic steps to perform each
+		    iteration. ``k>=1``.
+		xtol : scalar, optional
+		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
+		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
+		    parameter must be nonnegative.
+		rtol : scalar, optional
+		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
+		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root.
+		maxiter : int, optional
+		    if convergence is not achieved in `maxiter` iterations, an error is
+		    raised.  Must be >= 0.
+		full_output : bool, optional
+		    If `full_output` is False, the root is returned.  If `full_output` is
+		    True, the return value is ``(x, r)``, where `x` is the root, and `r` is
+		    a `RootResults` object.
+		disp : bool, optional
+		    If True, raise RuntimeError if the algorithm didn't converge.
+		    Otherwise the convergence status is recorded in the `RootResults`
+		    return object.
+		
+		Returns
+		-------
+		x0 : float
+		    Approximate Zero of `f`
+		r : `RootResults` (present if ``full_output = True``)
+		    Object containing information about the convergence.  In particular,
+		    ``r.converged`` is True if the routine converged.
+		
+		See Also
+		--------
+		brentq, brenth, ridder, bisect, newton
+		fsolve : find zeroes in n dimensions.
+		
+		Notes
+		-----
+		`f` must be continuous.
+		Algorithm 748 with ``k=2`` is asymptotically the most efficient
+		algorithm known for finding roots of a four times continuously
+		differentiable function.
+		In contrast with Brent's algorithm, which may only decrease the length of
+		the enclosing bracket on the last step, Algorithm 748 decreases it each
+		iteration with the same asymptotic efficiency as it finds the root.
+		
+		For easy statement of efficiency indices, assume that `f` has 4
+		continuouous deriviatives.
+		For ``k=1``, the convergence order is at least 2.7, and with about
+		asymptotically 2 function evaluations per iteration, the efficiency
+		index is approximately 1.65.
+		For ``k=2``, the order is about 4.6 with asymptotically 3 function
+		evaluations per iteration, and the efficiency index 1.66.
+		For higher values of `k`, the efficiency index approaches
+		the `k`-th root of ``(3k-2)``, hence ``k=1`` or ``k=2`` are
+		usually appropriate.
+		
+		References
+		----------
+		.. [APS1995]
+		   Alefeld, G. E. and Potra, F. A. and Shi, Yixun,
+		   *Algorithm 748: Enclosing Zeros of Continuous Functions*,
+		   ACM Trans. Math. Softw. Volume 221(1995)
+		   doi = {10.1145/210089.210111}
+		
+		Examples
+		--------
+		>>> def f(x):
+		...     return (x**3 - 1)  # only one real root at x = 1
+		
+		>>> from scipy import optimize
+		>>> root, results = optimize.toms748(f, 0, 2, full_output=True)
+		>>> root
+		1.0
+		>>> results
+		      converged: True
+		           flag: 'converged'
+		 function_calls: 11
+		     iterations: 5
+		           root: 1.0
+	**/
+	static public function toms748(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?k:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 }

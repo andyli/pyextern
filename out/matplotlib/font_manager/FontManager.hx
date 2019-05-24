@@ -110,38 +110,57 @@ package matplotlib.font_manager;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _findfont_cached(prop:Dynamic, fontext:Dynamic, directory:Dynamic, fallback_to_default:Dynamic, rebuild_if_missing:Dynamic, rc_params:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The afmfiles function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		\ 
-	**/
 	public var afmfiles : Dynamic;
+	public var defaultFont : Dynamic;
 	/**
-		Search the font list for the font that most closely matches
-		the :class:`FontProperties` *prop*.
+		Find a font that most closely matches the given font properties.
 		
-		:meth:`findfont` performs a nearest neighbor search.  Each
-		font is given a similarity score to the target font
-		properties.  The first font with the highest score is
-		returned.  If no matches below a certain threshold are found,
-		the default font (usually DejaVu Sans) is returned.
+		Parameters
+		----------
+		prop : str or `~matplotlib.font_manager.FontProperties`
+		    The font properties to search for. This can be either a
+		    `.FontProperties` object or a string defining a
+		    `fontconfig patterns`_.
 		
-		`directory`, is specified, will only return fonts from the
-		given directory (or subdirectory of that directory).
+		fontext : {'ttf', 'afm'}, optional, default: 'ttf'
+		    The extension of the font file:
+		
+		    - 'ttf': TrueType and OpenType fonts (.ttf, .ttc, .otf)
+		    - 'afm': Adobe Font Metrics (.afm)
+		
+		directory : str, optional
+		    If given, only search this directory and its subdirectories.
+		fallback_to_default : bool
+		    If True, will fallback to the default font family (usually
+		    "DejaVu Sans" or "Helvetica") if the first lookup hard-fails.
+		rebuild_if_missing : bool
+		    Whether to rebuild the font cache and search again if no match
+		    is found.
+		
+		Returns
+		-------
+		fontfile : str
+		    The filename of the best matching font.
+		
+		Notes
+		-----
+		This performs a nearest neighbor search.  Each font is given a
+		similarity score to the target font properties.  The first font with
+		the highest score is returned.  If no matches below a certain
+		threshold are found, the default font (usually DejaVu Sans) is
+		returned.
 		
 		The result is cached, so subsequent lookups don't have to
 		perform the O(n) nearest neighbor search.
 		
-		If `fallback_to_default` is True, will fallback to the default
-		font family (usually "DejaVu Sans" or "Helvetica") if
-		the first lookup hard-fails.
-		
 		See the `W3C Cascading Style Sheet, Level 1
 		<http://www.w3.org/TR/1998/REC-CSS2-19980512/>`_ documentation
 		for a description of the font finding algorithm.
+		
+		.. _fontconfig patterns:
+		   https://www.freedesktop.org/software/fontconfig/fontconfig-user.html
 	**/
-	public function findfont(prop:Dynamic, ?fontext:Dynamic, ?directory:Dynamic, ?fallback_to_default:Dynamic, ?rebuild_if_missing:Dynamic):Dynamic;
+	public function findfont(prop:Dynamic, ?fontext:Dynamic, ?directory:Dynamic, ?fallback_to_default:Dynamic, ?rebuild_if_missing:Dynamic):String;
 	/**
 		Return the default font size.
 	**/
@@ -211,16 +230,5 @@ package matplotlib.font_manager;
 		Set the default font weight.  The initial value is 'normal'.
 	**/
 	public function set_default_weight(weight:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The ttffiles function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		\ 
-	**/
 	public var ttffiles : Dynamic;
-	/**
-		Update the font dictionary with new font files.
-		Currently not implemented.
-	**/
-	public function update_fonts(filenames:Dynamic):Dynamic;
 }

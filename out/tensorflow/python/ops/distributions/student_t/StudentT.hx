@@ -52,7 +52,11 @@ package tensorflow.python.ops.distributions.student_t;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct Student's t distributions.
+		Construct Student's t distributions. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		The distributions have degree of freedom `df`, mean `loc`, and scale
 		`scale`.
@@ -84,7 +88,11 @@ package tensorflow.python.ops.distributions.student_t;
 	@:native("__init__")
 	public function ___init__(df:Dynamic, loc:Dynamic, scale:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Construct Student's t distributions.
+		Construct Student's t distributions. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		The distributions have degree of freedom `df`, mean `loc`, and scale
 		`scale`.

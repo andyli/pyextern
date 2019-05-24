@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.estimator.python.estimator.saved_model_estimator;
 @:pythonImport("tensorflow.contrib.estimator.python.estimator.saved_model_estimator") extern class Saved_model_estimator_Module {
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

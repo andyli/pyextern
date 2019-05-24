@@ -1,12 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.protobuf.meta_graph_pb2;
 @:pythonImport("tensorflow.core.protobuf.meta_graph_pb2", "CollectionDef") extern class CollectionDef {
-	static public var ANY_LIST_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
 	public function AnyList(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var BYTES_LIST_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -40,7 +38,6 @@ package tensorflow.core.protobuf.meta_graph_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FLOAT_LIST_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -61,7 +58,6 @@ package tensorflow.core.protobuf.meta_graph_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INT64_LIST_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -82,7 +78,6 @@ package tensorflow.core.protobuf.meta_graph_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NODE_LIST_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -107,6 +102,10 @@ package tensorflow.core.protobuf.meta_graph_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -272,4 +271,24 @@ package tensorflow.core.protobuf.meta_graph_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.CollectionDef.any_list
+	**/
+	public var any_list : Dynamic;
+	/**
+		Field tensorflow.CollectionDef.bytes_list
+	**/
+	public var bytes_list : Dynamic;
+	/**
+		Field tensorflow.CollectionDef.float_list
+	**/
+	public var float_list : Dynamic;
+	/**
+		Field tensorflow.CollectionDef.int64_list
+	**/
+	public var int64_list : Dynamic;
+	/**
+		Field tensorflow.CollectionDef.node_list
+	**/
+	public var node_list : Dynamic;
 }

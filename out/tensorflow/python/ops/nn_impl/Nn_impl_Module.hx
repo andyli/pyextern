@@ -58,6 +58,19 @@ package tensorflow.python.ops.nn_impl;
 	**/
 	static public function _compute_sampled_logits(weights:Dynamic, biases:Dynamic, labels:Dynamic, inputs:Dynamic, num_sampled:Dynamic, num_classes:Dynamic, ?num_true:Dynamic, ?sampled_values:Dynamic, ?subtract_log_q:Dynamic, ?remove_accidental_hits:Dynamic, ?partition_strategy:Dynamic, ?name:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
+		Same as math_ops.count_nonzero.
+		
+		The reduction is done in dtype, which can be faster for 32-bit dtypes.
+		
+		Args:
+		    input_tensor: numeric tensor
+		    dtype: reduction dtype
+		
+		Returns:
+		    number of nonzero values with type dtype
+	**/
+	static public function _count_nonzero(input_tensor:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
 		Returns a vector summing up each row of the matrix x.
 	**/
 	static public function _sum_rows(x:Dynamic):Dynamic;
@@ -94,6 +107,33 @@ package tensorflow.python.ops.nn_impl;
 		   A batch-normalized `t`.
 	**/
 	static public function batch_norm_with_global_normalization(t:Dynamic, m:Dynamic, v:Dynamic, beta:Dynamic, gamma:Dynamic, variance_epsilon:Dynamic, scale_after_normalization:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Batch normalization.
+		
+		This op is deprecated. See `tf.nn.batch_normalization`.
+		
+		Args:
+		  input: A 4D input Tensor.
+		  mean: A 1D mean Tensor with size matching the last dimension of t.
+		    This is the first output from tf.nn.moments,
+		    or a saved moving average thereof.
+		  variance: A 1D variance Tensor with size matching the last dimension of t.
+		    This is the second output from tf.nn.moments,
+		    or a saved moving average thereof.
+		  beta: A 1D beta Tensor with size matching the last dimension of t.
+		    An offset to be added to the normalized tensor.
+		  gamma: A 1D gamma Tensor with size matching the last dimension of t.
+		    If "scale_after_normalization" is true, this tensor will be multiplied
+		    with the normalized tensor.
+		  variance_epsilon: A small float number to avoid dividing by 0.
+		  scale_after_normalization: A bool indicating whether the resulted tensor
+		    needs to be multiplied with gamma.
+		  name: A name for this operation (optional).
+		
+		Returns:
+		   A batch-normalized `t`.
+	**/
+	static public function batch_norm_with_global_normalization_v2(input:Dynamic, mean:Dynamic, variance:Dynamic, beta:Dynamic, gamma:Dynamic, variance_epsilon:Dynamic, scale_after_normalization:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Batch normalization.
 		
@@ -236,6 +276,49 @@ package tensorflow.python.ops.nn_impl;
 		  `[batch, out_height, out_width, in_channels * channel_multiplier].`
 	**/
 	static public function depthwise_conv2d(input:Dynamic, filter:Dynamic, strides:Dynamic, padding:Dynamic, ?rate:Dynamic, ?name:Dynamic, ?data_format:Dynamic):Dynamic;
+	/**
+		Depthwise 2-D convolution.
+		
+		Given a 4D input tensor ('NHWC' or 'NCHW' data formats)
+		and a filter tensor of shape
+		`[filter_height, filter_width, in_channels, channel_multiplier]`
+		containing `in_channels` convolutional filters of depth 1, `depthwise_conv2d`
+		applies a different filter to each input channel (expanding from 1 channel
+		to `channel_multiplier` channels for each), then concatenates the results
+		together.  The output has `in_channels * channel_multiplier` channels.
+		
+		In detail,
+		
+		    output[b, i, j, k * channel_multiplier + q] = sum_{di, dj}
+		         filter[di, dj, k, q] * input[b, strides[1] * i + rate[0] * di,
+		                                         strides[2] * j + rate[1] * dj, k]
+		
+		Must have `strides[0] = strides[3] = 1`.  For the most common case of the
+		same horizontal and vertical strides, `strides = [1, stride, stride, 1]`.
+		If any value in `rate` is greater than 1, we perform atrous depthwise
+		convolution, in which case all values in the `strides` tensor must be equal
+		to 1.
+		
+		Args:
+		  input: 4-D with shape according to `data_format`.
+		  filter: 4-D with shape
+		    `[filter_height, filter_width, in_channels, channel_multiplier]`.
+		  strides: 1-D of size 4.  The stride of the sliding window for each
+		    dimension of `input`.
+		  padding: A string, either `'VALID'` or `'SAME'`. The padding algorithm.
+		    See the "returns" section of `tf.nn.convolution` for details.
+		  data_format: The data format for input. Either "NHWC" (default) or "NCHW".
+		  dilations: 1-D of size 2. The dilation rate in which we sample input values
+		    across the `height` and `width` dimensions in atrous convolution. If it is
+		    greater than 1, then all values of strides must be 1.
+		  name: A name for this operation (optional).
+		
+		Returns:
+		  A 4-D `Tensor` with shape according to `data_format`.  E.g., for
+		  "NHWC" format, shape is
+		  `[batch, out_height, out_width, in_channels * channel_multiplier].`
+	**/
+	static public function depthwise_conv2d_v2(input:Dynamic, filter:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Batch normalization.
@@ -267,7 +350,7 @@ package tensorflow.python.ops.nn_impl;
 	/**
 		Normalizes along dimension `axis` using an L2 norm. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(dim)`. They will be removed in a future version.
 		Instructions for updating:
 		dim is deprecated, use axis instead
 		
@@ -291,6 +374,28 @@ package tensorflow.python.ops.nn_impl;
 		  A `Tensor` with the same shape as `x`.
 	**/
 	static public function l2_normalize(x:Dynamic, ?axis:Dynamic, ?epsilon:Dynamic, ?name:Dynamic, ?dim:Dynamic):Dynamic;
+	/**
+		Normalizes along dimension `axis` using an L2 norm.
+		
+		For a 1-D tensor with `axis = 0`, computes
+		
+		    output = x / sqrt(max(sum(x**2), epsilon))
+		
+		For `x` with more dimensions, independently normalizes each 1-D slice along
+		dimension `axis`.
+		
+		Args:
+		  x: A `Tensor`.
+		  axis: Dimension along which to normalize.  A scalar or a vector of
+		    integers.
+		  epsilon: A lower bound value for the norm. Will use `sqrt(epsilon)` as the
+		    divisor if `norm < sqrt(epsilon)`.
+		  name: A name for this operation (optional).
+		
+		Returns:
+		  A `Tensor` with the same shape as `x`.
+	**/
+	static public function l2_normalize_v2(x:Dynamic, ?axis:Dynamic, ?epsilon:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes log Poisson loss given `log_input`.
 		
@@ -358,6 +463,34 @@ package tensorflow.python.ops.nn_impl;
 		  Two `Tensor` objects: `mean` and `variance`.
 	**/
 	static public function moments(x:Dynamic, axes:Dynamic, ?shift:Dynamic, ?name:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	/**
+		Calculates the mean and variance of `x`.
+		
+		The mean and variance are calculated by aggregating the contents of `x`
+		across `axes`.  If `x` is 1-D and `axes = [0]` this is just the mean
+		and variance of a vector.
+		
+		Note: shift is currently not used; the true mean is computed and used.
+		
+		When using these moments for batch normalization (see
+		`tf.nn.batch_normalization`):
+		
+		 * for so-called "global normalization", used with convolutional filters with
+		   shape `[batch, height, width, depth]`, pass `axes=[0, 1, 2]`.
+		 * for simple batch normalization pass `axes=[0]` (batch only).
+		
+		Args:
+		  x: A `Tensor`.
+		  axes: Array of ints.  Axes along which to compute mean and
+		    variance.
+		  shift: Not used in the current implementation.
+		  keepdims: produce moments with the same dimensionality as the input.
+		  name: Name used to scope the operations that compute the moments.
+		
+		Returns:
+		  Two `Tensor` objects: `mean` and `variance`.
+	**/
+	static public function moments_v2(x:Dynamic, axes:Dynamic, ?shift:Dynamic, ?keepdims:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes and returns the noise-contrastive estimation training loss.
 		
@@ -439,6 +572,85 @@ package tensorflow.python.ops.nn_impl;
 		  A `batch_size` 1-D tensor of per-example NCE losses.
 	**/
 	static public function nce_loss(weights:Dynamic, biases:Dynamic, labels:Dynamic, inputs:Dynamic, num_sampled:Dynamic, num_classes:Dynamic, ?num_true:Dynamic, ?sampled_values:Dynamic, ?remove_accidental_hits:Dynamic, ?partition_strategy:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes and returns the noise-contrastive estimation training loss.
+		
+		See [Noise-contrastive estimation: A new estimation principle for
+		unnormalized statistical
+		models](http://www.jmlr.org/proceedings/papers/v9/gutmann10a/gutmann10a.pdf).
+		Also see our [Candidate Sampling Algorithms
+		Reference](https://www.tensorflow.org/extras/candidate_sampling.pdf)
+		
+		A common use case is to use this method for training, and calculate the full
+		sigmoid loss for evaluation or inference as in the following example:
+		
+		```python
+		if mode == "train":
+		  loss = tf.nn.nce_loss(
+		      weights=weights,
+		      biases=biases,
+		      labels=labels,
+		      inputs=inputs,
+		      ...)
+		elif mode == "eval":
+		  logits = tf.matmul(inputs, tf.transpose(weights))
+		  logits = tf.nn.bias_add(logits, biases)
+		  labels_one_hot = tf.one_hot(labels, n_classes)
+		  loss = tf.nn.sigmoid_cross_entropy_with_logits(
+		      labels=labels_one_hot,
+		      logits=logits)
+		  loss = tf.reduce_sum(loss, axis=1)
+		```
+		
+		Note: when doing embedding lookup on `weights` and `bias`, "div" partition
+		strategy will be used. Support for other partition strategy will be added
+		later.
+		
+		Note: By default this uses a log-uniform (Zipfian) distribution for sampling,
+		so your labels must be sorted in order of decreasing frequency to achieve
+		good results.  For more details, see
+		`tf.nn.log_uniform_candidate_sampler`.
+		
+		Note: In the case where `num_true` > 1, we assign to each target class
+		the target probability 1 / `num_true` so that the target probabilities
+		sum to 1 per-example.
+		
+		Note: It would be useful to allow a variable number of target classes per
+		example.  We hope to provide this functionality in a future release.
+		For now, if you have a variable number of target classes, you can pad them
+		out to a constant number by either repeating them or by padding
+		with an otherwise unused class.
+		
+		Args:
+		  weights: A `Tensor` of shape `[num_classes, dim]`, or a list of `Tensor`
+		    objects whose concatenation along dimension 0 has shape [num_classes,
+		    dim].  The (possibly-partitioned) class embeddings.
+		  biases: A `Tensor` of shape `[num_classes]`.  The class biases.
+		  labels: A `Tensor` of type `int64` and shape `[batch_size, num_true]`. The
+		    target classes.
+		  inputs: A `Tensor` of shape `[batch_size, dim]`.  The forward activations of
+		    the input network.
+		  num_sampled: An `int`.  The number of negative classes to randomly sample
+		    per batch. This single sample of negative classes is evaluated for each
+		    element in the batch.
+		  num_classes: An `int`. The number of possible classes.
+		  num_true: An `int`.  The number of target classes per training example.
+		  sampled_values: a tuple of (`sampled_candidates`, `true_expected_count`,
+		    `sampled_expected_count`) returned by a `*_candidate_sampler` function.
+		    (if None, we default to `log_uniform_candidate_sampler`)
+		  remove_accidental_hits:  A `bool`.  Whether to remove "accidental hits"
+		    where a sampled class equals one of the target classes.  If set to `True`,
+		    this is a "Sampled Logistic" loss instead of NCE, and we are learning to
+		    generate log-odds instead of log probabilities.  See our [Candidate
+		    Sampling Algorithms Reference]
+		      (https://www.tensorflow.org/extras/candidate_sampling.pdf). Default is
+		        False.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `batch_size` 1-D tensor of per-example NCE losses.
+	**/
+	static public function nce_loss_v2(weights:Dynamic, biases:Dynamic, labels:Dynamic, inputs:Dynamic, num_sampled:Dynamic, num_classes:Dynamic, ?num_true:Dynamic, ?sampled_values:Dynamic, ?remove_accidental_hits:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Calculate the mean and variance of based on the sufficient statistics.
 		
@@ -541,6 +753,71 @@ package tensorflow.python.ops.nn_impl;
 	**/
 	static public function sampled_softmax_loss(weights:Dynamic, biases:Dynamic, labels:Dynamic, inputs:Dynamic, num_sampled:Dynamic, num_classes:Dynamic, ?num_true:Dynamic, ?sampled_values:Dynamic, ?remove_accidental_hits:Dynamic, ?partition_strategy:Dynamic, ?name:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
+		Computes and returns the sampled softmax training loss.
+		
+		This is a faster way to train a softmax classifier over a huge number of
+		classes.
+		
+		This operation is for training only.  It is generally an underestimate of
+		the full softmax loss.
+		
+		A common use case is to use this method for training, and calculate the full
+		sigmoid loss for evaluation or inference as in the following example:
+		
+		```python
+		if mode == "train":
+		  loss = tf.nn.sampled_softmax_loss(
+		      weights=weights,
+		      biases=biases,
+		      labels=labels,
+		      inputs=inputs,
+		      ...)
+		elif mode == "eval":
+		  logits = tf.matmul(inputs, tf.transpose(weights))
+		  logits = tf.nn.bias_add(logits, biases)
+		  labels_one_hot = tf.one_hot(labels, n_classes)
+		  loss = tf.nn.softmax_cross_entropy_with_logits_v2(
+		      labels=labels_one_hot,
+		      logits=logits)
+		```
+		
+		See our [Candidate Sampling Algorithms Reference]
+		(https://www.tensorflow.org/extras/candidate_sampling.pdf)
+		
+		Also see Section 3 of [Jean et al., 2014](http://arxiv.org/abs/1412.2007)
+		([pdf](http://arxiv.org/pdf/1412.2007.pdf)) for the math.
+		
+		Note: when doing embedding lookup on `weights` and `bias`, "div" partition
+		strategy will be used. Support for other partition strategy will be added
+		later.
+		
+		Args:
+		  weights: A `Tensor` of shape `[num_classes, dim]`, or a list of `Tensor`
+		    objects whose concatenation along dimension 0 has shape [num_classes,
+		    dim].  The (possibly-sharded) class embeddings.
+		  biases: A `Tensor` of shape `[num_classes]`.  The class biases.
+		  labels: A `Tensor` of type `int64` and shape `[batch_size, num_true]`. The
+		    target classes.  Note that this format differs from the `labels` argument
+		    of `nn.softmax_cross_entropy_with_logits_v2`.
+		  inputs: A `Tensor` of shape `[batch_size, dim]`.  The forward activations of
+		    the input network.
+		  num_sampled: An `int`.  The number of classes to randomly sample per batch.
+		  num_classes: An `int`. The number of possible classes.
+		  num_true: An `int`.  The number of target classes per training example.
+		  sampled_values: a tuple of (`sampled_candidates`, `true_expected_count`,
+		    `sampled_expected_count`) returned by a `*_candidate_sampler` function.
+		    (if None, we default to `log_uniform_candidate_sampler`)
+		  remove_accidental_hits:  A `bool`.  whether to remove "accidental hits"
+		    where a sampled class equals one of the target classes.  Default is True.
+		  seed: random seed for candidate sampling. Default to None, which doesn't set
+		    the op-level random seed for candidate sampling.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `batch_size` 1-D tensor of per-example sampled softmax losses.
+	**/
+	static public function sampled_softmax_loss_v2(weights:Dynamic, biases:Dynamic, labels:Dynamic, inputs:Dynamic, num_sampled:Dynamic, num_classes:Dynamic, ?num_true:Dynamic, ?sampled_values:Dynamic, ?remove_accidental_hits:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		2-D convolution with separable filters.
 		
 		Performs a depthwise convolution that acts separately on channels followed by
@@ -587,6 +864,53 @@ package tensorflow.python.ops.nn_impl;
 		    out_width, out_channels].
 	**/
 	static public function separable_conv2d(input:Dynamic, depthwise_filter:Dynamic, pointwise_filter:Dynamic, strides:Dynamic, padding:Dynamic, ?rate:Dynamic, ?name:Dynamic, ?data_format:Dynamic):Dynamic;
+	/**
+		2-D convolution with separable filters.
+		
+		Performs a depthwise convolution that acts separately on channels followed by
+		a pointwise convolution that mixes channels.  Note that this is separability
+		between dimensions `[1, 2]` and `3`, not spatial separability between
+		dimensions `1` and `2`.
+		
+		In detail,
+		
+		    output[b, i, j, k] = sum_{di, dj, q, r}
+		        input[b, strides[1] * i + di, strides[2] * j + dj, q] *
+		        depthwise_filter[di, dj, q, r] *
+		        pointwise_filter[0, 0, q * channel_multiplier + r, k]
+		
+		`strides` controls the strides for the depthwise convolution only, since
+		the pointwise convolution has implicit strides of `[1, 1, 1, 1]`.  Must have
+		`strides[0] = strides[3] = 1`.  For the most common case of the same
+		horizontal and vertical strides, `strides = [1, stride, stride, 1]`.
+		If any value in `rate` is greater than 1, we perform atrous depthwise
+		convolution, in which case all values in the `strides` tensor must be equal
+		to 1.
+		
+		Args:
+		  input: 4-D `Tensor` with shape according to `data_format`.
+		  depthwise_filter: 4-D `Tensor` with shape `[filter_height, filter_width,
+		    in_channels, channel_multiplier]`. Contains `in_channels` convolutional
+		    filters of depth 1.
+		  pointwise_filter: 4-D `Tensor` with shape `[1, 1, channel_multiplier *
+		    in_channels, out_channels]`.  Pointwise filter to mix channels after
+		    `depthwise_filter` has convolved spatially.
+		  strides: 1-D of size 4.  The strides for the depthwise convolution for each
+		    dimension of `input`.
+		  padding: A string, either `'VALID'` or `'SAME'`.  The padding algorithm. See
+		    the "returns" section of `tf.nn.convolution` for details.
+		  data_format: The data format for input. Either "NHWC" (default) or "NCHW".
+		  dilations: 1-D of size 2. The dilation rate in which we sample input values
+		    across the `height` and `width` dimensions in atrous convolution. If it is
+		    greater than 1, then all values of strides must be 1.
+		  name: A name for this operation (optional).
+		
+		Returns:
+		  A 4-D `Tensor` with shape according to 'data_format'. For
+		    example, with data_format="NHWC", shape is [batch, out_height,
+		    out_width, out_channels].
+	**/
+	static public function separable_conv2d_v2(input:Dynamic, depthwise_filter:Dynamic, pointwise_filter:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes sigmoid cross entropy given `logits`.
 		
@@ -656,6 +980,31 @@ package tensorflow.python.ops.nn_impl;
 		  * the shift by which the mean must be corrected or None if `shift` is None.
 	**/
 	static public function sufficient_statistics(x:Dynamic, axes:Dynamic, ?shift:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Calculate the sufficient statistics for the mean and variance of `x`.
+		
+		These sufficient statistics are computed using the one pass algorithm on
+		an input that's optionally shifted. See:
+		https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Computing_shifted_data
+		
+		Args:
+		  x: A `Tensor`.
+		  axes: Array of ints. Axes along which to compute mean and variance.
+		  shift: A `Tensor` containing the value by which to shift the data for
+		    numerical stability, or `None` if no shift is to be performed. A shift
+		    close to the true mean provides the most numerically stable results.
+		  keepdims: produce statistics with the same dimensionality as the input.
+		  name: Name used to scope the operations that compute the sufficient stats.
+		
+		Returns:
+		  Four `Tensor` objects of the same type as `x`:
+		
+		  * the count (number of elements to average over).
+		  * the (possibly shifted) sum of the elements in the array.
+		  * the (possibly shifted) sum of squares of the elements in the array.
+		  * the shift by which the mean must be corrected or None if `shift` is None.
+	**/
+	static public function sufficient_statistics_v2(x:Dynamic, axes:Dynamic, ?shift:Dynamic, ?keepdims:Dynamic, ?name:Dynamic):Dynamic;
 	static public function swish(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -728,6 +1077,22 @@ package tensorflow.python.ops.nn_impl;
 		  Two tensors: `weighted_mean` and `weighted_variance`.
 	**/
 	static public function weighted_moments(x:Dynamic, axes:Dynamic, frequency_weights:Dynamic, ?name:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	/**
+		Returns the frequency-weighted mean and variance of `x`.
+		
+		Args:
+		  x: A tensor.
+		  axes: 1-d tensor of int32 values; these are the axes along which
+		    to compute mean and variance.
+		  frequency_weights: A tensor of positive weights which can be
+		    broadcast with x.
+		  keepdims: Produce moments with the same dimensionality as the input.
+		  name: Name used to scope the operation.
+		
+		Returns:
+		  Two tensors: `weighted_mean` and `weighted_variance`.
+	**/
+	static public function weighted_moments_v2(x:Dynamic, axes:Dynamic, frequency_weights:Dynamic, ?keepdims:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns the fraction of zeros in `value`.
 		

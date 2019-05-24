@@ -13,7 +13,7 @@ package pandas.core.generic;
 		convert rhs to meet lhs dims if input is list, tuple or np.ndarray 
 	**/
 	static public function _align_method_FRAME(left:Dynamic, right:Dynamic, axis:Dynamic):Dynamic;
-	static public var _all_doc : Dynamic;
+	static public var _all_desc : Dynamic;
 	static public var _all_examples : Dynamic;
 	static public var _all_see_also : Dynamic;
 	static public var _any_desc : Dynamic;
@@ -29,8 +29,43 @@ package pandas.core.generic;
 		Return a tuple of the doc parms.
 	**/
 	static public function _doc_parms(cls:Dynamic):Dynamic;
+	static public function _make_cum_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, accum_func:Dynamic, accum_func_name:Dynamic, mask_a:Dynamic, mask_b:Dynamic, examples:Dynamic):Dynamic;
+	static public function _make_logical_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic, see_also:Dynamic, examples:Dynamic, empty_value:Dynamic):Dynamic;
+	static public function _make_min_count_stat_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic, ?see_also:Dynamic, ?examples:Dynamic):Dynamic;
+	static public function _make_stat_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic, ?see_also:Dynamic, ?examples:Dynamic):Dynamic;
+	static public function _make_stat_function_ddof(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
+	static public var _max_examples : Dynamic;
+	static public var _min_count_stub : Dynamic;
+	static public var _min_examples : Dynamic;
+	static public var _name : Dynamic;
+	static public var _num_ddof_doc : Dynamic;
+	static public var _num_doc : Dynamic;
+	static public var _prod_examples : Dynamic;
+	static public var _shared_doc_kwargs : Dynamic;
+	static public var _shared_docs : Dynamic;
 	/**
-		Ensure that we have an index from some index-like object
+		Replaces values in a Series using the fill method specified when no
+		replacement value is given in the replace method
+	**/
+	static public function _single_replace(self:Dynamic, to_replace:Dynamic, method:Dynamic, inplace:Dynamic, limit:Dynamic):Dynamic;
+	static public var _stat_func_see_also : Dynamic;
+	static public var _sum_examples : Dynamic;
+	/**
+		Remove any common leading whitespace from every line in `text`.
+		
+		This can be used to make triple-quoted strings line up with the left
+		edge of the display, while still presenting them in the source code
+		in indented form.
+		
+		Note that tabs and spaces are both treated as whitespace, but they
+		are not equal: the lines "  hello" and "\thello" are
+		considered to have no common leading whitespace.  (This behaviour is
+		new in Python 2.5; older versions of this module incorrectly
+		expanded tabs before searching for common leading whitespace.)
+	**/
+	static public function dedent(text:Dynamic):Dynamic;
+	/**
+		Ensure that we have an index from some index-like object.
 		
 		Parameters
 		----------
@@ -44,104 +79,23 @@ package pandas.core.generic;
 		
 		Examples
 		--------
-		>>> _ensure_index(['a', 'b'])
+		>>> ensure_index(['a', 'b'])
 		Index(['a', 'b'], dtype='object')
 		
-		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
+		>>> ensure_index([('a', 'a'),  ('b', 'c')])
 		Index([('a', 'a'), ('b', 'c')], dtype='object')
 		
-		>>> _ensure_index([['a', 'a'], ['b', 'c']])
+		>>> ensure_index([['a', 'a'], ['b', 'c']])
 		MultiIndex(levels=[['a'], ['b', 'c']],
-		           labels=[[0, 0], [0, 1]])
+		           codes=[[0, 0], [0, 1]])
 		
 		See Also
 		--------
-		_ensure_index_from_sequences
+		ensure_index_from_sequences
 	**/
-	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
-	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _make_cum_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, accum_func:Dynamic, accum_func_name:Dynamic, mask_a:Dynamic, mask_b:Dynamic, examples:Dynamic):Dynamic;
-	static public function _make_logical_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic, examples:Dynamic, see_also:Dynamic):Dynamic;
-	static public function _make_min_count_stat_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic, examples:Dynamic):Dynamic;
-	static public function _make_stat_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
-	static public function _make_stat_function_ddof(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
-	static public var _min_count_stub : Dynamic;
-	static public var _name : Dynamic;
-	static public var _num_ddof_doc : Dynamic;
-	static public var _num_doc : Dynamic;
-	static public var _prod_examples : Dynamic;
-	static public var _shared_doc_kwargs : Dynamic;
-	static public var _shared_docs : Dynamic;
-	/**
-		Replaces values in a Series using the fill method specified when no
-		replacement value is given in the replace method
-	**/
-	static public function _single_replace(self:Dynamic, to_replace:Dynamic, method:Dynamic, inplace:Dynamic, limit:Dynamic):Dynamic;
-	static public var _sum_examples : Dynamic;
-	/**
-		Decorator to deprecate a keyword argument of a function.
-		
-		Parameters
-		----------
-		old_arg_name : str
-		    Name of argument in function to deprecate
-		new_arg_name : str or None
-		    Name of preferred argument in function. Use None to raise warning that
-		    ``old_arg_name`` keyword is deprecated.
-		mapping : dict or callable
-		    If mapping is present, use it to translate old arguments to
-		    new arguments. A callable must do its own value checking;
-		    values not found in a dict will be forwarded unchanged.
-		
-		Examples
-		--------
-		The following deprecates 'cols', using 'columns' instead
-		
-		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name='columns')
-		... def f(columns=''):
-		...     print(columns)
-		...
-		>>> f(columns='should work ok')
-		should work ok
-		
-		>>> f(cols='should raise warning')
-		FutureWarning: cols is deprecated, use columns instead
-		  warnings.warn(msg, FutureWarning)
-		should raise warning
-		
-		>>> f(cols='should error', columns="can't pass do both")
-		TypeError: Can only specify 'cols' or 'columns', not both
-		
-		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
-		... def f(new=False):
-		...     print('yes!' if new else 'no!')
-		...
-		>>> f(old='yes')
-		FutureWarning: old='yes' is deprecated, use new=True instead
-		  warnings.warn(msg, FutureWarning)
-		yes!
-		
-		
-		To raise a warning that a keyword will be removed entirely in the future
-		
-		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
-		... def f(cols='', another_param=''):
-		...     print(cols)
-		...
-		>>> f(cols='should raise warning')
-		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
-		future version please takes steps to stop use of 'cols'
-		should raise warning
-		>>> f(another_param='should not raise warning')
-		should not raise warning
-		
-		>>> f(cols='should raise warning', another_param='')
-		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
-		future version please takes steps to stop use of 'cols'
-		should raise warning
-	**/
-	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
+	static public function ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Outputs rounded and formatted percentiles.
 		
@@ -174,6 +128,7 @@ package pandas.core.generic;
 		['0%', '50%', '2.0%', '50%', '66.67%', '99.99%']
 	**/
 	static public function format_percentiles(percentiles:Dynamic):Dynamic;
+	static public var iNaT : Dynamic;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a boolean dtype.
@@ -186,6 +141,11 @@ package pandas.core.generic;
 		Returns
 		-------
 		boolean : Whether or not the array or dtype is of a boolean dtype.
+		
+		Notes
+		-----
+		An ExtensionArray is considered boolean when the ``_is_boolean``
+		attribute is set to True.
 		
 		Examples
 		--------
@@ -203,62 +163,45 @@ package pandas.core.generic;
 		False
 		>>> is_bool_dtype(np.array([True, False]))
 		True
+		>>> is_bool_dtype(pd.Categorical([True, False]))
+		True
+		>>> is_bool_dtype(pd.SparseArray([True, False]))
+		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Check whether an array-like or dtype is of the Categorical dtype.
+		Check whether the provided array or dtype is of the datetime64 dtype.
 		
 		Parameters
 		----------
 		arr_or_dtype : array-like
-		    The array-like or dtype to check.
+		    The array or dtype to check.
 		
 		Returns
 		-------
-		boolean : Whether or not the array-like or dtype is
-		          of the Categorical dtype.
+		boolean : Whether or not the array or dtype is of the datetime64 dtype.
 		
 		Examples
 		--------
-		>>> is_categorical_dtype(object)
+		>>> is_datetime64_any_dtype(str)
 		False
-		>>> is_categorical_dtype(CategoricalDtype())
-		True
-		>>> is_categorical_dtype([1, 2, 3])
+		>>> is_datetime64_any_dtype(int)
 		False
-		>>> is_categorical_dtype(pd.Categorical([1, 2, 3]))
+		>>> is_datetime64_any_dtype(np.datetime64)  # can be tz-naive
 		True
-		>>> is_categorical_dtype(pd.CategoricalIndex([1, 2, 3]))
+		>>> is_datetime64_any_dtype(DatetimeTZDtype("ns", "US/Eastern"))
+		True
+		>>> is_datetime64_any_dtype(np.array(['a', 'b']))
+		False
+		>>> is_datetime64_any_dtype(np.array([1, 2]))
+		False
+		>>> is_datetime64_any_dtype(np.array([], dtype=np.datetime64))
+		True
+		>>> is_datetime64_any_dtype(pd.DatetimeIndex([1, 2, 3],
+		                            dtype=np.datetime64))
 		True
 	**/
-	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
-	/**
-		Check whether an array-like or dtype is of the datetime64 dtype.
-		
-		Parameters
-		----------
-		arr_or_dtype : array-like
-		    The array-like or dtype to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array-like or dtype is of
-		          the datetime64 dtype.
-		
-		Examples
-		--------
-		>>> is_datetime64_dtype(object)
-		False
-		>>> is_datetime64_dtype(np.datetime64)
-		True
-		>>> is_datetime64_dtype(np.array([], dtype=int))
-		False
-		>>> is_datetime64_dtype(np.array([], dtype=np.datetime64))
-		True
-		>>> is_datetime64_dtype([1, 2, 3])
-		False
-	**/
-	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64_any_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check whether an array-like or dtype is of a DatetimeTZDtype dtype.
 		
@@ -296,7 +239,7 @@ package pandas.core.generic;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -309,8 +252,57 @@ package pandas.core.generic;
 		True
 		>>> is_dict_like([1, 2, 3])
 		False
+		>>> is_dict_like(dict)
+		False
+		>>> is_dict_like(dict())
+		True
 	**/
 	static public function is_dict_like(obj:Dynamic):Bool;
+	/**
+		Check if an object is a pandas extension array type.
+		
+		See the :ref:`Use Guide <extending.extension-types>` for more.
+		
+		Parameters
+		----------
+		arr_or_dtype : object
+		    For array-like input, the ``.dtype`` attribute will
+		    be extracted.
+		
+		Returns
+		-------
+		bool
+		    Whether the `arr_or_dtype` is an extension array type.
+		
+		Notes
+		-----
+		This checks whether an object implements the pandas extension
+		array interface. In pandas, this includes:
+		
+		* Categorical
+		* Sparse
+		* Interval
+		* Period
+		* DatetimeArray
+		* TimedeltaArray
+		
+		Third-party libraries may implement arrays or types satisfying
+		this interface as well.
+		
+		Examples
+		--------
+		>>> from pandas.api.types import is_extension_array_dtype
+		>>> arr = pd.Categorical(['a', 'b'])
+		>>> is_extension_array_dtype(arr)
+		True
+		>>> is_extension_array_dtype(arr.dtype)
+		True
+		
+		>>> arr = np.array(['a', 'b'])
+		>>> is_extension_array_dtype(arr.dtype)
+		False
+	**/
+	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Return True if hash(obj) will succeed, False otherwise.
 		
@@ -340,7 +332,11 @@ package pandas.core.generic;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -359,8 +355,12 @@ package pandas.core.generic;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Check if the object is a number.
 		
@@ -378,7 +378,7 @@ package pandas.core.generic;
 		
 		See Also
 		--------
-		pandas.api.types.is_integer: checks a subgroup of numbers
+		pandas.api.types.is_integer: Checks a subgroup of numbers.
 		
 		Examples
 		--------
@@ -488,7 +488,7 @@ package pandas.core.generic;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -506,17 +506,49 @@ package pandas.core.generic;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -550,7 +582,7 @@ package pandas.core.generic;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -568,8 +600,8 @@ package pandas.core.generic;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -646,7 +678,7 @@ package pandas.core.generic;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -664,8 +696,8 @@ package pandas.core.generic;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -727,6 +759,10 @@ package pandas.core.generic;
 		Returns
 		-------
 		np.dtype or a pandas dtype
+		
+		Raises
+		------
+		TypeError if not a dtype
 	**/
 	static public function pandas_dtype(dtype:Dynamic):Dynamic;
 	/**
@@ -755,6 +791,8 @@ package pandas.core.generic;
 		result - unicode object on py2, str on py3. Always Unicode.
 	**/
 	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
+	static public function rewrite_axis_style_signature(name:Dynamic, extra_params:Dynamic):Dynamic;
+	static public var sentinel : Dynamic;
 	/**
 		Bind the name/qualname attributes of the function 
 	**/

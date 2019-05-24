@@ -12,7 +12,7 @@ package matplotlib.textpath;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _get_adobe_standard_encoding():Dynamic;
+	static public var _log : Dynamic;
 	static public function get_font(filename:Dynamic, ?hinting_factor:Dynamic):Dynamic;
 	static public var rcParams : Dynamic;
 	static public var text_to_path : Dynamic;

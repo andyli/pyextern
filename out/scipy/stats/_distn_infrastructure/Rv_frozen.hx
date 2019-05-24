@@ -128,6 +128,7 @@ package scipy.stats._distn_infrastructure;
 	public function sf(x:Dynamic):Dynamic;
 	public function stats(?moments:Dynamic):Dynamic;
 	public function std():Dynamic;
+	public function support():Dynamic;
 	@:native("var")
 	public function _var():Dynamic;
 }

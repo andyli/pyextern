@@ -165,7 +165,7 @@ package matplotlib.colors;
 	**/
 	public function autoscale(A:Dynamic):Dynamic;
 	/**
-		autoscale only None-valued vmin or vmax.
+		Autoscale only None-valued vmin or vmax.
 	**/
 	public function autoscale_None(A:Dynamic):Dynamic;
 	/**
@@ -193,7 +193,7 @@ package matplotlib.colors;
 	**/
 	static public function process_value(value:Dynamic):Dynamic;
 	/**
-		return true if vmin and vmax set
+		Return whether vmin and vmax are set.
 	**/
 	public function scaled():Dynamic;
 }

@@ -50,11 +50,11 @@ package matplotlib.units;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__():Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new():Void;
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -145,8 +145,7 @@ package matplotlib.units;
 	**/
 	public function get(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Get the converter for data that has the same type as *x*. If no
-		converters are registered for *x*, returns ``None``.
+		Get the converter interface instance for *x*, or None.
 	**/
 	public function get_converter(x:Dynamic):Dynamic;
 	/**

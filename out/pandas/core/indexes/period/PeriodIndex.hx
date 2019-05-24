@@ -2,14 +2,14 @@
 package pandas.core.indexes.period;
 @:pythonImport("pandas.core.indexes.period", "PeriodIndex") extern class PeriodIndex {
 	/**
-		return the transpose, which is by definition self
+		Return the transpose, which is by definition self.
 	**/
 	public var T : Dynamic;
 	public function __abs__(?other:Dynamic):Dynamic;
 	public function __add__(other:Dynamic):Dynamic;
 	public function __and__(other:Dynamic):Dynamic;
 	/**
-		the array interface, return my values 
+		The array interface, return my values.
 	**/
 	public function __array__(?dtype:Dynamic):Dynamic;
 	static public var __array_priority__ : Dynamic;
@@ -30,18 +30,49 @@ package pandas.core.indexes.period;
 	public function __bytes__():Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		return a boolean if this key is IN the index
+		Return a boolean indicating whether the provided key is in the index.
 		
 		Parameters
 		----------
-		key : object
+		key : label
+		    The key to check if it is present in the index.
 		
 		Returns
 		-------
-		boolean
+		bool
+		    Whether the key search is in the index.
+		
+		See Also
+		--------
+		Index.isin : Returns an ndarray of boolean dtype indicating whether the
+		    list-like key is in the index.
+		
+		Examples
+		--------
+		>>> idx = pd.Index([1, 2, 3, 4])
+		>>> idx
+		Int64Index([1, 2, 3, 4], dtype='int64')
+		
+		>>> idx.contains(2)
+		True
+		>>> idx.contains(6)
+		False
+		
+		This is equivalent to:
+		
+		>>> 2 in idx
+		True
+		>>> 6 in idx
+		False
 	**/
 	public function __contains__(key:Dynamic):Dynamic;
 	public function __copy__(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Parameters
+		----------
+		memo, default None
+		    Standard signature. Unused
+	**/
 	public function __deepcopy__(?memo:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -56,7 +87,7 @@ package pandas.core.indexes.period;
 	public function __divmod__(?other:Dynamic):Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
-		Return self==value.
+		eq(a, b) -- Same as a==b.
 	**/
 	public function __eq__(other:Dynamic):Dynamic;
 	public function __floordiv__(?other:Dynamic):Dynamic;
@@ -65,7 +96,7 @@ package pandas.core.indexes.period;
 	**/
 	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return self>=value.
+		ge(a, b) -- Same as a>=b.
 	**/
 	public function __ge__(other:Dynamic):Dynamic;
 	/**
@@ -73,12 +104,17 @@ package pandas.core.indexes.period;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	/**
-		This getitem defers to the underlying array, which by-definition can
-		only handle list-likes, slices, and integer scalars
+		Override numpy.ndarray's __getitem__ method to work as desired.
+		
+		This function adds lists and Series as valid boolean indexers
+		(ndarrays only supports ndarray with dtype=bool).
+		
+		If resulting ndim != 1, plain ndarray is returned instead of
+		corresponding `Index` subclass.
 	**/
 	public function __getitem__(key:Dynamic):Dynamic;
 	/**
-		Return self>value.
+		gt(a, b) -- Same as a>b.
 	**/
 	public function __gt__(other:Dynamic):Dynamic;
 	/**
@@ -103,25 +139,24 @@ package pandas.core.indexes.period;
 	**/
 	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __inv__(?other:Dynamic):Dynamic;
-	public function __isub__(other:Dynamic):Dynamic;
-	public function __iter__():Dynamic;
+	public function __iter__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return self<=value.
+		le(a, b) -- Same as a<=b.
 	**/
 	public function __le__(other:Dynamic):Dynamic;
 	/**
-		return the length of the Index
+		Return the length of the Index.
 	**/
 	public function __len__():Dynamic;
 	/**
-		Return self<value.
+		lt(a, b) -- Same as a<b.
 	**/
 	public function __lt__(other:Dynamic):Dynamic;
 	public function __mod__(?other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(?other:Dynamic):Dynamic;
 	/**
-		Return self!=value.
+		ne(a, b) -- Same as a!=b.
 	**/
 	public function __ne__(other:Dynamic):Dynamic;
 	public function __neg__(?other:Dynamic):Dynamic;
@@ -198,74 +233,73 @@ package pandas.core.indexes.period;
 	public var __weakref__ : Dynamic;
 	public function __xor__(other:Dynamic):Dynamic;
 	static public var _accessors : Dynamic;
+	static public function _add_arithmetic_ops():Dynamic;
 	/**
-		add in comparison methods 
+		Add in comparison methods.
 	**/
 	static public function _add_comparison_methods():Dynamic;
-	public function _add_datelike(other:Dynamic):Dynamic;
+	static public function _add_comparison_ops():Dynamic;
 	/**
-		add in the datetimelike methods (as we may have to override the
-		superclass)
+		Add in the datetimelike methods (as we may have to override the
+		superclass).
 	**/
 	static public function _add_datetimelike_methods():Dynamic;
-	public function _add_delta(other:Dynamic):Dynamic;
 	/**
-		Add a delta of a timedeltalike
-		return the i8 result view
-	**/
-	public function _add_delta_td(other:Dynamic):Dynamic;
-	/**
-		Add a delta of a TimedeltaIndex
-		return the i8 result view
-	**/
-	public function _add_delta_tdi(other:Dynamic):Dynamic;
-	/**
-		add in logical methods 
-	**/
-	static public function _add_logical_methods():Dynamic;
-	/**
-		add in logical methods to disable 
-	**/
-	static public function _add_logical_methods_disabled():Dynamic;
-	/**
-		Add pd.NaT to self
-	**/
-	public function _add_nat():Dynamic;
-	static public function _add_numeric_methods():Dynamic;
-	/**
-		add in the numeric add/sub methods to disable 
-	**/
-	static public function _add_numeric_methods_add_sub_disabled():Dynamic;
-	/**
-		add in numeric methods 
-	**/
-	static public function _add_numeric_methods_binary():Dynamic;
-	/**
-		add in numeric methods to disable other than add/sub 
-	**/
-	static public function _add_numeric_methods_disabled():Dynamic;
-	/**
-		add in numeric unary methods 
-	**/
-	static public function _add_numeric_methods_unary():Dynamic;
-	public function _add_offset(other:Dynamic):Dynamic;
-	/**
-		Add or subtract array-like of DateOffset objects
+		Add accessors to cls from the delegate class.
 		
 		Parameters
 		----------
-		other : Index, np.ndarray
-		    object-dtype containing pd.DateOffset objects
+		cls : the class to add the methods/properties to
+		delegate : the class to get methods/properties & doc-strings
+		acccessors : string list of accessors to add
+		typ : 'property' or 'method'
+		overwrite : boolean, default False
+		   overwrite the method/property in the target class if it exists
+	**/
+	static public function _add_delegate_accessors(delegate:Dynamic, accessors:Dynamic, typ:Dynamic, ?overwrite:Dynamic):Dynamic;
+	/**
+		Add in logical methods.
+	**/
+	static public function _add_logical_methods():Dynamic;
+	/**
+		Add in logical methods to disable.
+	**/
+	static public function _add_logical_methods_disabled():Dynamic;
+	static public function _add_numeric_methods():Dynamic;
+	/**
+		Add in the numeric add/sub methods to disable.
+	**/
+	static public function _add_numeric_methods_add_sub_disabled():Dynamic;
+	/**
+		Add in numeric methods.
+	**/
+	static public function _add_numeric_methods_binary():Dynamic;
+	/**
+		Add in numeric methods to disable other than add/sub.
+	**/
+	static public function _add_numeric_methods_disabled():Dynamic;
+	/**
+		Add in numeric unary methods.
+	**/
+	static public function _add_numeric_methods_unary():Dynamic;
+	/**
+		Add or subtract array-like of integers equivalent to applying
+		`_time_shift` pointwise.
+		
+		Parameters
+		----------
+		other : Index, ExtensionArray, np.ndarray
+		    integer-dtype
 		op : {operator.add, operator.sub}
 		
 		Returns
 		-------
 		result : same class as self
 	**/
-	public function _addsub_offset_array(other:Dynamic, op:Dynamic):Dynamic;
+	public function _addsub_int_array(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _apply_meta(rawarr:Dynamic):Dynamic;
 	/**
-		Check value is valid for scalar op 
+		Check value is valid for scalar op.
 	**/
 	public function _assert_can_do_op(value:Dynamic):Dynamic;
 	public function _assert_can_do_setop(other:Dynamic):Dynamic;
@@ -274,23 +308,15 @@ package pandas.core.indexes.period;
 	**/
 	static public function _assert_safe_casting(data:Dynamic, subarr:Dynamic):Dynamic;
 	/**
-		Internal method to handle NA filling of take 
+		Internal method to handle NA filling of take.
 	**/
 	public function _assert_take_fillable(values:Dynamic, indices:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic, ?na_value:Dynamic):Dynamic;
 	static public var _attributes : Dynamic;
-	static public var _bool_ops : Dynamic;
 	/**
-		box function to get object from internal representation
+		Maybe box an ordinal or Period
 	**/
 	public var _box_func : Dynamic;
-	/**
-		apply box func to passed values
-	**/
 	public function _box_values(values:Dynamic):Dynamic;
-	/**
-		return object Index which contains boxed values
-	**/
-	public function _box_values_as_index():Dynamic;
 	/**
 		Faster check for ``name in self`` when we know `name` is a Python
 		identifier (e.g. in NDFrame.__getattr__, which hits this to support
@@ -302,9 +328,7 @@ package pandas.core.indexes.period;
 	public function _can_hold_identifiers_and_holds_name(name:Dynamic):Dynamic;
 	static public var _can_hold_na : Dynamic;
 	/**
-		*this is an internal non-public method*
-		
-		Check if we are allowing reindexing with this particular indexer
+		Check if we are allowing reindexing with this particular indexer.
 		
 		Parameters
 		----------
@@ -325,14 +349,21 @@ package pandas.core.indexes.period;
 	**/
 	public function _coerce_scalar_to_index(item:Dynamic):Dynamic;
 	/**
-		coerces data to ndarray, raises on scalar data. Converts other
-		iterables to list first and then to array. Does not touch ndarrays.
+		Coerces data to ndarray.
+		
+		Converts other iterables to list first and then to array.
+		Does not touch ndarrays.
+		
+		Raises
+		------
+		TypeError
+		    When the data passed in is a scalar.
 	**/
 	static public function _coerce_to_ndarray(data:Dynamic):Dynamic;
 	static public var _comparables : Dynamic;
 	public function _concat(to_concat:Dynamic, name:Dynamic):Dynamic;
 	/**
-		Concatenate to_concat which has the same class
+		Concatenate to_concat which has the same class.
 	**/
 	public function _concat_same_dtype(to_concat:Dynamic, name:Dynamic):Dynamic;
 	public var _constructor : Dynamic;
@@ -395,8 +426,8 @@ package pandas.core.indexes.period;
 	**/
 	public function _convert_listlike_indexer(keyarr:Dynamic, ?kind:Dynamic):Dynamic;
 	/**
-		we don't allow integer or float indexing on datetime-like when using
-		loc
+		We don't allow integer or float indexing on datetime-like when using
+		loc.
 		
 		Parameters
 		----------
@@ -417,32 +448,64 @@ package pandas.core.indexes.period;
 	**/
 	public function _convert_slice_indexer(key:Dynamic, ?kind:Dynamic):Dynamic;
 	public function _convert_tolerance(tolerance:Dynamic, target:Dynamic):Dynamic;
-	static public var _data : Dynamic;
-	static public var _datetimelike_methods : Dynamic;
-	static public var _datetimelike_ops : Dynamic;
 	/**
-		.. versionadded:: 0.19.0
-		
-		Make a copy of self if data coincides (in memory) with orig.
-		Subclasses should override this if self._base is not an ndarray.
-		
-		Parameters
-		----------
-		orig : ndarray
-		    other ndarray to compare self._data against
-		copy : boolean, default False
-		    when False, do not run any check, just return self
-		
-		Returns
-		-------
-		A copy of self if needed, otherwise self : Index
+		Create a comparison method that dispatches to ``cls.values``.
 	**/
-	public function _deepcopy_if_needed(orig:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function _create_comparison_method(op:Dynamic):Dynamic;
+	static public var _data : Dynamic;
 	/**
-		64-bit integer. Character code 'l'. Python int compatible.
+		Signed integer type, compatible with Python `int` anc C ``long``.
+		Character code: ``'l'``.
+		Canonical name: ``np.int_``.
+		Alias *on this platform*: ``np.int64``: 64-bit signed integer (-9223372036854775808 to 9223372036854775807).
+		Alias *on this platform*: ``np.intp``: Signed integer large enough to fit pointer, compatible with C ``intptr_t``.
 	**/
 	public function _default_dtype(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _defer_to_indexing : Dynamic;
+	/**
+		Pandas ExtensionArray for storing Period data.
+		
+		Users should use :func:`period_array` to create new instances.
+		
+		Parameters
+		----------
+		values : Union[PeriodArray, Series[period], ndarary[int], PeriodIndex]
+		    The data to store. These should be arrays that can be directly
+		    converted to ordinals without inference or copy (PeriodArray,
+		    ndarray[int64]), or a box around such an array (Series[period],
+		    PeriodIndex).
+		freq : str or DateOffset
+		    The `freq` to use for the array. Mostly applicable when `values`
+		    is an ndarray of integers, when `freq` is required. When `values`
+		    is a PeriodArray (or box around), it's checked that ``values.freq``
+		    matches `freq`.
+		copy : bool, default False
+		    Whether to copy the ordinals before storing.
+		
+		See Also
+		--------
+		period_array : Create a new PeriodArray.
+		pandas.PeriodIndex : Immutable Index for period data.
+		
+		Notes
+		-----
+		There are two components to a PeriodArray
+		
+		- ordinals : integer ndarray
+		- freq : pd.tseries.offsets.Offset
+		
+		The values are physically stored as a 1-D ndarray of integers. These are
+		called "ordinals" and represent some kind of offset from a base.
+		
+		The `freq` indicates the span covered by each element of the array.
+		All elements in the PeriodArray have the same `freq`.
+	**/
+	static public function _delegate_class(values:Dynamic, ?freq:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	public function _delegate_method(name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _delegate_property_get(name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _delegate_property_set(name:Dynamic, value:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var _delegated_methods : Dynamic;
+	static public var _delegated_properties : Dynamic;
 	static public var _deprecations : Dynamic;
 	/**
 		add additional __dir__ for this object 
@@ -454,70 +517,36 @@ package pandas.core.indexes.period;
 	public function _dir_deletions():Dynamic;
 	public var _engine : Dynamic;
 	public function _engine_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		ensure that we are re-localized
-		
-		This is for compat as we can then call this on all datetimelike
-		indexes generally (ignored for Period/Timedelta)
-		
-		Parameters
-		----------
-		result : DatetimeIndex / i8 ndarray
-		
-		Returns
-		-------
-		localized DTI
-	**/
-	public function _ensure_localized(result:Dynamic):Dynamic;
-	/**
-		We have been called because a comparison between
-		8 aware arrays. numpy >= 1.11 will
-		now warn about NaT comparisons
-	**/
-	public function _evaluate_compare(other:Dynamic, op:Dynamic):Dynamic;
+	public function _ensure_localized(arg:Dynamic, ?ambiguous:Dynamic, ?nonexistent:Dynamic, ?from_utc:Dynamic):Dynamic;
 	public function _evaluate_with_datetime_like(other:Dynamic, op:Dynamic):Dynamic;
 	public function _evaluate_with_timedelta_like(other:Dynamic, op:Dynamic):Dynamic;
-	static public var _field_ops : Dynamic;
 	public function _filter_indexer_tolerance(target:Dynamic, indexer:Dynamic, tolerance:Dynamic):Dynamic;
 	/**
-		Return a list of tuples of the (attr,formatted_value)
+		Return a list of tuples of the (attr,formatted_value).
 	**/
 	public function _format_attrs():Dynamic;
 	/**
-		Return the formatted data as a unicode string
+		Return the formatted data as a unicode string.
 	**/
 	public function _format_data(?name:Dynamic):Dynamic;
 	/**
-		actually format my specific types 
+		Actually format specific types of the index.
 	**/
-	public function _format_native_types(?na_rep:Dynamic, ?date_format:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _format_native_types(?na_rep:Dynamic, ?quoting:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _format_space():Dynamic;
 	public function _format_with_header(header:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return the formatted data as a unicode string
+		Return the formatter function.
 	**/
 	public var _formatter_func : Dynamic;
-	static public var _freq : Dynamic;
 	/**
-		Values should be int ordinals
-		`__new__` & `_simple_new` cooerce to ordinals and call this method
-	**/
-	static public function _from_ordinals(values:Dynamic, ?name:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function _generate_range(start:Dynamic, end:Dynamic, periods:Dynamic, freq:Dynamic, fields:Dynamic):Dynamic;
-	/**
-		return an attributes dict for my class 
+		Return an attributes dict for my class.
 	**/
 	public function _get_attributes_dict():Dynamic;
-	/**
-		Given 2 indexes, give a consensus name meaning
-		we take the not None one, or None if the names differ.
-		Return a new object if we are resetting the name
-	**/
-	public function _get_consensus_name(other:Dynamic):Dynamic;
 	public function _get_fill_indexer(target:Dynamic, method:Dynamic, ?limit:Dynamic, ?tolerance:Dynamic):Dynamic;
 	/**
 		Fallback pad/backfill get_indexer that works for monotonic decreasing
-		indexes and non-monotonic targets
+		indexes and non-monotonic targets.
 	**/
 	public function _get_fill_indexer_searchsorted(target:Dynamic, method:Dynamic, ?limit:Dynamic):Dynamic;
 	/**
@@ -542,24 +571,40 @@ package pandas.core.indexes.period;
 	public function _get_grouper_for_level(mapper:Dynamic, ?level:Dynamic):pandas.Index;
 	public function _get_level_number(level:Dynamic):Dynamic;
 	/**
-		Return an Index of values for requested level, equal to the length
-		of the index.
+		Return an Index of values for requested level.
+		
+		This is primarily useful to get an individual level of values from a
+		MultiIndex, but is provided on Index as well for compatability.
 		
 		Parameters
 		----------
 		level : int or str
-		    ``level`` is either the integer position of the level in the
-		    MultiIndex, or the name of the level.
+		    It is either the integer position or the name of the level.
 		
 		Returns
 		-------
 		values : Index
-		    ``self``, as there is only one level in the Index.
+		    Calling object, as there is only one level in the Index.
 		
-		See also
-		---------
-		pandas.MultiIndex.get_level_values : get values for a level of a
-		                                     MultiIndex
+		See Also
+		--------
+		MultiIndex.get_level_values : Get values for a level of a MultiIndex.
+		
+		Notes
+		-----
+		For Index, level should be 0, since there are no multiple levels.
+		
+		Examples
+		--------
+		
+		>>> idx = pd.Index(list('abc'))
+		>>> idx
+		Index(['a', 'b', 'c'], dtype='object')
+		
+		Get level values by supplying `level` as integer:
+		
+		>>> idx.get_level_values(0)
+		Index(['a', 'b', 'c'], dtype='object')
 	**/
 	public function _get_level_values(level:Dynamic):pandas.Index;
 	/**
@@ -574,31 +619,51 @@ package pandas.core.indexes.period;
 		tuples).
 	**/
 	public function _get_nearest_indexer(target:Dynamic, limit:Dynamic, tolerance:Dynamic):Dynamic;
+	/**
+		If the result of a set operation will be self,
+		return self, unless the name changes, in which
+		case make a shallow copy of self.
+	**/
+	public function _get_reconciled_name_object(other:Dynamic):Dynamic;
 	public function _get_string_slice(key:Dynamic):Dynamic;
 	/**
 		wrap Index._get_unique_index to handle NaT
 	**/
 	public function _get_unique_index(?dropna:Dynamic):Dynamic;
 	public var _has_complex_internals : Dynamic;
+	/**
+		return if I have any nans; enables various perf speedups
+	**/
+	public var _hasnans : Dynamic;
 	static public var _id : Dynamic;
 	static public var _infer_as_myclass : Dynamic;
-	/**
-		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
-	**/
-	public function _inner_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _inner_indexer(left:Dynamic, right:Dynamic):Dynamic;
 	public var _int64index : Dynamic;
 	/**
-		consistent invalid indexer message 
+		Consistent invalid indexer message.
 	**/
 	public function _invalid_indexer(form:Dynamic, key:Dynamic):Dynamic;
 	/**
-		return a boolean if we need a qualified .info display 
+		Whether the object has a single dtype.
+		
+		By definition, Series and Index are always considered homogeneous.
+		A MultiIndex may or may not be homogeneous, depending on the
+		dtypes of the levels.
+		
+		See Also
+		--------
+		DataFrame._is_homogeneous_type
+		MultiIndex._is_homogeneous_type
+	**/
+	public var _is_homogeneous_type : Dynamic;
+	/**
+		Return a boolean if we need a qualified .info display.
 	**/
 	public function _is_memory_usage_qualified():Dynamic;
 	static public var _is_numeric_dtype : Dynamic;
 	/**
-		return if the index is strictly monotonic decreasing
-		(only decreasing) values
+		Return if the index is strictly monotonic decreasing
+		(only decreasing) values.
 		
 		Examples
 		--------
@@ -611,8 +676,8 @@ package pandas.core.indexes.period;
 	**/
 	public var _is_strictly_monotonic_decreasing : Dynamic;
 	/**
-		return if the index is strictly monotonic increasing
-		(only increasing) values
+		Return if the index is strictly monotonic increasing
+		(only increasing) values.
 		
 		Examples
 		--------
@@ -629,26 +694,25 @@ package pandas.core.indexes.period;
 	**/
 	public var _isnan : Dynamic;
 	/**
-		create the join wrapper methods 
+		Create the join wrapper methods.
 	**/
 	static public function _join_i8_wrapper(joinf:Dynamic, dtype:Dynamic, ?with_indexers:Dynamic):Dynamic;
 	/**
 		The join method *only* affects the level of the resulting
 		MultiIndex. Otherwise it just exactly aligns the Index data to the
-		labels of the level in the MultiIndex. If `keep_order` == True, the
-		order of the data indexed by the MultiIndex will not be changed;
-		otherwise, it will tie out with `other`.
+		labels of the level in the MultiIndex.
+		
+		If ```keep_order == True```, the order of the data indexed by the
+		MultiIndex will not be changed; otherwise, it will tie out
+		with `other`.
 	**/
 	public function _join_level(other:Dynamic, level:Dynamic, ?how:Dynamic, ?return_indexers:Dynamic, ?keep_order:Dynamic):Dynamic;
 	public function _join_monotonic(other:Dynamic, ?how:Dynamic, ?return_indexers:Dynamic):Dynamic;
 	public function _join_multi(other:Dynamic, how:Dynamic, ?return_indexers:Dynamic):Dynamic;
 	public function _join_non_unique(other:Dynamic, ?how:Dynamic, ?return_indexers:Dynamic):Dynamic;
 	static public var _join_precedence : Dynamic;
-	/**
-		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
-	**/
-	public function _left_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _left_indexer_unique(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _left_indexer(left:Dynamic, right:Dynamic):Dynamic;
+	public function _left_indexer_unique(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		An internal function that maps values using the input
 		correspondence (which can be a dict, Series, or function).
@@ -670,8 +734,8 @@ package pandas.core.indexes.period;
 	**/
 	public function _map_values(mapper:Dynamic, ?na_action:Dynamic):Dynamic;
 	/**
-		If we have a float key and are not a floating index
-		then try to cast to an int if equivalent
+		If we have a float key and are not a floating index, then try to cast
+		to an int if equivalent.
 	**/
 	public function _maybe_cast_indexer(key:Dynamic):Dynamic;
 	/**
@@ -693,11 +757,28 @@ package pandas.core.indexes.period;
 		Value of `side` parameter should be validated in caller.
 	**/
 	public function _maybe_cast_slice_bound(label:Dynamic, side:Dynamic, kind:Dynamic):Dynamic;
+	/**
+		Convert timedelta-like input to an integer multiple of self.freq
+		
+		Parameters
+		----------
+		other : timedelta, np.timedelta64, DateOffset, int, np.ndarray
+		
+		Returns
+		-------
+		converted : int, np.ndarray[int64]
+		
+		Raises
+		------
+		IncompatibleFrequency : if the input cannot be written as a multiple
+		    of self.freq.  Note IncompatibleFrequency subclasses ValueError.
+	**/
 	public function _maybe_convert_timedelta(other:Dynamic):Dynamic;
 	/**
 		Parameters
 		----------
 		result : a ndarray
+		fill_value : object, default iNaT
 		convert : string/dtype or None
 		
 		Returns
@@ -709,48 +790,27 @@ package pandas.core.indexes.period;
 		
 		This is an internal routine
 	**/
-	public function _maybe_mask_results(result:Dynamic, ?fill_value:Dynamic, ?convert:Dynamic):Dynamic;
+	public function _maybe_mask_results(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _maybe_promote(other:Dynamic):Dynamic;
 	/**
-		Update Index attributes (e.g. freq) depending on op 
+		Update Index attributes (e.g. freq) depending on op.
 	**/
 	public function _maybe_update_attributes(attrs:Dynamic):Dynamic;
 	public function _mpl_repr():Dynamic;
 	static public var _na_value : Dynamic;
 	public var _nan_idxs : Dynamic;
-	/**
-		Return Index or ndarray filled with NaT which has the same
-		length as the caller.
-		
-		Parameters
-		----------
-		box : boolean, default True
-		    - If True returns a Index as the same as caller.
-		    - If False returns ndarray of np.int64.
-	**/
-	public function _nat_new(?box:Dynamic):Dynamic;
-	/**
-		The data as an ndarray, possibly losing information.
-		
-		The expectation is that this is cheap to compute, and is primarily
-		used for interacting with our indexers.
-		
-		- categorical -> codes
-	**/
 	public var _ndarray_values : Dynamic;
-	static public var _object_ops : Dynamic;
-	static public var _other_ops : Dynamic;
-	public function _outer_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _outer_indexer(left:Dynamic, right:Dynamic):Dynamic;
 	public function _parsed_string_to_bounds(reso:Dynamic, parsed:Dynamic):Dynamic;
+	static public var _raw_methods : Dynamic;
+	static public var _raw_properties : Dynamic;
 	/**
 		perform the reduction type operation if we can 
 	**/
 	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		*this is an internal non-public method*
-		
 		Create a new index with target's values (move/add/delete values as
-		necessary) use with non-unique Index and a possibly non-unique target
+		necessary) use with non-unique Index and a possibly non-unique target.
 		
 		Parameters
 		----------
@@ -769,7 +829,7 @@ package pandas.core.indexes.period;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	/**
-		Initializes or resets ``_id`` attribute with new object
+		Initializes or resets ``_id`` attribute with new object.
 	**/
 	public function _reset_identity():Dynamic;
 	public var _resolution : Dynamic;
@@ -792,9 +852,9 @@ package pandas.core.indexes.period;
 	**/
 	public function _set_names(values:Dynamic, ?level:Dynamic):Dynamic;
 	/**
-		create a new Index with the same class as the caller, don't copy the
+		Create a new Index with the same class as the caller, don't copy the
 		data, use the same object attributes with passed in attributes taking
-		precedence
+		precedence.
 		
 		*this is an internal non-public method*
 		
@@ -803,29 +863,28 @@ package pandas.core.indexes.period;
 		values : the values to create the new Index, optional
 		kwargs : updates the default attributes for this Index
 	**/
-	public function _shallow_copy(?values:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _shallow_copy(?values:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		we always want to return a PeriodIndex 
 	**/
 	public function _shallow_copy_with_infer(?values:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Values can be any type that can be coerced to Periods.
-		Ordinals in an ndarray are fastpath-ed to `_from_ordinals`
+		Create a new PeriodIndex.
+		
+		Parameters
+		----------
+		values : PeriodArray, PeriodIndex, Index[int64], ndarray[int64]
+		    Values that can be converted to a PeriodArray without inference
+		    or coercion.
 	**/
 	static public function _simple_new(values:Dynamic, ?name:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		compat with MultiIndex 
+		Compat with MultiIndex.
 	**/
 	public function _sort_levels_monotonic():Dynamic;
 	static public function _string_data_error(data:Dynamic):Dynamic;
-	public function _sub_datelike(other:Dynamic):Dynamic;
 	/**
-		Subtract pd.NaT from self
-	**/
-	public function _sub_nat():Dynamic;
-	public function _sub_period(other:Dynamic):Dynamic;
-	/**
-		Return a summarized representation
+		Return a summarized representation.
 		
 		Parameters
 		----------
@@ -838,11 +897,7 @@ package pandas.core.indexes.period;
 	**/
 	public function _summary(?name:Dynamic):Dynamic;
 	/**
-		return an array repr of this object, potentially casting to object
-	**/
-	public function _to_embed(?keep_tz:Dynamic, ?dtype:Dynamic):Dynamic;
-	/**
-		convert to object if we are a categorical 
+		Convert to object if we are a categorical.
 	**/
 	public function _to_safe_for_reshape():Dynamic;
 	/**
@@ -871,14 +926,16 @@ package pandas.core.indexes.period;
 	public function _unpickle_compat(state:Dynamic):Dynamic;
 	public function _update_inplace(result:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return valid other, evaluate or raise TypeError
-		if we are not of the appropriate type
+		Return valid other; evaluate or raise TypeError if we are not of
+		the appropriate type.
 		
-		internal method called by ops
+		Notes
+		-----
+		This is an internal method called by ops.
 	**/
 	public function _validate_for_numeric_binop(other:Dynamic, op:Dynamic):Dynamic;
 	/**
-		validate if we can perform a numeric unary operation 
+		Validate if we can perform a numeric unary operation.
 	**/
 	public function _validate_for_numeric_unaryop(op:Dynamic, opstr:Dynamic):Dynamic;
 	/**
@@ -889,9 +946,8 @@ package pandas.core.indexes.period;
 	**/
 	public function _validate_index_level(level:Dynamic):Dynamic;
 	/**
-		if we are positional indexer
-		validate that we have appropriate typed bounds
-		must be an integer
+		If we are positional indexer, validate that we have appropriate
+		typed bounds must be an integer.
 	**/
 	public function _validate_indexer(form:Dynamic, key:Dynamic, kind:Dynamic):Dynamic;
 	/**
@@ -899,6 +955,7 @@ package pandas.core.indexes.period;
 		Index and plural 'names' parameter for MultiIndex.
 	**/
 	public function _validate_names(?name:Dynamic, ?names:Dynamic, ?deep:Dynamic):Dynamic;
+	public function _validate_sort_keyword(sort:Dynamic):Dynamic;
 	/**
 		The best array representation.
 		
@@ -910,18 +967,14 @@ package pandas.core.indexes.period;
 		
 		It may differ from the public '.values' method.
 		
-		index             | values          | _values     | _ndarray_values |
-		----------------- | -------------- -| ----------- | --------------- |
-		CategoricalIndex  | Categorical     | Categorical | codes           |
-		DatetimeIndex[tz] | ndarray[M8ns]   | DTI[tz]     | ndarray[M8ns]   |
-		
-		For the following, the ``._values`` is currently ``ndarray[object]``,
-		but will soon be an ``ExtensionArray``
-		
-		index             | values          | _values      | _ndarray_values |
-		----------------- | --------------- | ------------ | --------------- |
-		PeriodIndex       | ndarray[object] | ndarray[obj] | ndarray[int]    |
-		IntervalIndex     | ndarray[object] | ndarray[obj] | ndarray[object] |
+		index             | values          | _values       | _ndarray_values |
+		----------------- | --------------- | ------------- | --------------- |
+		Index             | ndarray         | ndarray       | ndarray         |
+		CategoricalIndex  | Categorical     | Categorical   | ndarray[int]    |
+		DatetimeIndex     | ndarray[M8ns]   | ndarray[M8ns] | ndarray[M8ns]   |
+		DatetimeIndex[tz] | ndarray[M8ns]   | DTI[tz]       | ndarray[M8ns]   |
+		PeriodIndex       | ndarray[object] | PeriodArray   | ndarray[int]    |
+		IntervalIndex     | IntervalArray   | IntervalArray | ndarray[object] |
 		
 		See Also
 		--------
@@ -930,11 +983,11 @@ package pandas.core.indexes.period;
 	**/
 	public var _values : Dynamic;
 	public function _wrap_joined_index(joined:Dynamic, other:Dynamic):Dynamic;
-	public function _wrap_union_result(other:Dynamic, result:Dynamic):Dynamic;
+	public function _wrap_setop_result(other:Dynamic, result:Dynamic):Dynamic;
 	public function all(?other:Dynamic):Dynamic;
 	public function any(?other:Dynamic):Dynamic;
 	/**
-		Append a collection of Index options together
+		Append a collection of Index options together.
 		
 		Parameters
 		----------
@@ -947,26 +1000,28 @@ package pandas.core.indexes.period;
 	public function append(other:Dynamic):pandas.Index;
 	/**
 		Returns the indices of the maximum values along an axis.
+		
 		See `numpy.ndarray.argmax` for more information on the
 		`axis` parameter.
 		
-		See also
+		See Also
 		--------
 		numpy.ndarray.argmax
 	**/
-	public function argmax(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function argmax(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns the indices of the minimum values along an axis.
+		
 		See `numpy.ndarray.argmin` for more information on the
 		`axis` parameter.
 		
-		See also
+		See Also
 		--------
 		numpy.ndarray.argmin
 	**/
-	public function argmin(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function argmin(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return the integer indicies that would sort the index.
+		Return the integer indices that would sort the index.
 		
 		Parameters
 		----------
@@ -978,10 +1033,10 @@ package pandas.core.indexes.period;
 		Returns
 		-------
 		numpy.ndarray
-		    Integer indicies that would sort the index if used as
+		    Integer indices that would sort the index if used as
 		    an indexer.
 		
-		See also
+		See Also
 		--------
 		numpy.argsort : Similar method for NumPy arrays.
 		Index.sort_values : Return sorted copy of Index.
@@ -1001,11 +1056,73 @@ package pandas.core.indexes.period;
 	**/
 	public function argsort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Convert the PeriodIndex to the specified frequency `freq`.
+		The ExtensionArray of the data backing this Series or Index.
+		
+		.. versionadded:: 0.24.0
+		
+		Returns
+		-------
+		array : ExtensionArray
+		    An ExtensionArray of the values stored within. For extension
+		    types, this is the actual array. For NumPy native types, this
+		    is a thin (no copy) wrapper around :class:`numpy.ndarray`.
+		
+		    ``.array`` differs ``.values`` which may require converting the
+		    data to a different form.
+		
+		See Also
+		--------
+		Index.to_numpy : Similar method that always returns a NumPy array.
+		Series.to_numpy : Similar method that always returns a NumPy array.
+		
+		Notes
+		-----
+		This table lays out the different array types for each extension
+		dtype within pandas.
+		
+		================== =============================
+		dtype              array type
+		================== =============================
+		category           Categorical
+		period             PeriodArray
+		interval           IntervalArray
+		IntegerNA          IntegerArray
+		datetime64[ns, tz] DatetimeArray
+		================== =============================
+		
+		For any 3rd-party extension types, the array type will be an
+		ExtensionArray.
+		
+		For all remaining dtypes ``.array`` will be a
+		:class:`arrays.NumpyExtensionArray` wrapping the actual ndarray
+		stored within. If you absolutely need a NumPy array (possibly with
+		copying / coercing data), then use :meth:`Series.to_numpy` instead.
+		
+		Examples
+		--------
+		
+		For regular NumPy types like int, and float, a PandasArray
+		is returned.
+		
+		>>> pd.Series([1, 2, 3]).array
+		<PandasArray>
+		[1, 2, 3]
+		Length: 3, dtype: int64
+		
+		For extension types, like Categorical, the actual ExtensionArray
+		is returned
+		
+		>>> ser = pd.Series(pd.Categorical(['a', 'b', 'a']))
+		>>> ser.array
+		[a, b, a]
+		Categories (2, object): [a, b]
+	**/
+	public var array : Dynamic;
+	/**
+		Convert the Period Array/Index to the specified frequency `freq`.
 		
 		Parameters
 		----------
-		
 		freq : str
 		    a frequency
 		how : str {'E', 'S'}
@@ -1013,12 +1130,11 @@ package pandas.core.indexes.period;
 		    'S', 'START', or 'BEGIN' for start.
 		    Whether the elements should be aligned to the end
 		    or start within pa period. January 31st ('END') vs.
-		    Janury 1st ('START') for example.
+		    January 1st ('START') for example.
 		
 		Returns
 		-------
-		
-		new : PeriodIndex with the new frequency
+		new : Period Array/Index with the new frequency
 		
 		Examples
 		--------
@@ -1038,7 +1154,15 @@ package pandas.core.indexes.period;
 		[2010-01, ..., 2015-01]
 		Length: 6, Freq: M
 	**/
-	public function asfreq(?freq:Dynamic, ?how:Dynamic):Dynamic;
+	public function asfreq(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Integer representation of the values.
+		
+		Returns
+		-------
+		ndarray
+		    An ndarray with int64 dtype.
+	**/
 	public var asi8 : Dynamic;
 	/**
 		Return object Index which contains boxed values.
@@ -1050,12 +1174,59 @@ package pandas.core.indexes.period;
 	**/
 	public var asobject : Dynamic;
 	/**
-		For a sorted index, return the most recent label up to and including
-		the passed label. Return NaN if not found.
+		Return the label from the index, or, if not present, the previous one.
 		
-		See also
+		Assuming that the index is sorted, return the passed index label if it
+		is in the index, or return the previous index label if the passed one
+		is not in the index.
+		
+		Parameters
+		----------
+		label : object
+		    The label up to which the method returns the latest index label.
+		
+		Returns
+		-------
+		object
+		    The passed label if it is in the index. The previous label if the
+		    passed label is not in the sorted index or `NaN` if there is no
+		    such label.
+		
+		See Also
 		--------
-		get_loc : asof is a thin wrapper around get_loc with method='pad'
+		Series.asof : Return the latest value in a Series up to the
+		    passed index.
+		merge_asof : Perform an asof merge (similar to left join but it
+		    matches on nearest key rather than equal key).
+		Index.get_loc : An `asof` is a thin wrapper around `get_loc`
+		    with method='pad'.
+		
+		Examples
+		--------
+		`Index.asof` returns the latest index label up to the passed label.
+		
+		>>> idx = pd.Index(['2013-12-31', '2014-01-02', '2014-01-03'])
+		>>> idx.asof('2014-01-01')
+		'2013-12-31'
+		
+		If the label is in the index, the method returns the passed label.
+		
+		>>> idx.asof('2014-01-02')
+		'2014-01-02'
+		
+		If all of the labels in the index are later than the passed label,
+		NaN is returned.
+		
+		>>> idx.asof('1999-01-02')
+		nan
+		
+		If the index is not sorted, an error is raised.
+		
+		>>> idx_not_sorted = pd.Index(['2013-12-31', '2015-01-02',
+		...                            '2014-01-03'])
+		>>> idx_not_sorted.asof('2013-12-31')
+		Traceback (most recent call last):
+		ValueError: index must be monotonic increasing or decreasing
 	**/
 	public function asof(label:Dynamic):Dynamic;
 	/**
@@ -1071,6 +1242,9 @@ package pandas.core.indexes.period;
 		Parameters
 		----------
 		dtype : numpy dtype or pandas type
+		    Note that any signed integer `dtype` is treated as ``'int64'``,
+		    and any unsigned integer `dtype` is treated as ``'uint64'``,
+		    regardless of the size.
 		copy : bool, default True
 		    By default, astype always returns a newly allocated object.
 		    If copy is set to False and internal requirements on dtype are
@@ -1086,15 +1260,40 @@ package pandas.core.indexes.period;
 	**/
 	public var base : Dynamic;
 	/**
-		return a boolean if this key is IN the index
+		Return a boolean indicating whether the provided key is in the index.
 		
 		Parameters
 		----------
-		key : object
+		key : label
+		    The key to check if it is present in the index.
 		
 		Returns
 		-------
-		boolean
+		bool
+		    Whether the key search is in the index.
+		
+		See Also
+		--------
+		Index.isin : Returns an ndarray of boolean dtype indicating whether the
+		    list-like key is in the index.
+		
+		Examples
+		--------
+		>>> idx = pd.Index([1, 2, 3, 4])
+		>>> idx
+		Int64Index([1, 2, 3, 4], dtype='int64')
+		
+		>>> idx.contains(2)
+		True
+		>>> idx.contains(6)
+		False
+		
+		This is equivalent to:
+		
+		>>> 2 in idx
+		True
+		>>> 6 in idx
+		False
 	**/
 	public function contains(key:Dynamic):Dynamic;
 	/**
@@ -1126,10 +1325,6 @@ package pandas.core.indexes.period;
 	**/
 	public var day : Dynamic;
 	/**
-		The ordinal day of the year
-	**/
-	public var day_of_year : Dynamic;
-	/**
 		The day of the week with Monday=0, Sunday=6
 	**/
 	public var dayofweek : Dynamic;
@@ -1146,7 +1341,7 @@ package pandas.core.indexes.period;
 	**/
 	public var daysinmonth : Dynamic;
 	/**
-		Make new Index with passed location(-s) deleted
+		Make new Index with passed location(-s) deleted.
 		
 		Returns
 		-------
@@ -1158,11 +1353,25 @@ package pandas.core.indexes.period;
 		`other`.
 		
 		This is the set difference of two Index objects.
-		It's sorted if sorting is possible.
 		
 		Parameters
 		----------
 		other : Index or array-like
+		sort : False or None, default None
+		    Whether to sort the resulting index. By default, the
+		    values are attempted to be sorted, but any TypeError from
+		    incomparable elements is caught by pandas.
+		
+		    * None : Attempt to sort the result, but catch any TypeErrors
+		      from comparing incomparable elements.
+		    * False : Do not sort the result.
+		
+		    .. versionadded:: 0.24.0
+		
+		    .. versionchanged:: 0.24.1
+		
+		       Changed the default value from ``True`` to ``None``
+		       (without change in behaviour).
 		
 		Returns
 		-------
@@ -1171,14 +1380,16 @@ package pandas.core.indexes.period;
 		Examples
 		--------
 		
-		>>> idx1 = pd.Index([1, 2, 3, 4])
+		>>> idx1 = pd.Index([2, 1, 3, 4])
 		>>> idx2 = pd.Index([3, 4, 5, 6])
 		>>> idx1.difference(idx2)
 		Int64Index([1, 2], dtype='int64')
+		>>> idx1.difference(idx2, sort=False)
+		Int64Index([2, 1], dtype='int64')
 	**/
-	public function difference(other:Dynamic):pandas.Index;
+	public function difference(other:Dynamic, ?sort:Dynamic):pandas.Index;
 	/**
-		Make new Index with passed list of labels deleted
+		Make new Index with passed list of labels deleted.
 		
 		Parameters
 		----------
@@ -1212,9 +1423,9 @@ package pandas.core.indexes.period;
 		
 		See Also
 		--------
-		Series.drop_duplicates : equivalent method on Series
-		DataFrame.drop_duplicates : equivalent method on DataFrame
-		Index.duplicated : related method on Index, indicating duplicate
+		Series.drop_duplicates : Equivalent method on Series.
+		DataFrame.drop_duplicates : Equivalent method on DataFrame.
+		Index.duplicated : Related method on Index, indicating duplicate
 		    Index values.
 		
 		Examples
@@ -1243,6 +1454,25 @@ package pandas.core.indexes.period;
 	**/
 	public function drop_duplicates(?keep:Dynamic):pandas.Index;
 	/**
+		Return index with requested level(s) removed.
+		
+		If resulting index has only 1 level left, the result will be
+		of Index type, not MultiIndex.
+		
+		.. versionadded:: 0.23.1 (support for non-MultiIndex)
+		
+		Parameters
+		----------
+		level : int, str, or list-like, default 0
+		    If a string is given, must be the name of a level
+		    If list-like, elements must be names or indexes of levels.
+		
+		Returns
+		-------
+		index : Index or MultiIndex
+	**/
+	public function droplevel(?level:Dynamic):Dynamic;
+	/**
 		Return Index without NA/NaN values
 		
 		Parameters
@@ -1256,9 +1486,12 @@ package pandas.core.indexes.period;
 		valid : Index
 	**/
 	public function dropna(?how:Dynamic):pandas.Index;
+	/**
+		Return the dtype object of the underlying data.
+	**/
 	public var dtype : Dynamic;
 	/**
-		return the dtype str of the underlying data 
+		Return the dtype str of the underlying data.
 	**/
 	public var dtype_str : Dynamic;
 	/**
@@ -1278,6 +1511,16 @@ package pandas.core.indexes.period;
 		    - 'last' : Mark duplicates as ``True`` except for the last
 		      occurrence.
 		    - ``False`` : Mark all duplicates as ``True``.
+		
+		Returns
+		-------
+		numpy.ndarray
+		
+		See Also
+		--------
+		pandas.Series.duplicated : Equivalent method on pandas.Series.
+		pandas.DataFrame.duplicated : Equivalent method on pandas.DataFrame.
+		pandas.Index.drop_duplicates : Remove duplicate values from Index.
 		
 		Examples
 		--------
@@ -1303,16 +1546,6 @@ package pandas.core.indexes.period;
 		
 		>>> idx.duplicated(keep=False)
 		array([ True, False,  True, False,  True])
-		
-		Returns
-		-------
-		numpy.ndarray
-		
-		See Also
-		--------
-		pandas.Series.duplicated : Equivalent method on pandas.Series
-		pandas.DataFrame.duplicated : Equivalent method on pandas.DataFrame
-		pandas.Index.drop_duplicates : Remove duplicate values from Index
 	**/
 	public function duplicated(?keep:Dynamic):Dynamic;
 	public var empty : Dynamic;
@@ -1355,8 +1588,8 @@ package pandas.core.indexes.period;
 		
 		See Also
 		--------
-		pandas.cut : Discretize continuous-valued array.
-		pandas.unique : Find the unique valuse in an array.
+		cut : Discretize continuous-valued array.
+		unique : Find the unique value in an array.
 		
 		Examples
 		--------
@@ -1401,7 +1634,7 @@ package pandas.core.indexes.period;
 		[a, c]
 		Categories (3, object): [a, b, c]
 		
-		Notice that ``'b'`` is in ``uniques.categories``, desipite not being
+		Notice that ``'b'`` is in ``uniques.categories``, despite not being
 		present in ``cat.values``.
 		
 		For all other pandas objects, an Index of the appropriate type is
@@ -1430,33 +1663,33 @@ package pandas.core.indexes.period;
 		
 		Returns
 		-------
-		filled : %(klass)s
+		filled : Index
 	**/
-	public function fillna(?value:Dynamic, ?downcast:Dynamic):Dynamic;
+	public function fillna(?value:Dynamic, ?downcast:Dynamic):pandas.Index;
 	/**
 		return the ndarray.flags for the underlying data 
 	**/
 	public var flags : Dynamic;
 	/**
-		Render a string representation of the Index
+		Render a string representation of the Index.
 	**/
 	public function format(?name:Dynamic, ?formatter:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return the frequency object if it is set, otherwise None
+		Return the frequency object if it is set, otherwise None.
 	**/
 	public var freq : Dynamic;
 	/**
-		Return the frequency object as a string if it is set, otherwise None
+		Return the frequency object as a string if it is set, otherwise None.
 	**/
 	public var freqstr : Dynamic;
 	/**
 		Extract duplicated index elements.
 		
-		Returns a sorted list of index elements which appear more than once in
-		the index.
-		
 		.. deprecated:: 0.23.0
 		    Use idx[idx.duplicated()].unique() instead
+		
+		Returns a sorted list of index elements which appear more than once in
+		the index.
 		
 		Returns
 		-------
@@ -1473,12 +1706,8 @@ package pandas.core.indexes.period;
 		
 		Works on different Index of types.
 		
-		>>> pd.Index([1, 2, 2, 3, 3, 3, 4]).get_duplicates()
+		>>> pd.Index([1, 2, 2, 3, 3, 3, 4]).get_duplicates()  # doctest: +SKIP
 		[2, 3]
-		>>> pd.Index([1., 2., 2., 3., 3., 3., 4.]).get_duplicates()
-		[2.0, 3.0]
-		>>> pd.Index(['a', 'b', 'b', 'c', 'c', 'c', 'd']).get_duplicates()
-		['b', 'c']
 		
 		Note that for a DatetimeIndex, it does not return a list but a new
 		DatetimeIndex:
@@ -1486,22 +1715,22 @@ package pandas.core.indexes.period;
 		>>> dates = pd.to_datetime(['2018-01-01', '2018-01-02', '2018-01-03',
 		...                         '2018-01-03', '2018-01-04', '2018-01-04'],
 		...                        format='%Y-%m-%d')
-		>>> pd.Index(dates).get_duplicates()
+		>>> pd.Index(dates).get_duplicates()  # doctest: +SKIP
 		DatetimeIndex(['2018-01-03', '2018-01-04'],
 		              dtype='datetime64[ns]', freq=None)
 		
 		Sorts duplicated elements even when indexes are unordered.
 		
-		>>> pd.Index([1, 2, 3, 2, 3, 4, 3]).get_duplicates()
+		>>> pd.Index([1, 2, 3, 2, 3, 4, 3]).get_duplicates()  # doctest: +SKIP
 		[2, 3]
 		
 		Return empty array-like structure when all elements are unique.
 		
-		>>> pd.Index([1, 2, 3, 4]).get_duplicates()
+		>>> pd.Index([1, 2, 3, 4]).get_duplicates()  # doctest: +SKIP
 		[]
 		>>> dates = pd.to_datetime(['2018-01-01', '2018-01-02', '2018-01-03'],
 		...                        format='%Y-%m-%d')
-		>>> pd.Index(dates).get_duplicates()
+		>>> pd.Index(dates).get_duplicates()  # doctest: +SKIP
 		DatetimeIndex([], dtype='datetime64[ns]', freq=None)
 	**/
 	public function get_duplicates():Dynamic;
@@ -1535,22 +1764,28 @@ package pandas.core.indexes.period;
 		
 		    .. versionadded:: 0.21.0 (list-like tolerance)
 		
-		Examples
-		--------
-		>>> indexer = index.get_indexer(new_index)
-		>>> new_values = cur_values.take(indexer)
-		
 		Returns
 		-------
 		indexer : ndarray of int
 		    Integers from 0 to n - 1 indicating that the index at these
 		    positions matches the corresponding target values. Missing values
 		    in the target are marked by -1.
+		
+		Examples
+		--------
+		>>> index = pd.Index(['c', 'a', 'b'])
+		>>> index.get_indexer(['a', 'b', 'x'])
+		array([ 1,  2, -1])
+		
+		Notice that the return value is an array of locations in ``index``
+		and ``x`` is marked by -1, as it is not in ``index``.
 	**/
 	public function get_indexer(target:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?tolerance:Dynamic):Dynamic;
 	/**
-		guaranteed return of an indexer even when non-unique
-		This dispatches to get_indexer or get_indexer_nonunique as appropriate
+		Guaranteed return of an indexer even when non-unique.
+		
+		This dispatches to get_indexer or get_indexer_nonunique
+		as appropriate.
 	**/
 	public function get_indexer_for(target:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1574,24 +1809,40 @@ package pandas.core.indexes.period;
 	**/
 	public function get_indexer_non_unique(target:Dynamic):Dynamic;
 	/**
-		Return an Index of values for requested level, equal to the length
-		of the index.
+		Return an Index of values for requested level.
+		
+		This is primarily useful to get an individual level of values from a
+		MultiIndex, but is provided on Index as well for compatability.
 		
 		Parameters
 		----------
 		level : int or str
-		    ``level`` is either the integer position of the level in the
-		    MultiIndex, or the name of the level.
+		    It is either the integer position or the name of the level.
 		
 		Returns
 		-------
 		values : Index
-		    ``self``, as there is only one level in the Index.
+		    Calling object, as there is only one level in the Index.
 		
-		See also
-		---------
-		pandas.MultiIndex.get_level_values : get values for a level of a
-		                                     MultiIndex
+		See Also
+		--------
+		MultiIndex.get_level_values : Get values for a level of a MultiIndex.
+		
+		Notes
+		-----
+		For Index, level should be 0, since there are no multiple levels.
+		
+		Examples
+		--------
+		
+		>>> idx = pd.Index(list('abc'))
+		>>> idx
+		Index(['a', 'b', 'c'], dtype='object')
+		
+		Get level values by supplying `level` as integer:
+		
+		>>> idx.get_level_values(0)
+		Index(['a', 'b', 'c'], dtype='object')
 	**/
 	public function get_level_values(level:Dynamic):pandas.Index;
 	/**
@@ -1678,7 +1929,7 @@ package pandas.core.indexes.period;
 	public function groupby(values:Dynamic):python.Dict<Dynamic, Dynamic>;
 	public var has_duplicates : Dynamic;
 	/**
-		return if I have any nans; enables various perf speedups 
+		return if I have any nans; enables various perf speedups
 	**/
 	public var hasnans : Dynamic;
 	public function holds_integer():Dynamic;
@@ -1688,11 +1939,11 @@ package pandas.core.indexes.period;
 	public var hour : Dynamic;
 	/**
 		Similar to equals, but check that other comparable attributes are
-		also equal
+		also equal.
 	**/
 	public function identical(other:Dynamic):Dynamic;
 	/**
-		Tries to return a string representing a frequency guess,
+		Tryies to return a string representing a frequency guess,
 		generated by infer_freq.  Returns None if it can't autodetect the
 		frequency.
 	**/
@@ -1702,8 +1953,9 @@ package pandas.core.indexes.period;
 	**/
 	public var inferred_type : Dynamic;
 	/**
-		Make new Index inserting new item at location. Follows
-		Python list.append semantics for negative values
+		Make new Index inserting new item at location.
+		
+		Follows Python list.append semantics for negative values.
 		
 		Parameters
 		----------
@@ -1718,12 +1970,24 @@ package pandas.core.indexes.period;
 	/**
 		Form the intersection of two Index objects.
 		
-		This returns a new Index with elements common to the index and `other`,
-		preserving the order of the calling index.
+		This returns a new Index with elements common to the index and `other`.
 		
 		Parameters
 		----------
 		other : Index or array-like
+		sort : False or None, default False
+		    Whether to sort the resulting index.
+		
+		    * False : do not sort the result.
+		    * None : sort the result, except when `self` and `other` are equal
+		      or when the values cannot be compared.
+		
+		    .. versionadded:: 0.24.0
+		
+		    .. versionchanged:: 0.24.1
+		
+		       Changed the default from ``True`` to ``False``, to match
+		       the behaviour of 0.23.4 and earlier.
 		
 		Returns
 		-------
@@ -1737,9 +2001,9 @@ package pandas.core.indexes.period;
 		>>> idx1.intersection(idx2)
 		Int64Index([3, 4], dtype='int64')
 	**/
-	public function intersection(other:Dynamic):pandas.Index;
+	public function intersection(other:Dynamic, ?sort:Dynamic):pandas.Index;
 	/**
-		More flexible, faster check like ``is`` but that works through views
+		More flexible, faster check like ``is`` but that works through views.
 		
 		Note: this is *not* the same as ``Index.identical()``, which checks
 		that metadata is also the same.
@@ -1795,23 +2059,24 @@ package pandas.core.indexes.period;
 	public function is_categorical():Dynamic;
 	public function is_floating():Dynamic;
 	/**
-		Returns True if there are any missing periods from start to end
+		Returns True if this PeriodIndex is range-like in that all Periods
+		between start and end are present, in order.
 	**/
 	public var is_full : Dynamic;
 	public function is_integer():Dynamic;
 	public function is_interval():Dynamic;
 	/**
-		Logical indicating if the date belongs to a leap year 
+		Logical indicating if the date belongs to a leap year
 	**/
 	public var is_leap_year : Dynamic;
 	public function is_lexsorted_for_tuple(tup:Dynamic):Dynamic;
 	public function is_mixed():Dynamic;
 	/**
-		alias for is_monotonic_increasing (deprecated) 
+		Alias for is_monotonic_increasing.
 	**/
 	public var is_monotonic : Dynamic;
 	/**
-		return if the index is monotonic decreasing (only equal or
+		Return if the index is monotonic decreasing (only equal or
 		decreasing) values.
 		
 		Examples
@@ -1825,7 +2090,7 @@ package pandas.core.indexes.period;
 	**/
 	public var is_monotonic_decreasing : Dynamic;
 	/**
-		return if the index is monotonic increasing (only equal or
+		Return if the index is monotonic increasing (only equal or
 		increasing) values.
 		
 		Examples
@@ -1842,12 +2107,12 @@ package pandas.core.indexes.period;
 	public function is_object():Dynamic;
 	public function is_type_compatible(kind:Dynamic):Dynamic;
 	/**
-		return if the index has unique values 
+		Return if the index has unique values.
 	**/
 	public var is_unique : Dynamic;
 	/**
 		Compute boolean array of whether each index value is found in the
-		passed set of values
+		passed set of values.
 		
 		Parameters
 		----------
@@ -1877,10 +2142,10 @@ package pandas.core.indexes.period;
 		
 		See Also
 		--------
-		pandas.Index.notna : boolean inverse of isna.
-		pandas.Index.dropna : omit entries with missing values.
-		pandas.isna : top-level isna.
-		Series.isna : detect missing values in Series object.
+		pandas.Index.notna : Boolean inverse of isna.
+		pandas.Index.dropna : Omit entries with missing values.
+		pandas.isna : Top-level isna.
+		Series.isna : Detect missing values in Series object.
 		
 		Examples
 		--------
@@ -1932,10 +2197,10 @@ package pandas.core.indexes.period;
 		
 		See Also
 		--------
-		pandas.Index.notna : boolean inverse of isna.
-		pandas.Index.dropna : omit entries with missing values.
-		pandas.isna : top-level isna.
-		Series.isna : detect missing values in Series object.
+		pandas.Index.notna : Boolean inverse of isna.
+		pandas.Index.dropna : Omit entries with missing values.
+		pandas.isna : Top-level isna.
+		Series.isna : Detect missing values in Series object.
 		
 		Examples
 		--------
@@ -1974,7 +2239,7 @@ package pandas.core.indexes.period;
 	**/
 	public function item():Dynamic;
 	/**
-		return the size of the dtype of the item of the underlying data 
+		Return the size of the dtype of the item of the underlying data.
 	**/
 	public var itemsize : Dynamic;
 	/**
@@ -1986,11 +2251,12 @@ package pandas.core.indexes.period;
 		Return the maximum value of the Index or maximum along
 		an axis.
 		
-		See also
+		See Also
 		--------
 		numpy.ndarray.max
+		Series.max : Return the maximum value in a Series.
 	**/
-	public function max(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function max(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Memory usage of the values
 		
@@ -2004,25 +2270,26 @@ package pandas.core.indexes.period;
 		-------
 		bytes used
 		
+		See Also
+		--------
+		numpy.ndarray.nbytes
+		
 		Notes
 		-----
 		Memory usage does not include memory consumed by elements that
 		are not components of the array if deep=False or if used on PyPy
-		
-		See Also
-		--------
-		numpy.ndarray.nbytes
 	**/
 	public function memory_usage(?deep:Dynamic):Dynamic;
 	/**
 		Return the minimum value of the Index or minimum along
 		an axis.
 		
-		See also
+		See Also
 		--------
 		numpy.ndarray.min
+		Series.min : Return the minimum value in a Series.
 	**/
-	public function min(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function min(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The minute of the period
 	**/
@@ -2034,12 +2301,11 @@ package pandas.core.indexes.period;
 	static public var name : Dynamic;
 	public var names : Dynamic;
 	/**
-		return the number of bytes in the underlying data 
+		Return the number of bytes in the underlying data.
 	**/
 	public var nbytes : Dynamic;
 	/**
-		return the number of dimensions of the underlying data,
-		by definition 1
+		Number of dimensions of the underlying data, by definition 1.
 	**/
 	public var ndim : Dynamic;
 	public var nlevels : Dynamic;
@@ -2060,11 +2326,11 @@ package pandas.core.indexes.period;
 		numpy.ndarray
 		    Boolean array to indicate which entries are not NA.
 		
-		See also
+		See Also
 		--------
-		Index.notnull : alias of notna
-		Index.isna: inverse of notna
-		pandas.notna : top-level notna
+		Index.notnull : Alias of notna.
+		Index.isna: Inverse of notna.
+		pandas.notna : Top-level notna.
 		
 		Examples
 		--------
@@ -2104,11 +2370,11 @@ package pandas.core.indexes.period;
 		numpy.ndarray
 		    Boolean array to indicate which entries are not NA.
 		
-		See also
+		See Also
 		--------
-		Index.notnull : alias of notna
-		Index.isna: inverse of notna
-		pandas.notna : top-level notna
+		Index.notnull : Alias of notna.
+		Index.isna: Inverse of notna.
+		pandas.notna : Top-level notna.
 		
 		Examples
 		--------
@@ -2147,9 +2413,9 @@ package pandas.core.indexes.period;
 	**/
 	public function nunique(?dropna:Dynamic):Int;
 	/**
-		return a new Index of the values set with the mask
+		Return a new Index of the values set with the mask.
 		
-		See also
+		See Also
 		--------
 		numpy.ndarray.putmask
 	**/
@@ -2160,15 +2426,16 @@ package pandas.core.indexes.period;
 	public var quarter : Dynamic;
 	public var qyear : Dynamic;
 	/**
-		return an ndarray of the flattened values of the underlying data
+		Return an ndarray of the flattened values of the underlying data.
 		
-		See also
+		See Also
 		--------
 		numpy.ndarray.ravel
 	**/
 	public function ravel(?order:Dynamic):Dynamic;
 	/**
-		Create index with target's values (move/add/delete values as necessary)
+		Create index with target's values (move/add/delete values
+		as necessary).
 		
 		Parameters
 		----------
@@ -2183,24 +2450,87 @@ package pandas.core.indexes.period;
 	**/
 	public function reindex(target:Dynamic, ?method:Dynamic, ?level:Dynamic, ?limit:Dynamic, ?tolerance:Dynamic):pandas.Index;
 	/**
-		Set new names on index. Defaults to returning new index.
+		Alter Index or MultiIndex name.
+		
+		Able to set new names without level. Defaults to returning new index.
+		Length of names must match number of levels in MultiIndex.
 		
 		Parameters
 		----------
-		name : str or list
-		    name to set
-		inplace : bool
-		    if True, mutates in place
+		name : label or list of labels
+		    Name(s) to set.
+		inplace : boolean, default False
+		    Modifies the object directly, instead of creating a new Index or
+		    MultiIndex.
 		
 		Returns
 		-------
-		new index (of same type and class...etc) [if inplace, returns None]
+		Index
+		    The same type as the caller or None if inplace is True.
+		
+		See Also
+		--------
+		Index.set_names : Able to set new names partially and by level.
+		
+		Examples
+		--------
+		>>> idx = pd.Index(['A', 'C', 'A', 'B'], name='score')
+		>>> idx.rename('grade')
+		Index(['A', 'C', 'A', 'B'], dtype='object', name='grade')
+		
+		>>> idx = pd.MultiIndex.from_product([['python', 'cobra'],
+		...                                   [2018, 2019]],
+		...                                   names=['kind', 'year'])
+		>>> idx
+		MultiIndex(levels=[['cobra', 'python'], [2018, 2019]],
+		           codes=[[1, 1, 0, 0], [0, 1, 0, 1]],
+		           names=['kind', 'year'])
+		>>> idx.rename(['species', 'year'])
+		MultiIndex(levels=[['cobra', 'python'], [2018, 2019]],
+		           codes=[[1, 1, 0, 0], [0, 1, 0, 1]],
+		           names=['species', 'year'])
+		>>> idx.rename('species')
+		Traceback (most recent call last):
+		TypeError: Must pass list-like as `names`.
 	**/
 	public function rename(name:Dynamic, ?inplace:Dynamic):Dynamic;
 	/**
-		Analogous to ndarray.repeat
+		Repeat elements of a Index.
+		
+		Returns a new Index where each element of the current Index
+		is repeated consecutively a given number of times.
+		
+		Parameters
+		----------
+		repeats : int or array of ints
+		    The number of repetitions for each element. This should be a
+		    non-negative integer. Repeating 0 times will return an empty
+		    Index.
+		axis : None
+		    Must be ``None``. Has no effect but is accepted for compatibility
+		    with numpy.
+		
+		Returns
+		-------
+		repeated_index : Index
+		    Newly created Index with repeated elements.
+		
+		See Also
+		--------
+		Series.repeat : Equivalent function for Series.
+		numpy.repeat : Similar method for :class:`numpy.ndarray`.
+		
+		Examples
+		--------
+		>>> idx = pd.Index(['a', 'b', 'c'])
+		>>> idx
+		Index(['a', 'b', 'c'], dtype='object')
+		>>> idx.repeat(2)
+		Index(['a', 'a', 'b', 'b', 'c', 'c'], dtype='object')
+		>>> idx.repeat([1, 2, 3])
+		Index(['a', 'b', 'b', 'c', 'c', 'c'], dtype='object')
 	**/
-	public function repeat(repeats:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function repeat(repeats:Dynamic, ?axis:Dynamic):pandas.Index;
 	/**
 		Returns day, hour, minute, second, millisecond or microsecond
 	**/
@@ -2226,8 +2556,14 @@ package pandas.core.indexes.period;
 		
 		Returns
 		-------
-		indices : array of ints
-		    Array of insertion points with the same shape as `value`.
+		int or array of int
+		    A scalar or array of insertion points with the
+		    same shape as `value`.
+		
+		    .. versionchanged :: 0.24.0
+		        If `value` is a scalar, an int is now always returned.
+		        Previously, scalar inputs returned an 1-item array for
+		        :class:`Series` and :class:`Categorical`.
 		
 		See Also
 		--------
@@ -2248,7 +2584,7 @@ package pandas.core.indexes.period;
 		dtype: int64
 		
 		>>> x.searchsorted(4)
-		array([3])
+		3
 		
 		>>> x.searchsorted([0, 4])
 		array([0, 3])
@@ -2265,7 +2601,7 @@ package pandas.core.indexes.period;
 		Categories (4, object): [apple < bread < cheese < milk]
 		
 		>>> x.searchsorted('bread')
-		array([1])     # Note: an array, not a scalar
+		1
 		
 		>>> x.searchsorted(['bread'], side='right')
 		array([3])
@@ -2276,65 +2612,98 @@ package pandas.core.indexes.period;
 	**/
 	public var second : Dynamic;
 	/**
-		Set new names on index. Defaults to returning new index.
+		Set Index or MultiIndex name.
+		
+		Able to set new names partially and by level.
 		
 		Parameters
 		----------
-		names : str or sequence
-		    name(s) to set
-		level : int, level name, or sequence of int/level names (default None)
-		    If the index is a MultiIndex (hierarchical), level(s) to set (None
-		    for all levels).  Otherwise level must be None
-		inplace : bool
-		    if True, mutates in place
+		names : label or list of label
+		    Name(s) to set.
+		level : int, label or list of int or label, optional
+		    If the index is a MultiIndex, level(s) to set (None for all
+		    levels). Otherwise level must be None.
+		inplace : bool, default False
+		    Modifies the object directly, instead of creating a new Index or
+		    MultiIndex.
 		
 		Returns
 		-------
-		new index (of same type and class...etc) [if inplace, returns None]
+		Index
+		    The same type as the caller or None if inplace is True.
+		
+		See Also
+		--------
+		Index.rename : Able to set new names without level.
 		
 		Examples
 		--------
-		>>> Index([1, 2, 3, 4]).set_names('foo')
-		Int64Index([1, 2, 3, 4], dtype='int64', name='foo')
-		>>> Index([1, 2, 3, 4]).set_names(['foo'])
-		Int64Index([1, 2, 3, 4], dtype='int64', name='foo')
-		>>> idx = MultiIndex.from_tuples([(1, u'one'), (1, u'two'),
-		                                  (2, u'one'), (2, u'two')],
-		                                  names=['foo', 'bar'])
-		>>> idx.set_names(['baz', 'quz'])
-		MultiIndex(levels=[[1, 2], [u'one', u'two']],
-		           labels=[[0, 0, 1, 1], [0, 1, 0, 1]],
-		           names=[u'baz', u'quz'])
-		>>> idx.set_names('baz', level=0)
-		MultiIndex(levels=[[1, 2], [u'one', u'two']],
-		           labels=[[0, 0, 1, 1], [0, 1, 0, 1]],
-		           names=[u'baz', u'bar'])
+		>>> idx = pd.Index([1, 2, 3, 4])
+		>>> idx
+		Int64Index([1, 2, 3, 4], dtype='int64')
+		>>> idx.set_names('quarter')
+		Int64Index([1, 2, 3, 4], dtype='int64', name='quarter')
+		
+		>>> idx = pd.MultiIndex.from_product([['python', 'cobra'],
+		...                                   [2018, 2019]])
+		>>> idx
+		MultiIndex(levels=[['cobra', 'python'], [2018, 2019]],
+		           codes=[[1, 1, 0, 0], [0, 1, 0, 1]])
+		>>> idx.set_names(['kind', 'year'], inplace=True)
+		>>> idx
+		MultiIndex(levels=[['cobra', 'python'], [2018, 2019]],
+		           codes=[[1, 1, 0, 0], [0, 1, 0, 1]],
+		           names=['kind', 'year'])
+		>>> idx.set_names('species', level=0)
+		MultiIndex(levels=[['cobra', 'python'], [2018, 2019]],
+		           codes=[[1, 1, 0, 0], [0, 1, 0, 1]],
+		           names=['species', 'year'])
 	**/
 	public function set_names(names:Dynamic, ?level:Dynamic, ?inplace:Dynamic):Dynamic;
 	/**
-		Fast lookup of value from 1-dimensional ndarray. Only use this if you
-		know what you're doing
+		Fast lookup of value from 1-dimensional ndarray.
+		
+		Notes
+		-----
+		Only use this if you know what you're doing.
 	**/
 	public function set_value(arr:Dynamic, key:Dynamic, value:Dynamic):Dynamic;
 	/**
-		return a tuple of the shape of the underlying data 
+		Return a tuple of the shape of the underlying data.
 	**/
 	public var shape : Dynamic;
 	/**
-		Specialized shift which produces an PeriodIndex
+		Shift index by desired number of time frequency increments.
+		
+		This method is for shifting the values of datetime-like indexes
+		by a specified time increment a given number of times.
 		
 		Parameters
 		----------
-		n : int
-		    Periods to shift by
+		periods : int
+		    Number of periods (or increments) to shift by,
+		    can be positive or negative.
+		
+		    .. versionchanged:: 0.24.0
+		
+		freq : pandas.DateOffset, pandas.Timedelta or string, optional
+		    Frequency increment to shift by.
+		    If None, the index is shifted by its own `freq` attribute.
+		    Offset aliases are valid strings, e.g., 'D', 'W', 'M' etc.
 		
 		Returns
 		-------
-		shifted : PeriodIndex
+		pandas.DatetimeIndex
+		    Shifted index.
+		
+		See Also
+		--------
+		Index.shift : Shift values of Index.
+		PeriodIndex.shift : Shift values of PeriodIndex.
 	**/
-	public function shift(n:Dynamic):pandas.PeriodIndex;
+	public function shift(periods:Dynamic, ?freq:Dynamic):Dynamic;
 	/**
-		return the number of elements in the underlying data 
+		Return the number of elements in the underlying data.
 	**/
 	public var size : Dynamic;
 	/**
@@ -2393,6 +2762,10 @@ package pandas.core.indexes.period;
 		-------
 		start, end : int
 		
+		See Also
+		--------
+		Index.get_loc : Get location for a single label.
+		
 		Notes
 		-----
 		This method only works if the index is monotonic or unique.
@@ -2402,19 +2775,15 @@ package pandas.core.indexes.period;
 		>>> idx = pd.Index(list('abcd'))
 		>>> idx.slice_locs(start='b', end='c')
 		(1, 3)
-		
-		See Also
-		--------
-		Index.get_loc : Get location for a single label
 	**/
 	public function slice_locs(?start:Dynamic, ?end:Dynamic, ?step:Dynamic, ?kind:Dynamic):Dynamic;
 	public function sort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return sorted copy of Index
+		Return sorted copy of Index.
 	**/
 	public function sort_values(?return_indexer:Dynamic, ?ascending:Dynamic):Dynamic;
 	/**
-		For internal compatibility with with the Index API
+		For internal compatibility with with the Index API.
 		
 		Sort the Index. This is for compat with MultiIndex
 		
@@ -2447,7 +2816,8 @@ package pandas.core.indexes.period;
 		
 		Return an Index of formatted strings specified by date_format, which
 		supports the same string format as the python standard library. Details
-		of the string format can be found in `python string format doc <https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior>`__
+		of the string format can be found in `python string format
+		doc <https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior>`__
 		
 		Parameters
 		----------
@@ -2461,7 +2831,7 @@ package pandas.core.indexes.period;
 		
 		See Also
 		--------
-		pandas.to_datetime : Convert the given argument to datetime
+		to_datetime : Convert the given argument to datetime.
 		DatetimeIndex.normalize : Return DatetimeIndex with times to midnight.
 		DatetimeIndex.round : Round the DatetimeIndex to the specified freq.
 		DatetimeIndex.floor : Floor the DatetimeIndex to the specified freq.
@@ -2475,24 +2845,39 @@ package pandas.core.indexes.period;
 		       'March 10, 2018, 09:00:02 AM'],
 		      dtype='object')
 	**/
-	public function strftime(date_format:Dynamic):Dynamic;
+	public function strftime(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return the strides of the underlying data 
+		Return the strides of the underlying data.
 	**/
 	public var strides : Dynamic;
 	/**
-		Return a summarized representation
+		Return a summarized representation.
+		
 		.. deprecated:: 0.23.0
 	**/
 	public function summary(?name:Dynamic):Dynamic;
 	/**
 		Compute the symmetric difference of two Index objects.
-		It's sorted if sorting is possible.
 		
 		Parameters
 		----------
 		other : Index or array-like
 		result_name : str
+		sort : False or None, default None
+		    Whether to sort the resulting index. By default, the
+		    values are attempted to be sorted, but any TypeError from
+		    incomparable elements is caught by pandas.
+		
+		    * None : Attempt to sort the result, but catch any TypeErrors
+		      from comparing incomparable elements.
+		    * False : Do not sort the result.
+		
+		    .. versionadded:: 0.24.0
+		
+		    .. versionchanged:: 0.24.1
+		
+		       Changed the default value from ``True`` to ``None``
+		       (without change in behaviour).
 		
 		Returns
 		-------
@@ -2507,8 +2892,8 @@ package pandas.core.indexes.period;
 		
 		Examples
 		--------
-		>>> idx1 = Index([1, 2, 3, 4])
-		>>> idx2 = Index([2, 3, 4, 5])
+		>>> idx1 = pd.Index([1, 2, 3, 4])
+		>>> idx2 = pd.Index([2, 3, 4, 5])
 		>>> idx1.symmetric_difference(idx2)
 		Int64Index([1, 5], dtype='int64')
 		
@@ -2517,9 +2902,9 @@ package pandas.core.indexes.period;
 		>>> idx1 ^ idx2
 		Int64Index([1, 5], dtype='int64')
 	**/
-	public function symmetric_difference(other:Dynamic, ?result_name:Dynamic):Dynamic;
+	public function symmetric_difference(other:Dynamic, ?result_name:Dynamic, ?sort:Dynamic):Dynamic;
 	/**
-		return a new Index of the values selected by the indices
+		Return a new Index of the values selected by the indices.
 		
 		For internal compatibility with numpy arrays.
 		
@@ -2534,20 +2919,42 @@ package pandas.core.indexes.period;
 		    If allow_fill=True and fill_value is not None, indices specified by
 		    -1 is regarded as NA. If Index doesn't hold NA, raise ValueError
 		
-		See also
+		See Also
 		--------
 		numpy.ndarray.take
 	**/
 	public function take(indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Identity method.
+		
+		.. versionadded:: 0.24.0
+		
+		This is implemented for compatability with subclass implementations
+		when chaining.
+		
+		Returns
+		-------
+		pd.Index
+		    Caller.
+		
+		See Also
+		--------
+		MultiIndex.to_flat_index : Subclass implementation.
+	**/
+	public function to_flat_index():Dynamic;
+	/**
 		Create a DataFrame with a column containing the Index.
 		
-		.. versionadded:: 0.21.0
+		.. versionadded:: 0.24.0
 		
 		Parameters
 		----------
 		index : boolean, default True
 		    Set the index of the returned DataFrame as the original Index.
+		
+		name : object, default None
+		    The passed name should substitute for the index name (if it has
+		    one).
 		
 		Returns
 		-------
@@ -2576,8 +2983,28 @@ package pandas.core.indexes.period;
 		0   Ant
 		1  Bear
 		2   Cow
+		
+		To override the name of the resulting column, specify `name`:
+		
+		>>> idx.to_frame(index=False, name='zoo')
+		    zoo
+		0   Ant
+		1  Bear
+		2   Cow
 	**/
-	public function to_frame(?index:Dynamic):Dynamic;
+	public function to_frame(?index:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Return a list of the values.
+		
+		These are each a scalar type, which is a Python scalar
+		(for str, int, float) or a pandas scalar
+		(for Timestamp/Timedelta/Interval/Period)
+		
+		See Also
+		--------
+		numpy.ndarray.tolist
+	**/
+	public function to_list():Dynamic;
 	/**
 		Format specified values of `self` and return them.
 		
@@ -2599,8 +3026,93 @@ package pandas.core.indexes.period;
 	**/
 	public function to_native_types(?slicer:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		A NumPy ndarray representing the values in this Series or Index.
+		
+		.. versionadded:: 0.24.0
+		
+		
+		Parameters
+		----------
+		dtype : str or numpy.dtype, optional
+		    The dtype to pass to :meth:`numpy.asarray`
+		copy : bool, default False
+		    Whether to ensure that the returned value is a not a view on
+		    another array. Note that ``copy=False`` does not *ensure* that
+		    ``to_numpy()`` is no-copy. Rather, ``copy=True`` ensure that
+		    a copy is made, even if not strictly necessary.
+		
+		Returns
+		-------
+		numpy.ndarray
+		
+		See Also
+		--------
+		Series.array : Get the actual data stored within.
+		Index.array : Get the actual data stored within.
+		DataFrame.to_numpy : Similar method for DataFrame.
+		
+		Notes
+		-----
+		The returned array will be the same up to equality (values equal
+		in `self` will be equal in the returned array; likewise for values
+		that are not equal). When `self` contains an ExtensionArray, the
+		dtype may be different. For example, for a category-dtype Series,
+		``to_numpy()`` will return a NumPy array and the categorical dtype
+		will be lost.
+		
+		For NumPy dtypes, this will be a reference to the actual data stored
+		in this Series or Index (assuming ``copy=False``). Modifying the result
+		in place will modify the data stored in the Series or Index (not that
+		we recommend doing that).
+		
+		For extension types, ``to_numpy()`` *may* require copying data and
+		coercing the result to a NumPy type (possibly object), which may be
+		expensive. When you need a no-copy reference to the underlying data,
+		:attr:`Series.array` should be used instead.
+		
+		This table lays out the different dtypes and default return types of
+		``to_numpy()`` for various dtypes within pandas.
+		
+		================== ================================
+		dtype              array type
+		================== ================================
+		category[T]        ndarray[T] (same dtype as input)
+		period             ndarray[object] (Periods)
+		interval           ndarray[object] (Intervals)
+		IntegerNA          ndarray[object]
+		datetime64[ns]     datetime64[ns]
+		datetime64[ns, tz] ndarray[object] (Timestamps)
+		================== ================================
+		
+		Examples
+		--------
+		>>> ser = pd.Series(pd.Categorical(['a', 'b', 'a']))
+		>>> ser.to_numpy()
+		array(['a', 'b', 'a'], dtype=object)
+		
+		Specify the `dtype` to control how datetime-aware data is represented.
+		Use ``dtype=object`` to return an ndarray of pandas :class:`Timestamp`
+		objects, each with the correct ``tz``.
+		
+		>>> ser = pd.Series(pd.date_range('2000', periods=2, tz="CET"))
+		>>> ser.to_numpy(dtype=object)
+		array([Timestamp('2000-01-01 00:00:00+0100', tz='CET', freq='D'),
+		       Timestamp('2000-01-02 00:00:00+0100', tz='CET', freq='D')],
+		      dtype=object)
+		
+		Or ``dtype='datetime64[ns]'`` to return an ndarray of native
+		datetime64 values. The values are converted to UTC and the timezone
+		info is dropped.
+		
+		>>> ser.to_numpy(dtype="datetime64[ns]")
+		... # doctest: +ELLIPSIS
+		array(['1999-12-31T23:00:00.000000000', '2000-01-01T23:00:00...'],
+		      dtype='datetime64[ns]')
+	**/
+	public function to_numpy(?dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
 		Create a Series with both index and values equal to the index keys
-		useful with map for returning an indexer based on an index
+		useful with map for returning an indexer based on an index.
 		
 		Parameters
 		----------
@@ -2616,7 +3128,7 @@ package pandas.core.indexes.period;
 	**/
 	public function to_series(?index:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Cast to DatetimeIndex
+		Cast to DatetimeArray/Index.
 		
 		Parameters
 		----------
@@ -2627,63 +3139,41 @@ package pandas.core.indexes.period;
 		
 		Returns
 		-------
-		DatetimeIndex
+		DatetimeArray/Index
 	**/
-	public function to_timestamp(?freq:Dynamic, ?how:Dynamic):Dynamic;
+	public function to_timestamp(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return a list of the underlying data
+		Return a list of the underlying data.
 	**/
 	public function tolist():Dynamic;
 	/**
-		return the transpose, which is by definition self 
+		Return the transpose, which is by definition self.
 	**/
 	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Convert tz-aware DatetimeIndex from one time zone to another (using
-		pytz/dateutil)
-		
-		Parameters
-		----------
-		tz : string, pytz.timezone, dateutil.tz.tzfile or None
-		    Time zone for time. Corresponding timestamps would be converted to
-		    time zone of the TimeSeries.
-		    None will remove timezone holding UTC time.
-		
-		Returns
-		-------
-		normalized : DatetimeIndex
-		
-		Notes
-		-----
-		Not currently implemented for PeriodIndex
-	**/
-	public function tz_convert(tz:Dynamic):pandas.DatetimeIndex;
-	/**
-		Localize tz-naive DatetimeIndex to given time zone (using
-		pytz/dateutil), or remove timezone from tz-aware DatetimeIndex
-		
-		Parameters
-		----------
-		tz : string, pytz.timezone, dateutil.tz.tzfile or None
-		    Time zone for time. Corresponding timestamps would be converted to
-		    time zone of the TimeSeries.
-		    None will remove timezone holding local time.
-		
-		Returns
-		-------
-		localized : DatetimeIndex
-		
-		Notes
-		-----
-		Not currently implemented for PeriodIndex
-	**/
-	public function tz_localize(tz:Dynamic, ?ambiguous:Dynamic):pandas.DatetimeIndex;
-	/**
-		Form the union of two Index objects and sorts if possible.
+		Form the union of two Index objects.
 		
 		Parameters
 		----------
 		other : Index or array-like
+		sort : bool or None, default None
+		    Whether to sort the resulting Index.
+		
+		    * None : Sort the result, except when
+		
+		      1. `self` and `other` are equal.
+		      2. `self` or `other` has length 0.
+		      3. Some values in `self` or `other` cannot be compared.
+		         A RuntimeWarning is issued in this case.
+		
+		    * False : do not sort the result.
+		
+		    .. versionadded:: 0.24.0
+		
+		    .. versionchanged:: 0.24.1
+		
+		       Changed the default value from ``True`` to ``None``
+		       (without change in behaviour).
 		
 		Returns
 		-------
@@ -2697,7 +3187,7 @@ package pandas.core.indexes.period;
 		>>> idx1.union(idx2)
 		Int64Index([1, 2, 3, 4, 5, 6], dtype='int64')
 	**/
-	public function union(other:Dynamic):pandas.Index;
+	public function union(other:Dynamic, ?sort:Dynamic):pandas.Index;
 	/**
 		Return unique values in the index. Uniques are returned in order
 		of appearance, this does NOT sort.
@@ -2720,7 +3210,7 @@ package pandas.core.indexes.period;
 	**/
 	public function unique(?level:Dynamic):Dynamic;
 	/**
-		Returns object containing counts of unique values.
+		Return a Series containing counts of unique values.
 		
 		The resulting object will be in descending order so that the
 		first element is the most frequently-occurring element.
@@ -2732,22 +3222,90 @@ package pandas.core.indexes.period;
 		    If True then the object returned will contain the relative
 		    frequencies of the unique values.
 		sort : boolean, default True
-		    Sort by values
+		    Sort by values.
 		ascending : boolean, default False
-		    Sort in ascending order
+		    Sort in ascending order.
 		bins : integer, optional
 		    Rather than count values, group them into half-open bins,
-		    a convenience for pd.cut, only works with numeric data
+		    a convenience for ``pd.cut``, only works with numeric data.
 		dropna : boolean, default True
 		    Don't include counts of NaN.
 		
 		Returns
 		-------
 		counts : Series
+		
+		See Also
+		--------
+		Series.count: Number of non-NA elements in a Series.
+		DataFrame.count: Number of non-NA elements in a DataFrame.
+		
+		Examples
+		--------
+		>>> index = pd.Index([3, 1, 2, 3, 4, np.nan])
+		>>> index.value_counts()
+		3.0    2
+		4.0    1
+		2.0    1
+		1.0    1
+		dtype: int64
+		
+		With `normalize` set to `True`, returns the relative frequency by
+		dividing all values by the sum of values.
+		
+		>>> s = pd.Series([3, 1, 2, 3, 4, np.nan])
+		>>> s.value_counts(normalize=True)
+		3.0    0.4
+		4.0    0.2
+		2.0    0.2
+		1.0    0.2
+		dtype: float64
+		
+		**bins**
+		
+		Bins can be useful for going from a continuous variable to a
+		categorical variable; instead of counting unique
+		apparitions of values, divide the index in the specified
+		number of half-open bins.
+		
+		>>> s.value_counts(bins=3)
+		(2.0, 3.0]      2
+		(0.996, 2.0]    2
+		(3.0, 4.0]      1
+		dtype: int64
+		
+		**dropna**
+		
+		With `dropna` set to `False` we can also see NaN index values.
+		
+		>>> s.value_counts(dropna=False)
+		3.0    2
+		NaN    1
+		4.0    1
+		2.0    1
+		1.0    1
+		dtype: int64
 	**/
 	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):pandas.Series;
 	/**
-		return the underlying data as an ndarray 
+		Return an array representing the data in the Index.
+		
+		.. warning::
+		
+		   We recommend using :attr:`Index.array` or
+		   :meth:`Index.to_numpy`, depending on whether you need
+		   a reference to the underlying data or a NumPy array.
+		
+		Returns
+		-------
+		array: numpy.ndarray or ExtensionArray
+		
+		See Also
+		--------
+		Index.array : Reference to the underlying data.
+		Index.to_numpy : A NumPy array representing the underlying data.
+		
+		Return the underlying data as an ndarray.
 	**/
 	public var values : Dynamic;
 	public function view(?cls:Dynamic):Dynamic;
@@ -2764,11 +3322,11 @@ package pandas.core.indexes.period;
 	**/
 	public var weekofyear : Dynamic;
 	/**
-		.. versionadded:: 0.19.0
-		
 		Return an Index of same shape as self and whose corresponding
 		entries are from self where cond is True and otherwise are from
 		other.
+		
+		.. versionadded:: 0.19.0
 		
 		Parameters
 		----------

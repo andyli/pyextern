@@ -101,6 +101,23 @@ package pandas._libs.interval;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Check if the closed attribute of `other` matches.
+		
+		Note that 'left' and 'right' are considered different from 'both'.
+		
+		Parameters
+		----------
+		other : Interval, IntervalIndex, IntervalArray
+		name : str
+		    Name to use for 'other' in the error message.
+		
+		Raises
+		------
+		ValueError
+		    When `other` is not closed exactly the same as self.
+	**/
+	public function _check_closed_matches(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Check if the interval is closed on the left side.
 		
 		For the meaning of `closed` and `open` see :class:`~pandas.Interval`.

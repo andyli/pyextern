@@ -44,7 +44,7 @@ package pandas.core.nanops;
 		if necessary copy and mask using the specified fill_value
 		copy = True will force the copy
 	**/
-	static public function _get_values(values:Dynamic, skipna:Dynamic, ?fill_value:Dynamic, ?fill_value_typ:Dynamic, ?isfinite:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function _get_values(values:Dynamic, skipna:Dynamic, ?fill_value:Dynamic, ?fill_value_typ:Dynamic, ?isfinite:Dynamic, ?copy:Dynamic, ?mask:Dynamic):Dynamic;
 	static public function _has_infs(result:Dynamic):Dynamic;
 	static public var _int64_max : Dynamic;
 	static public function _isfinite(values:Dynamic):Dynamic;
@@ -68,11 +68,29 @@ package pandas.core.nanops;
 	static public function _na_for_min_count(values:Dynamic, axis:Dynamic):Dynamic;
 	static public function _na_ok_dtype(dtype:Dynamic):Dynamic;
 	static public function _nanminmax(meth:Dynamic, fill_value_typ:Dynamic):Dynamic;
-	static public function _view_if_needed(values:Dynamic):Dynamic;
+	/**
+		Wraper for np.percentile that skips missing values, specialized to
+		1-dimensional case.
+		
+		Parameters
+		----------
+		values : array over which to find quantiles
+		mask : ndarray[bool]
+		    locations in values that should be considered missing
+		q : scalar or array of quantile indices to find
+		na_value : scalar
+		    value to return for empty or all-null values
+		interpolation : str
+		
+		Returns
+		-------
+		quantiles : scalar or array
+	**/
+	static public function _nanpercentile_1d(values:Dynamic, mask:Dynamic, q:Dynamic, na_value:Dynamic, interpolation:Dynamic):Dynamic;
 	/**
 		wrap our results if needed 
 	**/
-	static public function _wrap_results(result:Dynamic, dtype:Dynamic):Dynamic;
+	static public function _wrap_results(result:Dynamic, dtype:Dynamic, ?fill_value:Dynamic):Dynamic;
 	static public function _zero_out_fperr(arg:Dynamic):Dynamic;
 	static public function get_corr_func(method:Dynamic):Dynamic;
 	/**
@@ -159,7 +177,7 @@ package pandas.core.nanops;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
+		    [default: ANSI_X3.4-1968] [currently: ANSI_X3.4-1968]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -403,13 +421,19 @@ package pandas.core.nanops;
 		    [default: True] [currently: True]
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public var iNaT : Dynamic;
 	/**
 		Check whether the provided array or dtype is of an integer dtype.
 		
-		.. deprecated:: 0.20.0
-		
 		In this function, timedelta64 instances are also considered "any-integer"
 		type objects and will return True.
+		
+		This function is internal and should not be exposed in the public API.
+		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
 		
 		Parameters
 		----------
@@ -456,6 +480,11 @@ package pandas.core.nanops;
 		-------
 		boolean : Whether or not the array or dtype is of a boolean dtype.
 		
+		Notes
+		-----
+		An ExtensionArray is considered boolean when the ``_is_boolean``
+		attribute is set to True.
+		
 		Examples
 		--------
 		>>> is_bool_dtype(str)
@@ -471,6 +500,10 @@ package pandas.core.nanops;
 		>>> is_bool_dtype(pd.Series([1, 2]))
 		False
 		>>> is_bool_dtype(np.array([True, False]))
+		True
+		>>> is_bool_dtype(pd.Categorical([True, False]))
+		True
+		>>> is_bool_dtype(pd.SparseArray([True, False]))
 		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -531,6 +564,38 @@ package pandas.core.nanops;
 	**/
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
+		Check whether an array-like or dtype is of a DatetimeTZDtype dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of
+		          a DatetimeTZDtype dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64tz_dtype(object)
+		False
+		>>> is_datetime64tz_dtype([1, 2, 3])
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3]))  # tz-naive
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+		
+		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
+		>>> s = pd.Series([], dtype=dtype)
+		>>> is_datetime64tz_dtype(dtype)
+		True
+		>>> is_datetime64tz_dtype(s)
+		True
+	**/
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Check whether the provided array or dtype is of
 		a timedelta64 or datetime64 dtype.
 		
@@ -568,6 +633,8 @@ package pandas.core.nanops;
 	/**
 		Check whether the provided array or dtype is of a float dtype.
 		
+		This function is internal and should not be exposed in the public API.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -593,51 +660,16 @@ package pandas.core.nanops;
 		True
 	**/
 	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
-	/**
-		Check whether the provided array or dtype is of an
-		integer, timedelta64, or datetime64 dtype.
-		
-		Parameters
-		----------
-		arr_or_dtype : array-like
-		    The array or dtype to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array or dtype is of an
-		          integer, timedelta64, or datetime64 dtype.
-		
-		Examples
-		--------
-		>>> is_int_or_datetime_dtype(str)
-		False
-		>>> is_int_or_datetime_dtype(int)
-		True
-		>>> is_int_or_datetime_dtype(float)
-		False
-		>>> is_int_or_datetime_dtype(np.uint64)
-		True
-		>>> is_int_or_datetime_dtype(np.datetime64)
-		True
-		>>> is_int_or_datetime_dtype(np.timedelta64)
-		True
-		>>> is_int_or_datetime_dtype(np.array(['a', 'b']))
-		False
-		>>> is_int_or_datetime_dtype(pd.Series([1, 2]))
-		True
-		>>> is_int_or_datetime_dtype(np.array([], dtype=np.timedelta64))
-		True
-		>>> is_int_or_datetime_dtype(np.array([], dtype=np.datetime64))
-		True
-		>>> is_int_or_datetime_dtype(pd.Index([1, 2.]))  # float
-		False
-	**/
-	static public function is_int_or_datetime_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of an integer dtype.
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
 		
 		Parameters
 		----------
@@ -658,6 +690,12 @@ package pandas.core.nanops;
 		>>> is_integer_dtype(float)
 		False
 		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
 		True
 		>>> is_integer_dtype(np.datetime64)
 		False
@@ -738,17 +776,49 @@ package pandas.core.nanops;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -781,7 +851,7 @@ package pandas.core.nanops;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -799,8 +869,8 @@ package pandas.core.nanops;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -883,18 +953,121 @@ package pandas.core.nanops;
 		Returns
 		-------
 		np.dtype or a pandas dtype
+		
+		Examples
+		--------
+		>>> na_value_for_dtype(np.dtype('int64'))
+		0
+		>>> na_value_for_dtype(np.dtype('int64'), compat=False)
+		nan
+		>>> na_value_for_dtype(np.dtype('float64'))
+		nan
+		>>> na_value_for_dtype(np.dtype('bool'))
+		False
+		>>> na_value_for_dtype(np.dtype('datetime64[ns]'))
+		NaT
 	**/
 	static public function na_value_for_dtype(dtype:Dynamic, ?compat:Dynamic):Dynamic;
-	static public function nanall(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic):Dynamic;
-	static public function nanany(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic):Dynamic;
 	/**
-		Returns -1 in the NA case
+		Check if all elements along an axis evaluate to True.
+		
+		Parameters
+		----------
+		values : ndarray
+		axis: int, optional
+		skipna : bool, default True
+		mask : ndarray[bool], optional
+		    nan-mask if known
+		
+		Returns
+		-------
+		result : bool
+		
+		Examples
+		--------
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([1, 2, np.nan])
+		>>> nanops.nanall(s)
+		True
+		
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([1, 0])
+		>>> nanops.nanall(s)
+		False
 	**/
-	static public function nanargmax(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic):Dynamic;
+	static public function nanall(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?mask:Dynamic):Bool;
 	/**
-		Returns -1 in the NA case
+		Check if any elements along an axis evaluate to True.
+		
+		Parameters
+		----------
+		values : ndarray
+		axis : int, optional
+		skipna : bool, default True
+		mask : ndarray[bool], optional
+		    nan-mask if known
+		
+		Returns
+		-------
+		result : bool
+		
+		Examples
+		--------
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([1, 2])
+		>>> nanops.nanany(s)
+		True
+		
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([np.nan])
+		>>> nanops.nanany(s)
+		False
 	**/
-	static public function nanargmin(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic):Dynamic;
+	static public function nanany(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?mask:Dynamic):Bool;
+	/**
+		Parameters
+		----------
+		values : ndarray
+		axis: int, optional
+		skipna : bool, default True
+		mask : ndarray[bool], optional
+		    nan-mask if known
+		
+		Returns
+		--------
+		result : int
+		    The index of max value in specified axis or -1 in the NA case
+		
+		Examples
+		--------
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([1, 2, 3, np.nan, 4])
+		>>> nanops.nanargmax(s)
+		4
+	**/
+	static public function nanargmax(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?mask:Dynamic):Int;
+	/**
+		Parameters
+		----------
+		values : ndarray
+		axis: int, optional
+		skipna : bool, default True
+		mask : ndarray[bool], optional
+		    nan-mask if known
+		
+		Returns
+		--------
+		result : int
+		    The index of min value in specified axis or -1 in the NA case
+		
+		Examples
+		--------
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([1, 2, 3, np.nan, 4])
+		>>> nanops.nanargmin(s)
+		0
+	**/
+	static public function nanargmin(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?mask:Dynamic):Int;
 	/**
 		a, b: ndarrays
 	**/
@@ -904,37 +1077,274 @@ package pandas.core.nanops;
 	static public function nange(x:Dynamic, y:Dynamic):Dynamic;
 	static public function nangt(x:Dynamic, y:Dynamic):Dynamic;
 	/**
-		Compute the sample excess kurtosis.
+		Compute the sample excess kurtosis
 		
 		The statistic computed here is the adjusted Fisher-Pearson standardized
 		moment coefficient G2, computed directly from the second and fourth
 		central moment.
+		
+		Parameters
+		----------
+		values : ndarray
+		axis: int, optional
+		skipna : bool, default True
+		mask : ndarray[bool], optional
+		    nan-mask if known
+		
+		Returns
+		-------
+		result : float64
+		    Unless input is a float array, in which case use the same
+		    precision as the input array.
+		
+		Examples
+		--------
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([1,np.nan, 1, 3, 2])
+		>>> nanops.nankurt(s)
+		-1.2892561983471076
 	**/
-	static public function nankurt(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic):Dynamic;
+	static public function nankurt(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?mask:Dynamic):Dynamic;
 	static public function nanle(x:Dynamic, y:Dynamic):Dynamic;
 	static public function nanlt(x:Dynamic, y:Dynamic):Dynamic;
-	static public function nanmax(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic):Dynamic;
-	static public function nanmean(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic):Dynamic;
-	static public function nanmedian(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic):Dynamic;
-	static public function nanmin(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic):Dynamic;
+	static public function nanmax(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?mask:Dynamic):Dynamic;
+	/**
+		Compute the mean of the element along an axis ignoring NaNs
+		
+		Parameters
+		----------
+		values : ndarray
+		axis: int, optional
+		skipna : bool, default True
+		mask : ndarray[bool], optional
+		    nan-mask if known
+		
+		Returns
+		-------
+		result : float
+		    Unless input is a float array, in which case use the same
+		    precision as the input array.
+		
+		Examples
+		--------
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([1, 2, np.nan])
+		>>> nanops.nanmean(s)
+		1.5
+	**/
+	static public function nanmean(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?mask:Dynamic):Float;
+	/**
+		Parameters
+		----------
+		values : ndarray
+		axis: int, optional
+		skipna : bool, default True
+		mask : ndarray[bool], optional
+		    nan-mask if known
+		
+		Returns
+		-------
+		result : float
+		    Unless input is a float array, in which case use the same
+		    precision as the input array.
+		
+		Examples
+		--------
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([1, np.nan, 2, 2])
+		>>> nanops.nanmedian(s)
+		2.0
+	**/
+	static public function nanmedian(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?mask:Dynamic):Float;
+	static public function nanmin(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?mask:Dynamic):Dynamic;
 	static public function nanne(x:Dynamic, y:Dynamic):Dynamic;
-	static public function nanprod(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?min_count:Dynamic):Dynamic;
-	static public function nansem(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?ddof:Dynamic):Dynamic;
+	/**
+		Wraper for np.percentile that skips missing values.
+		
+		Parameters
+		----------
+		values : array over which to find quantiles
+		q : scalar or array of quantile indices to find
+		axis : {0, 1}
+		na_value : scalar
+		    value to return for empty or all-null values
+		mask : ndarray[bool]
+		    locations in values that should be considered missing
+		ndim : {1, 2}
+		interpolation : str
+		
+		Returns
+		-------
+		quantiles : scalar or array
+	**/
+	static public function nanpercentile(values:Dynamic, q:Dynamic, axis:Dynamic, na_value:Dynamic, mask:Dynamic, ndim:Dynamic, interpolation:Dynamic):Dynamic;
+	/**
+		Parameters
+		----------
+		values : ndarray[dtype]
+		axis: int, optional
+		skipna : bool, default True
+		min_count: int, default 0
+		mask : ndarray[bool], optional
+		    nan-mask if known
+		
+		Returns
+		-------
+		result : dtype
+		
+		Examples
+		--------
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([1, 2, 3, np.nan])
+		>>> nanops.nanprod(s)
+		6.0
+		
+		Returns
+		--------
+		The product of all elements on a given axis. ( NaNs are treated as 1)
+	**/
+	static public function nanprod(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?min_count:Dynamic, ?mask:Dynamic):Dynamic;
+	/**
+		Compute the standard error in the mean along given axis while ignoring NaNs
+		
+		Parameters
+		----------
+		values : ndarray
+		axis: int, optional
+		skipna : bool, default True
+		ddof : int, default 1
+		    Delta Degrees of Freedom. The divisor used in calculations is N - ddof,
+		    where N represents the number of elements.
+		mask : ndarray[bool], optional
+		    nan-mask if known
+		
+		Returns
+		-------
+		result : float64
+		    Unless input is a float array, in which case use the same
+		    precision as the input array.
+		
+		Examples
+		--------
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([1, np.nan, 2, 3])
+		>>> nanops.nansem(s)
+		 0.5773502691896258
+	**/
+	static public function nansem(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?ddof:Dynamic, ?mask:Dynamic):Dynamic;
 	/**
 		Compute the sample skewness.
 		
 		The statistic computed here is the adjusted Fisher-Pearson standardized
 		moment coefficient G1. The algorithm computes this coefficient directly
 		from the second and third central moment.
+		
+		Parameters
+		----------
+		values : ndarray
+		axis: int, optional
+		skipna : bool, default True
+		mask : ndarray[bool], optional
+		    nan-mask if known
+		
+		Returns
+		-------
+		result : float64
+		    Unless input is a float array, in which case use the same
+		    precision as the input array.
+		
+		Examples
+		--------
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([1,np.nan, 1, 2])
+		>>> nanops.nanskew(s)
+		1.7320508075688787
 	**/
-	static public function nanskew(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic):Dynamic;
-	static public function nanstd(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?ddof:Dynamic):Dynamic;
-	static public function nansum(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?min_count:Dynamic):Dynamic;
-	static public function nanvar(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?ddof:Dynamic):Dynamic;
+	static public function nanskew(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?mask:Dynamic):Dynamic;
+	/**
+		Compute the standard deviation along given axis while ignoring NaNs
+		
+		Parameters
+		----------
+		values : ndarray
+		axis: int, optional
+		skipna : bool, default True
+		ddof : int, default 1
+		    Delta Degrees of Freedom. The divisor used in calculations is N - ddof,
+		    where N represents the number of elements.
+		mask : ndarray[bool], optional
+		    nan-mask if known
+		
+		Returns
+		-------
+		result : float
+		    Unless input is a float array, in which case use the same
+		    precision as the input array.
+		
+		Examples
+		--------
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([1, np.nan, 2, 3])
+		>>> nanops.nanstd(s)
+		1.0
+	**/
+	static public function nanstd(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?ddof:Dynamic, ?mask:Dynamic):Float;
+	/**
+		Sum the elements along an axis ignoring NaNs
+		
+		Parameters
+		----------
+		values : ndarray[dtype]
+		axis: int, optional
+		skipna : bool, default True
+		min_count: int, default 0
+		mask : ndarray[bool], optional
+		    nan-mask if known
+		
+		Returns
+		-------
+		result : dtype
+		
+		Examples
+		--------
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([1, 2, np.nan])
+		>>> nanops.nansum(s)
+		3.0
+	**/
+	static public function nansum(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?min_count:Dynamic, ?mask:Dynamic):Dynamic;
+	/**
+		Compute the variance along given axis while ignoring NaNs
+		
+		Parameters
+		----------
+		values : ndarray
+		axis: int, optional
+		skipna : bool, default True
+		ddof : int, default 1
+		    Delta Degrees of Freedom. The divisor used in calculations is N - ddof,
+		    where N represents the number of elements.
+		mask : ndarray[bool], optional
+		    nan-mask if known
+		
+		Returns
+		-------
+		result : float
+		    Unless input is a float array, in which case use the same
+		    precision as the input array.
+		
+		Examples
+		--------
+		>>> import pandas.core.nanops as nanops
+		>>> s = pd.Series([1, np.nan, 2, 3])
+		>>> nanops.nanvar(s)
+		1.0
+	**/
+	static public function nanvar(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?ddof:Dynamic, ?mask:Dynamic):Float;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -952,8 +1362,8 @@ package pandas.core.nanops;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -1005,5 +1415,21 @@ package pandas.core.nanops;
 		Name: 1, dtype: bool
 	**/
 	static public function notna(obj:Dynamic):Dynamic;
+	/**
+		Converts input into a pandas only dtype object or a numpy dtype object.
+		
+		Parameters
+		----------
+		dtype : object to be converted
+		
+		Returns
+		-------
+		np.dtype or a pandas dtype
+		
+		Raises
+		------
+		TypeError if not a dtype
+	**/
+	static public function pandas_dtype(dtype:Dynamic):Dynamic;
 	static public function set_use_bottleneck(?v:Dynamic):Dynamic;
 }

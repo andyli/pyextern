@@ -128,10 +128,10 @@ package pandas.plotting._converter;
 	**/
 	static public function default_units(x:Dynamic, axis:Dynamic):Dynamic;
 	/**
-		The Matplotlib datalim, autoscaling, locators etc work with
-		scalars which are the units converted to floats given the
-		current unit.  The converter may be passed these floats, or
-		arrays of them, even when units are set.
+		The Matplotlib datalim, autoscaling, locators etc work with scalars
+		which are the units converted to floats given the current unit.  The
+		converter may be passed these floats, or arrays of them, even when
+		units are set.
 	**/
 	static public function is_numlike(x:Dynamic):Dynamic;
 }

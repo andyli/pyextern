@@ -9,15 +9,4 @@ package torch.utils.data.distributed;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Returns the rank of current process.
-		
-		Rank is a unique identifier assigned to each process within a distributed
-		group. They are always consecutive integers ranging from 0 to ``world_size``.
-	**/
-	static public function get_rank():Dynamic;
-	/**
-		Returns the number of processes in the distributed group.
-	**/
-	static public function get_world_size():Dynamic;
 }

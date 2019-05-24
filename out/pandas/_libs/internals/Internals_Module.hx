@@ -10,6 +10,7 @@ package pandas._libs.internals;
 	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
+	static public function ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Enumerate contiguous runs of integers in ndarray.
 		
@@ -25,18 +26,20 @@ package pandas._libs.internals;
 		iter : iterator of (int, slice or array)
 	**/
 	static public function get_blkno_indexers(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function indexer_as_slice(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Convert slice to canonical bounded form.
-	**/
-	static public function slice_canonize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Get (start, stop, step, length) tuple for a slice.
+		Parameters
+		----------
+		blknos : array of int64
+		blk_count : int
+		group : bool
 		
-		If `objlen` is not specified, slice must be bounded, otherwise the result
-		will be wrong.
+		Returns
+		-------
+		iterator
+		    yield (BlockPlacement, blkno)
 	**/
-	static public function slice_get_indices_ex(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function get_blkno_placements(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function indexer_as_slice(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function slice_getitem(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Get length of a bounded slice.

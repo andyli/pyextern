@@ -1567,6 +1567,36 @@ package scipy.linalg.lapack;
 	**/
 	static public function chetrf_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		cout = chfrk(n,k,alpha,a,beta,c,[transr,uplo,trans,overwrite_c])
+		
+		Wrapper for ``chfrk``.
+		
+		Parameters
+		----------
+		n : input int
+		k : input int
+		alpha : input float
+		a : input rank-2 array('F') with bounds (lda,ka)
+		beta : input float
+		c : input rank-1 array('F') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		overwrite_c : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		cout : rank-1 array('F') with bounds (nt) and c storage
+	**/
+	static public function chfrk(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		n2 = clange(norm,a)
 		
 		Wrapper for ``clange``.
@@ -1777,6 +1807,82 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function cpbtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		achol,info = cpftrf(n,a,[transr,uplo,overwrite_a])
+		
+		Wrapper for ``cpftrf``.
+		
+		Parameters
+		----------
+		n : input int
+		a : input rank-1 array('F') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		achol : rank-1 array('F') with bounds (nt) and a storage
+		info : int
+	**/
+	static public function cpftrf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ainv,info = cpftri(n,a,[transr,uplo,overwrite_a])
+		
+		Wrapper for ``cpftri``.
+		
+		Parameters
+		----------
+		n : input int
+		a : input rank-1 array('F') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		ainv : rank-1 array('F') with bounds (nt) and a storage
+		info : int
+	**/
+	static public function cpftri(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		x,info = cpftrs(n,a,b,[transr,uplo,overwrite_b])
+		
+		Wrapper for ``cpftrs``.
+		
+		Parameters
+		----------
+		n : input int
+		a : input rank-1 array('F') with bounds (nt)
+		b : input rank-2 array('F') with bounds (ldb,nhrs)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		overwrite_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-2 array('F') with bounds (ldb,nhrs) and b storage
+		info : int
+	**/
+	static public function cpftrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		rcond,info = cpocon(a,anorm,[uplo])
 		
@@ -2018,6 +2124,32 @@ package scipy.linalg.lapack;
 	**/
 	static public function csycon(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		a,e,info = csyconv(a,ipiv,[lower,way,overwrite_a])
+		
+		Wrapper for ``csyconv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (n,n)
+		ipiv : input rank-1 array('i') with bounds (n)
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		way : input int, optional
+		    Default: 0
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('F') with bounds (n,n)
+		e : rank-1 array('F') with bounds (n)
+		info : int
+	**/
+	static public function csyconv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		udut,ipiv,x,info = csysv(a,b,[lwork,lower,overwrite_a,overwrite_b])
 		
 		Wrapper for ``csysv``.
@@ -2193,6 +2325,83 @@ package scipy.linalg.lapack;
 	**/
 	static public function csytrf_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		x = ctfsm(alpha,a,b,[transr,side,uplo,trans,diag,overwrite_b])
+		
+		Wrapper for ``ctfsm``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-1 array('F') with bounds (nt)
+		b : input rank-2 array('F') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		side : input string(len=1), optional
+		    Default: 'L'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		diag : input string(len=1), optional
+		    Default: 'N'
+		overwrite_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-2 array('F') with bounds (m,n) and b storage
+	**/
+	static public function ctfsm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ap,info = ctfttp(n,arf,[transr,uplo])
+		
+		Wrapper for ``ctfttp``.
+		
+		Parameters
+		----------
+		n : input int
+		arf : input rank-1 array('F') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		ap : rank-1 array('F') with bounds (nt)
+		info : int
+	**/
+	static public function ctfttp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a,info = ctfttr(n,arf,[transr,uplo])
+		
+		Wrapper for ``ctfttr``.
+		
+		Parameters
+		----------
+		n : input int
+		arf : input rank-1 array('F') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		a : rank-2 array('F') with bounds (lda,n)
+		info : int
+	**/
+	static public function ctfttr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		a,b,alpha,beta,q,z,m,pl,pr,dif,work,iwork,info = ctgsen(select,a,b,q,z,[lwork,liwork,overwrite_a,overwrite_b,overwrite_q,overwrite_z])
 		
 		Wrapper for ``ctgsen``.
@@ -2237,6 +2446,50 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function ctgsen(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		arf,info = ctpttf(n,ap,[transr,uplo])
+		
+		Wrapper for ``ctpttf``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('F') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		arf : rank-1 array('F') with bounds (nt)
+		info : int
+	**/
+	static public function ctpttf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a,info = ctpttr(n,ap,[uplo])
+		
+		Wrapper for ``ctpttr``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('F') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		a : rank-2 array('F') with bounds (n,n)
+		info : int
+	**/
+	static public function ctpttr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		x,scale,info = ctrsyl(a,b,c,[trana,tranb,isgn,overwrite_c])
 		
@@ -2319,6 +2572,87 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function ctrtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		arf,info = ctrttf(a,[transr,uplo])
+		
+		Wrapper for ``ctrttf``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (lda,n)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		arf : rank-1 array('F') with bounds (n*(n+1)/2)
+		info : int
+	**/
+	static public function ctrttf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ap,info = ctrttp(a,[uplo])
+		
+		Wrapper for ``ctrttp``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (lda,n)
+		
+		Other Parameters
+		----------------
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		ap : rank-1 array('F') with bounds (n*(n+1)/2)
+		info : int
+	**/
+	static public function ctrttp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		rz,tau,info = ctzrzf(a,[lwork,overwrite_a])
+		
+		Wrapper for ``ctzrzf``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: MAX(m,1)
+		
+		Returns
+		-------
+		rz : rank-2 array('F') with bounds (m,n) and a storage
+		tau : rank-1 array('F') with bounds (m)
+		info : int
+	**/
+	static public function ctzrzf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = ctzrzf_lwork(m,n)
+		
+		Wrapper for ``ctzrzf_lwork``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		
+		Returns
+		-------
+		work : complex
+		info : int
+	**/
+	static public function ctzrzf_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ht,info = cunghr(a,tau,[lo,hi,lwork,overwrite_a])
 		
@@ -2442,6 +2776,57 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function cunmqr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		cq,info = cunmrz(a,tau,c,[side,trans,lwork,overwrite_c])
+		
+		Wrapper for ``cunmrz``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (k,nt)
+		tau : input rank-1 array('F') with bounds (k)
+		c : input rank-2 array('F') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		side : input string(len=1), optional
+		    Default: 'L'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		overwrite_c : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: MAX((side[0]=='L'?n:m),1)
+		
+		Returns
+		-------
+		cq : rank-2 array('F') with bounds (m,n) and c storage
+		info : int
+	**/
+	static public function cunmrz(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = cunmrz_lwork(m,n,[side,trans])
+		
+		Wrapper for ``cunmrz_lwork``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		
+		Other Parameters
+		----------------
+		side : input string(len=1), optional
+		    Default: 'L'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		
+		Returns
+		-------
+		work : complex
+		info : int
+	**/
+	static public function cunmrz_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		lub,piv,x,info = dgbsv(kl,ku,ab,b,[overwrite_ab,overwrite_b])
 		
@@ -3770,6 +4155,57 @@ package scipy.linalg.lapack;
 	**/
 	static public function dormqr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		cq,info = dormrz(a,tau,c,[side,trans,lwork,overwrite_c])
+		
+		Wrapper for ``dormrz``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (k,nt)
+		tau : input rank-1 array('d') with bounds (k)
+		c : input rank-2 array('d') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		side : input string(len=1), optional
+		    Default: 'L'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		overwrite_c : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: MAX((side[0]=='L'?n:m),1)
+		
+		Returns
+		-------
+		cq : rank-2 array('d') with bounds (m,n) and c storage
+		info : int
+	**/
+	static public function dormrz(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = dormrz_lwork(m,n,[side,trans])
+		
+		Wrapper for ``dormrz_lwork``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		
+		Other Parameters
+		----------------
+		side : input string(len=1), optional
+		    Default: 'L'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		
+		Returns
+		-------
+		work : float
+		info : int
+	**/
+	static public function dormrz_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		c,x,info = dpbsv(ab,b,[lower,ldab,overwrite_ab,overwrite_b])
 		
 		Wrapper for ``dpbsv``.
@@ -3846,6 +4282,82 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function dpbtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		achol,info = dpftrf(n,a,[transr,uplo,overwrite_a])
+		
+		Wrapper for ``dpftrf``.
+		
+		Parameters
+		----------
+		n : input int
+		a : input rank-1 array('d') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		achol : rank-1 array('d') with bounds (nt) and a storage
+		info : int
+	**/
+	static public function dpftrf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ainv,info = dpftri(n,a,[transr,uplo,overwrite_a])
+		
+		Wrapper for ``dpftri``.
+		
+		Parameters
+		----------
+		n : input int
+		a : input rank-1 array('d') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		ainv : rank-1 array('d') with bounds (nt) and a storage
+		info : int
+	**/
+	static public function dpftri(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		x,info = dpftrs(n,a,b,[transr,uplo,overwrite_b])
+		
+		Wrapper for ``dpftrs``.
+		
+		Parameters
+		----------
+		n : input int
+		a : input rank-1 array('d') with bounds (nt)
+		b : input rank-2 array('d') with bounds (ldb,nhrs)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		overwrite_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-2 array('d') with bounds (ldb,nhrs) and b storage
+		info : int
+	**/
+	static public function dpftrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		rcond,info = dpocon(a,anorm,[uplo])
 		
@@ -4125,6 +4637,36 @@ package scipy.linalg.lapack;
 	**/
 	static public function dsbevx(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		cout = dsfrk(n,k,alpha,a,beta,c,[transr,uplo,trans,overwrite_c])
+		
+		Wrapper for ``dsfrk``.
+		
+		Parameters
+		----------
+		n : input int
+		k : input int
+		alpha : input float
+		a : input rank-2 array('d') with bounds (lda,ka)
+		beta : input float
+		c : input rank-1 array('d') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		overwrite_c : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		cout : rank-1 array('d') with bounds (nt) and c storage
+	**/
+	static public function dsfrk(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		m,w,iblock,isplit,info = dstebz(d,e,range,vl,vu,il,iu,tol,order)
 		
 		Wrapper for ``dstebz``.
@@ -4305,6 +4847,32 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function dsycon(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a,e,info = dsyconv(a,ipiv,[lower,way,overwrite_a])
+		
+		Wrapper for ``dsyconv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (n,n)
+		ipiv : input rank-1 array('i') with bounds (n)
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		way : input int, optional
+		    Default: 0
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('d') with bounds (n,n)
+		e : rank-1 array('d') with bounds (n)
+		info : int
+	**/
+	static public function dsyconv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		w,v,info = dsyev(a,[compute_v,lower,lwork,overwrite_a])
 		
@@ -4738,6 +5306,83 @@ package scipy.linalg.lapack;
 	**/
 	static public function dsytrf_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		x = dtfsm(alpha,a,b,[transr,side,uplo,trans,diag,overwrite_b])
+		
+		Wrapper for ``dtfsm``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-1 array('d') with bounds (nt)
+		b : input rank-2 array('d') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		side : input string(len=1), optional
+		    Default: 'L'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		diag : input string(len=1), optional
+		    Default: 'N'
+		overwrite_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-2 array('d') with bounds (m,n) and b storage
+	**/
+	static public function dtfsm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ap,info = dtfttp(n,arf,[transr,uplo])
+		
+		Wrapper for ``dtfttp``.
+		
+		Parameters
+		----------
+		n : input int
+		arf : input rank-1 array('d') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		ap : rank-1 array('d') with bounds (nt)
+		info : int
+	**/
+	static public function dtfttp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a,info = dtfttr(n,arf,[transr,uplo])
+		
+		Wrapper for ``dtfttr``.
+		
+		Parameters
+		----------
+		n : input int
+		arf : input rank-1 array('d') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		a : rank-2 array('d') with bounds (lda,n)
+		info : int
+	**/
+	static public function dtfttr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		a,b,alphar,alphai,beta,q,z,m,pl,pr,dif,work,iwork,info = dtgsen(select,a,b,q,z,[lwork,liwork,overwrite_a,overwrite_b,overwrite_q,overwrite_z])
 		
 		Wrapper for ``dtgsen``.
@@ -4783,6 +5428,50 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function dtgsen(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		arf,info = dtpttf(n,ap,[transr,uplo])
+		
+		Wrapper for ``dtpttf``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('d') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		arf : rank-1 array('d') with bounds (nt)
+		info : int
+	**/
+	static public function dtpttf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a,info = dtpttr(n,ap,[uplo])
+		
+		Wrapper for ``dtpttr``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('d') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		a : rank-2 array('d') with bounds (n,n)
+		info : int
+	**/
+	static public function dtpttr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		x,scale,info = dtrsyl(a,b,c,[trana,tranb,isgn,overwrite_c])
 		
@@ -4865,6 +5554,87 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function dtrtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		arf,info = dtrttf(a,[transr,uplo])
+		
+		Wrapper for ``dtrttf``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (lda,n)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		arf : rank-1 array('d') with bounds (n*(n+1)/2)
+		info : int
+	**/
+	static public function dtrttf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ap,info = dtrttp(a,[uplo])
+		
+		Wrapper for ``dtrttp``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (lda,n)
+		
+		Other Parameters
+		----------------
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		ap : rank-1 array('d') with bounds (n*(n+1)/2)
+		info : int
+	**/
+	static public function dtrttp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		rz,tau,info = dtzrzf(a,[lwork,overwrite_a])
+		
+		Wrapper for ``dtzrzf``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: MAX(m,1)
+		
+		Returns
+		-------
+		rz : rank-2 array('d') with bounds (m,n) and a storage
+		tau : rank-1 array('d') with bounds (m)
+		info : int
+	**/
+	static public function dtzrzf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = dtzrzf_lwork(m,n)
+		
+		Wrapper for ``dtzrzf_lwork``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		
+		Returns
+		-------
+		work : float
+		info : int
+	**/
+	static public function dtzrzf_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Find best-matching BLAS/LAPACK type.
 		
@@ -6307,6 +7077,57 @@ package scipy.linalg.lapack;
 	**/
 	static public function sormqr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		cq,info = sormrz(a,tau,c,[side,trans,lwork,overwrite_c])
+		
+		Wrapper for ``sormrz``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('f') with bounds (k,nt)
+		tau : input rank-1 array('f') with bounds (k)
+		c : input rank-2 array('f') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		side : input string(len=1), optional
+		    Default: 'L'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		overwrite_c : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: MAX((side[0]=='L'?n:m),1)
+		
+		Returns
+		-------
+		cq : rank-2 array('f') with bounds (m,n) and c storage
+		info : int
+	**/
+	static public function sormrz(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = sormrz_lwork(m,n,[side,trans])
+		
+		Wrapper for ``sormrz_lwork``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		
+		Other Parameters
+		----------------
+		side : input string(len=1), optional
+		    Default: 'L'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		
+		Returns
+		-------
+		work : float
+		info : int
+	**/
+	static public function sormrz_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		c,x,info = spbsv(ab,b,[lower,ldab,overwrite_ab,overwrite_b])
 		
 		Wrapper for ``spbsv``.
@@ -6383,6 +7204,82 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function spbtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		achol,info = spftrf(n,a,[transr,uplo,overwrite_a])
+		
+		Wrapper for ``spftrf``.
+		
+		Parameters
+		----------
+		n : input int
+		a : input rank-1 array('f') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		achol : rank-1 array('f') with bounds (nt) and a storage
+		info : int
+	**/
+	static public function spftrf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ainv,info = spftri(n,a,[transr,uplo,overwrite_a])
+		
+		Wrapper for ``spftri``.
+		
+		Parameters
+		----------
+		n : input int
+		a : input rank-1 array('f') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		ainv : rank-1 array('f') with bounds (nt) and a storage
+		info : int
+	**/
+	static public function spftri(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		x,info = spftrs(n,a,b,[transr,uplo,overwrite_b])
+		
+		Wrapper for ``spftrs``.
+		
+		Parameters
+		----------
+		n : input int
+		a : input rank-1 array('f') with bounds (nt)
+		b : input rank-2 array('f') with bounds (ldb,nhrs)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		overwrite_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-2 array('f') with bounds (ldb,nhrs) and b storage
+		info : int
+	**/
+	static public function spftrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		rcond,info = spocon(a,anorm,[uplo])
 		
@@ -6662,6 +7559,36 @@ package scipy.linalg.lapack;
 	**/
 	static public function ssbevx(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		cout = ssfrk(n,k,alpha,a,beta,c,[transr,uplo,trans,overwrite_c])
+		
+		Wrapper for ``ssfrk``.
+		
+		Parameters
+		----------
+		n : input int
+		k : input int
+		alpha : input float
+		a : input rank-2 array('f') with bounds (lda,ka)
+		beta : input float
+		c : input rank-1 array('f') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		overwrite_c : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		cout : rank-1 array('f') with bounds (nt) and c storage
+	**/
+	static public function ssfrk(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		m,w,iblock,isplit,info = sstebz(d,e,range,vl,vu,il,iu,tol,order)
 		
 		Wrapper for ``sstebz``.
@@ -6842,6 +7769,32 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function ssycon(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a,e,info = ssyconv(a,ipiv,[lower,way,overwrite_a])
+		
+		Wrapper for ``ssyconv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('f') with bounds (n,n)
+		ipiv : input rank-1 array('i') with bounds (n)
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		way : input int, optional
+		    Default: 0
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('f') with bounds (n,n)
+		e : rank-1 array('f') with bounds (n)
+		info : int
+	**/
+	static public function ssyconv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		w,v,info = ssyev(a,[compute_v,lower,lwork,overwrite_a])
 		
@@ -7275,6 +8228,83 @@ package scipy.linalg.lapack;
 	**/
 	static public function ssytrf_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		x = stfsm(alpha,a,b,[transr,side,uplo,trans,diag,overwrite_b])
+		
+		Wrapper for ``stfsm``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-1 array('f') with bounds (nt)
+		b : input rank-2 array('f') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		side : input string(len=1), optional
+		    Default: 'L'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		diag : input string(len=1), optional
+		    Default: 'N'
+		overwrite_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-2 array('f') with bounds (m,n) and b storage
+	**/
+	static public function stfsm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ap,info = stfttp(n,arf,[transr,uplo])
+		
+		Wrapper for ``stfttp``.
+		
+		Parameters
+		----------
+		n : input int
+		arf : input rank-1 array('f') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		ap : rank-1 array('f') with bounds (nt)
+		info : int
+	**/
+	static public function stfttp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a,info = stfttr(n,arf,[transr,uplo])
+		
+		Wrapper for ``stfttr``.
+		
+		Parameters
+		----------
+		n : input int
+		arf : input rank-1 array('f') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		a : rank-2 array('f') with bounds (lda,n)
+		info : int
+	**/
+	static public function stfttr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		a,b,alphar,alphai,beta,q,z,m,pl,pr,dif,work,iwork,info = stgsen(select,a,b,q,z,[lwork,liwork,overwrite_a,overwrite_b,overwrite_q,overwrite_z])
 		
 		Wrapper for ``stgsen``.
@@ -7320,6 +8350,50 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function stgsen(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		arf,info = stpttf(n,ap,[transr,uplo])
+		
+		Wrapper for ``stpttf``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('f') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		arf : rank-1 array('f') with bounds (nt)
+		info : int
+	**/
+	static public function stpttf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a,info = stpttr(n,ap,[uplo])
+		
+		Wrapper for ``stpttr``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('f') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		a : rank-2 array('f') with bounds (n,n)
+		info : int
+	**/
+	static public function stpttr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		x,scale,info = strsyl(a,b,c,[trana,tranb,isgn,overwrite_c])
 		
@@ -7402,6 +8476,87 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function strtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		arf,info = strttf(a,[transr,uplo])
+		
+		Wrapper for ``strttf``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('f') with bounds (lda,n)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		arf : rank-1 array('f') with bounds (n*(n+1)/2)
+		info : int
+	**/
+	static public function strttf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ap,info = strttp(a,[uplo])
+		
+		Wrapper for ``strttp``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('f') with bounds (lda,n)
+		
+		Other Parameters
+		----------------
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		ap : rank-1 array('f') with bounds (n*(n+1)/2)
+		info : int
+	**/
+	static public function strttp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		rz,tau,info = stzrzf(a,[lwork,overwrite_a])
+		
+		Wrapper for ``stzrzf``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('f') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: MAX(m,1)
+		
+		Returns
+		-------
+		rz : rank-2 array('f') with bounds (m,n) and a storage
+		tau : rank-1 array('f') with bounds (m)
+		info : int
+	**/
+	static public function stzrzf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = stzrzf_lwork(m,n)
+		
+		Wrapper for ``stzrzf_lwork``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		
+		Returns
+		-------
+		work : float
+		info : int
+	**/
+	static public function stzrzf_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		lub,piv,x,info = zgbsv(kl,ku,ab,b,[overwrite_ab,overwrite_b])
 		
@@ -8929,6 +10084,36 @@ package scipy.linalg.lapack;
 	**/
 	static public function zhetrf_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		cout = zhfrk(n,k,alpha,a,beta,c,[transr,uplo,trans,overwrite_c])
+		
+		Wrapper for ``zhfrk``.
+		
+		Parameters
+		----------
+		n : input int
+		k : input int
+		alpha : input float
+		a : input rank-2 array('D') with bounds (lda,ka)
+		beta : input float
+		c : input rank-1 array('D') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		overwrite_c : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		cout : rank-1 array('D') with bounds (nt) and c storage
+	**/
+	static public function zhfrk(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		n2 = zlange(norm,a)
 		
 		Wrapper for ``zlange``.
@@ -9138,6 +10323,82 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function zpbtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		achol,info = zpftrf(n,a,[transr,uplo,overwrite_a])
+		
+		Wrapper for ``zpftrf``.
+		
+		Parameters
+		----------
+		n : input int
+		a : input rank-1 array('D') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		achol : rank-1 array('D') with bounds (nt) and a storage
+		info : int
+	**/
+	static public function zpftrf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ainv,info = zpftri(n,a,[transr,uplo,overwrite_a])
+		
+		Wrapper for ``zpftri``.
+		
+		Parameters
+		----------
+		n : input int
+		a : input rank-1 array('D') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		ainv : rank-1 array('D') with bounds (nt) and a storage
+		info : int
+	**/
+	static public function zpftri(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		x,info = zpftrs(n,a,b,[transr,uplo,overwrite_b])
+		
+		Wrapper for ``zpftrs``.
+		
+		Parameters
+		----------
+		n : input int
+		a : input rank-1 array('D') with bounds (nt)
+		b : input rank-2 array('D') with bounds (ldb,nhrs)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		overwrite_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-2 array('D') with bounds (ldb,nhrs) and b storage
+		info : int
+	**/
+	static public function zpftrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		rcond,info = zpocon(a,anorm,[uplo])
 		
@@ -9379,6 +10640,32 @@ package scipy.linalg.lapack;
 	**/
 	static public function zsycon(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		a,e,info = zsyconv(a,ipiv,[lower,way,overwrite_a])
+		
+		Wrapper for ``zsyconv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (n,n)
+		ipiv : input rank-1 array('i') with bounds (n)
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		way : input int, optional
+		    Default: 0
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('D') with bounds (n,n)
+		e : rank-1 array('D') with bounds (n)
+		info : int
+	**/
+	static public function zsyconv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		udut,ipiv,x,info = zsysv(a,b,[lwork,lower,overwrite_a,overwrite_b])
 		
 		Wrapper for ``zsysv``.
@@ -9554,6 +10841,83 @@ package scipy.linalg.lapack;
 	**/
 	static public function zsytrf_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		x = ztfsm(alpha,a,b,[transr,side,uplo,trans,diag,overwrite_b])
+		
+		Wrapper for ``ztfsm``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-1 array('D') with bounds (nt)
+		b : input rank-2 array('D') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		side : input string(len=1), optional
+		    Default: 'L'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		diag : input string(len=1), optional
+		    Default: 'N'
+		overwrite_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-2 array('D') with bounds (m,n) and b storage
+	**/
+	static public function ztfsm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ap,info = ztfttp(n,arf,[transr,uplo])
+		
+		Wrapper for ``ztfttp``.
+		
+		Parameters
+		----------
+		n : input int
+		arf : input rank-1 array('D') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		ap : rank-1 array('D') with bounds (nt)
+		info : int
+	**/
+	static public function ztfttp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a,info = ztfttr(n,arf,[transr,uplo])
+		
+		Wrapper for ``ztfttr``.
+		
+		Parameters
+		----------
+		n : input int
+		arf : input rank-1 array('D') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		a : rank-2 array('D') with bounds (lda,n)
+		info : int
+	**/
+	static public function ztfttr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		a,b,alpha,beta,q,z,m,pl,pr,dif,work,iwork,info = ztgsen(select,a,b,q,z,[lwork,liwork,overwrite_a,overwrite_b,overwrite_q,overwrite_z])
 		
 		Wrapper for ``ztgsen``.
@@ -9598,6 +10962,50 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function ztgsen(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		arf,info = ztpttf(n,ap,[transr,uplo])
+		
+		Wrapper for ``ztpttf``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('D') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		arf : rank-1 array('D') with bounds (nt)
+		info : int
+	**/
+	static public function ztpttf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		a,info = ztpttr(n,ap,[uplo])
+		
+		Wrapper for ``ztpttr``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('D') with bounds (nt)
+		
+		Other Parameters
+		----------------
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		a : rank-2 array('D') with bounds (n,n)
+		info : int
+	**/
+	static public function ztpttr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		x,scale,info = ztrsyl(a,b,c,[trana,tranb,isgn,overwrite_c])
 		
@@ -9680,6 +11088,87 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function ztrtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		arf,info = ztrttf(a,[transr,uplo])
+		
+		Wrapper for ``ztrttf``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (lda,n)
+		
+		Other Parameters
+		----------------
+		transr : input string(len=1), optional
+		    Default: 'N'
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		arf : rank-1 array('D') with bounds (n*(n+1)/2)
+		info : int
+	**/
+	static public function ztrttf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ap,info = ztrttp(a,[uplo])
+		
+		Wrapper for ``ztrttp``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (lda,n)
+		
+		Other Parameters
+		----------------
+		uplo : input string(len=1), optional
+		    Default: 'U'
+		
+		Returns
+		-------
+		ap : rank-1 array('D') with bounds (n*(n+1)/2)
+		info : int
+	**/
+	static public function ztrttp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		rz,tau,info = ztzrzf(a,[lwork,overwrite_a])
+		
+		Wrapper for ``ztzrzf``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: MAX(m,1)
+		
+		Returns
+		-------
+		rz : rank-2 array('D') with bounds (m,n) and a storage
+		tau : rank-1 array('D') with bounds (m)
+		info : int
+	**/
+	static public function ztzrzf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = ztzrzf_lwork(m,n)
+		
+		Wrapper for ``ztzrzf_lwork``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		
+		Returns
+		-------
+		work : complex
+		info : int
+	**/
+	static public function ztzrzf_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ht,info = zunghr(a,tau,[lo,hi,lwork,overwrite_a])
 		
@@ -9803,4 +11292,55 @@ package scipy.linalg.lapack;
 		info : int
 	**/
 	static public function zunmqr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		cq,info = zunmrz(a,tau,c,[side,trans,lwork,overwrite_c])
+		
+		Wrapper for ``zunmrz``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (k,nt)
+		tau : input rank-1 array('D') with bounds (k)
+		c : input rank-2 array('D') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		side : input string(len=1), optional
+		    Default: 'L'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		overwrite_c : input int, optional
+		    Default: 0
+		lwork : input int, optional
+		    Default: MAX((side[0]=='L'?n:m),1)
+		
+		Returns
+		-------
+		cq : rank-2 array('D') with bounds (m,n) and c storage
+		info : int
+	**/
+	static public function zunmrz(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = zunmrz_lwork(m,n,[side,trans])
+		
+		Wrapper for ``zunmrz_lwork``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		
+		Other Parameters
+		----------------
+		side : input string(len=1), optional
+		    Default: 'L'
+		trans : input string(len=1), optional
+		    Default: 'N'
+		
+		Returns
+		-------
+		work : complex
+		info : int
+	**/
+	static public function zunmrz_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

@@ -244,7 +244,7 @@ package theano.scalar.basic_scipy;
 		MethodNotDefined
 		    The subclass does not override this method.
 	**/
-	public function c_code(node:Dynamic, name:Dynamic, inputs:Dynamic, outputs:Dynamic, sub:Dynamic):Dynamic;
+	public function c_code(node:Dynamic, name:Dynamic, inp:Dynamic, out:Dynamic, sub:Dynamic):Dynamic;
 	/**
 		Return a tuple of integers indicating the version of this Op.
 		

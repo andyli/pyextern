@@ -52,7 +52,11 @@ package tensorflow.python.ops.distributions.beta;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize a batch of Beta distributions.
+		Initialize a batch of Beta distributions. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		Args:
 		  concentration1: Positive floating-point `Tensor` indicating mean
@@ -75,7 +79,11 @@ package tensorflow.python.ops.distributions.beta;
 	@:native("__init__")
 	public function ___init__(?concentration1:Dynamic, ?concentration0:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Initialize a batch of Beta distributions.
+		Initialize a batch of Beta distributions. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		Args:
 		  concentration1: Positive floating-point `Tensor` indicating mean

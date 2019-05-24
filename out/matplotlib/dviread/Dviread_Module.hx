@@ -87,6 +87,21 @@ package matplotlib.dviread;
 		Multiply two numbers in 20.12 fixed point format.
 	**/
 	static public function _mul2012(num1:Dynamic, num2:Dynamic):Dynamic;
+	/**
+		Parses a \*.enc file referenced from a psfonts.map style file.
+		The format this class understands is a very limited subset of PostScript.
+		
+		Parameters
+		----------
+		path : os.PathLike
+		
+		Returns
+		-------
+		encoding : list
+		    The nth entry of the list is the PostScript glyph name of the nth
+		    glyph.
+	**/
+	static public function _parse_enc(path:Dynamic):Array<Dynamic>;
 	static public function _tfmfile(texname:Dynamic):Dynamic;
 	static public function _vffile(texname:Dynamic):Dynamic;
 	/**
@@ -96,6 +111,8 @@ package matplotlib.dviread;
 		library [1]_. Most existing TeX distributions on Unix-like systems use
 		kpathsea. It is also available as part of MikTeX, a popular
 		distribution on Windows.
+		
+		*If the file is not found, an empty string is returned*.
 		
 		Parameters
 		----------

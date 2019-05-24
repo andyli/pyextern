@@ -36,8 +36,23 @@ package numpy.f2py.f2py2e;
 	**/
 	static public function run_compile():Dynamic;
 	/**
-		Run f2py as if string.join(comline_list,' ') is used as a command line.
-		In case of using -h flag, return None.
+		Equivalent to running::
+		
+		    f2py <args>
+		
+		where ``<args>=string.join(<list>,' ')``, but in Python.  Unless
+		``-h`` is used, this function returns a dictionary containing
+		information on generated modules and their dependencies on source
+		files.  For example, the command ``f2py -m scalar scalar.f`` can be
+		executed from Python as follows
+		
+		You cannot build extension modules with this function, that is,
+		using ``-c`` is not allowed. Use ``compile`` command instead
+		
+		Examples
+		--------
+		.. include:: run_main_session.dat
+		    :literal:
 	**/
 	static public function run_main(comline_list:Dynamic):Dynamic;
 	static public function scaninputline(inputline:Dynamic):Dynamic;

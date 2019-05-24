@@ -63,7 +63,7 @@ package tensorflow.python.ops.gen_stateless_random_ops;
 		    The shape of the output tensor.
 		  seed: A `Tensor`. Must be one of the following types: `int32`, `int64`.
 		    2 seeds (shape [2]).
-		  dtype: An optional `tf.DType` from: `tf.half, tf.float32, tf.float64`. Defaults to `tf.float32`.
+		  dtype: An optional `tf.DType` from: `tf.half, tf.bfloat16, tf.float32, tf.float64`. Defaults to `tf.float32`.
 		    The type of the output.
 		  name: A name for the operation (optional).
 		
@@ -89,7 +89,7 @@ package tensorflow.python.ops.gen_stateless_random_ops;
 		    The shape of the output tensor.
 		  seed: A `Tensor`. Must be one of the following types: `int32`, `int64`.
 		    2 seeds (shape [2]).
-		  dtype: An optional `tf.DType` from: `tf.half, tf.float32, tf.float64`. Defaults to `tf.float32`.
+		  dtype: An optional `tf.DType` from: `tf.half, tf.bfloat16, tf.float32, tf.float64`. Defaults to `tf.float32`.
 		    The type of the output.
 		  name: A name for the operation (optional).
 		
@@ -102,6 +102,33 @@ package tensorflow.python.ops.gen_stateless_random_ops;
 		This is for function stateless_random_uniform
 	**/
 	static public function stateless_random_uniform_eager_fallback(shape:Dynamic, seed:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Outputs deterministic pseudorandom random integers from a uniform distribution.
+		
+		The generated values follow a uniform distribution in the range `[minval, maxval)`.
+		
+		The outputs are a deterministic function of `shape`, `seed`, `minval`, and `maxval`.
+		
+		Args:
+		  shape: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    The shape of the output tensor.
+		  seed: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    2 seeds (shape [2]).
+		  minval: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    Minimum value (inclusive, scalar).
+		  maxval: A `Tensor`. Must have the same type as `minval`.
+		    Maximum value (exclusive, scalar).
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `minval`.
+	**/
+	static public function stateless_random_uniform_int(shape:Dynamic, seed:Dynamic, minval:Dynamic, maxval:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function stateless_random_uniform_int
+	**/
+	static public function stateless_random_uniform_int_eager_fallback(shape:Dynamic, seed:Dynamic, minval:Dynamic, maxval:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Outputs deterministic pseudorandom values from a truncated normal distribution.
 		
@@ -116,7 +143,7 @@ package tensorflow.python.ops.gen_stateless_random_ops;
 		    The shape of the output tensor.
 		  seed: A `Tensor`. Must be one of the following types: `int32`, `int64`.
 		    2 seeds (shape [2]).
-		  dtype: An optional `tf.DType` from: `tf.half, tf.float32, tf.float64`. Defaults to `tf.float32`.
+		  dtype: An optional `tf.DType` from: `tf.half, tf.bfloat16, tf.float32, tf.float64`. Defaults to `tf.float32`.
 		    The type of the output.
 		  name: A name for the operation (optional).
 		

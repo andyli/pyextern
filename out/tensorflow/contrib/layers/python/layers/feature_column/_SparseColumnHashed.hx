@@ -5,11 +5,25 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		IdWeightPair(id_tensor, weight_tensor)
 	**/
 	static public function IdWeightPair(id_tensor:Dynamic, weight_tensor:Dynamic):Dynamic;
+	static public var __abstractmethods__ : Dynamic;
 	/**
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Metaclass for defining Abstract Base Classes (ABCs).
+		
+		Use this metaclass to create an ABC.  An ABC can be subclassed
+		directly, and then acts as a mix-in class.  You can also register
+		unrelated concrete classes (even built-in classes) and unrelated
+		ABCs as 'virtual subclasses' -- these and their descendants will
+		be considered subclasses of the registering ABC by the built-in
+		issubclass() function, but the registering ABC won't show up in
+		their MRO (Method Resolution Order) nor will method
+		implementations defined by the registering ABC be callable (not
+		even via super()).
+	**/
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -89,23 +103,9 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		Return self<value.
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
-	/**
-		Metaclass for defining Abstract Base Classes (ABCs).
-		
-		Use this metaclass to create an ABC.  An ABC can be subclassed
-		directly, and then acts as a mix-in class.  You can also register
-		unrelated concrete classes (even built-in classes) and unrelated
-		ABCs as 'virtual subclasses' -- these and their descendants will
-		be considered subclasses of the registering ABC by the built-in
-		issubclass() function, but the registering ABC won't show up in
-		their MRO (Method Resolution Order) nor will method
-		implementations defined by the registering ABC be callable (not
-		even via super()).
-	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -129,7 +129,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	**/
 	public function __repr__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**
@@ -159,6 +159,10 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _abc_cache : Dynamic;
+	static public var _abc_negative_cache : Dynamic;
+	static public var _abc_negative_cache_version : Dynamic;
+	static public var _abc_registry : Dynamic;
 	/**
 		Return a new OrderedDict which maps field names to their values.
 	**/
@@ -297,7 +301,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	/**
 		Returns configuration of the base feature for `tf.parse_example`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-25.
 		Instructions for updating:
 		Should be private.
 	**/
@@ -346,7 +350,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	/**
 		Returns the name of column or transformed column. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-25.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-25.
 		Instructions for updating:
 		Should be private.
 	**/

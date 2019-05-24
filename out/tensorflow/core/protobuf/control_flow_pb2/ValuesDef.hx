@@ -26,7 +26,6 @@ package tensorflow.core.protobuf.control_flow_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EXTERNAL_VALUES_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
@@ -87,7 +86,10 @@ package tensorflow.core.protobuf.control_flow_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var VALUES_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -253,4 +255,12 @@ package tensorflow.core.protobuf.control_flow_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.ValuesDef.external_values
+	**/
+	public var external_values : Dynamic;
+	/**
+		Field tensorflow.ValuesDef.values
+	**/
+	public var values : Dynamic;
 }

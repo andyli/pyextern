@@ -102,14 +102,14 @@ package matplotlib.dviread;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Height and depth of char in dvi units. For internal use by dviread.py.
+		Height and depth of char in dvi units.
 	**/
 	public function _height_depth_of(char:Dynamic):Dynamic;
 	public var _scale : Dynamic;
 	public var _tfm : Dynamic;
 	public var _vf : Dynamic;
 	/**
-		Width of char in dvi units. For internal use by dviread.py.
+		Width of char in dvi units.
 	**/
 	public function _width_of(char:Dynamic):Dynamic;
 	public var size : Dynamic;

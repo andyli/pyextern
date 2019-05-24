@@ -52,66 +52,20 @@ package tensorflow.python.ops.distributions.student_t;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct Student's t distributions.
+		DEPRECATED FUNCTION
 		
-		The distributions have degree of freedom `df`, mean `loc`, and scale
-		`scale`.
-		
-		The parameters `df`, `loc`, and `scale` must be shaped in a way that
-		supports broadcasting (e.g. `df + loc + scale` is a valid operation).
-		
-		Args:
-		  df: Floating-point `Tensor`. The degrees of freedom of the
-		    distribution(s). `df` must contain only positive values.
-		  loc: Floating-point `Tensor`. The mean(s) of the distribution(s).
-		  scale: Floating-point `Tensor`. The scaling factor(s) for the
-		    distribution(s). Note that `scale` is not technically the standard
-		    deviation of this distribution but has semantics more similar to
-		    standard deviation than variance.
-		  validate_args: Python `bool`, default `False`. When `True` distribution
-		    parameters are checked for validity despite possibly degrading runtime
-		    performance. When `False` invalid inputs may silently render incorrect
-		    outputs.
-		  allow_nan_stats: Python `bool`, default `True`. When `True`,
-		    statistics (e.g., mean, mode, variance) use the value "`NaN`" to
-		    indicate the result is undefined. When `False`, an exception is raised
-		    if one or more of the statistic's batch members are undefined.
-		  name: Python `str` name prefixed to Ops created by this class.
-		
-		Raises:
-		  TypeError: if loc and scale are different dtypes.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		Use `tfd.StudentT(tf.floor(tf.abs(df)), loc, tf.nn.softplus(scale)) instead.
 	**/
 	@:native("__init__")
 	public function ___init__(df:Dynamic, loc:Dynamic, scale:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Construct Student's t distributions.
+		DEPRECATED FUNCTION
 		
-		The distributions have degree of freedom `df`, mean `loc`, and scale
-		`scale`.
-		
-		The parameters `df`, `loc`, and `scale` must be shaped in a way that
-		supports broadcasting (e.g. `df + loc + scale` is a valid operation).
-		
-		Args:
-		  df: Floating-point `Tensor`. The degrees of freedom of the
-		    distribution(s). `df` must contain only positive values.
-		  loc: Floating-point `Tensor`. The mean(s) of the distribution(s).
-		  scale: Floating-point `Tensor`. The scaling factor(s) for the
-		    distribution(s). Note that `scale` is not technically the standard
-		    deviation of this distribution but has semantics more similar to
-		    standard deviation than variance.
-		  validate_args: Python `bool`, default `False`. When `True` distribution
-		    parameters are checked for validity despite possibly degrading runtime
-		    performance. When `False` invalid inputs may silently render incorrect
-		    outputs.
-		  allow_nan_stats: Python `bool`, default `True`. When `True`,
-		    statistics (e.g., mean, mode, variance) use the value "`NaN`" to
-		    indicate the result is undefined. When `False`, an exception is raised
-		    if one or more of the statistic's batch members are undefined.
-		  name: Python `str` name prefixed to Ops created by this class.
-		
-		Raises:
-		  TypeError: if loc and scale are different dtypes.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		Use `tfd.StudentT(tf.floor(tf.abs(df)), loc, tf.nn.softplus(scale)) instead.
 	**/
 	public function new(df:Dynamic, loc:Dynamic, scale:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Void;
 	/**

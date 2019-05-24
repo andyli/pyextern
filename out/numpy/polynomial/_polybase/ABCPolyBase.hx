@@ -83,7 +83,7 @@ package numpy.polynomial._polybase;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __mod__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(other:Dynamic):Dynamic;
@@ -182,6 +182,9 @@ package numpy.polynomial._polybase;
 	public function _line():Dynamic;
 	public function _mul():Dynamic;
 	public function _pow():Dynamic;
+	public function _repr_latex_():Dynamic;
+	static public function _repr_latex_scalar(x:Dynamic):Dynamic;
+	static public function _repr_latex_term(i:Dynamic, arg_str:Dynamic, needs_parens:Dynamic):Dynamic;
 	public function _roots():Dynamic;
 	public function _sub():Dynamic;
 	public function _val():Dynamic;
@@ -213,6 +216,7 @@ package numpy.polynomial._polybase;
 		    all others zero.
 	**/
 	static public function basis(deg:Dynamic, ?domain:Dynamic, ?window:Dynamic):Dynamic;
+	public var basis_name : Dynamic;
 	/**
 		Convert series to series of this class.
 		
@@ -399,7 +403,9 @@ package numpy.polynomial._polybase;
 		-------
 		new_series : series
 		    A series that represents the least squares fit to the data and
-		    has the domain specified in the call.
+		    has the domain and window specified in the call. If the
+		    coefficients for the unscaled and unshifted basis polynomials are
+		    of interest, do ``new_series.convert().coef``.
 		
 		[resid, rank, sv, rcond] : list
 		    These values are only returned if `full` = True

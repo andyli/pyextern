@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.estimator.canned.optimizers;
 @:pythonImport("tensorflow.python.estimator.canned.optimizers") extern class Optimizers_Module {
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var _OPTIMIZER_CLS_NAMES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;

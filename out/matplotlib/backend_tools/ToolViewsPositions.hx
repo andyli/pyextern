@@ -123,6 +123,13 @@ package matplotlib.backend_tools;
 	**/
 	public function _axes_pos(ax:Dynamic):Dynamic;
 	/**
+		Return a placeholder object with a single `canvas` attribute.
+		
+		This is useful to reuse the implementations of tools already provided
+		by the classic Toolbars.
+	**/
+	public function _make_classic_style_pseudo_toolbar():Dynamic;
+	/**
 		Add the current figure to the stack of views and positions
 	**/
 	public function add_figure(figure:Dynamic):Dynamic;
@@ -171,7 +178,7 @@ package matplotlib.backend_tools;
 		
 		Parameters
 		----------
-		figure: `Figure`
+		figure : `Figure`
 	**/
 	public function set_figure(figure:Dynamic):Dynamic;
 	public var toolmanager : Dynamic;
@@ -183,11 +190,11 @@ package matplotlib.backend_tools;
 		
 		Parameters
 		----------
-		event: `Event`
+		event : `Event`
 		    The Canvas event that caused this tool to be called
-		sender: object
+		sender : object
 		    Object that requested the tool to be triggered
-		data: object
+		data : object
 		    Extra data
 	**/
 	public function trigger(sender:Dynamic, event:Dynamic, ?data:Dynamic):Dynamic;

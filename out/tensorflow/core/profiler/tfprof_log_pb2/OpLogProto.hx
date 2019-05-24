@@ -46,7 +46,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ID_TO_STRING_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -55,7 +54,6 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LOG_ENTRIES_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -88,6 +86,10 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -255,4 +257,12 @@ package tensorflow.core.profiler.tfprof_log_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.tfprof.OpLogProto.id_to_string
+	**/
+	public var id_to_string : Dynamic;
+	/**
+		Field tensorflow.tfprof.OpLogProto.log_entries
+	**/
+	public var log_entries : Dynamic;
 }

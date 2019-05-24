@@ -465,7 +465,7 @@ package tensorflow.contrib.quantization.python;
 		    output[..., :, :] = matrix(x[..., :, :]) * matrix(y[..., :, :])
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `complex64`, `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
 		    2-D or higher with shape `[..., r_x, c_x]`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		    2-D or higher with shape `[..., r_y, c_y]`.
@@ -540,6 +540,9 @@ package tensorflow.contrib.quantization.python;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.bessel_i0e(x.values, ...), x.dense_shape)`
 	**/
 	static public function bessel_i0e(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -561,6 +564,9 @@ package tensorflow.contrib.quantization.python;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.bessel_i1e(x.values, ...), x.dense_shape)`
 	**/
 	static public function bessel_i1e(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -1586,7 +1592,7 @@ package tensorflow.contrib.quantization.python;
 		In 'MIN_COMBINED' mode, each value of the tensor will undergo the following:
 		
 		```
-		if T == qint8, in[i] += (range(T) + 1)/ 2.0
+		if T == qint8: in[i] += (range(T) + 1)/ 2.0
 		out[i] = min_range + (in[i]* (max_range - min_range) / range(T))
 		```
 		here `range(T) = numeric_limits<T>::max() - numeric_limits<T>::min()`
@@ -1902,6 +1908,9 @@ package tensorflow.contrib.quantization.python;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.erf(x.values, ...), x.dense_shape)`
 	**/
 	static public function erf(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -1973,7 +1982,7 @@ package tensorflow.contrib.quantization.python;
 	/**
 		Returns x // y element-wise.
 		
-		*NOTE*: `FloorDiv` supports broadcasting. More about broadcasting
+		*NOTE*: `floor_div` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -2001,7 +2010,7 @@ package tensorflow.contrib.quantization.python;
 		true, this follows Python semantics in that the result here is consistent
 		with a flooring divide. E.g. `floor(x / y) * y + mod(x, y) = x`.
 		
-		*NOTE*: `FloorMod` supports broadcasting. More about broadcasting
+		*NOTE*: `floormod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -2802,6 +2811,44 @@ package tensorflow.contrib.quantization.python;
 	**/
 	static public function l2_loss_eager_fallback(t:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		Computes rectified linear: `max(features, features * alpha)`.
+		
+		Args:
+		  features: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		  alpha: An optional `float`. Defaults to `0.2`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `features`.
+	**/
+	static public function leaky_relu(features:Dynamic, ?alpha:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function leaky_relu
+	**/
+	static public function leaky_relu_eager_fallback(features:Dynamic, ?alpha:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes rectified linear gradients for a LeakyRelu operation.
+		
+		Args:
+		  gradients: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		    The backpropagated gradients to the corresponding LeakyRelu operation.
+		  features: A `Tensor`. Must have the same type as `gradients`.
+		    The features passed as input to the corresponding LeakyRelu operation,
+		    OR the outputs of that operation (both work equivalently).
+		  alpha: An optional `float`. Defaults to `0.2`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `gradients`.
+	**/
+	static public function leaky_relu_grad(gradients:Dynamic, features:Dynamic, ?alpha:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function leaky_relu_grad
+	**/
+	static public function leaky_relu_grad_eager_fallback(gradients:Dynamic, features:Dynamic, ?alpha:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Returns the truth value of (x < y) element-wise.
 		
 		*NOTE*: `math.less` supports broadcasting. More about broadcasting
@@ -3076,7 +3123,7 @@ package tensorflow.contrib.quantization.python;
 		cublas.
 		
 		Args:
-		  a: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `complex64`, `complex128`.
+		  a: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
 		  b: A `Tensor`. Must have the same type as `a`.
 		  transpose_a: An optional `bool`. Defaults to `False`.
 		    If true, "a" is transposed before multiplication.
@@ -3606,6 +3653,9 @@ package tensorflow.contrib.quantization.python;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.negative(x.values, ...), x.dense_shape)`
 	**/
 	static public function neg(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -3778,7 +3828,7 @@ package tensorflow.contrib.quantization.python;
 		
 		```
 		out[i] = (in[i] - min_range) * range(T) / (max_range - min_range)
-		if T == qint8, out[i] -= (range(T) + 1) / 2.0
+		if T == qint8: out[i] -= (range(T) + 1) / 2.0
 		```
 		
 		here `range(T) = numeric_limits<T>::max() - numeric_limits<T>::min()`
@@ -4927,6 +4977,9 @@ package tensorflow.contrib.quantization.python;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.sign(x.values, ...), x.dense_shape)`
 	**/
 	static public function sign(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -5420,6 +5473,9 @@ package tensorflow.contrib.quantization.python;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.sqrt(x.values, ...), x.dense_shape)`
 	**/
 	static public function sqrt(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -5458,6 +5514,9 @@ package tensorflow.contrib.quantization.python;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.square(x.values, ...), x.dense_shape)`
 	**/
 	static public function square(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -5530,6 +5589,9 @@ package tensorflow.contrib.quantization.python;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
+		
+		  If `x` is a `SparseTensor`, returns
+		  `SparseTensor(x.indices, tf.math.tanh(x.values, ...), x.dense_shape)`
 	**/
 	static public function tanh(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -5642,7 +5704,7 @@ package tensorflow.contrib.quantization.python;
 		than Python semantics. See `FloorDiv` for a division function that matches
 		Python Semantics.
 		
-		*NOTE*: `TruncateDiv` supports broadcasting. More about broadcasting
+		*NOTE*: `truncatediv` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -5665,7 +5727,7 @@ package tensorflow.contrib.quantization.python;
 		the result here is consistent with a truncating divide. E.g. `truncate(x / y) *
 		y + truncate_mod(x, y) = x`.
 		
-		*NOTE*: `TruncateMod` supports broadcasting. More about broadcasting
+		*NOTE*: `truncatemod` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:

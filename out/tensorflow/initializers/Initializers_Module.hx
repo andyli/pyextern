@@ -33,7 +33,8 @@ package tensorflow.initializers;
 		    An initializer.
 		
 		References:
-		    He et al., http://arxiv.org/abs/1502.01852
+		    [He et al., 2015](https://www.cv-foundation.org/openaccess/content_iccv_2015/html/He_Delving_Deep_into_ICCV_2015_paper.html)
+		    ([pdf](https://www.cv-foundation.org/openaccess/content_iccv_2015/papers/He_Delving_Deep_into_ICCV_2015_paper.pdf))
 	**/
 	static public function he_normal(?seed:Dynamic):Dynamic;
 	/**
@@ -50,7 +51,8 @@ package tensorflow.initializers;
 		    An initializer.
 		
 		References:
-		    He et al., http://arxiv.org/abs/1502.01852
+		    [He et al., 2015](https://www.cv-foundation.org/openaccess/content_iccv_2015/html/He_Delving_Deep_into_ICCV_2015_paper.html)
+		    ([pdf](https://www.cv-foundation.org/openaccess/content_iccv_2015/papers/He_Delving_Deep_into_ICCV_2015_paper.pdf))
 	**/
 	static public function he_uniform(?seed:Dynamic):Dynamic;
 	/**
@@ -67,9 +69,11 @@ package tensorflow.initializers;
 		    An initializer.
 		
 		References:
-		    - [Self-Normalizing Neural Networks](https://arxiv.org/abs/1706.02515)
-		    - [Efficient
-		    Backprop](http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf)
+		    - Self-Normalizing Neural Networks,
+		    [Klambauer et al., 2017](https://papers.nips.cc/paper/6698-self-normalizing-neural-networks)
+		    ([pdf](https://papers.nips.cc/paper/6698-self-normalizing-neural-networks.pdf))
+		    - Efficient Backprop,
+		    [Lecun et al., 1998](http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf)
 	**/
 	static public function lecun_normal(?seed:Dynamic):Dynamic;
 	/**
@@ -86,8 +90,11 @@ package tensorflow.initializers;
 		    An initializer.
 		
 		References:
-		    LeCun 98, Efficient Backprop,
-		    http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf
+		    - Self-Normalizing Neural Networks,
+		    [Klambauer et al., 2017](https://papers.nips.cc/paper/6698-self-normalizing-neural-networks)
+		    ([pdf](https://papers.nips.cc/paper/6698-self-normalizing-neural-networks.pdf))
+		    - Efficient Backprop,
+		    [Lecun et al., 1998](http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf)
 	**/
 	static public function lecun_uniform(?seed:Dynamic):Dynamic;
 	/**

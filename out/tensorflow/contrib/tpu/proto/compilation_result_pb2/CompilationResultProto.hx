@@ -38,7 +38,6 @@ package tensorflow.contrib.tpu.proto.compilation_result_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var HLO_PROTOS_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -71,8 +70,6 @@ package tensorflow.contrib.tpu.proto.compilation_result_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var STATUS_CODE_FIELD_NUMBER : Dynamic;
-	static public var STATUS_ERROR_MESSAGE_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -85,6 +82,10 @@ package tensorflow.contrib.tpu.proto.compilation_result_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -250,4 +251,16 @@ package tensorflow.contrib.tpu.proto.compilation_result_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tpu.CompilationResultProto.hlo_protos
+	**/
+	public var hlo_protos : Dynamic;
+	/**
+		Field tensorflow.tpu.CompilationResultProto.status_code
+	**/
+	public var status_code : Dynamic;
+	/**
+		Field tensorflow.tpu.CompilationResultProto.status_error_message
+	**/
+	public var status_error_message : Dynamic;
 }

@@ -41,11 +41,11 @@ package matplotlib.font_manager;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?family:Dynamic, ?style:Dynamic, ?variant:Dynamic, ?weight:Dynamic, ?stretch:Dynamic, ?size:Dynamic, ?fname:Dynamic, ?_init:Dynamic):Dynamic;
+	public function ___init__(?family:Dynamic, ?style:Dynamic, ?variant:Dynamic, ?weight:Dynamic, ?stretch:Dynamic, ?size:Dynamic, ?fname:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?family:Dynamic, ?style:Dynamic, ?variant:Dynamic, ?weight:Dynamic, ?stretch:Dynamic, ?size:Dynamic, ?fname:Dynamic, ?_init:Dynamic):Void;
+	public function new(?family:Dynamic, ?style:Dynamic, ?variant:Dynamic, ?weight:Dynamic, ?stretch:Dynamic, ?size:Dynamic, ?fname:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -110,7 +110,7 @@ package matplotlib.font_manager;
 	public var __weakref__ : Dynamic;
 	public function _parse_fontconfig_pattern(pattern:Dynamic):Dynamic;
 	/**
-		Return a deep copy of self
+		Return a copy of self.
 	**/
 	public function copy():Dynamic;
 	/**
@@ -122,11 +122,8 @@ package matplotlib.font_manager;
 	**/
 	public function get_file():Dynamic;
 	/**
-		Get a fontconfig pattern suitable for looking up the font as
+		Get a fontconfig_ pattern_ suitable for looking up the font as
 		specified with fontconfig's ``fc-match`` utility.
-		
-		See the documentation on `fontconfig patterns
-		<https://www.freedesktop.org/software/fontconfig/fontconfig-user.html>`_.
 		
 		This support does not require fontconfig to be installed or
 		support for it to be enabled.  We are merely borrowing its
@@ -181,10 +178,7 @@ package matplotlib.font_manager;
 	**/
 	public function set_file(file:Dynamic):Dynamic;
 	/**
-		Set the properties by parsing a fontconfig *pattern*.
-		
-		See the documentation on `fontconfig patterns
-		<https://www.freedesktop.org/software/fontconfig/fontconfig-user.html>`_.
+		Set the properties by parsing a fontconfig_ *pattern*.
 		
 		This support does not require fontconfig to be installed or
 		support for it to be enabled.  We are merely borrowing its

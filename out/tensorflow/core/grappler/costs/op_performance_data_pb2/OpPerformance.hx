@@ -5,9 +5,6 @@ package tensorflow.core.grappler.costs.op_performance_data_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var COMPUTE_COST_FIELD_NUMBER : Dynamic;
-	static public var COMPUTE_EFFICIENCY_FIELD_NUMBER : Dynamic;
-	static public var COMPUTE_TIME_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -29,8 +26,6 @@ package tensorflow.core.grappler.costs.op_performance_data_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EXECUTION_TIME_LOG_NORMAL_FIELD_NUMBER : Dynamic;
-	static public var EXECUTION_TIME_NORMAL_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
@@ -59,8 +54,6 @@ package tensorflow.core.grappler.costs.op_performance_data_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MEMORY_EFFICIENCY_FIELD_NUMBER : Dynamic;
-	static public var MEMORY_TIME_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -69,9 +62,6 @@ package tensorflow.core.grappler.costs.op_performance_data_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NODE_FIELD_NUMBER : Dynamic;
-	static public var OP_FIELD_NUMBER : Dynamic;
-	static public var OP_MEMORY_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -84,7 +74,6 @@ package tensorflow.core.grappler.costs.op_performance_data_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SESSION_INFO_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -97,7 +86,10 @@ package tensorflow.core.grappler.costs.op_performance_data_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TEMPORARY_MEMORY_SIZE_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -263,4 +255,52 @@ package tensorflow.core.grappler.costs.op_performance_data_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.OpPerformance.compute_cost
+	**/
+	public var compute_cost : Dynamic;
+	/**
+		Field tensorflow.OpPerformance.compute_efficiency
+	**/
+	public var compute_efficiency : Dynamic;
+	/**
+		Field tensorflow.OpPerformance.compute_time
+	**/
+	public var compute_time : Dynamic;
+	/**
+		Field tensorflow.OpPerformance.execution_time_log_normal
+	**/
+	public var execution_time_log_normal : Dynamic;
+	/**
+		Field tensorflow.OpPerformance.execution_time_normal
+	**/
+	public var execution_time_normal : Dynamic;
+	/**
+		Field tensorflow.OpPerformance.memory_efficiency
+	**/
+	public var memory_efficiency : Dynamic;
+	/**
+		Field tensorflow.OpPerformance.memory_time
+	**/
+	public var memory_time : Dynamic;
+	/**
+		Field tensorflow.OpPerformance.node
+	**/
+	public var node : Dynamic;
+	/**
+		Field tensorflow.OpPerformance.op
+	**/
+	public var op : Dynamic;
+	/**
+		Field tensorflow.OpPerformance.op_memory
+	**/
+	public var op_memory : Dynamic;
+	/**
+		Field tensorflow.OpPerformance.session_info
+	**/
+	public var session_info : Dynamic;
+	/**
+		Field tensorflow.OpPerformance.temporary_memory_size
+	**/
+	public var temporary_memory_size : Dynamic;
 }

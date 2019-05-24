@@ -11,7 +11,11 @@ package tensorflow.python.layers.core;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Functional interface for the densely-connected layer.
+		Functional interface for the densely-connected layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.dense instead.
 		
 		This layer implements the operation:
 		`outputs = activation(inputs * kernel + bias)`
@@ -57,7 +61,11 @@ package tensorflow.python.layers.core;
 	static public function dense(inputs:Dynamic, units:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Applies Dropout to the input.
+		Applies Dropout to the input. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.dropout instead.
 		
 		Dropout consists in randomly setting a fraction `rate` of input units to 0
 		at each update during training time, which helps prevent overfitting.
@@ -90,11 +98,20 @@ package tensorflow.python.layers.core;
 	**/
 	static public function dropout(inputs:Dynamic, ?rate:Dynamic, ?noise_shape:Dynamic, ?seed:Dynamic, ?training:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Flattens an input tensor while preserving the batch axis (axis 0).
+		Flattens an input tensor while preserving the batch axis (axis 0). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.flatten instead.
 		
 		Arguments:
 		  inputs: Tensor input.
 		  name: The name of the layer (string).
+		  data_format: A string, one of `channels_last` (default) or `channels_first`.
+		    The ordering of the dimensions in the inputs.
+		    `channels_last` corresponds to inputs with shape
+		    `(batch, height, width, channels)` while `channels_first` corresponds to
+		    inputs with shape `(batch, channels, height, width)`.
 		
 		Returns:
 		  Reshaped tensor.
@@ -111,9 +128,13 @@ package tensorflow.python.layers.core;
 		  # now `y` has shape `(None, None)`
 		```
 	**/
-	static public function flatten(inputs:Dynamic, ?name:Dynamic):Dynamic;
+	static public function flatten(inputs:Dynamic, ?name:Dynamic, ?data_format:Dynamic):Dynamic;
 	/**
-		Functional interface for the densely-connected layer.
+		Functional interface for the densely-connected layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.dense instead.
 		
 		This layer implements the operation:
 		`outputs = activation(inputs * kernel + bias)`

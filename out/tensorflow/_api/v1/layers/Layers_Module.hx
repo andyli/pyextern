@@ -11,7 +11,11 @@ package tensorflow._api.v1.layers;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Average Pooling layer for 1D inputs.
+		Average Pooling layer for 1D inputs. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.average_pooling1d instead.
 		
 		Arguments:
 		  inputs: The tensor over which to pool. Must have rank 3.
@@ -36,7 +40,11 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function average_pooling1d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Average pooling layer for 2D inputs (e.g. images).
+		Average pooling layer for 2D inputs (e.g. images). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.average_pooling2d instead.
 		
 		Arguments:
 		  inputs: The tensor over which to pool. Must have rank 4.
@@ -65,7 +73,11 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function average_pooling2d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Average pooling layer for 3D inputs (e.g. volumes).
+		Average pooling layer for 3D inputs (e.g. volumes). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.average_pooling3d instead.
 		
 		Arguments:
 		  inputs: The tensor over which to pool. Must have rank 5.
@@ -96,7 +108,11 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function average_pooling3d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Functional interface for the batch normalization layer.
+		Functional interface for the batch normalization layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.batch_normalization instead.
 		
 		Reference: http://arxiv.org/abs/1502.03167
 		
@@ -107,10 +123,10 @@ package tensorflow._api.v1.layers;
 		
 		Note: when training, the moving_mean and moving_variance need to be updated.
 		By default the update ops are placed in `tf.GraphKeys.UPDATE_OPS`, so they
-		need to be added as a dependency to the `train_op`. Also, be sure to add
-		any batch_normalization ops before getting the update_ops collection.
-		Otherwise, update_ops will be empty, and training/inference will not work
-		properly. For example:
+		need to be executed alongside the `train_op`. Also, be sure to add any
+		batch_normalization ops before getting the update_ops collection. Otherwise,
+		update_ops will be empty, and training/inference will not work properly. For
+		example:
 		
 		```python
 		  x_norm = tf.layers.batch_normalization(x, training=training)
@@ -118,8 +134,8 @@ package tensorflow._api.v1.layers;
 		  # ...
 		
 		  update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
-		  with tf.control_dependencies(update_ops):
-		    train_op = optimizer.minimize(loss)
+		  train_op = optimizer.minimize(loss)
+		  train_op = tf.group([train_op, update_ops])
 		```
 		
 		Arguments:
@@ -201,7 +217,11 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function batch_normalization(inputs:Dynamic, ?axis:Dynamic, ?momentum:Dynamic, ?epsilon:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?beta_initializer:Dynamic, ?gamma_initializer:Dynamic, ?moving_mean_initializer:Dynamic, ?moving_variance_initializer:Dynamic, ?beta_regularizer:Dynamic, ?gamma_regularizer:Dynamic, ?beta_constraint:Dynamic, ?gamma_constraint:Dynamic, ?training:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic, ?renorm:Dynamic, ?renorm_clipping:Dynamic, ?renorm_momentum:Dynamic, ?fused:Dynamic, ?virtual_batch_size:Dynamic, ?adjustment:Dynamic):Dynamic;
 	/**
-		Functional interface for 1D convolution layer (e.g. temporal convolution).
+		Functional interface for 1D convolution layer (e.g. temporal convolution). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv1d instead.
 		
 		This layer creates a convolution kernel that is convolved
 		(actually cross-correlated) with the layer input to produce a tensor of
@@ -260,7 +280,11 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function conv1d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for the 2D convolution layer.
+		Functional interface for the 2D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv2d instead.
 		
 		This layer creates a convolution kernel that is convolved
 		(actually cross-correlated) with the layer input to produce a tensor of
@@ -326,7 +350,11 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function conv2d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for transposed 2D convolution layer.
+		Functional interface for transposed 2D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv2d_transpose instead.
 		
 		The need for transposed convolutions generally arises
 		from the desire to use a transformation going in the opposite direction
@@ -382,7 +410,11 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function conv2d_transpose(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for the 3D convolution layer.
+		Functional interface for the 3D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv3d instead.
 		
 		This layer creates a convolution kernel that is convolved
 		(actually cross-correlated) with the layer input to produce a tensor of
@@ -449,7 +481,11 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function conv3d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for transposed 3D convolution layer.
+		Functional interface for transposed 3D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.conv3d_transpose instead.
 		
 		Arguments:
 		  inputs: Input tensor.
@@ -499,7 +535,11 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function conv3d_transpose(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for the densely-connected layer.
+		Functional interface for the densely-connected layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.dense instead.
 		
 		This layer implements the operation:
 		`outputs = activation(inputs * kernel + bias)`
@@ -544,7 +584,11 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function dense(inputs:Dynamic, units:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?kernel_initializer:Dynamic, ?bias_initializer:Dynamic, ?kernel_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?kernel_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Applies Dropout to the input.
+		Applies Dropout to the input. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.dropout instead.
 		
 		Dropout consists in randomly setting a fraction `rate` of input units to 0
 		at each update during training time, which helps prevent overfitting.
@@ -577,11 +621,20 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function dropout(inputs:Dynamic, ?rate:Dynamic, ?noise_shape:Dynamic, ?seed:Dynamic, ?training:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Flattens an input tensor while preserving the batch axis (axis 0).
+		Flattens an input tensor while preserving the batch axis (axis 0). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.flatten instead.
 		
 		Arguments:
 		  inputs: Tensor input.
 		  name: The name of the layer (string).
+		  data_format: A string, one of `channels_last` (default) or `channels_first`.
+		    The ordering of the dimensions in the inputs.
+		    `channels_last` corresponds to inputs with shape
+		    `(batch, height, width, channels)` while `channels_first` corresponds to
+		    inputs with shape `(batch, channels, height, width)`.
 		
 		Returns:
 		  Reshaped tensor.
@@ -598,9 +651,13 @@ package tensorflow._api.v1.layers;
 		  # now `y` has shape `(None, None)`
 		```
 	**/
-	static public function flatten(inputs:Dynamic, ?name:Dynamic):Dynamic;
+	static public function flatten(inputs:Dynamic, ?name:Dynamic, ?data_format:Dynamic):Dynamic;
 	/**
-		Max Pooling layer for 1D inputs.
+		Max Pooling layer for 1D inputs. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.max_pooling1d instead.
 		
 		Arguments:
 		  inputs: The tensor over which to pool. Must have rank 3.
@@ -625,7 +682,11 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function max_pooling1d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Max pooling layer for 2D inputs (e.g. images).
+		Max pooling layer for 2D inputs (e.g. images). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.max_pooling2d instead.
 		
 		Arguments:
 		  inputs: The tensor over which to pool. Must have rank 4.
@@ -654,7 +715,11 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function max_pooling2d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Max pooling layer for 3D inputs (e.g. volumes).
+		Max pooling layer for 3D inputs (e.g. volumes). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.max_pooling3d instead.
 		
 		Arguments:
 		  inputs: The tensor over which to pool. Must have rank 5.
@@ -685,7 +750,11 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function max_pooling3d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Functional interface for the depthwise separable 1D convolution layer.
+		Functional interface for the depthwise separable 1D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.separable_conv1d instead.
 		
 		This layer performs a depthwise convolution that acts separately on
 		channels, followed by a pointwise convolution that mixes channels.
@@ -753,7 +822,11 @@ package tensorflow._api.v1.layers;
 	**/
 	static public function separable_conv1d(inputs:Dynamic, filters:Dynamic, kernel_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic, ?depth_multiplier:Dynamic, ?activation:Dynamic, ?use_bias:Dynamic, ?depthwise_initializer:Dynamic, ?pointwise_initializer:Dynamic, ?bias_initializer:Dynamic, ?depthwise_regularizer:Dynamic, ?pointwise_regularizer:Dynamic, ?bias_regularizer:Dynamic, ?activity_regularizer:Dynamic, ?depthwise_constraint:Dynamic, ?pointwise_constraint:Dynamic, ?bias_constraint:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
 	/**
-		Functional interface for the depthwise separable 2D convolution layer.
+		Functional interface for the depthwise separable 2D convolution layer. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use keras.layers.separable_conv2d instead.
 		
 		This layer performs a depthwise convolution that acts separately on
 		channels, followed by a pointwise convolution that mixes channels.

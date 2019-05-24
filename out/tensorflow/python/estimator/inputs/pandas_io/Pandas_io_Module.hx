@@ -2,6 +2,7 @@
 package tensorflow.python.estimator.inputs.pandas_io;
 @:pythonImport("tensorflow.python.estimator.inputs.pandas_io") extern class Pandas_io_Module {
 	static public var HAS_PANDAS : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

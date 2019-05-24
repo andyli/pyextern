@@ -38,6 +38,7 @@ package numpy.core.numeric;
 	static public var UFUNC_BUFSIZE_DEFAULT : Dynamic;
 	static public var UFUNC_PYVALS_NAME : Dynamic;
 	static public var WRAP : Dynamic;
+	static public var _UFUNC_API : Dynamic;
 	static public var _Unspecified : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -48,13 +49,63 @@ package numpy.core.numeric;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		add_ufunc_docstring(ufunc, new_docstring)
+		
+		Replace the docstring for a ufunc with new_docstring.
+		This method will only work if the current docstring for
+		the ufunc is NULL. (At the C level, i.e. when ufunc->doc is NULL.)
+		
+		Parameters
+		----------
+		ufunc : numpy.ufunc
+		    A ufunc whose current doc is NULL.
+		new_docstring : string
+		    The new docstring for the ufunc.
+		
+		Notes
+		-----
+		This method allocates memory for new_docstring on
+		the heap. Technically this creates a mempory leak, since this
+		memory will not be reclaimed until the end of the program
+		even if the ufunc itself is removed. However this will only
+		be a problem if the user is repeatedly creating ufuncs with
+		no documentation, adding documentation via add_newdoc_ufunc,
+		and then throwing away the ufunc.
+	**/
+	static public function _add_newdoc_ufunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _allclose_dispatcher(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Dynamic;
+	/**
+		_arg(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		DO NOT USE, ONLY FOR TESTING
+	**/
+	static public function _arg(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _argwhere_dispatcher(a:Dynamic):Dynamic;
+	static public function _array_equal_dispatcher(a1:Dynamic, a2:Dynamic):Dynamic;
+	static public function _array_equiv_dispatcher(a1:Dynamic, a2:Dynamic):Dynamic;
+	static public function _convolve_dispatcher(a:Dynamic, v:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function _correlate_dispatcher(a:Dynamic, v:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function _count_nonzero_dispatcher(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _cross_dispatcher(a:Dynamic, b:Dynamic, ?axisa:Dynamic, ?axisb:Dynamic, ?axisc:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var _errdict : Dynamic;
 	static public var _errdict_rev : Dynamic;
+	static public function _flatnonzero_dispatcher(a:Dynamic):Dynamic;
+	static public function _frombuffer(buf:Dynamic, dtype:Dynamic, shape:Dynamic, order:Dynamic):Dynamic;
+	static public function _full_like_dispatcher(a:Dynamic, fill_value:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):Dynamic;
+	static public function _isclose_dispatcher(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Dynamic;
 	static public function _maketup(descr:Dynamic, val:Dynamic):Dynamic;
 	static public function _mode_from_name(mode:Dynamic):Dynamic;
 	static public var _mode_from_name_dict : Dynamic;
 	static public function _move_axis_to_0(a:Dynamic, axis:Dynamic):Dynamic;
+	static public function _moveaxis_dispatcher(a:Dynamic, source:Dynamic, destination:Dynamic):Dynamic;
+	static public function _ones_like_dispatcher(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):Dynamic;
+	static public function _outer_dispatcher(a:Dynamic, b:Dynamic, ?out:Dynamic):Dynamic;
+	static public function _roll_dispatcher(a:Dynamic, shift:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _rollaxis_dispatcher(a:Dynamic, axis:Dynamic, ?start:Dynamic):Dynamic;
 	static public function _setdef():Dynamic;
+	static public function _tensordot_dispatcher(a:Dynamic, b:Dynamic, ?axes:Dynamic):Dynamic;
+	static public function _zeros_like_dispatcher(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):Dynamic;
 	/**
 		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -624,11 +675,10 @@ package numpy.core.numeric;
 		Values are generated within the half-open interval ``[start, stop)``
 		(in other words, the interval including `start` but excluding `stop`).
 		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
+		`range` function, but returns an ndarray rather than a list.
 		
 		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
+		be consistent.  It is better to use `numpy.linspace` for these cases.
 		
 		Parameters
 		----------
@@ -799,7 +849,7 @@ package numpy.core.numeric;
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
 		.. [2] Wikipedia, "Inverse hyperbolic function",
-		       http://en.wikipedia.org/wiki/Arccosh
+		       https://en.wikipedia.org/wiki/Arccosh
 		
 		Examples
 		--------
@@ -921,7 +971,7 @@ package numpy.core.numeric;
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
 		.. [2] Wikipedia, "Inverse hyperbolic function",
-		       http://en.wikipedia.org/wiki/Arcsinh
+		       https://en.wikipedia.org/wiki/Arcsinh
 		
 		Examples
 		--------
@@ -1146,7 +1196,7 @@ package numpy.core.numeric;
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
 		.. [2] Wikipedia, "Inverse hyperbolic function",
-		       http://en.wikipedia.org/wiki/Arctanh
+		       https://en.wikipedia.org/wiki/Arctanh
 		
 		Examples
 		--------
@@ -1187,10 +1237,10 @@ package numpy.core.numeric;
 		
 		Examples
 		--------
-		>>> a = np.arange(6).reshape(2,3)
+		>>> a = np.arange(6).reshape(2,3) + 10
 		>>> a
-		array([[0, 1, 2],
-		       [3, 4, 5]])
+		array([[10, 11, 12],
+		       [13, 14, 15]])
 		>>> np.argmax(a)
 		5
 		>>> np.argmax(a, axis=0)
@@ -1204,7 +1254,7 @@ package numpy.core.numeric;
 		>>> ind
 		(1, 2)
 		>>> a[ind]
-		5
+		15
 		
 		>>> b = np.arange(6)
 		>>> b[1] = 5
@@ -1247,10 +1297,10 @@ package numpy.core.numeric;
 		
 		Examples
 		--------
-		>>> a = np.arange(6).reshape(2,3)
+		>>> a = np.arange(6).reshape(2,3) + 10
 		>>> a
-		array([[0, 1, 2],
-		       [3, 4, 5]])
+		array([[10, 11, 12],
+		       [13, 14, 15]])
 		>>> np.argmin(a)
 		0
 		>>> np.argmin(a, axis=0)
@@ -1264,12 +1314,12 @@ package numpy.core.numeric;
 		>>> ind
 		(0, 0)
 		>>> a[ind]
-		0
+		10
 		
-		>>> b = np.arange(6)
-		>>> b[4] = 0
+		>>> b = np.arange(6) + 10
+		>>> b[4] = 10
 		>>> b
-		array([0, 1, 2, 3, 0, 5])
+		array([10, 11, 12, 13, 10, 15])
 		>>> np.argmin(b)  # Only the first occurrence is returned.
 		0
 	**/
@@ -1510,11 +1560,11 @@ package numpy.core.numeric;
 		
 		References
 		----------
-		.. [1] "Lecture Notes on the Status of  IEEE 754", William Kahan,
-		       http://www.cs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF
+		.. [1] "Lecture Notes on the Status of IEEE 754", William Kahan,
+		       https://people.eecs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF
 		.. [2] "How Futile are Mindless Assessments of
 		       Roundoff in Floating-Point Computation?", William Kahan,
-		       http://www.cs.berkeley.edu/~wkahan/Mindless.pdf
+		       https://people.eecs.berkeley.edu/~wkahan/Mindless.pdf
 		
 		Examples
 		--------
@@ -1669,6 +1719,8 @@ package numpy.core.numeric;
 		
 		    The output is left-padded by the length of the prefix string, and
 		    wrapping is forced at the column ``max_line_width - len(suffix)``.
+		    It should be noted that the content of prefix and suffix strings are
+		    not included in the output.
 		style : _NoValue, optional
 		    Has no effect, do not use.
 		
@@ -1842,6 +1894,7 @@ package numpy.core.numeric;
 		False
 	**/
 	static public function array_equiv(a1:Dynamic, a2:Dynamic):Bool;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	/**
 		Return the string representation of an array.
 		
@@ -2034,7 +2087,7 @@ package numpy.core.numeric;
 	**/
 	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
-		Return a contiguous array in memory (C order).
+		Return a contiguous array (ndim >= 1) in memory (C order).
 		
 		Parameters
 		----------
@@ -2064,10 +2117,13 @@ package numpy.core.numeric;
 		       [ 3.,  4.,  5.]], dtype=float32)
 		>>> x.flags['C_CONTIGUOUS']
 		True
+		
+		Note: This function returns an array with at least one-dimension (1-d) 
+		so it will not preserve 0-d arrays.  
 	**/
 	static public function ascontiguousarray(a:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
-		Return an array laid out in Fortran order in memory.
+		Return an array (ndim >= 1) laid out in Fortran order in memory.
 		
 		Parameters
 		----------
@@ -2097,6 +2153,9 @@ package numpy.core.numeric;
 		False
 		>>> y.flags['F_CONTIGUOUS']
 		True
+		
+		Note: This function returns an array with at least one-dimension (1-d) 
+		so it will not preserve 0-d arrays.  
 	**/
 	static public function asfortranarray(a:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
@@ -2186,7 +2245,7 @@ package numpy.core.numeric;
 		References
 		----------
 		.. [1] Wikipedia, "Two's complement",
-		    http://en.wikipedia.org/wiki/Two's_complement
+		    https://en.wikipedia.org/wiki/Two's_complement
 		
 		Examples
 		--------
@@ -2324,7 +2383,7 @@ package numpy.core.numeric;
 		References
 		----------
 		.. [1] Wikipedia, "Two's complement",
-		    http://en.wikipedia.org/wiki/Two's_complement
+		    https://en.wikipedia.org/wiki/Two's_complement
 		
 		Examples
 		--------
@@ -3000,6 +3059,40 @@ package numpy.core.numeric;
 		array([3, 4, 2, 3, 4, 5, 6, 7, 8, 8])
 	**/
 	static public function clip(a:Dynamic, a_min:Dynamic, a_max:Dynamic, ?out:Dynamic):numpy.Ndarray;
+	/**
+		compare_chararrays(a, b, cmp_op, rstrip)
+		
+		Performs element-wise comparison of two string arrays using the
+		comparison operator specified by `cmp_op`.
+		
+		Parameters
+		----------
+		a, b : array_like
+		    Arrays to be compared.
+		cmp_op : {"<", "<=", "==", ">=", ">", "!="}
+		    Type of comparison.
+		rstrip : Boolean
+		    If True, the spaces at the end of Strings are removed before the comparison.
+		
+		Returns
+		-------
+		out : ndarray
+		    The output array of type Boolean with the same shape as a and b.
+		
+		Raises
+		------
+		ValueError
+		    If `cmp_op` is not valid.
+		TypeError
+		    If at least one of `a` or `b` is a non-string array
+		
+		Examples
+		--------
+		>>> a = np.array(["a", "b", "cde"])
+		>>> b = np.array(["a", "a", "dec"])
+		>>> np.compare_chararrays(a, b, ">", True)
+		array([False,  True, False])
+	**/
 	static public function compare_chararrays(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return selected slices of an array along given axis.
@@ -3096,6 +3189,7 @@ package numpy.core.numeric;
 		hstack : Stack arrays in sequence horizontally (column wise)
 		vstack : Stack arrays in sequence vertically (row wise)
 		dstack : Stack arrays in sequence depth wise (along third dimension)
+		block : Assemble arrays from blocks.
 		
 		Notes
 		-----
@@ -3125,19 +3219,19 @@ package numpy.core.numeric;
 		>>> a[1] = np.ma.masked
 		>>> b = np.arange(2, 5)
 		>>> a
-		masked_array(data = [0 -- 2],
-		             mask = [False  True False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2],
+		             mask=[False,  True, False],
+		       fill_value=999999)
 		>>> b
 		array([2, 3, 4])
 		>>> np.concatenate([a, b])
-		masked_array(data = [0 1 2 2 3 4],
-		             mask = False,
-		       fill_value = 999999)
+		masked_array(data=[0, 1, 2, 2, 3, 4],
+		             mask=False,
+		       fill_value=999999)
 		>>> np.ma.concatenate([a, b])
-		masked_array(data = [0 -- 2 2 3 4],
-		             mask = [False  True False False False False],
-		       fill_value = 999999)
+		masked_array(data=[0, --, 2, 2, 3, 4],
+		             mask=[False,  True, False, False, False, False],
+		       fill_value=999999)
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3284,7 +3378,8 @@ package numpy.core.numeric;
 		
 		References
 		----------
-		.. [1] Wikipedia, "Convolution", http://en.wikipedia.org/wiki/Convolution.
+		.. [1] Wikipedia, "Convolution",
+		    https://en.wikipedia.org/wiki/Convolution
 		
 		Examples
 		--------
@@ -3501,7 +3596,7 @@ package numpy.core.numeric;
 		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3900,8 +3995,8 @@ package numpy.core.numeric;
 		
 		Get information about the step size of a date or time type.
 		
-		The returned tuple can be passed as the second argument of `datetime64` and
-		`timedelta64`.
+		The returned tuple can be passed as the second argument of `numpy.datetime64` and
+		`numpy.timedelta64`.
 		
 		Parameters
 		----------
@@ -3925,10 +4020,10 @@ package numpy.core.numeric;
 		array(250, dtype='timedelta64[s]')
 		
 		The result can be used to construct a datetime that uses the same units
-		as a timedelta::
+		as a timedelta
 		
 		>>> np.datetime64('2010', np.datetime_data(dt_25s))
-		numpy.datetime64('2010-01-01T00:00:00','25s')
+		numpy.datetime64('2010-01-01T00:00:00', '25s')
 	**/
 	static public function datetime_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4524,7 +4619,7 @@ package numpy.core.numeric;
 		References
 		----------
 		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
+		       https://en.wikipedia.org/wiki/Exponential_function
 		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
 		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
 		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
@@ -5469,7 +5564,7 @@ package numpy.core.numeric;
 		    The result of the call to `function` is passed back directly.
 		    Therefore the shape of `fromfunction` is completely determined by
 		    `function`.  If `function` returns a scalar value, the shape of
-		    `fromfunction` would match the `shape` parameter.
+		    `fromfunction` would not match the `shape` parameter.
 		
 		See Also
 		--------
@@ -6311,7 +6406,7 @@ package numpy.core.numeric;
 		References
 		----------
 		.. [1] Wikipedia, "Two's complement",
-		    http://en.wikipedia.org/wiki/Two's_complement
+		    https://en.wikipedia.org/wiki/Two's_complement
 		
 		Examples
 		--------
@@ -6714,6 +6809,8 @@ package numpy.core.numeric;
 		
 		Test element-wise for NaT (not a time) and return result as a boolean array.
 		
+		.. versionadded:: 1.13.0
+		
 		Parameters
 		----------
 		x : array_like
@@ -6763,10 +6860,46 @@ package numpy.core.numeric;
 		val : bool
 		    True if `num` is a scalar type, False if it is not.
 		
+		See Also
+		--------
+		ndim : Get the number of dimensions of an array
+		
+		Notes
+		-----
+		In almost all cases ``np.ndim(x) == 0`` should be used instead of this
+		function, as that will also return true for 0d arrays. This is how
+		numpy overloads functions in the style of the ``dx`` arguments to `gradient`
+		and the ``bins`` argument to `histogram`. Some key differences:
+		
+		+--------------------------------------+---------------+-------------------+
+		| x                                    |``isscalar(x)``|``np.ndim(x) == 0``|
+		+======================================+===============+===================+
+		| PEP 3141 numeric objects (including  | ``True``      | ``True``          |
+		| builtins)                            |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| builtin string and buffer objects    | ``True``      | ``True``          |
+		+--------------------------------------+---------------+-------------------+
+		| other builtin objects, like          | ``False``     | ``True``          |
+		| `pathlib.Path`, `Exception`,         |               |                   |
+		| the result of `re.compile`           |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| third-party objects like             | ``False``     | ``True``          |
+		| `matplotlib.figure.Figure`           |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| zero-dimensional numpy arrays        | ``False``     | ``True``          |
+		+--------------------------------------+---------------+-------------------+
+		| other numpy arrays                   | ``False``     | ``False``         |
+		+--------------------------------------+---------------+-------------------+
+		| `list`, `tuple`, and other sequence  | ``False``     | ``False``         |
+		| objects                              |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		
 		Examples
 		--------
 		>>> np.isscalar(3.1)
 		True
+		>>> np.isscalar(np.array(3.1))
+		False
 		>>> np.isscalar([3.1])
 		False
 		>>> np.isscalar(False)
@@ -7202,7 +7335,7 @@ package numpy.core.numeric;
 		----------
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+		.. [2] Wikipedia, "Logarithm". https://en.wikipedia.org/wiki/Logarithm
 		
 		Examples
 		--------
@@ -7261,7 +7394,7 @@ package numpy.core.numeric;
 		----------
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+		.. [2] Wikipedia, "Logarithm". https://en.wikipedia.org/wiki/Logarithm
 		
 		Examples
 		--------
@@ -7324,7 +7457,7 @@ package numpy.core.numeric;
 		----------
 		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
 		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+		.. [2] Wikipedia, "Logarithm". https://en.wikipedia.org/wiki/Logarithm
 		
 		Examples
 		--------
@@ -7685,9 +7818,48 @@ package numpy.core.numeric;
 	**/
 	static public function logical_xor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		matmul(a, b, out=None)
+		matmul(x1, x2, /, out=None, *, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Matrix product of two arrays.
+		
+		Parameters
+		----------
+		x1, x2 : array_like
+		    Input arrays, scalars not allowed.
+		out : ndarray, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that matches the signature `(n,k),(k,m)->(n,m)`. If not
+		    provided or `None`, a freshly-allocated array is returned.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		    ..versionadded:: 1.16
+		      Now handles ufunc kwargs
+		
+		Returns
+		-------
+		y : ndarray
+		    The matrix product of the inputs.
+		    This is a scalar only when both x1, x2 are 1-d vectors.
+		
+		Raises
+		------
+		ValueError
+		    If the last dimension of `a` is not the same size as
+		    the second-to-last dimension of `b`.
+		
+		    If a scalar value is passed in.
+		
+		See Also
+		--------
+		vdot : Complex-conjugating dot product.
+		tensordot : Sum products over arbitrary axes.
+		einsum : Einstein summation convention.
+		dot : alternative matrix product with different broadcasting rules.
+		
+		Notes
+		-----
 		
 		The behavior depends on the arguments in the following way.
 		
@@ -7702,61 +7874,20 @@ package numpy.core.numeric;
 		  appending a 1 to its dimensions. After matrix multiplication
 		  the appended 1 is removed.
 		
-		Multiplication by a scalar is not allowed, use ``*`` instead. Note that
-		multiplying a stack of matrices with a vector will result in a stack of
-		vectors, but matmul will not recognize it as such.
+		``matmul`` differs from ``dot`` in two important ways:
 		
-		``matmul`` differs from ``dot`` in two important ways.
-		
-		- Multiplication by scalars is not allowed.
+		- Multiplication by scalars is not allowed, use ``*`` instead.
 		- Stacks of matrices are broadcast together as if the matrices
-		  were elements.
+		  were elements, respecting the signature ``(n,k),(k,m)->(n,m)``:
 		
-		.. warning::
-		   This function is preliminary and included in NumPy 1.10.0 for testing
-		   and documentation. Its semantics will not change, but the number and
-		   order of the optional arguments will.
+		  >>> a = np.ones([9, 5, 7, 4])
+		  >>> c = np.ones([9, 5, 4, 3])
+		  >>> np.dot(a, c).shape
+		  (9, 5, 7, 9, 5, 3)
+		  >>> np.matmul(a, c).shape
+		  (9, 5, 7, 3)
+		  >>> # n is 7, k is 4, m is 3
 		
-		.. versionadded:: 1.10.0
-		
-		Parameters
-		----------
-		a : array_like
-		    First argument.
-		b : array_like
-		    Second argument.
-		out : ndarray, optional
-		    Output argument. This must have the exact kind that would be returned
-		    if it was not used. In particular, it must have the right type, must be
-		    C-contiguous, and its dtype must be the dtype that would be returned
-		    for `dot(a,b)`. This is a performance feature. Therefore, if these
-		    conditions are not met, an exception is raised, instead of attempting
-		    to be flexible.
-		
-		Returns
-		-------
-		output : ndarray
-		    Returns the dot product of `a` and `b`.  If `a` and `b` are both
-		    1-D arrays then a scalar is returned; otherwise an array is
-		    returned.  If `out` is given, then it is returned.
-		
-		Raises
-		------
-		ValueError
-		    If the last dimension of `a` is not the same size as
-		    the second-to-last dimension of `b`.
-		
-		    If scalar value is passed.
-		
-		See Also
-		--------
-		vdot : Complex-conjugating dot product.
-		tensordot : Sum products over arbitrary axes.
-		einsum : Einstein summation convention.
-		dot : alternative matrix product with different broadcasting rules.
-		
-		Notes
-		-----
 		The matmul function implements the semantics of the `@` operator introduced
 		in Python 3.5 following PEP465.
 		
@@ -7764,16 +7895,19 @@ package numpy.core.numeric;
 		--------
 		For 2-D arrays it is the matrix product:
 		
-		>>> a = [[1, 0], [0, 1]]
-		>>> b = [[4, 1], [2, 2]]
+		>>> a = np.array([[1, 0],
+		...               [0, 1]])
+		>>> b = np.array([[4, 1],
+		...               [2, 2]]
 		>>> np.matmul(a, b)
 		array([[4, 1],
 		       [2, 2]])
 		
 		For 2-D mixed with 1-D, the result is the usual.
 		
-		>>> a = [[1, 0], [0, 1]]
-		>>> b = [1, 2]
+		>>> a = np.array([[1, 0],
+		...               [0, 1]]
+		>>> b = np.array([1, 2])
 		>>> np.matmul(a, b)
 		array([1, 2])
 		>>> np.matmul(b, a)
@@ -7782,13 +7916,13 @@ package numpy.core.numeric;
 		
 		Broadcasting is conventional for stacks of arrays
 		
-		>>> a = np.arange(2*2*4).reshape((2,2,4))
-		>>> b = np.arange(2*2*4).reshape((2,4,2))
+		>>> a = np.arange(2 * 2 * 4).reshape((2, 2, 4))
+		>>> b = np.arange(2 * 2 * 4).reshape((2, 4, 2))
 		>>> np.matmul(a,b).shape
 		(2, 2, 2)
-		>>> np.matmul(a,b)[0,1,1]
+		>>> np.matmul(a, b)[0, 1, 1]
 		98
-		>>> sum(a[0,1,:] * b[0,:,1])
+		>>> sum(a[0, 1, :] * b[0 , :, 1])
 		98
 		
 		Vector, vector returns the scalar inner product, but neither argument
@@ -7802,7 +7936,9 @@ package numpy.core.numeric;
 		>>> np.matmul([1,2], 3)
 		Traceback (most recent call last):
 		...
-		ValueError: Scalar operands are not allowed, use '*' instead
+		ValueError: matmul: Input operand 1 does not have enough dimensions ...
+		
+		.. versionadded:: 1.10.0
 	**/
 	static public function matmul(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -8338,8 +8474,7 @@ package numpy.core.numeric;
 		Returns
 		-------
 		y : ndarray
-		    The product of `x1` and `x2`, element-wise. Returns a scalar if
-		    both `x1` and `x2` are scalars.
+		    The product of `x1` and `x2`, element-wise.
 		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
@@ -8562,16 +8697,16 @@ package numpy.core.numeric;
 		
 		Examples
 		--------
-		>>> x = np.array([[1,0,0], [0,2,0], [1,1,0]])
+		>>> x = np.array([[3, 0, 0], [0, 4, 0], [5, 6, 0]])
 		>>> x
-		array([[1, 0, 0],
-		       [0, 2, 0],
-		       [1, 1, 0]])
+		array([[3, 0, 0],
+		       [0, 4, 0],
+		       [5, 6, 0]])
 		>>> np.nonzero(x)
 		(array([0, 1, 2, 2]), array([0, 1, 0, 1]))
 		
 		>>> x[np.nonzero(x)]
-		array([1, 2, 1, 1])
+		array([3, 4, 5, 6])
 		>>> np.transpose(np.nonzero(x))
 		array([[0, 0],
 		       [1, 1],
@@ -8583,7 +8718,7 @@ package numpy.core.numeric;
 		boolean array and since False is interpreted as 0, np.nonzero(a > 3)
 		yields the indices of the `a` where the condition is true.
 		
-		>>> a = np.array([[1,2,3],[4,5,6],[7,8,9]])
+		>>> a = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 		>>> a > 3
 		array([[False, False, False],
 		       [ True,  True,  True],
@@ -8591,7 +8726,14 @@ package numpy.core.numeric;
 		>>> np.nonzero(a > 3)
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 		
-		The ``nonzero`` method of the boolean array can also be called.
+		Using this result to index `a` is equivalent to using the mask directly:
+		
+		>>> a[np.nonzero(a > 3)]
+		array([4, 5, 6, 7, 8, 9])
+		>>> a[a > 3]  # prefer this spelling
+		array([4, 5, 6, 7, 8, 9])
+		
+		``nonzero`` can also be called as a method of the array.
 		
 		>>> (a > 3).nonzero()
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
@@ -9996,6 +10138,16 @@ package numpy.core.numeric;
 		--------
 		ndarray.resize : resize an array in-place.
 		
+		Notes
+		-----
+		Warning: This functionality does **not** consider axes separately,
+		i.e. it does not apply interpolation/extrapolation.
+		It fills the return array with the required number of elements, taken
+		from `a` as they are laid out in memory, disregarding strides and axes.
+		(This is in case the new shape is smaller. For larger, see above.)
+		This functionality is therefore not suitable to resize images,
+		or data where each axis represents a separate and distinct entity.
+		
 		Examples
 		--------
 		>>> a=np.array([[0,1],[2,3]])
@@ -10269,11 +10421,9 @@ package numpy.core.numeric;
 	/**
 		Round an array to the given number of decimals.
 		
-		Refer to `around` for full documentation.
-		
 		See Also
 		--------
-		around : equivalent function
+		around : equivalent function; see for details.
 	**/
 	static public function round_(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -10386,9 +10536,27 @@ package numpy.core.numeric;
 	**/
 	static public function searchsorted(a:Dynamic, v:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
+	/**
 		set_numeric_ops(op1=func1, op2=func2, ...)
 		
 		Set numerical operators for array objects.
+		
+		.. deprecated:: 1.16
+		
+		    For the general case, use :c:func:`PyUFunc_ReplaceLoopBySignature`.
+		    For ndarray subclasses, define the ``__array_ufunc__`` method and
+		    override the relevant ufunc.
 		
 		Parameters
 		----------
@@ -10673,7 +10841,7 @@ package numpy.core.numeric;
 		- Invalid operation: result is not an expressible number, typically
 		  indicates that a NaN was produced.
 		
-		.. [1] http://en.wikipedia.org/wiki/IEEE_754
+		.. [1] https://en.wikipedia.org/wiki/IEEE_754
 		
 		Examples
 		--------
@@ -11128,7 +11296,7 @@ package numpy.core.numeric;
 		>>> np.sinh(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function sinh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -11902,7 +12070,7 @@ package numpy.core.numeric;
 		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function tan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -11946,7 +12114,7 @@ package numpy.core.numeric;
 		       http://www.math.sfu.ca/~cbm/aands/
 		
 		.. [2] Wikipedia, "Hyperbolic function",
-		       http://en.wikipedia.org/wiki/Hyperbolic_function
+		       https://en.wikipedia.org/wiki/Hyperbolic_function
 		
 		Examples
 		--------
@@ -11963,7 +12131,7 @@ package numpy.core.numeric;
 		>>> np.tanh(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function tanh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -12455,70 +12623,72 @@ package numpy.core.numeric;
 	/**
 		where(condition, [x, y])
 		
-		Return elements, either from `x` or `y`, depending on `condition`.
+		Return elements chosen from `x` or `y` depending on `condition`.
 		
-		If only `condition` is given, return ``condition.nonzero()``.
+		.. note::
+		    When only `condition` is provided, this function is a shorthand for
+		    ``np.asarray(condition).nonzero()``. Using `nonzero` directly should be
+		    preferred, as it behaves correctly for subclasses. The rest of this
+		    documentation covers only the case where all three arguments are
+		    provided.
 		
 		Parameters
 		----------
 		condition : array_like, bool
-		    When True, yield `x`, otherwise yield `y`.
-		x, y : array_like, optional
+		    Where True, yield `x`, otherwise yield `y`.
+		x, y : array_like
 		    Values from which to choose. `x`, `y` and `condition` need to be
 		    broadcastable to some shape.
 		
 		Returns
 		-------
-		out : ndarray or tuple of ndarrays
-		    If both `x` and `y` are specified, the output array contains
-		    elements of `x` where `condition` is True, and elements from
-		    `y` elsewhere.
-		
-		    If only `condition` is given, return the tuple
-		    ``condition.nonzero()``, the indices where `condition` is True.
+		out : ndarray
+		    An array with elements from `x` where `condition` is True, and elements
+		    from `y` elsewhere.
 		
 		See Also
 		--------
-		nonzero, choose
+		choose
+		nonzero : The function that is called when x and y are omitted
 		
 		Notes
 		-----
-		If `x` and `y` are given and input arrays are 1-D, `where` is
-		equivalent to::
+		If all the arrays are 1-D, `where` is equivalent to::
 		
-		    [xv if c else yv for (c,xv,yv) in zip(condition,x,y)]
+		    [xv if c else yv
+		     for c, xv, yv in zip(condition, x, y)]
 		
 		Examples
 		--------
+		>>> a = np.arange(10)
+		>>> a
+		array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+		>>> np.where(a < 5, a, 10*a)
+		array([ 0,  1,  2,  3,  4, 50, 60, 70, 80, 90])
+		
+		This can be used on multidimensional arrays too:
+		
 		>>> np.where([[True, False], [True, True]],
 		...          [[1, 2], [3, 4]],
 		...          [[9, 8], [7, 6]])
 		array([[1, 8],
 		       [3, 4]])
 		
-		>>> np.where([[0, 1], [1, 0]])
-		(array([0, 1]), array([1, 0]))
+		The shapes of x, y, and the condition are broadcast together:
 		
-		>>> x = np.arange(9.).reshape(3, 3)
-		>>> np.where( x > 5 )
-		(array([2, 2, 2]), array([0, 1, 2]))
-		>>> x[np.where( x > 3.0 )]               # Note: result is 1D.
-		array([ 4.,  5.,  6.,  7.,  8.])
-		>>> np.where(x < 5, x, -1)               # Note: broadcasting.
-		array([[ 0.,  1.,  2.],
-		       [ 3.,  4., -1.],
-		       [-1., -1., -1.]])
+		>>> x, y = np.ogrid[:3, :4]
+		>>> np.where(x < y, x, 10 + y)  # both x and 10+y are broadcast
+		array([[10,  0,  0,  0],
+		       [10, 11,  1,  1],
+		       [10, 11, 12,  2]])
 		
-		Find the indices of elements of `x` that are in `goodvalues`.
-		
-		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.isin(x, goodvalues)
-		>>> ix
-		array([[False, False, False],
-		       [ True,  True, False],
-		       [False,  True, False]])
-		>>> np.where(ix)
-		(array([1, 1, 2]), array([0, 1, 1]))
+		>>> a = np.array([[0, 1, 2],
+		...               [0, 2, 4],
+		...               [0, 3, 6]])
+		>>> np.where(a < 4, a, -1)  # -1 is broadcast
+		array([[ 0,  1,  2],
+		       [ 0,  2, -1],
+		       [ 0,  3, -1]])
 	**/
 	static public function where(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

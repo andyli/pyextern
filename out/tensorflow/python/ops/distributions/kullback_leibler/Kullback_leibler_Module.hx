@@ -17,7 +17,11 @@ package tensorflow.python.ops.distributions.kullback_leibler;
 	static public function _registered_kl(type_a:Dynamic, type_b:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Computes the (Shannon) cross entropy.
+		Computes the (Shannon) cross entropy. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		Denote two distributions by `P` (`ref`) and `Q` (`other`). Assuming `P, Q`
 		are absolutely continuous with respect to one another and permit densities
@@ -45,7 +49,11 @@ package tensorflow.python.ops.distributions.kullback_leibler;
 	static public function cross_entropy(ref:Dynamic, other:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Get the KL-divergence KL(distribution_a || distribution_b).
+		Get the KL-divergence KL(distribution_a || distribution_b). (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		If there is no KL method registered specifically for `type(distribution_a)`
 		and `type(distribution_b)`, then the class hierarchies of these types are

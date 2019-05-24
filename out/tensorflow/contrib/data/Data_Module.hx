@@ -5,7 +5,7 @@ package tensorflow.contrib.data;
 	/**
 		Creates a `Dataset` that counts from `start` in steps of size `step`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.Counter(...)`.
 		
@@ -64,7 +64,7 @@ package tensorflow.contrib.data;
 	/**
 		A batching transformation that omits the final small batch (if present). (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.Dataset.batch(..., drop_remainder=True)`.
 		
@@ -98,7 +98,7 @@ package tensorflow.contrib.data;
 	/**
 		A transformation that buckets elements in a `Dataset` by length. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.bucket_by_sequence_length(...)`.
 		
@@ -141,7 +141,7 @@ package tensorflow.contrib.data;
 	/**
 		Creates a dataset that deterministically chooses elements from `datasets`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.choose_from_datasets(...)`.
 		
@@ -181,7 +181,7 @@ package tensorflow.contrib.data;
 	/**
 		A transformation that copies dataset elements to the given `target_device`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.copy_to_device(...)`.
 		
@@ -197,7 +197,7 @@ package tensorflow.contrib.data;
 	/**
 		A transformation that batches ragged elements into `tf.SparseTensor`s. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.dense_to_sparse_batch(...)`.
 		
@@ -244,7 +244,7 @@ package tensorflow.contrib.data;
 	/**
 		A transformation that enumerate the elements of a dataset. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.enumerate_dataset(...)`.
 		
@@ -289,7 +289,7 @@ package tensorflow.contrib.data;
 	/**
 		Returns the single element in `dataset` as a nested structure of tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.get_single_element(...)`.
 		
@@ -329,7 +329,7 @@ package tensorflow.contrib.data;
 	/**
 		A transformation that groups elements and performs a reduction. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.group_by_reducer(...)`.
 		
@@ -355,7 +355,7 @@ package tensorflow.contrib.data;
 	/**
 		A transformation that groups windows of elements by key and reduces them. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.group_by_window(...)`.
 		
@@ -395,7 +395,7 @@ package tensorflow.contrib.data;
 	/**
 		Creates a `Dataset` from another `Dataset` and silently ignores any errors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.ignore_errors()`.
 		
@@ -422,7 +422,7 @@ package tensorflow.contrib.data;
 	/**
 		Returns a `Dataset` of feature dictionaries from `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.make_batched_features_dataset(...)`.
 		
@@ -517,7 +517,7 @@ package tensorflow.contrib.data;
 	/**
 		Reads CSV files into a dataset. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.make_csv_dataset(...)`.
 		
@@ -606,7 +606,7 @@ package tensorflow.contrib.data;
 	/**
 		Returns a SaveableObject for saving/restore iterator state using Saver. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.make_saveable_from_iterator(...)`.
 		
@@ -646,7 +646,7 @@ package tensorflow.contrib.data;
 	/**
 		Fused implementation of `map` and `batch`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.map_and_batch(...)`.
 		
@@ -687,7 +687,7 @@ package tensorflow.contrib.data;
 	/**
 		A batching and padding transformation that omits the final small batch. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.Dataset.padded_batch(..., drop_remainder=True)`.
 		
@@ -715,7 +715,7 @@ package tensorflow.contrib.data;
 	/**
 		A parallel version of the `Dataset.interleave()` transformation. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.parallel_interleave(...)`.
 		
@@ -764,7 +764,7 @@ package tensorflow.contrib.data;
 	/**
 		A transformation that parses `Example` protos into a `dict` of tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.parse_example_dataset(...)`.
 		
@@ -796,7 +796,7 @@ package tensorflow.contrib.data;
 	/**
 		A transformation that prefetches dataset values to the given `device`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.prefetch_to_device(...)`.
 		
@@ -816,7 +816,7 @@ package tensorflow.contrib.data;
 	/**
 		Reads batches of Examples. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.make_batched_features_dataset(...)`
 		
@@ -883,7 +883,7 @@ package tensorflow.contrib.data;
 	/**
 		Returns the result of reducing the `dataset` using `reducer`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.Dataset.reduce(...)`.
 		
@@ -902,7 +902,7 @@ package tensorflow.contrib.data;
 	/**
 		A transformation that resamples a dataset to achieve a target distribution. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.rejection_resample(...)`.
 		
@@ -926,7 +926,7 @@ package tensorflow.contrib.data;
 	/**
 		Samples elements at random from the datasets in `datasets`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.sample_from_datasets(...)`.
 		
@@ -954,7 +954,7 @@ package tensorflow.contrib.data;
 	/**
 		A transformation that scans a function across an input dataset. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.scan(...)`.
 		
@@ -979,7 +979,7 @@ package tensorflow.contrib.data;
 	/**
 		Shuffles and repeats a Dataset returning a new permutation for each epoch. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.shuffle_and_repeat(...)`.
 		
@@ -1012,11 +1012,11 @@ package tensorflow.contrib.data;
 	/**
 		A sliding window over a dataset. (deprecated) (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(stride)`. They will be removed in a future version.
 		Instructions for updating:
 		stride is deprecated, use window_shift instead
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.Dataset.window(size=window_size, shift=window_shift, stride=window_stride).flat_map(lambda x: x.batch(window.size))` instead.
 		
@@ -1065,7 +1065,7 @@ package tensorflow.contrib.data;
 	/**
 		A non-deterministic version of the `Dataset.interleave()` transformation. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.contrib.data.parallel_interleave(..., sloppy=True)`.
 		
@@ -1119,7 +1119,7 @@ package tensorflow.contrib.data;
 	/**
 		Splits elements of a dataset into multiple elements on the batch dimension. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.unbatch()`.
 		
@@ -1145,7 +1145,7 @@ package tensorflow.contrib.data;
 	/**
 		Creates a `Dataset` from another `Dataset`, discarding duplicates. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.unique()`.
 		

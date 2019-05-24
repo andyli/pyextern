@@ -1,7 +1,8 @@
 /* This file is generated, do not edit! */
 package scipy.optimize.minpack;
 @:pythonImport("scipy.optimize.minpack") extern class Minpack_Module {
-	static public var _MINPACK_LOCK : Dynamic;
+	static public var LEASTSQ_FAILURE : Dynamic;
+	static public var LEASTSQ_SUCCESS : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -504,15 +505,17 @@ package scipy.optimize.minpack;
 		    The model function, f(x, ...).  It must take the independent
 		    variable as the first argument and the parameters to fit as
 		    separate remaining arguments.
-		xdata : An M-length sequence or an (k,M)-shaped array for functions with k predictors
+		xdata : array_like
 		    The independent variable where the data is measured.
-		ydata : M-length sequence
-		    The dependent data --- nominally f(xdata, ...)
-		p0 : None, scalar, or N-length sequence, optional
-		    Initial guess for the parameters.  If None, then the initial
-		    values will all be 1 (if the number of parameters for the function
-		    can be determined using introspection, otherwise a ValueError
-		    is raised).
+		    Must be an M-length sequence or an (k,M)-shaped array for functions
+		    with k predictors.
+		ydata : array_like
+		    The dependent data, a length M array - nominally ``f(xdata, ...)``.
+		p0 : array_like, optional
+		    Initial guess for the parameters (length N).  If None, then the
+		    initial values will all be 1 (if the number of parameters for the
+		    function can be determined using introspection, otherwise a
+		    ValueError is raised).
 		sigma : None or M-length sequence or MxM array, optional
 		    Determines the uncertainty in `ydata`. If we define residuals as
 		    ``r = ydata - f(xdata, *popt)``, then the interpretation of `sigma`
@@ -622,7 +625,6 @@ package scipy.optimize.minpack;
 		
 		Examples
 		--------
-		>>> import numpy as np
 		>>> import matplotlib.pyplot as plt
 		>>> from scipy.optimize import curve_fit
 		
@@ -909,7 +911,7 @@ package scipy.optimize.minpack;
 		See Also
 		--------
 		root : Interface to root finding algorithms for multivariate
-		functions. See the 'hybr' `method` in particular.
+		       functions. See the ``method=='hybr'`` in particular.
 		
 		Notes
 		-----
@@ -978,10 +980,46 @@ package scipy.optimize.minpack;
 		val : bool
 		    True if `num` is a scalar type, False if it is not.
 		
+		See Also
+		--------
+		ndim : Get the number of dimensions of an array
+		
+		Notes
+		-----
+		In almost all cases ``np.ndim(x) == 0`` should be used instead of this
+		function, as that will also return true for 0d arrays. This is how
+		numpy overloads functions in the style of the ``dx`` arguments to `gradient`
+		and the ``bins`` argument to `histogram`. Some key differences:
+		
+		+--------------------------------------+---------------+-------------------+
+		| x                                    |``isscalar(x)``|``np.ndim(x) == 0``|
+		+======================================+===============+===================+
+		| PEP 3141 numeric objects (including  | ``True``      | ``True``          |
+		| builtins)                            |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| builtin string and buffer objects    | ``True``      | ``True``          |
+		+--------------------------------------+---------------+-------------------+
+		| other builtin objects, like          | ``False``     | ``True``          |
+		| `pathlib.Path`, `Exception`,         |               |                   |
+		| the result of `re.compile`           |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| third-party objects like             | ``False``     | ``True``          |
+		| `matplotlib.figure.Figure`           |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		| zero-dimensional numpy arrays        | ``False``     | ``True``          |
+		+--------------------------------------+---------------+-------------------+
+		| other numpy arrays                   | ``False``     | ``False``         |
+		+--------------------------------------+---------------+-------------------+
+		| `list`, `tuple`, and other sequence  | ``False``     | ``False``         |
+		| objects                              |               |                   |
+		+--------------------------------------+---------------+-------------------+
+		
 		Examples
 		--------
 		>>> np.isscalar(3.1)
 		True
+		>>> np.isscalar(np.array(3.1))
+		False
 		>>> np.isscalar([3.1])
 		False
 		>>> np.isscalar(False)
@@ -1056,15 +1094,14 @@ package scipy.optimize.minpack;
 		    element (i, j) is the partial derivative of f[i] with respect to
 		    x[j]). The keywords select a finite difference scheme for numerical
 		    estimation. The scheme '3-point' is more accurate, but requires
-		    twice as much operations compared to '2-point' (default). The
-		    scheme 'cs' uses complex steps, and while potentially the most
-		    accurate, it is applicable only when `fun` correctly handles
-		    complex inputs and can be analytically continued to the complex
-		    plane. Method 'lm' always uses the '2-point' scheme. If callable,
-		    it is used as ``jac(x, *args, **kwargs)`` and should return a
-		    good approximation (or the exact value) for the Jacobian as an
-		    array_like (np.atleast_2d is applied), a sparse matrix or a
-		    `scipy.sparse.linalg.LinearOperator`.
+		    twice as many operations as '2-point' (default). The scheme 'cs'
+		    uses complex steps, and while potentially the most accurate, it is
+		    applicable only when `fun` correctly handles complex inputs and
+		    can be analytically continued to the complex plane. Method 'lm'
+		    always uses the '2-point' scheme. If callable, it is used as
+		    ``jac(x, *args, **kwargs)`` and should return a good approximation
+		    (or the exact value) for the Jacobian as an array_like (np.atleast_2d
+		    is applied), a sparse matrix or a `scipy.sparse.linalg.LinearOperator`.
 		bounds : 2-tuple of array_like, optional
 		    Lower and upper bounds on independent variables. Defaults to no bounds.
 		    Each array must match the size of `x0` or be a scalar, in the latter
@@ -1083,12 +1120,13 @@ package scipy.optimize.minpack;
 		          efficient method for small unconstrained problems.
 		
 		    Default is 'trf'. See Notes for more information.
-		ftol : float, optional
+		ftol : float or None, optional
 		    Tolerance for termination by the change of the cost function. Default
 		    is 1e-8. The optimization process is stopped when  ``dF < ftol * F``,
 		    and there was an adequate agreement between a local quadratic model and
-		    the true model in the last step.
-		xtol : float, optional
+		    the true model in the last step. If None, the termination by this
+		    condition is disabled.
+		xtol : float or None, optional
 		    Tolerance for termination by the change of the independent variables.
 		    Default is 1e-8. The exact condition depends on the `method` used:
 		
@@ -1097,7 +1135,8 @@ package scipy.optimize.minpack;
 		          a trust-region radius and ``xs`` is the value of ``x``
 		          scaled according to `x_scale` parameter (see below).
 		
-		gtol : float, optional
+		    If None, the termination by this condition is disabled.
+		gtol : float or None, optional
 		    Tolerance for termination by the norm of the gradient. Default is 1e-8.
 		    The exact condition depends on a `method` used:
 		
@@ -1111,6 +1150,7 @@ package scipy.optimize.minpack;
 		          between columns of the Jacobian and the residual vector is less
 		          than `gtol`, or the residual vector is zero.
 		
+		    If None, the termination by this condition is disabled.
 		x_scale : array_like or 'jac', optional
 		    Characteristic scale of each variable. Setting `x_scale` is equivalent
 		    to reformulating the problem in scaled variables ``xs = x / x_scale``.
@@ -1581,14 +1621,13 @@ package scipy.optimize.minpack;
 		    The solution (or the result of the last iteration for an unsuccessful
 		    call).
 		cov_x : ndarray
-		    Uses the fjac and ipvt optional outputs to construct an
-		    estimate of the jacobian around the solution. None if a
-		    singular matrix encountered (indicates very flat curvature in
-		    some direction).  This matrix must be multiplied by the
-		    residual variance to get the covariance of the
-		    parameter estimates -- see curve_fit.
+		    The inverse of the Hessian. `fjac` and `ipvt` are used to construct an
+		    estimate of the Hessian. A value of None indicates a singular matrix,
+		    which means the curvature in parameters `x` is numerically flat. To
+		    obtain the covariance matrix of the parameters `x`, `cov_x` must be
+		    multiplied by the variance of the residuals -- see curve_fit.
 		infodict : dict
-		    a dictionary of optional outputs with the key s:
+		    a dictionary of optional outputs with the keys:
 		
 		    ``nfev``
 		        The number of function calls
@@ -1650,11 +1689,109 @@ package scipy.optimize.minpack;
 	/**
 		Return the product of array elements over a given axis.
 		
+		Parameters
+		----------
+		a : array_like
+		    Input data.
+		axis : None or int or tuple of ints, optional
+		    Axis or axes along which a product is performed.  The default,
+		    axis=None, will calculate the product of all the elements in the
+		    input array. If axis is negative it counts from the last to the
+		    first axis.
+		
+		    .. versionadded:: 1.7.0
+		
+		    If axis is a tuple of ints, a product is performed on all of the
+		    axes specified in the tuple instead of a single axis or all the
+		    axes as before.
+		dtype : dtype, optional
+		    The type of the returned array, as well as of the accumulator in
+		    which the elements are multiplied.  The dtype of `a` is used by
+		    default unless `a` has an integer dtype of less precision than the
+		    default platform integer.  In that case, if `a` is signed then the
+		    platform integer is used while if `a` is unsigned then an unsigned
+		    integer of the same precision as the platform integer is used.
+		out : ndarray, optional
+		    Alternative output array in which to place the result. It must have
+		    the same shape as the expected output, but the type of the output
+		    values will be cast if necessary.
+		keepdims : bool, optional
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the input array.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `prod` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-class' method does not implement `keepdims` any
+		    exceptions will be raised.
+		initial : scalar, optional
+		    The starting value for this product. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
+		
+		Returns
+		-------
+		product_along_axis : ndarray, see `dtype` parameter above.
+		    An array shaped as `a` but with the specified axis removed.
+		    Returns a reference to `out` if specified.
+		
 		See Also
 		--------
-		prod : equivalent function; see for details.
+		ndarray.prod : equivalent method
+		numpy.doc.ufuncs : Section "Output arguments"
+		
+		Notes
+		-----
+		Arithmetic is modular when using integer types, and no error is
+		raised on overflow.  That means that, on a 32-bit platform:
+		
+		>>> x = np.array([536870910, 536870910, 536870910, 536870910])
+		>>> np.prod(x)  # random
+		16
+		
+		The product of an empty array is the neutral element 1:
+		
+		>>> np.prod([])
+		1.0
+		
+		Examples
+		--------
+		By default, calculate the product of all elements:
+		
+		>>> np.prod([1.,2.])
+		2.0
+		
+		Even when the input array is two-dimensional:
+		
+		>>> np.prod([[1.,2.],[3.,4.]])
+		24.0
+		
+		But we can also specify the axis over which to multiply:
+		
+		>>> np.prod([[1.,2.],[3.,4.]], axis=1)
+		array([  2.,  12.])
+		
+		If the type of `x` is unsigned, then the output type is
+		the unsigned platform integer:
+		
+		>>> x = np.array([1, 2, 3], dtype=np.uint8)
+		>>> np.prod(x).dtype == np.uint
+		True
+		
+		If `x` is of a signed integer type, then the output type
+		is the default platform integer:
+		
+		>>> x = np.array([1, 2, 3], dtype=np.int8)
+		>>> np.prod(x).dtype == int
+		True
+		
+		You can also start the product with a value other than one:
+		
+		>>> np.prod([1, 2], initial=5)
+		10
 	**/
-	static public function product(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function prod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		Return the shape of an array.
 		
@@ -2012,70 +2149,72 @@ package scipy.optimize.minpack;
 	/**
 		where(condition, [x, y])
 		
-		Return elements, either from `x` or `y`, depending on `condition`.
+		Return elements chosen from `x` or `y` depending on `condition`.
 		
-		If only `condition` is given, return ``condition.nonzero()``.
+		.. note::
+		    When only `condition` is provided, this function is a shorthand for
+		    ``np.asarray(condition).nonzero()``. Using `nonzero` directly should be
+		    preferred, as it behaves correctly for subclasses. The rest of this
+		    documentation covers only the case where all three arguments are
+		    provided.
 		
 		Parameters
 		----------
 		condition : array_like, bool
-		    When True, yield `x`, otherwise yield `y`.
-		x, y : array_like, optional
+		    Where True, yield `x`, otherwise yield `y`.
+		x, y : array_like
 		    Values from which to choose. `x`, `y` and `condition` need to be
 		    broadcastable to some shape.
 		
 		Returns
 		-------
-		out : ndarray or tuple of ndarrays
-		    If both `x` and `y` are specified, the output array contains
-		    elements of `x` where `condition` is True, and elements from
-		    `y` elsewhere.
-		
-		    If only `condition` is given, return the tuple
-		    ``condition.nonzero()``, the indices where `condition` is True.
+		out : ndarray
+		    An array with elements from `x` where `condition` is True, and elements
+		    from `y` elsewhere.
 		
 		See Also
 		--------
-		nonzero, choose
+		choose
+		nonzero : The function that is called when x and y are omitted
 		
 		Notes
 		-----
-		If `x` and `y` are given and input arrays are 1-D, `where` is
-		equivalent to::
+		If all the arrays are 1-D, `where` is equivalent to::
 		
-		    [xv if c else yv for (c,xv,yv) in zip(condition,x,y)]
+		    [xv if c else yv
+		     for c, xv, yv in zip(condition, x, y)]
 		
 		Examples
 		--------
+		>>> a = np.arange(10)
+		>>> a
+		array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+		>>> np.where(a < 5, a, 10*a)
+		array([ 0,  1,  2,  3,  4, 50, 60, 70, 80, 90])
+		
+		This can be used on multidimensional arrays too:
+		
 		>>> np.where([[True, False], [True, True]],
 		...          [[1, 2], [3, 4]],
 		...          [[9, 8], [7, 6]])
 		array([[1, 8],
 		       [3, 4]])
 		
-		>>> np.where([[0, 1], [1, 0]])
-		(array([0, 1]), array([1, 0]))
+		The shapes of x, y, and the condition are broadcast together:
 		
-		>>> x = np.arange(9.).reshape(3, 3)
-		>>> np.where( x > 5 )
-		(array([2, 2, 2]), array([0, 1, 2]))
-		>>> x[np.where( x > 3.0 )]               # Note: result is 1D.
-		array([ 4.,  5.,  6.,  7.,  8.])
-		>>> np.where(x < 5, x, -1)               # Note: broadcasting.
-		array([[ 0.,  1.,  2.],
-		       [ 3.,  4., -1.],
-		       [-1., -1., -1.]])
+		>>> x, y = np.ogrid[:3, :4]
+		>>> np.where(x < y, x, 10 + y)  # both x and 10+y are broadcast
+		array([[10,  0,  0,  0],
+		       [10, 11,  1,  1],
+		       [10, 11, 12,  2]])
 		
-		Find the indices of elements of `x` that are in `goodvalues`.
-		
-		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.isin(x, goodvalues)
-		>>> ix
-		array([[False, False, False],
-		       [ True,  True, False],
-		       [False,  True, False]])
-		>>> np.where(ix)
-		(array([1, 1, 2]), array([0, 1, 1]))
+		>>> a = np.array([[0, 1, 2],
+		...               [0, 2, 4],
+		...               [0, 3, 6]])
+		>>> np.where(a < 4, a, -1)  # -1 is broadcast
+		array([[ 0,  1,  2],
+		       [ 0,  2, -1],
+		       [ 0,  3, -1]])
 	**/
 	static public function where(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

@@ -56,7 +56,10 @@ package tensorflow.python.training.checkpoint_utils;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
-		Initializes current variables with tensors loaded from given checkpoint.
+		Replaces `tf.Variable` initializers so they load from a checkpoint file.
+		
+		Values are not loaded immediately, but when the initializer is run
+		(typically by running a `tf.global_variables_initializer` op).
 		
 		Note: This overrides default initialization ops of specified variables and
 		redefines dtype.

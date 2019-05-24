@@ -40,7 +40,7 @@ package tensorflow.contrib.learn.python.learn.monitors;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-05.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-05.
 		Instructions for updating:
 		Monitors are deprecated. Please use tf.train.SessionRunHook.
 	**/
@@ -49,7 +49,7 @@ package tensorflow.contrib.learn.python.learn.monitors;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-05.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-05.
 		Instructions for updating:
 		Monitors are deprecated. Please use tf.train.SessionRunHook.
 	**/

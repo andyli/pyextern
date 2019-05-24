@@ -22,7 +22,6 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DURATION_MS_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
@@ -55,7 +54,6 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MONITORING_LEVEL_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -84,6 +82,10 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -249,4 +251,12 @@ package tensorflow.contrib.tpu.profiler.tpu_profiler_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.MonitorRequest.duration_ms
+	**/
+	public var duration_ms : Dynamic;
+	/**
+		Field tensorflow.MonitorRequest.monitoring_level
+	**/
+	public var monitoring_level : Dynamic;
 }

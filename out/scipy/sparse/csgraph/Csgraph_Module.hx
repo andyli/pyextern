@@ -70,6 +70,31 @@ package scipy.sparse.csgraph;
 		This routine is specially designed for graphs with negative edge weights.
 		If all edge weights are positive, then Dijkstra's algorithm is a better
 		choice.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import bellman_ford
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [2, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 3)    1
+		  (2, 0)    2
+		  (2, 3)    3
+		
+		>>> dist_matrix, predecessors = bellman_ford(csgraph=graph, directed=False, indices=0, return_predecessors=True)
+		>>> dist_matrix
+		array([ 0.,  1.,  2.,  2.])
+		>>> predecessors
+		array([-9999,     0,     0,     1], dtype=int32)
 	**/
 	static public function bellman_ford(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -110,6 +135,28 @@ package scipy.sparse.csgraph;
 		    tree.  If node i is in the tree, then its parent is given by
 		    predecessors[i]. If node i is not in the tree (and for the parent
 		    node) then predecessors[i] = -9999.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import breadth_first_order
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [2, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 3)    1
+		  (2, 0)    2
+		  (2, 3)    3
+		
+		>>> breadth_first_order(graph,0)
+		(array([0, 1, 2, 3], dtype=int32), array([-9999,     0,     0,     1], dtype=int32))
 	**/
 	static public function breadth_first_order(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -217,6 +264,31 @@ package scipy.sparse.csgraph;
 		----------
 		.. [1] D. J. Pearce, "An Improved Algorithm for Finding the Strongly
 		       Connected Components of a Directed Graph", Technical Report, 2005
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import connected_components
+		
+		>>> graph = [
+		... [ 0, 1 , 1, 0 , 0 ],
+		... [ 0, 0 , 1 , 0 ,0 ],
+		... [ 0, 0, 0, 0, 0],
+		... [0, 0 , 0, 0, 1],
+		... [0, 0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    1
+		  (1, 2)    1
+		  (3, 4)    1
+		
+		>>> n_components, labels = connected_components(csgraph=graph, directed=False, return_labels=True)
+		>>> n_components
+		2
+		>>> labels
+		array([0, 0, 0, 1, 1], dtype=int32)
 	**/
 	static public function connected_components(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -251,11 +323,40 @@ package scipy.sparse.csgraph;
 		Notes
 		-----
 		The predecessor matrix is of the form returned by
-		:func:`graph_shortest_path`.  Row i of the predecessor matrix contains
+		`shortest_path`.  Row i of the predecessor matrix contains
 		information on the shortest paths from point i: each entry
 		predecessors[i, j] gives the index of the previous node in the path from
 		point i to point j.  If no path exists between point i and j, then
 		predecessors[i, j] = -9999
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import construct_dist_matrix
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [0, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 3)    1
+		  (2, 3)    3
+		
+		>>> pred = np.array([[-9999, 0, 0, 2],
+		... [1, -9999, 0, 1],
+		... [2, 0, -9999, 2],
+		... [1, 3, 3, -9999]], dtype=np.int32)
+		
+		>>> construct_dist_matrix(graph=graph, predecessors=pred, directed=False)
+		array([[ 0.,  1.,  2.,  5.],
+		       [ 1.,  0.,  3.,  1.],
+		       [ 2.,  3.,  0.,  3.],
+		       [ 2.,  1.,  3.,  0.]])
 	**/
 	static public function construct_dist_matrix(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -281,6 +382,21 @@ package scipy.sparse.csgraph;
 		-------
 		csgraph : csr_matrix
 		    Compressed sparse representation of graph,
+		
+		Examples
+		--------
+		>>> from scipy.sparse.csgraph import csgraph_from_dense
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [0, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		
+		>>> csgraph_from_dense(graph)
+		<4x4 sparse matrix of type '<class 'numpy.float64'>'
+		    with 4 stored elements in Compressed Sparse Row format>
 	**/
 	static public function csgraph_from_dense(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -299,6 +415,27 @@ package scipy.sparse.csgraph;
 		-------
 		csgraph : csr_matrix
 		    Compressed sparse representation of graph,
+		
+		Examples
+		--------
+		>>> import numpy as np
+		>>> from scipy.sparse.csgraph import csgraph_from_masked
+		
+		>>> graph_masked = np.ma.masked_array(data =[
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [0, 0, 0, 3],
+		... [0, 0, 0, 0]
+		...  ],
+		... mask=[[ True, False, False , True],
+		... [ True,  True , True, False],
+		... [ True , True,  True ,False],
+		... [ True ,True , True , True]],
+		... fill_value = 0)
+		
+		>>> csgraph_from_masked(graph_masked)
+		<4x4 sparse matrix of type '<class 'numpy.float64'>'
+		    with 4 stored elements in Compressed Sparse Row format>
 	**/
 	static public function csgraph_from_masked(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -325,6 +462,29 @@ package scipy.sparse.csgraph;
 		-------
 		csgraph : MaskedArray
 		    masked array representation of graph
+		
+		Examples
+		--------
+		>>> from scipy.sparse.csgraph import csgraph_masked_from_dense
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [0, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		
+		>>> csgraph_masked_from_dense(graph)
+		masked_array(
+		  data=[[--, 1, 2, --],
+		        [--, --, --, 1],
+		        [--, --, --, 3],
+		        [--, --, --, --]],
+		  mask=[[ True, False, False,  True],
+		        [ True,  True,  True, False],
+		        [ True,  True,  True, False],
+		        [ True,  True,  True,  True]],
+		  fill_value=0)
 	**/
 	static public function csgraph_masked_from_dense(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -396,6 +556,27 @@ package scipy.sparse.csgraph;
 		In the first case, the zero-weight edge gets lost in the dense
 		representation.  In the second case, we can choose a different null value
 		and see the true form of the graph.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import csgraph_to_dense
+		
+		>>> graph = csr_matrix( [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [0, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ])
+		>>> graph
+		<4x4 sparse matrix of type '<class 'numpy.int64'>'
+		    with 4 stored elements in Compressed Sparse Row format>
+		
+		>>> csgraph_to_dense(graph)
+		array([[ 0.,  1.,  2.,  0.],
+		       [ 0.,  0.,  0.,  1.],
+		       [ 0.,  0.,  0.,  3.],
+		       [ 0.,  0.,  0.,  0.]])
 	**/
 	static public function csgraph_to_dense(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -414,6 +595,33 @@ package scipy.sparse.csgraph;
 		-------
 		graph : MaskedArray
 		    The masked dense representation of the sparse graph.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import csgraph_to_masked
+		
+		>>> graph = csr_matrix( [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [0, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ])
+		>>> graph
+		<4x4 sparse matrix of type '<class 'numpy.int64'>'
+		    with 4 stored elements in Compressed Sparse Row format>
+		
+		>>> csgraph_to_masked(graph)
+		masked_array(
+		  data=[[--, 1.0, 2.0, --],
+		        [--, --, --, 1.0],
+		        [--, --, --, 3.0],
+		        [--, --, --, --]],
+		  mask=[[ True, False, False,  True],
+		        [ True,  True,  True, False],
+		        [ True,  True,  True, False],
+		        [ True,  True,  True,  True]],
+		  fill_value=1e+20)
 	**/
 	static public function csgraph_to_masked(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -455,6 +663,28 @@ package scipy.sparse.csgraph;
 		    tree.  If node i is in the tree, then its parent is given by
 		    predecessors[i]. If node i is not in the tree (and for the parent
 		    node) then predecessors[i] = -9999.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import depth_first_order
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [2, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 3)    1
+		  (2, 0)    2
+		  (2, 3)    3
+		
+		>>> depth_first_order(graph,0)
+		(array([0, 1, 3, 2], dtype=int32), array([-9999,     0,     0,     1], dtype=int32))
 	**/
 	static public function depth_first_order(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -540,10 +770,11 @@ package scipy.sparse.csgraph;
 		    The N x N array of non-negative distances representing the input graph.
 		directed : bool, optional
 		    If True (default), then find the shortest path on a directed graph:
-		    only move from point i to point j along paths csgraph[i, j].
+		    only move from point i to point j along paths csgraph[i, j] and from
+		    point j to i along paths csgraph[j, i].
 		    If False, then find the shortest path on an undirected graph: the
-		    algorithm can progress from point i to j along csgraph[i, j] or
-		    csgraph[j, i]
+		    algorithm can progress from point i to j or j to i along either
+		    csgraph[i, j] or csgraph[j, i].
 		indices : array_like or int, optional
 		    if specified, only compute the paths for the points at the given
 		    indices.
@@ -560,14 +791,25 @@ package scipy.sparse.csgraph;
 		    will be equal to np.inf (i.e., not connected).
 		
 		    .. versionadded:: 0.14.0
+		min_only : bool, optional
+		    If False (default), for every node in the graph, find the shortest path
+		    to every node in indices.
+		    If True, for every node in the graph, find the shortest path to any of
+		    the nodes in indices (which can be substantially faster).
+		
+		    .. versionadded:: 1.3.0
 		
 		Returns
 		-------
-		dist_matrix : ndarray
-		    The matrix of distances between graph nodes. dist_matrix[i,j]
+		dist_matrix : ndarray, shape ([n_indices, ]n_nodes,)
+		    The matrix of distances between graph nodes. If min_only=False,
+		    dist_matrix has shape (n_indices, n_nodes) and dist_matrix[i, j]
 		    gives the shortest distance from point i to point j along the graph.
-		
-		predecessors : ndarray
+		    If min_only=True, dist_matrix has shape (n_nodes,) and contains the
+		    shortest path from each node to any of the nodes in indices.
+		predecessors : ndarray, shape ([n_indices, ]n_nodes,)
+		    If min_only=False, this has shape (n_indices, n_nodes),
+		    otherwise it has shape (n_nodes,).
 		    Returned only if return_predecessors == True.
 		    The matrix of predecessors, which can be used to reconstruct
 		    the shortest paths.  Row i of the predecessor matrix contains
@@ -575,6 +817,14 @@ package scipy.sparse.csgraph;
 		    predecessors[i, j] gives the index of the previous node in the
 		    path from point i to point j.  If no path exists between point
 		    i and j, then predecessors[i, j] = -9999
+		
+		sources : ndarray, shape (n_nodes,)
+		    Returned only if min_only=True and return_predecessors=True.
+		    Contains the index of the source which had the shortest path
+		    to each target.  If no path exists within the limit,
+		    this will contain -9999.  The value at the indices passed
+		    will be equal to that index (i.e. the fastest way to reach
+		    node i, is to start on node i).
 		
 		Notes
 		-----
@@ -588,6 +838,30 @@ package scipy.sparse.csgraph;
 		distances.  Negative distances can lead to infinite cycles that must
 		be handled by specialized algorithms such as Bellman-Ford's algorithm
 		or Johnson's algorithm.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import dijkstra
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [0, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 3)    1
+		  (2, 3)    3
+		
+		>>> dist_matrix, predecessors = dijkstra(csgraph=graph, directed=False, indices=0, return_predecessors=True)
+		>>> dist_matrix
+		array([ 0.,  1.,  2.,  2.])
+		>>> predecessors
+		array([-9999,     0,     0,     1], dtype=int32)
 	**/
 	static public function dijkstra(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
@@ -638,6 +912,38 @@ package scipy.sparse.csgraph;
 		------
 		NegativeCycleError:
 		    if there are negative cycles in the graph
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import floyd_warshall
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [2, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 3)    1
+		  (2, 0)    2
+		  (2, 3)    3
+		
+		
+		>>> dist_matrix, predecessors = floyd_warshall(csgraph=graph, directed=False, return_predecessors=True)
+		>>> dist_matrix
+		array([[ 0.,  1.,  2.,  2.],
+		       [ 1.,  0.,  3.,  1.],
+		       [ 2.,  3.,  0.,  3.],
+		       [ 2.,  1.,  3.,  0.]])
+		>>> predecessors
+		array([[-9999,     0,     0,     1],
+		       [    1, -9999,     0,     1],
+		       [    2,     0, -9999,     2],
+		       [    1,     3,     3, -9999]], dtype=int32)
 	**/
 	static public function floyd_warshall(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -699,6 +1005,31 @@ package scipy.sparse.csgraph;
 		This routine is specially designed for graphs with negative edge weights.
 		If all edge weights are positive, then Dijkstra's algorithm is a better
 		choice.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import johnson
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [2, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 3)    1
+		  (2, 0)    2
+		  (2, 3)    3
+		
+		>>> dist_matrix, predecessors = johnson(csgraph=graph, directed=False, indices=0, return_predecessors=True)
+		>>> dist_matrix
+		array([ 0.,  1.,  2.,  2.])
+		>>> predecessors
+		array([-9999,     0,     0,     1], dtype=int32)
 	**/
 	static public function johnson(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -788,6 +1119,31 @@ package scipy.sparse.csgraph;
 		I. S. Duff, K. Kaya, and B. Ucar, "Design, Implementation, and 
 		Analysis of Maximum Transversal Algorithms", ACM Trans. Math. Softw.
 		38, no. 2, (2011).
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import maximum_bipartite_matching
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [1, 0, 0, 1],
+		... [2, 0, 0, 3],
+		... [0, 1, 3, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 0)    1
+		  (1, 3)    1
+		  (2, 0)    2
+		  (2, 3)    3
+		  (3, 1)    1
+		  (3, 2)    3
+		
+		>>> maximum_bipartite_matching(graph, perm_type='row')
+		array([1, 0, 3, 2], dtype=int32)
 	**/
 	static public function maximum_bipartite_matching(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -885,6 +1241,33 @@ package scipy.sparse.csgraph;
 		cstree : csr matrix
 		    The N x N directed compressed-sparse representation of the tree drawn
 		    from csgraph which is encoded by the predecessor list.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import reconstruct_path
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [0, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 3)    1
+		  (2, 3)    3
+		
+		>>> pred = np.array([-9999, 0, 0, 1], dtype=np.int32)
+		
+		>>> cstree = reconstruct_path(csgraph=graph, predecessors=pred, directed=False)
+		>>> cstree.todense()
+		matrix([[ 0.,  1.,  2.,  0.],
+		        [ 0.,  0.,  0.,  1.],
+		        [ 0.,  0.,  0.,  0.],
+		        [ 0.,  0.,  0.,  0.]])
 	**/
 	static public function reconstruct_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -918,6 +1301,28 @@ package scipy.sparse.csgraph;
 		----------
 		E. Cuthill and J. McKee, "Reducing the Bandwidth of Sparse Symmetric Matrices",
 		ACM '69 Proceedings of the 1969 24th national conference, (1969).
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import reverse_cuthill_mckee
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [2, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 3)    1
+		  (2, 0)    2
+		  (2, 3)    3
+		
+		>>> reverse_cuthill_mckee(graph)
+		array([3, 2, 1, 0], dtype=int32)
 	**/
 	static public function reverse_cuthill_mckee(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -986,7 +1391,6 @@ package scipy.sparse.csgraph;
 		dist_matrix : ndarray
 		    The N x N matrix of distances between graph nodes. dist_matrix[i,j]
 		    gives the shortest distance from point i to point j along the graph.
-		
 		predecessors : ndarray
 		    Returned only if return_predecessors == True.
 		    The N x N matrix of predecessors, which can be used to reconstruct
@@ -1007,6 +1411,31 @@ package scipy.sparse.csgraph;
 		do not work for graphs with direction-dependent distances when
 		directed == False.  i.e., if csgraph[i,j] and csgraph[j,i] are non-equal
 		edges, method='D' may yield an incorrect result.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import shortest_path
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [0, 0, 0, 1],
+		... [2, 0, 0, 3],
+		... [0, 0, 0, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 3)    1
+		  (2, 0)    2
+		  (2, 3)    3
+		
+		>>> dist_matrix, predecessors = shortest_path(csgraph=graph, directed=False, indices=0, return_predecessors=True)
+		>>> dist_matrix
+		array([ 0.,  1.,  2.,  2.])
+		>>> predecessors
+		array([-9999,     0,     0,     1], dtype=int32)
 	**/
 	static public function shortest_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1020,6 +1449,8 @@ package scipy.sparse.csgraph;
 		on the numerical rank of the matrix. A graph has full structural rank 
 		if it is possible to permute the elements to make the diagonal zero-free.
 		
+		.. versionadded:: 0.19.0
+		
 		Parameters
 		----------
 		graph : sparse matrix
@@ -1030,14 +1461,37 @@ package scipy.sparse.csgraph;
 		rank : int
 		    The structural rank of the sparse graph.
 		
-		.. versionadded:: 0.19.0
-		
 		References
 		----------
 		.. [1] I. S. Duff, "Computing the Structural Index", SIAM J. Alg. Disc. 
 		        Meth., Vol. 7, 594 (1986).
 		
 		.. [2] http://www.cise.ufl.edu/research/sparse/matrices/legend.html
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.csgraph import structural_rank
+		
+		>>> graph = [
+		... [0, 1 , 2, 0],
+		... [1, 0, 0, 1],
+		... [2, 0, 0, 3],
+		... [0, 1, 3, 0]
+		... ]
+		>>> graph = csr_matrix(graph)
+		>>> print(graph)
+		  (0, 1)    1
+		  (0, 2)    2
+		  (1, 0)    1
+		  (1, 3)    1
+		  (2, 0)    2
+		  (2, 3)    3
+		  (3, 1)    1
+		  (3, 2)    3
+		
+		>>> structural_rank(graph)
+		4
 	**/
 	static public function structural_rank(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?tests:Dynamic):Dynamic;

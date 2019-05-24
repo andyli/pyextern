@@ -108,11 +108,11 @@ package torch._c;
 	**/
 	public function _create_method_from_graph(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_create_method_from_trace(self: torch._C.ScriptModule, arg0: str, arg1: function, arg2: List[torch::autograd::Variable]) -> None
+		_create_method_from_trace(self: torch._C.ScriptModule, arg0: str, arg1: function, arg2: tuple, arg3: function, arg4: bool) -> None
 	**/
 	public function _create_method_from_trace(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		_create_methods(self: torch._C.ScriptModule, arg0: List[torch._C._jit_tree_views.Def], arg1: List[Callable[[str], function]]) -> None
+		_create_methods(self: torch._C.ScriptModule, arg0: List[torch._C._jit_tree_views.Def], arg1: List[Callable[[str], function]], arg2: List[Dict[str, object]]) -> None
 	**/
 	public function _create_methods(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -160,6 +160,10 @@ package torch._c;
 	**/
 	public function _method_names(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		_python_print(self: torch._C.ScriptModule) -> Tuple[str, List[at::Tensor]]
+	**/
+	public function _python_print(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		_register_module(self: torch._C.ScriptModule, arg0: str, arg1: torch._C.ScriptModule) -> None
 	**/
 	public function _register_module(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -175,12 +179,29 @@ package torch._c;
 		_set_parameter(self: torch._C.ScriptModule, arg0: str, arg1: at::Tensor) -> None
 	**/
 	public function _set_parameter(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var code : Dynamic;
 	/**
-		forward(self: torch._C.ScriptModule, *args) -> object
+		debug_disable_autodiff_subgraph_inlining(self: torch._C.ScriptModule) -> None
+	**/
+	public function debug_disable_autodiff_subgraph_inlining(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		forward(*args, **kwargs) -> object
 	**/
 	public function forward(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		graph_for(self: torch._C.ScriptModule, *args) -> torch._C.Graph
+		get_debug_state(self: torch._C.ScriptModule) -> torch._C.GraphExecutorState
+	**/
+	public function get_debug_state(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		graph_for(*args, **kwargs) -> torch._C.Graph
 	**/
 	public function graph_for(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		save(self: torch._C.ScriptModule, arg0: str) -> None
+	**/
+	public function save(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		save_to_buffer(self: torch._C.ScriptModule) -> bytes
+	**/
+	public function save_to_buffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

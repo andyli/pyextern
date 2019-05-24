@@ -56,6 +56,12 @@ package numpy.lib.nanfunctions;
 		    in place. If `a` is a numpy scalar, the division preserves its type.
 	**/
 	static public function _divide_by_count(a:Dynamic, b:Dynamic, ?out:Dynamic):Dynamic;
+	static public function _nanargmax_dispatcher(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _nanargmin_dispatcher(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _nancumprod_dispatcher(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	static public function _nancumsum_dispatcher(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	static public function _nanmax_dispatcher(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function _nanmean_dispatcher(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		Private function that doesn't support extended axis or keepdims.
 		These methods are extended to this function using _ureduce
@@ -67,6 +73,7 @@ package numpy.lib.nanfunctions;
 		See nanmedian for parameter usage
 	**/
 	static public function _nanmedian1d(arr1d:Dynamic, ?overwrite_input:Dynamic):Dynamic;
+	static public function _nanmedian_dispatcher(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		sort + indexing median, faster for small medians along multiple
 		dimensions due to the high overhead of apply_along_axis
@@ -74,11 +81,15 @@ package numpy.lib.nanfunctions;
 		see nanmedian for parameter usage
 	**/
 	static public function _nanmedian_small(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic):Dynamic;
+	static public function _nanmin_dispatcher(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function _nanpercentile_dispatcher(a:Dynamic, q:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function _nanprod_dispatcher(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		Private function for rank 1 arrays. Compute quantile ignoring NaNs.
 		See nanpercentile for parameter usage
 	**/
 	static public function _nanquantile_1d(arr1d:Dynamic, q:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic):Dynamic;
+	static public function _nanquantile_dispatcher(a:Dynamic, q:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		Assumes that q is in [0, 1], and is an ndarray
 	**/
@@ -89,6 +100,9 @@ package numpy.lib.nanfunctions;
 		See nanpercentile for parameter usage
 	**/
 	static public function _nanquantile_ureduce_func(a:Dynamic, q:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic):Dynamic;
+	static public function _nanstd_dispatcher(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?ddof:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function _nansum_dispatcher(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function _nanvar_dispatcher(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?ddof:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		Equivalent to arr1d[~arr1d.isnan()], but in a different order
 		
@@ -138,6 +152,7 @@ package numpy.lib.nanfunctions;
 	**/
 	static public function _replace_nan(a:Dynamic, val:Dynamic):numpy.Ndarray;
 	static public var absolute_import : Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Return the indices of the maximum values in the specified axis ignoring
@@ -847,13 +862,15 @@ package numpy.lib.nanfunctions;
 		    This optional parameter specifies the interpolation method to
 		    use when the desired quantile lies between two data points
 		    ``i < j``:
-		        * linear: ``i + (j - i) * fraction``, where ``fraction``
-		          is the fractional part of the index surrounded by ``i``
-		          and ``j``.
-		        * lower: ``i``.
-		        * higher: ``j``.
-		        * nearest: ``i`` or ``j``, whichever is nearest.
-		        * midpoint: ``(i + j) / 2``.
+		
+		    * linear: ``i + (j - i) * fraction``, where ``fraction``
+		      is the fractional part of the index surrounded by ``i``
+		      and ``j``.
+		    * lower: ``i``.
+		    * higher: ``j``.
+		    * nearest: ``i`` or ``j``, whichever is nearest.
+		    * midpoint: ``(i + j) / 2``.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left in
 		    the result as dimensions with size one. With this option, the

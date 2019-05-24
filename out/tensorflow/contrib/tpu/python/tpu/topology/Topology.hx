@@ -151,9 +151,17 @@ package tensorflow.contrib.tpu.python.tpu.topology;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		Inverts a [task,device,axis] topology to [x,y,z] -> task/device maps.
+	**/
+	public function _invert_topology():Dynamic;
+	/**
 		Parses a serialized `TopologyProto` into `self`.
 	**/
 	public function _parse_topology(serialized:Dynamic):Dynamic;
+	/**
+		Returns the CPU device attached to a logical core.
+	**/
+	public function cpu_device_name_at_coordinates(device_coordinates:Dynamic, ?job:Dynamic):Dynamic;
 	/**
 		Describes the mapping from TPU devices to topology coordinates.
 		
@@ -186,4 +194,32 @@ package tensorflow.contrib.tpu.python.tpu.topology;
 		Returns the serialized form of the topology.
 	**/
 	public function serialized():Dynamic;
+	/**
+		Returns the TensorFlow task number attached to `device_coordinates`.
+		
+		Args:
+		  device_coordinates: An integer sequence describing a device's physical
+		    coordinates in the TPU fabric.
+		
+		Returns:
+		  Returns the TensorFlow task number that contains the TPU device with those
+		  physical coordinates.
+	**/
+	public function task_ordinal_at_coordinates(device_coordinates:Dynamic):Dynamic;
+	/**
+		Returns the name of the TPU device assigned to a logical core.
+	**/
+	public function tpu_device_name_at_coordinates(device_coordinates:Dynamic, ?job:Dynamic):Dynamic;
+	/**
+		Returns the TensorFlow device number at `device_coordinates`.
+		
+		Args:
+		  device_coordinates: An integer sequence describing a device's physical
+		    coordinates in the TPU fabric.
+		
+		Returns:
+		  Returns the TensorFlow device number within the task corresponding to
+		  attached to the device with those physical coordinates.
+	**/
+	public function tpu_device_ordinal_at_coordinates(device_coordinates:Dynamic):Dynamic;
 }

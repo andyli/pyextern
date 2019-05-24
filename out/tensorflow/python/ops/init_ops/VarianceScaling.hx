@@ -2,7 +2,14 @@
 package tensorflow.python.ops.init_ops;
 @:pythonImport("tensorflow.python.ops.init_ops", "VarianceScaling") extern class VarianceScaling {
 	/**
-		Call self as a function.
+		Returns a tensor object initialized as specified by the initializer.
+		
+		Args:
+		  shape: Shape of the tensor.
+		  dtype: Optional dtype of the tensor. If not provided use the initializer
+		    dtype.
+		  partition_info: Optional information about the possible partitioning of a
+		    tensor.
 	**/
 	public function __call__(shape:Dynamic, ?dtype:Dynamic, ?partition_info:Dynamic):Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -42,18 +49,18 @@ package tensorflow.python.ops.init_ops;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		DEPRECATED FUNCTION ARGUMENTS
+		DEPRECATED FUNCTION ARGUMENT VALUES
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENT VALUES ARE DEPRECATED: `(distribution='normal')`. They will be removed in a future version.
 		Instructions for updating:
 		`normal` is a deprecated alias for `truncated_normal`
 	**/
 	@:native("__init__")
 	public function ___init__(?scale:Dynamic, ?mode:Dynamic, ?distribution:Dynamic, ?seed:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
-		DEPRECATED FUNCTION ARGUMENTS
+		DEPRECATED FUNCTION ARGUMENT VALUES
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENT VALUES ARE DEPRECATED: `(distribution='normal')`. They will be removed in a future version.
 		Instructions for updating:
 		`normal` is a deprecated alias for `truncated_normal`
 	**/

@@ -153,6 +153,7 @@ package pandas._libs.sparse;
 	**/
 	public function make_union(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var nblocks : Dynamic;
+	public var nbytes : Dynamic;
 	public var ngaps : Dynamic;
 	public var npoints : Dynamic;
 	public function put(args:haxe.extern.Rest<Dynamic>):Dynamic;

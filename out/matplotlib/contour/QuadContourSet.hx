@@ -48,7 +48,7 @@ package matplotlib.contour;
 		
 		Parameters
 		----------
-		ax :
+		ax : `~.axes.Axes`
 		    The `~.axes.Axes` object to draw on.
 		
 		levels : [level0, level1, ..., leveln]
@@ -94,7 +94,7 @@ package matplotlib.contour;
 		
 		Parameters
 		----------
-		ax :
+		ax : `~.axes.Axes`
 		    The `~.axes.Axes` object to draw on.
 		
 		levels : [level0, level1, ..., leveln]
@@ -354,26 +354,8 @@ package matplotlib.contour;
 		return True; else return False
 	**/
 	public function check_update(checker:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The <lambda> function was deprecated in Matplotlib 3.0 and will be removed in 3.2. Use labelTexts instead.
-		
-		\ 
-	**/
 	public var cl : Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The <lambda> function was deprecated in Matplotlib 3.0 and will be removed in 3.2. Use labelCValues instead.
-		
-		\ 
-	**/
 	public var cl_cvalues : Dynamic;
-	/**
-		.. deprecated:: 3.0
-		    The <lambda> function was deprecated in Matplotlib 3.0 and will be removed in 3.2. Use labelXYs instead.
-		
-		\ 
-	**/
 	public var cl_xy : Dynamic;
 	/**
 		Label a contour plot.
@@ -515,17 +497,6 @@ package matplotlib.contour;
 	**/
 	public function get_label_width(lev:Dynamic, fmt:Dynamic, fsize:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 2.2
-		    The get_real_label_width function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
-		
-		This computes actual onscreen label width.
-		This uses some black magic to determine onscreen extent of non-drawn
-		label.  This magic may not be very robust.
-		
-		This method is not being used, and may be modified or removed.
-	**/
-	public function get_real_label_width(lev:Dynamic, fmt:Dynamic, fsize:Dynamic):Dynamic;
-	/**
 		Get the text of the label.
 	**/
 	public function get_text(lev:Dynamic, fmt:Dynamic):Dynamic;
@@ -611,6 +582,12 @@ package matplotlib.contour;
 		Parameters
 		----------
 		norm : `.Normalize`
+		
+		Notes
+		-----
+		If there are any colorbars using the mappable for this norm, setting
+		the norm of the mappable will reset the norm, locator, and formatters
+		on the colorbar to default.
 	**/
 	public function set_norm(norm:Dynamic):Dynamic;
 	/**

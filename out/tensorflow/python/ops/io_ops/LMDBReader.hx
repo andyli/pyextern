@@ -40,7 +40,7 @@ package tensorflow.python.ops.io_ops;
 	/**
 		Create a LMDBReader. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.contrib.data.LMDBDataset`.
 		
@@ -53,7 +53,7 @@ package tensorflow.python.ops.io_ops;
 	/**
 		Create a LMDBReader. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.contrib.data.LMDBDataset`.
 		

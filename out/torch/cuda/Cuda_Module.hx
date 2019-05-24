@@ -17,6 +17,21 @@ package torch.cuda;
 	static public var _cudart : Dynamic;
 	static public function _dummy_type(name:Dynamic):Dynamic;
 	static public function _free_mutex():Dynamic;
+	/**
+		Gets the device index from :attr:`device`, which can be a torch.device
+		object, a Python integer, or ``None``.
+		
+		If :attr:`device` is a torch.device object, returns the device index if it
+		is a CUDA device. Note that for CUDA device without sepecified index, i.e.,
+		``torch.devie('cuda')``, this will return the current default CUDA device if
+		:attr:`optional` is ``True``.
+		
+		If :attr:`device` is a Python interger, it is returned as is.
+		
+		If :attr:`device` is ``None``, this will return the current default CUDA
+		device if :attr:`optional` is ``True``.
+	**/
+	static public function _get_device_index(device:Dynamic, ?optional:Dynamic):Dynamic;
 	static public function _host_allocator():Dynamic;
 	static public var _in_bad_fork : Dynamic;
 	static public var _initialized : Dynamic;
@@ -62,8 +77,12 @@ package torch.cuda;
 		Gets the cuda capability of a device.
 		
 		Arguments:
-		    device (int): device for which to return the name. This function is a
-		        no-op if this argument is negative.
+		    device (torch.device or int, optional): device for which to return the
+		        device capability. This function is a no-op if this argument is
+		        a negative integer. Uses the current device, given by
+		        :meth:`~torch.cuda.current_device`, if :attr:`device` is ``None``
+		        (default).
+		
 		Returns:
 		    tuple(int, int): the major and minor cuda capability of the device
 	**/
@@ -72,8 +91,10 @@ package torch.cuda;
 		Gets the name of a device.
 		
 		Arguments:
-		    device (int): device for which to return the name. This function is a
-		        no-op if this argument is negative.
+		    device (torch.device or int, optional): device for which to return the
+		        name. This function is a no-op if this argument is a negative
+		        integer. Uses the current device, given by :meth:`~torch.cuda.current_device`,
+		        if :attr:`device` is ``None`` (default).
 	**/
 	static public function get_device_name(device:Dynamic):Dynamic;
 	static public function get_device_properties(device:Dynamic):Dynamic;
@@ -142,10 +163,9 @@ package torch.cuda;
 		device.
 		
 		Arguments:
-		    device (int, optional): selected device. Returns statistic for the
-		                            current device, given by
-		                            :meth:`~torch.cuda.current_device`, if
-		                            :attr:`device` is ``None`` (default).
+		    device (torch.device or int, optional): selected device. Returns
+		        statistic for the current device, given by :meth:`~torch.cuda.current_device`,
+		        if :attr:`device` is ``None`` (default).
 		
 		.. note::
 		    See :ref:`cuda-memory-management` for more details about GPU memory
@@ -157,10 +177,9 @@ package torch.cuda;
 		for a given device.
 		
 		Arguments:
-		    device (int, optional): selected device. Returns statistic for the
-		                            current device, given by
-		                            :meth:`~torch.cuda.current_device`, if
-		                            :attr:`device` is ``None`` (default).
+		    device (torch.device or int, optional): selected device. Returns
+		        statistic for the current device, given by :meth:`~torch.cuda.current_device`,
+		        if :attr:`device` is ``None`` (default).
 		
 		.. note::
 		    See :ref:`cuda-memory-management` for more details about GPU memory
@@ -172,10 +191,9 @@ package torch.cuda;
 		device.
 		
 		Arguments:
-		    device (int, optional): selected device. Returns statistic for the
-		                            current device, given by
-		                            :meth:`~torch.cuda.current_device`, if
-		                            :attr:`device` is ``None`` (default).
+		    device (torch.device or int, optional): selected device. Returns
+		        statistic for the current device, given by :meth:`~torch.cuda.current_device`,
+		        if :attr:`device` is ``None`` (default).
 		
 		.. note::
 		    This is likely less than the amount shown in `nvidia-smi` since some
@@ -189,10 +207,9 @@ package torch.cuda;
 		for a given device.
 		
 		Arguments:
-		    device (int, optional): selected device. Returns statistic for the
-		                            current device, given by
-		                            :meth:`~torch.cuda.current_device`, if
-		                            :attr:`device` is ``None`` (default).
+		    device (torch.device or int, optional): selected device. Returns
+		        statistic for the current device, given by :meth:`~torch.cuda.current_device`,
+		        if :attr:`device` is ``None`` (default).
 		
 		.. note::
 		    See :ref:`cuda-memory-management` for more details about GPU memory
@@ -223,8 +240,8 @@ package torch.cuda;
 		cases it's better to use ``CUDA_VISIBLE_DEVICES`` environmental variable.
 		
 		Arguments:
-		    device (int): selected device. This function is a no-op if this
-		        argument is negative.
+		    device (torch.device or int): selected device. This function is a no-op
+		        if this argument is negative.
 	**/
 	static public function set_device(device:Dynamic):Dynamic;
 	/**

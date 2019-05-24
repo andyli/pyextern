@@ -15,7 +15,7 @@ package tensorflow.contrib.learn.python.learn.datasets.mnist;
 	/**
 		Convert class labels from scalars to one-hot vectors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.one_hot on tensors.
 	**/
@@ -57,7 +57,7 @@ package tensorflow.contrib.learn.python.learn.datasets.mnist;
 	/**
 		Extract the images into a 4D uint8 numpy array [index, y, x, depth]. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.data to implement this functionality.
 		
@@ -74,7 +74,7 @@ package tensorflow.contrib.learn.python.learn.datasets.mnist;
 	/**
 		Extract the labels into a 1D uint8 numpy array [index]. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.data to implement this functionality.
 		
@@ -93,7 +93,7 @@ package tensorflow.contrib.learn.python.learn.datasets.mnist;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use alternatives such as official/mnist/dataset.py from tensorflow/models.
 	**/
@@ -102,7 +102,7 @@ package tensorflow.contrib.learn.python.learn.datasets.mnist;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use alternatives such as official/mnist/dataset.py from tensorflow/models.
 	**/

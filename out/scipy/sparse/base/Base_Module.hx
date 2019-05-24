@@ -14,6 +14,7 @@ package scipy.sparse.base;
 	static public var _formats : Dynamic;
 	static public var _ufuncs_with_fixed_point_at_zero : Dynamic;
 	static public var absolute_import : Dynamic;
+	static public function asmatrix(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Broadcast an array to a new shape.
 		

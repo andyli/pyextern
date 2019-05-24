@@ -46,6 +46,21 @@ package tensorflow.contrib.compiler.xla;
 	static public function _get_scaffold(captured_scaffold_fn:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
+		Validate the number of input arguments to an XLA function.
+		
+		Args:
+		  func: the Python function that will be called to generate the body of an XLA
+		    computation graph.
+		  input_arity: the number of explicit arguments supplied by the caller.
+		  infeed_queue: if not None, the infeed queue that will supply
+		    additional arguments to the function.
+		
+		Returns:
+		  None if function can be called with the supplied number of
+		    arguments, or an error string if it cannot.
+	**/
+	static public function check_function_argument_count(func:Dynamic, input_arity:Dynamic, infeed_queue:Dynamic):Dynamic;
+	/**
 		Builds an operator that compiles and runs `computation` with XLA.
 		
 		Args:
@@ -70,8 +85,8 @@ package tensorflow.contrib.compiler.xla;
 	/**
 		estimator_model_fn decorates a model_fn to be compiled for execution.
 		
-		Currently only it only works with `TPUEstimator`. If you need to use it with
-		base `Estimator`, please add `tf.enable_resource_variables()` at beginning of
+		Currently it only works with `TPUEstimator`. If you need to use it with base
+		`Estimator`, please add `tf.enable_resource_variables()` at the beginning of
 		your program.
 		
 		Example 1, decorating model_fn:

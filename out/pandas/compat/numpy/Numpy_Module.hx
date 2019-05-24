@@ -13,12 +13,11 @@ package pandas.compat.numpy;
 	static public var __spec__ : Dynamic;
 	static public var _nlv : Dynamic;
 	static public var _np_version : Dynamic;
-	static public var _np_version_under1p10 : Dynamic;
-	static public var _np_version_under1p11 : Dynamic;
-	static public var _np_version_under1p12 : Dynamic;
 	static public var _np_version_under1p13 : Dynamic;
 	static public var _np_version_under1p14 : Dynamic;
 	static public var _np_version_under1p15 : Dynamic;
+	static public var _np_version_under1p16 : Dynamic;
+	static public var _np_version_under1p17 : Dynamic;
 	static public var _tz_regex : Dynamic;
 	/**
 		provide compat for construction of an array of strings to a

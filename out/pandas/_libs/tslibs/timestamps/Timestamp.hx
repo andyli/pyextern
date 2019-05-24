@@ -127,7 +127,7 @@ package pandas._libs.tslibs.timestamps;
 	**/
 	public function _has_time_component():Dynamic;
 	public var _repr_base : Dynamic;
-	public function _round(freq:Dynamic, rounder:Dynamic):Dynamic;
+	public function _round(freq:Dynamic, mode:Dynamic, ?ambiguous:Dynamic, ?nonexistent:Dynamic):Dynamic;
 	public var _short_repr : Dynamic;
 	public var _time_repr : Dynamic;
 	public var asm8 : Dynamic;
@@ -156,8 +156,34 @@ package pandas._libs.tslibs.timestamps;
 		Parameters
 		----------
 		freq : a freq string indicating the ceiling resolution
+		ambiguous : bool, 'NaT', default 'raise'
+		    - bool contains flags to determine if time is dst or not (note
+		      that this flag is only applicable for ambiguous fall dst dates)
+		    - 'NaT' will return NaT for an ambiguous time
+		    - 'raise' will raise an AmbiguousTimeError for an ambiguous time
+		
+		    .. versionadded:: 0.24.0
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
 	**/
-	public function ceil(freq:Dynamic):Dynamic;
+	public function ceil(freq:Dynamic, ?ambiguous:Dynamic, ?nonexistent:Dynamic):Dynamic;
 	/**
 		Timsetamp.combine(date, time)
 		
@@ -202,8 +228,34 @@ package pandas._libs.tslibs.timestamps;
 		Parameters
 		----------
 		freq : a freq string indicating the flooring resolution
+		ambiguous : bool, 'NaT', default 'raise'
+		    - bool contains flags to determine if time is dst or not (note
+		      that this flag is only applicable for ambiguous fall dst dates)
+		    - 'NaT' will return NaT for an ambiguous time
+		    - 'raise' will raise an AmbiguousTimeError for an ambiguous time
+		
+		    .. versionadded:: 0.24.0
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
 	**/
-	public function floor(freq:Dynamic):Dynamic;
+	public function floor(freq:Dynamic, ?ambiguous:Dynamic, ?nonexistent:Dynamic):Dynamic;
 	public var fold : Dynamic;
 	public var freq : Dynamic;
 	public var freqstr : Dynamic;
@@ -298,7 +350,7 @@ package pandas._libs.tslibs.timestamps;
 		minute : int, optional
 		second : int, optional
 		microsecond : int, optional
-		nanosecond: int, optional
+		nanosecond : int, optional
 		tzinfo : tz-convertible, optional
 		fold : int, optional, default is 0
 		    added in 3.6, NotImplemented
@@ -308,23 +360,49 @@ package pandas._libs.tslibs.timestamps;
 		Timestamp with fields replaced
 	**/
 	public function replace(?year:Dynamic, ?month:Dynamic, ?day:Dynamic, ?hour:Dynamic, ?minute:Dynamic, ?second:Dynamic, ?microsecond:Dynamic, ?nanosecond:Dynamic, ?tzinfo:Dynamic, ?fold:Dynamic):Dynamic;
-	static public var resolution : Dynamic;
+	/**
+		Return resolution describing the smallest difference between two
+		times that can be represented by Timestamp object_state
+	**/
+	public var resolution : Dynamic;
 	/**
 		Round the Timestamp to the specified resolution
+		
+		Parameters
+		----------
+		freq : a freq string indicating the rounding resolution
+		ambiguous : bool, 'NaT', default 'raise'
+		    - bool contains flags to determine if time is dst or not (note
+		      that this flag is only applicable for ambiguous fall dst dates)
+		    - 'NaT' will return NaT for an ambiguous time
+		    - 'raise' will raise an AmbiguousTimeError for an ambiguous time
+		
+		    .. versionadded:: 0.24.0
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
 		a new Timestamp rounded to the given resolution of `freq`
 		
-		Parameters
-		----------
-		freq : a freq string indicating the rounding resolution
-		
 		Raises
 		------
 		ValueError if the freq cannot be converted
 	**/
-	public function round(freq:Dynamic):Dynamic;
+	public function round(freq:Dynamic, ?ambiguous:Dynamic, ?nonexistent:Dynamic):Dynamic;
 	public var second : Dynamic;
 	/**
 		format -> strftime() style string.
@@ -420,19 +498,42 @@ package pandas._libs.tslibs.timestamps;
 		    None will remove timezone holding local time.
 		
 		ambiguous : bool, 'NaT', default 'raise'
+		    When clocks moved backward due to DST, ambiguous times may arise.
+		    For example in Central European Time (UTC+01), when going from
+		    03:00 DST to 02:00 non-DST, 02:30:00 local time occurs both at
+		    00:30:00 UTC and at 01:30:00 UTC. In such a situation, the
+		    `ambiguous` parameter dictates how ambiguous times should be
+		    handled.
+		
 		    - bool contains flags to determine if time is dst or not (note
 		      that this flag is only applicable for ambiguous fall dst dates)
 		    - 'NaT' will return NaT for an ambiguous time
 		    - 'raise' will raise an AmbiguousTimeError for an ambiguous time
 		
-		errors : 'raise', 'coerce', default 'raise'
+		nonexistent : 'shift_forward', 'shift_backward, 'NaT', timedelta,
+		              default 'raise'
+		    A nonexistent time does not exist in a particular timezone
+		    where clocks moved forward due to DST.
+		
+		    - 'shift_forward' will shift the nonexistent time forward to the
+		      closest existing time
+		    - 'shift_backward' will shift the nonexistent time backward to the
+		      closest existing time
+		    - 'NaT' will return NaT where there are nonexistent times
+		    - timedelta objects will shift nonexistent times by the timedelta
+		    - 'raise' will raise an NonExistentTimeError if there are
+		      nonexistent times
+		
+		    .. versionadded:: 0.24.0
+		
+		errors : 'raise', 'coerce', default None
 		    - 'raise' will raise a NonExistentTimeError if a timestamp is not
 		       valid in the specified timezone (e.g. due to a transition from
-		       or to DST time)
+		       or to DST time). Use ``nonexistent='raise'`` instead.
 		    - 'coerce' will return NaT if the timestamp can not be converted
-		      into the specified timezone
+		      into the specified timezone. Use ``nonexistent='NaT'`` instead.
 		
-		      .. versionadded:: 0.19.0
+		      .. deprecated:: 0.24.0
 		
 		Returns
 		-------
@@ -443,7 +544,7 @@ package pandas._libs.tslibs.timestamps;
 		TypeError
 		    If the Timestamp is tz-aware and tz is not None.
 	**/
-	public function tz_localize(tz:Dynamic, ?ambiguous:Dynamic, ?errors:Dynamic):pandas.Timestamp;
+	public function tz_localize(tz:Dynamic, ?ambiguous:Dynamic, ?nonexistent:Dynamic, ?errors:Dynamic):pandas.Timestamp;
 	public var tzinfo : Dynamic;
 	/**
 		Return self.tzinfo.tzname(self).

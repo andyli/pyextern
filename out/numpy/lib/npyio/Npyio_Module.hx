@@ -36,8 +36,13 @@ package numpy.lib.npyio;
 	**/
 	static public function _is_string_like(obj:Dynamic):Dynamic;
 	static public var _loadtxt_chunksize : Dynamic;
+	static public function _save_dispatcher(file:Dynamic, arr:Dynamic, ?allow_pickle:Dynamic, ?fix_imports:Dynamic):Dynamic;
+	static public function _savetxt_dispatcher(fname:Dynamic, X:Dynamic, ?fmt:Dynamic, ?delimiter:Dynamic, ?newline:Dynamic, ?header:Dynamic, ?footer:Dynamic, ?comments:Dynamic, ?encoding:Dynamic):Dynamic;
 	static public function _savez(file:Dynamic, args:Dynamic, kwds:Dynamic, compress:Dynamic, ?allow_pickle:Dynamic, ?pickle_kwargs:Dynamic):Dynamic;
+	static public function _savez_compressed_dispatcher(file:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function _savez_dispatcher(file:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	static public function asbytes(s:Dynamic):Dynamic;
 	static public function asbytes_nested(x:Dynamic):Dynamic;
 	static public function asstr(s:Dynamic):Dynamic;
@@ -284,7 +289,7 @@ package numpy.lib.npyio;
 		References
 		----------
 		.. [1] NumPy User Guide, section `I/O with NumPy
-		       <http://docs.scipy.org/doc/numpy/user/basics.io.genfromtxt.html>`_.
+		       <https://docs.scipy.org/doc/numpy/user/basics.io.genfromtxt.html>`_.
 		
 		Examples
 		---------
@@ -349,10 +354,6 @@ package numpy.lib.npyio;
 	**/
 	static public function has_nested_fields(ndtype:Dynamic):Dynamic;
 	/**
-		Check whether obj is a pathlib.Path object.
-	**/
-	static public function is_pathlib_path(obj:Dynamic):Dynamic;
-	/**
 		Load arrays or pickled objects from ``.npy``, ``.npz`` or pickled files.
 		
 		Parameters
@@ -372,8 +373,11 @@ package numpy.lib.npyio;
 		    Allow loading pickled object arrays stored in npy files. Reasons for
 		    disallowing pickles include security, as loading pickled data can
 		    execute arbitrary code. If pickles are disallowed, loading object
-		    arrays will fail.
-		    Default: True
+		    arrays will fail. Default: False
+		
+		    .. versionchanged:: 1.16.3
+		        Made default False in response to CVE-2019-6446.
+		
 		fix_imports : bool, optional
 		    Only useful when loading Python 2 generated pickled files on Python 3,
 		    which includes npy/npz files containing object arrays. If `fix_imports`
@@ -514,6 +518,11 @@ package numpy.lib.npyio;
 		    the system default is used. The default value is 'bytes'.
 		
 		    .. versionadded:: 1.14.0
+		max_rows : int, optional
+		    Read `max_rows` lines of content after `skiprows` lines. The default
+		    is to read all the lines.
+		
+		    .. versionadded:: 1.16.0
 		
 		Returns
 		-------
@@ -558,7 +567,7 @@ package numpy.lib.npyio;
 		>>> y
 		array([ 2.,  4.])
 	**/
-	static public function loadtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?converters:Dynamic, ?skiprows:Dynamic, ?usecols:Dynamic, ?unpack:Dynamic, ?ndmin:Dynamic, ?encoding:Dynamic):numpy.Ndarray;
+	static public function loadtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?converters:Dynamic, ?skiprows:Dynamic, ?usecols:Dynamic, ?unpack:Dynamic, ?ndmin:Dynamic, ?encoding:Dynamic, ?max_rows:Dynamic):numpy.Ndarray;
 	/**
 		Load ASCII data stored in a text file and return a masked array.
 		
@@ -587,6 +596,14 @@ package numpy.lib.npyio;
 		index(a) -- Same as a.__index__()
 	**/
 	static public function opindex(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return the file system path representation of the object.
+		
+		If the object is str or bytes, then allow it to pass through as-is. If the
+		object defines __fspath__(), then return the result of that method. All other
+		types raise a TypeError.
+	**/
+	static public function os_fspath(path:Dynamic):Dynamic;
 	/**
 		packbits(myarray, axis=None)
 		
@@ -828,8 +845,8 @@ package numpy.lib.npyio;
 		References
 		----------
 		.. [1] `Format Specification Mini-Language
-		       <http://docs.python.org/library/string.html#
-		       format-specification-mini-language>`_, Python Documentation.
+		       <https://docs.python.org/library/string.html#format-specification-mini-language>`_,
+		       Python Documentation.
 		
 		Examples
 		--------
@@ -974,6 +991,18 @@ package numpy.lib.npyio;
 		True
 	**/
 	static public function savez_compressed(file:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
 	/**
 		unpackbits(myarray, axis=None)
 		

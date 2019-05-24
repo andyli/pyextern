@@ -166,6 +166,24 @@ package scipy.integrate;
 		cumtrapz : cumulative integration for sampled data
 		ode : ODE integrator
 		odeint : ODE integrator
+		
+		Examples
+		--------
+		>>> from scipy import integrate
+		>>> f = lambda x: x**8
+		>>> integrate.fixed_quad(f, 0.0, 1.0, n=4)
+		(0.1110884353741496, None)
+		>>> integrate.fixed_quad(f, 0.0, 1.0, n=5)
+		(0.11111111111111102, None)
+		>>> print(1/9.0)  # analytical result
+		0.1111111111111111
+		
+		>>> integrate.fixed_quad(np.cos, 0.0, np.pi/2, n=4)
+		(0.9999999771971152, None)
+		>>> integrate.fixed_quad(np.cos, 0.0, np.pi/2, n=5)
+		(1.000000000039565, None)
+		>>> np.sin(np.pi/2)-np.sin(0)  # analytical result
+		1.0
 	**/
 	static public function fixed_quad(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?n:Dynamic):Float;
 	/**
@@ -200,6 +218,30 @@ package scipy.integrate;
 		    positions.
 		B : float
 		    Error coefficient.
+		
+		Examples
+		--------
+		Compute the integral of sin(x) in [0, :math:`\pi`]:
+		
+		>>> from scipy.integrate import newton_cotes
+		>>> def f(x):
+		...     return np.sin(x)
+		>>> a = 0
+		>>> b = np.pi
+		>>> exact = 2
+		>>> for N in [2, 4, 6, 8, 10]:
+		...     x = np.linspace(a, b, N + 1)
+		...     an, B = newton_cotes(N, 1)
+		...     dx = (b - a) / N
+		...     quad = dx * np.sum(an * f(x))
+		...     error = abs(quad - exact)
+		...     print('{:2d}  {:10.9f}  {:.5e}'.format(N, quad, error))
+		...
+		 2   2.094395102   9.43951e-02
+		 4   1.998570732   1.42927e-03
+		 6   2.000017814   1.78136e-05
+		 8   1.999999835   1.64725e-07
+		10   2.000000001   1.14677e-09
 		
 		Notes
 		-----
@@ -361,6 +403,8 @@ package scipy.integrate;
 		t : array
 		    A sequence of time points for which to solve for y.  The initial
 		    value point should be the first element of this sequence.
+		    This sequence must be monotonically increasing or monotonically
+		    decreasing; repeated values are allowed.
 		args : tuple, optional
 		    Extra arguments to pass to function.
 		Dfun : callable(y, t, ...) or callable(t, y, ...)
@@ -868,6 +912,20 @@ package scipy.integrate;
 		cumtrapz: cumulative integration for sampled data
 		ode: ODE integrator
 		odeint: ODE integrator
+		
+		Examples
+		--------
+		>>> from scipy import integrate
+		>>> f = lambda x: x**8
+		>>> integrate.quadrature(f, 0.0, 1.0)
+		(0.11111111111111106, 4.163336342344337e-17)
+		>>> print(1/9.0)  # analytical result
+		0.1111111111111111
+		
+		>>> integrate.quadrature(np.cos, 0.0, np.pi/2)
+		(0.9999999999999536, 3.9611425250996035e-11)
+		>>> np.sin(np.pi/2)-np.sin(0)  # analytical result
+		1.0
 	**/
 	static public function quadrature(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?vec_func:Dynamic, ?miniter:Dynamic):Float;
 	/**
@@ -918,13 +976,13 @@ package scipy.integrate;
 		-0.742561336672229
 		
 		>>> integrate.romb(y, show=True)
-		Richardson Extrapolation Table for Romberg Integration       
+		Richardson Extrapolation Table for Romberg Integration
 		====================================================================
-		-0.81576 
-		4.63862  6.45674 
-		-1.10581 -3.02062 -3.65245 
-		-2.57379 -3.06311 -3.06595 -3.05664 
-		-1.34093 -0.92997 -0.78776 -0.75160 -0.74256 
+		-0.81576
+		4.63862  6.45674
+		-1.10581 -3.02062 -3.65245
+		-2.57379 -3.06311 -3.06595 -3.05664
+		-1.34093 -0.92997 -0.78776 -0.75160 -0.74256
 		====================================================================
 		-0.742561336672229
 	**/
@@ -983,7 +1041,7 @@ package scipy.integrate;
 		
 		References
 		----------
-		.. [1] 'Romberg's method' http://en.wikipedia.org/wiki/Romberg%27s_method
+		.. [1] 'Romberg's method' https://en.wikipedia.org/wiki/Romberg%27s_method
 		
 		Examples
 		--------
@@ -1187,6 +1245,11 @@ package scipy.integrate;
 		        * 0 (default) : work silently.
 		        * 1 : display a termination report.
 		        * 2 : display progress during iterations.
+		bc_tol : float, optional
+		    Desired absolute tolerance for the boundary condition residuals: `bc` 
+		    value should satisfy ``abs(bc) < bc_tol`` component-wise. 
+		    Equals to `tol` by default. Up to 10 iterations are allowed to achieve this
+		    tolerance.
 		
 		Returns
 		-------
@@ -1362,7 +1425,7 @@ package scipy.integrate;
 		>>> plt.ylabel("y")
 		>>> plt.show()
 	**/
-	static public function solve_bvp(fun:Dynamic, bc:Dynamic, x:Dynamic, y:Dynamic, ?p:Dynamic, ?S:Dynamic, ?fun_jac:Dynamic, ?bc_jac:Dynamic, ?tol:Dynamic, ?max_nodes:Dynamic, ?verbose:Dynamic):Dynamic;
+	static public function solve_bvp(fun:Dynamic, bc:Dynamic, x:Dynamic, y:Dynamic, ?p:Dynamic, ?S:Dynamic, ?fun_jac:Dynamic, ?bc_jac:Dynamic, ?tol:Dynamic, ?max_nodes:Dynamic, ?verbose:Dynamic, ?bc_tol:Dynamic):Dynamic;
 	/**
 		Solve an initial value problem for a system of ODEs.
 		
@@ -1388,11 +1451,11 @@ package scipy.integrate;
 		----------
 		fun : callable
 		    Right-hand side of the system. The calling signature is ``fun(t, y)``.
-		    Here ``t`` is a scalar, and there are two options for the ndarray ``y``:
-		    It can either have shape (n,); then ``fun`` must return array_like with
-		    shape (n,). Alternatively it can have shape (n, k); then ``fun``
+		    Here `t` is a scalar, and there are two options for the ndarray `y`:
+		    It can either have shape (n,); then `fun` must return array_like with
+		    shape (n,). Alternatively it can have shape (n, k); then `fun`
 		    must return an array_like with shape (n, k), i.e. each column
-		    corresponds to a single column in ``y``. The choice between the two
+		    corresponds to a single column in `y`. The choice between the two
 		    options is determined by `vectorized` argument (see below). The
 		    vectorized implementation allows a faster approximation of the Jacobian
 		    by finite differences (required for stiff solvers).
@@ -1443,32 +1506,40 @@ package scipy.integrate;
 		t_eval : array_like or None, optional
 		    Times at which to store the computed solution, must be sorted and lie
 		    within `t_span`. If None (default), use points selected by the solver.
-		events : callable, list of callables or None, optional
-		    Types of events to track. Each is defined by a continuous function of
-		    time and state that becomes zero value in case of an event. Each function
-		    must have the signature ``event(t, y)`` and return a float. The solver will
-		    find an accurate value of ``t`` at which ``event(t, y(t)) = 0`` using a
-		    root-finding algorithm. Additionally each ``event`` function might have
-		    the following attributes:
+		events : callable, or list of callables, optional
+		    Events to track. If None (default), no events will be tracked.
+		    Each event occurs at the zeros of a continuous function of time and
+		    state. Each function must have the signature ``event(t, y)`` and return
+		    a float. The solver will find an accurate value of `t` at which
+		    ``event(t, y(t)) = 0`` using a root-finding algorithm. By default, all
+		    zeros will be found. The solver looks for a sign change over each step,
+		    so if multiple zero crossings occur within one step, events may be
+		    missed. Additionally each `event` function might have the following
+		    attributes:
 		
-		        * terminal: bool, whether to terminate integration if this
-		          event occurs. Implicitly False if not assigned.
-		        * direction: float, direction of a zero crossing. If `direction`
-		          is positive, `event` must go from negative to positive, and
-		          vice versa if `direction` is negative. If 0, then either direction
-		          will count. Implicitly 0 if not assigned.
+		        terminal: bool, optional
+		            Whether to terminate integration if this event occurs.
+		            Implicitly False if not assigned.
+		        direction: float, optional
+		            Direction of a zero crossing. If `direction` is positive,
+		            `event` will only trigger when going from negative to positive,
+		            and vice versa if `direction` is negative. If 0, then either
+		            direction will trigger event. Implicitly 0 if not assigned.
 		
 		    You can assign attributes like ``event.terminal = True`` to any
-		    function in Python. If None (default), events won't be tracked.
+		    function in Python. 
 		vectorized : bool, optional
 		    Whether `fun` is implemented in a vectorized fashion. Default is False.
 		options
 		    Options passed to a chosen solver. All options available for already
 		    implemented solvers are listed below.
+		first_step : float or None, optional
+		    Initial step size. Default is `None` which means that the algorithm
+		    should choose.
 		max_step : float, optional
 		    Maximum allowed step size. Default is np.inf, i.e. the step size is not
 		    bounded and determined solely by the solver.
-		rtol, atol : float and array_like, optional
+		rtol, atol : float or array_like, optional
 		    Relative and absolute tolerances. The solver keeps the local error
 		    estimates less than ``atol + rtol * abs(y)``. Here `rtol` controls a
 		    relative accuracy (number of correct digits). But if a component of `y`
@@ -1478,7 +1549,7 @@ package scipy.integrate;
 		    beneficial to set different `atol` values for different components by
 		    passing array_like with shape (n,) for `atol`. Default values are
 		    1e-3 for `rtol` and 1e-6 for `atol`.
-		jac : {None, array_like, sparse_matrix, callable}, optional
+		jac : array_like, sparse_matrix, callable or None, optional
 		    Jacobian matrix of the right-hand side of the system with respect to
 		    y, required by the 'Radau', 'BDF' and 'LSODA' method. The Jacobian matrix
 		    has shape (n, n) and its element (i, j) is equal to ``d f_i / d y_j``.
@@ -1495,7 +1566,7 @@ package scipy.integrate;
 		
 		    It is generally recommended to provide the Jacobian rather than
 		    relying on a finite-difference approximation.
-		jac_sparsity : {None, array_like, sparse matrix}, optional
+		jac_sparsity : array_like, sparse matrix or None, optional
 		    Defines a sparsity structure of the Jacobian matrix for a
 		    finite-difference approximation. Its shape must be (n, n). This argument
 		    is ignored if `jac` is not `None`. If the Jacobian has only few non-zero
@@ -1504,20 +1575,19 @@ package scipy.integrate;
 		    element in the Jacobian is always zero. If None (default), the Jacobian
 		    is assumed to be dense.
 		    Not supported by 'LSODA', see `lband` and `uband` instead.
-		lband, uband : int or None
+		lband, uband : int or None, optional
 		    Parameters defining the bandwidth of the Jacobian for the 'LSODA' method,
-		    i.e., ``jac[i, j] != 0 only for i - lband <= j <= i + uband``. Setting
-		    these requires your jac routine to return the Jacobian in the packed format:
-		    the returned array must have ``n`` columns and ``uband + lband + 1``
-		    rows in which Jacobian diagonals are written. Specifically
-		    ``jac_packed[uband + i - j , j] = jac[i, j]``. The same format is used
-		    in `scipy.linalg.solve_banded` (check for an illustration).
+		    i.e., ``jac[i, j] != 0 only for i - lband <= j <= i + uband``. Default is
+		    None. Setting these requires your jac routine to return the Jacobian in the
+		    packed format: the returned array must have ``n`` columns and
+		    ``uband + lband + 1`` rows in which Jacobian diagonals are written.
+		    Specifically ``jac_packed[uband + i - j , j] = jac[i, j]``. The same format
+		    is used in `scipy.linalg.solve_banded` (check for an illustration).
 		    These parameters can be also used with ``jac=None`` to reduce the
 		    number of Jacobian elements estimated by finite differences.
-		min_step, first_step : float, optional
-		    The minimum allowed step size and the initial step size respectively
-		    for 'LSODA' method. By default `min_step` is zero and `first_step` is
-		    selected automatically.
+		min_step : float, optional
+		    The minimum allowed step size for 'LSODA' method. 
+		    By default `min_step` is zero.
 		
 		Returns
 		-------
@@ -1619,15 +1689,32 @@ package scipy.integrate;
 		because the event is terminal.
 		
 		>>> def upward_cannon(t, y): return [y[1], -0.5]
-		>>> def hit_ground(t, y): return y[1]
+		>>> def hit_ground(t, y): return y[0]
 		>>> hit_ground.terminal = True
 		>>> hit_ground.direction = -1
 		>>> sol = solve_ivp(upward_cannon, [0, 100], [0, 10], events=hit_ground)
 		>>> print(sol.t_events)
-		[array([ 20.])]
+		[array([40.])]
 		>>> print(sol.t)
 		[0.00000000e+00 9.99900010e-05 1.09989001e-03 1.10988901e-02
-		 1.11088891e-01 1.11098890e+00 1.11099890e+01 2.00000000e+01]
+		 1.11088891e-01 1.11098890e+00 1.11099890e+01 4.00000000e+01]
+		
+		Use `dense_output` and `events` to find position, which is 100, at the apex of
+		the cannonball's trajectory. Apex is not defined as terminal, so both apex
+		and hit_ground are found. There is no information at t=20, so the sol
+		attribute is used to evaluate the solution. The sol attribute is
+		returned by setting ``dense_output=True``.
+		
+		>>> def apex(t,y): return y[1]
+		>>> sol = solve_ivp(upward_cannon, [0, 100], [0, 10], 
+		...                 events=(hit_ground, apex), dense_output=True)
+		>>> print(sol.t_events)
+		[array([40.]), array([20.])]
+		>>> print(sol.t)
+		[0.00000000e+00 9.99900010e-05 1.09989001e-03 1.10988901e-02
+		 1.11088891e-01 1.11098890e+00 1.11099890e+01 4.00000000e+01]
+		>>> print(sol.sol(sol.t_events[1][0]))
+		[100.   0.]
 	**/
 	static public function solve_ivp(fun:Dynamic, t_span:Dynamic, y0:Dynamic, ?method:Dynamic, ?t_eval:Dynamic, ?dense_output:Dynamic, ?events:Dynamic, ?vectorized:Dynamic, ?options:python.KwArgs<Dynamic>):Dynamic;
 	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?tests:Dynamic):Dynamic;
@@ -1687,7 +1774,7 @@ package scipy.integrate;
 		Examples
 		--------
 		
-		Compute the triple integral of ``x * y * z``, over ``x`` ranging 
+		Compute the triple integral of ``x * y * z``, over ``x`` ranging
 		from 1 to 2, ``y`` ranging from 2 to 3, ``z`` ranging from 0 to 1.
 		
 		>>> from scipy import integrate
@@ -1722,7 +1809,7 @@ package scipy.integrate;
 		
 		See Also
 		--------
-		sum, cumsum
+		numpy.cumsum
 		
 		Notes
 		-----
@@ -1735,10 +1822,10 @@ package scipy.integrate;
 		
 		References
 		----------
-		.. [1] Wikipedia page: http://en.wikipedia.org/wiki/Trapezoidal_rule
+		.. [1] Wikipedia page: https://en.wikipedia.org/wiki/Trapezoidal_rule
 		
 		.. [2] Illustration image:
-		       http://en.wikipedia.org/wiki/File:Composite_trapezoidal_rule_illustration.png
+		       https://en.wikipedia.org/wiki/File:Composite_trapezoidal_rule_illustration.png
 		
 		Examples
 		--------

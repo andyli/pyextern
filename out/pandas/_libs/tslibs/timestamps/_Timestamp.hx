@@ -193,7 +193,11 @@ package pandas._libs.tslibs.timestamps;
 		Return datetime with new specified fields.
 	**/
 	public function replace(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var resolution : Dynamic;
+	/**
+		Return resolution describing the smallest difference between two
+		times that can be represented by Timestamp object_state
+	**/
+	public var resolution : Dynamic;
 	public var second : Dynamic;
 	/**
 		format -> strftime() style string.

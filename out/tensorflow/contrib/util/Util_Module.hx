@@ -61,6 +61,8 @@ package tensorflow.contrib.util;
 		  dtype:          Optional tensor_pb2 DataType value.
 		  shape:          List of integers representing the dimensions of tensor.
 		  verify_shape:   Boolean that enables verification of a shape of values.
+		  allow_broadcast:Boolean that enables allowing scalars and 1 length vector
+		      broadcasting. Cannot be true when verify_shape is true.
 		
 		Returns:
 		  A `TensorProto`. Depending on the type, it may contain data in the
@@ -96,7 +98,7 @@ package tensorflow.contrib.util;
 		Otherwise, "shape" specifies the tensor's shape and the numpy array
 		can not have more elements than what "shape" specifies.
 	**/
-	static public function make_tensor_proto(values:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?verify_shape:Dynamic):Dynamic;
+	static public function make_tensor_proto(values:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?verify_shape:Dynamic, ?allow_broadcast:Dynamic):Dynamic;
 	/**
 		Collect the list of ops used by a graph.
 		

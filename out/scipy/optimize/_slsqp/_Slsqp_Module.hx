@@ -9,7 +9,7 @@ package scipy.optimize._slsqp;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	/**
-		slsqp(m,meq,x,xl,xu,f,c,g,a,acc,iter,mode,w,jw,[la,n,l_w,l_jw])
+		slsqp(m,meq,x,xl,xu,f,c,g,a,acc,iter,mode,w,jw,alpha,f0,gs,h1,h2,h3,h4,t,t0,tol,iexact,incons,ireset,itermx,line,n1,n2,n3,[la,n,l_w,l_jw])
 		
 		Wrapper for ``slsqp``.
 		
@@ -29,6 +29,24 @@ package scipy.optimize._slsqp;
 		mode : in/output rank-0 array(int,'i')
 		w : input rank-1 array('d') with bounds (l_w)
 		jw : input rank-1 array('i') with bounds (l_jw)
+		alpha : in/output rank-0 array(float,'d')
+		f0 : in/output rank-0 array(float,'d')
+		gs : in/output rank-0 array(float,'d')
+		h1 : in/output rank-0 array(float,'d')
+		h2 : in/output rank-0 array(float,'d')
+		h3 : in/output rank-0 array(float,'d')
+		h4 : in/output rank-0 array(float,'d')
+		t : in/output rank-0 array(float,'d')
+		t0 : in/output rank-0 array(float,'d')
+		tol : in/output rank-0 array(float,'d')
+		iexact : in/output rank-0 array(int,'i')
+		incons : in/output rank-0 array(int,'i')
+		ireset : in/output rank-0 array(int,'i')
+		itermx : in/output rank-0 array(int,'i')
+		line : in/output rank-0 array(int,'i')
+		n1 : in/output rank-0 array(int,'i')
+		n2 : in/output rank-0 array(int,'i')
+		n3 : in/output rank-0 array(int,'i')
 		
 		Other Parameters
 		----------------

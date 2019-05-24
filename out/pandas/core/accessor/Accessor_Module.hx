@@ -12,6 +12,33 @@ package pandas.core.accessor;
 	static public var _doc : Dynamic;
 	static public function _register_accessor(name:Dynamic, cls:Dynamic):Dynamic;
 	/**
+		Add delegated names to a class using a class decorator.  This provides
+		an alternative usage to directly calling `_add_delegate_accessors`
+		below a class definition.
+		
+		Parameters
+		----------
+		delegate : object
+		    the class to get methods/properties & doc-strings
+		acccessors : Sequence[str]
+		    List of accessor to add
+		typ : {'property', 'method'}
+		overwrite : boolean, default False
+		   overwrite the method/property in the target class if it exists
+		
+		Returns
+		-------
+		callable
+		    A class decorator.
+		
+		Examples
+		--------
+		@delegate_names(Categorical, ["categories", "ordered"], "property")
+		class CategoricalAccessor(PandasDelegate):
+		    [...]
+	**/
+	static public function delegate_names(delegate:Dynamic, accessors:Dynamic, typ:Dynamic, ?overwrite:Dynamic):Dynamic;
+	/**
 		Register a custom accessor on DataFrame objects.
 		
 		Parameters
@@ -20,6 +47,10 @@ package pandas.core.accessor;
 		    Name under which the accessor should be registered. A warning is issued
 		    if this name conflicts with a preexisting attribute.
 		
+		See Also
+		--------
+		register_series_accessor, register_index_accessor
+		
 		Notes
 		-----
 		When accessed, your accessor will be initialized with the pandas object
@@ -27,7 +58,8 @@ package pandas.core.accessor;
 		
 		.. code-block:: python
 		
-		    def __init__(self, pandas_object):
+		    def __init__(self, pandas_object):  # noqa: E999
+		        ...
 		
 		For consistency with pandas methods, you should raise an ``AttributeError``
 		if the data passed to your accessor has an incorrect dtype.
@@ -68,10 +100,6 @@ package pandas.core.accessor;
 		    (5.0, 10.0)
 		    >>> ds.geo.plot()
 		    # plots data on a map
-		
-		See also
-		--------
-		register_series_accessor, register_index_accessor
 	**/
 	static public function register_dataframe_accessor(name:Dynamic):Dynamic;
 	/**
@@ -83,6 +111,10 @@ package pandas.core.accessor;
 		    Name under which the accessor should be registered. A warning is issued
 		    if this name conflicts with a preexisting attribute.
 		
+		See Also
+		--------
+		register_dataframe_accessor, register_series_accessor
+		
 		Notes
 		-----
 		When accessed, your accessor will be initialized with the pandas object
@@ -90,7 +122,8 @@ package pandas.core.accessor;
 		
 		.. code-block:: python
 		
-		    def __init__(self, pandas_object):
+		    def __init__(self, pandas_object):  # noqa: E999
+		        ...
 		
 		For consistency with pandas methods, you should raise an ``AttributeError``
 		if the data passed to your accessor has an incorrect dtype.
@@ -131,10 +164,6 @@ package pandas.core.accessor;
 		    (5.0, 10.0)
 		    >>> ds.geo.plot()
 		    # plots data on a map
-		
-		See also
-		--------
-		register_dataframe_accessor, register_series_accessor
 	**/
 	static public function register_index_accessor(name:Dynamic):Dynamic;
 	/**
@@ -146,6 +175,10 @@ package pandas.core.accessor;
 		    Name under which the accessor should be registered. A warning is issued
 		    if this name conflicts with a preexisting attribute.
 		
+		See Also
+		--------
+		register_dataframe_accessor, register_index_accessor
+		
 		Notes
 		-----
 		When accessed, your accessor will be initialized with the pandas object
@@ -153,7 +186,8 @@ package pandas.core.accessor;
 		
 		.. code-block:: python
 		
-		    def __init__(self, pandas_object):
+		    def __init__(self, pandas_object):  # noqa: E999
+		        ...
 		
 		For consistency with pandas methods, you should raise an ``AttributeError``
 		if the data passed to your accessor has an incorrect dtype.
@@ -194,10 +228,6 @@ package pandas.core.accessor;
 		    (5.0, 10.0)
 		    >>> ds.geo.plot()
 		    # plots data on a map
-		
-		See also
-		--------
-		register_dataframe_accessor, register_index_accessor
 	**/
 	static public function register_series_accessor(name:Dynamic):Dynamic;
 }

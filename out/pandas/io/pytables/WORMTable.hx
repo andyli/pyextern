@@ -249,7 +249,7 @@ package pandas.io.pytables;
 	**/
 	public function queryables():Dynamic;
 	/**
-		read the indicies and the indexing array, calculate offset rows and
+		read the indices and the indexing array, calculate offset rows and
 		return 
 	**/
 	public function read(?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -262,7 +262,7 @@ package pandas.io.pytables;
 		return a single column from the table, generally only indexables
 		are interesting
 	**/
-	public function read_column(column:Dynamic, ?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function read_column(column:Dynamic, ?where:Dynamic, ?start:Dynamic, ?stop:Dynamic):Dynamic;
 	/**
 		select coordinates (row numbers) from a table; return the
 		coordinates object
@@ -333,7 +333,7 @@ package pandas.io.pytables;
 	public function values_cols():Dynamic;
 	/**
 		write in a format that we can search later on (but cannot append
-		to): write out the indicies and the values using _write_array
+		to): write out the indices and the values using _write_array
 		(e.g. a CArray) create an indexing table so that we can search
 	**/
 	public function write(?kwargs:python.KwArgs<Dynamic>):Dynamic;

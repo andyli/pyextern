@@ -130,6 +130,9 @@ package tensorflow.contrib.training.python.training.hparam;
 		    type T if either V has type T, or V is a list of elements of type T.
 		    Hence, for a multidimensional parameter 'x' taking float values,
 		    'x=[0.1,0.2]' will parse successfully if type_map['x'] = float.
+		  ignore_unknown: Bool. Whether values that are missing a type in type_map
+		    should be ignored. If set to True, a ValueError will not be raised for
+		    unknown hyperparameter type.
 		
 		Returns:
 		  A python map mapping each name to either:
@@ -145,6 +148,6 @@ package tensorflow.contrib.training.python.training.hparam;
 		  * If the same rvalue is assigned two different values (e.g. 'a=1,a=2',
 		    'a[1]=1,a[1]=2', or 'a=1,a=[1]')
 	**/
-	static public function parse_values(values:Dynamic, type_map:Dynamic):Dynamic;
+	static public function parse_values(values:Dynamic, type_map:Dynamic, ?ignore_unknown:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

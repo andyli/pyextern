@@ -343,9 +343,9 @@ package scipy.linalg.basic;
 		Parameters
 		----------
 		a : (M, N) array_like
-		    Left hand side matrix (2-D array).
+		    Left hand side array
 		b : (M,) or (M, K) array_like
-		    Right hand side matrix or vector (1-D or 2-D array).
+		    Right hand side array
 		cond : float, optional
 		    Cutoff for 'small' singular values; used to determine effective
 		    rank of a. Singular values smaller than
@@ -371,16 +371,15 @@ package scipy.linalg.basic;
 		-------
 		x : (N,) or (N, K) ndarray
 		    Least-squares solution.  Return shape matches shape of `b`.
-		residues : (0,) or () or (K,) ndarray
-		    Sums of residues, squared 2-norm for each column in ``b - a x``.
-		    If rank of matrix a is ``< N`` or ``N > M``, or ``'gelsy'`` is used,
-		    this is a length zero array. If b was 1-D, this is a () shape array
-		    (numpy scalar), otherwise the shape is (K,).
+		residues : (K,) ndarray or float
+		    Square of the 2-norm for each column in ``b - a x``, if ``M > N`` and
+		    ``ndim(A) == n`` (returns a scalar if b is 1-D). Otherwise a
+		    (0,)-shaped array is returned.
 		rank : int
-		    Effective rank of matrix `a`.
-		s : (min(M,N),) ndarray or None
+		    Effective rank of `a`.
+		s : (min(M, N),) ndarray or None
 		    Singular values of `a`. The condition number of a is
-		    ``abs(s[0] / s[-1])``. None is returned when ``'gelsy'`` is used.
+		    ``abs(s[0] / s[-1])``.
 		
 		Raises
 		------
@@ -388,11 +387,16 @@ package scipy.linalg.basic;
 		    If computation does not converge.
 		
 		ValueError
-		    When parameters are wrong.
+		    When parameters are not compatible.
 		
 		See Also
 		--------
-		optimize.nnls : linear least squares with non-negativity constraint
+		scipy.optimize.nnls : linear least squares with non-negativity constraint
+		
+		Notes
+		-----
+		When ``'gelsy'`` is used as a driver, `residues` is set to a (0,)-shaped
+		array and `s` is always ``None``.
 		
 		Examples
 		--------
@@ -489,8 +493,6 @@ package scipy.linalg.basic;
 		    ``T`` above, the scaling and the permutation vectors are given
 		    separately as a tuple without allocating the full array ``T``.
 		
-		.. versionadded:: 0.19.0
-		
 		Notes
 		-----
 		
@@ -506,6 +508,8 @@ package scipy.linalg.basic;
 		
 		The code is a wrapper around LAPACK's xGEBAL routine family for matrix
 		balancing.
+		
+		.. versionadded:: 0.19.0
 		
 		Examples
 		--------
@@ -532,7 +536,7 @@ package scipy.linalg.basic;
 		
 		.. [2] : R. James, J. Langou, B.R. Lowery, "On matrix balancing and
 		   eigenvector computation", 2014, Available online:
-		   http://arxiv.org/abs/1401.5766
+		   https://arxiv.org/abs/1401.5766
 		
 		.. [3] :  D.S. Watkins. A case where balancing is harmful.
 		   Electron. Trans. Numer. Anal, Vol.23, 2006.
@@ -549,9 +553,16 @@ package scipy.linalg.basic;
 		a : (M, N) array_like
 		    Matrix to be pseudo-inverted.
 		cond, rcond : float, optional
-		    Cutoff for 'small' singular values in the least-squares solver.
-		    Singular values smaller than ``rcond * largest_singular_value``
-		    are considered zero.
+		    Cutoff factor for 'small' singular values. In `lstsq`, 
+		    singular values less than ``cond*largest_singular_value`` will be
+		    considered as zero. If both are omitted, the default value
+		    ``max(M, N) * eps`` is passed to `lstsq` where ``eps`` is the
+		    corresponding machine precision value of the datatype of ``a``.
+		
+		    .. versionchanged:: 1.3.0
+		        Previously the default cutoff value was just `eps` without the
+		        factor ``max(M, N)``.
+		
 		return_rank : bool, optional
 		    if True, return the effective rank of the matrix
 		check_finite : bool, optional
@@ -594,12 +605,17 @@ package scipy.linalg.basic;
 		a : (M, N) array_like
 		    Matrix to be pseudo-inverted.
 		cond, rcond : float or None
-		    Cutoff for 'small' singular values.
-		    Singular values smaller than ``rcond*largest_singular_value``
-		    are considered zero.
-		    If None or -1, suitable machine precision is used.
+		    Cutoff for 'small' singular values; singular values smaller than this
+		    value are considered as zero. If both are omitted, the default value
+		    ``max(M,N)*largest_singular_value*eps`` is used where ``eps`` is the
+		    machine precision value of the datatype of ``a``.
+		
+		    .. versionchanged:: 1.3.0
+		        Previously the default cutoff value was just ``eps*f`` where ``f``
+		        was ``1e3`` for single precision and ``1e6`` for double precision.
+		
 		return_rank : bool, optional
-		    if True, return the effective rank of the matrix
+		    If True, return the effective rank of the matrix.
 		check_finite : bool, optional
 		    Whether to check that the input matrix contains only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
@@ -610,7 +626,7 @@ package scipy.linalg.basic;
 		B : (N, M) ndarray
 		    The pseudo-inverse of matrix `a`.
 		rank : int
-		    The effective rank of the matrix.  Returned if return_rank == True
+		    The effective rank of the matrix.  Returned if `return_rank` is True.
 		
 		Raises
 		------
@@ -640,16 +656,20 @@ package scipy.linalg.basic;
 		a : (N, N) array_like
 		    Real symmetric or complex hermetian matrix to be pseudo-inverted
 		cond, rcond : float or None
-		    Cutoff for 'small' eigenvalues.
-		    Singular values smaller than rcond * largest_eigenvalue are considered
-		    zero.
+		    Cutoff for 'small' singular values; singular values smaller than this
+		    value are considered as zero. If both are omitted, the default
+		    ``max(M,N)*largest_eigenvalue*eps`` is used where ``eps`` is the
+		    machine precision value of the datatype of ``a``.
 		
-		    If None or -1, suitable machine precision is used.
+		    .. versionchanged:: 1.3.0
+		        Previously the default cutoff value was just ``eps*f`` where ``f``
+		        was ``1e3`` for single precision and ``1e6`` for double precision.
+		
 		lower : bool, optional
 		    Whether the pertinent array data is taken from the lower or upper
-		    triangle of a. (Default: lower)
+		    triangle of `a`. (Default: lower)
 		return_rank : bool, optional
-		    if True, return the effective rank of the matrix
+		    If True, return the effective rank of the matrix.
 		check_finite : bool, optional
 		    Whether to check that the input matrix contains only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
@@ -660,7 +680,7 @@ package scipy.linalg.basic;
 		B : (N, N) ndarray
 		    The pseudo-inverse of matrix `a`.
 		rank : int
-		    The effective rank of the matrix.  Returned if return_rank == True
+		    The effective rank of the matrix.  Returned if `return_rank` is True.
 		
 		Raises
 		------

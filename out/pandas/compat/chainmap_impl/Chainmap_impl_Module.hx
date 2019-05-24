@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.compat.chainmap_impl;
 @:pythonImport("pandas.compat.chainmap_impl") extern class Chainmap_impl_Module {
+	static public var PY3 : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

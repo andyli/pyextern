@@ -213,6 +213,10 @@ package tensorflow.python.training.checkpointable.data_structures;
 	**/
 	public function _handle_deferred_dependencies(name:Dynamic, checkpointable:Dynamic):Dynamic;
 	/**
+		All Layers and Layer containers, including empty containers.
+	**/
+	public var _layers : Dynamic;
+	/**
 		Look up a dependency by name.
 		
 		May be overridden to include conditional dependencies.
@@ -298,6 +302,10 @@ package tensorflow.python.training.checkpointable.data_structures;
 		Add a dependency on `value`.
 	**/
 	public function _track_value(value:Dynamic, name:Dynamic):Dynamic;
+	/**
+		An iterable/sequence which may contain checkpointable objects.
+	**/
+	public var _values : Dynamic;
 	public var layers : Dynamic;
 	/**
 		Aggregate losses from any `Layer` instances.

@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 @:pythonImport("tensorflow.contrib.boosted_trees.proto.learner_pb2", "AveragingConfig") extern class AveragingConfig {
-	static public var AVERAGE_LAST_N_TREES_FIELD_NUMBER : Dynamic;
-	static public var AVERAGE_LAST_PERCENT_TREES_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -84,6 +82,10 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -249,4 +251,12 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.AveragingConfig.average_last_n_trees
+	**/
+	public var average_last_n_trees : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.AveragingConfig.average_last_percent_trees
+	**/
+	public var average_last_percent_trees : Dynamic;
 }

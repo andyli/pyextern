@@ -112,10 +112,20 @@ package scipy.io.arff.arffread;
 	public var __weakref__ : Dynamic;
 	/**
 		Return the list of attribute names.
+		
+		Returns
+		-------
+		attrnames : list of str
+		    The attribute names.
 	**/
 	public function names():Dynamic;
 	/**
 		Return the list of attribute types.
+		
+		Returns
+		-------
+		attr_types : list of str
+		    The attribute types.
 	**/
 	public function types():Dynamic;
 }

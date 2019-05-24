@@ -1,12 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 @:pythonImport("tensorflow.contrib.boosted_trees.proto.learner_pb2", "LearnerConfig") extern class LearnerConfig {
-	static public var AVERAGING_CONFIG_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CONSTRAINTS_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -33,8 +31,6 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
-	static public var FEATURE_FRACTION_PER_LEVEL_FIELD_NUMBER : Dynamic;
-	static public var FEATURE_FRACTION_PER_TREE_FIELD_NUMBER : Dynamic;
 	static public var FULL_HESSIAN : Dynamic;
 	/**
 		Finds unset required fields.
@@ -44,7 +40,6 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GROWING_MODE_FIELD_NUMBER : Dynamic;
 	static public var GROWING_MODE_UNSPECIFIED : Dynamic;
 	static public var GrowingMode : Dynamic;
 	/**
@@ -60,12 +55,10 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var LAYER_BY_LAYER : Dynamic;
-	static public var LEARNING_RATE_TUNER_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MULTI_CLASS_STRATEGY_FIELD_NUMBER : Dynamic;
 	static public var MULTI_CLASS_STRATEGY_UNSPECIFIED : Dynamic;
 	/**
 		Merges a protocol message into the current message.
@@ -77,18 +70,15 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var MultiClassStrategy : Dynamic;
 	static public var NORMAL_DECISION_TREE : Dynamic;
-	static public var NUM_CLASSES_FIELD_NUMBER : Dynamic;
 	static public var OBLIVIOUS_DECISION_TREE : Dynamic;
 	static public var POST_PRUNE : Dynamic;
 	static public var PRE_PRUNE : Dynamic;
-	static public var PRUNING_MODE_FIELD_NUMBER : Dynamic;
 	static public var PRUNING_MODE_UNSPECIFIED : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var PruningMode : Dynamic;
-	static public var REGULARIZATION_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -106,7 +96,10 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var TREE_PER_CLASS : Dynamic;
-	static public var WEAK_LEARNER_TYPE_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var WHOLE_TREE : Dynamic;
 	static public var WeakLearnerType : Dynamic;
 	/**
@@ -274,4 +267,48 @@ package tensorflow.contrib.boosted_trees.proto.learner_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearnerConfig.averaging_config
+	**/
+	public var averaging_config : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearnerConfig.constraints
+	**/
+	public var constraints : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearnerConfig.feature_fraction_per_level
+	**/
+	public var feature_fraction_per_level : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearnerConfig.feature_fraction_per_tree
+	**/
+	public var feature_fraction_per_tree : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearnerConfig.growing_mode
+	**/
+	public var growing_mode : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearnerConfig.learning_rate_tuner
+	**/
+	public var learning_rate_tuner : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearnerConfig.multi_class_strategy
+	**/
+	public var multi_class_strategy : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearnerConfig.num_classes
+	**/
+	public var num_classes : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearnerConfig.pruning_mode
+	**/
+	public var pruning_mode : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearnerConfig.regularization
+	**/
+	public var regularization : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.learner.LearnerConfig.weak_learner_type
+	**/
+	public var weak_learner_type : Dynamic;
 }

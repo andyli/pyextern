@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.framework.step_stats_pb2;
 @:pythonImport("tensorflow.core.framework.step_stats_pb2", "AllocationRecord") extern class AllocationRecord {
-	static public var ALLOC_BYTES_FIELD_NUMBER : Dynamic;
-	static public var ALLOC_MICROS_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -84,6 +82,10 @@ package tensorflow.core.framework.step_stats_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -249,4 +251,12 @@ package tensorflow.core.framework.step_stats_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.AllocationRecord.alloc_bytes
+	**/
+	public var alloc_bytes : Dynamic;
+	/**
+		Field tensorflow.AllocationRecord.alloc_micros
+	**/
+	public var alloc_micros : Dynamic;
 }

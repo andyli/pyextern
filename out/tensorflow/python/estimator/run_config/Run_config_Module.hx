@@ -5,6 +5,7 @@ package tensorflow.python.estimator.run_config;
 	static public var _DEFAULT_REPLACEABLE_LIST : Dynamic;
 	static public var _EVAL_SESSION_MASTER_KEY : Dynamic;
 	static public var _GRPC_SCHEME : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var _LOCAL_MASTER : Dynamic;
 	static public var _MODEL_DIR_KEY : Dynamic;
 	static public var _SAVE_CKPT_ERR : Dynamic;

@@ -7,11 +7,12 @@ package scipy.spatial.ckdtree;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
+	static public function _run_threads(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the number of CPUs in the system
 	**/
 	static public function cpu_count():Dynamic;
-	static public function new_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

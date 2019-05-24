@@ -245,7 +245,7 @@ package pandas.io.pytables;
 		
 		Parameters
 		----------
-		data : numpy ndarray (structured or homogeneous), dict, or DataFrame
+		data : ndarray (structured or homogeneous), Iterable, dict, or DataFrame
 		    Dict can contain Series, arrays, constants, or list-like objects
 		
 		    .. versionchanged :: 0.23.0
@@ -262,6 +262,13 @@ package pandas.io.pytables;
 		    Data type to force. Only a single dtype is allowed. If None, infer
 		copy : boolean, default False
 		    Copy data from inputs. Only affects DataFrame / 2d ndarray input
+		
+		See Also
+		--------
+		DataFrame.from_records : Constructor from tuples, also record arrays.
+		DataFrame.from_dict : From dicts of Series, arrays, or dicts.
+		DataFrame.from_items : From sequence of (key, value) pairs
+		    pandas.read_csv, pandas.read_table, pandas.read_clipboard.
 		
 		Examples
 		--------
@@ -291,22 +298,13 @@ package pandas.io.pytables;
 		
 		Constructing DataFrame from numpy ndarray:
 		
-		>>> df2 = pd.DataFrame(np.random.randint(low=0, high=10, size=(5, 5)),
-		...                    columns=['a', 'b', 'c', 'd', 'e'])
+		>>> df2 = pd.DataFrame(np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]),
+		...                    columns=['a', 'b', 'c'])
 		>>> df2
-		    a   b   c   d   e
-		0   2   8   8   3   4
-		1   4   2   9   0   9
-		2   1   0   7   8   0
-		3   5   1   7   1   3
-		4   6   0   2   4   2
-		
-		See also
-		--------
-		DataFrame.from_records : constructor from tuples, also record arrays
-		DataFrame.from_dict : from dicts of Series, arrays, or dicts
-		DataFrame.from_items : from sequence of (key, value) pairs
-		pandas.read_csv, pandas.read_table, pandas.read_clipboard
+		   a  b  c
+		0  1  2  3
+		1  4  5  6
+		2  7  8  9
 	**/
 	static public function obj_type(?data:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	static public var pandas_kind : Dynamic;
@@ -334,7 +332,7 @@ package pandas.io.pytables;
 		return a single column from the table, generally only indexables
 		are interesting
 	**/
-	public function read_column(column:Dynamic, ?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function read_column(column:Dynamic, ?where:Dynamic, ?start:Dynamic, ?stop:Dynamic):Dynamic;
 	/**
 		select coordinates (row numbers) from a table; return the
 		coordinates object

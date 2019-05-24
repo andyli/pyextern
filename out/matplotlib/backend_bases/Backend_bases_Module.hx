@@ -12,6 +12,11 @@ package matplotlib.backend_bases;
 	static public var _default_backends : Dynamic;
 	static public var _default_filetypes : Dynamic;
 	static public var _has_pil : Dynamic;
+	static public var _log : Dynamic;
+	/**
+		The default Matplotlib button actions for extra mouse buttons.
+	**/
+	static public function button_press_handler(event:Dynamic, canvas:Dynamic, ?toolbar:Dynamic):Dynamic;
 	/**
 		@contextmanager decorator.
 		

@@ -70,8 +70,6 @@ package tensorflow.core.kernels.boosted_trees.boosted_trees_pb2;
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SCALAR_FIELD_NUMBER : Dynamic;
-	static public var SPARSE_VECTOR_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -84,7 +82,10 @@ package tensorflow.core.kernels.boosted_trees.boosted_trees_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var VECTOR_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -250,4 +251,16 @@ package tensorflow.core.kernels.boosted_trees.boosted_trees_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.Leaf.scalar
+	**/
+	public var scalar : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.Leaf.sparse_vector
+	**/
+	public var sparse_vector : Dynamic;
+	/**
+		Field tensorflow.boosted_trees.Leaf.vector
+	**/
+	public var vector : Dynamic;
 }

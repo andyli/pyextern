@@ -15,7 +15,7 @@ package tensorflow.contrib.distributions.python.ops.bijectors.masked_autoregress
 	/**
 		Clips input while leaving gradient unaltered. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 	**/
@@ -23,7 +23,7 @@ package tensorflow.contrib.distributions.python.ops.bijectors.masked_autoregress
 	/**
 		Generate the mask for building an autoregressive dense layer. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 	**/
@@ -31,7 +31,7 @@ package tensorflow.contrib.distributions.python.ops.bijectors.masked_autoregress
 	/**
 		Generate the slices for building an autoregressive mask. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 	**/
@@ -41,7 +41,7 @@ package tensorflow.contrib.distributions.python.ops.bijectors.masked_autoregress
 	/**
 		Build the Masked Autoregressive Density Estimator (Germain et al., 2015). (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 		
@@ -111,7 +111,7 @@ package tensorflow.contrib.distributions.python.ops.bijectors.masked_autoregress
 	/**
 		A autoregressively masked dense layer. Analogous to `tf.layers.dense`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
 		Instructions for updating:
 		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 		

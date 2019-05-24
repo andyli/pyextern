@@ -62,7 +62,9 @@ package scipy.spatial.distance;
 	static public function _filter_deprecated_kwargs(kwargs:Dynamic, args_blacklist:Dynamic):Dynamic;
 	static public function _nbool_correspond_all(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	static public function _nbool_correspond_ft_tf(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
+	static public function _select_weighted_metric(mstr:Dynamic, kwargs:Dynamic, out:Dynamic):Dynamic;
 	static public function _validate_cdist_input(XA:Dynamic, XB:Dynamic, mA:Dynamic, mB:Dynamic, n:Dynamic, metric_name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _validate_hamming_kwargs(X:Dynamic, m:Dynamic, n:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _validate_mahalanobis_kwargs(X:Dynamic, m:Dynamic, n:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _validate_minkowski_kwargs(X:Dynamic, m:Dynamic, n:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _validate_pdist_input(X:Dynamic, m:Dynamic, n:Dynamic, metric_name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -165,9 +167,9 @@ package scipy.spatial.distance;
 		metric : str or callable, optional
 		    The distance metric to use.  If a string, the distance function can be
 		    'braycurtis', 'canberra', 'chebyshev', 'cityblock', 'correlation',
-		    'cosine', 'dice', 'euclidean', 'hamming', 'jaccard', 'kulsinski',
-		    'mahalanobis', 'matching', 'minkowski', 'rogerstanimoto', 'russellrao',
-		    'seuclidean', 'sokalmichener', 'sokalsneath', 'sqeuclidean',
+		    'cosine', 'dice', 'euclidean', 'hamming', 'jaccard', 'jensenshannon',
+		    'kulsinski', 'mahalanobis', 'matching', 'minkowski', 'rogerstanimoto',
+		    'russellrao', 'seuclidean', 'sokalmichener', 'sokalsneath', 'sqeuclidean',
 		    'wminkowski', 'yule'.
 		*args : tuple. Deprecated.
 		    Additional arguments should be passed as keyword arguments
@@ -627,8 +629,8 @@ package scipy.spatial.distance;
 		v : (O,N) ndarray
 		    Input array.
 		seed : int or None
-		    Local `np.random.RandomState` seed. Default is 0, a random shuffling of
-		    u and v that guarantees reproducibility.
+		    Local `numpy.random.RandomState` seed. Default is 0, a random
+		    shuffling of u and v that guarantees reproducibility.
 		
 		Returns
 		-------
@@ -640,6 +642,12 @@ package scipy.spatial.distance;
 		
 		index_2 : int
 		    index of point contributing to Hausdorff pair in `v`
+		
+		Raises
+		------
+		ValueError
+		    An exception is thrown if `u` and `v` do not have
+		    the same number of columns.
 		
 		Notes
 		-----
@@ -868,6 +876,22 @@ package scipy.spatial.distance;
 		jaccard : double
 		    The Jaccard distance between vectors `u` and `v`.
 		
+		Notes
+		-----
+		When both `u` and `v` lead to a `0/0` division i.e. there is no overlap
+		between the items in the vectors the returned distance is 0. See the
+		Wikipedia page on the Jaccard index [1]_, and this paper [2]_.
+		
+		.. versionchanged:: 1.2.0
+		    Previously, when `u` and `v` lead to a `0/0` division, the function
+		    would return NaN. This was changed to return 0 instead.
+		
+		References
+		----------
+		.. [1] https://en.wikipedia.org/wiki/Jaccard_index
+		.. [2] S. Kosub, "A note on the triangle inequality for the Jaccard
+		   distance", 2016, Available online: https://arxiv.org/pdf/1612.02696.pdf
+		
 		Examples
 		--------
 		>>> from scipy.spatial import distance
@@ -881,6 +905,52 @@ package scipy.spatial.distance;
 		0.66666666666666663
 	**/
 	static public function jaccard(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
+	/**
+		Compute the Jensen-Shannon distance (metric) between
+		two 1-D probability arrays. This is the square root
+		of the Jensen-Shannon divergence.
+		
+		The Jensen-Shannon distance between two probability
+		vectors `p` and `q` is defined as,
+		
+		.. math::
+		
+		   \sqrt{\frac{D(p \parallel m) + D(q \parallel m)}{2}}
+		
+		where :math:`m` is the pointwise mean of :math:`p` and :math:`q`
+		and :math:`D` is the Kullback-Leibler divergence.
+		
+		This routine will normalize `p` and `q` if they don't sum to 1.0.
+		
+		Parameters
+		----------
+		p : (N,) array_like
+		    left probability vector
+		q : (N,) array_like
+		    right probability vector
+		base : double, optional
+		    the base of the logarithm used to compute the output
+		    if not given, then the routine uses the default base of
+		    scipy.stats.entropy.
+		
+		Returns
+		-------
+		js : double
+		    The Jensen-Shannon distance between `p` and `q`
+		
+		.. versionadded:: 1.2.0
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.jensenshannon([1.0, 0.0, 0.0], [0.0, 1.0, 0.0], 2.0)
+		1.0
+		>>> distance.jensenshannon([1.0, 0.0], [0.5, 0.5])
+		0.46450140402245893
+		>>> distance.jensenshannon([1.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+		0.0
+	**/
+	static public function jensenshannon(p:Dynamic, q:Dynamic, ?base:Dynamic):Dynamic;
 	/**
 		Compute the Kulsinski dissimilarity between two boolean 1-D arrays.
 		
@@ -1203,7 +1273,7 @@ package scipy.spatial.distance;
 		    The distance metric to use. The distance function can
 		    be 'braycurtis', 'canberra', 'chebyshev', 'cityblock',
 		    'correlation', 'cosine', 'dice', 'euclidean', 'hamming',
-		    'jaccard', 'kulsinski', 'mahalanobis', 'matching',
+		    'jaccard', 'jensenshannon', 'kulsinski', 'mahalanobis', 'matching',
 		    'minkowski', 'rogerstanimoto', 'russellrao', 'seuclidean',
 		    'sokalmichener', 'sokalsneath', 'sqeuclidean', 'yule'.
 		*args : tuple. Deprecated.
@@ -1438,6 +1508,38 @@ package scipy.spatial.distance;
 	**/
 	static public function pdist(X:Dynamic, ?metric:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		rel_entr(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		rel_entr(x, y)
+		
+		Elementwise function for computing relative entropy.
+		
+		.. math:: \mathrm{rel\_entr}(x, y) = \begin{cases} x \log(x / y) & x > 0, y > 0 \\ 0 & x = 0, y \ge 0 \\ \infty & \text{otherwise} \end{cases}
+		
+		Parameters
+		----------
+		x : ndarray
+		    First input array.
+		y : ndarray
+		    Second input array.
+		
+		Returns
+		-------
+		res : ndarray
+		    Output array.
+		
+		See Also
+		--------
+		entr, kl_div
+		
+		Notes
+		-----
+		This function is jointly convex in x and y.
+		
+		.. versionadded:: 0.15.0
+	**/
+	static public function rel_entr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Compute the Rogers-Tanimoto dissimilarity between two boolean 1-D arrays.
 		
@@ -1716,7 +1818,7 @@ package scipy.spatial.distance;
 		  :math:`v[{n \choose 2}-{n-i \choose 2} + (j-i-1)]` and all
 		  diagonal elements are zero.
 		
-		In Scipy 0.19.0, ``squareform`` stopped casting all input types to
+		In SciPy 0.19.0, ``squareform`` stopped casting all input types to
 		float64, and started returning arrays of the same dtype as the input.
 	**/
 	static public function squareform(X:Dynamic, ?force:Dynamic, ?checks:Dynamic):Dynamic;

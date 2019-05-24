@@ -14,7 +14,7 @@ package tensorflow.contrib.data.python.ops.parsing_ops;
 	/**
 		A transformation that parses `Example` protos into a `dict` of tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.parse_example_dataset(...)`.
 		

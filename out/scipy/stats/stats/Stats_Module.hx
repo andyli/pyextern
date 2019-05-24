@@ -10,7 +10,6 @@ package scipy.stats.stats;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _betai(a:Dynamic, b:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Compute, between two one-dimensional distributions :math:`u` and
 		:math:`v`, whose respective CDFs are :math:`U` and :math:`V`, the
@@ -56,7 +55,53 @@ package scipy.stats.stats;
 	static public function _cdf_distance(p:Dynamic, u_values:Dynamic, v_values:Dynamic, ?u_weights:Dynamic, ?v_weights:Dynamic):Float;
 	static public function _chk2_asarray(a:Dynamic, b:Dynamic, axis:Dynamic):Dynamic;
 	static public function _chk_asarray(a:Dynamic, axis:Dynamic):Dynamic;
-	static public function _compute_qth_percentile(sorted:Dynamic, per:Dynamic, interpolation_method:Dynamic, axis:Dynamic):Dynamic;
+	/**
+		Count the proportion of paths that stay strictly inside two diagonal lines.
+		
+		Parameters
+		----------
+		m : integer
+		    m > 0
+		n : integer
+		    n > 0
+		g : integer
+		    g is greatest common divisor of m and n
+		h : integer
+		    0 <= h <= lcm(m,n)
+		
+		Returns
+		-------
+		p : float
+		    The proportion of paths that stay inside the two lines.
+		
+		
+		Count the integer lattice paths from (0, 0) to (m, n) which satisfy
+		|x/m - y/n| < h / lcm(m, n).
+		The paths make steps of size +1 in either positive x or positive y directions.
+		
+		We generally follow Hodges' treatment of Drion/Gnedenko/Korolyuk.
+		Hodges, J.L. Jr.,
+		"The Significance Probability of the Smirnov Two-Sample Test,"
+		Arkiv fiur Matematik, 3, No. 43 (1958), 469-86.
+	**/
+	static public function _compute_prob_inside_method(m:Dynamic, n:Dynamic, g:Dynamic, h:Dynamic):Float;
+	/**
+		Compute the proportion of paths that pass outside the two diagonal lines.
+		
+		Parameters
+		----------
+		n : integer
+		    n > 0
+		h : integer
+		    0 <= h <= n
+		
+		Returns
+		-------
+		p : float
+		    The proportion of paths that pass outside the lines x-y = +/-h.
+	**/
+	static public function _compute_prob_outside_square(n:Dynamic, h:Dynamic):Float;
+	static public function _compute_qth_percentile(sorted_:Dynamic, per:Dynamic, interpolation_method:Dynamic, axis:Dynamic):Dynamic;
 	static public function _contains_nan(a:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
 		Count the number of non-masked elements of an array.
@@ -65,6 +110,44 @@ package scipy.stats.stats;
 		for ndarrays.
 	**/
 	static public function _count(a:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Count the number of paths that pass outside the specified diagonal.
+		
+		Parameters
+		----------
+		m : integer
+		    m > 0
+		n : integer
+		    n > 0
+		g : integer
+		    g is greatest common divisor of m and n
+		h : integer
+		    0 <= h <= lcm(m,n)
+		
+		Returns
+		-------
+		p : float
+		    The number of paths that go low.
+		    The calculation may overflow - check for a finite answer.
+		
+		Exceptions
+		----------
+		FloatingPointError: Raised if the intermediate computation goes outside
+		the range of a float.
+		
+		Notes
+		-----
+		Count the integer lattice paths from (0, 0) to (m, n), which at some
+		point (x, y) along the path, satisfy:
+		  m*y <= n*x - h*g
+		The paths make steps of size +1 in either positive x or positive y directions.
+		
+		We generally follow Hodges' treatment of Drion/Gnedenko/Korolyuk.
+		Hodges, J.L. Jr.,
+		"The Significance Probability of the Smirnov Two-Sample Test,"
+		Arkiv fiur Matematik, 3, No. 43 (1958), 469-86.
+	**/
+	static public function _count_paths_outside_method(m:Dynamic, n:Dynamic, g:Dynamic, h:Dynamic):Float;
 	static public function _equal_var_ttest_denom(v1:Dynamic, n1:Dynamic, v2:Dynamic, n2:Dynamic):Dynamic;
 	static public function _find_repeats(arr:Dynamic):Dynamic;
 	/**
@@ -428,6 +511,73 @@ package scipy.stats.stats;
 		True
 	**/
 	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	/**
+		Computes the Brunner-Munzel test on samples x and y
+		
+		The Brunner-Munzel test is a nonparametric test of the null hypothesis that
+		when values are taken one by one from each group, the probabilities of
+		getting large values in both groups are equal.
+		Unlike the Wilcoxon-Mann-Whitney's U test, this does not require the
+		assumption of equivariance of two groups. Note that this does not assume
+		the distributions are same. This test works on two independent samples,
+		which may have different sizes.
+		
+		Parameters
+		----------
+		x, y : array_like
+		    Array of samples, should be one-dimensional.
+		alternative :  'less', 'two-sided', or 'greater', optional
+		    Whether to get the p-value for the one-sided hypothesis ('less'
+		    or 'greater') or for the two-sided hypothesis ('two-sided').
+		    Defaults value is 'two-sided' .
+		distribution: 't' or 'normal', optional
+		    Whether to get the p-value by t-distribution or by standard normal
+		    distribution.
+		    Defaults value is 't' .
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
+		
+		Returns
+		-------
+		statistic : float
+		    The Brunner-Munzer W statistic.
+		pvalue : float
+		    p-value assuming an t distribution. One-sided or
+		    two-sided, depending on the choice of `alternative` and `distribution`.
+		
+		See Also
+		--------
+		mannwhitneyu : Mann-Whitney rank test on two samples.
+		
+		Notes
+		-------
+		Brunner and Munzel recommended to estimate the p-value by t-distribution
+		when the size of data is 50 or less. If the size is lower than 10, it would
+		be better to use permuted Brunner Munzel test (see [2]_).
+		
+		References
+		----------
+		.. [1] Brunner, E. and Munzel, U. "The nonparametric Benhrens-Fisher
+		       problem: Asymptotic theory and a small-sample approximation".
+		       Biometrical Journal. Vol. 42(2000): 17-25.
+		.. [2] Neubert, K. and Brunner, E. "A studentized permutation test for the
+		       non-parametric Behrens-Fisher problem". Computational Statistics and
+		       Data Analysis. Vol. 51(2007): 5192-5204.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> x1 = [1,2,1,1,1,1,1,1,1,1,2,4,1,1]
+		>>> x2 = [3,3,4,3,1,2,3,1,1,5,4]
+		>>> w, p_value = stats.brunnermunzel(x1, x2)
+		>>> w
+		3.1374674823029505
+		>>> p_value
+		0.0057862086661515377
+	**/
+	static public function brunnermunzel(x:Dynamic, y:Dynamic, ?alternative:Dynamic, ?distribution:Dynamic, ?nan_policy:Dynamic):Float;
 	static public function callable(obj:Dynamic):Dynamic;
 	/**
 		Calculate a one-way chi square test.
@@ -464,8 +614,7 @@ package scipy.stats.stats;
 		
 		See Also
 		--------
-		power_divergence
-		mstats.chisquare
+		scipy.stats.power_divergence
 		
 		Notes
 		-----
@@ -484,8 +633,9 @@ package scipy.stats.stats;
 		References
 		----------
 		.. [1] Lowry, Richard.  "Concepts and Applications of Inferential
-		       Statistics". Chapter 8. http://faculty.vassar.edu/lowry/ch8pt1.html
-		.. [2] "Chi-squared test", http://en.wikipedia.org/wiki/Chi-squared_test
+		       Statistics". Chapter 8.
+		       https://web.archive.org/web/20171022032306/http://vassarstats.net:80/textbook/ch8pt1.html
+		.. [2] "Chi-squared test", https://en.wikipedia.org/wiki/Chi-squared_test
 		
 		Examples
 		--------
@@ -547,22 +697,26 @@ package scipy.stats.stats;
 		----------
 		pvalues : array_like, 1-D
 		    Array of p-values assumed to come from independent tests.
-		method : {'fisher', 'stouffer'}, optional
+		method : {'fisher', 'pearson', 'tippett', 'stouffer', 'mudholkar_george'},
+		optional.
 		    Name of method to use to combine p-values. The following methods are
 		    available:
 		
 		    - "fisher": Fisher's method (Fisher's combined probability test),
-		      the default.
+		      the default, the sum of the logarithm of the p-values.
+		    - "pearson": Pearson's method (similar to Fisher's but uses sum of the
+		      complement of the p-values inside the logarithms).
+		    - "tippett": Tippett's method (minimum of p-values).
 		    - "stouffer": Stouffer's Z-score method.
+		    - "mudholkar_george": the difference of Fisher's and Pearson's methods
+		       divided by 2.
 		weights : array_like, 1-D, optional
 		    Optional array of weights used only for Stouffer's Z-score method.
 		
 		Returns
 		-------
 		statistic: float
-		    The statistic calculated by the specified method:
-		    - "fisher": The chi-squared statistic
-		    - "stouffer": The Z-score
+		    The statistic calculated by the specified method.
 		pval: float
 		    The combined p-value.
 		
@@ -573,7 +727,17 @@ package scipy.stats.stats;
 		Stouffer's Z-score method [2]_ uses Z-scores rather than p-values. The
 		advantage of Stouffer's method is that it is straightforward to introduce
 		weights, which can make Stouffer's method more powerful than Fisher's
-		method when the p-values are from studies of different size [3]_ [4]_.
+		method when the p-values are from studies of different size [6]_ [7]_.
+		The Pearson's method uses :math:`log(1-p_i)` inside the sum whereas Fisher's
+		method uses :math:`log(p_i)` [4]_. For Fisher's and Pearson's method, the
+		sum of the logarithms is multiplied by -2 in the implementation. This
+		quantity has a chisquare distribution that determines the p-value. The
+		`mudholkar_george` method is the difference of the Fisher's and Pearson's
+		test statistics, each of which include the -2 factor [4]_. However, the
+		`mudholkar_george` method does not include these -2 factors. The test
+		statistic of `mudholkar_george` is the sum of logisitic random variables and
+		equation 3.6 in [3]_ is used to approximate the p-value based on Student's
+		t-distribution.
 		
 		Fisher's method may be extended to combine p-values from dependent tests
 		[5]_. Extensions such as Brown's method and Kost's method are not currently
@@ -584,14 +748,18 @@ package scipy.stats.stats;
 		References
 		----------
 		.. [1] https://en.wikipedia.org/wiki/Fisher%27s_method
-		.. [2] http://en.wikipedia.org/wiki/Fisher's_method#Relation_to_Stouffer.27s_Z-score_method
-		.. [3] Whitlock, M. C. "Combining probability from independent tests: the
+		.. [2] https://en.wikipedia.org/wiki/Fisher%27s_method#Relation_to_Stouffer.27s_Z-score_method
+		.. [3] George, E. O., and G. S. Mudholkar. "On the convolution of logistic
+		       random variables." Metrika 30.1 (1983): 1-13.
+		.. [4] Heard, N. and Rubin-Delanchey, P. "Choosing between methods of
+		       combining p-values."  Biometrika 105.1 (2018): 239-246.
+		.. [5] Whitlock, M. C. "Combining probability from independent tests: the
 		       weighted Z-method is superior to Fisher's approach." Journal of
 		       Evolutionary Biology 18, no. 5 (2005): 1368-1373.
-		.. [4] Zaykin, Dmitri V. "Optimally weighted Z-test is a powerful method
+		.. [6] Zaykin, Dmitri V. "Optimally weighted Z-test is a powerful method
 		       for combining probabilities in meta-analysis." Journal of
 		       Evolutionary Biology 24, no. 8 (2011): 1836-1841.
-		.. [5] https://en.wikipedia.org/wiki/Extensions_of_Fisher%27s_method
+		.. [7] https://en.wikipedia.org/wiki/Extensions_of_Fisher%27s_method
 	**/
 	static public function combine_pvalues(pvalues:Dynamic, ?method:Dynamic, ?weights:Dynamic):Dynamic;
 	/**
@@ -802,6 +970,72 @@ package scipy.stats.stats;
 	**/
 	static public function energy_distance(u_values:Dynamic, v_values:Dynamic, ?u_weights:Dynamic, ?v_weights:Dynamic):Float;
 	/**
+		Compute the Epps-Singleton (ES) test statistic.
+		
+		Test the null hypothesis that two samples have the same underlying
+		probability distribution.
+		
+		Parameters
+		----------
+		x, y : array-like
+		    The two samples of observations to be tested. Input must not have more
+		    than one dimension. Samples can have different lengths.
+		t : array-like, optional
+		    The points (t1, ..., tn) where the empirical characteristic function is
+		    to be evaluated. It should be positive distinct numbers. The default
+		    value (0.4, 0.8) is proposed in [1]_. Input must not have more than
+		    one dimension.
+		
+		Returns
+		-------
+		statistic : float
+		    The test statistic.
+		pvalue : float
+		    The associated p-value based on the asymptotic chi2-distribution.
+		
+		See Also
+		--------
+		ks_2samp, anderson_ksamp
+		
+		Notes
+		-----
+		Testing whether two samples are generated by the same underlying
+		distribution is a classical question in statistics. A widely used test is
+		the Kolmogorov-Smirnov (KS) test which relies on the empirical
+		distribution function. Epps and Singleton introduce a test based on the
+		empirical characteristic function in [1]_.
+		
+		One advantage of the ES test compared to the KS test is that is does
+		not assume a continuous distribution. In [1]_, the authors conclude
+		that the test also has a higher power than the KS test in many
+		examples. They recommend the use of the ES test for discrete samples as
+		well as continuous samples with at least 25 observations each, whereas
+		`anderson_ksamp` is recommended for smaller sample sizes in the
+		continuous case.
+		
+		The p-value is computed from the asymptotic distribution of the test
+		statistic which follows a `chi2` distribution. If the sample size of both
+		`x` and `y` is below 25, the small sample correction proposed in [1]_ is
+		applied to the test statistic.
+		
+		The default values of `t` are determined in [1]_ by considering
+		various distributions and finding good values that lead to a high power
+		of the test in general. Table III in [1]_ gives the optimal values for
+		the distributions tested in that study. The values of `t` are scaled by
+		the semi-interquartile range in the implementation, see [1]_.
+		
+		References
+		----------
+		.. [1] T. W. Epps and K. J. Singleton, "An omnibus test for the two-sample
+		   problem using the empirical characteristic function", Journal of
+		   Statistical Computation and Simulation 26, p. 177--203, 1986.
+		
+		.. [2] S. J. Goerg and J. Kaiser, "Nonparametric testing of distributions
+		   - the Epps-Singleton two-sample test using the empirical characteristic
+		   function", The Stata Journal 9(3), p. 454--465, 2009.
+	**/
+	static public function epps_singleton_2samp(x:Dynamic, y:Dynamic, ?t:Dynamic):Float;
+	/**
 		Performs a 1-way ANOVA.
 		
 		The one-way ANOVA tests the null hypothesis that two or more groups have
@@ -839,13 +1073,14 @@ package scipy.stats.stats;
 		
 		References
 		----------
-		.. [1] Lowry, Richard.  "Concepts and Applications of Inferential
-		       Statistics". Chapter 14.
-		       http://faculty.vassar.edu/lowry/ch14pt1.html
+		.. [1] R. Lowry, "Concepts and Applications of Inferential Statistics",
+		       Chapter 14, 2014, http://vassarstats.net/textbook/
 		
-		.. [2] Heiman, G.W.  Research Methods in Statistics. 2002.
+		.. [2] G.W. Heiman, "Understanding research methods and statistics: An
+		       integrated introduction for psychology", Houghton, Mifflin and
+		       Company, 2001.
 		
-		.. [3] McDonald, G. H. "Handbook of Biological Statistics", One-way ANOVA.
+		.. [3] G.H. McDonald, "Handbook of Biological Statistics", One-way ANOVA.
 		       http://www.biostathandbook.com/onewayanova.html
 		
 		Examples
@@ -992,9 +1227,14 @@ package scipy.stats.stats;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Friedman_test
+		.. [1] https://en.wikipedia.org/wiki/Friedman_test
 	**/
 	static public function friedmanchisquare(?args:python.VarArgs<Dynamic>):Float;
+	/**
+		gcd(x, y) -> int
+		greatest common divisor of x and y
+	**/
+	static public function gcd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Compute the geometric mean along the specified axis.
 		
@@ -1045,6 +1285,101 @@ package scipy.stats.stats;
 		3.3800151591412964
 	**/
 	static public function gmean(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
+		Calculate the geometric standard deviation of an array
+		
+		The geometric standard deviation describes the spread of a set of numbers
+		where the geometric mean is preferred. It is a multiplicative factor, and
+		so a dimensionless quantity.
+		
+		It is defined as the exponent of the standard deviation of ``log(a)``.
+		Mathematically the population geometric standard deviation can be
+		evaluated as::
+		
+		    gstd = exp(std(log(a)))
+		
+		.. versionadded:: 1.3.0
+		
+		Parameters
+		----------
+		a : array_like
+		    An array like object containing the sample data.
+		axis : int, tuple or None, optional
+		    Axis along which to operate. Default is 0. If None, compute over
+		    the whole array `a`.
+		ddof : int, optional
+		    Degree of freedom correction in the calculation of the
+		    geometric standard deviation. Default is 1.
+		
+		Returns
+		-------
+		ndarray or float
+		    An array of the geometric standard deviation. If `axis` is None or `a`
+		    is a 1d array a float is returned.
+		
+		Notes
+		-----
+		As the calculation requires the use of logarithms the geometric standard
+		deviation only supports strictly positive values. Any non-positive or
+		infinite values will raise a `ValueError`.
+		The geometric standard deviation is sometimes confused with the exponent of
+		the standard deviation, ``exp(std(a))``. Instead the geometric standard
+		deviation is ``exp(std(log(a)))``.
+		The default value for `ddof` is different to the default value (0) used
+		by other ddof containing functions, such as ``np.std`` and ``np.nanstd``.
+		
+		Examples
+		--------
+		Find the geometric standard deviation of a log-normally distributed sample.
+		Note that the standard deviation of the distribution is one, on a
+		log scale this evaluates to approximately ``exp(1)``.
+		
+		>>> from scipy.stats import gstd
+		>>> np.random.seed(123)
+		>>> sample = np.random.lognormal(mean=0, sigma=1, size=1000)
+		>>> gstd(sample)
+		2.7217860664589946
+		
+		Compute the geometric standard deviation of a multidimensional array and
+		of a given axis.
+		
+		>>> a = np.arange(1, 25).reshape(2, 3, 4)
+		>>> gstd(a, axis=None)
+		2.2944076136018947
+		>>> gstd(a, axis=2)
+		array([[1.82424757, 1.22436866, 1.13183117],
+		       [1.09348306, 1.07244798, 1.05914985]])
+		>>> gstd(a, axis=(1,2))
+		array([2.12939215, 1.22120169])
+		
+		The geometric standard deviation further handles masked arrays.
+		
+		>>> a = np.arange(1, 25).reshape(2, 3, 4)
+		>>> ma = np.ma.masked_where(a > 16, a)
+		>>> ma
+		masked_array(
+		  data=[[[1, 2, 3, 4],
+		         [5, 6, 7, 8],
+		         [9, 10, 11, 12]],
+		        [[13, 14, 15, 16],
+		         [--, --, --, --],
+		         [--, --, --, --]]],
+		  mask=[[[False, False, False, False],
+		         [False, False, False, False],
+		         [False, False, False, False]],
+		        [[False, False, False, False],
+		         [ True,  True,  True,  True],
+		         [ True,  True,  True,  True]]],
+		  fill_value=999999)
+		>>> gstd(ma, axis=2)
+		masked_array(
+		  data=[[1.8242475707663655, 1.2243686572447428, 1.1318311657788478],
+		        [1.0934830582350938, --, --]],
+		  mask=[[False, False, False],
+		        [False,  True,  True]],
+		  fill_value=999999)
+	**/
+	static public function gstd(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Dynamic;
 	/**
 		Calculate the harmonic mean along the specified axis.
 		
@@ -1313,6 +1648,12 @@ package scipy.stats.stats;
 		    values. Default is 'propagate'. Note that if the input contains nan
 		    'omit' delegates to mstats_basic.kendalltau(), which has a different
 		    implementation.
+		method: {'auto', 'asymptotic', 'exact'}, optional
+		    Defines which method is used to calculate the p-value [5]_.
+		    'asymptotic' uses a normal approximation valid for large samples.
+		    'exact' computes the exact p-value, but can only be used if no ties
+		    are present. 'auto' is the default and selects the appropriate
+		    method based on a trade-off between speed and accuracy.
 		
 		Returns
 		-------
@@ -1350,6 +1691,8 @@ package scipy.stats.stats;
 		.. [4] Peter M. Fenwick, "A new data structure for cumulative frequency
 		       tables", Software: Practice and Experience, Vol. 24, No. 3,
 		       pp. 327-336, 1994.
+		.. [5] Maurice G. Kendall, "Rank Correlation Methods" (4th Edition),
+		       Charles Griffin & Co., 1970.
 		
 		Examples
 		--------
@@ -1362,7 +1705,7 @@ package scipy.stats.stats;
 		>>> p_value
 		0.2827454599327748
 	**/
-	static public function kendalltau(x:Dynamic, y:Dynamic, ?initial_lexsort:Dynamic, ?nan_policy:Dynamic):Float;
+	static public function kendalltau(x:Dynamic, y:Dynamic, ?initial_lexsort:Dynamic, ?nan_policy:Dynamic, ?method:Dynamic):Float;
 	/**
 		Compute the Kruskal-Wallis H-test for independent samples
 		
@@ -1408,7 +1751,7 @@ package scipy.stats.stats;
 		.. [1] W. H. Kruskal & W. W. Wallis, "Use of Ranks in
 		   One-Criterion Variance Analysis", Journal of the American Statistical
 		   Association, Vol. 47, Issue 260, pp. 583-621, 1952.
-		.. [2] http://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
+		.. [2] https://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
 		
 		Examples
 		--------
@@ -1429,13 +1772,25 @@ package scipy.stats.stats;
 		Compute the Kolmogorov-Smirnov statistic on 2 samples.
 		
 		This is a two-sided test for the null hypothesis that 2 independent samples
-		are drawn from the same continuous distribution.
+		are drawn from the same continuous distribution.  The
+		alternative hypothesis can be either 'two-sided' (default), 'less'
+		or 'greater'.
 		
 		Parameters
 		----------
 		data1, data2 : sequence of 1-D ndarrays
-		    two arrays of sample observations assumed to be drawn from a continuous
-		    distribution, sample sizes can be different
+		    Two arrays of sample observations assumed to be drawn from a continuous
+		    distribution, sample sizes can be different.
+		alternative : {'two-sided', 'less', 'greater'}, optional
+		    Defines the alternative hypothesis (see explanation above).
+		    Default is 'two-sided'.
+		mode : {'auto', 'exact', 'asymp'}, optional
+		    Defines the method used for calculating the p-value.
+		    Default is 'auto'.
+		
+		    - 'exact' : use approximation to exact distribution of test statistic
+		    - 'asymp' : use asymptotic distribution of test statistic
+		    - 'auto' : use 'exact' for small size arrays, 'asymp' for large.
 		
 		Returns
 		-------
@@ -1450,12 +1805,26 @@ package scipy.stats.stats;
 		that, like in the case of the one-sample K-S test, the distribution is
 		assumed to be continuous.
 		
-		This is the two-sided test, one-sided tests are not implemented.
-		The test uses the two-sided asymptotic Kolmogorov-Smirnov distribution.
+		In the one-sided test, the alternative is that the empirical
+		cumulative distribution function F(x) of the data1 variable is "less"
+		or "greater" than the empirical cumulative distribution function G(x)
+		of the data2 variable, ``F(x)<=G(x)``, resp. ``F(x)>=G(x)``.
 		
 		If the K-S statistic is small or the p-value is high, then we cannot
 		reject the hypothesis that the distributions of the two samples
 		are the same.
+		
+		If the mode is 'auto', the computation is exact if the sample sizes are
+		less than 10000.  For larger sizes, the computation uses the
+		Kolmogorov-Smirnov distributions to compute an approximate value.
+		
+		We generally follow Hodges' treatment of Drion/Gnedenko/Korolyuk [1]_.
+		
+		References
+		----------
+		.. [1] Hodges, J.L. Jr.,  "The Significance Probability of the Smirnov
+		       Two-Sample Test," Arkiv fiur Matematik, 3, No. 43 (1958), 469-86.
+		
 		
 		Examples
 		--------
@@ -1470,14 +1839,14 @@ package scipy.stats.stats;
 		>>> rvs1 = stats.norm.rvs(size=n1, loc=0., scale=1)
 		>>> rvs2 = stats.norm.rvs(size=n2, loc=0.5, scale=1.5)
 		>>> stats.ks_2samp(rvs1, rvs2)
-		(0.20833333333333337, 4.6674975515806989e-005)
+		(0.20833333333333334, 5.129279597781977e-05)
 		
 		For a slightly different distribution, we cannot reject the null hypothesis
 		at a 10% or lower alpha since the p-value at 0.144 is higher than 10%
 		
 		>>> rvs3 = stats.norm.rvs(size=n2, loc=0.01, scale=1.0)
 		>>> stats.ks_2samp(rvs1, rvs3)
-		(0.10333333333333333, 0.14498781825751686)
+		(0.10333333333333333, 0.14691437867433876)
 		
 		For an identical distribution, we cannot reject the null hypothesis since
 		the p-value is high, 41%:
@@ -1486,13 +1855,13 @@ package scipy.stats.stats;
 		>>> stats.ks_2samp(rvs1, rvs4)
 		(0.07999999999999996, 0.41126949729859719)
 	**/
-	static public function ks_2samp(data1:Dynamic, data2:Dynamic):Float;
+	static public function ks_2samp(data1:Dynamic, data2:Dynamic, ?alternative:Dynamic, ?mode:Dynamic):Float;
 	/**
 		Perform the Kolmogorov-Smirnov test for goodness of fit.
 		
-		This performs a test of the distribution G(x) of an observed
-		random variable against a given distribution F(x). Under the null
-		hypothesis the two distributions are identical, G(x)=F(x). The
+		This performs a test of the distribution F(x) of an observed
+		random variable against a given distribution G(x). Under the null
+		hypothesis the two distributions are identical, F(x)=G(x). The
 		alternative hypothesis can be either 'two-sided' (default), 'less'
 		or 'greater'. The KS test is only valid for continuous distributions.
 		
@@ -1532,8 +1901,8 @@ package scipy.stats.stats;
 		-----
 		In the one-sided test, the alternative is that the empirical
 		cumulative distribution function of the random variable is "less"
-		or "greater" than the cumulative distribution function F(x) of the
-		hypothesis, ``G(x)<=F(x)``, resp. ``G(x)>=F(x)``.
+		or "greater" than the cumulative distribution function G(x) of the
+		hypothesis, ``F(x)<=G(x)``, resp. ``F(x)>=G(x)``.
 		
 		Examples
 		--------
@@ -1667,8 +2036,7 @@ package scipy.stats.stats;
 		
 		Notes
 		-----
-		Valid only for n>20.  The Z-score is set to 0 for bad entries.
-		This function uses the method described in [1]_.
+		Valid only for n>20. This function uses the method described in [1]_.
 		
 		References
 		----------
@@ -1693,21 +2061,23 @@ package scipy.stats.stats;
 		Parameters
 		----------
 		x, y : array_like
-		    Two sets of measurements.  Both arrays should have the same length.
-		    If only x is given (and y=None), then it must be a two-dimensional
+		    Two sets of measurements.  Both arrays should have the same length.  If
+		    only `x` is given (and ``y=None``), then it must be a two-dimensional
 		    array where one dimension has length 2.  The two sets of measurements
-		    are then found by splitting the array along the length-2 dimension.
+		    are then found by splitting the array along the length-2 dimension.  In
+		    the case where ``y=None`` and `x` is a 2x2 array, ``linregress(x)`` is
+		    equivalent to ``linregress(x[0], x[1])``.
 		
 		Returns
 		-------
 		slope : float
-		    slope of the regression line
+		    Slope of the regression line.
 		intercept : float
-		    intercept of the regression line
+		    Intercept of the regression line.
 		rvalue : float
-		    correlation coefficient
+		    Correlation coefficient.
 		pvalue : float
-		    two-sided p-value for a hypothesis test whose null hypothesis is
+		    Two-sided p-value for a hypothesis test whose null hypothesis is
 		    that the slope is zero, using Wald Test with t-distribution of
 		    the test statistic.
 		stderr : float
@@ -1720,26 +2090,46 @@ package scipy.stats.stats;
 		:func:`scipy.optimize.leastsq` : Minimize the sum of
 		 squares of a set of equations.
 		
+		Notes
+		-----
+		Missing values are considered pair-wise: if a value is missing in `x`,
+		the corresponding value in `y` is masked.
+		
 		Examples
 		--------
 		>>> import matplotlib.pyplot as plt
 		>>> from scipy import stats
+		
+		Generate some data:
+		
 		>>> np.random.seed(12345678)
 		>>> x = np.random.random(10)
-		>>> y = np.random.random(10)
+		>>> y = 1.6*x + np.random.random(10)
+		
+		Perform the linear regression:
+		
 		>>> slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
+		>>> print("slope: %f    intercept: %f" % (slope, intercept))
+		slope: 1.944864    intercept: 0.268578
 		
-		To get coefficient of determination (r_squared)
+		To get coefficient of determination (R-squared):
 		
-		>>> print("r-squared:", r_value**2)
-		r-squared: 0.08040226853902833
+		>>> print("R-squared: %f" % r_value**2)
+		R-squared: 0.735498
 		
-		Plot the data along with the fitted line
+		Plot the data along with the fitted line:
 		
 		>>> plt.plot(x, y, 'o', label='original data')
 		>>> plt.plot(x, intercept + slope*x, 'r', label='fitted line')
 		>>> plt.legend()
 		>>> plt.show()
+		
+		Example for the case where only x is provided as a 2x2 array:
+		
+		>>> x = np.array([[0, 1], [0, 2]])
+		>>> r = stats.linregress(x)
+		>>> r.slope, r.intercept
+		(2.0, 0.0)
 	**/
 	static public function linregress(x:Dynamic, ?y:Dynamic):Float;
 	/**
@@ -1788,6 +2178,92 @@ package scipy.stats.stats;
 		       Mathematical Statistics, vol. 18, no. 1, pp. 50-60, 1947.
 	**/
 	static public function mannwhitneyu(x:Dynamic, y:Dynamic, ?use_continuity:Dynamic, ?alternative:Dynamic):Float;
+	/**
+		Compute the median absolute deviation of the data along the given axis.
+		
+		The median absolute deviation (MAD, [1]_) computes the median over the
+		absolute deviations from the median. It is a measure of dispersion
+		similar to the standard deviation, but is more robust to outliers [2]_.
+		
+		The MAD of an empty array is ``np.nan``.
+		
+		.. versionadded:: 1.3.0
+		
+		Parameters
+		----------
+		x : array_like
+		    Input array or object that can be converted to an array.
+		axis : int or None, optional
+		    Axis along which the range is computed. Default is 0. If None, compute
+		    the MAD over the entire array.
+		center : callable, optional
+		    A function that will return the central value. The default is to use
+		    np.median. Any user defined function used will need to have the function
+		    signature ``func(arr, axis)``.
+		scale : int, optional
+		    The scaling factor applied to the MAD. The default scale (1.4826)
+		    ensures consistency with the standard deviation for normally distributed
+		    data.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate'
+		    returns nan, 'raise' throws an error, 'omit' performs the
+		    calculations ignoring nan values. Default is 'propagate'.
+		
+		Returns
+		-------
+		mad : scalar or ndarray
+		    If ``axis=None``, a scalar is returned. If the input contains
+		    integers or floats of smaller precision than ``np.float64``, then the
+		    output data-type is ``np.float64``. Otherwise, the output data-type is
+		    the same as that of the input.
+		
+		See Also
+		--------
+		numpy.std, numpy.var, numpy.median, scipy.stats.iqr, scipy.stats.tmean,
+		scipy.stats.tstd, scipy.stats.tvar
+		
+		Notes
+		-----
+		The `center` argument only affects the calculation of the central value
+		around which the MAD is calculated. That is, passing in ``center=np.mean``
+		will calculate the MAD around the mean - it will not calculate the *mean*
+		absolute deviation.
+		
+		References
+		----------
+		.. [1] "Median absolute deviation" https://en.wikipedia.org/wiki/Median_absolute_deviation
+		.. [2] "Robust measures of scale" https://en.wikipedia.org/wiki/Robust_measures_of_scale
+		
+		Examples
+		--------
+		When comparing the behavior of `median_absolute_deviation` with ``np.std``,
+		the latter is affected when we change a single value of an array to have an
+		outlier value while the MAD hardly changes:
+		
+		>>> from scipy import stats
+		>>> x = stats.norm.rvs(size=100, scale=1, random_state=123456)
+		>>> x.std()
+		0.9973906394005013
+		>>> stats.median_absolute_deviation(x)
+		1.2280762773108278
+		>>> x[0] = 345.6
+		>>> x.std()
+		34.42304872314415
+		>>> stats.median_absolute_deviation(x)
+		1.2340335571164334
+		
+		Axis handling example:
+		
+		>>> x = np.array([[10, 7, 4], [3, 2, 1]])
+		>>> x
+		array([[10,  7,  4],
+		       [ 3,  2,  1]])
+		>>> stats.median_absolute_deviation(x)
+		array([5.1891, 3.7065, 2.2239])
+		>>> stats.median_absolute_deviation(x, axis=None)
+		2.9652
+	**/
+	static public function median_absolute_deviation(x:Dynamic, ?axis:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
 		Return an array of the modal (most common) value in the passed array.
 		
@@ -1876,7 +2352,7 @@ package scipy.stats.stats;
 		
 		References
 		----------
-		.. [1] http://eli.thegreenplace.net/2009/03/21/efficient-integer-exponentiation-algorithms
+		.. [1] https://eli.thegreenplace.net/2009/03/21/efficient-integer-exponentiation-algorithms
 		
 		Examples
 		--------
@@ -2018,21 +2494,21 @@ package scipy.stats.stats;
 	**/
 	static public function obrientransform(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Calculate a Pearson correlation coefficient and the p-value for testing
-		non-correlation.
+		Pearson correlation coefficient and p-value for testing non-correlation.
 		
-		The Pearson correlation coefficient measures the linear relationship
-		between two datasets. Strictly speaking, Pearson's correlation requires
-		that each dataset be normally distributed, and not necessarily zero-mean.
-		Like other correlation coefficients, this one varies between -1 and +1
-		with 0 implying no correlation. Correlations of -1 or +1 imply an exact
-		linear relationship. Positive correlations imply that as x increases, so
-		does y. Negative correlations imply that as x increases, y decreases.
+		The Pearson correlation coefficient [1]_ measures the linear relationship
+		between two datasets.  The calculation of the p-value relies on the
+		assumption that each dataset is normally distributed.  (See Kowalski [3]_
+		for a discussion of the effects of non-normality of the input on the
+		distribution of the correlation coefficient.)  Like other correlation
+		coefficients, this one varies between -1 and +1 with 0 implying no
+		correlation. Correlations of -1 or +1 imply an exact linear relationship.
+		Positive correlations imply that as x increases, so does y. Negative
+		correlations imply that as x increases, y decreases.
 		
 		The p-value roughly indicates the probability of an uncorrelated system
 		producing datasets that have a Pearson correlation at least as extreme
-		as the one computed from these datasets. The p-values are not entirely
-		reliable but are probably reasonable for datasets larger than 500 or so.
+		as the one computed from these datasets.
 		
 		Parameters
 		----------
@@ -2046,7 +2522,24 @@ package scipy.stats.stats;
 		r : float
 		    Pearson's correlation coefficient
 		p-value : float
-		    2-tailed p-value
+		    two-tailed p-value
+		
+		Warns
+		-----
+		PearsonRConstantInputWarning
+		    Raised if an input is a constant array.  The correlation coefficient
+		    is not defined in this case, so ``np.nan`` is returned.
+		
+		PearsonRNearConstantInputWarning
+		    Raised if an input is "nearly" constant.  The array ``x`` is considered
+		    nearly constant if ``norm(x - mean(x)) < 1e-13 * abs(mean(x))``.
+		    Numerical errors in the calculation ``x - mean(x)`` in this case might
+		    result in an inaccurate calculation of r.
+		
+		See Also
+		--------
+		spearmanr : Spearman rank-order correlation coefficient.
+		kendalltau : Kendall's tau, a correlation measure for ordinal data.
 		
 		Notes
 		-----
@@ -2055,16 +2548,58 @@ package scipy.stats.stats;
 		
 		.. math::
 		
-		    r_{pb} = \frac{\sum (x - m_x) (y - m_y)
-		                   }{\sqrt{\sum (x - m_x)^2 (y - m_y)^2}}
+		    r = \frac{\sum (x - m_x) (y - m_y)}
+		             {\sqrt{\sum (x - m_x)^2 \sum (y - m_y)^2}}
 		
 		where :math:`m_x` is the mean of the vector :math:`x` and :math:`m_y` is
 		the mean of the vector :math:`y`.
 		
+		Under the assumption that x and y are drawn from independent normal
+		distributions (so the population correlation coefficient is 0), the
+		probability density function of the sample correlation coefficient r
+		is ([1]_, [2]_)::
+		
+		           (1 - r**2)**(n/2 - 2)
+		    f(r) = ---------------------
+		              B(1/2, n/2 - 1)
+		
+		where n is the number of samples, and B is the beta function.  This
+		is sometimes referred to as the exact distribution of r.  This is
+		the distribution that is used in `pearsonr` to compute the p-value.
+		The distribution is a beta distribution on the interval [-1, 1],
+		with equal shape parameters a = b = n/2 - 1.  In terms of SciPy's
+		implementation of the beta distribution, the distribution of r is::
+		
+		    dist = scipy.stats.beta(n/2 - 1, n/2 - 1, loc=-1, scale=2)
+		
+		The p-value returned by `pearsonr` is a two-sided p-value.  For a
+		given sample with correlation coefficient r, the p-value is
+		the probability that abs(r') of a random sample x' and y' drawn from
+		the population with zero correlation would be greater than or equal
+		to abs(r).  In terms of the object `dist` shown above, the p-value
+		for a given r and length n can be computed as::
+		
+		    p = 2*dist.cdf(-abs(r))
+		
+		When n is 2, the above continuous distribution is not well-defined.
+		One can interpret the limit of the beta distribution as the shape
+		parameters a and b approach a = b = 0 as a discrete distribution with
+		equal probability masses at r = 1 and r = -1.  More directly, one
+		can observe that, given the data x = [x1, x2] and y = [y1, y2], and
+		assuming x1 != x2 and y1 != y2, the only possible values for r are 1
+		and -1.  Because abs(r') for any sample x' and y' with length 2 will
+		be 1, the two-sided p-value for a sample of length 2 is always 1.
 		
 		References
 		----------
-		http://www.statsoft.com/textbook/glosp.html#Pearson%20Correlation
+		.. [1] "Pearson correlation coefficient", Wikipedia,
+		       https://en.wikipedia.org/wiki/Pearson_correlation_coefficient
+		.. [2] Student, "Probable error of a correlation coefficient",
+		       Biometrika, Volume 6, Issue 2-3, 1 September 1908, pp. 302-310.
+		.. [3] C. J. Kowalski, "On the Effects of Non-Normality on the Distribution
+		       of the Sample Product-Moment Correlation Coefficient"
+		       Journal of the Royal Statistical Society. Series C (Applied
+		       Statistics), Vol. 21, No. 1 (1972), pp. 1-12.
 		
 		Examples
 		--------
@@ -2072,10 +2607,10 @@ package scipy.stats.stats;
 		>>> a = np.array([0, 0, 0, 1, 1, 1, 1])
 		>>> b = np.arange(7)
 		>>> stats.pearsonr(a, b)
-		(0.8660254037844386, 0.011724811003954654)
+		(0.8660254037844386, 0.011724811003954649)
 		
-		>>> stats.pearsonr([1,2,3,4,5], [5,6,7,8,7])
-		(0.83205029433784372, 0.080509573298498519)
+		>>> stats.pearsonr([1, 2, 3, 4, 5], [10, 9, 2.5, 6, 4])
+		(-0.7426106572325057, 0.1505558088534455)
 	**/
 	static public function pearsonr(x:Dynamic, y:Dynamic):Float;
 	/**
@@ -2107,7 +2642,7 @@ package scipy.stats.stats;
 		    - "mean": The average of the "weak" and "strict" scores, often used in
 		              testing.  See
 		
-		              http://en.wikipedia.org/wiki/Percentile_rank
+		              https://en.wikipedia.org/wiki/Percentile_rank
 		
 		Returns
 		-------
@@ -2212,7 +2747,9 @@ package scipy.stats.stats;
 		       Variable. Point-Biserial Correlation.", Ann. Math. Statist., Vol. 25,
 		       np. 3, pp. 603-607, 1954.
 		
-		.. [3] http://onlinelibrary.wiley.com/doi/10.1002/9781118445112.stat06227/full
+		.. [3] D. Kornbrot "Point Biserial Correlation", In Wiley StatsRef:
+		       Statistics Reference Online (eds N. Balakrishnan, et al.), 2014.
+		       https://doi.org/10.1002/9781118445112.stat06227
 		
 		Examples
 		--------
@@ -2312,9 +2849,10 @@ package scipy.stats.stats;
 		References
 		----------
 		.. [1] Lowry, Richard.  "Concepts and Applications of Inferential
-		       Statistics". Chapter 8. http://faculty.vassar.edu/lowry/ch8pt1.html
-		.. [2] "Chi-squared test", http://en.wikipedia.org/wiki/Chi-squared_test
-		.. [3] "G-test", http://en.wikipedia.org/wiki/G-test
+		       Statistics". Chapter 8.
+		       https://web.archive.org/web/20171015035606/http://faculty.vassar.edu/lowry/ch8pt1.html
+		.. [2] "Chi-squared test", https://en.wikipedia.org/wiki/Chi-squared_test
+		.. [3] "G-test", https://en.wikipedia.org/wiki/G-test
 		.. [4] Sokal, R. R. and Rohlf, F. J. "Biometry: the principles and
 		       practice of statistics in biological research", New York: Freeman
 		       (1981)
@@ -2423,7 +2961,7 @@ package scipy.stats.stats;
 		
 		References
 		----------
-		.. [1] "Ranking", http://en.wikipedia.org/wiki/Ranking
+		.. [1] "Ranking", https://en.wikipedia.org/wiki/Ranking
 		
 		Examples
 		--------
@@ -2468,7 +3006,7 @@ package scipy.stats.stats;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Wilcoxon_rank-sum_test
+		.. [1] https://en.wikipedia.org/wiki/Wilcoxon_rank-sum_test
 	**/
 	static public function ranksums(x:Dynamic, y:Dynamic):Float;
 	/**
@@ -2540,6 +3078,119 @@ package scipy.stats.stats;
 	**/
 	static public function relfreq(a:Dynamic, ?numbins:Dynamic, ?defaultreallimits:Dynamic, ?weights:Dynamic):Dynamic;
 	/**
+		Generate random samples from a probability density function using the
+		ratio-of-uniforms method.
+		
+		Parameters
+		----------
+		pdf : callable
+		    A function with signature `pdf(x)` that is the probability
+		    density function of the distribution.
+		umax : float
+		    The upper bound of the bounding rectangle in the u-direction.
+		vmin : float
+		    The lower bound of the bounding rectangle in the v-direction.
+		vmax : float
+		    The upper bound of the bounding rectangle in the v-direction.
+		size : int or tuple of ints, optional
+		    Defining number of random variates (default is 1).
+		c : float, optional.
+		    Shift parameter of ratio-of-uniforms method, see Notes. Default is 0.
+		random_state : int or np.random.RandomState instance, optional
+		    If already a RandomState instance, use it.
+		    If seed is an int, return a new RandomState instance seeded with seed.
+		    If None, use np.random.RandomState. Default is None.
+		
+		Returns
+		-------
+		rvs : ndarray
+		    The random variates distributed according to the probability
+		    distribution defined by the pdf.
+		
+		Notes
+		-----
+		Given a univariate probability density function `pdf` and a constant `c`,
+		define the set ``A = {(u, v) : 0 < u <= sqrt(pdf(v/u + c))}``.
+		If `(U, V)` is a random vector uniformly distributed over `A`,
+		then `V/U + c` follows a distribution according to `pdf`.
+		
+		The above result (see [1]_, [2]_) can be used to sample random variables
+		using only the pdf, i.e. no inversion of the cdf is required. Typical
+		choices of `c` are zero or the mode of `pdf`. The set `A` is a subset of
+		the rectangle ``R = [0, umax] x [vmin, vmax]`` where
+		
+		- ``umax = sup sqrt(pdf(x))``
+		- ``vmin = inf (x - c) sqrt(pdf(x))``
+		- ``vmax = sup (x - c) sqrt(pdf(x))``
+		
+		In particular, these values are finite if `pdf` is bounded and
+		``x**2 * pdf(x)`` is bounded (i.e. subquadratic tails).
+		One can generate `(U, V)` uniformly on `R` and return
+		`V/U + c` if `(U, V)` are also in `A` which can be directly
+		verified.
+		
+		Intuitively, the method works well if `A` fills up most of the
+		enclosing rectangle such that the probability is high that `(U, V)`
+		lies in `A` whenever it lies in `R` as the number of required
+		iterations becomes too large otherwise. To be more precise, note that
+		the expected number of iterations to draw `(U, V)` uniformly
+		distributed on `R` such that `(U, V)` is also in `A` is given by
+		the ratio ``area(R) / area(A) = 2 * umax * (vmax - vmin)``, using the fact
+		that the area of `A` is equal to 1/2 (Theorem 7.1 in [1]_). A warning
+		is displayed if this ratio is larger than 20. Moreover, if the sampling
+		fails to generate a single random variate after 50000 iterations (i.e.
+		not a single draw is in `A`), an exception is raised.
+		
+		If the bounding rectangle is not correctly specified (i.e. if it does not
+		contain `A`), the algorithm samples from a distribution different from
+		the one given by `pdf`. It is therefore recommended to perform a
+		test such as `~scipy.stats.kstest` as a check.
+		
+		References
+		----------
+		.. [1] L. Devroye, "Non-Uniform Random Variate Generation",
+		   Springer-Verlag, 1986.
+		
+		.. [2] W. Hoermann and J. Leydold, "Generating generalized inverse Gaussian
+		   random variates", Statistics and Computing, 24(4), p. 547--557, 2014.
+		
+		.. [3] A.J. Kinderman and J.F. Monahan, "Computer Generation of Random
+		   Variables Using the Ratio of Uniform Deviates",
+		   ACM Transactions on Mathematical Software, 3(3), p. 257--260, 1977.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		
+		Simulate normally distributed random variables. It is easy to compute the
+		bounding rectangle explicitly in that case.
+		
+		>>> f = stats.norm.pdf
+		>>> v_bound = np.sqrt(f(np.sqrt(2))) * np.sqrt(2)
+		>>> umax, vmin, vmax = np.sqrt(f(0)), -v_bound, v_bound
+		>>> np.random.seed(12345)
+		>>> rvs = stats.rvs_ratio_uniforms(f, umax, vmin, vmax, size=2500)
+		
+		The K-S test confirms that the random variates are indeed normally
+		distributed (normality is not rejected at 5% significance level):
+		
+		>>> stats.kstest(rvs, 'norm')[1]
+		0.3420173467307603
+		
+		The exponential distribution provides another example where the bounding
+		rectangle can be determined explicitly.
+		
+		>>> np.random.seed(12345)
+		>>> rvs = stats.rvs_ratio_uniforms(lambda x: np.exp(-x), umax=1,
+		...                                vmin=0, vmax=2*np.exp(-1), size=1000)
+		>>> stats.kstest(rvs, 'expon')[1]
+		0.928454552559516
+		
+		Sometimes it can be helpful to use a non-zero shift parameter `c`, see e.g.
+		[2]_ above in the case of the generalized inverse Gaussian distribution.
+	**/
+	static public function rvs_ratio_uniforms(pdf:Dynamic, umax:Dynamic, vmin:Dynamic, vmax:Dynamic, ?size:Dynamic, ?c:Dynamic, ?random_state:Dynamic):Dynamic;
+	/**
 		Calculate the score at a given percentile of the input sequence.
 		
 		For example, the score at `per=50` is the median. If the desired quantile
@@ -2583,7 +3234,7 @@ package scipy.stats.stats;
 		Notes
 		-----
 		This function will become obsolete in the future.
-		For Numpy 1.9 and higher, `numpy.percentile` provides all the functionality
+		For NumPy 1.9 and higher, `numpy.percentile` provides all the functionality
 		that `scoreatpercentile` provides.  And it's significantly faster.
 		Therefore it's recommended to use `numpy.percentile` for users that have
 		numpy >= 1.9.
@@ -2643,6 +3294,91 @@ package scipy.stats.stats;
 	**/
 	static public function sem(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
+		Computes the Siegel estimator for a set of points (x, y).
+		
+		`siegelslopes` implements a method for robust linear regression
+		using repeated medians (see [1]_) to fit a line to the points (x, y).
+		The method is robust to outliers with an asymptotic breakdown point
+		of 50%.
+		
+		Parameters
+		----------
+		y : array_like
+		    Dependent variable.
+		x : array_like or None, optional
+		    Independent variable. If None, use ``arange(len(y))`` instead.
+		method : {'hierarchical', 'separate'}
+		    If 'hierarchical', estimate the intercept using the estimated
+		    slope ``medslope`` (default option).
+		    If 'separate', estimate the intercept independent of the estimated
+		    slope. See Notes for details.
+		
+		Returns
+		-------
+		medslope : float
+		    Estimate of the slope of the regression line.
+		medintercept : float
+		    Estimate of the intercept of the regression line.
+		
+		See also
+		--------
+		theilslopes : a similar technique without repeated medians
+		
+		Notes
+		-----
+		With ``n = len(y)``, compute ``m_j`` as the median of
+		the slopes from the point ``(x[j], y[j])`` to all other `n-1` points.
+		``medslope`` is then the median of all slopes ``m_j``.
+		Two ways are given to estimate the intercept in [1]_ which can be chosen
+		via the parameter ``method``.
+		The hierarchical approach uses the estimated slope ``medslope``
+		and computes ``medintercept`` as the median of ``y - medslope*x``.
+		The other approach estimates the intercept separately as follows: for
+		each point ``(x[j], y[j])``, compute the intercepts of all the `n-1`
+		lines through the remaining points and take the median ``i_j``.
+		``medintercept`` is the median of the ``i_j``.
+		
+		The implementation computes `n` times the median of a vector of size `n`
+		which can be slow for large vectors. There are more efficient algorithms
+		(see [2]_) which are not implemented here.
+		
+		References
+		----------
+		.. [1] A. Siegel, "Robust Regression Using Repeated Medians",
+		       Biometrika, Vol. 69, pp. 242-244, 1982.
+		
+		.. [2] A. Stein and M. Werman, "Finding the repeated median regression
+		       line", Proceedings of the Third Annual ACM-SIAM Symposium on
+		       Discrete Algorithms, pp. 409-413, 1992.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> import matplotlib.pyplot as plt
+		
+		>>> x = np.linspace(-5, 5, num=150)
+		>>> y = x + np.random.normal(size=x.size)
+		>>> y[11:15] += 10  # add outliers
+		>>> y[-5:] -= 7
+		
+		Compute the slope and intercept.  For comparison, also compute the
+		least-squares fit with `linregress`:
+		
+		>>> res = stats.siegelslopes(y, x)
+		>>> lsq_res = stats.linregress(x, y)
+		
+		Plot the results. The Siegel regression line is shown in red. The green
+		line shows the least-squares fit for comparison.
+		
+		>>> fig = plt.figure()
+		>>> ax = fig.add_subplot(111)
+		>>> ax.plot(x, y, 'b.')
+		>>> ax.plot(x, res[1] + res[0] * x, 'r-')
+		>>> ax.plot(x, lsq_res[1] + lsq_res[0] * x, 'g-')
+		>>> plt.show()
+	**/
+	static public function siegelslopes(y:Dynamic, ?x:Dynamic, ?method:Dynamic):Float;
+	/**
 		Iterative sigma-clipping of array elements.
 		
 		Starting from the full sample, all elements outside the critical range are
@@ -2697,7 +3433,7 @@ package scipy.stats.stats;
 	**/
 	static public function sigmaclip(a:Dynamic, ?low:Dynamic, ?high:Dynamic):Dynamic;
 	/**
-		Compute the skewness of a data set.
+		Compute the sample skewness of a data set.
 		
 		For normally distributed data, the skewness should be about 0. For
 		unimodal continuous distributions, a skewness value > 0 means that
@@ -2724,6 +3460,25 @@ package scipy.stats.stats;
 		skewness : ndarray
 		    The skewness of values along an axis, returning 0 where all values are
 		    equal.
+		
+		Notes
+		-----
+		The sample skewness is computed as the Fisher-Pearson coefficient
+		of skewness, i.e.
+		
+		.. math:: g_1=\frac{m_3}{m_2^{3/2}}
+		
+		where
+		
+		.. math:: m_i=\frac{1}{N}\sum_{n=1}^N(x[n]-\bar{x})^i
+		
+		is the biased sample :math:`i\texttt{th}` central moment, and :math:`\bar{x}` is
+		the sample mean.  If ``bias`` is False, the calculations are
+		corrected for bias and the value computed is the adjusted
+		Fisher-Pearson standardized moment coefficient, i.e.
+		
+		.. math:: G_1=\frac{k_3}{k_2^{3/2}}=
+		              \frac{\sqrt{N(N-1)}}{N-2}\frac{m_3}{m_2^{3/2}}.
 		
 		References
 		----------
@@ -2832,15 +3587,11 @@ package scipy.stats.stats;
 		correlation : float or ndarray (2-D square)
 		    Spearman correlation matrix or correlation coefficient (if only 2
 		    variables are given as parameters. Correlation matrix is square with
-		    length equal to total number of variables (columns or rows) in a and b
-		    combined.
+		    length equal to total number of variables (columns or rows) in ``a``
+		    and ``b`` combined.
 		pvalue : float
 		    The two-sided p-value for a hypothesis test whose null hypothesis is
 		    that two sets of data are uncorrelated, has same dimension as rho.
-		
-		Notes
-		-----
-		Changes in scipy 0.8.0: rewrite to add tie-handling, and axis.
 		
 		References
 		----------
@@ -2918,6 +3669,10 @@ package scipy.stats.stats;
 		up_slope : float
 		    Upper bound of the confidence interval on `medslope`.
 		
+		See also
+		--------
+		siegelslopes : a similar technique using repeated medians
+		
 		Notes
 		-----
 		The implementation of `theilslopes` follows [1]_. The intercept is
@@ -2977,7 +3732,7 @@ package scipy.stats.stats;
 		----------
 		rankvals : array_like
 		    A 1-D sequence of ranks.  Typically this will be the array
-		    returned by `stats.rankdata`.
+		    returned by `~scipy.stats.rankdata`.
 		
 		Returns
 		-------
@@ -3441,9 +4196,9 @@ package scipy.stats.stats;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/T-test#Independent_two-sample_t-test
+		.. [1] https://en.wikipedia.org/wiki/T-test#Independent_two-sample_t-test
 		
-		.. [2] http://en.wikipedia.org/wiki/Welch%27s_t_test
+		.. [2] https://en.wikipedia.org/wiki/Welch%27s_t-test
 		
 		Examples
 		--------
@@ -3529,9 +4284,9 @@ package scipy.stats.stats;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/T-test#Independent_two-sample_t-test
+		.. [1] https://en.wikipedia.org/wiki/T-test#Independent_two-sample_t-test
 		
-		.. [2] http://en.wikipedia.org/wiki/Welch%27s_t_test
+		.. [2] https://en.wikipedia.org/wiki/Welch%27s_t-test
 		
 		Examples
 		--------
@@ -3754,7 +4509,7 @@ package scipy.stats.stats;
 		
 		References
 		----------
-		.. [1] "Wasserstein metric", http://en.wikipedia.org/wiki/Wasserstein_metric
+		.. [1] "Wasserstein metric", https://en.wikipedia.org/wiki/Wasserstein_metric
 		.. [2] Ramdas, Garcia, Cuturi "On Wasserstein Two Sample Testing and Related
 		       Families of Nonparametric Tests" (2015). :arXiv:`1509.02237`.
 		
@@ -3901,57 +4656,6 @@ package scipy.stats.stats;
 		WeightedTauResult(correlation=-0.7181341329699028, pvalue=nan)
 	**/
 	static public function weightedtau(x:Dynamic, y:Dynamic, ?rank:Dynamic, ?weigher:Dynamic, ?additive:Dynamic):Float;
-	/**
-		zeros(shape, dtype=float, order='C')
-		
-		Return a new array of given shape and type, filled with zeros.
-		
-		Parameters
-		----------
-		shape : int or tuple of ints
-		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
-		dtype : data-type, optional
-		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
-		    `numpy.float64`.
-		order : {'C', 'F'}, optional, default: 'C'
-		    Whether to store multi-dimensional data in row-major
-		    (C-style) or column-major (Fortran-style) order in
-		    memory.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array of zeros with the given shape, dtype, and order.
-		
-		See Also
-		--------
-		zeros_like : Return an array of zeros with shape and type of input.
-		empty : Return a new uninitialized array.
-		ones : Return a new array setting values to one.
-		full : Return a new array of given shape filled with value.
-		
-		Examples
-		--------
-		>>> np.zeros(5)
-		array([ 0.,  0.,  0.,  0.,  0.])
-		
-		>>> np.zeros((5,), dtype=int)
-		array([0, 0, 0, 0, 0])
-		
-		>>> np.zeros((2, 1))
-		array([[ 0.],
-		       [ 0.]])
-		
-		>>> s = (2,2)
-		>>> np.zeros(s)
-		array([[ 0.,  0.],
-		       [ 0.,  0.]])
-		
-		>>> np.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype
-		array([(0, 0), (0, 0)],
-		      dtype=[('x', '<i4'), ('y', '<i4')])
-	**/
-	static public function zeros(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Calculate the relative z-scores.
 		

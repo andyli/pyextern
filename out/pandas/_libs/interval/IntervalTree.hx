@@ -198,6 +198,23 @@ package pandas._libs.interval;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Check if the closed attribute of `other` matches.
+		
+		Note that 'left' and 'right' are considered different from 'both'.
+		
+		Parameters
+		----------
+		other : Interval, IntervalIndex, IntervalArray
+		name : str
+		    Name to use for 'other' in the error message.
+		
+		Raises
+		------
+		ValueError
+		    When `other` is not closed exactly the same as self.
+	**/
+	public function _check_closed_matches(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return all positions corresponding to intervals with the given side
 		falling between the left and right bounds of an interval query
 	**/
@@ -250,6 +267,11 @@ package pandas._libs.interval;
 		The given interval is presumed to have closed bounds.
 	**/
 	public function get_loc_interval(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Determine if the IntervalTree contains overlapping intervals.
+		Cached as self._is_overlapping.
+	**/
+	public var is_overlapping : Dynamic;
 	public var left : Dynamic;
 	/**
 		How to sort the left labels; this is used for binary search

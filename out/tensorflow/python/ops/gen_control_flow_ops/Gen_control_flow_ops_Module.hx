@@ -216,6 +216,7 @@ package tensorflow.python.ops.gen_control_flow_ops;
 		  A mutable `Tensor`. Has the same type as `data`.
 	**/
 	static public function ref_enter(data:Dynamic, frame_name:Dynamic, ?is_constant:Dynamic, ?parallel_iterations:Dynamic, ?name:Dynamic):Dynamic;
+	static public function ref_enter_eager_fallback(data:Dynamic, frame_name:Dynamic, ?is_constant:Dynamic, ?parallel_iterations:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Exits the current frame to its parent frame.
 		
@@ -230,6 +231,7 @@ package tensorflow.python.ops.gen_control_flow_ops;
 		  A mutable `Tensor`. Has the same type as `data`.
 	**/
 	static public function ref_exit(data:Dynamic, ?name:Dynamic):Dynamic;
+	static public function ref_exit_eager_fallback(data:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Forwards the value of an available tensor from `inputs` to `output`.
 		
@@ -251,6 +253,7 @@ package tensorflow.python.ops.gen_control_flow_ops;
 		  value_index: A `Tensor` of type `int32`.
 	**/
 	static public function ref_merge(inputs:Dynamic, ?name:Dynamic):Dynamic;
+	static public function ref_merge_eager_fallback(inputs:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Makes its input available to the next iteration.
 		
@@ -263,6 +266,7 @@ package tensorflow.python.ops.gen_control_flow_ops;
 		  A mutable `Tensor`. Has the same type as `data`.
 	**/
 	static public function ref_next_iteration(data:Dynamic, ?name:Dynamic):Dynamic;
+	static public function ref_next_iteration_eager_fallback(data:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Forwards the `index`th element of `inputs` to `output`.
 		
@@ -277,6 +281,7 @@ package tensorflow.python.ops.gen_control_flow_ops;
 		  A mutable `Tensor`. Has the same type as `inputs`.
 	**/
 	static public function ref_select(index:Dynamic, inputs:Dynamic, ?name:Dynamic):Dynamic;
+	static public function ref_select_eager_fallback(index:Dynamic, inputs:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Forwards the ref tensor `data` to the output port determined by `pred`.
 		
@@ -299,6 +304,7 @@ package tensorflow.python.ops.gen_control_flow_ops;
 		  output_true: A mutable `Tensor`. Has the same type as `data`.
 	**/
 	static public function ref_switch(data:Dynamic, pred:Dynamic, ?name:Dynamic):Dynamic;
+	static public function ref_switch_eager_fallback(data:Dynamic, pred:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Forwards `data` to the output port determined by `pred`.
 		

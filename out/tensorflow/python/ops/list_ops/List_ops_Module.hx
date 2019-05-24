@@ -3,6 +3,7 @@ package tensorflow.python.ops.list_ops;
 @:pythonImport("tensorflow.python.ops.list_ops") extern class List_ops_Module {
 	static public function _PopBackGrad(op:Dynamic, dlist:Dynamic, delement:Dynamic):Dynamic;
 	static public function _PushBackGrad(op:Dynamic, dresult:Dynamic):Dynamic;
+	static public function _TensorListConcatGrad(op:Dynamic, dtensor:Dynamic, unused_dlengths:Dynamic):Dynamic;
 	/**
 		Gradient for TensorListFromTensor.
 	**/
@@ -14,6 +15,7 @@ package tensorflow.python.ops.list_ops;
 	static public function _TensorListGetItemGrad(op:Dynamic, ditem:Dynamic):Dynamic;
 	static public function _TensorListScatterGrad(op:Dynamic, dlist:Dynamic):Dynamic;
 	static public function _TensorListSetItemGrad(op:Dynamic, dlist:Dynamic):Dynamic;
+	static public function _TensorListSplitGrad(op:Dynamic, dlist:Dynamic):Dynamic;
 	static public function _TensorListStackGrad(unused_op:Dynamic, dtensor:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -23,6 +25,29 @@ package tensorflow.python.ops.list_ops;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Converts shape to a format understood by list_ops for element_shape.
+		
+		If `shape` is already a `Tensor` it is returned as-is. We do not perform a
+		type check here.
+		
+		If shape is None or a TensorShape with unknown rank, -1 is returned.
+		
+		If shape is a scalar, an int32 tensor with empty list is returned. Note we
+		do directly return an empty list since ops.convert_to_tensor would conver it
+		to a float32 which is not a valid type for element_shape.
+		
+		If shape is a sequence of dims, None's in the list are replaced with -1. We
+		do not check the dtype of the other dims.
+		
+		Args:
+		  shape: Could be None, Tensor, TensorShape or a list of dims (each dim could
+		    be a None, scalar or Tensor).
+		
+		Returns:
+		  A None-free shape that can be converted to a tensor.
+	**/
+	static public function _build_element_shape(shape:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Decorator for marking endpoints deprecated.
@@ -42,31 +67,19 @@ package tensorflow.python.ops.list_ops;
 	**/
 	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
-	/**
-		Creates and returns an empty tensor list.
-		
-		All list elements must be tensors of dtype element_dtype and shape compatible
-		with element_shape.
-		
-		handle: an empty tensor list.
-		element_dtype: the type of elements in the list.
-		element_shape: a shape compatible with that of elements in the list.
-		
-		Args:
-		  element_shape: A `Tensor`. Must be one of the following types: `int32`, `int64`.
-		  element_dtype: A `tf.DType`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function empty_tensor_list(element_shape:Dynamic, element_dtype:Dynamic, ?name:Dynamic):Dynamic;
+	static public function empty_tensor_list(element_shape:Dynamic, element_dtype:Dynamic, ?max_num_elements:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function empty_tensor_list
 	**/
-	static public function empty_tensor_list_eager_fallback(element_shape:Dynamic, element_dtype:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function empty_tensor_list_eager_fallback(element_shape:Dynamic, max_num_elements:Dynamic, element_dtype:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tensor_list_concat(input_handle:Dynamic, element_dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function tensor_list_concat
+	**/
+	static public function tensor_list_concat_eager_fallback(input_handle:Dynamic, element_dtype:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		TODO: add doc.
 		
@@ -105,22 +118,6 @@ package tensorflow.python.ops.list_ops;
 		This is for function tensor_list_element_shape
 	**/
 	static public function tensor_list_element_shape_eager_fallback(input_handle:Dynamic, shape_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		Creates a TensorList which, when stacked, has the value of `tensor`.
-		
-		Each tensor in the result list corresponds to one row of the input tensor.
-		
-		tensor: The input tensor.
-		output_handle: The list.
-		
-		Args:
-		  tensor: A `Tensor`.
-		  element_shape: A `Tensor`. Must be one of the following types: `int32`, `int64`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
 	static public function tensor_list_from_tensor(tensor:Dynamic, element_shape:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
@@ -260,23 +257,6 @@ package tensorflow.python.ops.list_ops;
 		This is for function tensor_list_push_back
 	**/
 	static public function tensor_list_push_back_eager_fallback(input_handle:Dynamic, tensor:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		List of the given size with empty elements.
-		
-		element_shape: the shape of the future elements of the list
-		num_elements: the number of elements to reserve
-		handle: the output list
-		element_dtype: the desired type of elements in the list.
-		
-		Args:
-		  element_shape: A `Tensor`. Must be one of the following types: `int32`, `int64`.
-		  num_elements: A `Tensor` of type `int32`.
-		  element_dtype: A `tf.DType`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
 	static public function tensor_list_reserve(element_shape:Dynamic, num_elements:Dynamic, element_dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
@@ -333,6 +313,12 @@ package tensorflow.python.ops.list_ops;
 		This is for function tensor_list_set_item
 	**/
 	static public function tensor_list_set_item_eager_fallback(input_handle:Dynamic, index:Dynamic, item:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function tensor_list_split(tensor:Dynamic, element_shape:Dynamic, lengths:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function tensor_list_split
+	**/
+	static public function tensor_list_split_eager_fallback(tensor:Dynamic, element_shape:Dynamic, lengths:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Stacks all tensors in the list.
 		

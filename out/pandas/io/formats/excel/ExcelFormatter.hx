@@ -117,6 +117,7 @@ package pandas.io.formats.excel;
 	public function _format_value(val:Dynamic):Dynamic;
 	public function _generate_body(coloffset:Dynamic):Dynamic;
 	public function get_formatted_cells():Dynamic;
+	public var header_style : Dynamic;
 	/**
 		writer : string or ExcelWriter object
 		    File path or existing ExcelWriter

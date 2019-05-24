@@ -129,7 +129,7 @@ package matplotlib.tri.triinterpolate;
 		      unnecessary to compute the containing triangles twice)
 		    - scaling according to self._unit_x, self._unit_y
 		    - dealing with points outside of the grid (with fill value np.nan)
-		    - dealing with multi-dimensionnal *x*, *y* arrays: flattening for
+		    - dealing with multi-dimensional *x*, *y* arrays: flattening for
 		      :meth:`_interpolate_params` call and final reshaping.
 		
 		(Note that np.vectorize could do most of those things very well for

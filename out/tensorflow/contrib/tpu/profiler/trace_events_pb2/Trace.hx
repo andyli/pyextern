@@ -22,7 +22,6 @@ package tensorflow.contrib.tpu.profiler.trace_events_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DEVICES_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -87,7 +86,10 @@ package tensorflow.contrib.tpu.profiler.trace_events_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TRACE_EVENTS_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -253,4 +255,12 @@ package tensorflow.contrib.tpu.profiler.trace_events_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tpu.Trace.devices
+	**/
+	public var devices : Dynamic;
+	/**
+		Field tensorflow.tpu.Trace.trace_events
+	**/
+	public var trace_events : Dynamic;
 }

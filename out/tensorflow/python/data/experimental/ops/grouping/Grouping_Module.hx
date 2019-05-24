@@ -9,22 +9,6 @@ package tensorflow.python.data.experimental.ops.grouping;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		A transformation that maps `map_func` across its input.
-		
-		This transformation is similar to `tf.data.Dataset.map`, but in addition to
-		supporting dense and sparse tensor inputs, it also supports dataset inputs.
-		
-		Args:
-		  map_func: A function mapping a nested structure of tensors and/or datasets
-		    (having shapes and types defined by `self.output_shapes` and
-		   `self.output_types`) to another nested structure of tensors and/or
-		   datasets.
-		
-		Returns:
-		  Dataset: A `Dataset`.
-	**/
-	static public function _map_x_dataset(map_func:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		A transformation that buckets elements in a `Dataset` by length.

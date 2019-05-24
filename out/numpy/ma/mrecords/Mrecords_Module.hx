@@ -30,10 +30,6 @@ package numpy.ma.mrecords;
 	static public function _checknames(descr:Dynamic, ?names:Dynamic):Dynamic;
 	static public function _get_fieldmask(self:Dynamic):Dynamic;
 	/**
-		Returns the formats of arrays in arraylist as a comma-separated string.
-	**/
-	static public function _getformats(data:Dynamic):Dynamic;
-	/**
 		Tries to guess the dtypes of the str_ ndarray `arr`.
 		
 		Guesses by testing element-wise conversion. Returns a list of dtypes.
@@ -46,7 +42,6 @@ package numpy.ma.mrecords;
 		Build a new MaskedArray from the information stored in a pickle.
 	**/
 	static public function _mrreconstruct(subtype:Dynamic, baseclass:Dynamic, baseshape:Dynamic, basetype:Dynamic):Dynamic;
-	static public var _typestr : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Adds a new field to the masked record array

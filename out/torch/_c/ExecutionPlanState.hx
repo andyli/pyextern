@@ -104,6 +104,5 @@ package torch._c;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var code : Dynamic;
-	public var grad_executor : Dynamic;
 	public var graph : Dynamic;
 }

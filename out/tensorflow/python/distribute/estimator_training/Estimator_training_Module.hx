@@ -32,6 +32,14 @@ package tensorflow.python.distribute.estimator_training;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
+		Run distribute coordinator for Estimator's `evaluate` method.
+	**/
+	static public function estimator_evaluate(estimator:Dynamic, evaluate_distributed_fn:Dynamic, hooks:Dynamic):Dynamic;
+	/**
+		Run distribute coordinator for Estimator's `train` method.
+	**/
+	static public function estimator_train(estimator:Dynamic, train_distributed_fn:Dynamic, hooks:Dynamic):Dynamic;
+	/**
 		Initializes RunConfig for distribution strategies.
 	**/
 	static public function init_run_config(config:Dynamic, tf_config:Dynamic):Dynamic;

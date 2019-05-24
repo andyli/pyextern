@@ -23,10 +23,12 @@ package pandas.core.dtypes.dtypes;
 	/**
 		Check whether 'other' is equal to self.
 		
-		By default, 'other' is considered equal if
+		By default, 'other' is considered equal if either
 		
 		* it's a string matching 'self.name'.
-		* it's an instance of this type.
+		* it's an instance of this type and all of the
+		  the attributes in ``self._metadata`` are equal between
+		  `self` and `other`.
 		
 		Parameters
 		----------
@@ -117,10 +119,7 @@ package pandas.core.dtypes.dtypes;
 	**/
 	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return a string representation for a particular Object
-		
-		Invoked by str(df) in both py2/py3.
-		Yields Bytestring in Py2, Unicode String in py3.
+		Return str(self).
 	**/
 	public function __str__():Dynamic;
 	/**
@@ -138,13 +137,44 @@ package pandas.core.dtypes.dtypes;
 	**/
 	public var __weakref__ : Dynamic;
 	static public var _cache : Dynamic;
+	/**
+		Whether this dtype should be considered boolean.
+		
+		By default, ExtensionDtypes are assumed to be non-numeric.
+		Setting this to True will affect the behavior of several places,
+		e.g.
+		
+		* is_bool
+		* boolean indexing
+		
+		Returns
+		-------
+		bool
+	**/
+	public var _is_boolean : Dynamic;
+	/**
+		Whether columns with this dtype should be considered numeric.
+		
+		By default ExtensionDtypes are assumed to be non-numeric.
+		They'll be excluded from operations that exclude non-numeric
+		columns, like (groupby) reductions, plotting, etc.
+	**/
+	public var _is_numeric : Dynamic;
 	static public var _match : Dynamic;
 	static public var _metadata : Dynamic;
 	static public function _parse_dtype_strict(freq:Dynamic):Dynamic;
 	static public var base : Dynamic;
 	/**
-		attempt to construct this type from a string, raise a TypeError
-		if its not possible
+		Return the array type associated with this dtype
+		
+		Returns
+		-------
+		type
+	**/
+	static public function construct_array_type():Dynamic;
+	/**
+		Strict construction from a string, raise a TypeError if not
+		possible
 	**/
 	static public function construct_from_string(string:Dynamic):Dynamic;
 	/**
@@ -156,7 +186,17 @@ package pandas.core.dtypes.dtypes;
 	static public var isnative : Dynamic;
 	static public var itemsize : Dynamic;
 	static public var kind : Dynamic;
-	static public var na_value : Dynamic;
+	/**
+		float(x) -> floating point number
+		
+		Convert a string or number to a floating point number, if possible.
+	**/
+	public var na_value : Dynamic;
+	/**
+		A string identifying the data type.
+		
+		Will be used for display in, e.g. ``Series.dtype``
+	**/
 	public var name : Dynamic;
 	/**
 		Ordered list of field names, or None if there are no fields.
@@ -174,7 +214,21 @@ package pandas.core.dtypes.dtypes;
 	static public var str : Dynamic;
 	static public var subdtype : Dynamic;
 	/**
-		the type of PeriodDtype, this metaclass determines subclass ability
+		Represents a period of time
+		
+		Parameters
+		----------
+		value : Period or compat.string_types, default None
+		    The time period represented (e.g., '4Q2005')
+		freq : str, default None
+		    One of pandas period strings or corresponding objects
+		year : int, default None
+		month : int, default 1
+		quarter : int, default None
+		day : int, default 1
+		hour : int, default 0
+		minute : int, default 0
+		second : int, default 0
 	**/
-	public function type(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function type(?value:Dynamic, ?freq:Dynamic, ?ordinal:Dynamic, ?year:Dynamic, ?month:Dynamic, ?quarter:Dynamic, ?day:Dynamic, ?hour:Dynamic, ?minute:Dynamic, ?second:Dynamic):Dynamic;
 }

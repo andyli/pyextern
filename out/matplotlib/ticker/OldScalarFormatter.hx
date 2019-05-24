@@ -2,8 +2,7 @@
 package matplotlib.ticker;
 @:pythonImport("matplotlib.ticker", "OldScalarFormatter") extern class OldScalarFormatter {
 	/**
-		Return the format for tick val `x` based on the width of the
-		axis.
+		Return the format for tick val `x` based on the width of the axis.
 		
 		The position `pos` is ignored.
 	**/
@@ -115,6 +114,10 @@ package matplotlib.ticker;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Subclasses may want to override this to set a locator.
+	**/
+	public function _set_locator(locator:Dynamic):Dynamic;
 	static public var axis : Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -142,10 +145,19 @@ package matplotlib.ticker;
 		Defaults to the position-independent long value.
 	**/
 	public function format_data_short(value:Dynamic):Dynamic;
+	/**
+		Return the tick labels for all the ticks at once.
+	**/
+	public function format_ticks(values:Dynamic):Dynamic;
 	public function get_offset():Dynamic;
 	static public var locs : Dynamic;
 	/**
-		Formats the value `x` based on the size of the axis range `d`.
+		[*Deprecated*] Formats the value `x` based on the size of the axis range `d`.
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	public function pprint_val(x:Dynamic, d:Dynamic):Dynamic;
 	public function set_axis(axis:Dynamic):Dynamic;

@@ -116,16 +116,22 @@ package matplotlib.dates;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		.. deprecated:: 3.0
-		    The _replace_common_substr function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		[*Deprecated*] Helper function for replacing substrings sub1 and sub2
+		located at the same indexes in strings s1 and s2 respectively,
+		with the string replacement.  It is expected that sub1 and sub2
+		have the same length.  Returns the pair s1, s2 after the
+		substitutions.
 		
-		Helper function for replacing substrings sub1 and sub2
-		        located at the same indexes in strings s1 and s2 respectively,
-		        with the string replacement.  It is expected that sub1 and sub2
-		        have the same length.  Returns the pair s1, s2 after the
-		        substitutions.
+		Notes
+		-----
+		.. deprecated:: 3.0
+		   
 	**/
 	public function _replace_common_substr(s1:Dynamic, s2:Dynamic, sub1:Dynamic, sub2:Dynamic, replacement:Dynamic):Dynamic;
+	/**
+		Subclasses may want to override this to set a locator.
+	**/
+	public function _set_locator(locator:Dynamic):Dynamic;
 	static public var axis : Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -153,6 +159,10 @@ package matplotlib.dates;
 		Defaults to the position-independent long value.
 	**/
 	public function format_data_short(value:Dynamic):Dynamic;
+	/**
+		Return the tick labels for all the ticks at once.
+	**/
+	public function format_ticks(values:Dynamic):Dynamic;
 	public function get_offset():Dynamic;
 	static public var illegal_s : Dynamic;
 	static public var locs : Dynamic;
@@ -163,10 +173,7 @@ package matplotlib.dates;
 	public function set_tzinfo(tz:Dynamic):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 3.0
-		    The strftime function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		Refer to documentation for :meth:`datetime.datetime.strftime`
+		[*Deprecated*] Refer to documentation for :meth:`datetime.datetime.strftime`
 		
 		*fmt* is a :meth:`datetime.datetime.strftime` format string.
 		
@@ -174,21 +181,28 @@ package matplotlib.dates;
 		locale it is possible that the year displayed with %x might
 		be incorrect. For years before 100, %y and %Y will yield
 		zero-padded strings.
+		
+		Notes
+		-----
+		.. deprecated:: 3.0
+		   
 	**/
 	public function strftime(dt:Dynamic, ?fmt:Dynamic):Dynamic;
 	/**
+		[*Deprecated*] Call time.strftime for years before 1900 by rolling
+		forward a multiple of 28 years.
+		
+		*fmt* is a :func:`strftime` format string.
+		
+		Dalke: I hope I did this math right.  Every 28 years the
+		calendar repeats, except through century leap years excepting
+		the 400 year leap years.  But only if you're using the Gregorian
+		calendar.
+		
+		Notes
+		-----
 		.. deprecated:: 3.0
-		    The strftime_pre_1900 function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
-		
-		Call time.strftime for years before 1900 by rolling
-		        forward a multiple of 28 years.
-		
-		        *fmt* is a :func:`strftime` format string.
-		
-		        Dalke: I hope I did this math right.  Every 28 years the
-		        calendar repeats, except through century leap years excepting
-		        the 400 year leap years.  But only if you're using the Gregorian
-		        calendar.
+		   
 	**/
 	public function strftime_pre_1900(dt:Dynamic, ?fmt:Dynamic):Dynamic;
 }

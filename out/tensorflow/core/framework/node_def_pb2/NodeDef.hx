@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.framework.node_def_pb2;
 @:pythonImport("tensorflow.core.framework.node_def_pb2", "NodeDef") extern class NodeDef {
-	static public var ATTR_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -27,11 +26,14 @@ package tensorflow.core.framework.node_def_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DEVICE_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		A ProtocolMessage
+	**/
+	public function ExperimentalDebugInfo(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Extension dict
 	**/
@@ -52,7 +54,6 @@ package tensorflow.core.framework.node_def_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INPUT_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -69,8 +70,6 @@ package tensorflow.core.framework.node_def_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NAME_FIELD_NUMBER : Dynamic;
-	static public var OP_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -91,6 +90,10 @@ package tensorflow.core.framework.node_def_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -258,4 +261,28 @@ package tensorflow.core.framework.node_def_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.NodeDef.attr
+	**/
+	public var attr : Dynamic;
+	/**
+		Field tensorflow.NodeDef.device
+	**/
+	public var device : Dynamic;
+	/**
+		Field tensorflow.NodeDef.experimental_debug_info
+	**/
+	public var experimental_debug_info : Dynamic;
+	/**
+		Field tensorflow.NodeDef.input
+	**/
+	public var input : Dynamic;
+	/**
+		Field tensorflow.NodeDef.name
+	**/
+	public var name : Dynamic;
+	/**
+		Field tensorflow.NodeDef.op
+	**/
+	public var op : Dynamic;
 }

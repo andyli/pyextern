@@ -10,9 +10,9 @@ package tensorflow.python.ops.metrics_impl;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Aggregate metric value across towers.
+		Aggregate metric value across replicas.
 	**/
-	static public function _aggregate_across_towers(metrics_collections:Dynamic, metric_value_fn:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function _aggregate_across_replicas(metrics_collections:Dynamic, metric_value_fn:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function _aggregate_variable(v:Dynamic, collections:Dynamic):Dynamic;
 	static public function _at_k_name(name:Dynamic, ?k:Dynamic, ?class_id:Dynamic):Dynamic;
 	/**
@@ -184,18 +184,6 @@ package tensorflow.python.ops.metrics_impl;
 		  the last dimension squeezed, `weights` could be extended by one dimension.
 	**/
 	static public function _remove_squeezable_dimensions(predictions:Dynamic, labels:Dynamic, weights:Dynamic):Dynamic;
-	/**
-		Divides two tensors element-wise, returning 0 if the denominator is <= 0.
-		
-		Args:
-		  numerator: A real `Tensor`.
-		  denominator: A real `Tensor`, with dtype matching `numerator`.
-		  name: Name for the returned op.
-		
-		Returns:
-		  0 if `denominator` <= 0, else `numerator` / `denominator`
-	**/
-	static public function _safe_div(numerator:Dynamic, denominator:Dynamic, name:Dynamic):Dynamic;
 	/**
 		Divides two values, returning 0 if the denominator is 0.
 		
@@ -1192,25 +1180,24 @@ package tensorflow.python.ops.metrics_impl;
 		Create variable in `GraphKeys.(LOCAL|METRIC_VARIABLES)` collections.
 		
 		If running in a `DistributionStrategy` context, the variable will be
-		"tower local". This means:
+		"replica local". This means:
 		
 		*   The returned object will be a container with separate variables
-		    per replica/tower of the model.
+		    per replica of the model.
 		
 		*   When writing to the variable, e.g. using `assign_add` in a metric
 		    update, the update will be applied to the variable local to the
-		    replica/tower.
+		    replica.
 		
 		*   To get a metric's result value, we need to sum the variable values
-		    across the replicas/towers before computing the final answer.
-		    Furthermore, the final answer should be computed once instead of
-		    in every replica/tower. Both of these are accomplished by
-		    running the computation of the final result value inside
-		    `tf.contrib.distribution_strategy_context.get_tower_context(
-		    ).merge_call(fn)`.
+		    across the replicas before computing the final answer. Furthermore,
+		    the final answer should be computed once instead of in every
+		    replica. Both of these are accomplished by running the computation
+		    of the final result value inside
+		    `distribution_strategy_context.get_replica_context().merge_call(fn)`.
 		    Inside the `merge_call()`, ops are only added to the graph once
-		    and access to a tower-local variable in a computation returns
-		    the sum across all replicas/towers.
+		    and access to a replica-local variable in a computation returns
+		    the sum across all replicas.
 		
 		Args:
 		  shape: Shape of the created variable.
@@ -1221,7 +1208,7 @@ package tensorflow.python.ops.metrics_impl;
 		
 		Returns:
 		  A (non-trainable) variable initialized to zero, or if inside a
-		  `DistributionStrategy` scope a tower-local variable container.
+		  `DistributionStrategy` scope a replica-local variable container.
 	**/
 	static public function metric_variable(shape:Dynamic, dtype:Dynamic, ?validate_shape:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -1775,7 +1762,7 @@ package tensorflow.python.ops.metrics_impl;
 	/**
 		Renamed to `average_precision_at_k`, please use that method instead. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use average_precision_at_k instead
 	**/
@@ -1783,7 +1770,7 @@ package tensorflow.python.ops.metrics_impl;
 	/**
 		Renamed to `precision_at_k`, please use that method instead. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use precision_at_k instead
 	**/

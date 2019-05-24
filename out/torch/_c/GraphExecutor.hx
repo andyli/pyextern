@@ -45,7 +45,7 @@ package torch._c;
 		__init__(*args, **kwargs)
 		Overloaded function.
 		
-		1. __init__(self: torch._C.GraphExecutor, func: function, inputs: List[torch::autograd::Variable], optimize: bool = True) -> None
+		1. __init__(self: torch._C.GraphExecutor, func: function, inputs: tuple, var_name_lookup_fn: function, optimize: bool = True, _force_outplace: bool = False) -> None
 		
 		2. __init__(self: torch._C.GraphExecutor, graph: torch::jit::Graph, optimize: bool = True) -> None
 	**/
@@ -55,7 +55,7 @@ package torch._c;
 		__init__(*args, **kwargs)
 		Overloaded function.
 		
-		1. __init__(self: torch._C.GraphExecutor, func: function, inputs: List[torch::autograd::Variable], optimize: bool = True) -> None
+		1. __init__(self: torch._C.GraphExecutor, func: function, inputs: tuple, var_name_lookup_fn: function, optimize: bool = True, _force_outplace: bool = False) -> None
 		
 		2. __init__(self: torch._C.GraphExecutor, graph: torch::jit::Graph, optimize: bool = True) -> None
 	**/

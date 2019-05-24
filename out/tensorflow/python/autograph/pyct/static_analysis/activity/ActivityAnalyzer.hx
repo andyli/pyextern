@@ -122,7 +122,7 @@ package tensorflow.python.autograph.pyct.static_analysis.activity;
 	public function _process_block_node(node:Dynamic, block:Dynamic, scope_name:Dynamic):Dynamic;
 	public function _process_parallel_blocks(parent:Dynamic, children:Dynamic):Dynamic;
 	public function _process_statement(node:Dynamic):Dynamic;
-	public function _track_symbol(node:Dynamic, ?composite_writes_alter_parent:Dynamic, ?writes_create_symbol:Dynamic):Dynamic;
+	public function _track_symbol(node:Dynamic, ?composite_writes_alter_parent:Dynamic):Dynamic;
 	/**
 		Applies a function to each individual assignment.
 		
@@ -156,6 +156,7 @@ package tensorflow.python.autograph.pyct.static_analysis.activity;
 		      apply_fn(target, value), no return value.
 	**/
 	public function apply_to_single_assignments(targets:Dynamic, values:Dynamic, apply_fn:Dynamic):Dynamic;
+	public function create_assignment(target:Dynamic, expression:Dynamic):Dynamic;
 	/**
 		Helper method useful for debugging.
 	**/
@@ -205,10 +206,12 @@ package tensorflow.python.autograph.pyct.static_analysis.activity;
 	public function visit_Attribute(node:Dynamic):Dynamic;
 	public function visit_AugAssign(node:Dynamic):Dynamic;
 	public function visit_Call(node:Dynamic):Dynamic;
+	public function visit_Delete(node:Dynamic):Dynamic;
 	public function visit_Expr(node:Dynamic):Dynamic;
 	public function visit_For(node:Dynamic):Dynamic;
 	public function visit_FunctionDef(node:Dynamic):Dynamic;
 	public function visit_If(node:Dynamic):Dynamic;
+	public function visit_Lambda(node:Dynamic):Dynamic;
 	public function visit_Name(node:Dynamic):Dynamic;
 	public function visit_Print(node:Dynamic):Dynamic;
 	public function visit_Return(node:Dynamic):Dynamic;
@@ -250,19 +253,22 @@ package tensorflow.python.autograph.pyct.static_analysis.activity;
 		        return node, None
 		
 		Args:
-		  nodes: enumerable of AST node objects
+		  nodes: enumerable of AST node objects. If None, the function returns None.
 		  before_visit: optional callable that is called before visiting each item
-		      in nodes
-		  after_visit: optional callable that takes in an AST node and
-		      returns a tuple (new_node, new_destination). It is called after
-		      visiting each item in nodes. Is used in the same was as the
+		    in nodes
+		  after_visit: optional callable that takes in an AST node and returns a
+		    tuple (new_node, new_destination). It is called after visiting each item
+		    in nodes. Is used in the same was as the
 		      visit_* methods: new_node will replace the node; if not None,
-		      new_destination must be a list, and subsequent nodes will be placed
-		      in this list instead of the list returned by visit_block.
+		        new_destination must be a list, and subsequent nodes will be placed
+		        in this list instead of the list returned by visit_block.
+		
 		Returns:
 		  A list of AST node objects containing the transformed items fron nodes,
 		  except those nodes that have been relocated using after_visit.
 	**/
 	public function visit_block(nodes:Dynamic, ?before_visit:Dynamic, ?after_visit:Dynamic):Dynamic;
+	public function visit_global(node:Dynamic):Dynamic;
+	public function visit_nonlocal(node:Dynamic):Dynamic;
 	public function visit_withitem(node:Dynamic):Dynamic;
 }

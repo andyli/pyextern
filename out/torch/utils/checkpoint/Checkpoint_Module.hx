@@ -9,6 +9,7 @@ package torch.utils.checkpoint;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
 	static public function check_backward_validity(inputs:Dynamic):Dynamic;
 	/**
 		Checkpoint a model or part of the model
@@ -90,4 +91,8 @@ package torch.utils.checkpoint;
 	**/
 	static public function checkpoint_sequential(functions:Dynamic, segments:Dynamic, ?inputs:python.VarArgs<Dynamic>):Dynamic;
 	static public function detach_variable(inputs:Dynamic):Dynamic;
+	static public var division : Dynamic;
+	static public var preserve_rng_state : Dynamic;
+	static public var print_function : Dynamic;
+	static public var unicode_literals : Dynamic;
 }

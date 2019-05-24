@@ -97,7 +97,7 @@ package numpy.polynomial.hermite;
 		
 		See Also
 		--------
-		hermsub, hermmul, hermdiv, hermpow
+		hermsub, hermmulx, hermmul, hermdiv, hermpow
 		
 		Notes
 		-----
@@ -215,7 +215,7 @@ package numpy.polynomial.hermite;
 		
 		See Also
 		--------
-		hermadd, hermsub, hermmul, hermpow
+		hermadd, hermsub, hermmulx, hermmul, hermpow
 		
 		Notes
 		-----
@@ -349,7 +349,7 @@ package numpy.polynomial.hermite;
 		References
 		----------
 		.. [1] Wikipedia, "Curve fitting",
-		       http://en.wikipedia.org/wiki/Curve_fitting
+		       https://en.wikipedia.org/wiki/Curve_fitting
 		
 		Examples
 		--------
@@ -677,7 +677,7 @@ package numpy.polynomial.hermite;
 		
 		See Also
 		--------
-		hermadd, hermsub, hermdiv, hermpow
+		hermadd, hermsub, hermmulx, hermdiv, hermpow
 		
 		Notes
 		-----
@@ -711,6 +711,10 @@ package numpy.polynomial.hermite;
 		-------
 		out : ndarray
 		    Array representing the result of the multiplication.
+		
+		See Also
+		--------
+		hermadd, hermsub, hermmul, hermdiv, hermpow
 		
 		Notes
 		-----
@@ -754,7 +758,7 @@ package numpy.polynomial.hermite;
 		
 		See Also
 		--------
-		hermadd, hermsub, hermmul, hermdiv
+		hermadd, hermsub, hermmulx, hermmul, hermdiv
 		
 		Examples
 		--------
@@ -828,7 +832,7 @@ package numpy.polynomial.hermite;
 		
 		See Also
 		--------
-		hermadd, hermmul, hermdiv, hermpow
+		hermadd, hermmulx, hermmul, hermdiv, hermpow
 		
 		Notes
 		-----

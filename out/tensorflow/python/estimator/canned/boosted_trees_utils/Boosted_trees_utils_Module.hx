@@ -3,6 +3,7 @@ package tensorflow.python.estimator.canned.boosted_trees_utils;
 @:pythonImport("tensorflow.python.estimator.canned.boosted_trees_utils") extern class Boosted_trees_utils_Module {
 	static public var _BIAS_ID : Dynamic;
 	static public var _DEBUG_PROTO_KEY : Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

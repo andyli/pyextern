@@ -5,8 +5,6 @@ package tensorflow.contrib.tpu.profiler.op_profile_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CATEGORY_FIELD_NUMBER : Dynamic;
-	static public var CHILDREN_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -60,7 +58,6 @@ package tensorflow.contrib.tpu.profiler.op_profile_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var METRICS_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -69,8 +66,6 @@ package tensorflow.contrib.tpu.profiler.op_profile_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var NAME_FIELD_NUMBER : Dynamic;
-	static public var NUM_CHILDREN_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -92,6 +87,10 @@ package tensorflow.contrib.tpu.profiler.op_profile_pb2;
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
 	public function WhichOneof(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -99,7 +98,6 @@ package tensorflow.contrib.tpu.profiler.op_profile_pb2;
 		A ProtocolMessage
 	**/
 	public function XLAInstruction(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var XLA_FIELD_NUMBER : Dynamic;
 	/**
 		Raises TypeError if the caller is not in a _pb2.py file.
 	**/
@@ -261,4 +259,28 @@ package tensorflow.contrib.tpu.profiler.op_profile_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.tpu.op_profile.Node.category
+	**/
+	public var category : Dynamic;
+	/**
+		Field tensorflow.tpu.op_profile.Node.children
+	**/
+	public var children : Dynamic;
+	/**
+		Field tensorflow.tpu.op_profile.Node.metrics
+	**/
+	public var metrics : Dynamic;
+	/**
+		Field tensorflow.tpu.op_profile.Node.name
+	**/
+	public var name : Dynamic;
+	/**
+		Field tensorflow.tpu.op_profile.Node.num_children
+	**/
+	public var num_children : Dynamic;
+	/**
+		Field tensorflow.tpu.op_profile.Node.xla
+	**/
+	public var xla : Dynamic;
 }

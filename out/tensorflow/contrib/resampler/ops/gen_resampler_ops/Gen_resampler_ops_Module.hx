@@ -33,7 +33,7 @@ package tensorflow.contrib.resampler.ops.gen_resampler_ops;
 		Resampler op.
 		
 		Args:
-		  data: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`.
+		  data: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		  warp: A `Tensor`. Must have the same type as `data`.
 		  name: A name for the operation (optional).
 		
@@ -50,7 +50,7 @@ package tensorflow.contrib.resampler.ops.gen_resampler_ops;
 		Resampler Grad op.
 		
 		Args:
-		  data: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`.
+		  data: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		  warp: A `Tensor`. Must have the same type as `data`.
 		  grad_output: A `Tensor`. Must have the same type as `data`.
 		  name: A name for the operation (optional).

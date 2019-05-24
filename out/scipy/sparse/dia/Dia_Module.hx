@@ -109,6 +109,7 @@ package scipy.sparse.dia;
 		False
 	**/
 	static public function isspmatrix_dia(x:Dynamic):Dynamic;
+	static public function matrix(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Same as `upcast` but taking dtype.char as input (faster).

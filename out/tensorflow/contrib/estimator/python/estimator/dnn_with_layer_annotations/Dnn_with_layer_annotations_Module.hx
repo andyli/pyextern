@@ -164,6 +164,7 @@ package tensorflow.contrib.estimator.python.estimator.dnn_with_layer_annotations
 		  DNNRegressor with layer annotations.
 	**/
 	static public function DNNRegressorWithLayerAnnotations(hidden_units:Dynamic, feature_columns:Dynamic, ?model_dir:Dynamic, ?label_dimension:Dynamic, ?weight_column:Dynamic, ?optimizer:Dynamic, ?activation_fn:Dynamic, ?dropout:Dynamic, ?input_layer_partitioner:Dynamic, ?config:Dynamic, ?warm_start_from:Dynamic, ?loss_reduction:Dynamic):Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

@@ -207,6 +207,31 @@ package tensorflow.python.framework.ops;
 	**/
 	public function _add_control_inputs(ops:Dynamic):Dynamic;
 	/**
+		Adds new Tensors to self.outputs.
+		
+		Note: this is generally unsafe to use. This is used in certain situations in
+		conjunction with _set_type_list_attr.
+		
+		Arguments:
+		  types: list of DTypes
+		  shapes: list of TensorShapes
+	**/
+	public function _add_outputs(types:Dynamic, shapes:Dynamic):Dynamic;
+	/**
+		See AddWhileInputHack in python_api.h.
+		
+		NOTE: This is for TF internal use only. Please don't use it.
+		
+		Args:
+		  tensors: list of Tensors
+		
+		Raises:
+		  TypeError: if tensor is not a Tensor,
+		    or if input tensor type is not convertible to dtype.
+		  ValueError: if the Tensor is from a different graph.
+	**/
+	public function _add_while_inputs(tensors:Dynamic):Dynamic;
+	/**
 		Code locations for colocation context managers active at op creation.
 		
 		This property will return a dictionary for which the keys are nodes with
@@ -347,6 +372,18 @@ package tensorflow.python.framework.ops;
 		  device: string or device..  The device to set.
 	**/
 	public function _set_device(device:Dynamic):Dynamic;
+	/**
+		Private method used to set a function attribute in the node_def.
+	**/
+	public function _set_func_attr(attr_name:Dynamic, func_name:Dynamic):Dynamic;
+	/**
+		Private method used to set a function attribute in the node_def.
+	**/
+	public function _set_shape_list_attr(attr_name:Dynamic, shapes:Dynamic):Dynamic;
+	/**
+		Private method used to set a function attribute in the node_def.
+	**/
+	public function _set_type_list_attr(attr_name:Dynamic, types:Dynamic):Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
 	/**

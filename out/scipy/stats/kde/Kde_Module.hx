@@ -86,6 +86,193 @@ package scipy.stats.kde;
 	**/
 	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	static public function callable(obj:Dynamic):Dynamic;
+	/**
+		choice(a, size=None, replace=True, p=None)
+		
+		Generates a random sample from a given 1-D array
+		
+		        .. versionadded:: 1.7.0
+		
+		Parameters
+		-----------
+		a : 1-D array-like or int
+		    If an ndarray, a random sample is generated from its elements.
+		    If an int, the random sample is generated as if a were np.arange(a)
+		size : int or tuple of ints, optional
+		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
+		    ``m * n * k`` samples are drawn.  Default is None, in which case a
+		    single value is returned.
+		replace : boolean, optional
+		    Whether the sample is with or without replacement
+		p : 1-D array-like, optional
+		    The probabilities associated with each entry in a.
+		    If not given the sample assumes a uniform distribution over all
+		    entries in a.
+		
+		Returns
+		--------
+		samples : single item or ndarray
+		    The generated random samples
+		
+		Raises
+		-------
+		ValueError
+		    If a is an int and less than zero, if a or p are not 1-dimensional,
+		    if a is an array-like of size 0, if p is not a vector of
+		    probabilities, if a and p have different lengths, or if
+		    replace=False and the sample size is greater than the population
+		    size
+		
+		See Also
+		---------
+		randint, shuffle, permutation
+		
+		Examples
+		---------
+		Generate a uniform random sample from np.arange(5) of size 3:
+		
+		>>> np.random.choice(5, 3)
+		array([0, 3, 4])
+		>>> #This is equivalent to np.random.randint(0,5,3)
+		
+		Generate a non-uniform random sample from np.arange(5) of size 3:
+		
+		>>> np.random.choice(5, 3, p=[0.1, 0, 0.3, 0.6, 0])
+		array([3, 3, 0])
+		
+		Generate a uniform random sample from np.arange(5) of size 3 without
+		replacement:
+		
+		>>> np.random.choice(5, 3, replace=False)
+		array([3,1,0])
+		>>> #This is equivalent to np.random.permutation(np.arange(5))[:3]
+		
+		Generate a non-uniform random sample from np.arange(5) of size
+		3 without replacement:
+		
+		>>> np.random.choice(5, 3, replace=False, p=[0.1, 0, 0.3, 0.6, 0])
+		array([2, 3, 0])
+		
+		Any of the above can be repeated with an arbitrary array-like
+		instead of just integers. For instance:
+		
+		>>> aa_milne_arr = ['pooh', 'rabbit', 'piglet', 'Christopher']
+		>>> np.random.choice(aa_milne_arr, 5, p=[0.5, 0.1, 0.1, 0.3])
+		array(['pooh', 'pooh', 'pooh', 'Christopher', 'piglet'],
+		      dtype='|S11')
+	**/
+	static public function choice(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Estimate a covariance matrix, given data and weights.
+		
+		Covariance indicates the level to which two variables vary together.
+		If we examine N-dimensional samples, :math:`X = [x_1, x_2, ... x_N]^T`,
+		then the covariance matrix element :math:`C_{ij}` is the covariance of
+		:math:`x_i` and :math:`x_j`. The element :math:`C_{ii}` is the variance
+		of :math:`x_i`.
+		
+		See the notes for an outline of the algorithm.
+		
+		Parameters
+		----------
+		m : array_like
+		    A 1-D or 2-D array containing multiple variables and observations.
+		    Each row of `m` represents a variable, and each column a single
+		    observation of all those variables. Also see `rowvar` below.
+		y : array_like, optional
+		    An additional set of variables and observations. `y` has the same form
+		    as that of `m`.
+		rowvar : bool, optional
+		    If `rowvar` is True (default), then each row represents a
+		    variable, with observations in the columns. Otherwise, the relationship
+		    is transposed: each column represents a variable, while the rows
+		    contain observations.
+		bias : bool, optional
+		    Default normalization (False) is by ``(N - 1)``, where ``N`` is the
+		    number of observations given (unbiased estimate). If `bias` is True,
+		    then normalization is by ``N``. These values can be overridden by using
+		    the keyword ``ddof`` in numpy versions >= 1.5.
+		ddof : int, optional
+		    If not ``None`` the default value implied by `bias` is overridden.
+		    Note that ``ddof=1`` will return the unbiased estimate, even if both
+		    `fweights` and `aweights` are specified, and ``ddof=0`` will return
+		    the simple average. See the notes for the details. The default value
+		    is ``None``.
+		
+		    .. versionadded:: 1.5
+		fweights : array_like, int, optional
+		    1-D array of integer frequency weights; the number of times each
+		    observation vector should be repeated.
+		
+		    .. versionadded:: 1.10
+		aweights : array_like, optional
+		    1-D array of observation vector weights. These relative weights are
+		    typically large for observations considered "important" and smaller for
+		    observations considered less "important". If ``ddof=0`` the array of
+		    weights can be used to assign probabilities to observation vectors.
+		
+		    .. versionadded:: 1.10
+		
+		Returns
+		-------
+		out : ndarray
+		    The covariance matrix of the variables.
+		
+		See Also
+		--------
+		corrcoef : Normalized covariance matrix
+		
+		Notes
+		-----
+		Assume that the observations are in the columns of the observation
+		array `m` and let ``f = fweights`` and ``a = aweights`` for brevity. The
+		steps to compute the weighted covariance are as follows::
+		
+		    >>> w = f * a
+		    >>> v1 = np.sum(w)
+		    >>> v2 = np.sum(w * a)
+		    >>> m -= np.sum(m * w, axis=1, keepdims=True) / v1
+		    >>> cov = np.dot(m * w, m.T) * v1 / (v1**2 - ddof * v2)
+		
+		Note that when ``a == 1``, the normalization factor
+		``v1 / (v1**2 - ddof * v2)`` goes over to ``1 / (np.sum(f) - ddof)``
+		as it should.
+		
+		Examples
+		--------
+		Consider two variables, :math:`x_0` and :math:`x_1`, which
+		correlate perfectly, but in opposite directions:
+		
+		>>> x = np.array([[0, 2], [1, 1], [2, 0]]).T
+		>>> x
+		array([[0, 1, 2],
+		       [2, 1, 0]])
+		
+		Note how :math:`x_0` increases while :math:`x_1` decreases. The covariance
+		matrix shows this clearly:
+		
+		>>> np.cov(x)
+		array([[ 1., -1.],
+		       [-1.,  1.]])
+		
+		Note that element :math:`C_{0,1}`, which shows the correlation between
+		:math:`x_0` and :math:`x_1`, is negative.
+		
+		Further, note how `x` and `y` are combined:
+		
+		>>> x = [-2.1, -1,  4.3]
+		>>> y = [3,  1.1,  0.12]
+		>>> X = np.stack((x, y), axis=0)
+		>>> print(np.cov(X))
+		[[ 11.71        -4.286     ]
+		 [ -4.286        2.14413333]]
+		>>> print(np.cov(x, y))
+		[[ 11.71        -4.286     ]
+		 [ -4.286        2.14413333]]
+		>>> print(np.cov(x))
+		11.71
+	**/
+	static public function cov(m:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic, ?fweights:Dynamic, ?aweights:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		dot(a, b, out=None)
@@ -218,7 +405,7 @@ package scipy.stats.kde;
 		References
 		----------
 		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
+		       https://en.wikipedia.org/wiki/Exponential_function
 		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
 		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
 		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
@@ -293,7 +480,7 @@ package scipy.stats.kde;
 		
 		Notes
 		-----
-		Numpy has a logaddexp function which is very similar to `logsumexp`, but
+		NumPy has a logaddexp function which is very similar to `logsumexp`, but
 		only handles two arguments. `logaddexp.reduce` is similar to this
 		function, but may be less stable.
 		
@@ -358,6 +545,7 @@ package scipy.stats.kde;
 		    Behavior when the covariance matrix is not positive semidefinite.
 		tol : float, optional
 		    Tolerance when checking the singular values in covariance matrix.
+		    cov is cast to double before the check.
 		
 		Returns
 		-------
@@ -430,6 +618,52 @@ package scipy.stats.kde;
 	**/
 	static public function multivariate_normal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var newaxis : Dynamic;
+	/**
+		Return a new array of given shape and type, filled with ones.
+		
+		Parameters
+		----------
+		shape : int or sequence of ints
+		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
+		dtype : data-type, optional
+		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
+		    `numpy.float64`.
+		order : {'C', 'F'}, optional, default: C
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
+		
+		Returns
+		-------
+		out : ndarray
+		    Array of ones with the given shape, dtype, and order.
+		
+		See Also
+		--------
+		ones_like : Return an array of ones with shape and type of input.
+		empty : Return a new uninitialized array.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
+		
+		Examples
+		--------
+		>>> np.ones(5)
+		array([ 1.,  1.,  1.,  1.,  1.])
+		
+		>>> np.ones((5,), dtype=int)
+		array([1, 1, 1, 1, 1])
+		
+		>>> np.ones((2, 1))
+		array([[ 1.],
+		       [ 1.]])
+		
+		>>> s = (2,2)
+		>>> np.ones(s)
+		array([[ 1.,  1.],
+		       [ 1.,  1.]])
+	**/
+	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	static public var pi : Dynamic;
 	/**
 		power(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
@@ -496,63 +730,6 @@ package scipy.stats.kde;
 	**/
 	static public function power(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
-	/**
-		randint(low, high=None, size=None, dtype='l')
-		
-		Return random integers from `low` (inclusive) to `high` (exclusive).
-		
-		Return random integers from the "discrete uniform" distribution of
-		the specified dtype in the "half-open" interval [`low`, `high`). If
-		`high` is None (the default), then results are from [0, `low`).
-		
-		Parameters
-		----------
-		low : int
-		    Lowest (signed) integer to be drawn from the distribution (unless
-		    ``high=None``, in which case this parameter is one above the
-		    *highest* such integer).
-		high : int, optional
-		    If provided, one above the largest (signed) integer to be drawn
-		    from the distribution (see above for behavior if ``high=None``).
-		size : int or tuple of ints, optional
-		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
-		    ``m * n * k`` samples are drawn.  Default is None, in which case a
-		    single value is returned.
-		dtype : dtype, optional
-		    Desired dtype of the result. All dtypes are determined by their
-		    name, i.e., 'int64', 'int', etc, so byteorder is not available
-		    and a specific precision may have different C types depending
-		    on the platform. The default value is 'np.int'.
-		
-		    .. versionadded:: 1.11.0
-		
-		Returns
-		-------
-		out : int or ndarray of ints
-		    `size`-shaped array of random integers from the appropriate
-		    distribution, or a single such random int if `size` not provided.
-		
-		See Also
-		--------
-		random.random_integers : similar to `randint`, only for the closed
-		    interval [`low`, `high`], and 1 is the lowest value if `high` is
-		    omitted. In particular, this other one is the one to use to generate
-		    uniformly distributed discrete non-integers.
-		
-		Examples
-		--------
-		>>> np.random.randint(2, size=10)
-		array([1, 0, 0, 0, 1, 1, 0, 0, 1, 0])
-		>>> np.random.randint(1, size=10)
-		array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-		
-		Generate a 2 x 4 array of ints between 0 and 4, inclusive:
-		
-		>>> np.random.randint(5, size=(2, 4))
-		array([[4, 0, 2, 1],
-		       [3, 2, 2, 0]])
-	**/
-	static public function randint(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a contiguous flattened array.
 		

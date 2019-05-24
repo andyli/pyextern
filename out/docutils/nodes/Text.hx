@@ -99,7 +99,7 @@ package docutils.nodes;
 	public function __mod__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -127,7 +127,7 @@ package docutils.nodes;
 	**/
 	public function __rmod__(value:Dynamic):Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**
@@ -261,7 +261,11 @@ package docutils.nodes;
 	/**
 		S.index(sub[, start[, end]]) -> int
 		
-		Like S.find() but raise ValueError when the substring is not found.
+		Return the lowest index in S where substring sub is found, 
+		such that sub is contained within S[start:end].  Optional
+		arguments start and end are interpreted as in slice notation.
+		
+		Raises ValueError when the substring is not found.
 	**/
 	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -430,7 +434,11 @@ package docutils.nodes;
 	/**
 		S.rindex(sub[, start[, end]]) -> int
 		
-		Like S.rfind() but raise ValueError when the substring is not found.
+		Return the highest index in S where substring sub is found,
+		such that sub is contained within S[start:end].  Optional
+		arguments start and end are interpreted as in slice notation.
+		
+		Raises ValueError when the substring is not found.
 	**/
 	public function rindex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

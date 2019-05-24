@@ -370,13 +370,15 @@ package tensorflow.python.training.checkpointable.util;
 		  status of a checkpoint restoration and run initialization/restore ops.
 		
 		  The returned status object has the following methods:
-		  - `assert_consumed()`:
+		
+		  * `assert_consumed()`:
 		      Raises an exception if any variables/objects are unmatched: either
 		      checkpointed values which don't have a matching Python object or
 		      Python objects in the dependency graph with no values in the
 		      checkpoint. This method returns the status object, and so may be
 		      chained with `initialize_or_restore` or `run_restore_ops`.
-		  -  `assert_existing_objects_matched()`:
+		
+		  * `assert_existing_objects_matched()`:
 		      Raises an exception if any existing Python objects in the dependency
 		      graph are unmatched. Unlike `assert_consumed`, this assertion will
 		      pass if values in the checkpoint have no corresponding Python
@@ -387,12 +389,20 @@ package tensorflow.python.training.checkpointable.util;
 		      a `tf.train.Optimizer` was saved but only the state required for
 		      inference is being loaded. This method returns the status object, and
 		      so may be chained with `initialize_or_restore` or `run_restore_ops`.
-		  - `initialize_or_restore(session=None)`:
+		
+		  * `assert_nontrivial_match()`: Asserts that something aside from the root
+		      object was matched. This is a very weak assertion, but is useful for
+		      sanity checking in library code where objects may exist in the
+		      checkpoint which haven't been created in Python and some Python
+		      objects may not have a checkpointed value.
+		
+		  * `initialize_or_restore(session=None)`:
 		      When graph building, runs variable initializers if `save_path` is
 		      `None`, but otherwise runs restore operations. If no `session` is
 		      explicitly specified, the default session is used. No effect when
 		      executing eagerly (variables are initialized or restored eagerly).
-		  - `run_restore_ops(session=None)`:
+		
+		  * `run_restore_ops(session=None)`:
 		      When graph building, runs restore operations. If no `session` is
 		      explicitly specified, the default session is used. No effect when
 		      executing eagerly (restore operations are run eagerly). May only be

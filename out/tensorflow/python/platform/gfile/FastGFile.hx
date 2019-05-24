@@ -48,7 +48,7 @@ package tensorflow.python.platform.gfile;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.gfile.GFile.
 	**/
@@ -57,7 +57,7 @@ package tensorflow.python.platform.gfile;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.gfile.GFile.
 	**/
@@ -176,7 +176,7 @@ package tensorflow.python.platform.gfile;
 	/**
 		Seeks to the offset in the file. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(position)`. They will be removed in a future version.
 		Instructions for updating:
 		position is deprecated in favor of the offset argument.
 		

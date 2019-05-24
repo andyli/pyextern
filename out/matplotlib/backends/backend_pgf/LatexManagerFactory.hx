@@ -37,15 +37,9 @@ package matplotlib.backends.backend_pgf;
 		Return hash(self).
 	**/
 	public function __hash__():Dynamic;
-	/**
-		Initialize self.  See help(type(self)) for accurate signature.
-	**/
 	@:native("__init__")
-	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Initialize self.  See help(type(self)) for accurate signature.
-	**/
-	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function ___init__(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function new(?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		

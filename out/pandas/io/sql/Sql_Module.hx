@@ -31,6 +31,10 @@ package pandas.io.sql;
 	**/
 	static public function _parse_date_columns(data_frame:Dynamic, parse_dates:Dynamic):Dynamic;
 	/**
+		Process parse_dates argument for read_sql functions
+	**/
+	static public function _process_parse_dates_argument(parse_dates:Dynamic):Dynamic;
+	/**
 		Wrap result set of query in a DataFrame.
 	**/
 	static public function _wrap_result(data:Dynamic, columns:Dynamic, ?index_col:Dynamic, ?coerce_float:Dynamic, ?parse_dates:Dynamic):Dynamic;
@@ -159,7 +163,7 @@ package pandas.io.sql;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
 		
 		Returns
 		-------
@@ -172,6 +176,10 @@ package pandas.io.sql;
 		True
 		>>> is_dict_like([1, 2, 3])
 		False
+		>>> is_dict_like(dict)
+		False
+		>>> is_dict_like(dict())
+		True
 	**/
 	static public function is_dict_like(obj:Dynamic):Bool;
 	/**
@@ -184,7 +192,11 @@ package pandas.io.sql;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -203,12 +215,16 @@ package pandas.io.sql;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -226,8 +242,8 @@ package pandas.io.sql;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -340,7 +356,7 @@ package pandas.io.sql;
 		-------
 		DataFrame
 		
-		See also
+		See Also
 		--------
 		read_sql_table : Read SQL database table into a DataFrame.
 		read_sql_query : Read SQL query into a DataFrame.
@@ -390,15 +406,15 @@ package pandas.io.sql;
 		-------
 		DataFrame
 		
+		See Also
+		--------
+		read_sql_table : Read SQL database table into a DataFrame.
+		read_sql
+		
 		Notes
 		-----
 		Any datetime values with time zone information parsed via the `parse_dates`
 		parameter will be converted to UTC.
-		
-		See also
-		--------
-		read_sql_table : Read SQL database table into a DataFrame.
-		read_sql
 	**/
 	static public function read_sql_query(sql:Dynamic, con:Dynamic, ?index_col:Dynamic, ?coerce_float:Dynamic, ?params:Dynamic, ?parse_dates:Dynamic, ?chunksize:Dynamic):Dynamic;
 	/**
@@ -440,14 +456,14 @@ package pandas.io.sql;
 		-------
 		DataFrame
 		
-		Notes
-		-----
-		Any datetime values with time zone information will be converted to UTC.
-		
-		See also
+		See Also
 		--------
 		read_sql_query : Read SQL query into a DataFrame.
 		read_sql
+		
+		Notes
+		-----
+		Any datetime values with time zone information will be converted to UTC.
 	**/
 	static public function read_sql_table(table_name:Dynamic, con:Dynamic, ?schema:Dynamic, ?index_col:Dynamic, ?coerce_float:Dynamic, ?parse_dates:Dynamic, ?columns:Dynamic, ?chunksize:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
@@ -502,7 +518,7 @@ package pandas.io.sql;
 		      as dateutil).
 		
 		    Warning: yearfirst=True is not strict, but will prefer to parse
-		    with year first (this is a known bug, based on dateutil beahavior).
+		    with year first (this is a known bug, based on dateutil behavior).
 		
 		    .. versionadded:: 0.16.1
 		
@@ -511,7 +527,7 @@ package pandas.io.sql;
 		    datetime.datetime objects as well).
 		box : boolean, default True
 		
-		    - If True returns a DatetimeIndex
+		    - If True returns a DatetimeIndex or Index-like object
 		    - If False returns ndarray of values.
 		format : string, default None
 		    strftime to parse time, eg "%d/%m/%Y", note that "%f" will parse
@@ -545,8 +561,8 @@ package pandas.io.sql;
 		    .. versionadded:: 0.20.0
 		cache : boolean, default False
 		    If True, use a cache of unique, converted dates to apply the datetime
-		    conversion. May produce sigificant speed-up when parsing duplicate date
-		    strings, especially ones with timezone offsets.
+		    conversion. May produce significant speed-up when parsing duplicate
+		    date strings, especially ones with timezone offsets.
 		
 		    .. versionadded:: 0.23.0
 		
@@ -563,6 +579,11 @@ package pandas.io.sql;
 		    any element of input is before Timestamp.min or after Timestamp.max)
 		    return will have datetime.datetime type (or corresponding
 		    array/Series).
+		
+		See Also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
 		
 		Examples
 		--------
@@ -627,11 +648,6 @@ package pandas.io.sql;
 		0    1960-01-02
 		1    1960-01-03
 		2    1960-01-04
-		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_timedelta : Convert argument to timedelta.
 	**/
 	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 	/**
@@ -667,6 +683,17 @@ package pandas.io.sql;
 		    Optional specifying the datatype for columns. The SQL type should
 		    be a SQLAlchemy type, or a string for sqlite3 fallback connection.
 		    If all columns are of the same type, one single value can be used.
+		method : {None, 'multi', callable}, default None
+		    Controls the SQL insertion clause used:
+		
+		    - None : Uses standard SQL ``INSERT`` clause (one per row).
+		    - 'multi': Pass multiple values in a single ``INSERT`` clause.
+		    - callable with signature ``(pd_table, conn, keys, data_iter)``.
+		
+		    Details and a sample callable implementation can be found in the
+		    section :ref:`insert method <io.sql.method>`.
+		
+		    .. versionadded:: 0.24.0
 	**/
-	static public function to_sql(frame:Dynamic, name:Dynamic, con:Dynamic, ?schema:Dynamic, ?if_exists:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?chunksize:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function to_sql(frame:Dynamic, name:Dynamic, con:Dynamic, ?schema:Dynamic, ?if_exists:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?chunksize:Dynamic, ?dtype:Dynamic, ?method:Dynamic):Dynamic;
 }

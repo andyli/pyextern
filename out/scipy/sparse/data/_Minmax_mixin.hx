@@ -130,7 +130,7 @@ package scipy.sparse.data;
 		
 		Returns
 		-------
-		ind : np.matrix or int
+		ind : numpy.matrix or int
 		    Indices of maximum elements. If matrix, its size along `axis` is 1.
 	**/
 	public function argmax(?axis:Dynamic, ?out:Dynamic):Dynamic;
@@ -152,7 +152,7 @@ package scipy.sparse.data;
 		
 		Returns
 		-------
-		 ind : np.matrix or int
+		 ind : numpy.matrix or int
 		    Indices of minimum elements. If matrix, its size along `axis` is 1.
 	**/
 	public function argmin(?axis:Dynamic, ?out:Dynamic):Dynamic;
@@ -182,7 +182,7 @@ package scipy.sparse.data;
 		See Also
 		--------
 		min : The minimum value of a sparse matrix along a given axis.
-		np.matrix.max : NumPy's implementation of 'max' for matrices
+		numpy.matrix.max : NumPy's implementation of 'max' for matrices
 	**/
 	public function max(?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -211,7 +211,7 @@ package scipy.sparse.data;
 		See Also
 		--------
 		max : The maximum value of a sparse matrix along a given axis.
-		np.matrix.min : NumPy's implementation of 'min' for matrices
+		numpy.matrix.min : NumPy's implementation of 'min' for matrices
 	**/
 	public function min(?axis:Dynamic, ?out:Dynamic):Dynamic;
 }

@@ -54,6 +54,15 @@ package tensorflow.contrib.tensorrt;
 		    use this list to determine the batch sizes of the cached engines, instead
 		    of making the decision on the fly. This is useful when we know the most
 		    common batch size(s) the application is going to generate.
+		  use_calibration: this argument is ignored if precision_mode is not INT8. If
+		    set to True, a calibration graph will be created to calibrate the missing
+		    ranges. The calibration graph must be converted to an inference graph
+		    using calib_graph_to_infer_graph() after running calibration. if set to
+		    False, quantization nodes will be expected for every tensor in the graph
+		    (exlcuding those which will be fused). If a range is missing, an error
+		    will occur. Please note that accuracy may be negatively affected if there
+		    is a mismatch between which tensors TRT quantizes and which tensors were
+		    trained with fake quantization.
 		  input_saved_model_dir: the directory to load the SavedModel which contains
 		    the input graph to transforms. Used only when input_graph_def is None.
 		  input_saved_model_tags: list of tags to load the SavedModel.
@@ -61,8 +70,9 @@ package tensorflow.contrib.tensorrt;
 		    returned GraphDef and save it to the specified directory. This option only
 		    works when the input graph is loaded from a SavedModel, i.e. when
 		    input_saved_model_dir is specified and input_graph_def is None.
-		  session_config: the ConfigProto used to create a Session. If not specified,
-		    a default ConfigProto will be used.
+		  session_config: the ConfigProto used to create a Session. It's also used as
+		    a template to create a TRT-enabled ConfigProto for conversion. If not
+		    specified, a default ConfigProto will be used.
 		
 		Returns:
 		  A GraphDef transformed from input_graph_def (or the SavedModel graph def
@@ -87,7 +97,7 @@ package tensorflow.contrib.tensorrt;
 		  ValueError: if the combination of the parameters is invalid.
 		  RuntimeError: if the TensorRT library version is incompatible.
 	**/
-	static public function create_inference_graph(input_graph_def:Dynamic, outputs:Dynamic, ?max_batch_size:Dynamic, ?max_workspace_size_bytes:Dynamic, ?precision_mode:Dynamic, ?minimum_segment_size:Dynamic, ?is_dynamic_op:Dynamic, ?maximum_cached_engines:Dynamic, ?cached_engine_batch_sizes:Dynamic, ?input_saved_model_dir:Dynamic, ?input_saved_model_tags:Dynamic, ?output_saved_model_dir:Dynamic, ?session_config:Dynamic):Dynamic;
+	static public function create_inference_graph(input_graph_def:Dynamic, outputs:Dynamic, ?max_batch_size:Dynamic, ?max_workspace_size_bytes:Dynamic, ?precision_mode:Dynamic, ?minimum_segment_size:Dynamic, ?is_dynamic_op:Dynamic, ?maximum_cached_engines:Dynamic, ?cached_engine_batch_sizes:Dynamic, ?use_calibration:Dynamic, ?input_saved_model_dir:Dynamic, ?input_saved_model_tags:Dynamic, ?output_saved_model_dir:Dynamic, ?session_config:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public function enable_test_value(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function get_test_value(args:haxe.extern.Rest<Dynamic>):Dynamic;

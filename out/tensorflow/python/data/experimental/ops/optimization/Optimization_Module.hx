@@ -10,6 +10,8 @@ package tensorflow.python.data.experimental.ops.optimization;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _tf_api_constants : Dynamic;
+	static public var _tf_api_constants_v1 : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		A transformation that asserts which transformations happen next.
@@ -33,6 +35,14 @@ package tensorflow.python.data.experimental.ops.optimization;
 	**/
 	static public function model():Dynamic;
 	/**
+		A non-serializable identity transformation.
+		
+		Returns:
+		  A `Dataset` transformation function, which can be passed to
+		  `tf.data.Dataset.apply`.
+	**/
+	static public function non_serializable():Dynamic;
+	/**
 		A transformation that applies optimizations.
 		
 		Args:
@@ -46,4 +56,5 @@ package tensorflow.python.data.experimental.ops.optimization;
 	**/
 	static public function optimize(?optimizations:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

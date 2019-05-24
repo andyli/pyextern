@@ -324,7 +324,7 @@ package scipy.linalg.interpolative;
 		    from `numpy.random.RandomState` (MT19937) with the integer
 		    used as the initial seed.
 		
-		    If `seed` is omitted (None), `numpy.random` is used to
+		    If `seed` is omitted (None), `numpy.random.rand` is used to
 		    initialize the generator.
 	**/
 	static public function seed(?seed:Dynamic):Dynamic;

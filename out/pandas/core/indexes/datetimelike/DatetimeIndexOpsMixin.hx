@@ -3,15 +3,40 @@ package pandas.core.indexes.datetimelike;
 @:pythonImport("pandas.core.indexes.datetimelike", "DatetimeIndexOpsMixin") extern class DatetimeIndexOpsMixin {
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		return a boolean if this key is IN the index
+		Return a boolean indicating whether the provided key is in the index.
 		
 		Parameters
 		----------
-		key : object
+		key : label
+		    The key to check if it is present in the index.
 		
 		Returns
 		-------
-		boolean
+		bool
+		    Whether the key search is in the index.
+		
+		See Also
+		--------
+		Index.isin : Returns an ndarray of boolean dtype indicating whether the
+		    list-like key is in the index.
+		
+		Examples
+		--------
+		>>> idx = pd.Index([1, 2, 3, 4])
+		>>> idx
+		Int64Index([1, 2, 3, 4], dtype='int64')
+		
+		>>> idx.contains(2)
+		True
+		>>> idx.contains(6)
+		False
+		
+		This is equivalent to:
+		
+		>>> 2 in idx
+		True
+		>>> 6 in idx
+		False
 	**/
 	public function __contains__(key:Dynamic):Dynamic;
 	/**
@@ -42,11 +67,6 @@ package pandas.core.indexes.datetimelike;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	/**
-		This getitem defers to the underlying array, which by-definition can
-		only handle list-likes, slices, and integer scalars
-	**/
-	public function __getitem__(key:Dynamic):Dynamic;
-	/**
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
@@ -70,7 +90,7 @@ package pandas.core.indexes.datetimelike;
 		overridden to extend subclasses.
 	**/
 	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __iter__():Dynamic;
+	public function __iter__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -126,62 +146,22 @@ package pandas.core.indexes.datetimelike;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _add_datelike(other:Dynamic):Dynamic;
+	static public function _add_arithmetic_ops():Dynamic;
+	static public function _add_comparison_ops():Dynamic;
 	/**
-		add in the datetimelike methods (as we may have to override the
-		superclass)
+		Add in the datetimelike methods (as we may have to override the
+		superclass).
 	**/
 	static public function _add_datetimelike_methods():Dynamic;
-	public function _add_delta(other:Dynamic):Dynamic;
-	/**
-		Add a delta of a timedeltalike
-		return the i8 result view
-	**/
-	public function _add_delta_td(other:Dynamic):Dynamic;
-	/**
-		Add a delta of a TimedeltaIndex
-		return the i8 result view
-	**/
-	public function _add_delta_tdi(other:Dynamic):Dynamic;
-	/**
-		Add pd.NaT to self
-	**/
-	public function _add_nat():Dynamic;
-	public function _add_offset(offset:Dynamic):Dynamic;
-	/**
-		Add or subtract array-like of DateOffset objects
-		
-		Parameters
-		----------
-		other : Index, np.ndarray
-		    object-dtype containing pd.DateOffset objects
-		op : {operator.add, operator.sub}
-		
-		Returns
-		-------
-		result : same class as self
-	**/
-	public function _addsub_offset_array(other:Dynamic, op:Dynamic):Dynamic;
-	/**
-		box function to get object from internal representation
-	**/
-	public var _box_func : Dynamic;
-	/**
-		apply box func to passed values
-	**/
 	public function _box_values(values:Dynamic):Dynamic;
-	/**
-		return object Index which contains boxed values
-	**/
-	public function _box_values_as_index():Dynamic;
 	static public var _can_hold_na : Dynamic;
 	/**
-		Concatenate to_concat which has the same class
+		Concatenate to_concat which has the same class.
 	**/
 	public function _concat_same_dtype(to_concat:Dynamic, name:Dynamic):Dynamic;
 	/**
-		we don't allow integer or float indexing on datetime-like when using
-		loc
+		We don't allow integer or float indexing on datetime-like when using
+		loc.
 		
 		Parameters
 		----------
@@ -191,44 +171,34 @@ package pandas.core.indexes.datetimelike;
 	public function _convert_scalar_indexer(key:Dynamic, ?kind:Dynamic):Dynamic;
 	public function _convert_tolerance(tolerance:Dynamic, target:Dynamic):Dynamic;
 	/**
-		ensure that we are re-localized
-		
-		This is for compat as we can then call this on all datetimelike
-		indexes generally (ignored for Period/Timedelta)
-		
-		Parameters
-		----------
-		result : DatetimeIndex / i8 ndarray
-		
-		Returns
-		-------
-		localized DTI
+		Create a comparison method that dispatches to ``cls.values``.
 	**/
-	public function _ensure_localized(result:Dynamic):Dynamic;
+	static public function _create_comparison_method(op:Dynamic):Dynamic;
+	static public var _data : Dynamic;
+	public function _ensure_localized(arg:Dynamic, ?ambiguous:Dynamic, ?nonexistent:Dynamic, ?from_utc:Dynamic):Dynamic;
 	/**
-		We have been called because a comparison between
-		8 aware arrays. numpy >= 1.11 will
-		now warn about NaT comparisons
-	**/
-	public function _evaluate_compare(other:Dynamic, op:Dynamic):Dynamic;
-	/**
-		Return a list of tuples of the (attr,formatted_value)
+		Return a list of tuples of the (attr,formatted_value).
 	**/
 	public function _format_attrs():Dynamic;
 	public function _format_with_header(header:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _formatter_func : Dynamic;
 	/**
+		return if I have any nans; enables various perf speedups
+	**/
+	public var _hasnans : Dynamic;
+	/**
 		return if each value is nan
 	**/
 	public var _isnan : Dynamic;
 	/**
-		create the join wrapper methods 
+		Create the join wrapper methods.
 	**/
 	static public function _join_i8_wrapper(joinf:Dynamic, dtype:Dynamic, ?with_indexers:Dynamic):Dynamic;
 	/**
 		Parameters
 		----------
 		result : a ndarray
+		fill_value : object, default iNaT
 		convert : string/dtype or None
 		
 		Returns
@@ -240,28 +210,12 @@ package pandas.core.indexes.datetimelike;
 		
 		This is an internal routine
 	**/
-	public function _maybe_mask_results(result:Dynamic, ?fill_value:Dynamic, ?convert:Dynamic):Dynamic;
+	public function _maybe_mask_results(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _na_value : Dynamic;
-	/**
-		Return Index or ndarray filled with NaT which has the same
-		length as the caller.
-		
-		Parameters
-		----------
-		box : boolean, default True
-		    - If True returns a Index as the same as caller.
-		    - If False returns ndarray of np.int64.
-	**/
-	public function _nat_new(?box:Dynamic):Dynamic;
+	public var _ndarray_values : Dynamic;
 	public var _resolution : Dynamic;
-	public function _sub_datelike(other:Dynamic):Dynamic;
 	/**
-		Subtract pd.NaT from self
-	**/
-	public function _sub_nat():Dynamic;
-	public function _sub_period(other:Dynamic):Dynamic;
-	/**
-		Return a summarized representation
+		Return a summarized representation.
 		
 		Parameters
 		----------
@@ -275,24 +229,35 @@ package pandas.core.indexes.datetimelike;
 	public function _summary(?name:Dynamic):Dynamic;
 	/**
 		Returns the indices of the maximum values along an axis.
+		
 		See `numpy.ndarray.argmax` for more information on the
 		`axis` parameter.
 		
-		See also
+		See Also
 		--------
 		numpy.ndarray.argmax
 	**/
-	public function argmax(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function argmax(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns the indices of the minimum values along an axis.
+		
 		See `numpy.ndarray.argmin` for more information on the
 		`axis` parameter.
 		
-		See also
+		See Also
 		--------
 		numpy.ndarray.argmin
 	**/
-	public function argmin(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function argmin(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Integer representation of the values.
+		
+		Returns
+		-------
+		ndarray
+		    An ndarray with int64 dtype.
+	**/
+	public var asi8 : Dynamic;
 	/**
 		Return object Index which contains boxed values.
 		
@@ -302,17 +267,61 @@ package pandas.core.indexes.datetimelike;
 		*this is an internal non-public method*
 	**/
 	public var asobject : Dynamic;
-	public function astype(dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
-		return a boolean if this key is IN the index
+		Create an Index with values cast to dtypes. The class of a new Index
+		is determined by dtype. When conversion is impossible, a ValueError
+		exception is raised.
 		
 		Parameters
 		----------
-		key : object
+		dtype : numpy dtype or pandas type
+		    Note that any signed integer `dtype` is treated as ``'int64'``,
+		    and any unsigned integer `dtype` is treated as ``'uint64'``,
+		    regardless of the size.
+		copy : bool, default True
+		    By default, astype always returns a newly allocated object.
+		    If copy is set to False and internal requirements on dtype are
+		    satisfied, the original data is used to create a new Index
+		    or the original Index is returned.
+		
+		    .. versionadded:: 0.19.0
+	**/
+	public function astype(dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		Return a boolean indicating whether the provided key is in the index.
+		
+		Parameters
+		----------
+		key : label
+		    The key to check if it is present in the index.
 		
 		Returns
 		-------
-		boolean
+		bool
+		    Whether the key search is in the index.
+		
+		See Also
+		--------
+		Index.isin : Returns an ndarray of boolean dtype indicating whether the
+		    list-like key is in the index.
+		
+		Examples
+		--------
+		>>> idx = pd.Index([1, 2, 3, 4])
+		>>> idx
+		Int64Index([1, 2, 3, 4], dtype='int64')
+		
+		>>> idx.contains(2)
+		True
+		>>> idx.contains(6)
+		False
+		
+		This is equivalent to:
+		
+		>>> 2 in idx
+		True
+		>>> 6 in idx
+		False
 	**/
 	public function contains(key:Dynamic):Dynamic;
 	/**
@@ -320,18 +329,26 @@ package pandas.core.indexes.datetimelike;
 	**/
 	public function equals(other:Dynamic):Dynamic;
 	/**
-		Return the frequency object as a string if it is set, otherwise None
+		Return the frequency object if it is set, otherwise None.
+	**/
+	public var freq : Dynamic;
+	/**
+		Return the frequency object as a string if it is set, otherwise None.
 	**/
 	public var freqstr : Dynamic;
 	/**
-		Tries to return a string representing a frequency guess,
+		return if I have any nans; enables various perf speedups
+	**/
+	public var hasnans : Dynamic;
+	/**
+		Tryies to return a string representing a frequency guess,
 		generated by infer_freq.  Returns None if it can't autodetect the
 		frequency.
 	**/
 	public var inferred_freq : Dynamic;
 	/**
 		Compute boolean array of whether each index value is found in the
-		passed set of values
+		passed set of values.
 		
 		Parameters
 		----------
@@ -347,48 +364,99 @@ package pandas.core.indexes.datetimelike;
 		Return the maximum value of the Index or maximum along
 		an axis.
 		
-		See also
+		See Also
 		--------
 		numpy.ndarray.max
+		Series.max : Return the maximum value in a Series.
 	**/
-	public function max(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function max(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the minimum value of the Index or minimum along
 		an axis.
 		
-		See also
+		See Also
 		--------
 		numpy.ndarray.min
+		Series.min : Return the minimum value in a Series.
 	**/
-	public function min(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function min(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Analogous to ndarray.repeat
+		Repeat elements of a Index.
+		
+		Returns a new Index where each element of the current Index
+		is repeated consecutively a given number of times.
+		
+		Parameters
+		----------
+		repeats : int or array of ints
+		    The number of repetitions for each element. This should be a
+		    non-negative integer. Repeating 0 times will return an empty
+		    Index.
+		axis : None
+		    Must be ``None``. Has no effect but is accepted for compatibility
+		    with numpy.
+		
+		Returns
+		-------
+		repeated_index : Index
+		    Newly created Index with repeated elements.
+		
+		See Also
+		--------
+		Series.repeat : Equivalent function for Series.
+		numpy.repeat : Similar method for :class:`numpy.ndarray`.
+		
+		Examples
+		--------
+		>>> idx = pd.Index(['a', 'b', 'c'])
+		>>> idx
+		Index(['a', 'b', 'c'], dtype='object')
+		>>> idx.repeat(2)
+		Index(['a', 'a', 'b', 'b', 'c', 'c'], dtype='object')
+		>>> idx.repeat([1, 2, 3])
+		Index(['a', 'b', 'b', 'c', 'c', 'c'], dtype='object')
 	**/
-	public function repeat(repeats:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function repeat(repeats:Dynamic, ?axis:Dynamic):pandas.Index;
 	/**
 		Returns day, hour, minute, second, millisecond or microsecond
 	**/
 	public var resolution : Dynamic;
 	/**
-		Specialized shift which produces a DatetimeIndex
+		Shift index by desired number of time frequency increments.
+		
+		This method is for shifting the values of datetime-like indexes
+		by a specified time increment a given number of times.
 		
 		Parameters
 		----------
-		n : int
-		    Periods to shift by
-		freq : DateOffset or timedelta-like, optional
+		periods : int
+		    Number of periods (or increments) to shift by,
+		    can be positive or negative.
+		
+		    .. versionchanged:: 0.24.0
+		
+		freq : pandas.DateOffset, pandas.Timedelta or string, optional
+		    Frequency increment to shift by.
+		    If None, the index is shifted by its own `freq` attribute.
+		    Offset aliases are valid strings, e.g., 'D', 'W', 'M' etc.
 		
 		Returns
 		-------
-		shifted : DatetimeIndex
+		pandas.DatetimeIndex
+		    Shifted index.
+		
+		See Also
+		--------
+		Index.shift : Shift values of Index.
+		PeriodIndex.shift : Shift values of PeriodIndex.
 	**/
-	public function shift(n:Dynamic, ?freq:Dynamic):pandas.DatetimeIndex;
+	public function shift(periods:Dynamic, ?freq:Dynamic):Dynamic;
 	/**
-		Return sorted copy of Index
+		Return sorted copy of Index.
 	**/
 	public function sort_values(?return_indexer:Dynamic, ?ascending:Dynamic):Dynamic;
 	/**
-		return a new Index of the values selected by the indices
+		Return a new Index of the values selected by the indices.
 		
 		For internal compatibility with numpy arrays.
 		
@@ -403,21 +471,23 @@ package pandas.core.indexes.datetimelike;
 		    If allow_fill=True and fill_value is not None, indices specified by
 		    -1 is regarded as NA. If Index doesn't hold NA, raise ValueError
 		
-		See also
+		See Also
 		--------
 		numpy.ndarray.take
 	**/
 	public function take(indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return a list of the underlying data
+		Return a list of the underlying data.
 	**/
 	public function tolist():Dynamic;
+	public function unique(?level:Dynamic):Dynamic;
+	public var values : Dynamic;
 	/**
-		.. versionadded:: 0.19.0
-		
 		Return an Index of same shape as self and whose corresponding
 		entries are from self where cond is True and otherwise are from
 		other.
+		
+		.. versionadded:: 0.19.0
 		
 		Parameters
 		----------

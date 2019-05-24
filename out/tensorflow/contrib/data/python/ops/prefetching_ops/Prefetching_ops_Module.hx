@@ -13,7 +13,7 @@ package tensorflow.contrib.data.python.ops.prefetching_ops;
 	/**
 		A transformation that copies dataset elements to the given `target_device`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.copy_to_device(...)`.
 		
@@ -30,7 +30,7 @@ package tensorflow.contrib.data.python.ops.prefetching_ops;
 	/**
 		A transformation that prefetches dataset values to the given `device`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.prefetch_to_device(...)`.
 		

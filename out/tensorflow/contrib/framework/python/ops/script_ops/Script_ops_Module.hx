@@ -11,7 +11,17 @@ package tensorflow.contrib.framework.python.ops.script_ops;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Wraps a python function and uses it as a TensorFlow op.
+		Wraps a python function and uses it as a TensorFlow op. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		tf.py_func is deprecated in TF V2. Instead, use
+		    tf.py_function, which takes a python function which manipulates tf eager
+		    tensors instead of numpy arrays. It's easy to convert a tf eager tensor to
+		    an ndarray (just call tensor.numpy()) but having access to eager tensors
+		    means `tf.py_function`s can use accelerators such as GPUs as well as
+		    being differentiable using a gradient tape.
+		    
 		
 		Given a python function `func`, which takes numpy arrays as its
 		arguments and returns numpy arrays as its outputs, wrap this function as an

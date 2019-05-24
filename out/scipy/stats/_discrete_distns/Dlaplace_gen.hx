@@ -160,19 +160,39 @@ package scipy.stats._discrete_distns;
 	public function _construct_doc(docdict:Dynamic, ?shapes_vals:Dynamic):Dynamic;
 	public function _construct_docstrings(name:Dynamic, longname:Dynamic, extradoc:Dynamic):Dynamic;
 	public function _entropy(a:Dynamic):Dynamic;
+	/**
+		Return the support of the (unscaled, unshifted) distribution.
+		
+		*Must* be overridden by distributions which have support dependent
+		upon the shape parameters of the distribution.  Any such override
+		*must not* set or change any of the class members, as these members
+		are shared amongst all instances of the distribution.
+		
+		Parameters
+		----------
+		arg1, arg2, ... : array_like
+		    The shape parameter(s) for the distribution (see docstring of the
+		    instance object for more information).
+		Returns
+		-------
+		a, b : numeric (float, or int or +/-np.inf)
+		    end-points of the distribution's support for the specified
+		    shape parameters.
+	**/
+	public function _get_support(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _isf(q:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _logcdf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _logpmf(k:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _logsf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _munp(n:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _nonzero(k:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
-	public function _open_support_mask(x:Dynamic):Dynamic;
+	public function _open_support_mask(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _pmf(k:Dynamic, a:Dynamic):Dynamic;
 	public function _ppf(q:Dynamic, a:Dynamic):Dynamic;
 	public function _rvs(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _sf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _stats(a:Dynamic):Dynamic;
-	public function _support_mask(x:Dynamic):Dynamic;
+	public function _support_mask(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return the current version of _ctor_param, possibly updated by user.
 		
@@ -223,7 +243,7 @@ package scipy.stats._discrete_distns;
 	public function entropy(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculate expected value of a function with respect to the distribution
-		for discrete distribution.
+		for discrete distribution by numerical summation.
 		
 		Parameters
 		----------
@@ -265,8 +285,8 @@ package scipy.stats._discrete_distns;
 		depending on the function, `func`. If it does exist, but the sum converges
 		slowly, the accuracy of the result may be rather low. For instance, for
 		``zipf(4)``, accuracy for mean, variance in example is only 1e-5.
-		increasing `maxcount` and/or `chunksize` may improve the result, but may also
-		make zipf very slow.
+		increasing `maxcount` and/or `chunksize` may improve the result, but may
+		also make zipf very slow.
 		
 		The function is not vectorized.
 	**/
@@ -427,7 +447,7 @@ package scipy.stats._discrete_distns;
 		
 		See Also
 		--------
-		stats.distributions.rv_discrete.ppf
+		rv_discrete.ppf
 		    Inverse of the CDF
 	**/
 	public function median(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
@@ -583,6 +603,24 @@ package scipy.stats._discrete_distns;
 		    standard deviation of the distribution
 	**/
 	public function std(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
+	/**
+		Return the support of the distribution.
+		
+		Parameters
+		----------
+		arg1, arg2, ... : array_like
+		    The shape parameter(s) for the distribution (see docstring of the
+		    instance object for more information).
+		loc : array_like, optional
+		    location parameter, Default is 0.
+		scale : array_like, optional
+		    scale parameter, Default is 1.
+		Returns
+		-------
+		a, b : float
+		    end-points of the distribution's support.
+	**/
+	public function support(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Float;
 	/**
 		Variance of the distribution.
 		

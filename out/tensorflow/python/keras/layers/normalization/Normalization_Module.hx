@@ -9,6 +9,7 @@ package tensorflow.python.keras.layers.normalization;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _replace_in_v2_docstring(old:Dynamic, _new:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;

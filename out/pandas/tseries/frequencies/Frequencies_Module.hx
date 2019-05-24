@@ -1,13 +1,14 @@
 /* This file is generated, do not edit! */
 package pandas.tseries.frequencies;
 @:pythonImport("pandas.tseries.frequencies") extern class Frequencies_Module {
-	static public var RESO_DAY : Dynamic;
-	static public var RESO_HR : Dynamic;
-	static public var RESO_MIN : Dynamic;
-	static public var RESO_MS : Dynamic;
-	static public var RESO_NS : Dynamic;
-	static public var RESO_SEC : Dynamic;
-	static public var RESO_US : Dynamic;
+	static public var MONTH_ALIASES : Dynamic;
+	static public var UTC : Dynamic;
+	static public var _ONE_DAY : Dynamic;
+	static public var _ONE_HOUR : Dynamic;
+	static public var _ONE_MICRO : Dynamic;
+	static public var _ONE_MILLI : Dynamic;
+	static public var _ONE_MINUTE : Dynamic;
+	static public var _ONE_SECOND : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -16,66 +17,15 @@ package pandas.tseries.frequencies;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _is_multiple(us:Dynamic, mult:Dynamic):Dynamic;
+	static public function _maybe_add_count(base:Dynamic, count:Dynamic):Dynamic;
 	static public var _name_to_offset_map : Dynamic;
 	static public var _offset_map : Dynamic;
 	static public var _offset_to_period_map : Dynamic;
-	static public function cday(other:Dynamic):Dynamic;
 	/**
-		Return DateOffset object associated with rule name
-		
-		Examples
-		--------
-		get_offset('EOM') --> BMonthEnd(1)
+		Datetime as int64 representation to a structured array of fields
 	**/
-	static public function getOffset(name:Dynamic):Dynamic;
-	/**
-		Returns the base frequency alias, e.g., '5D' -> 'D'
-		
-		Parameters
-		----------
-		freqstr : str
-		
-		Returns
-		-------
-		base_alias : str
-	**/
-	static public function get_base_alias(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Return frequency code of given frequency str.
-		If input is not string, return input as it is.
-		
-		Examples
-		--------
-		>>> get_freq('A')
-		1000
-		
-		>>> get_freq('3A')
-		1000
-	**/
-	static public function get_freq(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Return freq str or tuple to freq code and stride (mult)
-		
-		Parameters
-		----------
-		freqstr : str or tuple
-		
-		Returns
-		-------
-		return : tuple of base frequency code and stride (mult)
-		
-		Examples
-		--------
-		>>> get_freq_code('3D')
-		(6000, 3)
-		
-		>>> get_freq_code('D')
-		(6000, 1)
-		
-		>>> get_freq_code(('D', 3))
-		(6000, 3)
-	**/
-	static public function get_freq_code(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function build_field_sarray(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return DateOffset object associated with rule name
 		
@@ -88,35 +38,6 @@ package pandas.tseries.frequencies;
 		alias to closest period strings BQ->Q etc
 	**/
 	static public function get_period_alias(offset_str:Dynamic):Dynamic;
-	/**
-		Return frequency code group used for base of to_timestamp against
-		frequency code.
-		
-		Parameters
-		----------
-		base : int (member of FreqGroup)
-		
-		Returns
-		-------
-		base : int
-		
-		Examples
-		--------
-		# Return day freq code against longer freq than day
-		>>> get_to_timestamp_base(get_freq_code('D')[0])
-		6000
-		>>> get_to_timestamp_base(get_freq_code('W')[0])
-		6000
-		>>> get_to_timestamp_base(get_freq_code('M')[0])
-		6000
-		
-		# Return second freq code against hour between second
-		>>> get_to_timestamp_base(get_freq_code('H')[0])
-		9000
-		>>> get_to_timestamp_base(get_freq_code('S')[0])
-		9000
-	**/
-	static public function get_to_timestamp_base(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Infer the most likely frequency given the input index. If the frequency is
 		uncertain, a warning will be printed.
@@ -135,6 +56,7 @@ package pandas.tseries.frequencies;
 		    ValueError if there are less than three values.
 	**/
 	static public function infer_freq(index:Dynamic, ?warn:Dynamic):Dynamic;
+	static public var int_to_weekday : Dynamic;
 	/**
 		Check whether an array-like or dtype is of the datetime64 dtype.
 		
@@ -185,38 +107,6 @@ package pandas.tseries.frequencies;
 		True
 	**/
 	static public function is_period_arraylike(arr:Dynamic):Dynamic;
-	/**
-		Returns True if downsampling is possible between source and target
-		frequencies
-		
-		Parameters
-		----------
-		source : string or DateOffset
-		    Frequency converting from
-		target : string or DateOffset
-		    Frequency converting to
-		
-		Returns
-		-------
-		is_subperiod : boolean
-	**/
-	static public function is_subperiod(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Returns True if upsampling is possible between source and target
-		frequencies
-		
-		Parameters
-		----------
-		source : string
-		    Frequency converting from
-		target : string
-		    Frequency converting to
-		
-		Returns
-		-------
-		is_superperiod : boolean
-	**/
-	static public function is_superperiod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether an array-like or dtype is of the timedelta64 dtype.
 		
@@ -288,4 +178,104 @@ package pandas.tseries.frequencies;
 		<Hour>
 	**/
 	static public function to_offset(freq:Dynamic):pandas.DateOffset;
+	/**
+		Convert the values (in i8) from timezone1 to timezone2
+		
+		Parameters
+		----------
+		vals : int64 ndarray
+		tz1 : string / timezone object
+		tz2 : string / timezone object
+		
+		Returns
+		-------
+		int64 ndarray of converted
+	**/
+	static public function tz_convert(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Hash table-based unique. Uniques are returned in order
+		of appearance. This does NOT sort.
+		
+		Significantly faster than numpy.unique. Includes NA values.
+		
+		Parameters
+		----------
+		values : 1d array-like
+		
+		Returns
+		-------
+		unique values.
+		  - If the input is an Index, the return is an Index
+		  - If the input is a Categorical dtype, the return is a Categorical
+		  - If the input is a Series/ndarray, the return will be an ndarray
+		
+		See Also
+		--------
+		pandas.Index.unique
+		pandas.Series.unique
+		
+		Examples
+		--------
+		>>> pd.unique(pd.Series([2, 1, 3, 3]))
+		array([2, 1, 3])
+		
+		>>> pd.unique(pd.Series([2] + [1] * 5))
+		array([2, 1])
+		
+		>>> pd.unique(pd.Series([pd.Timestamp('20160101'),
+		...                     pd.Timestamp('20160101')]))
+		array(['2016-01-01T00:00:00.000000000'], dtype='datetime64[ns]')
+		
+		>>> pd.unique(pd.Series([pd.Timestamp('20160101', tz='US/Eastern'),
+		...                      pd.Timestamp('20160101', tz='US/Eastern')]))
+		array([Timestamp('2016-01-01 00:00:00-0500', tz='US/Eastern')],
+		      dtype=object)
+		
+		>>> pd.unique(pd.Index([pd.Timestamp('20160101', tz='US/Eastern'),
+		...                     pd.Timestamp('20160101', tz='US/Eastern')]))
+		DatetimeIndex(['2016-01-01 00:00:00-05:00'],
+		...           dtype='datetime64[ns, US/Eastern]', freq=None)
+		
+		>>> pd.unique(list('baabc'))
+		array(['b', 'a', 'c'], dtype=object)
+		
+		An unordered Categorical will return categories in the
+		order of appearance.
+		
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'))))
+		[b, a, c]
+		Categories (3, object): [b, a, c]
+		
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'),
+		...                                    categories=list('abc'))))
+		[b, a, c]
+		Categories (3, object): [b, a, c]
+		
+		An ordered Categorical preserves the category ordering.
+		
+		>>> pd.unique(pd.Series(pd.Categorical(list('baabc'),
+		...                                    categories=list('abc'),
+		...                                    ordered=True)))
+		[b, a, c]
+		Categories (3, object): [a < b < c]
+		
+		An array of tuples
+		
+		>>> pd.unique([('a', 'b'), ('b', 'a'), ('a', 'c'), ('b', 'a')])
+		array([('a', 'b'), ('b', 'a'), ('a', 'c')], dtype=object)
+	**/
+	static public function unique(values:Dynamic):Dynamic;
+	/**
+		Efficiently find the unique first-differences of the given array.
+		
+		Parameters
+		----------
+		arr : ndarray[in64_t]
+		
+		Returns
+		-------
+		result : ndarray[int64_t]
+		    result is sorted
+	**/
+	static public function unique_deltas(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

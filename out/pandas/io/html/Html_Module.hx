@@ -10,45 +10,45 @@ package pandas.io.html;
 		----------
 		data : file-like object or list
 		delimiter : separator character to use
-		dialect : str or csv.Dialect instance, default None
+		dialect : str or csv.Dialect instance, optional
 		    Ignored if delimiter is longer than 1 character
 		names : sequence, default
 		header : int, default 0
 		    Row to use to parse column labels. Defaults to the first row. Prior
 		    rows will be discarded
-		index_col : int or list, default None
+		index_col : int or list, optional
 		    Column or columns to use as the (possibly hierarchical) index
-		has_index_names: boolean, default False
+		has_index_names: bool, default False
 		    True if the cols defined in index_col have an index name and are
-		    not in the header
-		na_values : scalar, str, list-like, or dict, default None
+		    not in the header.
+		na_values : scalar, str, list-like, or dict, optional
 		    Additional strings to recognize as NA/NaN.
 		keep_default_na : bool, default True
-		thousands : str, default None
+		thousands : str, optional
 		    Thousands separator
-		comment : str, default None
+		comment : str, optional
 		    Comment out remainder of line
-		parse_dates : boolean, default False
-		keep_date_col : boolean, default False
-		date_parser : function, default None
+		parse_dates : bool, default False
+		keep_date_col : bool, default False
+		date_parser : function, optional
 		skiprows : list of integers
 		    Row numbers to skip
 		skipfooter : int
 		    Number of line at bottom of file to skip
-		converters : dict, default None
+		converters : dict, optional
 		    Dict of functions for converting values in certain columns. Keys can
 		    either be integers or column labels, values are functions that take one
 		    input argument, the cell (not column) content, and return the
 		    transformed content.
-		encoding : string, default None
+		encoding : str, optional
 		    Encoding to use for UTF when reading/writing (ex. 'utf-8')
-		squeeze : boolean, default False
-		    returns Series if only one column
-		infer_datetime_format: boolean, default False
+		squeeze : bool, default False
+		    returns Series if only one column.
+		infer_datetime_format: bool, default False
 		    If True and `parse_dates` is True for a column, try to infer the
 		    datetime format based on the first datetime string. If the format
 		    can be inferred, there often will be a large parsing speed-up.
-		float_precision : string, default None
+		float_precision : str, optional
 		    Specifies which converter the C engine should use for floating-point
 		    values. The options are None for the ordinary converter,
 		    'high' for the high-precision converter, and 'round_trip' for the
@@ -186,7 +186,11 @@ package pandas.io.html;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -205,8 +209,12 @@ package pandas.io.html;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	static public function iteritems(obj:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -345,7 +353,7 @@ package pandas.io.html;
 		
 		    .. versionadded:: 0.19.0
 		
-		display_only : bool, default True
+		displayed_only : bool, default True
 		    Whether elements with "display: none" should be parsed
 		
 		    .. versionadded:: 0.23.0
@@ -353,6 +361,10 @@ package pandas.io.html;
 		Returns
 		-------
 		dfs : list of DataFrames
+		
+		See Also
+		--------
+		pandas.read_csv
 		
 		Notes
 		-----
@@ -367,7 +379,13 @@ package pandas.io.html;
 		
 		This function searches for ``<table>`` elements and only for ``<tr>``
 		and ``<th>`` rows and ``<td>`` elements within each ``<tr>`` or ``<th>``
-		element in the table. ``<td>`` stands for "table data".
+		element in the table. ``<td>`` stands for "table data". This function
+		attempts to properly handle ``colspan`` and ``rowspan`` attributes.
+		If the function has a ``<thead>`` argument, it is used to construct
+		the header, otherwise the function attempts to find the header within
+		the body (by putting rows with only ``<th>`` elements into the header).
+		
+		    .. versionadded:: 0.21.0
 		
 		Similar to :func:`~pandas.read_csv` the `header` argument is applied
 		**after** `skiprows` is applied.
@@ -379,10 +397,6 @@ package pandas.io.html;
 		--------
 		See the :ref:`read_html documentation in the IO section of the docs
 		<io.read_html>` for some examples of reading in HTML tables.
-		
-		See Also
-		--------
-		pandas.read_csv
 	**/
 	static public function read_html(io:Dynamic, ?match:Dynamic, ?flavor:Dynamic, ?header:Dynamic, ?index_col:Dynamic, ?skiprows:Dynamic, ?attrs:Dynamic, ?parse_dates:Dynamic, ?tupleize_cols:Dynamic, ?thousands:Dynamic, ?encoding:Dynamic, ?decimal:Dynamic, ?converters:Dynamic, ?na_values:Dynamic, ?keep_default_na:Dynamic, ?displayed_only:Dynamic):Dynamic;
 	static public var string_types : Dynamic;

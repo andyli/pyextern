@@ -43,12 +43,7 @@ package scipy.sparse.dok;
 		Return getattr(self, name).
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
-	/**
-		If key=(i, j) is a pair of integers, return the corresponding
-		element.  If either i or j is a slice or sequence, return a new sparse
-		matrix with just these elements.
-	**/
-	public function __getitem__(index:Dynamic):Dynamic;
+	public function __getitem__(key:Dynamic):Dynamic;
 	/**
 		Return self>value.
 	**/
@@ -132,10 +127,7 @@ package scipy.sparse.dok;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
-	/**
-		Set self[key] to value.
-	**/
-	public function __setitem__(index:Dynamic, x:Dynamic):Dynamic;
+	public function __setitem__(key:Dynamic, x:Dynamic):Dynamic;
 	/**
 		D.__sizeof__() -> size of D in memory, in bytes
 	**/
@@ -161,16 +153,24 @@ package scipy.sparse.dok;
 	public var __weakref__ : Dynamic;
 	public function _add_dense(other:Dynamic):Dynamic;
 	public function _add_sparse(other:Dynamic):Dynamic;
-	public function _boolean_index_to_array(i:Dynamic):Dynamic;
-	public function _check_boolean(row:Dynamic, col:Dynamic):Dynamic;
 	/**
-		Process indices with Ellipsis. Returns modified index.
+		Convert `idx` to a valid index for an axis with a given length.
+		
+		Subclasses that need special validation can override this method.
 	**/
-	public function _check_ellipsis(index:Dynamic):Dynamic;
+	public function _asindices(idx:Dynamic, length:Dynamic):Dynamic;
 	public function _divide(other:Dynamic, ?true_divide:Dynamic, ?rdivide:Dynamic):Dynamic;
-	public function _getitem_ranges(i_indices:Dynamic, j_indices:Dynamic, shape:Dynamic):Dynamic;
+	public function _get_arrayXarray(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_arrayXint(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_arrayXslice(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_columnXarray(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_intXarray(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_intXint(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_intXslice(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_sliceXarray(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_sliceXint(row:Dynamic, col:Dynamic):Dynamic;
+	public function _get_sliceXslice(row:Dynamic, col:Dynamic):Dynamic;
 	public function _imag():Dynamic;
-	public function _index_to_arrays(i:Dynamic, j:Dynamic):Dynamic;
 	public function _mul_multivector(other:Dynamic):Dynamic;
 	public function _mul_scalar(other:Dynamic):Dynamic;
 	public function _mul_sparse_matrix(other:Dynamic):Dynamic;
@@ -178,39 +178,33 @@ package scipy.sparse.dok;
 	public function _process_toarray_args(order:Dynamic, out:Dynamic):Dynamic;
 	public function _real():Dynamic;
 	public function _rsub_dense(other:Dynamic):Dynamic;
+	public function _set_arrayXarray(row:Dynamic, col:Dynamic, x:Dynamic):Dynamic;
+	public function _set_arrayXarray_sparse(row:Dynamic, col:Dynamic, x:Dynamic):Dynamic;
+	public function _set_intXint(row:Dynamic, col:Dynamic, x:Dynamic):Dynamic;
 	public function _setdiag(values:Dynamic, k:Dynamic):Dynamic;
-	/**
-		Given a slice object, use numpy arange to change it to a 1D
-		array.
-	**/
-	public function _slicetoarange(j:Dynamic, shape:Dynamic):Dynamic;
 	public function _sub_dense(other:Dynamic):Dynamic;
 	public function _sub_sparse(other:Dynamic):Dynamic;
-	/**
-		Parse index. Always return a tuple of the form (row, col).
-		Where row/col is a integer, slice, or array of integers.
-	**/
-	public function _unpack_index(index:Dynamic):Dynamic;
 	/**
 		An update method for dict data defined for direct access to
 		`dok_matrix` data. Main purpose is to be used for effcient conversion
 		from other spmatrix classes. Has no checking if `data` is valid.
 	**/
 	public function _update(data:Dynamic):Dynamic;
+	public function _validate_indices(key:Dynamic):Dynamic;
 	/**
-		Return this matrix in the passed sparse format.
+		Return this matrix in the passed format.
 		
 		Parameters
 		----------
 		format : {str, None}
-		    The desired sparse matrix format ("csr", "csc", "lil", "dok", ...)
+		    The desired matrix format ("csr", "csc", "lil", "dok", "array", ...)
 		    or None for no conversion.
 		copy : bool, optional
 		    If True, the result is guaranteed to not share data with self.
 		
 		Returns
 		-------
-		A : This matrix in the passed sparse format.
+		A : This matrix in the passed format.
 	**/
 	public function asformat(format:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
@@ -349,7 +343,7 @@ package scipy.sparse.dok;
 		
 		See Also
 		--------
-		np.matrix.getH : NumPy's implementation of `getH` for matrices
+		numpy.matrix.getH : NumPy's implementation of `getH` for matrices
 	**/
 	public function getH():Dynamic;
 	/**
@@ -357,7 +351,8 @@ package scipy.sparse.dok;
 	**/
 	public function get_shape():Dynamic;
 	/**
-		Returns the j-th column as a (m x 1) DOK matrix.
+		Returns a copy of column j of the matrix, as an (m x 1) sparse
+		matrix (column vector).
 	**/
 	public function getcol(j:Dynamic):Dynamic;
 	/**
@@ -383,7 +378,8 @@ package scipy.sparse.dok;
 	**/
 	public function getnnz(?axis:Dynamic):Dynamic;
 	/**
-		Returns the i-th row as a (1 x n) DOK matrix.
+		Returns a copy of row i of the matrix, as a (1 x n) sparse
+		matrix (row vector).
 	**/
 	public function getrow(i:Dynamic):Dynamic;
 	/**
@@ -431,7 +427,7 @@ package scipy.sparse.dok;
 		
 		See Also
 		--------
-		np.matrix.mean : NumPy's implementation of 'mean' for matrices
+		numpy.matrix.mean : NumPy's implementation of 'mean' for matrices
 	**/
 	public function mean(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -508,7 +504,8 @@ package scipy.sparse.dok;
 		
 		See Also
 		--------
-		np.matrix.reshape : NumPy's implementation of 'reshape' for matrices
+		numpy.matrix.reshape : NumPy's implementation of 'reshape' for
+		                       matrices
 	**/
 	public function reshape(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -600,7 +597,7 @@ package scipy.sparse.dok;
 		
 		See Also
 		--------
-		np.matrix.sum : NumPy's implementation of 'sum' for matrices
+		numpy.matrix.sum : NumPy's implementation of 'sum' for matrices
 	**/
 	public function sum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -736,8 +733,8 @@ package scipy.sparse.dok;
 		
 		See Also
 		--------
-		np.matrix.transpose : NumPy's implementation of 'transpose'
-		                      for matrices
+		numpy.matrix.transpose : NumPy's implementation of 'transpose'
+		                         for matrices
 	**/
 	public function transpose(?axes:Dynamic, ?copy:Dynamic):Dynamic;
 	/**

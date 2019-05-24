@@ -52,38 +52,20 @@ package tensorflow.python.ops.distributions.exponential;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct Exponential distribution with parameter `rate`.
+		DEPRECATED FUNCTION
 		
-		Args:
-		  rate: Floating point tensor, equivalent to `1 / mean`. Must contain only
-		    positive values.
-		  validate_args: Python `bool`, default `False`. When `True` distribution
-		    parameters are checked for validity despite possibly degrading runtime
-		    performance. When `False` invalid inputs may silently render incorrect
-		    outputs.
-		  allow_nan_stats: Python `bool`, default `True`. When `True`, statistics
-		    (e.g., mean, mode, variance) use the value "`NaN`" to indicate the
-		    result is undefined. When `False`, an exception is raised if one or
-		    more of the statistic's batch members are undefined.
-		  name: Python `str` name prefixed to Ops created by this class.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		Use `tfd.Exponential(tf.nn.softplus(rate)).
 	**/
 	@:native("__init__")
 	public function ___init__(rate:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Construct Exponential distribution with parameter `rate`.
+		DEPRECATED FUNCTION
 		
-		Args:
-		  rate: Floating point tensor, equivalent to `1 / mean`. Must contain only
-		    positive values.
-		  validate_args: Python `bool`, default `False`. When `True` distribution
-		    parameters are checked for validity despite possibly degrading runtime
-		    performance. When `False` invalid inputs may silently render incorrect
-		    outputs.
-		  allow_nan_stats: Python `bool`, default `True`. When `True`, statistics
-		    (e.g., mean, mode, variance) use the value "`NaN`" to indicate the
-		    result is undefined. When `False`, an exception is raised if one or
-		    more of the statistic's batch members are undefined.
-		  name: Python `str` name prefixed to Ops created by this class.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		Use `tfd.Exponential(tf.nn.softplus(rate)).
 	**/
 	public function new(rate:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Void;
 	/**

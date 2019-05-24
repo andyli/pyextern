@@ -53,7 +53,11 @@ package tensorflow.python.ops.distributions.kullback_leibler;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize the KL registrar.
+		Initialize the KL registrar. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		Args:
 		  dist_cls_a: the class of the first argument of the KL divergence.
@@ -62,7 +66,11 @@ package tensorflow.python.ops.distributions.kullback_leibler;
 	@:native("__init__")
 	public function ___init__(dist_cls_a:Dynamic, dist_cls_b:Dynamic):Dynamic;
 	/**
-		Initialize the KL registrar.
+		Initialize the KL registrar. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		Args:
 		  dist_cls_a: the class of the first argument of the KL divergence.

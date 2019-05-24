@@ -1,12 +1,10 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.protobuf.config_pb2;
 @:pythonImport("tensorflow.core.protobuf.config_pb2", "ConfigProto") extern class ConfigProto {
-	static public var ALLOW_SOFT_PLACEMENT_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CLUSTER_DEF_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -24,8 +22,6 @@ package tensorflow.core.protobuf.config_pb2;
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var DESCRIPTOR : Dynamic;
-	static public var DEVICE_COUNT_FIELD_NUMBER : Dynamic;
-	static public var DEVICE_FILTERS_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -34,7 +30,6 @@ package tensorflow.core.protobuf.config_pb2;
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EXPERIMENTAL_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
@@ -51,8 +46,6 @@ package tensorflow.core.protobuf.config_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GPU_OPTIONS_FIELD_NUMBER : Dynamic;
-	static public var GRAPH_OPTIONS_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -61,14 +54,10 @@ package tensorflow.core.protobuf.config_pb2;
 		Checks if a message field is set.
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var INTER_OP_PARALLELISM_THREADS_FIELD_NUMBER : Dynamic;
-	static public var INTRA_OP_PARALLELISM_THREADS_FIELD_NUMBER : Dynamic;
-	static public var ISOLATE_SESSION_STATE_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LOG_DEVICE_PLACEMENT_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -81,18 +70,14 @@ package tensorflow.core.protobuf.config_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var OPERATION_TIMEOUT_IN_MS_FIELD_NUMBER : Dynamic;
-	static public var PLACEMENT_PERIOD_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var RPC_OPTIONS_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SESSION_INTER_OP_THREAD_POOL_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -105,7 +90,10 @@ package tensorflow.core.protobuf.config_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var USE_PER_SESSION_THREADS_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -273,4 +261,68 @@ package tensorflow.core.protobuf.config_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.allow_soft_placement
+	**/
+	public var allow_soft_placement : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.cluster_def
+	**/
+	public var cluster_def : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.device_count
+	**/
+	public var device_count : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.device_filters
+	**/
+	public var device_filters : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.experimental
+	**/
+	public var experimental : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.gpu_options
+	**/
+	public var gpu_options : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.graph_options
+	**/
+	public var graph_options : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.inter_op_parallelism_threads
+	**/
+	public var inter_op_parallelism_threads : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.intra_op_parallelism_threads
+	**/
+	public var intra_op_parallelism_threads : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.isolate_session_state
+	**/
+	public var isolate_session_state : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.log_device_placement
+	**/
+	public var log_device_placement : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.operation_timeout_in_ms
+	**/
+	public var operation_timeout_in_ms : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.placement_period
+	**/
+	public var placement_period : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.rpc_options
+	**/
+	public var rpc_options : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.session_inter_op_thread_pool
+	**/
+	public var session_inter_op_thread_pool : Dynamic;
+	/**
+		Field tensorflow.ConfigProto.use_per_session_threads
+	**/
+	public var use_per_session_threads : Dynamic;
 }

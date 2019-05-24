@@ -158,6 +158,10 @@ package tensorflow.python.distribute.distribute_coordinator;
 	**/
 	public var distributed_mode : Dynamic;
 	/**
+		Whether to run init ops.
+	**/
+	public var experimental_should_init : Dynamic;
+	/**
 		Whether the barrier is set or not.
 	**/
 	public var has_barrier : Dynamic;
@@ -173,6 +177,7 @@ package tensorflow.python.distribute.distribute_coordinator;
 		Returns number of workers in the cluster, including chief.
 	**/
 	public var num_workers : Dynamic;
+	public var session_config : Dynamic;
 	/**
 		Returns a session creator.
 		

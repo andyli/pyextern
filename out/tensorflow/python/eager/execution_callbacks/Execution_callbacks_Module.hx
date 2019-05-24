@@ -2,7 +2,6 @@
 package tensorflow.python.eager.execution_callbacks;
 @:pythonImport("tensorflow.python.eager.execution_callbacks") extern class Execution_callbacks_Module {
 	static public var _DEFAULT_CALLBACK_ACTION : Dynamic;
-	static public var _VALID_CALLBACK_ACTIONS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -59,6 +58,29 @@ package tensorflow.python.eager.execution_callbacks;
 	static public function clear_execution_callbacks():Dynamic;
 	static public var division : Dynamic;
 	/**
+		Context manager setting error state.
+		
+		Example:
+		```
+		c = tf.log(0.)  # -inf
+		
+		with errstate(inf_or_nan=ExecutionCallback.RAISE):
+		  tf.log(0.)  # <-- Raises InfOrNanError.
+		```
+		
+		Args:
+		  inf_or_nan: An `ExecutionCallback` determining the action for infinity
+		    (`inf`) and NaN (`nan`) values. A value of `None` leads to no change in
+		    the action of the condition.
+		
+		Yields:
+		  None.
+		
+		Raises:
+		  ValueError: If the value of any keyword arguments is invalid.
+	**/
+	static public function errstate(?inf_or_nan:Dynamic):Dynamic;
+	/**
 		A specialization of `inf_nan_callback` that checks for `inf`s only.
 	**/
 	static public function inf_callback(op_type:Dynamic, inputs:Dynamic, attrs:Dynamic, outputs:Dynamic, op_name:Dynamic, ?action:Dynamic):Dynamic;
@@ -85,11 +107,8 @@ package tensorflow.python.eager.execution_callbacks;
 		    the output tensor values.
 		  check_nan: (`bool`) Whether this callback should check for `nan` values in
 		    the output tensor values.
-		  action: (`str`) Action to be taken by the callback when `inf` or `nan`
-		    values are detected. Possible values {"raise", "warn", "print"}
-		    `"raise"`: Raise a `InfOrNanError`.
-		    `"warn"`: Log a warning using `tf.logging.warn`.
-		    `"print"`: Print a message to `sys.stdout`.
+		  action: (`ExecutionCallback`) Action to be taken by the callback when
+		    `inf` or `nan` values are detected.
 		
 		Raises:
 		  InfOrNanError: iff `inf` or `nan` values are seen in any of `outputs` and
@@ -107,7 +126,7 @@ package tensorflow.python.eager.execution_callbacks;
 		
 		Example:
 		```python
-		tfe.seterr(inf_or_nan="raise")
+		tfe.seterr(inf_or_nan=ExecutionCallback.RAISE)
 		a = tf.constant(10.0)
 		b = tf.constant(0.0)
 		try:
@@ -115,18 +134,14 @@ package tensorflow.python.eager.execution_callbacks;
 		except Exception as e:
 		  print("Caught Exception: %s" % e)
 		
-		tfe.seterr(inf_or_nan="ignore")
+		tfe.seterr(inf_or_nan=ExecutionCallback.IGNORE)
 		c = a / b  # <-- Does NOT raise exception anymore.
 		```
 		
 		Args:
-		  inf_or_nan: Set action for infinity (`inf`) and NaN (`nan`) values.
-		    Possible values: `{"ignore", "print", "raise", "warn"}`.
-		    `"ignore"`: take no action when `inf` values appear.
-		    `"print"`: print a warning to `stdout`.
-		    `"raise"`: raise an `InfOrNanError`.
-		    `"warn"`: print a warning using `tf.logging.warn`.
-		    A value of `None` leads to no change in the action of the condition.
+		  inf_or_nan: An `ExecutionCallback` determining the action for infinity
+		    (`inf`) and NaN (`nan`) values. A value of `None` leads to no change in
+		    the action of the condition.
 		
 		Returns:
 		  A dictionary of old actions.

@@ -49,9 +49,9 @@ package tensorflow.contrib.layers.python.ops.sparse_feature_cross_op;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Crosses a list of Tensor or SparseTensor objects. (deprecated arguments)
+		Crosses a list of Tensor or SparseTensor objects. (deprecated argument values)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-11-20.
+		Warning: SOME ARGUMENT VALUES ARE DEPRECATED: `(hash_key=None)`. They will be removed after 2016-11-20.
 		Instructions for updating:
 		The default behavior of sparse_feature_cross is changing, the default
 		value for hash_key will change to SPARSE_FEATURE_CROSS_DEFAULT_HASH_KEY.

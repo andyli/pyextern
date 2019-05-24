@@ -15,7 +15,7 @@ package tensorflow.examples.tutorials.mnist.input_data;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use alternatives such as official/mnist/dataset.py from tensorflow/models.
 	**/

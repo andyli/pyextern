@@ -10,22 +10,57 @@ package matplotlib.ticker;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _divmod(x:Dynamic, y:Dynamic):Dynamic;
+	/**
+		Return the smallest integer power of *base* that's greater than *x*.
+		
+		If *x* is negative, the exponent will be *smaller*.
+	**/
+	static public function _decade_greater(x:Dynamic, base:Dynamic):Dynamic;
+	/**
+		Return the smallest integer power of *base* that's greater or equal to *x*.
+		
+		If *x* is negative, the exponent will be *smaller*.
+	**/
+	static public function _decade_greater_equal(x:Dynamic, base:Dynamic):Dynamic;
+	/**
+		Return the largest integer power of *base* that's less than *x*.
+		
+		If *x* is negative, the exponent will be *greater*.
+	**/
+	static public function _decade_less(x:Dynamic, base:Dynamic):Dynamic;
+	/**
+		Return the largest integer power of *base* that's less or equal to *x*.
+		
+		If *x* is negative, the exponent will be *greater*.
+	**/
+	static public function _decade_less_equal(x:Dynamic, base:Dynamic):Dynamic;
 	static public var _log : Dynamic;
 	static public function _mathdefault(s:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 3.0
-		    The closeto function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		[*Deprecated*] 
 		
-		\ 
+		Notes
+		-----
+		.. deprecated:: 3.0
+		   \ 
 	**/
 	static public function closeto(x:Dynamic, y:Dynamic):Dynamic;
 	/**
-		floor x to the nearest lower decade
+		[*Deprecated*] floor x to the nearest lower decade
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function decade_down(x:Dynamic, ?base:Dynamic):Dynamic;
 	/**
-		ceil x to the nearest higher decade
+		[*Deprecated*] ceil x to the nearest higher decade
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function decade_up(x:Dynamic, ?base:Dynamic):Dynamic;
 	static public function is_close_to_int(x:Dynamic):Dynamic;

@@ -52,7 +52,11 @@ package tensorflow.python.ops.distributions.multinomial;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize a batch of Multinomial distributions.
+		Initialize a batch of Multinomial distributions. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		Args:
 		  total_count: Non-negative floating point tensor with shape broadcastable
@@ -82,7 +86,11 @@ package tensorflow.python.ops.distributions.multinomial;
 	@:native("__init__")
 	public function ___init__(total_count:Dynamic, ?logits:Dynamic, ?probs:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Initialize a batch of Multinomial distributions.
+		Initialize a batch of Multinomial distributions. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2019-01-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.distributions`.
 		
 		Args:
 		  total_count: Non-negative floating point tensor with shape broadcastable

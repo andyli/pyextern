@@ -14,43 +14,6 @@ package scipy.io.arff.arffread;
 	static public var absolute_import : Dynamic;
 	static public function basic_stats(data:Dynamic):Dynamic;
 	static public var division : Dynamic;
-	static public function get_date_format(atrv:Dynamic):Dynamic;
-	/**
-		Read the whole file to get number of data attributes.
-	**/
-	static public function get_ndata(ofile:Dynamic):Dynamic;
-	/**
-		Given a string containing a nominal type, returns a tuple of the
-		possible values.
-		
-		A nominal type is defined as something framed between braces ({}).
-		
-		Parameters
-		----------
-		atrv : str
-		   Nominal type definition
-		
-		Returns
-		-------
-		poss_vals : tuple
-		   possible values
-		
-		Examples
-		--------
-		>>> get_nom_val("{floup, bouga, fl, ratata}")
-		('floup', 'bouga', 'fl', 'ratata')
-	**/
-	static public function get_nom_val(atrv:Dynamic):python.Tuple<Dynamic>;
-	/**
-		If attribute is nominal, returns a list of the values
-	**/
-	static public function get_nominal(attribute:Dynamic):Dynamic;
-	/**
-		Skip header.
-		
-		the first next() call of the returned iterator will be the @data line
-	**/
-	static public function go_data(ofile:Dynamic):Dynamic;
 	/**
 		Read an arff file.
 		
@@ -121,89 +84,36 @@ package scipy.io.arff.arffread;
 	**/
 	static public function loadarff(f:Dynamic):Dynamic;
 	/**
-		Given a string containing a nominal type definition, returns the
-		string len of the biggest component.
-		
-		A nominal type is defined as seomthing framed between brace ({}).
-		
-		Parameters
-		----------
-		atrv : str
-		   Nominal type definition
-		
-		Returns
-		-------
-		slen : int
-		   length of longest component
-		
-		Examples
-		--------
-		maxnomlen("{floup, bouga, fl, ratata}") returns 6 (the size of
-		ratata, the longest nominal value).
-		
-		>>> maxnomlen("{floup, bouga, fl, ratata}")
-		6
-	**/
-	static public function maxnomlen(atrv:Dynamic):Int;
-	/**
 		next(iterator[, default])
 		
 		Return the next item from the iterator. If default is given and the iterator
 		is exhausted, it is returned instead of raising StopIteration.
 	**/
 	static public function next(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Given an arff attribute value (meta data), returns its type.
-		
-		Expect the value to be a name.
-	**/
-	static public function parse_type(attrtype:Dynamic):Dynamic;
 	static public function print_attribute(name:Dynamic, tp:Dynamic, data:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public var r_attribute : Dynamic;
 	static public var r_comattrval : Dynamic;
 	static public var r_comment : Dynamic;
 	static public var r_datameta : Dynamic;
+	static public var r_date : Dynamic;
 	static public var r_empty : Dynamic;
 	static public var r_headerline : Dynamic;
 	static public var r_meta : Dynamic;
+	static public var r_nominal : Dynamic;
 	static public var r_relation : Dynamic;
 	static public var r_wcomattrval : Dynamic;
-	/**
-		Read each line of the iterable and put it in a list.
-	**/
-	static public function read_data_list(ofile:Dynamic):Dynamic;
 	/**
 		Read the header of the iterable ofile.
 	**/
 	static public function read_header(ofile:Dynamic):Dynamic;
-	static public function safe_date(value:Dynamic, date_format:Dynamic, datetime_unit:Dynamic):Dynamic;
 	/**
-		given a string x, convert it to a float. If the stripped string is a ?,
-		return a Nan (missing value).
-		
-		Parameters
-		----------
-		x : str
-		   string to convert
-		
-		Returns
-		-------
-		f : float
-		   where float can be nan
-		
-		Examples
-		--------
-		>>> safe_float('1')
-		1.0
-		>>> safe_float('1\n')
-		1.0
-		>>> safe_float('?\n')
-		nan
+		Read the nested attributes of a relational attribute
 	**/
-	static public function safe_float(x:Dynamic):Float;
-	static public function safe_nominal(value:Dynamic, pvalue:Dynamic):Dynamic;
+	static public function read_relational_attribute(ofile:Dynamic, relational_attribute:Dynamic, i:Dynamic):Dynamic;
+	static public function split_data_line(line:Dynamic, ?dialect:Dynamic):Dynamic;
 	static public function test_weka(filename:Dynamic):Dynamic;
+	static public function to_attribute(name:Dynamic, attr_string:Dynamic):Dynamic;
 	/**
 		Parse a raw string in header (eg starts by @attribute).
 		

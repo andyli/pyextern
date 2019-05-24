@@ -11,6 +11,57 @@ package tensorflow._api.v1.io;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Decode and Crop a JPEG-encoded image to a uint8 tensor.
+		
+		The attr `channels` indicates the desired number of color channels for the
+		decoded image.
+		
+		Accepted values are:
+		
+		*   0: Use the number of channels in the JPEG-encoded image.
+		*   1: output a grayscale image.
+		*   3: output an RGB image.
+		
+		If needed, the JPEG-encoded image is transformed to match the requested number
+		of color channels.
+		
+		The attr `ratio` allows downscaling the image by an integer factor during
+		decoding.  Allowed values are: 1, 2, 4, and 8.  This is much faster than
+		downscaling the image later.
+		
+		
+		It is equivalent to a combination of decode and crop, but much faster by only
+		decoding partial jpeg image.
+		
+		Args:
+		  contents: A `Tensor` of type `string`. 0-D.  The JPEG-encoded image.
+		  crop_window: A `Tensor` of type `int32`.
+		    1-D.  The crop window: [crop_y, crop_x, crop_height, crop_width].
+		  channels: An optional `int`. Defaults to `0`.
+		    Number of color channels for the decoded image.
+		  ratio: An optional `int`. Defaults to `1`. Downscaling ratio.
+		  fancy_upscaling: An optional `bool`. Defaults to `True`.
+		    If true use a slower but nicer upscaling of the
+		    chroma planes (yuv420/422 only).
+		  try_recover_truncated: An optional `bool`. Defaults to `False`.
+		    If true try to recover an image from truncated input.
+		  acceptable_fraction: An optional `float`. Defaults to `1`.
+		    The minimum required fraction of lines before a truncated
+		    input is accepted.
+		  dct_method: An optional `string`. Defaults to `""`.
+		    string specifying a hint about the algorithm used for
+		    decompression.  Defaults to "" which maps to a system-specific
+		    default.  Currently valid values are ["INTEGER_FAST",
+		    "INTEGER_ACCURATE"].  The hint may be ignored (e.g., the internal
+		    jpeg library changes to a version that does not have that specific
+		    option.)
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `uint8`.
+	**/
+	static public function decode_and_crop_jpeg(contents:Dynamic, crop_window:Dynamic, ?channels:Dynamic, ?ratio:Dynamic, ?fancy_upscaling:Dynamic, ?try_recover_truncated:Dynamic, ?acceptable_fraction:Dynamic, ?dct_method:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Decode web-safe base64-encoded strings.
 		
 		Input may or may not have padding at the end. See EncodeBase64 for padding.
@@ -24,6 +75,27 @@ package tensorflow._api.v1.io;
 		  A `Tensor` of type `string`.
 	**/
 	static public function decode_base64(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Decode the first frame of a BMP-encoded image to a uint8 tensor.
+		
+		The attr `channels` indicates the desired number of color channels for the
+		decoded image.
+		
+		Accepted values are:
+		
+		*   0: Use the number of channels in the BMP-encoded image.
+		*   3: output an RGB image.
+		*   4: output an RGBA image.
+		
+		Args:
+		  contents: A `Tensor` of type `string`. 0-D.  The BMP-encoded image.
+		  channels: An optional `int`. Defaults to `0`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `uint8`.
+	**/
+	static public function decode_bmp(contents:Dynamic, ?channels:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Decompress strings.
 		
@@ -82,6 +154,104 @@ package tensorflow._api.v1.io;
 	**/
 	static public function decode_csv(records:Dynamic, record_defaults:Dynamic, ?field_delim:Dynamic, ?use_quote_delim:Dynamic, ?name:Dynamic, ?na_value:Dynamic, ?select_cols:Dynamic):Dynamic;
 	/**
+		Decode the first frame of a GIF-encoded image to a uint8 tensor.
+		
+		GIF with frame or transparency compression are not supported
+		convert animated GIF from compressed to uncompressed by:
+		
+		    convert $src.gif -coalesce $dst.gif
+		
+		This op also supports decoding JPEGs and PNGs, though it is cleaner to use
+		`tf.image.decode_image`.
+		
+		Args:
+		  contents: A `Tensor` of type `string`. 0-D.  The GIF-encoded image.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `uint8`.
+	**/
+	static public function decode_gif(contents:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Convenience function for `decode_bmp`, `decode_gif`, `decode_jpeg`,
+		and `decode_png`.
+		
+		Detects whether an image is a BMP, GIF, JPEG, or PNG, and performs the
+		appropriate operation to convert the input bytes `string` into a `Tensor`
+		of type `dtype`.
+		
+		Note: `decode_gif` returns a 4-D array `[num_frames, height, width, 3]`, as
+		opposed to `decode_bmp`, `decode_jpeg` and `decode_png`, which return 3-D
+		arrays `[height, width, num_channels]`. Make sure to take this into account
+		when constructing your graph if you are intermixing GIF files with BMP, JPEG,
+		and/or PNG files.
+		
+		Args:
+		  contents: 0-D `string`. The encoded image bytes.
+		  channels: An optional `int`. Defaults to `0`. Number of color channels for
+		    the decoded image.
+		  dtype: The desired DType of the returned `Tensor`.
+		  name: A name for the operation (optional)
+		
+		Returns:
+		  `Tensor` with type `dtype` and shape `[height, width, num_channels]` for
+		    BMP, JPEG, and PNG images and shape `[num_frames, height, width, 3]` for
+		    GIF images.
+		
+		Raises:
+		  ValueError: On incorrect number of channels.
+	**/
+	static public function decode_image(contents:Dynamic, ?channels:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Decode a JPEG-encoded image to a uint8 tensor.
+		
+		The attr `channels` indicates the desired number of color channels for the
+		decoded image.
+		
+		Accepted values are:
+		
+		*   0: Use the number of channels in the JPEG-encoded image.
+		*   1: output a grayscale image.
+		*   3: output an RGB image.
+		
+		If needed, the JPEG-encoded image is transformed to match the requested number
+		of color channels.
+		
+		The attr `ratio` allows downscaling the image by an integer factor during
+		decoding.  Allowed values are: 1, 2, 4, and 8.  This is much faster than
+		downscaling the image later.
+		
+		
+		This op also supports decoding PNGs and non-animated GIFs since the interface is
+		the same, though it is cleaner to use `tf.image.decode_image`.
+		
+		Args:
+		  contents: A `Tensor` of type `string`. 0-D.  The JPEG-encoded image.
+		  channels: An optional `int`. Defaults to `0`.
+		    Number of color channels for the decoded image.
+		  ratio: An optional `int`. Defaults to `1`. Downscaling ratio.
+		  fancy_upscaling: An optional `bool`. Defaults to `True`.
+		    If true use a slower but nicer upscaling of the
+		    chroma planes (yuv420/422 only).
+		  try_recover_truncated: An optional `bool`. Defaults to `False`.
+		    If true try to recover an image from truncated input.
+		  acceptable_fraction: An optional `float`. Defaults to `1`.
+		    The minimum required fraction of lines before a truncated
+		    input is accepted.
+		  dct_method: An optional `string`. Defaults to `""`.
+		    string specifying a hint about the algorithm used for
+		    decompression.  Defaults to "" which maps to a system-specific
+		    default.  Currently valid values are ["INTEGER_FAST",
+		    "INTEGER_ACCURATE"].  The hint may be ignored (e.g., the internal
+		    jpeg library changes to a version that does not have that specific
+		    option.)
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `uint8`.
+	**/
+	static public function decode_jpeg(contents:Dynamic, ?channels:Dynamic, ?ratio:Dynamic, ?fancy_upscaling:Dynamic, ?try_recover_truncated:Dynamic, ?acceptable_fraction:Dynamic, ?dct_method:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Convert JSON-encoded Example records to binary protocol buffer strings.
 		
 		This op translates a tensor containing Example records, encoded using
@@ -101,6 +271,36 @@ package tensorflow._api.v1.io;
 		  A `Tensor` of type `string`.
 	**/
 	static public function decode_json_example(json_examples:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Decode a PNG-encoded image to a uint8 or uint16 tensor.
+		
+		The attr `channels` indicates the desired number of color channels for the
+		decoded image.
+		
+		Accepted values are:
+		
+		*   0: Use the number of channels in the PNG-encoded image.
+		*   1: output a grayscale image.
+		*   3: output an RGB image.
+		*   4: output an RGBA image.
+		
+		If needed, the PNG-encoded image is transformed to match the requested number
+		of color channels.
+		
+		This op also supports decoding JPEGs and non-animated GIFs since the interface
+		is the same, though it is cleaner to use `tf.image.decode_image`.
+		
+		Args:
+		  contents: A `Tensor` of type `string`. 0-D.  The PNG-encoded image.
+		  channels: An optional `int`. Defaults to `0`.
+		    Number of color channels for the decoded image.
+		  dtype: An optional `tf.DType` from: `tf.uint8, tf.uint16`. Defaults to `tf.uint8`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `dtype`.
+	**/
+	static public function decode_png(contents:Dynamic, ?channels:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Reinterpret the bytes of a string as a vector of numbers.
 		
@@ -197,6 +397,82 @@ package tensorflow._api.v1.io;
 		  A `Tensor` of type `string`.
 	**/
 	static public function encode_base64(input:Dynamic, ?pad:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		JPEG-encode an image.
+		
+		`image` is a 3-D uint8 Tensor of shape `[height, width, channels]`.
+		
+		The attr `format` can be used to override the color format of the encoded
+		output.  Values can be:
+		
+		*   `''`: Use a default format based on the number of channels in the image.
+		*   `grayscale`: Output a grayscale JPEG image.  The `channels` dimension
+		    of `image` must be 1.
+		*   `rgb`: Output an RGB JPEG image. The `channels` dimension
+		    of `image` must be 3.
+		
+		If `format` is not specified or is the empty string, a default format is picked
+		in function of the number of channels in `image`:
+		
+		*   1: Output a grayscale image.
+		*   3: Output an RGB image.
+		
+		Args:
+		  image: A `Tensor` of type `uint8`.
+		    3-D with shape `[height, width, channels]`.
+		  format: An optional `string` from: `"", "grayscale", "rgb"`. Defaults to `""`.
+		    Per pixel image format.
+		  quality: An optional `int`. Defaults to `95`.
+		    Quality of the compression from 0 to 100 (higher is better and slower).
+		  progressive: An optional `bool`. Defaults to `False`.
+		    If True, create a JPEG that loads progressively (coarse to fine).
+		  optimize_size: An optional `bool`. Defaults to `False`.
+		    If True, spend CPU/RAM to reduce size with no quality change.
+		  chroma_downsampling: An optional `bool`. Defaults to `True`.
+		    See http://en.wikipedia.org/wiki/Chroma_subsampling.
+		  density_unit: An optional `string` from: `"in", "cm"`. Defaults to `"in"`.
+		    Unit used to specify `x_density` and `y_density`:
+		    pixels per inch (`'in'`) or centimeter (`'cm'`).
+		  x_density: An optional `int`. Defaults to `300`.
+		    Horizontal pixels per density unit.
+		  y_density: An optional `int`. Defaults to `300`.
+		    Vertical pixels per density unit.
+		  xmp_metadata: An optional `string`. Defaults to `""`.
+		    If not empty, embed this XMP metadata in the image header.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `string`.
+	**/
+	static public function encode_jpeg(image:Dynamic, ?format:Dynamic, ?quality:Dynamic, ?progressive:Dynamic, ?optimize_size:Dynamic, ?chroma_downsampling:Dynamic, ?density_unit:Dynamic, ?x_density:Dynamic, ?y_density:Dynamic, ?xmp_metadata:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Extract the shape information of a JPEG-encoded image.
+		
+		This op only parses the image header, so it is much faster than DecodeJpeg.
+		
+		Args:
+		  contents: A `Tensor` of type `string`. 0-D. The JPEG-encoded image.
+		  output_type: An optional `tf.DType` from: `tf.int32, tf.int64`. Defaults to `tf.int32`.
+		    (Optional) The output type of the operation (int32 or int64).
+		    Defaults to int32.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `output_type`.
+	**/
+	static public function extract_jpeg_shape(contents:Dynamic, ?output_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Convenience function to check if the 'contents' encodes a JPEG image.
+		
+		Args:
+		  contents: 0-D `string`. The encoded image bytes.
+		  name: A name for the operation (optional)
+		
+		Returns:
+		   A scalar boolean tensor indicating if 'contents' may be a JPEG image.
+		   is_jpeg is susceptible to false positives.
+	**/
+	static public function is_jpeg(contents:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Save the list of files matching pattern, so it is only computed once.
 		
@@ -700,7 +976,23 @@ package tensorflow._api.v1.io;
 	**/
 	static public function serialize_sparse(sp_input:Dynamic, ?name:Dynamic, ?out_type:Dynamic):Dynamic;
 	/**
-		An iterator that read the records from a TFRecords file.
+		Transforms a Tensor into a serialized TensorProto proto.
+		
+		Args:
+		  tensor: A `Tensor`. A Tensor of type `T`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `string`.
+	**/
+	static public function serialize_tensor(tensor:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		An iterator that read the records from a TFRecords file. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use eager execution and: 
+		`tf.data.TFRecordDataset(path)`
 		
 		Args:
 		  path: The path to the TFRecords file.

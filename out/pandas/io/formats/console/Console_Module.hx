@@ -28,4 +28,28 @@ package pandas.io.formats.console;
 		IPython zmq frontends, or IDLE do not run in a terminal,
 	**/
 	static public function get_terminal_size():Dynamic;
+	/**
+		check if we're running in an interactive shell
+		
+		returns True if running under python/ipython interactive shell
+	**/
+	static public function in_interactive_session():Dynamic;
+	/**
+		check if we're inside an IPython Notebook
+		
+		.. deprecated:: 0.14.1
+		   This is no longer needed, or working, in IPython 3 and above.
+	**/
+	static public function in_ipnb():Dynamic;
+	/**
+		check if we're inside an an IPython zmq frontend
+	**/
+	static public function in_ipython_frontend():Dynamic;
+	/**
+		check if we're inside an IPython qtconsole
+		
+		.. deprecated:: 0.14.1
+		   This is no longer needed, or working, in IPython 3 and above.
+	**/
+	static public function in_qtconsole():Dynamic;
 }

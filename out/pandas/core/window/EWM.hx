@@ -120,7 +120,7 @@ package pandas.core.window;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		provide a nice str repr of our rolling object 
+		Provide a nice str repr of our rolling object.
 	**/
 	public function __unicode__():Dynamic;
 	/**
@@ -128,7 +128,8 @@ package pandas.core.window;
 	**/
 	public var __weakref__ : Dynamic;
 	static public var _accessors : Dynamic;
-	static public var _agg_doc : Dynamic;
+	static public var _agg_examples_doc : Dynamic;
+	static public var _agg_see_also_doc : Dynamic;
 	/**
 		provide an implementation for the aggregators
 		
@@ -155,17 +156,17 @@ package pandas.core.window;
 		
 		Parameters
 		----------
-		func : string/callable to apply
+		func : str/callable to apply
 		
 		Returns
 		-------
-		y : type of input argument
+		y : same type as input argument
 	**/
 	public function _apply(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _attributes : Dynamic;
 	static public var _builtin_table : Dynamic;
 	/**
-		center the result in the window 
+		Center the result in the window.
 	**/
 	public function _center_window(result:Dynamic, window:Dynamic):Dynamic;
 	/**
@@ -173,11 +174,11 @@ package pandas.core.window;
 	**/
 	public var _constructor : Dynamic;
 	/**
-		resample according to the how, return a new object 
+		Resample according to the how, return a new object.
 	**/
 	public function _convert_freq():Dynamic;
 	/**
-		split data into blocks & return conformed data 
+		Split data into blocks & return conformed data.
 	**/
 	public function _create_blocks():Dynamic;
 	static public var _cython_table : Dynamic;
@@ -191,7 +192,7 @@ package pandas.core.window;
 	**/
 	public function _dir_deletions():Dynamic;
 	/**
-		Return index as ndarrays
+		Return index as ndarrays.
 		
 		Returns
 		-------
@@ -200,12 +201,11 @@ package pandas.core.window;
 	public function _get_index(?index:Dynamic):Dynamic;
 	public function _get_window(?other:Dynamic):Dynamic;
 	/**
-		sub-classes to define
-		return a sliced object
+		Sub-classes to define. Return a sliced object.
 		
 		Parameters
 		----------
-		key : string / list of selections
+		key : str / list of selections
 		ndim : 1,2
 		    requested ndim of result
 		subset : object, default None
@@ -220,7 +220,7 @@ package pandas.core.window;
 	**/
 	public function _is_builtin_func(arg:Dynamic):Dynamic;
 	/**
-		if we define an internal function for this argument, return it 
+		if we define an internal function for this argument, return it
 	**/
 	public function _is_cython_func(arg:Dynamic):Dynamic;
 	public var _obj_with_exclusions : Dynamic;
@@ -240,7 +240,7 @@ package pandas.core.window;
 	**/
 	public var _selection_name : Dynamic;
 	/**
-		return a new object with the replacement attributes 
+		return a new object with the replacement attributes
 	**/
 	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -252,11 +252,11 @@ package pandas.core.window;
 	public function _try_aggregate_string_function(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _window_type : Dynamic;
 	/**
-		wrap a single result 
+		Wrap a single result.
 	**/
 	public function _wrap_result(result:Dynamic, ?block:Dynamic, ?obj:Dynamic):Dynamic;
 	/**
-		wrap the results
+		Wrap the results.
 		
 		Parameters
 		----------
@@ -272,18 +272,16 @@ package pandas.core.window;
 		
 		Parameters
 		----------
-		func : function, string, dictionary, or list of string/functions
+		func : function, str, list or dict
 		    Function to use for aggregating the data. If a function, must either
-		    work when passed a Series/DataFrame or when passed to Series/DataFrame.apply. For
-		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
+		    work when passed a Series/Dataframe or when passed to Series/Dataframe.apply.
 		
 		    Accepted combinations are:
 		
-		    - string function name.
-		    - function.
-		    - list of functions.
-		    - dict of column names -> functions (or list of functions).
-		
+		    - function
+		    - string function name
+		    - list of functions and/or function names, e.g. ``[np.sum, 'mean']``
+		    - dict of axis labels -> functions, function names or list of such.
 		
 		*args
 		    Positional arguments to pass to `func`.
@@ -292,13 +290,24 @@ package pandas.core.window;
 		
 		Returns
 		-------
-		aggregated : Series/DataFrame
+		DataFrame, Series or scalar
+		    if DataFrame.agg is called with a single function, returns a Series
+		    if DataFrame.agg is called with several functions, returns a DataFrame
+		    if Series.agg is called with single function, returns a scalar
+		    if Series.agg is called with several functions, returns a Series
+		
+		
+		See Also
+		--------
+		pandas.DataFrame.rolling.aggregate
+		
 		
 		Notes
 		-----
 		`agg` is an alias for `aggregate`. Use the alias.
 		
 		A passed user-defined-function will be passed a Series for evaluation.
+		
 		
 		Examples
 		--------
@@ -329,10 +338,6 @@ package pandas.core.window;
 		7  0.680292  0.132049  0.548693
 		8  0.067236  0.948257  0.163353
 		9 -0.286980  0.618493 -0.694496
-		
-		See also
-		--------
-		pandas.DataFrame.rolling.aggregate
 	**/
 	public function agg(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -342,18 +347,16 @@ package pandas.core.window;
 		
 		Parameters
 		----------
-		func : function, string, dictionary, or list of string/functions
+		func : function, str, list or dict
 		    Function to use for aggregating the data. If a function, must either
-		    work when passed a Series/DataFrame or when passed to Series/DataFrame.apply. For
-		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
+		    work when passed a Series/Dataframe or when passed to Series/Dataframe.apply.
 		
 		    Accepted combinations are:
 		
-		    - string function name.
-		    - function.
-		    - list of functions.
-		    - dict of column names -> functions (or list of functions).
-		
+		    - function
+		    - string function name
+		    - list of functions and/or function names, e.g. ``[np.sum, 'mean']``
+		    - dict of axis labels -> functions, function names or list of such.
 		
 		*args
 		    Positional arguments to pass to `func`.
@@ -362,13 +365,24 @@ package pandas.core.window;
 		
 		Returns
 		-------
-		aggregated : Series/DataFrame
+		DataFrame, Series or scalar
+		    if DataFrame.agg is called with a single function, returns a Series
+		    if DataFrame.agg is called with several functions, returns a DataFrame
+		    if Series.agg is called with single function, returns a scalar
+		    if Series.agg is called with several functions, returns a Series
+		
+		
+		See Also
+		--------
+		pandas.DataFrame.rolling.aggregate
+		
 		
 		Notes
 		-----
 		`agg` is an alias for `aggregate`. Use the alias.
 		
 		A passed user-defined-function will be passed a Series for evaluation.
+		
 		
 		Examples
 		--------
@@ -399,142 +413,156 @@ package pandas.core.window;
 		7  0.680292  0.132049  0.548693
 		8  0.067236  0.948257  0.163353
 		9 -0.286980  0.618493 -0.694496
-		
-		See also
-		--------
-		pandas.DataFrame.rolling.aggregate
 	**/
 	public function aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		exponential weighted sample correlation
+		Exponential weighted sample correlation.
 		
 		Parameters
 		----------
 		other : Series, DataFrame, or ndarray, optional
-		    if not supplied then will default to self and produce pairwise output
+		    If not supplied then will default to self and produce pairwise
+		    output.
 		pairwise : bool, default None
-		    If False then only matching columns between self and other will be used and
-		    the output will be a DataFrame.
-		    If True then all pairwise combinations will be calculated and the output
-		    will be a MultiIndex DataFrame in the case of DataFrame inputs.
-		    In the case of missing elements, only complete pairwise observations will
-		    be used.
-		bias : boolean, default False
-		   Use a standard estimation bias correction
+		    If False then only matching columns between self and other will be
+		    used and the output will be a DataFrame.
+		    If True then all pairwise combinations will be calculated and the
+		    output will be a MultiIndex DataFrame in the case of DataFrame
+		    inputs. In the case of missing elements, only complete pairwise
+		    observations will be used.
+		bias : bool, default False
+		   Use a standard estimation bias correction.
+		**kwargs
+		   Keyword arguments to be passed into func.
 		
+		        Returns
+		        -------
+		        Series or DataFrame
+		            Return type is determined by the caller.
 		
-		Returns
-		-------
-		same type as input
-		
-		See also
-		--------
-		pandas.Series.ewm
-		pandas.DataFrame.ewm
+		        See Also
+		        --------
+		        Series.ewm : Series ewm.
+		        DataFrame.ewm : DataFrame ewm.
 	**/
 	public function corr(?other:Dynamic, ?pairwise:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		exponential weighted sample covariance
+		Exponential weighted sample covariance.
 		
 		Parameters
 		----------
 		other : Series, DataFrame, or ndarray, optional
-		    if not supplied then will default to self and produce pairwise output
+		    If not supplied then will default to self and produce pairwise
+		    output.
 		pairwise : bool, default None
-		    If False then only matching columns between self and other will be used and
-		    the output will be a DataFrame.
-		    If True then all pairwise combinations will be calculated and the output
-		    will be a MultiIndex DataFrame in the case of DataFrame inputs.
-		    In the case of missing elements, only complete pairwise observations will
-		    be used.
-		bias : boolean, default False
-		   Use a standard estimation bias correction
+		    If False then only matching columns between self and other will be
+		    used and the output will be a DataFrame.
+		    If True then all pairwise combinations will be calculated and the
+		    output will be a MultiIndex DataFrame in the case of DataFrame
+		    inputs. In the case of missing elements, only complete pairwise
+		    observations will be used.
+		bias : bool, default False
+		   Use a standard estimation bias correction.
+		**kwargs
+		   Keyword arguments to be passed into func.
 		
+		        Returns
+		        -------
+		        Series or DataFrame
+		            Return type is determined by the caller.
 		
-		Returns
-		-------
-		same type as input
-		
-		See also
-		--------
-		pandas.Series.ewm
-		pandas.DataFrame.ewm
+		        See Also
+		        --------
+		        Series.ewm : Series ewm.
+		        DataFrame.ewm : DataFrame ewm.
 	**/
 	public function cov(?other:Dynamic, ?pairwise:Dynamic, ?bias:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var exclusions : Dynamic;
 	public var is_datetimelike : Dynamic;
 	public var is_freq_type : Dynamic;
 	/**
-		exponential weighted moving average
+		Exponential weighted moving average.
+		
+		Parameters
+		----------
+		*args, **kwargs
+		    Arguments and keyword arguments to be passed into func.
 		
 		Returns
 		-------
-		same type as input
+		Series or DataFrame
+		    Return type is determined by the caller.
 		
-		See also
+		See Also
 		--------
-		pandas.Series.ewm
-		pandas.DataFrame.ewm
+		Series.ewm : Series ewm.
+		DataFrame.ewm : DataFrame ewm.
 	**/
 	public function mean(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var ndim : Dynamic;
 	/**
-		exponential weighted moving stddev
+		Exponential weighted moving stddev.
 		
 		Parameters
 		----------
-		bias : boolean, default False
-		    Use a standard estimation bias correction
+		bias : bool, default False
+		    Use a standard estimation bias correction.
+		*args, **kwargs
+		    Arguments and keyword arguments to be passed into func.
 		
+		        Returns
+		        -------
+		        Series or DataFrame
+		            Return type is determined by the caller.
 		
-		Returns
-		-------
-		same type as input
-		
-		See also
-		--------
-		pandas.Series.ewm
-		pandas.DataFrame.ewm
+		        See Also
+		        --------
+		        Series.ewm : Series ewm.
+		        DataFrame.ewm : DataFrame ewm.
 	**/
 	public function std(?bias:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function validate():Dynamic;
 	/**
-		exponential weighted moving variance
+		Exponential weighted moving variance.
 		
 		Parameters
 		----------
-		bias : boolean, default False
-		    Use a standard estimation bias correction
+		bias : bool, default False
+		    Use a standard estimation bias correction.
+		*args, **kwargs
+		    Arguments and keyword arguments to be passed into func.
 		
+		        Returns
+		        -------
+		        Series or DataFrame
+		            Return type is determined by the caller.
 		
-		Returns
-		-------
-		same type as input
-		
-		See also
-		--------
-		pandas.Series.ewm
-		pandas.DataFrame.ewm
+		        See Also
+		        --------
+		        Series.ewm : Series ewm.
+		        DataFrame.ewm : DataFrame ewm.
 	**/
 	@:native("var")
 	public function _var(?bias:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		exponential weighted moving stddev
+		Exponential weighted moving stddev.
 		
 		Parameters
 		----------
-		bias : boolean, default False
-		    Use a standard estimation bias correction
+		bias : bool, default False
+		    Use a standard estimation bias correction.
+		*args, **kwargs
+		    Arguments and keyword arguments to be passed into func.
 		
+		        Returns
+		        -------
+		        Series or DataFrame
+		            Return type is determined by the caller.
 		
-		Returns
-		-------
-		same type as input
-		
-		See also
-		--------
-		pandas.Series.ewm
-		pandas.DataFrame.ewm
+		        See Also
+		        --------
+		        Series.ewm : Series ewm.
+		        DataFrame.ewm : DataFrame ewm.
 	**/
 	public function vol(?bias:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

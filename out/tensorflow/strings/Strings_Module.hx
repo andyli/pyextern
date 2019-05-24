@@ -179,23 +179,21 @@ package tensorflow.strings;
 	**/
 	static public function regex_full_match(input:Dynamic, pattern:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Replaces the match of pattern in input with rewrite.
-		
-		It follows the re2 syntax (https://github.com/google/re2/wiki/Syntax)
+		Replace elements of `input` matching regex `pattern` with `rewrite`.
 		
 		Args:
-		  input: A `Tensor` of type `string`. The text to be processed.
-		  pattern: A `Tensor` of type `string`.
-		    The regular expression to match the input.
-		  rewrite: A `Tensor` of type `string`.
-		    The rewrite to be applied to the matched expresion.
-		  replace_global: An optional `bool`. Defaults to `True`.
-		    If True, the replacement is global, otherwise the replacement
-		    is done only on the first match.
+		  input: string `Tensor`, the source strings to process.
+		  pattern: string or scalar string `Tensor`, regular expression to use,
+		    see more details at https://github.com/google/re2/wiki/Syntax
+		  rewrite: string or scalar string `Tensor`, value to use in match
+		    replacement, supports backslash-escaped digits (\1 to \9) can be to insert
+		    text matching corresponding parenthesized group.
+		  replace_global: `bool`, if `True` replace all non-overlapping matches,
+		    else replace only the first match.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `string`.
+		  string `Tensor` of the same shape as `input` with specified replacements.
 	**/
 	static public function regex_replace(input:Dynamic, pattern:Dynamic, rewrite:Dynamic, ?replace_global:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -267,7 +265,7 @@ package tensorflow.strings;
 		`pos` and `len` must have the same shape, otherwise a `ValueError` is thrown on
 		Op creation.
 		
-		*NOTE*: `strings.substr` supports broadcasting up to two dimensions. More about
+		*NOTE*: `Substr` supports broadcasting up to two dimensions. More about
 		broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
@@ -335,12 +333,18 @@ package tensorflow.strings;
 		    Scalar defining the position of first character in each substring
 		  len: A `Tensor`. Must have the same type as `pos`.
 		    Scalar defining the number of characters to include in each substring
+		  unit: An optional `string` from: `"BYTE", "UTF8_CHAR"`. Defaults to `"BYTE"`.
+		    The unit that is used to create the substring.  One of: `"BYTE"` (for
+		    defining position and length by bytes) or `"UTF8_CHAR"` (for the UTF-8
+		    encoded Unicode code points).  The default is `"BYTE"`. Results are undefined if
+		    `unit=UTF8_CHAR` and the `input` strings do not contain structurally valid
+		    UTF-8.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `string`.
 	**/
-	static public function substr(input:Dynamic, pos:Dynamic, len:Dynamic, ?name:Dynamic):Dynamic;
+	static public function substr(input:Dynamic, pos:Dynamic, len:Dynamic, ?name:Dynamic, ?unit:Dynamic):Dynamic;
 	/**
 		Converts each string in the input Tensor to its hash mod by a number of buckets.
 		
@@ -422,6 +426,127 @@ package tensorflow.strings;
 	**/
 	static public function to_number(string_tensor:Dynamic, ?out_type:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Decodes each string in `input` into a sequence of Unicode code points.
+		
+		`result[i1...iN, j]` is the Unicode codepoint for the `j`th character in
+		`input[i1...iN]`, when decoded using `input_encoding`.
+		
+		Args:
+		  input: An `N` dimensional potentially ragged `string` tensor with shape
+		    `[D1...DN]`.  `N` must be statically known.
+		  input_encoding: String name for the unicode encoding that should be used to
+		    decode each string.
+		  errors: Specifies the response when an input string can't be converted
+		    using the indicated encoding. One of:
+		    * `'strict'`: Raise an exception for any illegal substrings.
+		    * `'replace'`: Replace illegal substrings with `replacement_char`.
+		    * `'ignore'`: Skip illegal substrings.
+		  replacement_char: The replacement codepoint to be used in place of invalid
+		    substrings in `input` when `errors='replace'`; and in place of C0 control
+		    characters in `input` when `replace_control_characters=True`.
+		  replace_control_characters: Whether to replace the C0 control characters
+		    `(U+0000 - U+001F)` with the `replacement_char`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `N+1` dimensional `int32` tensor with shape `[D1...DN, (num_chars)]`.
+		  The returned tensor is a `tf.Tensor` if `input` is a scalar, or a
+		  `tf.RaggedTensor` otherwise.
+		
+		#### Example:
+		  ```python
+		  >>> input = [s.encode('utf8') for s in (u'G\xf6\xf6dnight', u'\U0001f60a')]
+		  >>> tf.strings.unicode_decode(input, 'UTF-8').tolist()
+		  [[71, 246, 246, 100, 110, 105, 103, 104, 116], [128522]]
+		  ```
+	**/
+	static public function unicode_decode(input:Dynamic, input_encoding:Dynamic, ?errors:Dynamic, ?replacement_char:Dynamic, ?replace_control_characters:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Decodes each string into a sequence of code points with start offsets.
+		
+		This op is similar to `tf.strings.decode(...)`, but it also returns the
+		start offset for each character in its respective string.  This information
+		can be used to align the characters with the original byte sequence.
+		
+		Returns a tuple `(codepoints, start_offsets)` where:
+		
+		* `codepoints[i1...iN, j]` is the Unicode codepoint for the `j`th character
+		  in `input[i1...iN]`, when decoded using `input_encoding`.
+		* `start_offsets[i1...iN, j]` is the start byte offset for the `j`th
+		  character in `input[i1...iN]`, when decoded using `input_encoding`.
+		
+		Args:
+		  input: An `N` dimensional potentially ragged `string` tensor with shape
+		    `[D1...DN]`.  `N` must be statically known.
+		  input_encoding: String name for the unicode encoding that should be used to
+		    decode each string.
+		  errors: Specifies the response when an input string can't be converted
+		    using the indicated encoding. One of:
+		    * `'strict'`: Raise an exception for any illegal substrings.
+		    * `'replace'`: Replace illegal substrings with `replacement_char`.
+		    * `'ignore'`: Skip illegal substrings.
+		  replacement_char: The replacement codepoint to be used in place of invalid
+		    substrings in `input` when `errors='replace'`; and in place of C0 control
+		    characters in `input` when `replace_control_characters=True`.
+		  replace_control_characters: Whether to replace the C0 control characters
+		    `(U+0000 - U+001F)` with the `replacement_char`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `N+1` dimensional tensors `(codepoints, start_offsets)`.
+		
+		  * `codepoints` is an `int32` tensor with shape `[D1...DN, (num_chars)]`.
+		  * `offsets` is an `int64` tensor with shape `[D1...DN, (num_chars)]`.
+		
+		  The returned tensors are `tf.Tensor`s if `input` is a scalar, or
+		  `tf.RaggedTensor`s otherwise.
+		
+		#### Example:
+		  ```python
+		  >>> input = [s.encode('utf8') for s in (u'G\xf6\xf6dnight', u'\U0001f60a')]
+		  >>> result = tf.strings.unicode_decode_with_offsets(input, 'UTF-8')
+		  >>> result[0].tolist()  # codepoints
+		  [[71, 246, 246, 100, 110, 105, 103, 104, 116], [128522]]
+		  >>> result[1].tolist()  # offsets
+		 [[0, 1, 3, 5, 6, 7, 8, 9, 10], [0]]
+		  ```
+	**/
+	static public function unicode_decode_with_offsets(input:Dynamic, input_encoding:Dynamic, ?errors:Dynamic, ?replacement_char:Dynamic, ?replace_control_characters:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Encodes each sequence of Unicode code points in `input` into a string.
+		
+		`result[i1...iN]` is the string formed by concatenating the Unicode
+		codepoints `input[1...iN, :]`, encoded using `output_encoding`.
+		
+		Args:
+		  input: An `N+1` dimensional potentially ragged integer tensor with shape
+		    `[D1...DN, num_chars]`.
+		  output_encoding: Unicode encoding that should be used to encode each
+		    codepoint sequence.  Can be `"UTF-8"`, `"UTF-16-BE"`, or `"UTF-32-BE"`.
+		  errors: Specifies the response when an invalid codepoint is encountered
+		    (optional). One of:
+		          * `'replace'`: Replace invalid codepoint with the
+		            `replacement_char`. (default)
+		          * `'ignore'`: Skip invalid codepoints.
+		          * `'strict'`: Raise an exception for any invalid codepoint.
+		  replacement_char: The replacement character codepoint to be used in place of
+		    any invalid input when `errors='replace'`. Any valid unicode codepoint may
+		    be used. The default value is the default unicode replacement character
+		    which is 0xFFFD (U+65533).
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `N` dimensional `string` tensor with shape `[D1...DN]`.
+		
+		#### Example:
+		  ```python
+		    >>> input = [[71, 246, 246, 100, 110, 105, 103, 104, 116], [128522]]
+		    >>> unicode_encode(input, 'UTF8')
+		    ['G\xc3\xb6\xc3\xb6dnight', '\xf0\x9f\x98\x8a']
+		  ```
+	**/
+	static public function unicode_encode(input:Dynamic, output_encoding:Dynamic, ?errors:Dynamic, ?replacement_char:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Determine the script codes of a given tensor of Unicode integer code points.
 		
 		This operation converts Unicode code points to script codes corresponding to
@@ -438,4 +563,151 @@ package tensorflow.strings;
 		  A `Tensor` of type `int32`.
 	**/
 	static public function unicode_script(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Splits each string in `input` into a sequence of Unicode code points.
+		
+		`result[i1...iN, j]` is the substring of `input[i1...iN] that encodes its
+		`j`th character, when decoded using `input_encoding`.
+		
+		Args:
+		  input: An `N` dimensional potentially ragged `string` tensor with shape
+		    `[D1...DN]`.  `N` must be statically known.
+		  input_encoding: String name for the unicode encoding that should be used to
+		    decode each string.
+		  errors: Specifies the response when an input string can't be converted
+		    using the indicated encoding. One of:
+		    * `'strict'`: Raise an exception for any illegal substrings.
+		    * `'replace'`: Replace illegal substrings with `replacement_char`.
+		    * `'ignore'`: Skip illegal substrings.
+		  replacement_char: The replacement codepoint to be used in place of invalid
+		    substrings in `input` when `errors='replace'`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `N+1` dimensional `int32` tensor with shape `[D1...DN, (num_chars)]`.
+		  The returned tensor is a `tf.Tensor` if `input` is a scalar, or a
+		  `tf.RaggedTensor` otherwise.
+		
+		#### Example:
+		  ```python
+		  >>> input = [s.encode('utf8') for s in (u'G\xf6\xf6dnight', u'\U0001f60a')]
+		  >>> tf.strings.unicode_split(input, 'UTF-8').tolist()
+		  [['G', '\xc3\xb6', '\xc3\xb6', 'd', 'n', 'i', 'g', 'h', 't'],
+		   ['\xf0\x9f\x98\x8a']]
+		  ```
+	**/
+	static public function unicode_split(input:Dynamic, input_encoding:Dynamic, ?errors:Dynamic, ?replacement_char:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Splits each string into a sequence of code points with start offsets.
+		
+		This op is similar to `tf.strings.decode(...)`, but it also returns the
+		start offset for each character in its respective string.  This information
+		can be used to align the characters with the original byte sequence.
+		
+		Returns a tuple `(chars, start_offsets)` where:
+		
+		* `chars[i1...iN, j]` is the substring of `input[i1...iN] that encodes its
+		  `j`th character, when decoded using `input_encoding`.
+		* `start_offsets[i1...iN, j]` is the start byte offset for the `j`th
+		  character in `input[i1...iN]`, when decoded using `input_encoding`.
+		
+		Args:
+		  input: An `N` dimensional potentially ragged `string` tensor with shape
+		    `[D1...DN]`.  `N` must be statically known.
+		  input_encoding: String name for the unicode encoding that should be used to
+		    decode each string.
+		  errors: Specifies the response when an input string can't be converted
+		    using the indicated encoding. One of:
+		    * `'strict'`: Raise an exception for any illegal substrings.
+		    * `'replace'`: Replace illegal substrings with `replacement_char`.
+		    * `'ignore'`: Skip illegal substrings.
+		  replacement_char: The replacement codepoint to be used in place of invalid
+		    substrings in `input` when `errors='replace'`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `N+1` dimensional tensors `(codepoints, start_offsets)`.
+		
+		  * `codepoints` is an `int32` tensor with shape `[D1...DN, (num_chars)]`.
+		  * `offsets` is an `int64` tensor with shape `[D1...DN, (num_chars)]`.
+		
+		  The returned tensors are `tf.Tensor`s if `input` is a scalar, or
+		  `tf.RaggedTensor`s otherwise.
+		
+		#### Example:
+		  ```python
+		  >>> input = [s.encode('utf8') for s in (u'G\xf6\xf6dnight', u'\U0001f60a')]
+		  >>> result = tf.strings.unicode_split_with_offsets(input, 'UTF-8')
+		  >>> result[0].tolist()  # character substrings
+		  [['G', '\xc3\xb6', '\xc3\xb6', 'd', 'n', 'i', 'g', 'h', 't'],
+		   ['\xf0\x9f\x98\x8a']]
+		  >>> result[1].tolist()  # offsets
+		 [[0, 1, 3, 5, 6, 7, 8, 9, 10], [0]]
+		  ```
+	**/
+	static public function unicode_split_with_offsets(input:Dynamic, input_encoding:Dynamic, ?errors:Dynamic, ?replacement_char:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Transcode the input text from a source encoding to a destination encoding.
+		
+		The input is a string tensor of any shape. The output is a string tensor of
+		the same shape containing the transcoded strings. Output strings are always
+		valid unicode. If the input contains invalid encoding positions, the
+		`errors` attribute sets the policy for how to deal with them. If the default
+		error-handling policy is used, invalid formatting will be substituted in the
+		output by the `replacement_char`. If the errors policy is to `ignore`, any
+		invalid encoding positions in the input are skipped and not included in the
+		output. If it set to `strict` then any invalid formatting will result in an
+		InvalidArgument error.
+		
+		This operation can be used with `output_encoding = input_encoding` to enforce
+		correct formatting for inputs even if they are already in the desired encoding.
+		
+		If the input is prefixed by a Byte Order Mark needed to determine encoding
+		(e.g. if the encoding is UTF-16 and the BOM indicates big-endian), then that
+		BOM will be consumed and not emitted into the output. If the input encoding
+		is marked with an explicit endianness (e.g. UTF-16-BE), then the BOM is
+		interpreted as a non-breaking-space and is preserved in the output (including
+		always for UTF-8).
+		
+		The end result is that if the input is marked as an explicit endianness the
+		transcoding is faithful to all codepoints in the source. If it is not marked
+		with an explicit endianness, the BOM is not considered part of the string itself
+		but as metadata, and so is not preserved in the output.
+		
+		Args:
+		  input: A `Tensor` of type `string`.
+		    The text to be processed. Can have any shape.
+		  input_encoding: A `string`.
+		    Text encoding of the input strings. This is any of the encodings supported
+		    by ICU ucnv algorithmic converters. Examples: `"UTF-16", "US ASCII", "UTF-8"`.
+		  output_encoding: A `string` from: `"UTF-8", "UTF-16-BE", "UTF-32-BE"`.
+		    The unicode encoding to use in the output. Must be one of
+		    `"UTF-8", "UTF-16-BE", "UTF-32-BE"`. Multi-byte encodings will be big-endian.
+		  errors: An optional `string` from: `"strict", "replace", "ignore"`. Defaults to `"replace"`.
+		    Error handling policy when there is invalid formatting found in the input.
+		    The value of 'strict' will cause the operation to produce a InvalidArgument
+		    error on any invalid input formatting. A value of 'replace' (the default) will
+		    cause the operation to replace any invalid formatting in the input with the
+		    `replacement_char` codepoint. A value of 'ignore' will cause the operation to
+		    skip any invalid formatting in the input and produce no corresponding output
+		    character.
+		  replacement_char: An optional `int`. Defaults to `65533`.
+		    The replacement character codepoint to be used in place of any invalid
+		    formatting in the input when `errors='replace'`. Any valid unicode codepoint may
+		    be used. The default value is the default unicode replacement character is
+		    0xFFFD or U+65533.)
+		
+		    Note that for UTF-8, passing a replacement character expressible in 1 byte, such
+		    as ' ', will preserve string alignment to the source since invalid bytes will be
+		    replaced with a 1-byte replacement. For UTF-16-BE and UTF-16-LE, any 1 or 2 byte
+		    replacement character will preserve byte alignment to the source.
+		  replace_control_characters: An optional `bool`. Defaults to `False`.
+		    Whether to replace the C0 control characters (00-1F) with the
+		    `replacement_char`. Default is false.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `string`.
+	**/
+	static public function unicode_transcode(input:Dynamic, input_encoding:Dynamic, output_encoding:Dynamic, ?errors:Dynamic, ?replacement_char:Dynamic, ?replace_control_characters:Dynamic, ?name:Dynamic):Dynamic;
 }

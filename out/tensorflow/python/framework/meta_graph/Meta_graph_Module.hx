@@ -111,19 +111,6 @@ package tensorflow.python.framework.meta_graph;
 		  `True` if the node should be included.
 	**/
 	static public function _should_include_node(node_or_node_name:Dynamic, export_scope:Dynamic, exclude_nodes:Dynamic):Dynamic;
-	/**
-		Strips default valued attributes for node defs in given MetaGraphDef.
-		
-		This method also sets `meta_info_def.stripped_default_attrs` in the given
-		`MetaGraphDef` proto to True.
-		
-		Args:
-		  meta_graph_def: `MetaGraphDef` protocol buffer
-		
-		Returns:
-		  None.
-	**/
-	static public function _strip_graph_default_valued_attrs(meta_graph_def:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Adds a collection to MetaGraphDef protocol buffer.
@@ -343,6 +330,19 @@ package tensorflow.python.framework.meta_graph;
 		  IOError: If the file doesn't exist, or cannot be successfully parsed.
 	**/
 	static public function read_meta_graph_file(filename:Dynamic):Dynamic;
+	/**
+		Strips default valued attributes for node defs in given MetaGraphDef.
+		
+		This method also sets `meta_info_def.stripped_default_attrs` in the given
+		`MetaGraphDef` proto to True.
+		
+		Args:
+		  meta_graph_def: `MetaGraphDef` protocol buffer
+		
+		Returns:
+		  None.
+	**/
+	static public function strip_graph_default_valued_attrs(meta_graph_def:Dynamic):Dynamic;
 	/**
 		Collect the stripped OpDefs for ops used by a graph.
 		

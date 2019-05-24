@@ -47,7 +47,7 @@ package tensorflow.contrib.learn.python.learn.ops.losses_ops;
 	/**
 		Returns prediction and loss for mean squared error regression. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
 		Instructions for updating:
 		Use `tf.losses.mean_squared_error` and explicit logits computation.
 	**/
@@ -56,7 +56,7 @@ package tensorflow.contrib.learn.python.learn.ops.losses_ops;
 	/**
 		Returns prediction and loss for softmax classifier. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-01.
 		Instructions for updating:
 		Use `tf.losses.softmax_cross_entropy` and explicit logits computation.
 		

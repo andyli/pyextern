@@ -166,7 +166,7 @@ package tensorflow.python.lib.io.file_io;
 	/**
 		Seeks to the offset in the file. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(position)`. They will be removed in a future version.
 		Instructions for updating:
 		position is deprecated in favor of the offset argument.
 		

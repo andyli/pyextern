@@ -14,16 +14,13 @@ package torch.distributions.multivariate_normal;
 	**/
 	static public function _batch_diag(bmat:Dynamic):Dynamic;
 	/**
-		Returns the inverses of a batch of square matrices.
-	**/
-	static public function _batch_inverse(bmat:Dynamic):Dynamic;
-	/**
 		Computes the squared Mahalanobis distance :math:`\mathbf{x}^\top\mathbf{M}^{-1}\mathbf{x}`
 		for a factored :math:`\mathbf{M} = \mathbf{L}\mathbf{L}^\top`.
 		
-		Accepts batches for both L and x.
+		Accepts batches for both bL and bx. They are not necessarily assumed to have the same batch
+		shape, but `bL` one should be able to broadcasted to `bx` one.
 	**/
-	static public function _batch_mahalanobis(L:Dynamic, x:Dynamic):Dynamic;
+	static public function _batch_mahalanobis(bL:Dynamic, bx:Dynamic):Dynamic;
 	/**
 		Performs a batched matrix-vector product, with compatible but different batch shapes.
 		
@@ -36,11 +33,9 @@ package torch.distributions.multivariate_normal;
 	**/
 	static public function _batch_mv(bmat:Dynamic, bvec:Dynamic):Dynamic;
 	/**
-		Applies a Cholesky decomposition to all matrices in a batch of arbitrary shape.
+		Applies `torch.trtrs` for batches of matrices. `bb` and `bA` should have
+		the same batch shape.
 	**/
-	static public function _batch_potrf_lower(bmat:Dynamic):Dynamic;
-	/**
-		Given a batch of matrices and a batch of vectors, compute the combined `batch_shape`.
-	**/
-	static public function _get_batch_shape(bmat:Dynamic, bvec:Dynamic):Dynamic;
+	static public function _batch_trtrs_lower(bb:Dynamic, bA:Dynamic):Dynamic;
+	static public function _standard_normal(shape:Dynamic, dtype:Dynamic, device:Dynamic):Dynamic;
 }

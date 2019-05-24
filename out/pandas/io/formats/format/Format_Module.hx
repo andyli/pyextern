@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.io.formats.format;
 @:pythonImport("pandas.io.formats.format") extern class Format_Module {
+	static public var NaT : Dynamic;
 	static public var _VALID_JUSTIFY_PARAMETERS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -11,36 +12,6 @@ package pandas.io.formats.format;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _binify(cols:Dynamic, line_width:Dynamic):Dynamic;
-	/**
-		Ensure that we have an index from some index-like object
-		
-		Parameters
-		----------
-		index : sequence
-		    An Index or other sequence
-		copy : bool
-		
-		Returns
-		-------
-		index : Index or MultiIndex
-		
-		Examples
-		--------
-		>>> _ensure_index(['a', 'b'])
-		Index(['a', 'b'], dtype='object')
-		
-		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
-		Index([('a', 'a'), ('b', 'c')], dtype='object')
-		
-		>>> _ensure_index([['a', 'a'], ['b', 'c']])
-		MultiIndex(levels=[['a'], ['b', 'c']],
-		           labels=[[0, 0], [0, 1]])
-		
-		See Also
-		--------
-		_ensure_index_from_sequences
-	**/
-	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Return the argument with an initial component of ~ or ~user
 		   replaced by that user's home directory.
@@ -128,8 +99,63 @@ package pandas.io.formats.format;
 	**/
 	static public function buffer_put_lines(buf:Dynamic, lines:Dynamic):Dynamic;
 	static public var common_docstring : Dynamic;
-	static public var docstring_to_string : Dynamic;
-	static public function format_array(values:Dynamic, formatter:Dynamic, ?float_format:Dynamic, ?na_rep:Dynamic, ?digits:Dynamic, ?space:Dynamic, ?justify:Dynamic, ?decimal:Dynamic):Dynamic;
+	/**
+		Ensure that we have an index from some index-like object.
+		
+		Parameters
+		----------
+		index : sequence
+		    An Index or other sequence
+		copy : bool
+		
+		Returns
+		-------
+		index : Index or MultiIndex
+		
+		Examples
+		--------
+		>>> ensure_index(['a', 'b'])
+		Index(['a', 'b'], dtype='object')
+		
+		>>> ensure_index([('a', 'a'),  ('b', 'c')])
+		Index([('a', 'a'), ('b', 'c')], dtype='object')
+		
+		>>> ensure_index([['a', 'a'], ['b', 'c']])
+		MultiIndex(levels=[['a'], ['b', 'c']],
+		           codes=[[0, 0], [0, 1]])
+		
+		See Also
+		--------
+		ensure_index_from_sequences
+	**/
+	static public function ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		Format an array for printing.
+		
+		Parameters
+		----------
+		values
+		formatter
+		float_format
+		na_rep
+		digits
+		space
+		justify
+		decimal
+		leading_space : bool, optional
+		    Whether the array should be formatted with a leading space.
+		    When an array as a column of a Series or DataFrame, we do want
+		    the leading space to pad between columns.
+		
+		    When formatting an Index subclass
+		    (e.g. IntervalIndex._format_native_types), we don't want the
+		    leading space since it should be left-aligned.
+		
+		Returns
+		-------
+		List[str]
+	**/
+	static public function format_array(values:Dynamic, formatter:Dynamic, ?float_format:Dynamic, ?na_rep:Dynamic, ?digits:Dynamic, ?space:Dynamic, ?justify:Dynamic, ?decimal:Dynamic, ?leading_space:Dynamic):Dynamic;
 	/**
 		return a np object array of the string formatted values
 		
@@ -275,7 +301,7 @@ package pandas.io.formats.format;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
+		    [default: ANSI_X3.4-1968] [currently: ANSI_X3.4-1968]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -582,45 +608,87 @@ package pandas.io.formats.format;
 	**/
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Check whether an array-like is a datetime array-like with a timezone
-		component in its dtype.
+		Check whether an array-like or dtype is of a DatetimeTZDtype dtype.
 		
 		Parameters
 		----------
-		arr : array-like
-		    The array-like to check.
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
 		
 		Returns
 		-------
-		boolean : Whether or not the array-like is a datetime array-like with
-		          a timezone component in its dtype.
+		boolean : Whether or not the array-like or dtype is of
+		          a DatetimeTZDtype dtype.
 		
 		Examples
 		--------
-		>>> is_datetimetz([1, 2, 3])
+		>>> is_datetime64tz_dtype(object)
 		False
-		
-		Although the following examples are both DatetimeIndex objects,
-		the first one returns False because it has no timezone component
-		unlike the second one, which returns True.
-		
-		>>> is_datetimetz(pd.DatetimeIndex([1, 2, 3]))
+		>>> is_datetime64tz_dtype([1, 2, 3])
 		False
-		>>> is_datetimetz(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3]))  # tz-naive
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
 		True
-		
-		The object need not be a DatetimeIndex object. It just needs to have
-		a dtype which has a timezone component.
 		
 		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
 		>>> s = pd.Series([], dtype=dtype)
-		>>> is_datetimetz(s)
+		>>> is_datetime64tz_dtype(dtype)
+		True
+		>>> is_datetime64tz_dtype(s)
 		True
 	**/
-	static public function is_datetimetz(arr:Dynamic):Dynamic;
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check if an object is a pandas extension array type.
+		
+		See the :ref:`Use Guide <extending.extension-types>` for more.
+		
+		Parameters
+		----------
+		arr_or_dtype : object
+		    For array-like input, the ``.dtype`` attribute will
+		    be extracted.
+		
+		Returns
+		-------
+		bool
+		    Whether the `arr_or_dtype` is an extension array type.
+		
+		Notes
+		-----
+		This checks whether an object implements the pandas extension
+		array interface. In pandas, this includes:
+		
+		* Categorical
+		* Sparse
+		* Interval
+		* Period
+		* DatetimeArray
+		* TimedeltaArray
+		
+		Third-party libraries may implement arrays or types satisfying
+		this interface as well.
+		
+		Examples
+		--------
+		>>> from pandas.api.types import is_extension_array_dtype
+		>>> arr = pd.Categorical(['a', 'b'])
+		>>> is_extension_array_dtype(arr)
+		True
+		>>> is_extension_array_dtype(arr.dtype)
+		True
+		
+		>>> arr = np.array(['a', 'b'])
+		>>> is_extension_array_dtype(arr.dtype)
+		False
+	**/
+	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a float dtype.
+		
+		This function is internal and should not be exposed in the public API.
 		
 		Parameters
 		----------
@@ -653,6 +721,11 @@ package pandas.io.formats.format;
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
 		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
+		
 		Parameters
 		----------
 		arr_or_dtype : array-like
@@ -673,6 +746,12 @@ package pandas.io.formats.format;
 		False
 		>>> is_integer_dtype(np.uint64)
 		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
+		True
 		>>> is_integer_dtype(np.datetime64)
 		False
 		>>> is_integer_dtype(np.timedelta64)
@@ -688,35 +767,6 @@ package pandas.io.formats.format;
 	**/
 	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Check whether an array-like or dtype is of the Interval dtype.
-		
-		Parameters
-		----------
-		arr_or_dtype : array-like
-		    The array-like or dtype to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array-like or dtype is
-		          of the Interval dtype.
-		
-		Examples
-		--------
-		>>> is_interval_dtype(object)
-		False
-		>>> is_interval_dtype(IntervalDtype())
-		True
-		>>> is_interval_dtype([1, 2, 3])
-		False
-		>>>
-		>>> interval = pd.Interval(1, 2, closed="right")
-		>>> is_interval_dtype(interval)
-		False
-		>>> is_interval_dtype(pd.IntervalIndex([interval]))
-		True
-	**/
-	static public function is_interval_dtype(arr_or_dtype:Dynamic):Dynamic;
-	/**
 		Check if the object is list-like.
 		
 		Objects that are considered list-like are for example Python
@@ -726,7 +776,11 @@ package pandas.io.formats.format;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -745,8 +799,12 @@ package pandas.io.formats.format;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Check whether the provided array or dtype is of a numeric dtype.
 		
@@ -784,42 +842,51 @@ package pandas.io.formats.format;
 	**/
 	static public function is_numeric_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Check whether an array-like is a periodical array-like or PeriodIndex.
+		Return True if given value is scalar.
 		
 		Parameters
 		----------
-		arr : array-like
-		    The array-like to check.
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
 		
 		Returns
 		-------
-		boolean : Whether or not the array-like is a periodical
-		          array-like or PeriodIndex instance.
+		bool
+		    Return True if given object is scalar, False otherwise
 		
 		Examples
 		--------
-		>>> is_period_arraylike([1, 2, 3])
-		False
-		>>> is_period_arraylike(pd.Index([1, 2, 3]))
-		False
-		>>> is_period_arraylike(pd.PeriodIndex(["2017-01-01"], freq="D"))
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
 		True
-	**/
-	static public function is_period_arraylike(arr:Dynamic):Dynamic;
-	/**
-		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -852,7 +919,7 @@ package pandas.io.formats.format;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -870,8 +937,8 @@ package pandas.io.formats.format;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -927,12 +994,11 @@ package pandas.io.formats.format;
 		Perform ljust, center, rjust against string or list-like
 	**/
 	static public function justify(texts:Dynamic, max_len:Dynamic, ?mode:Dynamic):Dynamic;
-	static public var justify_docstring : Dynamic;
 	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -950,8 +1016,8 @@ package pandas.io.formats.format;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -1125,7 +1191,7 @@ package pandas.io.formats.format;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: UTF-8] [currently: UTF-8]
+		    [default: ANSI_X3.4-1968] [currently: ANSI_X3.4-1968]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across

@@ -1206,7 +1206,7 @@ package tensorflow.metrics;
 	/**
 		Renamed to `average_precision_at_k`, please use that method instead. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use average_precision_at_k instead
 	**/
@@ -1214,7 +1214,7 @@ package tensorflow.metrics;
 	/**
 		Renamed to `precision_at_k`, please use that method instead. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use precision_at_k instead
 	**/

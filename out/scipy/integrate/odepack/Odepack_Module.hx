@@ -53,6 +53,8 @@ package scipy.integrate.odepack;
 		t : array
 		    A sequence of time points for which to solve for y.  The initial
 		    value point should be the first element of this sequence.
+		    This sequence must be monotonically increasing or monotonically
+		    decreasing; repeated values are allowed.
 		args : tuple, optional
 		    Extra arguments to pass to function.
 		Dfun : callable(y, t, ...) or callable(t, y, ...)

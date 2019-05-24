@@ -43,14 +43,6 @@ package matplotlib.image;
 	**/
 	static public function _rgb_to_rgba(A:Dynamic):Dynamic;
 	/**
-		Decorator for Artist.draw method. Provides routines
-		that run before and after the draw call. The before and after functions
-		are useful for changing artist-dependent renderer attributes or making
-		other setup function calls, such as starting and flushing a mixed-mode
-		renderer.
-	**/
-	static public function allow_rasterization(draw:Dynamic):Dynamic;
-	/**
 		ceil(x)
 		
 		Return the ceiling of x as an Integral.
@@ -118,16 +110,15 @@ package matplotlib.image;
 	**/
 	static public function imread(fname:Dynamic, ?format:Dynamic):Dynamic;
 	/**
-		Save an array as in image file.
-		
-		The output formats available depend on the backend being used.
+		Save an array as an image file.
 		
 		Parameters
 		----------
-		fname : str or file-like
-		    The filename or a Python file-like object to store the image in.
-		    The necessary output format is inferred from the filename extension
-		    but may be explicitly overwritten using *format*.
+		fname : str or PathLike file-like
+		    A path or a Python file-like object to store the image in.
+		    If *format* is not set, then the output format is inferred from the
+		    extension of *fname*, if any, and from :rc:`savefig.format` otherwise.
+		    If *format* is set, it determines the output format.
 		arr : array-like
 		    The image data. The shape can be one of
 		    MxN (luminance), MxNx3 (RGB) or MxNx4 (RGBA).
@@ -141,9 +132,8 @@ package matplotlib.image;
 		    maps scalar data to colors. It is ignored for RGB(A) data.
 		    Defaults to :rc:`image.cmap` ('viridis').
 		format : str, optional
-		    The file format, e.g. 'png', 'pdf', 'svg', ... . If not given, the
-		    format is deduced form the filename extension in *fname*.
-		    See `.Figure.savefig` for details.
+		    The file format, e.g. 'png', 'pdf', 'svg', ...  The behavior when this
+		    is unset is documented under *fname*.
 		origin : {'upper', 'lower'}, optional
 		    Indicates whether the ``(0, 0)`` index of the array is in the upper
 		    left or lower left corner of the axes.  Defaults to :rc:`image.origin`
@@ -240,8 +230,10 @@ package matplotlib.image;
 		Parameters
 		----------
 		infile : str or file-like
-		    The image file -- must be PNG, Pillow-readable if you have `Pillow
-		    <http://python-pillow.org/>`_ installed.
+		    The image file -- must be PNG, or Pillow-readable if you have Pillow_
+		    installed.
+		
+		    .. _Pillow: http://python-pillow.org/
 		
 		thumbfile : str or file-like
 		    The thumbnail filename.

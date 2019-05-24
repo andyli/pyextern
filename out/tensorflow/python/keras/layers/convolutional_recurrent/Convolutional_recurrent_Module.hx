@@ -26,13 +26,15 @@ package tensorflow.python.keras.layers.convolutional_recurrent;
 		    constants: Tensor or list of tensors or None, constant tensors.
 		    num_constants: Expected number of constants (if constants are passed as
 		      part of the `inputs` list.
+		    num_inputs: Expected number of real input tensors (exclude initial_states
+		      and constants).
 		
 		Returns:
-		    inputs: Single tensor.
+		    inputs: Single tensor or tuple of tensors.
 		    initial_state: List of tensors or None.
 		    constants: List of tensors or None.
 	**/
-	static public function _standardize_args(inputs:Dynamic, initial_state:Dynamic, constants:Dynamic, num_constants:Dynamic):Dynamic;
+	static public function _standardize_args(inputs:Dynamic, initial_state:Dynamic, constants:Dynamic, num_constants:Dynamic, ?num_inputs:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;

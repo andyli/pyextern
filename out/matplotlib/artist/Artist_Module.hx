@@ -9,6 +9,7 @@ package matplotlib.artist;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _log : Dynamic;
 	static public function _stale_axes_callback(self:Dynamic, val:Dynamic):Dynamic;
 	/**
 		Decorator for Artist.draw method. Provides routines
@@ -28,7 +29,7 @@ package matplotlib.artist;
 		    getp(obj, 'linestyle')  # get the linestyle property
 		
 		*obj* is a :class:`Artist` instance, e.g.,
-		:class:`~matplotllib.lines.Line2D` or an instance of a
+		:class:`~matplotlib.lines.Line2D` or an instance of a
 		:class:`~matplotlib.axes.Axes` or :class:`matplotlib.text.Text`.
 		If the *property* is 'somename', this function returns
 		
@@ -56,7 +57,7 @@ package matplotlib.artist;
 		    getp(obj, 'linestyle')  # get the linestyle property
 		
 		*obj* is a :class:`Artist` instance, e.g.,
-		:class:`~matplotllib.lines.Line2D` or an instance of a
+		:class:`~matplotlib.lines.Line2D` or an instance of a
 		:class:`~matplotlib.axes.Axes` or :class:`matplotlib.text.Text`.
 		If the *property* is 'somename', this function returns
 		
@@ -75,10 +76,8 @@ package matplotlib.artist;
 	**/
 	static public function getp(obj:Dynamic, ?property:Dynamic):Dynamic;
 	/**
-		Inspect an `~matplotlib.artist.Artist` class and return
-		information about its settable properties and their current values.
-		
-		It use the class `.ArtistInspector`.
+		Inspect an `~matplotlib.artist.Artist` class (using `.ArtistInspector`) and
+		return information about its settable properties and their current values.
 		
 		Parameters
 		----------
@@ -87,11 +86,9 @@ package matplotlib.artist;
 		Returns
 		-------
 		string
-		    Returns a string with a list or rst table with the settable properties
-		    of the *artist*. The formating depends on the value of
-		    :rc:`docstring.hardcopy`. False result in a list that is intended for
-		    easy reading as a docstring and True result in a rst table intended
-		    for rendering the documentation with sphinx.
+		    The settable properties of *artist*, as plain text if
+		    :rc:`docstring.hardcopy` is False and as a rst table (intended for
+		    use in Sphinx) if it is True.
 	**/
 	static public function kwdoc(artist:Dynamic):Dynamic;
 	/**

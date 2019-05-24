@@ -38,12 +38,12 @@ package matplotlib.scale;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		        
 	**/
 	@:native("__init__")
 	public function ___init__(axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		        
 	**/
 	public function new(axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**

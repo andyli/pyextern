@@ -37,7 +37,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	/**
 		Checks array on dtype and converts it if different. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please convert numpy dtypes explicitly.
 		
@@ -86,7 +86,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	/**
 		Extract data from dask.Series or dask.DataFrame for predictors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please feed input to tf.data to support dask.
 		
@@ -106,7 +106,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	/**
 		Extract data from dask.Series or dask.DataFrame for labels. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please feed input to tf.data to support dask.
 		
@@ -132,7 +132,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	/**
 		Extract data from pandas.DataFrame for predictors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please access pandas data directly.
 		
@@ -152,7 +152,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	/**
 		Extract data from pandas.DataFrame for labels. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please access pandas data directly.
 		
@@ -171,7 +171,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	/**
 		Extracts numpy matrix from pandas DataFrame. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please access pandas data directly.
 		
@@ -186,7 +186,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	/**
 		Returns an iterable for feeding into predict step. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tensorflow/transform or tf.data.
 		
@@ -206,7 +206,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	/**
 		Sets up processor iterable. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tensorflow/transform or tf.data.
 		
@@ -220,7 +220,7 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	/**
 		Create data feeder, to sample inputs from dataset. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tensorflow/transform or tf.data.
 		

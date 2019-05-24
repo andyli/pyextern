@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package pandas._libs.missing;
 @:pythonImport("pandas._libs.missing") extern class Missing_Module {
-	static public var NaT : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;
@@ -60,7 +59,7 @@ package pandas._libs.missing;
 	static public function checknull_old(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return boolean mask denoting which elements of a 1-D array are na-like,
-		according to the criteria defined in `_check_all_nulls`:
+		according to the criteria defined in `checknull`:
 		 - None
 		 - nan
 		 - NaT

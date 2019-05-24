@@ -165,8 +165,8 @@ package tensorflow.contrib.tpu.python.tpu.tpu;
 		    `rewrite` is a list of tensors corresponding to the tensors from the
 		    output of `computation`.
 		
-		    All `Operation`s returned from `computation` will be executed when
-		    evaluating any of the returned output tensors.
+		    All `Operation`s constructed during `computation` will be executed when
+		    evaluating any of the returned output tensors, not just the ones returned.
 		  inputs: A list of input tensors or `None` (equivalent to an empty list).
 		  infeed_queue: If not `None`, the `InfeedQueue` from which to append a tuple
 		    of arguments as inputs to `computation`.
@@ -182,7 +182,7 @@ package tensorflow.contrib.tpu.python.tpu.tpu;
 	/**
 		Rewrites `computation` for inference on a TPU system. (experimental)
 		
-		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
+		Warning: THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
 		
 		   Other than 'rewriting' the computation to run on a TPU, if using variables
 		   in your computation, it moves the ReadVariableOps outside the TPU
@@ -311,13 +311,74 @@ package tensorflow.contrib.tpu.python.tpu.tpu;
 	**/
 	static public function split_compile_and_replicate(computation:Dynamic, ?inputs:Dynamic, ?infeed_queue:Dynamic, ?device_assignment:Dynamic, ?name:Dynamic, ?use_tpu:Dynamic):Dynamic;
 	/**
+		Shards `computation` for parallel execution.
+		
+		`inputs` must be a list of Tensors or None (equivalent to an empty list), each
+		of which has a corresponding split axis (from `input_shard_axes`). Each input
+		is split into `num_shards` pieces along the corresponding axis, and
+		computation is applied to each shard in parallel.
+		
+		Tensors are broadcast to all shards if they are lexically captured by
+		`computation`. e.g.,
+		
+		x = tf.constant(7)
+		def computation():
+		  return x + 3
+		... = shard(computation, ...)
+		
+		TODO(phawkins): consider adding support for broadcasting Tensors passed
+		as inputs.
+		
+		If `outputs_from_all_shards` is true, the outputs from all shards of
+		`computation` are concatenated back together along their `output_shards_axes`.
+		Otherwise, each output is taken from an arbitrary shard.
+		
+		Inputs and outputs of the computation must be at least rank-1 Tensors.
+		
+		Args:
+		  computation: A Python function that builds a computation to apply to each
+		    shard of the input.
+		  inputs: A list of input tensors or None (equivalent to an empty list). Each
+		    input tensor has a corresponding shard axes, given by `input_shard_axes`,
+		    which must have size divisible by `num_shards`.
+		  num_shards: The number of shards.
+		  input_shard_axes: A list of dimensions along which to shard `inputs`, or
+		    `None`. `None` means "shard all inputs along dimension 0". If not `None`,
+		    there must be one dimension per input.
+		  outputs_from_all_shards: Boolean or list of boolean. For each output, if
+		    `True`, outputs from all shards are concatenated along the corresponding
+		    `output_shard_axes` entry. Otherwise, each output is taken
+		    from an arbitrary shard. If the argument is a boolean, the argument's
+		    value is used for each output.
+		  output_shard_axes: A list of dimensions along which to concatenate the
+		    outputs of `computation`, or `None`. `None` means "concatenate all outputs
+		    along dimension 0". If not `None`, there must be one dimension per output.
+		    Ignored if `outputs_from_all_shards` is False.
+		  infeed_queue: If not `None`, the `InfeedQueue` to use to augment the inputs
+		    of `computation`.
+		  device_assignment: If not `None`, a `DeviceAssignment` describing the
+		    mapping between logical cores in the computation with physical cores in
+		    the TPU topology. Uses a default device assignment if `None`. The
+		    `DeviceAssignment` may be omitted if each shard of the computation uses
+		    only one core, and there is either only one shard, or the number of shards
+		    is equal to the number of cores in the TPU system.
+		  name: (Deprecated) Does nothing.
+		Returns:
+		  A tuple of (compile op, [output tensors]).
+		Raises:
+		  ValueError: If num_shards <= 0
+		  ValueError: If len(input_shard_axes) != len(inputs)
+		  ValueError: If len(output_shard_axes) != len(outputs from `computation`)
+	**/
+	static public function split_compile_and_shard(computation:Dynamic, ?inputs:Dynamic, ?num_shards:Dynamic, ?input_shard_axes:Dynamic, ?outputs_from_all_shards:Dynamic, ?output_shard_axes:Dynamic, ?infeed_queue:Dynamic, ?device_assignment:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Check if it is currently under `tpu.rewrite_for_inference()`.
 	**/
 	static public function under_tpu_inference_context():Dynamic;
 	/**
 		Validates whether rewrite_for_inference() 'worked' for variables. (experimental)
 		
-		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
+		Warning: THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
 		
 		   The rewrite_for_inference() method is supposed to append GuaranteeConstOps
 		   after ReadVariableOps, but this mechanism works only if you are using

@@ -1,6 +1,30 @@
 /* This file is generated, do not edit! */
 package tensorflow._api.v1.saved_model;
 @:pythonImport("tensorflow._api.v1.saved_model") extern class Saved_model_Module {
+	static public var ASSETS_DIRECTORY : Dynamic;
+	static public var ASSETS_KEY : Dynamic;
+	static public var CLASSIFY_INPUTS : Dynamic;
+	static public var CLASSIFY_METHOD_NAME : Dynamic;
+	static public var CLASSIFY_OUTPUT_CLASSES : Dynamic;
+	static public var CLASSIFY_OUTPUT_SCORES : Dynamic;
+	static public var DEFAULT_SERVING_SIGNATURE_DEF_KEY : Dynamic;
+	static public var GPU : Dynamic;
+	static public var LEGACY_INIT_OP_KEY : Dynamic;
+	static public var MAIN_OP_KEY : Dynamic;
+	static public var PREDICT_INPUTS : Dynamic;
+	static public var PREDICT_METHOD_NAME : Dynamic;
+	static public var PREDICT_OUTPUTS : Dynamic;
+	static public var REGRESS_INPUTS : Dynamic;
+	static public var REGRESS_METHOD_NAME : Dynamic;
+	static public var REGRESS_OUTPUTS : Dynamic;
+	static public var SAVED_MODEL_FILENAME_PB : Dynamic;
+	static public var SAVED_MODEL_FILENAME_PBTXT : Dynamic;
+	static public var SAVED_MODEL_SCHEMA_VERSION : Dynamic;
+	static public var SERVING : Dynamic;
+	static public var TPU : Dynamic;
+	static public var TRAINING : Dynamic;
+	static public var VARIABLES_DIRECTORY : Dynamic;
+	static public var VARIABLES_FILENAME : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -25,7 +49,11 @@ package tensorflow._api.v1.saved_model;
 	**/
 	static public function build_signature_def(?inputs:Dynamic, ?outputs:Dynamic, ?method_name:Dynamic):Dynamic;
 	/**
-		Utility function to build TensorInfo proto.
+		Utility function to build TensorInfo proto from a Tensor. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This function will only be available through the v1 compatibility library as tf.compat.v1.saved_model.utils.build_tensor_info or tf.compat.v1.saved_model.build_tensor_info.
 		
 		Args:
 		  tensor: Tensor or SparseTensor whose name, dtype and shape are used to
@@ -57,7 +85,27 @@ package tensorflow._api.v1.saved_model;
 	**/
 	static public function classification_signature_def(examples:Dynamic, classes:Dynamic, scores:Dynamic):Dynamic;
 	/**
-		Returns the Tensor or SparseTensor described by a TensorInfo proto.
+		Checks whether the provided export directory could contain a SavedModel.
+		
+		Note that the method does not load any data by itself. If the method returns
+		`false`, the export directory definitely does not contain a SavedModel. If the
+		method returns `true`, the export directory may contain a SavedModel but
+		provides no guarantee that it can be loaded.
+		
+		Args:
+		  export_dir: Absolute string path to possible export location. For example,
+		              '/my/foo/model'.
+		
+		Returns:
+		  True if the export directory contains SavedModel files, False otherwise.
+	**/
+	static public function contains_saved_model(export_dir:Dynamic):Dynamic;
+	/**
+		Returns the Tensor or SparseTensor described by a TensorInfo proto. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This function will only be available through the v1 compatibility library as tf.compat.v1.saved_model.utils.get_tensor_from_tensor_info or tf.compat.v1.saved_model.get_tensor_from_tensor_info.
 		
 		Args:
 		  tensor_info: A TensorInfo proto describing a Tensor or SparseTensor.
@@ -79,7 +127,11 @@ package tensorflow._api.v1.saved_model;
 	**/
 	static public function is_valid_signature(signature_def:Dynamic):Dynamic;
 	/**
-		Loads the model from a SavedModel as specified by tags.
+		Loads the model from a SavedModel as specified by tags. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This function will only be available through the v1 compatibility library as tf.compat.v1.saved_model.loader.load or tf.compat.v1.saved_model.load. There will be a new function for importing SavedModels in Tensorflow 2.0.
 		
 		Args:
 		  sess: The TensorFlow session to restore the variables.
@@ -103,7 +155,11 @@ package tensorflow._api.v1.saved_model;
 	**/
 	static public function load(sess:Dynamic, tags:Dynamic, export_dir:Dynamic, ?import_scope:Dynamic, ?saver_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Returns a main op to init variables, tables and restore the graph.
+		Returns a main op to init variables, tables and restore the graph. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This function will only be available through the v1 compatibility library as tf.compat.v1.saved_model.main_op_with_restore or tf.compat.v1.saved_model.main_op.main_op_with_restore.
 		
 		Returns the main op including the group of ops that initializes all
 		variables, initialize local variables, initialize all tables and the restore
@@ -169,7 +225,11 @@ package tensorflow._api.v1.saved_model;
 	**/
 	static public function regression_signature_def(examples:Dynamic, predictions:Dynamic):Dynamic;
 	/**
-		Convenience function to build a SavedModel suitable for serving.
+		Convenience function to build a SavedModel suitable for serving. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		This function will only be available through the v1 compatibility library as tf.compat.v1.saved_model.simple_save.
 		
 		In many common cases, saving models for serving will be as simple as:
 		

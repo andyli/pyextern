@@ -62,7 +62,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Creates a `Head` for binary classification with SVMs. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.contrib.estimator.*_head.
 		
@@ -89,7 +89,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Build an input_fn appropriate for serving, expecting feature Tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.estimator.export.build_raw_serving_input_receiver_fn.
 		
@@ -109,7 +109,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Build an input_fn appropriate for serving, expecting fed tf.Examples. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.estimator.export.build_parsing_serving_input_receiver_fn.
 		
@@ -131,7 +131,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Evaluate a model loaded from a checkpoint. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
 		Instructions for updating:
 		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
@@ -182,7 +182,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Deprecated, please use Estimator.export_savedmodel(). (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-23.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2016-09-23.
 		Instructions for updating:
 		Please use Estimator.export_savedmodel() instead.
 	**/
@@ -190,7 +190,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Extract data from dask.Series or dask.DataFrame for predictors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please feed input to tf.data to support dask.
 		
@@ -210,7 +210,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Extract data from dask.Series or dask.DataFrame for labels. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please feed input to tf.data to support dask.
 		
@@ -236,7 +236,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Extract data from pandas.DataFrame for predictors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please access pandas data directly.
 		
@@ -256,7 +256,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Extract data from pandas.DataFrame for labels. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please access pandas data directly.
 		
@@ -275,7 +275,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Extracts numpy matrix from pandas DataFrame. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please access pandas data directly.
 		
@@ -289,7 +289,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Returns input function that returns dicts of numpy arrays (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please use tf.data.
 		
@@ -348,7 +348,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Restore graph from `restore_checkpoint_path` and run `output_dict` tensors. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
 		Instructions for updating:
 		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
@@ -374,7 +374,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Creates `FeatureColumn` objects for inputs defined by input `x`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please specify feature columns explicitly.
 		
@@ -391,7 +391,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Creates `FeatureColumn` objects for inputs defined by `input_fn`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please specify feature columns explicitly.
 		
@@ -411,7 +411,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Creates a Head that contains only loss terms. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.contrib.estimator.*_head.
 		
@@ -430,7 +430,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Create an ExportStrategy for use with Experiment. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Switch to tf.estimator.Exporter and associated utilities.
 		
@@ -463,7 +463,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Creates a `Head` for multi class single label classification. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.contrib.estimator.*_head.
 		
@@ -509,7 +509,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Creates a MultiHead stemming from same logits/hidden layer. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.contrib.estimator.*_head.
 		
@@ -528,7 +528,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Creates a Head for multi label classification. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.contrib.estimator.*_head.
 		
@@ -570,7 +570,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use 'lambda _: tf.no_op()'.
 	**/
@@ -578,23 +578,23 @@ package tensorflow.contrib.learn.python;
 	/**
 		This input_fn diffs from the core version with default `shuffle`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
-		Use tf.estimator.inputs.numpy_input_fn.
+		Use tf.compat.v1.estimator.inputs.numpy_input_fn.
 	**/
 	static public function numpy_input_fn(x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic):Dynamic;
 	/**
 		This input_fn diffs from the core version with default `shuffle`. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
-		Please use tf.estimator.inputs.pandas_input_fn
+		Please use tf.compat.v1.estimator.inputs.pandas_input_fn
 	**/
 	static public function pandas_input_fn(x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic, ?target_column:Dynamic):Dynamic;
 	/**
 		Creates a `Head` for poisson regression. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.contrib.estimator.*_head.
 		
@@ -622,7 +622,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Speeds up parsing by using queues to do it asynchronously. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -661,7 +661,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Adds operations to read, queue, batch `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -708,7 +708,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Adds operations to read, queue, batch and parse `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -763,7 +763,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Reads TFRecord, queues, batches and parses `Example` proto. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -796,7 +796,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Adds operations to read, queue, batch `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -845,7 +845,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Adds operations to read, queue, batch `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -897,7 +897,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Adds operations to read, queue, batch and parse `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -953,7 +953,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Adds operations to read, queue, batch and parse `Example` protos. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.data.
 		
@@ -1004,7 +1004,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Creates a `Head` for linear regression. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Please switch to tf.contrib.estimator.*_head.
 		
@@ -1033,7 +1033,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		See run_feeds_iter(). Returns a `list` instead of an iterator. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
 		Instructions for updating:
 		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 	**/
@@ -1041,7 +1041,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Run `output_dict` tensors `n` times, with the same `feed_dict` each run. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
 		Instructions for updating:
 		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		
@@ -1061,7 +1061,7 @@ package tensorflow.contrib.learn.python;
 	/**
 		Train a model. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2017-02-15.
 		Instructions for updating:
 		graph_actions.py will be deleted. Use tf.train.* utilities instead. You can use learn/estimators/estimator.py as an example.
 		

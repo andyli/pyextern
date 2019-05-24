@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package numpy.lib.ufunclike;
 @:pythonImport("numpy.lib.ufunclike") extern class Ufunclike_Module {
+	static public var ENABLE_ARRAY_FUNCTION : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -16,7 +17,46 @@ package numpy.lib.ufunclike;
 		In future, this decorator should be removed.
 	**/
 	static public function _deprecate_out_named_y(f:Dynamic):Dynamic;
+	static public function _dispatcher(x:Dynamic, ?out:Dynamic):Dynamic;
+	/**
+		Allow the out argument to be passed as the name `y` (deprecated)
+		
+		In future, this decorator should be removed.
+	**/
+	static public function _fix_out_named_y(f:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Decorator for adding dispatch with the __array_function__ protocol.
+		
+		See NEP-18 for example usage.
+		
+		Parameters
+		----------
+		dispatcher : callable
+		    Function that when called like ``dispatcher(*args, **kwargs)`` with
+		    arguments from the NumPy function call returns an iterable of
+		    array-like arguments to check for ``__array_function__``.
+		module : str, optional
+		    __module__ attribute to set on new function, e.g., ``module='numpy'``.
+		    By default, module is copied from the decorated function.
+		verify : bool, optional
+		    If True, verify the that the signature of the dispatcher and decorated
+		    function signatures match exactly: all required and optional arguments
+		    should appear in order with the same names, but the default values for
+		    all optional arguments should be ``None``. Only disable verification
+		    if the dispatcher's signature needs to deviate for some particular
+		    reason, e.g., because the function has a signature like
+		    ``func(*args, **kwargs)``.
+		docs_from_dispatcher : bool, optional
+		    If True, copy docs from the dispatcher function onto the dispatched
+		    function, rather than from the implementation. This is useful for
+		    functions defined in C, which otherwise don't have docstrings.
+		
+		Returns
+		-------
+		Function suitable for decorating the implementation of a NumPy function.
+	**/
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Round to nearest integer towards zero.
@@ -86,7 +126,8 @@ package numpy.lib.ufunclike;
 		(IEEE 754).
 		
 		Errors result if the second argument is also supplied when x is a scalar
-		input, or if first and second arguments have different shapes.
+		input, if first and second arguments have different shapes, or if the
+		first argument has complex values.
 		
 		Examples
 		--------
@@ -140,8 +181,9 @@ package numpy.lib.ufunclike;
 		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754).
 		
-		Errors result if the second argument is also supplied when `x` is a
-		scalar input, or if first and second arguments have different shapes.
+		Errors result if the second argument is also supplied when x is a scalar
+		input, if first and second arguments have different shapes, or if the
+		first argument has complex values
 		
 		Examples
 		--------

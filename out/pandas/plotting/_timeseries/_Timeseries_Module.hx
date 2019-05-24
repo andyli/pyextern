@@ -43,6 +43,63 @@ package pandas.plotting._timeseries;
 	**/
 	static public function format_timedelta_ticks(x:Dynamic, pos:Dynamic, n_decimals:Dynamic):Dynamic;
 	/**
+		Returns the base frequency alias, e.g., '5D' -> 'D'
+		
+		Parameters
+		----------
+		freqstr : str
+		
+		Returns
+		-------
+		base_alias : str
+	**/
+	static public function get_base_alias(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return frequency code of given frequency str.
+		If input is not string, return input as it is.
+		
+		Examples
+		--------
+		>>> get_freq('A')
+		1000
+		
+		>>> get_freq('3A')
+		1000
+	**/
+	static public function get_freq(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Returns True if downsampling is possible between source and target
+		frequencies
+		
+		Parameters
+		----------
+		source : string or DateOffset
+		    Frequency converting from
+		target : string or DateOffset
+		    Frequency converting to
+		
+		Returns
+		-------
+		is_subperiod : boolean
+	**/
+	static public function is_subperiod(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Returns True if upsampling is possible between source and target
+		frequencies
+		
+		Parameters
+		----------
+		source : string
+		    Frequency converting from
+		target : string
+		    Frequency converting to
+		
+		Returns
+		-------
+		is_superperiod : boolean
+	**/
+	static public function is_superperiod(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		This function is the sanctioned way of converting objects
 		to a unicode representation.
 		

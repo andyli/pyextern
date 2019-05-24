@@ -10,126 +10,12 @@ package pandas._libs.join;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	static public function _get_result_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_double(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_double_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_double_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_double_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_float_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_float_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_float_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int16_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int16_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int16_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int16_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int32_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int32_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int32_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int32_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int64_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int64_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int64_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int8_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int8_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int8_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_int8_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint16_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint16_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint16_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint16_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint32_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint32_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint32_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint32_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint64_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint64_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint64_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint8_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint8_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint8_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_backward_uint8_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_double(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_double_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_double_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_double_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_float_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_float_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_float_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int16_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int16_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int16_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int16_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int32_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int32_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int32_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int32_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int64_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int64_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int64_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int8_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int8_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int8_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_int8_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint16_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint16_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint16_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint16_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint32_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint32_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint32_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint32_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint64_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint64_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint64_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint8_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint8_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint8_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_forward_uint8_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_double(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_double_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_double_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_double_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_float_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_float_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_float_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int16_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int16_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int16_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int16_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int32_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int32_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int32_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int32_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int64_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int64_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int64_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int8_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int8_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int8_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_int8_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint16_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint16_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint16_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint16_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint32_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint32_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint32_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint32_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint64_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint64_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint64_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint8_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint8_t_by_int64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint8_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function asof_join_nearest_uint8_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function asof_join_backward(left_values:Dynamic, right_values:Dynamic, ?allow_exact_matches:Dynamic, ?tolerance:Dynamic):Dynamic;
+	static public function asof_join_backward_on_X_by_Y(left_values:Dynamic, right_values:Dynamic, left_by_values:Dynamic, right_by_values:Dynamic, ?allow_exact_matches:Dynamic, ?tolerance:Dynamic):Dynamic;
+	static public function asof_join_forward(left_values:Dynamic, right_values:Dynamic, ?allow_exact_matches:Dynamic, ?tolerance:Dynamic):Dynamic;
+	static public function asof_join_forward_on_X_by_Y(left_values:Dynamic, right_values:Dynamic, left_by_values:Dynamic, right_by_values:Dynamic, ?allow_exact_matches:Dynamic, ?tolerance:Dynamic):Dynamic;
+	static public function asof_join_nearest(left_values:Dynamic, right_values:Dynamic, ?allow_exact_matches:Dynamic, ?tolerance:Dynamic):Dynamic;
+	static public function asof_join_nearest_on_X_by_Y(left_values:Dynamic, right_values:Dynamic, left_by_values:Dynamic, right_by_values:Dynamic, ?allow_exact_matches:Dynamic, ?tolerance:Dynamic):Dynamic;
 	static public function ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function ffill_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function full_outer_join(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -152,64 +38,74 @@ package pandas._libs.join;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
-	static public function inner_join_indexer_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function inner_join_indexer(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
-	static public function inner_join_indexer_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function inner_join_indexer_float32(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
-	static public function inner_join_indexer_int32(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function inner_join_indexer_float64(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
-	static public function inner_join_indexer_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function inner_join_indexer_int32(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
-	static public function inner_join_indexer_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function inner_join_indexer_int64(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
-	static public function inner_join_indexer_uint64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function inner_join_indexer_object(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
-	static public function left_join_indexer_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function inner_join_indexer_uint64(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
-	static public function left_join_indexer_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function left_join_indexer(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
-	static public function left_join_indexer_int32(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function left_join_indexer_float32(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
-	static public function left_join_indexer_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function left_join_indexer_float64(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
-	static public function left_join_indexer_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function left_join_indexer_int32(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
-	static public function left_join_indexer_uint64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function left_join_indexer_unique_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function left_join_indexer_unique_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function left_join_indexer_unique_int32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function left_join_indexer_unique_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function left_join_indexer_unique_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function left_join_indexer_unique_uint64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function left_join_indexer_int64(left:Dynamic, right:Dynamic):Dynamic;
+	/**
+		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
+	**/
+	static public function left_join_indexer_object(left:Dynamic, right:Dynamic):Dynamic;
+	/**
+		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
+	**/
+	static public function left_join_indexer_uint64(left:Dynamic, right:Dynamic):Dynamic;
+	static public function left_join_indexer_unique(left:Dynamic, right:Dynamic):Dynamic;
+	static public function left_join_indexer_unique_float32(left:Dynamic, right:Dynamic):Dynamic;
+	static public function left_join_indexer_unique_float64(left:Dynamic, right:Dynamic):Dynamic;
+	static public function left_join_indexer_unique_int32(left:Dynamic, right:Dynamic):Dynamic;
+	static public function left_join_indexer_unique_int64(left:Dynamic, right:Dynamic):Dynamic;
+	static public function left_join_indexer_unique_object(left:Dynamic, right:Dynamic):Dynamic;
+	static public function left_join_indexer_unique_uint64(left:Dynamic, right:Dynamic):Dynamic;
 	static public function left_outer_join(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function outer_join_indexer_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function outer_join_indexer_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function outer_join_indexer_int32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function outer_join_indexer_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function outer_join_indexer_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function outer_join_indexer_uint64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function outer_join_indexer(left:Dynamic, right:Dynamic):Dynamic;
+	static public function outer_join_indexer_float32(left:Dynamic, right:Dynamic):Dynamic;
+	static public function outer_join_indexer_float64(left:Dynamic, right:Dynamic):Dynamic;
+	static public function outer_join_indexer_int32(left:Dynamic, right:Dynamic):Dynamic;
+	static public function outer_join_indexer_int64(left:Dynamic, right:Dynamic):Dynamic;
+	static public function outer_join_indexer_object(left:Dynamic, right:Dynamic):Dynamic;
+	static public function outer_join_indexer_uint64(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Specialized Cython take which sets NaN values in one pass
 		

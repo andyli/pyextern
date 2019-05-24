@@ -16,7 +16,7 @@ package tensorflow.python.training.checkpointable.data_structures;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __contains__(value:Dynamic):Dynamic;
 	public function __copy__():Dynamic;
 	public function __deepcopy__(memo:Dynamic):Dynamic;
@@ -105,7 +105,7 @@ package tensorflow.python.training.checkpointable.data_structures;
 	public function __lt__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -131,7 +131,7 @@ package tensorflow.python.training.checkpointable.data_structures;
 	public function __repr__():Dynamic;
 	public function __reversed__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**
@@ -277,6 +277,10 @@ package tensorflow.python.training.checkpointable.data_structures;
 	**/
 	public function _handle_deferred_dependencies(name:Dynamic, checkpointable:Dynamic):Dynamic;
 	/**
+		All Layers and Layer containers, including empty containers.
+	**/
+	public var _layers : Dynamic;
+	/**
 		Look up a dependency by name.
 		
 		May be overridden to include conditional dependencies.
@@ -372,6 +376,10 @@ package tensorflow.python.training.checkpointable.data_structures;
 	**/
 	public function _update_snapshot():Dynamic;
 	/**
+		An iterable/sequence which may contain checkpointable objects.
+	**/
+	public var _values : Dynamic;
+	/**
 		Add a new checkpointable value.
 	**/
 	public function append(value:Dynamic):Dynamic;
@@ -394,6 +402,9 @@ package tensorflow.python.training.checkpointable.data_structures;
 	/**
 		S.index(value, [start, [stop]]) -> integer -- return first index of value.
 		Raises ValueError if the value is not present.
+		
+		Supporting start and stop arguments is optional, but
+		recommended.
 	**/
 	public function index(value:Dynamic, ?start:Dynamic, ?stop:Dynamic):Dynamic;
 	/**

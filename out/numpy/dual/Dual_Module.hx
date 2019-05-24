@@ -542,16 +542,19 @@ package numpy.dual;
 		----------
 		x : array_like
 		    The (n-dimensional) array to transform.
-		shape : tuple of ints, optional
+		shape : int or array_like of ints or None, optional
 		    The shape of the result.  If both `shape` and `axes` (see below) are
 		    None, `shape` is ``x.shape``; if `shape` is None but `axes` is
 		    not None, then `shape` is ``scipy.take(x.shape, axes, axis=0)``.
 		    If ``shape[i] > x.shape[i]``, the i-th dimension is padded with zeros.
 		    If ``shape[i] < x.shape[i]``, the i-th dimension is truncated to
 		    length ``shape[i]``.
-		axes : array_like of ints, optional
+		    If any element of `shape` is -1, the size of the corresponding
+		    dimension of `x` is used.
+		axes : int or array_like of ints or None, optional
 		    The axes of `x` (`y` if `shape` is not None) along which the
 		    transform is applied.
+		    The default is over all axes.
 		overwrite_x : bool, optional
 		    If True, the contents of `x` can be destroyed.  Default is False.
 		
@@ -621,7 +624,7 @@ package numpy.dual;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 	**/
 	static public function i0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -690,8 +693,9 @@ package numpy.dual;
 	**/
 	static public function ifft2(x:Dynamic, ?shape:Dynamic, ?axes:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	/**
-		Return inverse multi-dimensional discrete Fourier transform of
-		arbitrary type sequence x.
+		Return inverse multi-dimensional discrete Fourier transform.
+		
+		The sequence can be of an arbitrary type.
 		
 		The returned array contains::
 		
@@ -761,9 +765,9 @@ package numpy.dual;
 		Parameters
 		----------
 		a : (M, N) array_like
-		    Left hand side matrix (2-D array).
+		    Left hand side array
 		b : (M,) or (M, K) array_like
-		    Right hand side matrix or vector (1-D or 2-D array).
+		    Right hand side array
 		cond : float, optional
 		    Cutoff for 'small' singular values; used to determine effective
 		    rank of a. Singular values smaller than
@@ -789,16 +793,15 @@ package numpy.dual;
 		-------
 		x : (N,) or (N, K) ndarray
 		    Least-squares solution.  Return shape matches shape of `b`.
-		residues : (0,) or () or (K,) ndarray
-		    Sums of residues, squared 2-norm for each column in ``b - a x``.
-		    If rank of matrix a is ``< N`` or ``N > M``, or ``'gelsy'`` is used,
-		    this is a length zero array. If b was 1-D, this is a () shape array
-		    (numpy scalar), otherwise the shape is (K,).
+		residues : (K,) ndarray or float
+		    Square of the 2-norm for each column in ``b - a x``, if ``M > N`` and
+		    ``ndim(A) == n`` (returns a scalar if b is 1-D). Otherwise a
+		    (0,)-shaped array is returned.
 		rank : int
-		    Effective rank of matrix `a`.
-		s : (min(M,N),) ndarray or None
+		    Effective rank of `a`.
+		s : (min(M, N),) ndarray or None
 		    Singular values of `a`. The condition number of a is
-		    ``abs(s[0] / s[-1])``. None is returned when ``'gelsy'`` is used.
+		    ``abs(s[0] / s[-1])``.
 		
 		Raises
 		------
@@ -806,11 +809,16 @@ package numpy.dual;
 		    If computation does not converge.
 		
 		ValueError
-		    When parameters are wrong.
+		    When parameters are not compatible.
 		
 		See Also
 		--------
-		optimize.nnls : linear least squares with non-negativity constraint
+		scipy.optimize.nnls : linear least squares with non-negativity constraint
+		
+		Notes
+		-----
+		When ``'gelsy'`` is used as a driver, `residues` is set to a (0,)-shaped
+		array and `s` is always ``None``.
 		
 		Examples
 		--------
@@ -985,12 +993,17 @@ package numpy.dual;
 		a : (M, N) array_like
 		    Matrix to be pseudo-inverted.
 		cond, rcond : float or None
-		    Cutoff for 'small' singular values.
-		    Singular values smaller than ``rcond*largest_singular_value``
-		    are considered zero.
-		    If None or -1, suitable machine precision is used.
+		    Cutoff for 'small' singular values; singular values smaller than this
+		    value are considered as zero. If both are omitted, the default value
+		    ``max(M,N)*largest_singular_value*eps`` is used where ``eps`` is the
+		    machine precision value of the datatype of ``a``.
+		
+		    .. versionchanged:: 1.3.0
+		        Previously the default cutoff value was just ``eps*f`` where ``f``
+		        was ``1e3`` for single precision and ``1e6`` for double precision.
+		
 		return_rank : bool, optional
-		    if True, return the effective rank of the matrix
+		    If True, return the effective rank of the matrix.
 		check_finite : bool, optional
 		    Whether to check that the input matrix contains only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
@@ -1001,7 +1014,7 @@ package numpy.dual;
 		B : (N, M) ndarray
 		    The pseudo-inverse of matrix `a`.
 		rank : int
-		    The effective rank of the matrix.  Returned if return_rank == True
+		    The effective rank of the matrix.  Returned if `return_rank` is True.
 		
 		Raises
 		------

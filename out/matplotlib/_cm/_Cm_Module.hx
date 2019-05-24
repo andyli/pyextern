@@ -51,6 +51,10 @@ package matplotlib._cm;
 	static public var _bone_data : Dynamic;
 	static public var _brg_data : Dynamic;
 	static public var _bwr_data : Dynamic;
+	/**
+		Helper function for generating picklable cubehelix color maps.
+	**/
+	static public function _ch_helper(gamma:Dynamic, s:Dynamic, r:Dynamic, h:Dynamic, p0:Dynamic, p1:Dynamic, x:Dynamic):Dynamic;
 	static public var _cool_data : Dynamic;
 	static public var _coolwarm_data : Dynamic;
 	static public var _copper_data : Dynamic;
@@ -59,12 +63,53 @@ package matplotlib._cm;
 	static public var _flag_data : Dynamic;
 	static public function _flag_green(x:Dynamic):Dynamic;
 	static public function _flag_red(x:Dynamic):Dynamic;
+	static public function _g0(x:Dynamic):Dynamic;
+	static public function _g1(x:Dynamic):Dynamic;
+	static public function _g10(x:Dynamic):Dynamic;
+	static public function _g11(x:Dynamic):Dynamic;
+	static public function _g12(x:Dynamic):Dynamic;
+	static public function _g13(x:Dynamic):Dynamic;
+	static public function _g14(x:Dynamic):Dynamic;
+	static public function _g15(x:Dynamic):Dynamic;
+	static public function _g16(x:Dynamic):Dynamic;
+	static public function _g17(x:Dynamic):Dynamic;
+	static public function _g18(x:Dynamic):Dynamic;
+	static public function _g19(x:Dynamic):Dynamic;
+	static public function _g2(x:Dynamic):Dynamic;
+	static public function _g20(x:Dynamic):Dynamic;
+	static public function _g21(x:Dynamic):Dynamic;
+	static public function _g22(x:Dynamic):Dynamic;
+	static public function _g23(x:Dynamic):Dynamic;
+	static public function _g24(x:Dynamic):Dynamic;
+	static public function _g25(x:Dynamic):Dynamic;
+	static public function _g26(x:Dynamic):Dynamic;
+	static public function _g27(x:Dynamic):Dynamic;
+	static public function _g28(x:Dynamic):Dynamic;
+	static public function _g29(x:Dynamic):Dynamic;
+	static public function _g3(x:Dynamic):Dynamic;
+	static public function _g30(x:Dynamic):Dynamic;
+	static public function _g31(x:Dynamic):Dynamic;
+	static public function _g32(x:Dynamic):Dynamic;
+	static public function _g33(x:Dynamic):Dynamic;
+	static public function _g34(x:Dynamic):Dynamic;
+	static public function _g35(x:Dynamic):Dynamic;
+	static public function _g36(x:Dynamic):Dynamic;
+	static public function _g4(x:Dynamic):Dynamic;
+	static public function _g5(x:Dynamic):Dynamic;
+	static public function _g6(x:Dynamic):Dynamic;
+	static public function _g7(x:Dynamic):Dynamic;
+	static public function _g8(x:Dynamic):Dynamic;
+	static public function _g9(x:Dynamic):Dynamic;
 	static public var _gist_earth_data : Dynamic;
 	static public var _gist_gray_data : Dynamic;
+	static public function _gist_heat_blue(x:Dynamic):Dynamic;
 	static public var _gist_heat_data : Dynamic;
+	static public function _gist_heat_green(x:Dynamic):Dynamic;
+	static public function _gist_heat_red(x:Dynamic):Dynamic;
 	static public var _gist_ncar_data : Dynamic;
 	static public var _gist_rainbow_data : Dynamic;
 	static public var _gist_stern_data : Dynamic;
+	static public function _gist_yarg(x:Dynamic):Dynamic;
 	static public var _gist_yarg_data : Dynamic;
 	static public var _gnuplot2_data : Dynamic;
 	static public var _gnuplot_data : Dynamic;
@@ -91,8 +136,8 @@ package matplotlib._cm;
 	static public var _winter_data : Dynamic;
 	static public var _wistia_data : Dynamic;
 	/**
-		Return custom data dictionary of (r,g,b) conversion functions, which
-		can be used with :func:`register_cmap`, for the cubehelix color scheme.
+		Return custom data dictionary of (r,g,b) conversion functions, which can be
+		used with :func:`register_cmap`, for the cubehelix color scheme.
 		
 		Unlike most other color schemes cubehelix was designed by D.A. Green to
 		be monotonically increasing in terms of perceived brightness.
@@ -130,5 +175,4 @@ package matplotlib._cm;
 	static public function cubehelix(?gamma:Dynamic, ?s:Dynamic, ?r:Dynamic, ?h:Dynamic):Dynamic;
 	static public var datad : Dynamic;
 	static public var gfunc : Dynamic;
-	static public function gfunc32(x:Dynamic):Dynamic;
 }

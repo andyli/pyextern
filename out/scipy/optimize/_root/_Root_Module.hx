@@ -91,16 +91,23 @@ package scipy.optimize._root;
 		            method and values for additional parameters.
 		
 		            Methods available:
-		                - ``restart``: drop all matrix columns. Has no
+		
+		                - ``restart``
+		                    Drop all matrix columns. Has no
 		                    extra parameters.
-		                - ``simple``: drop oldest matrix column. Has no
+		                - ``simple``
+		                    Drop oldest matrix column. Has no
 		                    extra parameters.
-		                - ``svd``: keep only the most significant SVD
+		                - ``svd``
+		                    Keep only the most significant SVD
 		                    components.
-		                  Extra parameters:
-		                      - ``to_retain``: number of SVD components to
-		                          retain when rank reduction is done.
-		                          Default is ``max_rank - 2``.
+		
+		                    Extra parameters:
+		
+		                        - ``to_retain``
+		                            Number of SVD components to
+		                            retain when rank reduction is done.
+		                            Default is ``max_rank - 2``.
 		        max_rank : int, optional
 		            Maximum rank for the Broyden matrix.
 		            Default is infinity (ie., no rank reduction).
@@ -147,16 +154,23 @@ package scipy.optimize._root;
 		        method and values for additional parameters.
 		
 		        Methods available:
-		            - ``restart``: drop all matrix columns. Has no
+		
+		            - ``restart``
+		                Drop all matrix columns. Has no
 		                extra parameters.
-		            - ``simple``: drop oldest matrix column. Has no
+		            - ``simple``
+		                Drop oldest matrix column. Has no
 		                extra parameters.
-		            - ``svd``: keep only the most significant SVD
+		            - ``svd``
+		                Keep only the most significant SVD
 		                components.
-		              Extra parameters:
-		                  - ``to_retain``: number of SVD components to
-		                      retain when rank reduction is done.
-		                      Default is ``max_rank - 2``.
+		
+		                Extra parameters:
+		              
+		                    - ``to_retain``
+		                        Number of SVD components to
+		                        retain when rank reduction is done.
+		                        Default is ``max_rank - 2``.
 		    max_rank : int, optional
 		        Maximum rank for the Broyden matrix.
 		        Default is infinity (ie., no rank reduction).
@@ -503,14 +517,13 @@ package scipy.optimize._root;
 		    The solution (or the result of the last iteration for an unsuccessful
 		    call).
 		cov_x : ndarray
-		    Uses the fjac and ipvt optional outputs to construct an
-		    estimate of the jacobian around the solution. None if a
-		    singular matrix encountered (indicates very flat curvature in
-		    some direction).  This matrix must be multiplied by the
-		    residual variance to get the covariance of the
-		    parameter estimates -- see curve_fit.
+		    The inverse of the Hessian. `fjac` and `ipvt` are used to construct an
+		    estimate of the Hessian. A value of None indicates a singular matrix,
+		    which means the curvature in parameters `x` is numerically flat. To
+		    obtain the covariance matrix of the parameters `x`, `cov_x` must be
+		    multiplied by the variance of the residuals -- see curve_fit.
 		infodict : dict
-		    a dictionary of optional outputs with the key s:
+		    a dictionary of optional outputs with the keys:
 		
 		    ``nfev``
 		        The number of function calls
@@ -662,7 +675,7 @@ package scipy.optimize._root;
 		   1980. User Guide for MINPACK-1.
 		.. [2] C. T. Kelley. 1995. Iterative Methods for Linear and Nonlinear
 		   Equations. Society for Industrial and Applied Mathematics.
-		   <http://www.siam.org/books/kelley/fr16/index.php>
+		   <https://archive.siam.org/books/kelley/fr16/>
 		.. [3] W. La Cruz, J.M. Martinez, M. Raydan. Math. Comp. 75, 1429 (2006).
 		
 		Examples

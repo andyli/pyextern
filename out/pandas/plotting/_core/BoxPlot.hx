@@ -189,8 +189,6 @@ package pandas.plotting._core;
 	public function generate():Dynamic;
 	public var legend_title : Dynamic;
 	public function maybe_color_bp(bp:Dynamic):Dynamic;
-	static public function mpl_ge_1_3_1():Dynamic;
-	static public function mpl_ge_1_5_0():Dynamic;
 	public var nseries : Dynamic;
 	public function on_right(i:Dynamic):Dynamic;
 	/**

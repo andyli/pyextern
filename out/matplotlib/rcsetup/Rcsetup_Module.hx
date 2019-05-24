@@ -24,6 +24,8 @@ package matplotlib.rcsetup;
 	static public function _validate_named_linestyle(s:Dynamic):Dynamic;
 	static public function _validate_negative_linestyle(s:Dynamic):Dynamic;
 	static public function _validate_standard_backends(s:Dynamic):Dynamic;
+	static public function _validate_tex_preamble(s:Dynamic):Dynamic;
+	static public function _validate_verbose(s:Dynamic):Dynamic;
 	static public var all_backends : Dynamic;
 	/**
 		Create a new `Cycler` object from a single positional argument,
@@ -273,7 +275,23 @@ package matplotlib.rcsetup;
 	static public function validate_pgf_texsystem(s:Dynamic):Dynamic;
 	static public function validate_ps_distiller(s:Dynamic):Dynamic;
 	static public function validate_ps_papersize(s:Dynamic):Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	static public function validate_qt4(s:Dynamic):Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	static public function validate_qt5(s:Dynamic):Dynamic;
 	static public function validate_sketch(s:Dynamic):Dynamic;
 	static public function validate_string(s:Dynamic):Dynamic;
@@ -287,6 +305,14 @@ package matplotlib.rcsetup;
 	static public function validate_stringlist(s:Dynamic):Dynamic;
 	static public function validate_svg_fonttype(s:Dynamic):Dynamic;
 	static public function validate_toolbar(s:Dynamic):Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   \ 
+	**/
 	static public function validate_verbose(s:Dynamic):Dynamic;
 	static public function validate_webagg_address(s:Dynamic):Dynamic;
 	static public function validate_whiskers(s:Dynamic):Dynamic;

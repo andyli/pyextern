@@ -10,10 +10,6 @@ package pandas.core.computation.pytables;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Convert string 'r' to a timedelta object.
-	**/
-	static public function _coerce_scalar_to_timedelta_type(r:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
-	/**
 		if we have bytes, decode them to unicode 
 	**/
 	static public function _ensure_decoded(s:Dynamic):Dynamic;
@@ -46,7 +42,11 @@ package pandas.core.computation.pytables;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -65,8 +65,12 @@ package pandas.core.computation.pytables;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	static public function is_term(obj:Dynamic):Dynamic;
 	/**
 		loose checking if s is a pytables-acceptable expression 

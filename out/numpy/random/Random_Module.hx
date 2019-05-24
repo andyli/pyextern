@@ -55,9 +55,9 @@ package numpy.random;
 		Parameters
 		----------
 		a : float or array_like of floats
-		    Alpha, non-negative.
+		    Alpha, positive (>0).
 		b : float or array_like of floats
-		    Beta, non-negative.
+		    Beta, positive (>0).
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
 		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
@@ -133,7 +133,7 @@ package numpy.random;
 		       Wolfram Web Resource.
 		       http://mathworld.wolfram.com/BinomialDistribution.html
 		.. [5] Wikipedia, "Binomial distribution",
-		       http://en.wikipedia.org/wiki/Binomial_distribution
+		       https://en.wikipedia.org/wiki/Binomial_distribution
 		
 		Examples
 		--------
@@ -229,7 +229,7 @@ package numpy.random;
 		References
 		----------
 		.. [1] NIST "Engineering Statistics Handbook"
-		       http://www.itl.nist.gov/div898/handbook/eda/section3/eda3666.htm
+		       https://www.itl.nist.gov/div898/handbook/eda/section3/eda3666.htm
 		
 		Examples
 		--------
@@ -357,9 +357,9 @@ package numpy.random;
 		----------
 		.. [1] David McKay, "Information Theory, Inference and Learning
 		       Algorithms," chapter 23,
-		       http://www.inference.phy.cam.ac.uk/mackay/
+		       http://www.inference.org.uk/mackay/itila/
 		.. [2] Wikipedia, "Dirichlet distribution",
-		       http://en.wikipedia.org/wiki/Dirichlet_distribution
+		       https://en.wikipedia.org/wiki/Dirichlet_distribution
 		
 		Examples
 		--------
@@ -371,6 +371,7 @@ package numpy.random;
 		
 		>>> s = np.random.dirichlet((10, 5, 3), 20).transpose()
 		
+		>>> import matplotlib.pyplot as plt
 		>>> plt.barh(range(20), s[0])
 		>>> plt.barh(range(20), s[1], left=s[0], color='g')
 		>>> plt.barh(range(20), s[2], left=s[0]+s[1], color='r')
@@ -417,9 +418,9 @@ package numpy.random;
 		.. [1] Peyton Z. Peebles Jr., "Probability, Random Variables and
 		       Random Signal Principles", 4th ed, 2001, p. 57.
 		.. [2] Wikipedia, "Poisson process",
-		       http://en.wikipedia.org/wiki/Poisson_process
+		       https://en.wikipedia.org/wiki/Poisson_process
 		.. [3] Wikipedia, "Exponential distribution",
-		       http://en.wikipedia.org/wiki/Exponential_distribution
+		       https://en.wikipedia.org/wiki/Exponential_distribution
 	**/
 	static public function exponential(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -474,7 +475,7 @@ package numpy.random;
 		.. [1] Glantz, Stanton A. "Primer of Biostatistics.", McGraw-Hill,
 		       Fifth Edition, 2002.
 		.. [2] Wikipedia, "F-distribution",
-		       http://en.wikipedia.org/wiki/F-distribution
+		       https://en.wikipedia.org/wiki/F-distribution
 		
 		Examples
 		--------
@@ -555,7 +556,7 @@ package numpy.random;
 		       Wolfram Web Resource.
 		       http://mathworld.wolfram.com/GammaDistribution.html
 		.. [2] Wikipedia, "Gamma distribution",
-		       http://en.wikipedia.org/wiki/Gamma_distribution
+		       https://en.wikipedia.org/wiki/Gamma_distribution
 		
 		Examples
 		--------
@@ -801,12 +802,12 @@ package numpy.random;
 		-----
 		The probability density for the Hypergeometric distribution is
 		
-		.. math:: P(x) = \frac{\binom{m}{n}\binom{N-m}{n-x}}{\binom{N}{n}},
+		.. math:: P(x) = \frac{\binom{g}{x}\binom{b}{n-x}}{\binom{g+b}{n}},
 		
-		where :math:`0 \le x \le m` and :math:`n+m-N \le x \le n`
+		where :math:`0 \le x \le n` and :math:`n-b \le x \le g`
 		
-		for P(x) the probability of x successes, n = ngood, m = nbad, and
-		N = number of samples.
+		for P(x) the probability of x successes, g = ngood, b = nbad, and
+		n = number of samples.
 		
 		Consider an urn with black and white marbles in it, ngood of them
 		black and nbad are white. If you draw nsample balls without
@@ -827,7 +828,7 @@ package numpy.random;
 		       MathWorld--A Wolfram Web Resource.
 		       http://mathworld.wolfram.com/HypergeometricDistribution.html
 		.. [3] Wikipedia, "Hypergeometric distribution",
-		       http://en.wikipedia.org/wiki/Hypergeometric_distribution
+		       https://en.wikipedia.org/wiki/Hypergeometric_distribution
 		
 		Examples
 		--------
@@ -836,6 +837,7 @@ package numpy.random;
 		>>> ngood, nbad, nsamp = 100, 2, 10
 		# number of good, number of bad, and number of samples
 		>>> s = np.random.hypergeometric(ngood, nbad, nsamp, 1000)
+		>>> from matplotlib.pyplot import hist
 		>>> hist(s)
 		#   note that it is very unlikely to grab both bad items
 		
@@ -901,7 +903,7 @@ package numpy.random;
 		       From MathWorld--A Wolfram Web Resource.
 		       http://mathworld.wolfram.com/LaplaceDistribution.html
 		.. [4] Wikipedia, "Laplace distribution",
-		       http://en.wikipedia.org/wiki/Laplace_distribution
+		       https://en.wikipedia.org/wiki/Laplace_distribution
 		
 		Examples
 		--------
@@ -980,7 +982,7 @@ package numpy.random;
 		       MathWorld--A Wolfram Web Resource.
 		       http://mathworld.wolfram.com/LogisticDistribution.html
 		.. [3] Wikipedia, "Logistic-distribution",
-		       http://en.wikipedia.org/wiki/Logistic_distribution
+		       https://en.wikipedia.org/wiki/Logistic_distribution
 		
 		Examples
 		--------
@@ -988,6 +990,7 @@ package numpy.random;
 		
 		>>> loc, scale = 10, 1
 		>>> s = np.random.logistic(loc, scale, 10000)
+		>>> import matplotlib.pyplot as plt
 		>>> count, bins, ignored = plt.hist(s, bins=50)
 		
 		#   plot against distribution
@@ -1054,7 +1057,7 @@ package numpy.random;
 		.. [1] Limpert, E., Stahel, W. A., and Abbt, M., "Log-normal
 		       Distributions across the Sciences: Keys and Clues,"
 		       BioScience, Vol. 51, No. 5, May, 2001.
-		       http://stat.ethz.ch/~stahel/lognormal/bioscience.pdf
+		       https://stat.ethz.ch/~stahel/lognormal/bioscience.pdf
 		.. [2] Reiss, R.D. and Thomas, M., "Statistical Analysis of Extreme
 		       Values," Basel: Birkhauser Verlag, 2001, pp. 31-32.
 		
@@ -1157,7 +1160,7 @@ package numpy.random;
 		.. [3] D. J. Hand, F. Daly, D. Lunn, E. Ostrowski, A Handbook of Small
 		       Data Sets, CRC Press, 1994.
 		.. [4] Wikipedia, "Logarithmic distribution",
-		       http://en.wikipedia.org/wiki/Logarithmic_distribution
+		       https://en.wikipedia.org/wiki/Logarithmic_distribution
 		
 		Examples
 		--------
@@ -1165,6 +1168,7 @@ package numpy.random;
 		
 		>>> a = .6
 		>>> s = np.random.logseries(a, 10000)
+		>>> import matplotlib.pyplot as plt
 		>>> count, bins, ignored = plt.hist(s)
 		
 		#   plot against distribution
@@ -1278,6 +1282,7 @@ package numpy.random;
 		    Behavior when the covariance matrix is not positive semidefinite.
 		tol : float, optional
 		    Tolerance when checking the singular values in covariance matrix.
+		    cov is cast to double before the check.
 		
 		Returns
 		-------
@@ -1399,7 +1404,7 @@ package numpy.random;
 		       MathWorld--A Wolfram Web Resource.
 		       http://mathworld.wolfram.com/NegativeBinomialDistribution.html
 		.. [2] Wikipedia, "Negative binomial distribution",
-		       http://en.wikipedia.org/wiki/Negative_binomial_distribution
+		       https://en.wikipedia.org/wiki/Negative_binomial_distribution
 		
 		Examples
 		--------
@@ -1466,8 +1471,8 @@ package numpy.random;
 		.. [1] Delhi, M.S. Holla, "On a noncentral chi-square distribution in
 		       the analysis of weapon systems effectiveness", Metrika,
 		       Volume 15, Number 1 / December, 1970.
-		.. [2] Wikipedia, "Noncentral chi-square distribution"
-		       http://en.wikipedia.org/wiki/Noncentral_chi-square_distribution
+		.. [2] Wikipedia, "Noncentral chi-squared distribution"
+		       https://en.wikipedia.org/wiki/Noncentral_chi-squared_distribution
 		
 		Examples
 		--------
@@ -1546,7 +1551,7 @@ package numpy.random;
 		       From MathWorld--A Wolfram Web Resource.
 		       http://mathworld.wolfram.com/NoncentralF-Distribution.html
 		.. [2] Wikipedia, "Noncentral F-distribution",
-		       http://en.wikipedia.org/wiki/Noncentral_F-distribution
+		       https://en.wikipedia.org/wiki/Noncentral_F-distribution
 		
 		Examples
 		--------
@@ -1563,6 +1568,7 @@ package numpy.random;
 		>>> NF = np.histogram(nc_vals, bins=50, density=True)
 		>>> c_vals = np.random.f(dfnum, dfden, 1000000)
 		>>> F = np.histogram(c_vals, bins=50, density=True)
+		>>> import matplotlib.pyplot as plt
 		>>> plt.plot(F[1][1:], F[0])
 		>>> plt.plot(NF[1][1:], NF[0])
 		>>> plt.show()
@@ -1625,7 +1631,7 @@ package numpy.random;
 		References
 		----------
 		.. [1] Wikipedia, "Normal distribution",
-		       http://en.wikipedia.org/wiki/Normal_distribution
+		       https://en.wikipedia.org/wiki/Normal_distribution
 		.. [2] P. R. Peebles Jr., "Central Limit Theorem" in "Probability,
 		       Random Variables and Random Signal Principles", 4th ed., 2001,
 		       pp. 51, 51, 125.
@@ -1729,7 +1735,7 @@ package numpy.random;
 		.. [3] Reiss, R.D., Thomas, M.(2001), Statistical Analysis of Extreme
 		       Values, Birkhauser Verlag, Basel, pp 23-30.
 		.. [4] Wikipedia, "Pareto distribution",
-		       http://en.wikipedia.org/wiki/Pareto_distribution
+		       https://en.wikipedia.org/wiki/Pareto_distribution
 		
 		Examples
 		--------
@@ -1828,7 +1834,7 @@ package numpy.random;
 		       From MathWorld--A Wolfram Web Resource.
 		       http://mathworld.wolfram.com/PoissonDistribution.html
 		.. [2] Wikipedia, "Poisson distribution",
-		       http://en.wikipedia.org/wiki/Poisson_distribution
+		       https://en.wikipedia.org/wiki/Poisson_distribution
 		
 		Examples
 		--------
@@ -1897,7 +1903,7 @@ package numpy.random;
 		       Dataplot Reference Manual, Volume 2: Let Subcommands and Library
 		       Functions", National Institute of Standards and Technology
 		       Handbook Series, June 2003.
-		       http://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/powpdf.pdf
+		       https://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/powpdf.pdf
 		
 		Examples
 		--------
@@ -2328,14 +2334,15 @@ package numpy.random;
 		References
 		----------
 		.. [1] Brighton Webs Ltd., "Rayleigh Distribution,"
-		       http://www.brighton-webs.co.uk/distributions/rayleigh.asp
+		       https://web.archive.org/web/20090514091424/http://brighton-webs.co.uk:80/distributions/rayleigh.asp
 		.. [2] Wikipedia, "Rayleigh distribution"
-		       http://en.wikipedia.org/wiki/Rayleigh_distribution
+		       https://en.wikipedia.org/wiki/Rayleigh_distribution
 		
 		Examples
 		--------
 		Draw values from the distribution and plot the histogram
 		
+		>>> from matplotlib.pyplot import hist
 		>>> values = hist(np.random.rayleigh(3, 100000), bins=200, density=True)
 		
 		Wave heights tend to follow a Rayleigh distribution. If the mean wave
@@ -2536,17 +2543,18 @@ package numpy.random;
 		----------
 		.. [1] NIST/SEMATECH e-Handbook of Statistical Methods, "Cauchy
 		      Distribution",
-		      http://www.itl.nist.gov/div898/handbook/eda/section3/eda3663.htm
+		      https://www.itl.nist.gov/div898/handbook/eda/section3/eda3663.htm
 		.. [2] Weisstein, Eric W. "Cauchy Distribution." From MathWorld--A
 		      Wolfram Web Resource.
 		      http://mathworld.wolfram.com/CauchyDistribution.html
 		.. [3] Wikipedia, "Cauchy distribution"
-		      http://en.wikipedia.org/wiki/Cauchy_distribution
+		      https://en.wikipedia.org/wiki/Cauchy_distribution
 		
 		Examples
 		--------
 		Draw samples and plot the distribution:
 		
+		>>> import matplotlib.pyplot as plt
 		>>> s = np.random.standard_cauchy(1000000)
 		>>> s = s[(s>-25) & (s<25)]  # truncate distribution so it plots well
 		>>> plt.hist(s, bins=100)
@@ -2627,7 +2635,7 @@ package numpy.random;
 		       Wolfram Web Resource.
 		       http://mathworld.wolfram.com/GammaDistribution.html
 		.. [2] Wikipedia, "Gamma distribution",
-		       http://en.wikipedia.org/wiki/Gamma_distribution
+		       https://en.wikipedia.org/wiki/Gamma_distribution
 		
 		Examples
 		--------
@@ -2725,12 +2733,12 @@ package numpy.random;
 		.. [1] Dalgaard, Peter, "Introductory Statistics With R",
 		       Springer, 2002.
 		.. [2] Wikipedia, "Student's t-distribution"
-		       http://en.wikipedia.org/wiki/Student's_t-distribution
+		       https://en.wikipedia.org/wiki/Student's_t-distribution
 		
 		Examples
 		--------
 		From Dalgaard page 83 [1]_, suppose the daily energy intake for 11
-		women in Kj is:
+		women in kilojoules (kJ) is:
 		
 		>>> intake = np.array([5260., 5470, 5640, 6180, 6390, 6515, 6805, 7515, \
 		...                    7515, 8230, 8770])
@@ -2816,7 +2824,7 @@ package numpy.random;
 		References
 		----------
 		.. [1] Wikipedia, "Triangular distribution"
-		       http://en.wikipedia.org/wiki/Triangular_distribution
+		       https://en.wikipedia.org/wiki/Triangular_distribution
 		
 		Examples
 		--------
@@ -3027,12 +3035,12 @@ package numpy.random;
 		References
 		----------
 		.. [1] Brighton Webs Ltd., Wald Distribution,
-		       http://www.brighton-webs.co.uk/distributions/wald.asp
+		       https://web.archive.org/web/20090423014010/http://www.brighton-webs.co.uk:80/distributions/wald.asp
 		.. [2] Chhikara, Raj S., and Folks, J. Leroy, "The Inverse Gaussian
 		       Distribution: Theory : Methodology, and Applications", CRC Press,
 		       1988.
-		.. [3] Wikipedia, "Wald distribution"
-		       http://en.wikipedia.org/wiki/Wald_distribution
+		.. [3] Wikipedia, "Inverse Gaussian distribution"
+		       https://en.wikipedia.org/wiki/Inverse_Gaussian_distribution
 		
 		Examples
 		--------
@@ -3061,7 +3069,7 @@ package numpy.random;
 		Parameters
 		----------
 		a : float or array_like of floats
-		    Shape of the distribution. Should be greater than zero.
+		    Shape parameter of the distribution.  Must be nonnegative.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
 		    ``m * n * k`` samples are drawn.  If size is ``None`` (default),
@@ -3111,7 +3119,7 @@ package numpy.random;
 		       Wide Applicability", Journal Of Applied Mechanics ASME Paper
 		       1951.
 		.. [3] Wikipedia, "Weibull distribution",
-		       http://en.wikipedia.org/wiki/Weibull_distribution
+		       https://en.wikipedia.org/wiki/Weibull_distribution
 		
 		Examples
 		--------

@@ -40,7 +40,7 @@ package tensorflow.contrib.data.python.ops.iterator_ops;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.CheckpointInputPipelineHook(...)`.
 	**/
@@ -49,7 +49,7 @@ package tensorflow.contrib.data.python.ops.iterator_ops;
 	/**
 		DEPRECATED FUNCTION
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use `tf.data.experimental.CheckpointInputPipelineHook(...)`.
 	**/
@@ -116,6 +116,8 @@ package tensorflow.contrib.data.python.ops.iterator_ops;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _estimator_api_names : Dynamic;
+	static public var _estimator_api_names_v1 : Dynamic;
 	public function _restore_or_save_initial_ckpt(session:Dynamic):Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;

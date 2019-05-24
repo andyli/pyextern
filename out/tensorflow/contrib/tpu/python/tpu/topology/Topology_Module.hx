@@ -9,6 +9,14 @@ package tensorflow.contrib.tpu.python.tpu.topology;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Returns the device name for the TPU `device` on `task` of `job`.
+	**/
+	static public function _tpu_device_name(job:Dynamic, task:Dynamic, device:Dynamic):Dynamic;
+	/**
+		Returns the device name for the CPU device on `task` of `job`.
+	**/
+	static public function _tpu_host_device_name(job:Dynamic, task:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;

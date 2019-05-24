@@ -169,10 +169,11 @@ package theano.compat;
 	**/
 	public function pop(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		od.popitem() -> (k, v), return and remove a (key, value) pair.
+		Remove and return a (key, value) pair from the dictionary.
+		
 		Pairs are returned in LIFO order if last is true or FIFO order if false.
 	**/
-	public function popitem(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function popitem(?last:Dynamic):Dynamic;
 	/**
 		od.setdefault(k[,d]) -> od.get(k,d), also set od[k]=d if k not in od
 	**/

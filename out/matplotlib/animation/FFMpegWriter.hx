@@ -15,7 +15,7 @@ package matplotlib.animation;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,22 +56,22 @@ package matplotlib.animation;
 		
 		Parameters
 		----------
-		fps: int
+		fps : int
 		    Framerate for movie.
-		codec: string or None, optional
+		codec : string or None, optional
 		    The codec to use. If ``None`` (the default) the ``animation.codec``
 		    rcParam is used.
-		bitrate: int or None, optional
+		bitrate : int or None, optional
 		    The bitrate for the saved movie file, which is one way to control
 		    the output file size and quality. The default value is ``None``,
 		    which uses the ``animation.bitrate`` rcParam.  A value of -1
 		    implies that the bitrate should be determined automatically by the
 		    underlying utility.
-		extra_args: list of strings or None, optional
+		extra_args : list of strings or None, optional
 		    A list of extra string arguments to be passed to the underlying
 		    movie utility. The default is ``None``, which passes the additional
 		    arguments in the ``animation.extra_args`` rcParam.
-		metadata: Dict[str, str] or None
+		metadata : Dict[str, str] or None
 		    A dictionary of keys and values for metadata to include in the
 		    output file. Some keys that may be of use include:
 		    title, artist, genre, subject, copyright, srcform, comment.
@@ -83,22 +83,22 @@ package matplotlib.animation;
 		
 		Parameters
 		----------
-		fps: int
+		fps : int
 		    Framerate for movie.
-		codec: string or None, optional
+		codec : string or None, optional
 		    The codec to use. If ``None`` (the default) the ``animation.codec``
 		    rcParam is used.
-		bitrate: int or None, optional
+		bitrate : int or None, optional
 		    The bitrate for the saved movie file, which is one way to control
 		    the output file size and quality. The default value is ``None``,
 		    which uses the ``animation.bitrate`` rcParam.  A value of -1
 		    implies that the bitrate should be determined automatically by the
 		    underlying utility.
-		extra_args: list of strings or None, optional
+		extra_args : list of strings or None, optional
 		    A list of extra string arguments to be passed to the underlying
 		    movie utility. The default is ``None``, which passes the additional
 		    arguments in the ``animation.extra_args`` rcParam.
-		metadata: Dict[str, str] or None
+		metadata : Dict[str, str] or None
 		    A dictionary of keys and values for metadata to include in the
 		    output file. Some keys that may be of use include:
 		    title, artist, genre, subject, copyright, srcform, comment.
@@ -176,13 +176,13 @@ package matplotlib.animation;
 	**/
 	public function _args():Dynamic;
 	/**
-		Returns the place to which frames should be written.
+		Return the place to which frames should be written.
 	**/
 	public function _frame_sink():Dynamic;
 	public function _run():Dynamic;
 	static public var args_key : Dynamic;
 	/**
-		Returns the binary path to the commandline tool used by a specific
+		Return the binary path to the commandline tool used by a specific
 		subclass. This is a class method so that the tool can be looked for
 		before making a particular MovieWriter subclass available.
 	**/

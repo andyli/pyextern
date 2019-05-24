@@ -41,6 +41,10 @@ package numpy.core._internal;
 	**/
 	static public function _gcd(a:Dynamic, b:Dynamic):Dynamic;
 	/**
+		Get a `ctypes.c_void_p` to arr.data, that keeps a reference to the array
+	**/
+	static public function _get_void_ptr(arr:Dynamic):Dynamic;
+	/**
 		Checks safety of getfield for object arrays.
 		
 		As in _view_is_safe, we need to check that memory containing objects is not
@@ -62,7 +66,6 @@ package numpy.core._internal;
 	**/
 	static public function _getfield_is_safe(oldtype:Dynamic, newtype:Dynamic, offset:Dynamic):Dynamic;
 	static public function _getintp_ctype():Dynamic;
-	static public function _is_from_ctypes(obj:Dynamic):Dynamic;
 	static public function _lcm(a:Dynamic, b:Dynamic):Dynamic;
 	static public function _makenames_list(adict:Dynamic, align:Dynamic):Dynamic;
 	static public var _nbo : Dynamic;
@@ -75,6 +78,7 @@ package numpy.core._internal;
 	static public var _pep3118_native_typechars : Dynamic;
 	static public var _pep3118_standard_map : Dynamic;
 	static public var _pep3118_standard_typechars : Dynamic;
+	static public var _pep3118_unsupported_map : Dynamic;
 	static public function _prod(a:Dynamic):Dynamic;
 	static public function _reconstruct(subtype:Dynamic, shape:Dynamic, dtype:Dynamic):Dynamic;
 	/**
@@ -219,10 +223,27 @@ package numpy.core._internal;
 	/**
 		Format the error message for when __array_ufunc__ gives up. 
 	**/
+	static public function array_function_errmsg_formatter(public_api:Dynamic, types:Dynamic):Dynamic;
+	/**
+		Format the error message for when __array_ufunc__ gives up. 
+	**/
 	static public function array_ufunc_errmsg_formatter(dummy:Dynamic, ufunc:Dynamic, method:Dynamic, ?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	static public var format_re : Dynamic;
+	static public function npy_ctypes_check(cls:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public var sep_re : Dynamic;
+	/**
+		Decorator for overriding __module__ on a function or class.
+		
+		Example usage::
+		
+		    @set_module('numpy')
+		    def example():
+		        pass
+		
+		    assert example.__module__ == 'numpy'
+	**/
+	static public function set_module(module:Dynamic):Dynamic;
 	static public var space_re : Dynamic;
 }

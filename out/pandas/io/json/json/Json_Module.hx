@@ -11,7 +11,7 @@ package pandas.io.json.json;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Helper function that converts json lists to line delimited json.
+		Helper function that converts JSON lists to line delimited JSON.
 	**/
 	static public function _convert_to_line_delimits(s:Dynamic):Dynamic;
 	/**
@@ -24,8 +24,10 @@ package pandas.io.json.json;
 		mode : str
 		    mode to open path_or_buf with
 		encoding : str or None
-		compression : str or None
-		    Supported compression protocols are gzip, bz2, zip, and xz
+		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default None
+		    If 'infer' and `filepath_or_buffer` is path-like, then detect
+		    compression from the following extensions: '.gz', '.bz2', '.zip',
+		    or '.xz' (otherwise no compression).
 		memory_map : boolean, default False
 		    See parsers._parser_params for more information.
 		is_text : boolean, default True
@@ -48,10 +50,12 @@ package pandas.io.json.json;
 		
 		Parameters
 		----------
-		filepath_or_buf :
+		filepath_or_buffer :
 		    a path (str) or buffer
-		compression : str or None
-		    the compression method including None for no compression and 'infer'
+		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}
+		    If 'infer' and `filepath_or_buffer` is path-like, then detect
+		    compression from the following extensions: '.gz', '.bz2', '.zip',
+		    or '.xz' (otherwise no compression).
 		
 		Returns
 		-------
@@ -122,6 +126,16 @@ package pandas.io.json.json;
 		-------
 		schema : dict
 		
+		Notes
+		-----
+		See `_as_json_table_type` for conversion types.
+		Timedeltas as converted to ISO8601 duration format with
+		9 decimal places after the seconds field for nanosecond precision.
+		
+		Categoricals are converted to the `any` dtype, and use the `enum` field
+		constraint to list the allowed values. The `ordered` attribute is included
+		in an `ordered` field.
+		
 		Examples
 		--------
 		>>> df = pd.DataFrame(
@@ -136,16 +150,6 @@ package pandas.io.json.json;
 		{'name': 'C', 'type': 'datetime'}],
 		'pandas_version': '0.20.0',
 		'primaryKey': ['idx']}
-		
-		Notes
-		-----
-		See `_as_json_table_type` for conversion types.
-		Timedeltas as converted to ISO8601 duration format with
-		9 decimal places after the secnods field for nanosecond precision.
-		
-		Categoricals are converted to the `any` dtype, and use the `enum` field
-		constraint to list the allowed values. The `ordered` attribute is included
-		in an `ordered` field.
 	**/
 	static public function build_table_schema(data:Dynamic, ?index:Dynamic, ?primary_key:Dynamic, ?version:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
@@ -211,6 +215,13 @@ package pandas.io.json.json;
 		    ``DataFrame``, a ``DataFrame`` is returned. When concatenating along
 		    the columns (axis=1), a ``DataFrame`` is returned.
 		
+		See Also
+		--------
+		Series.append
+		DataFrame.append
+		DataFrame.join
+		DataFrame.merge
+		
 		Notes
 		-----
 		The keys, levels, and names arguments are all optional.
@@ -218,13 +229,6 @@ package pandas.io.json.json;
 		A walkthrough of how this method fits in with other tools for combining
 		pandas objects can be found `here
 		<http://pandas.pydata.org/pandas-docs/stable/merging.html>`__.
-		
-		See Also
-		--------
-		Series.append
-		DataFrame.append
-		DataFrame.join
-		DataFrame.merge
 		
 		Examples
 		--------
@@ -301,12 +305,12 @@ package pandas.io.json.json;
 		  letter  number animal
 		0      c       3    cat
 		1      d       4    dog
-		>>> pd.concat([df1, df3])
-		  animal letter  number
-		0    NaN      a       1
-		1    NaN      b       2
-		0    cat      c       3
-		1    dog      d       4
+		>>> pd.concat([df1, df3], sort=False)
+		  letter  number animal
+		0      a       1    NaN
+		1      b       2    NaN
+		0      c       3    cat
+		1      d       4    dog
 		
 		Combine ``DataFrame`` objects with overlapping columns
 		and return only those that are shared by passing ``inner`` to
@@ -399,7 +403,7 @@ package pandas.io.json.json;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -417,8 +421,8 @@ package pandas.io.json.json;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -504,9 +508,9 @@ package pandas.io.json.json;
 		    :class:`Index` name of 'index'  and :class:`MultiIndex` names starting
 		    with 'level_' are not supported.
 		
-		See also
+		See Also
 		--------
-		build_table_schema : inverse function
+		build_table_schema : Inverse function.
 		pandas.read_json
 	**/
 	static public function parse_table_schema(json:Dynamic, precise_float:Dynamic):pandas.DataFrame;
@@ -537,14 +541,14 @@ package pandas.io.json.json;
 	**/
 	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
 	/**
-		Convert a JSON string to pandas object
+		Convert a JSON string to pandas object.
 		
 		Parameters
 		----------
 		path_or_buf : a valid JSON string or file-like, default: None
-		    The string could be a URL. Valid URL schemes include http, ftp, s3, and
-		    file. For file URLs, a host is expected. For instance, a local file
-		    could be ``file://localhost/path/to/table.json``
+		    The string could be a URL. Valid URL schemes include http, ftp, s3,
+		    gcs, and file. For file URLs, a host is expected. For instance, a local
+		    file could be ``file://localhost/path/to/table.json``
 		
 		orient : string,
 		    Indication of expected JSON string format.
@@ -617,17 +621,17 @@ package pandas.io.json.json;
 		    is to try and detect the correct precision, but if this is not desired
 		    then pass one of 's', 'ms', 'us' or 'ns' to force parsing only seconds,
 		    milliseconds, microseconds or nanoseconds respectively.
-		lines : boolean, default False
-		    Read the file as a json object per line.
-		
-		    .. versionadded:: 0.19.0
-		
 		encoding : str, default is 'utf-8'
 		    The encoding to use to decode py3 bytes.
 		
 		    .. versionadded:: 0.19.0
 		
-		chunksize: integer, default None
+		lines : boolean, default False
+		    Read the file as a json object per line.
+		
+		    .. versionadded:: 0.19.0
+		
+		chunksize : integer, default None
 		    Return JsonReader object for iteration.
 		    See the `line-delimted json docs
 		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-jsonl>`_
@@ -650,6 +654,10 @@ package pandas.io.json.json;
 		-------
 		result : Series or DataFrame, depending on the value of `typ`.
 		
+		See Also
+		--------
+		DataFrame.to_json
+		
 		Notes
 		-----
 		Specific to ``orient='table'``, if a :class:`DataFrame` with a literal
@@ -660,10 +668,6 @@ package pandas.io.json.json;
 		:func:`read_json` operation cannot distinguish between the two. The same
 		limitation is encountered with a :class:`MultiIndex` and any names
 		beginning with ``'level_'``.
-		
-		See Also
-		--------
-		DataFrame.to_json
 		
 		Examples
 		--------
@@ -745,7 +749,7 @@ package pandas.io.json.json;
 		      as dateutil).
 		
 		    Warning: yearfirst=True is not strict, but will prefer to parse
-		    with year first (this is a known bug, based on dateutil beahavior).
+		    with year first (this is a known bug, based on dateutil behavior).
 		
 		    .. versionadded:: 0.16.1
 		
@@ -754,7 +758,7 @@ package pandas.io.json.json;
 		    datetime.datetime objects as well).
 		box : boolean, default True
 		
-		    - If True returns a DatetimeIndex
+		    - If True returns a DatetimeIndex or Index-like object
 		    - If False returns ndarray of values.
 		format : string, default None
 		    strftime to parse time, eg "%d/%m/%Y", note that "%f" will parse
@@ -788,8 +792,8 @@ package pandas.io.json.json;
 		    .. versionadded:: 0.20.0
 		cache : boolean, default False
 		    If True, use a cache of unique, converted dates to apply the datetime
-		    conversion. May produce sigificant speed-up when parsing duplicate date
-		    strings, especially ones with timezone offsets.
+		    conversion. May produce significant speed-up when parsing duplicate
+		    date strings, especially ones with timezone offsets.
 		
 		    .. versionadded:: 0.23.0
 		
@@ -806,6 +810,11 @@ package pandas.io.json.json;
 		    any element of input is before Timestamp.min or after Timestamp.max)
 		    return will have datetime.datetime type (or corresponding
 		    array/Series).
+		
+		See Also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
 		
 		Examples
 		--------
@@ -870,11 +879,6 @@ package pandas.io.json.json;
 		0    1960-01-02
 		1    1960-01-03
 		2    1960-01-04
-		
-		See also
-		--------
-		pandas.DataFrame.astype : Cast argument to a specified dtype.
-		pandas.to_timedelta : Convert argument to timedelta.
 	**/
 	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 	static public function to_json(path_or_buf:Dynamic, obj:Dynamic, ?orient:Dynamic, ?date_format:Dynamic, ?double_precision:Dynamic, ?force_ascii:Dynamic, ?date_unit:Dynamic, ?default_handler:Dynamic, ?lines:Dynamic, ?compression:Dynamic, ?index:Dynamic):Dynamic;

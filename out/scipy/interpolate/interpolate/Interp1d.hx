@@ -167,5 +167,8 @@ package scipy.interpolate.interpolate;
 	public var _y_axis : Dynamic;
 	public var _y_extra_shape : Dynamic;
 	public var dtype : Dynamic;
+	/**
+		The fill value.
+	**/
 	public var fill_value : Dynamic;
 }

@@ -21,14 +21,11 @@ package tensorflow.core.framework.remote_fused_graph_execute_info_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEFAULT_GRAPH_INPUT_TENSOR_SHAPE_FIELD_NUMBER : Dynamic;
-	static public var DEFAULT_GRAPH_OUTPUT_TENSOR_SHAPE_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var EXECUTOR_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Extension dict
 	**/
@@ -41,8 +38,6 @@ package tensorflow.core.framework.remote_fused_graph_execute_info_pb2;
 		Creates new method instance from given serialized data.
 	**/
 	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var GRAPH_INPUT_NODE_NAME_FIELD_NUMBER : Dynamic;
-	static public var GRAPH_OUTPUT_NODE_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -71,12 +66,10 @@ package tensorflow.core.framework.remote_fused_graph_execute_info_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var REMOTE_GRAPH_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var SERIALIZED_EXECUTOR_PARAMETERS_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -93,6 +86,10 @@ package tensorflow.core.framework.remote_fused_graph_execute_info_pb2;
 		A ProtocolMessage
 	**/
 	public function TensorShapeTypeProto(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -258,4 +255,32 @@ package tensorflow.core.framework.remote_fused_graph_execute_info_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field tensorflow.RemoteFusedGraphExecuteInfo.default_graph_input_tensor_shape
+	**/
+	public var default_graph_input_tensor_shape : Dynamic;
+	/**
+		Field tensorflow.RemoteFusedGraphExecuteInfo.default_graph_output_tensor_shape
+	**/
+	public var default_graph_output_tensor_shape : Dynamic;
+	/**
+		Field tensorflow.RemoteFusedGraphExecuteInfo.executor_name
+	**/
+	public var executor_name : Dynamic;
+	/**
+		Field tensorflow.RemoteFusedGraphExecuteInfo.graph_input_node_name
+	**/
+	public var graph_input_node_name : Dynamic;
+	/**
+		Field tensorflow.RemoteFusedGraphExecuteInfo.graph_output_node_name
+	**/
+	public var graph_output_node_name : Dynamic;
+	/**
+		Field tensorflow.RemoteFusedGraphExecuteInfo.remote_graph
+	**/
+	public var remote_graph : Dynamic;
+	/**
+		Field tensorflow.RemoteFusedGraphExecuteInfo.serialized_executor_parameters
+	**/
+	public var serialized_executor_parameters : Dynamic;
 }

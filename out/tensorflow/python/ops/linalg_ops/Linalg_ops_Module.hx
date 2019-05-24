@@ -386,6 +386,46 @@ package tensorflow.python.ops.linalg_ops;
 	**/
 	static public function log_matrix_determinant_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		Computes the LU decomposition of one or more square matrices.
+		
+		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
+		form square matrices.
+		
+		The input has to be invertible.
+		
+		The output consists of two tensors LU and P containing the LU decomposition
+		of all input submatrices `[..., :, :]`. LU encodes the lower triangular and
+		upper triangular factors.
+		
+		For each input submatrix of shape `[M, M]`, L is a lower triangular matrix of
+		shape `[M, M]` with unit diagonal whose entries correspond to the strictly lower
+		triangular part of LU. U is a upper triangular matrix of shape `[M, M]` whose
+		entries correspond to the upper triangular part, including the diagonal, of LU.
+		
+		P represents a permutation matrix encoded as a list of indices each between `0`
+		and `M-1`, inclusive. If P_mat denotes the permutation matrix corresponding to
+		P, then the L, U and P satisfies P_mat * input = L * U.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
+		    A tensor of shape `[..., M, M]` whose inner-most 2 dimensions form matrices of
+		    size `[M, M]`.
+		  output_idx_type: An optional `tf.DType` from: `tf.int32, tf.int64`. Defaults to `tf.int32`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (lu, p).
+		
+		  lu: A `Tensor`. Has the same type as `input`.
+		  p: A `Tensor` of type `output_idx_type`.
+	**/
+	static public function lu(input:Dynamic, ?output_idx_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function lu
+	**/
+	static public function lu_eager_fallback(input:Dynamic, ?output_idx_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Computes the determinant of one or more square matrices.
 		
 		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
@@ -576,6 +616,39 @@ package tensorflow.python.ops.linalg_ops;
 	**/
 	static public function matrix_solve_ls_eager_fallback(matrix:Dynamic, rhs:Dynamic, l2_regularizer:Dynamic, ?fast:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		Computes the matrix square root of one or more square matrices:
+		
+		matmul(sqrtm(A), sqrtm(A)) = A
+		
+		The input matrix should be invertible. If the input matrix is real, it should
+		have no eigenvalues which are real and negative (pairs of complex conjugate
+		eigenvalues are allowed).
+		
+		The matrix square root is computed by first reducing the matrix to 
+		quasi-triangular form with the real Schur decomposition. The square root 
+		of the quasi-triangular matrix is then computed directly. Details of 
+		the algorithm can be found in: Nicholas J. Higham, "Computing real 
+		square roots of a real matrix", Linear Algebra Appl., 1987.
+		
+		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
+		form square matrices. The output is a tensor of the same shape as the input
+		containing the matrix square root for all input submatrices `[..., :, :]`.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
+		    Shape is `[..., M, M]`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function matrix_square_root(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function matrix_square_root
+	**/
+	static public function matrix_square_root_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Solves systems of linear equations with upper or lower triangular matrices by
 		
 		backsubstitution.
@@ -623,7 +696,7 @@ package tensorflow.python.ops.linalg_ops;
 	/**
 		Computes the norm of vectors, matrices, and tensors. (deprecated arguments)
 		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Warning: SOME ARGUMENTS ARE DEPRECATED: `(keep_dims)`. They will be removed in a future version.
 		Instructions for updating:
 		keep_dims is deprecated, use keepdims instead
 		
@@ -684,6 +757,65 @@ package tensorflow.python.ops.linalg_ops;
 		@end_compatibility
 	**/
 	static public function norm(tensor:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?keep_dims:Dynamic):Dynamic;
+	/**
+		Computes the norm of vectors, matrices, and tensors.
+		
+		This function can compute several different vector norms (the 1-norm, the
+		Euclidean or 2-norm, the inf-norm, and in general the p-norm for p > 0) and
+		matrix norms (Frobenius, 1-norm, 2-norm and inf-norm).
+		
+		Args:
+		  tensor: `Tensor` of types `float32`, `float64`, `complex64`, `complex128`
+		  ord: Order of the norm. Supported values are 'fro', 'euclidean',
+		    `1`, `2`, `np.inf` and any positive real number yielding the corresponding
+		    p-norm. Default is 'euclidean' which is equivalent to Frobenius norm if
+		    `tensor` is a matrix and equivalent to 2-norm for vectors.
+		    Some restrictions apply:
+		      a) The Frobenius norm `fro` is not defined for vectors,
+		      b) If axis is a 2-tuple (matrix norm), only 'euclidean', 'fro', `1`,
+		         `2`, `np.inf` are supported.
+		    See the description of `axis` on how to compute norms for a batch of
+		    vectors or matrices stored in a tensor.
+		  axis: If `axis` is `None` (the default), the input is considered a vector
+		    and a single vector norm is computed over the entire set of values in the
+		    tensor, i.e. `norm(tensor, ord=ord)` is equivalent to
+		    `norm(reshape(tensor, [-1]), ord=ord)`.
+		    If `axis` is a Python integer, the input is considered a batch of vectors,
+		    and `axis` determines the axis in `tensor` over which to compute vector
+		    norms.
+		    If `axis` is a 2-tuple of Python integers it is considered a batch of
+		    matrices and `axis` determines the axes in `tensor` over which to compute
+		    a matrix norm.
+		    Negative indices are supported. Example: If you are passing a tensor that
+		    can be either a matrix or a batch of matrices at runtime, pass
+		    `axis=[-2,-1]` instead of `axis=None` to make sure that matrix norms are
+		    computed.
+		  keepdims: If True, the axis indicated in `axis` are kept with size 1.
+		    Otherwise, the dimensions in `axis` are removed from the output shape.
+		  name: The name of the op.
+		
+		Returns:
+		  output: A `Tensor` of the same type as tensor, containing the vector or
+		    matrix norms. If `keepdims` is True then the rank of output is equal to
+		    the rank of `tensor`. Otherwise, if `axis` is none the output is a scalar,
+		    if `axis` is an integer, the rank of `output` is one less than the rank
+		    of `tensor`, if `axis` is a 2-tuple the rank of `output` is two less
+		    than the rank of `tensor`.
+		
+		Raises:
+		  ValueError: If `ord` or `axis` is invalid.
+		
+		@compatibility(numpy)
+		Mostly equivalent to numpy.linalg.norm.
+		Not supported: ord <= 0, 2-norm for matrices, nuclear norm.
+		Other differences:
+		  a) If axis is `None`, treats the flattened `tensor` as a vector
+		   regardless of rank.
+		  b) Explicitly supports 'euclidean' norm as the default, including for
+		   higher order tensors.
+		@end_compatibility
+	**/
+	static public function norm_v2(tensor:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Computes the QR decompositions of one or more matrices.

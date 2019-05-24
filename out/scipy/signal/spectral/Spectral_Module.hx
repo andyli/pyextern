@@ -62,6 +62,23 @@ package scipy.signal.spectral;
 	**/
 	static public function _lombscargle(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Returns the bias of the median of a set of periodograms relative to
+		the mean.
+		
+		See arXiv:gr-qc/0509116 Appendix B for details.
+		
+		Parameters
+		----------
+		n : int
+		    Numbers of periodograms being averaged.
+		
+		Returns
+		-------
+		bias : float
+		    Calculated bias.
+	**/
+	static public function _median_bias(n:Dynamic):Float;
+	/**
 		Calculate various forms of windowed FFTs for PSD, CSD, etc.
 		
 		This is a helper function that implements the commonality between
@@ -104,8 +121,8 @@ package scipy.signal.spectral;
 		    done. Defaults to 'constant'.
 		return_onesided : bool, optional
 		    If `True`, return a one-sided spectrum for real data. If
-		    `False` return a two-sided spectrum. Note that for complex
-		    data, a two-sided spectrum is always returned.
+		    `False` return a two-sided spectrum. Defaults to `True`, but for 
+		    complex data, a two-sided spectrum is always returned.
 		scaling : { 'density', 'spectrum' }, optional
 		    Selects between computing the cross spectral density ('density')
 		    where `Pxy` has units of V**2/Hz and computing the cross
@@ -153,7 +170,7 @@ package scipy.signal.spectral;
 		This is a helper function, not meant to be called externally.
 		
 		Parameters
-		---------
+		----------
 		window : string, tuple, or ndarray
 		    If window is specified by a string or tuple and nperseg is not
 		    specified, nperseg is set to the default of 256 and returns a window of
@@ -210,15 +227,16 @@ package scipy.signal.spectral;
 		
 		See Also
 		--------
+		check_NOLA: Check whether the Nonzero Overlap Add (NOLA) constraint is met
 		stft: Short Time Fourier Transform
 		istft: Inverse Short Time Fourier Transform
 		
 		Notes
 		-----
 		In order to enable inversion of an STFT via the inverse STFT in
-		`istft`, the signal windowing must obey the constraint of "Constant
-		OverLap Add" (COLA). This ensures that every point in the input data
-		is equally weighted, thereby avoiding aliasing and allowing full
+		`istft`, it is sufficient that the signal windowing obeys the constraint of
+		"Constant OverLap Add" (COLA). This ensures that every point in the input
+		data is equally weighted, thereby avoiding aliasing and allowing full
 		reconstruction.
 		
 		Some examples of windows that satisfy COLA:
@@ -276,6 +294,103 @@ package scipy.signal.spectral;
 		True
 	**/
 	static public function check_COLA(window:Dynamic, nperseg:Dynamic, noverlap:Dynamic, ?tol:Dynamic):Bool;
+	/**
+		Check whether the Nonzero Overlap Add (NOLA) constraint is met
+		
+		Parameters
+		----------
+		window : str or tuple or array_like
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg.
+		nperseg : int
+		    Length of each segment.
+		noverlap : int
+		    Number of points to overlap between segments.
+		tol : float, optional
+		    The allowed variance of a bin's weighted sum from the median bin
+		    sum.
+		
+		Returns
+		-------
+		verdict : bool
+		    `True` if chosen combination satisfies the NOLA constraint within
+		    `tol`, `False` otherwise
+		
+		See Also
+		--------
+		check_COLA: Check whether the Constant OverLap Add (COLA) constraint is met
+		stft: Short Time Fourier Transform
+		istft: Inverse Short Time Fourier Transform
+		
+		Notes
+		-----
+		In order to enable inversion of an STFT via the inverse STFT in
+		`istft`, the signal windowing must obey the constraint of "nonzero
+		overlap add" (NOLA):
+		
+		.. math:: \sum_{t}w^{2}[n-tH] \ne 0
+		
+		for all :math:`n`, where :math:`w` is the window function, :math:`t` is the
+		frame index, and :math:`H` is the hop size (:math:`H` = `nperseg` -
+		`noverlap`).
+		
+		This ensures that the normalization factors in the denominator of the
+		overlap-add inversion equation are not zero. Only very pathological windows
+		will fail the NOLA constraint.
+		
+		.. versionadded:: 1.2.0
+		
+		References
+		----------
+		.. [1] Julius O. Smith III, "Spectral Audio Signal Processing", W3K
+		       Publishing, 2011,ISBN 978-0-9745607-3-1.
+		.. [2] G. Heinzel, A. Ruediger and R. Schilling, "Spectrum and
+		       spectral density estimation by the Discrete Fourier transform
+		       (DFT), including a comprehensive list of window functions and
+		       some new at-top windows", 2002,
+		       http://hdl.handle.net/11858/00-001M-0000-0013-557A-5
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		
+		Confirm NOLA condition for rectangular window of 75% (3/4) overlap:
+		
+		>>> signal.check_NOLA(signal.boxcar(100), 100, 75)
+		True
+		
+		NOLA is also true for 25% (1/4) overlap:
+		
+		>>> signal.check_NOLA(signal.boxcar(100), 100, 25)
+		True
+		
+		"Symmetrical" Hann window (for filter design) is also NOLA:
+		
+		>>> signal.check_NOLA(signal.hann(120, sym=True), 120, 60)
+		True
+		
+		As long as there is overlap, it takes quite a pathological window to fail
+		NOLA:
+		
+		>>> w = np.ones(64, dtype="float")
+		>>> w[::2] = 0
+		>>> signal.check_NOLA(w, 64, 32)
+		False
+		
+		If there is not enough overlap, a window with zeros at the ends will not
+		work:
+		
+		>>> signal.check_NOLA(signal.hann(64), 64, 0)
+		False
+		>>> signal.check_NOLA(signal.hann(64), 64, 1)
+		False
+		>>> signal.check_NOLA(signal.hann(64), 64, 2)
+		True
+	**/
+	static public function check_NOLA(window:Dynamic, nperseg:Dynamic, noverlap:Dynamic, ?tol:Dynamic):Bool;
 	/**
 		Estimate the magnitude squared coherence estimate, Cxy, of
 		discrete-time signals X and Y using Welch's method.
@@ -457,8 +572,8 @@ package scipy.signal.spectral;
 		    done. Defaults to 'constant'.
 		return_onesided : bool, optional
 		    If `True`, return a one-sided spectrum for real data. If
-		    `False` return a two-sided spectrum. Note that for complex
-		    data, a two-sided spectrum is always returned.
+		    `False` return a two-sided spectrum. Defaults to `True`, but for 
+		    complex data, a two-sided spectrum is always returned.
 		scaling : { 'density', 'spectrum' }, optional
 		    Selects between computing the cross spectral density ('density')
 		    where `Pxy` has units of V**2/Hz and computing the cross spectrum
@@ -467,6 +582,10 @@ package scipy.signal.spectral;
 		axis : int, optional
 		    Axis along which the CSD is computed for both inputs; the
 		    default is over the last axis (i.e. ``axis=-1``).
+		average : { 'mean', 'median' }, optional
+		    Method to use when averaging periodograms. Defaults to 'mean'.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -535,7 +654,7 @@ package scipy.signal.spectral;
 		>>> plt.ylabel('CSD [V**2/Hz]')
 		>>> plt.show()
 	**/
-	static public function csd(x:Dynamic, y:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?detrend:Dynamic, ?return_onesided:Dynamic, ?scaling:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function csd(x:Dynamic, y:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?detrend:Dynamic, ?return_onesided:Dynamic, ?scaling:Dynamic, ?axis:Dynamic, ?average:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Even extension at the boundaries of an array
@@ -572,7 +691,7 @@ package scipy.signal.spectral;
 	**/
 	static public function even_ext(x:Dynamic, n:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
-		Return a window.
+		Return a window of a given length and type.
 		
 		Parameters
 		----------
@@ -595,13 +714,26 @@ package scipy.signal.spectral;
 		-----
 		Window types:
 		
-		    `boxcar`, `triang`, `blackman`, `hamming`, `hann`, `bartlett`,
-		    `flattop`, `parzen`, `bohman`, `blackmanharris`, `nuttall`,
-		    `barthann`, `kaiser` (needs beta), `gaussian` (needs standard
-		    deviation), `general_gaussian` (needs power, width), `slepian`
-		    (needs width), `dpss` (needs normalized half-bandwidth),
-		    `chebwin` (needs attenuation), `exponential` (needs decay scale),
-		    `tukey` (needs taper fraction)
+		- `~scipy.signal.windows.boxcar`
+		- `~scipy.signal.windows.triang`
+		- `~scipy.signal.windows.blackman`
+		- `~scipy.signal.windows.hamming`
+		- `~scipy.signal.windows.hann`
+		- `~scipy.signal.windows.bartlett`
+		- `~scipy.signal.windows.flattop`
+		- `~scipy.signal.windows.parzen`
+		- `~scipy.signal.windows.bohman`
+		- `~scipy.signal.windows.blackmanharris`
+		- `~scipy.signal.windows.nuttall`
+		- `~scipy.signal.windows.barthann`
+		- `~scipy.signal.windows.kaiser` (needs beta)
+		- `~scipy.signal.windows.gaussian` (needs standard deviation)
+		- `~scipy.signal.windows.general_gaussian` (needs power, width)
+		- `~scipy.signal.windows.slepian` (needs width)
+		- `~scipy.signal.windows.dpss` (needs normalized half-bandwidth)
+		- `~scipy.signal.windows.chebwin` (needs attenuation)
+		- `~scipy.signal.windows.exponential` (needs decay scale)
+		- `~scipy.signal.windows.tukey` (needs taper fraction)
 		
 		If the window requires no parameters, then `window` can be a string.
 		
@@ -610,7 +742,7 @@ package scipy.signal.spectral;
 		arguments the needed parameters.
 		
 		If `window` is a floating point number, it is interpreted as the beta
-		parameter of the `kaiser` window.
+		parameter of the `~scipy.signal.windows.kaiser` window.
 		
 		Each of the window types listed above is also the name of
 		a function that can be called directly to create a window of
@@ -652,7 +784,7 @@ package scipy.signal.spectral;
 		    parameter must be specified if the number of data points per
 		    segment is odd, or if the STFT was padded via ``nfft >
 		    nperseg``. If `None`, the value depends on the shape of
-		    `Zxx` and `input_onesided`. If `input_onesided` is True,
+		    `Zxx` and `input_onesided`. If `input_onesided` is `True`,
 		    ``nperseg=2*(Zxx.shape[freq_axis] - 1)``. Otherwise,
 		    ``nperseg=Zxx.shape[freq_axis]``. Defaults to `None`.
 		noverlap : int, optional
@@ -698,20 +830,27 @@ package scipy.signal.spectral;
 		stft: Short Time Fourier Transform
 		check_COLA: Check whether the Constant OverLap Add (COLA) constraint
 		            is met
+		check_NOLA: Check whether the Nonzero Overlap Add (NOLA) constraint is met
 		
 		Notes
 		-----
 		In order to enable inversion of an STFT via the inverse STFT with
-		`istft`, the signal windowing must obey the constraint of "Constant
-		OverLap Add" (COLA). This ensures that every point in the input data
-		is equally weighted, thereby avoiding aliasing and allowing full
-		reconstruction. Whether a choice of `window`, `nperseg`, and
-		`noverlap` satisfy this constraint can be tested with
-		`check_COLA`, by using ``nperseg = Zxx.shape[freq_axis]``.
+		`istft`, the signal windowing must obey the constraint of "nonzero
+		overlap add" (NOLA):
+		
+		.. math:: \sum_{t}w^{2}[n-tH] \ne 0
+		
+		This ensures that the normalization factors that appear in the denominator
+		of the overlap-add reconstruction equation
+		
+		.. math:: x[n]=\frac{\sum_{t}x_{t}[n]w[n-tH]}{\sum_{t}w^{2}[n-tH]}
+		
+		are not zero. The NOLA constraint can be checked with the `check_NOLA`
+		function.
 		
 		An STFT which has been modified (via masking or otherwise) is not
 		guaranteed to correspond to a exactly realizible signal. This
-		function implements the iSTFT via the least-squares esimation
+		function implements the iSTFT via the least-squares estimation
 		algorithm detailed in [2]_, which produces a signal that minimizes
 		the mean squared error between the STFT of the returned signal and
 		the modified STFT.
@@ -722,8 +861,8 @@ package scipy.signal.spectral;
 		----------
 		.. [1] Oppenheim, Alan V., Ronald W. Schafer, John R. Buck
 		       "Discrete-Time Signal Processing", Prentice Hall, 1999.
-		.. [2] Daniel W. Griffin, Jae S. Limdt "Signal Estimation from
-		       Modified Short Fourier Transform", IEEE 1984,
+		.. [2] Daniel W. Griffin, Jae S. Lim "Signal Estimation from
+		       Modified Short-Time Fourier Transform", IEEE 1984,
 		       10.1109/TASSP.1984.1164317
 		
 		Examples
@@ -798,7 +937,7 @@ package scipy.signal.spectral;
 		is unnormalized, it takes the value ``(A**2) * N/4`` for a harmonic
 		signal with amplitude A for sufficiently large N.
 		
-		When *normalize* is True the computed periodogram is is normalized by
+		When *normalize* is True the computed periodogram is normalized by
 		the residuals of the data around a constant reference model (at zero).
 		
 		Input arrays should be one-dimensional and will be cast to float64.
@@ -841,7 +980,7 @@ package scipy.signal.spectral;
 		.. [1] N.R. Lomb "Least-squares frequency analysis of unequally spaced
 		       data", Astrophysics and Space Science, vol 39, pp. 447-462, 1976
 		
-		.. [2] J.D. Scargle "Studies in astronomical time series analysis. II - 
+		.. [2] J.D. Scargle "Studies in astronomical time series analysis. II -
 		       Statistical aspects of spectral analysis of unevenly spaced data",
 		       The Astrophysical Journal, vol 263, pp. 835-853, 1982
 		
@@ -849,9 +988,16 @@ package scipy.signal.spectral;
 		       periodogram using graphics processing units.", The Astrophysical
 		       Journal Supplement Series, vol 191, pp. 247-253, 2010
 		
+		See Also
+		--------
+		istft: Inverse Short Time Fourier Transform
+		check_COLA: Check whether the Constant OverLap Add (COLA) constraint is met
+		welch: Power spectral density by Welch's method
+		spectrogram: Spectrogram by Welch's method
+		csd: Cross spectral density by Welch's method
+		
 		Examples
 		--------
-		>>> import scipy.signal
 		>>> import matplotlib.pyplot as plt
 		
 		First define some input parameters for the signal:
@@ -862,13 +1008,13 @@ package scipy.signal.spectral;
 		>>> nin = 1000
 		>>> nout = 100000
 		>>> frac_points = 0.9 # Fraction of points to select
-		 
+		
 		Randomly select a fraction of an array with timesteps:
 		
 		>>> r = np.random.rand(nin)
 		>>> x = np.linspace(0.01, 10*np.pi, nin)
 		>>> x = x[r >= frac_points]
-		 
+		
 		Plot a sine wave for the selected times:
 		
 		>>> y = A * np.sin(w*x+phi)
@@ -876,7 +1022,7 @@ package scipy.signal.spectral;
 		Define the array of frequencies for which to compute the periodogram:
 		
 		>>> f = np.linspace(0.01, 10, nout)
-		 
+		
 		Calculate Lomb-Scargle periodogram:
 		
 		>>> import scipy.signal as signal
@@ -956,8 +1102,8 @@ package scipy.signal.spectral;
 		    done. Defaults to 'constant'.
 		return_onesided : bool, optional
 		    If `True`, return a one-sided spectrum for real data. If
-		    `False` return a two-sided spectrum. Note that for complex
-		    data, a two-sided spectrum is always returned.
+		    `False` return a two-sided spectrum. Defaults to `True`, but for 
+		    complex data, a two-sided spectrum is always returned.
 		scaling : { 'density', 'spectrum' }, optional
 		    Selects between computing the power spectral density ('density')
 		    where `Pxx` has units of V**2/Hz and computing the power
@@ -1072,8 +1218,8 @@ package scipy.signal.spectral;
 		    done. Defaults to 'constant'.
 		return_onesided : bool, optional
 		    If `True`, return a one-sided spectrum for real data. If
-		    `False` return a two-sided spectrum. Note that for complex
-		    data, a two-sided spectrum is always returned.
+		    `False` return a two-sided spectrum. Defaults to `True`, but for 
+		    complex data, a two-sided spectrum is always returned.
 		scaling : { 'density', 'spectrum' }, optional
 		    Selects between computing the power spectral density ('density')
 		    where `Sxx` has units of V**2/Hz and computing the power
@@ -1152,6 +1298,14 @@ package scipy.signal.spectral;
 		>>> plt.ylabel('Frequency [Hz]')
 		>>> plt.xlabel('Time [sec]')
 		>>> plt.show()
+		
+		Note, if using output that is not one sided, then use the following:
+		
+		>>> f, t, Sxx = signal.spectrogram(x, fs, return_onesided=False)
+		>>> plt.pcolormesh(t, np.fft.fftshift(f), np.fft.fftshift(Sxx, axes=0))
+		>>> plt.ylabel('Frequency [Hz]')
+		>>> plt.xlabel('Time [sec]')
+		>>> plt.show()
 	**/
 	static public function spectrogram(x:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?detrend:Dynamic, ?return_onesided:Dynamic, ?scaling:Dynamic, ?axis:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
@@ -1190,9 +1344,8 @@ package scipy.signal.spectral;
 		    done. Defaults to `False`.
 		return_onesided : bool, optional
 		    If `True`, return a one-sided spectrum for real data. If
-		    `False` return a two-sided spectrum. Note that for complex
-		    data, a two-sided spectrum is always returned. Defaults to
-		    `True`.
+		    `False` return a two-sided spectrum. Defaults to `True`, but for 
+		    complex data, a two-sided spectrum is always returned.
 		boundary : str or None, optional
 		    Specifies whether the input signal is extended at both ends, and
 		    how to generate the new values, in order to center the first
@@ -1228,6 +1381,7 @@ package scipy.signal.spectral;
 		istft: Inverse Short Time Fourier Transform
 		check_COLA: Check whether the Constant OverLap Add (COLA) constraint
 		            is met
+		check_NOLA: Check whether the Nonzero Overlap Add (NOLA) constraint is met
 		welch: Power spectral density by Welch's method.
 		spectrogram: Spectrogram by Welch's method.
 		csd: Cross spectral density by Welch's method.
@@ -1236,17 +1390,26 @@ package scipy.signal.spectral;
 		Notes
 		-----
 		In order to enable inversion of an STFT via the inverse STFT in
-		`istft`, the signal windowing must obey the constraint of "Constant
-		OverLap Add" (COLA), and the input signal must have complete
+		`istft`, the signal windowing must obey the constraint of "Nonzero
+		OverLap Add" (NOLA), and the input signal must have complete
 		windowing coverage (i.e. ``(x.shape[axis] - nperseg) %
 		(nperseg-noverlap) == 0``). The `padded` argument may be used to
 		accomplish this.
 		
-		The COLA constraint ensures that every point in the input data is
-		equally weighted, thereby avoiding aliasing and allowing full
-		reconstruction. Whether a choice of `window`, `nperseg`, and
-		`noverlap` satisfy this constraint can be tested with
-		`check_COLA`.
+		Given a time-domain signal :math:`x[n]`, a window :math:`w[n]`, and a hop
+		size :math:`H` = `nperseg - noverlap`, the windowed frame at time index
+		:math:`t` is given by
+		
+		.. math:: x_{t}[n]=x[n]w[n-tH]
+		
+		The overlap-add (OLA) reconstruction equation is given by
+		
+		.. math:: x[n]=\frac{\sum_{t}x_{t}[n]w[n-tH]}{\sum_{t}w^{2}[n-tH]}
+		
+		The NOLA constraint ensures that every normalization term that appears
+		in the denomimator of the OLA reconstruction equation is nonzero. Whether a
+		choice of `window`, `nperseg`, and `noverlap` satisfy this constraint can
+		be tested with `check_NOLA`.
 		
 		.. versionadded:: 0.19.0
 		
@@ -1254,8 +1417,8 @@ package scipy.signal.spectral;
 		----------
 		.. [1] Oppenheim, Alan V., Ronald W. Schafer, John R. Buck
 		       "Discrete-Time Signal Processing", Prentice Hall, 1999.
-		.. [2] Daniel W. Griffin, Jae S. Limdt "Signal Estimation from
-		       Modified Short Fourier Transform", IEEE 1984,
+		.. [2] Daniel W. Griffin, Jae S. Lim "Signal Estimation from
+		       Modified Short-Time Fourier Transform", IEEE 1984,
 		       10.1109/TASSP.1984.1164317
 		
 		Examples
@@ -1329,8 +1492,8 @@ package scipy.signal.spectral;
 		    done. Defaults to 'constant'.
 		return_onesided : bool, optional
 		    If `True`, return a one-sided spectrum for real data. If
-		    `False` return a two-sided spectrum. Note that for complex
-		    data, a two-sided spectrum is always returned.
+		    `False` return a two-sided spectrum. Defaults to `True`, but for 
+		    complex data, a two-sided spectrum is always returned.
 		scaling : { 'density', 'spectrum' }, optional
 		    Selects between computing the power spectral density ('density')
 		    where `Pxx` has units of V**2/Hz and computing the power
@@ -1340,6 +1503,10 @@ package scipy.signal.spectral;
 		axis : int, optional
 		    Axis along which the periodogram is computed; the default is
 		    over the last axis (i.e. ``axis=-1``).
+		average : { 'mean', 'median' }, optional
+		    Method to use when averaging periodograms. Defaults to 'mean'.
+		
+		    .. versionadded:: 1.2.0
 		
 		Returns
 		-------
@@ -1422,8 +1589,24 @@ package scipy.signal.spectral;
 		
 		>>> np.sqrt(Pxx_spec.max())
 		2.0077340678640727
+		
+		If we now introduce a discontinuity in the signal, by increasing the
+		amplitude of a small portion of the signal by 50, we can see the
+		corruption of the mean average power spectral density, but using a
+		median average better estimates the normal behaviour.
+		
+		>>> x[int(N//2):int(N//2)+10] *= 50.
+		>>> f, Pxx_den = signal.welch(x, fs, nperseg=1024)
+		>>> f_med, Pxx_den_med = signal.welch(x, fs, nperseg=1024, average='median')
+		>>> plt.semilogy(f, Pxx_den, label='mean')
+		>>> plt.semilogy(f_med, Pxx_den_med, label='median')
+		>>> plt.ylim([0.5e-3, 1])
+		>>> plt.xlabel('frequency [Hz]')
+		>>> plt.ylabel('PSD [V**2/Hz]')
+		>>> plt.legend()
+		>>> plt.show()
 	**/
-	static public function welch(x:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?detrend:Dynamic, ?return_onesided:Dynamic, ?scaling:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function welch(x:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?detrend:Dynamic, ?return_onesided:Dynamic, ?scaling:Dynamic, ?axis:Dynamic, ?average:Dynamic):Dynamic;
 	/**
 		Zero padding at the boundaries of an array
 		

@@ -97,7 +97,7 @@ package numpy.polynomial.hermite_e;
 		
 		See Also
 		--------
-		hermesub, hermemul, hermediv, hermepow
+		hermesub, hermemulx, hermemul, hermediv, hermepow
 		
 		Notes
 		-----
@@ -215,7 +215,7 @@ package numpy.polynomial.hermite_e;
 		
 		See Also
 		--------
-		hermeadd, hermesub, hermemul, hermepow
+		hermeadd, hermesub, hermemulx, hermemul, hermepow
 		
 		Notes
 		-----
@@ -347,7 +347,7 @@ package numpy.polynomial.hermite_e;
 		References
 		----------
 		.. [1] Wikipedia, "Curve fitting",
-		       http://en.wikipedia.org/wiki/Curve_fitting
+		       https://en.wikipedia.org/wiki/Curve_fitting
 		
 		Examples
 		--------
@@ -676,7 +676,7 @@ package numpy.polynomial.hermite_e;
 		
 		See Also
 		--------
-		hermeadd, hermesub, hermediv, hermepow
+		hermeadd, hermesub, hermemulx, hermediv, hermepow
 		
 		Notes
 		-----
@@ -753,7 +753,7 @@ package numpy.polynomial.hermite_e;
 		
 		See Also
 		--------
-		hermeadd, hermesub, hermemul, hermediv
+		hermeadd, hermesub, hermemulx, hermemul, hermediv
 		
 		Examples
 		--------
@@ -827,7 +827,7 @@ package numpy.polynomial.hermite_e;
 		
 		See Also
 		--------
-		hermeadd, hermemul, hermediv, hermepow
+		hermeadd, hermemulx, hermemul, hermediv, hermepow
 		
 		Notes
 		-----

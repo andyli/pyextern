@@ -21,8 +21,11 @@ package torch.nn.modules.adaptive;
 		Arguments:
 		    input (Tensor): input
 		    dim (int): A dimension along which log_softmax will be computed.
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		    If specified, the input tensor is casted to :attr:`dtype` before the operation
+		    is performed. This is useful for preventing data type overflows. Default: None.
 	**/
-	static public function log_softmax(input:Dynamic, ?dim:Dynamic, ?_stacklevel:Dynamic):Dynamic;
+	static public function log_softmax(input:Dynamic, ?dim:Dynamic, ?_stacklevel:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Returns a new subclass of tuple with named fields.
 		

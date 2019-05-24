@@ -12,12 +12,10 @@ package torch.distributions.pareto;
 	/**
 		Given a list of values (possibly containing numbers), returns a list where each
 		value is broadcasted based on the following rules:
-		  - `torch.*Tensor` instances are broadcasted as per the `broadcasting rules
-		    <http://pytorch.org/docs/master/notes/broadcasting.html>`_
+		  - `torch.*Tensor` instances are broadcasted as per :ref:`_broadcasting-semantics`.
 		  - numbers.Number instances (scalars) are upcast to tensors having
 		    the same size and type as the first tensor passed to `values`.  If all the
-		    values are scalars, then they are upcasted to Tensors having size
-		    `(1,)`.
+		    values are scalars, then they are upcasted to scalar Tensors.
 		
 		Args:
 		    values (list of `numbers.Number` or `torch.*Tensor`)

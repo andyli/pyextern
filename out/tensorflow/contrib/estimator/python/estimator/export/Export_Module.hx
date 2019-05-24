@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.estimator.python.estimator.export;
 @:pythonImport("tensorflow.contrib.estimator.python.estimator.export") extern class Export_Module {
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,9 +11,46 @@ package tensorflow.contrib.estimator.python.estimator.export;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Exports requested train/eval/predict graphs as separate SavedModels.
+		Exports requested train/eval/predict graphs as separate SavedModels. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-12-03.
+		Instructions for updating:
+		Use estimator.experimental_export_all_saved_models
 		
 		See tf.contrib.estimator.export_all_saved_models for the currently
 		exposed version of this function.
@@ -76,8 +114,8 @@ package tensorflow.contrib.estimator.python.estimator.export;
 		    export_dir_base='my_model/',
 		    input_receiver_fn_map=rcvr_fn_map)
 		
-		# export_dirs is a dict of directories with SavedModels, which
-		# can be used for serving, analysis with TFMA, or directly loaded in.
+		# export_dir is a directory with SavedModels, which can be used for serving,
+		# analysis with TFMA, or directly loaded in.
 		with ops.Graph().as_default() as graph:
 		  with session.Session(graph=graph) as sess:
 		    loader.load(sess, [tag_constants.TRAINING], export_dir)
@@ -97,21 +135,21 @@ package tensorflow.contrib.estimator.python.estimator.export;
 		  as_text: whether to write the SavedModel proto in text format.
 		  checkpoint_path: The checkpoint path to export.  If `None` (the default),
 		    the most recent checkpoint found within the model directory is chosen.
-		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
-		    removed from the NodeDefs. For a detailed guide, see
-		    [Stripping Default-Valued Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
 		
 		Returns:
-		  A dict of tf.estimator.ModeKeys value to string path for each exported
-		  directory.
+		  The string path to the exported directory.
 		
 		Raises:
 		  ValueError: if any input_receiver_fn is None, no export_outputs
 		    are provided, or no checkpoint can be found.
 	**/
-	static public function export_all_saved_models(estimator:Dynamic, export_dir_base:Dynamic, input_receiver_fn_map:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic, ?strip_default_attrs:Dynamic):Dynamic;
+	static public function export_all_saved_models(estimator:Dynamic, export_dir_base:Dynamic, input_receiver_fn_map:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic):Dynamic;
 	/**
-		Exports a single train/eval/predict graph as a SavedModel.
+		Exports a single train/eval/predict graph as a SavedModel. (deprecated)
+		
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed after 2018-12-03.
+		Instructions for updating:
+		Use estimator.export_saved_model(*args, experimental_mode=...)
 		
 		For a detailed guide, see [Using SavedModel with Estimators](
 		https://tensorflow.org/guide/saved_model#using_savedmodel_with_estimators).
@@ -164,9 +202,6 @@ package tensorflow.contrib.estimator.python.estimator.export;
 		  as_text: whether to write the SavedModel proto in text format.
 		  checkpoint_path: The checkpoint path to export.  If `None` (the default),
 		    the most recent checkpoint found within the model directory is chosen.
-		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
-		    removed from the NodeDefs. For a detailed guide, see
-		    [Stripping Default-Valued Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
 		  mode: tf.estimator.ModeKeys value indicating with mode will be exported.
 		
 		Returns:
@@ -176,6 +211,6 @@ package tensorflow.contrib.estimator.python.estimator.export;
 		  ValueError: if input_receiver_fn is None, no export_outputs
 		    are provided, or no checkpoint can be found.
 	**/
-	static public function export_saved_model_for_mode(estimator:Dynamic, export_dir_base:Dynamic, input_receiver_fn:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic, ?strip_default_attrs:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function export_saved_model_for_mode(estimator:Dynamic, export_dir_base:Dynamic, input_receiver_fn:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic, ?mode:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

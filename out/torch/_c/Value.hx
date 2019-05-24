@@ -128,11 +128,7 @@ package torch._c;
 	**/
 	public function replaceAllUsesWith(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		setStage(self: torch._C.Value, arg0: int) -> torch._C.Value
-	**/
-	public function setStage(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		setType(self: torch._C.Value, arg0: torch::jit::Type) -> torch._C.Value
+		setType(self: torch._C.Value, arg0: c10::Type) -> torch._C.Value
 	**/
 	public function setType(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -144,11 +140,7 @@ package torch._c;
 	**/
 	public function setUniqueName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		stage(self: torch._C.Value) -> int
-	**/
-	public function stage(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		type(self: torch._C.Value) -> torch::jit::Type
+		type(self: torch._C.Value) -> c10::Type
 	**/
 	public function type(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

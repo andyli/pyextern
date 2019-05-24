@@ -86,6 +86,23 @@ package tensorflow.contrib.nn.python.ops.fwd_gradients;
 		All integer tensors are considered constant with respect to all `xs`, as if
 		they were included in `stop_gradients`.
 		
+		`unconnected_gradients` determines the value returned for each x in xs if it
+		is unconnected in the graph to ys. By default this is None to safeguard
+		against errors. MAthematically these gradients are zero which can be requested
+		using the `'zero'` option. `tf.UnconnectedGradients` provides the
+		following options and behaviors:
+		
+		```python
+		a = tf.ones([1, 2])
+		b = tf.ones([3, 1])
+		g1 = tf.gradients([b], [a], unnconnected_gradients='none')
+		sess.run(g1)  # [None]
+		
+		g2 = tf.gradients([b], [a], unconnected_gradients='zero')
+		sess.run(g2)  # [array([[0., 0.]], dtype=float32)]
+		```
+		
+		
 		Args:
 		  ys: A `Tensor` or list of tensors to be differentiated.
 		  xs: A `Tensor` or list of tensors to be used for differentiation.
@@ -101,6 +118,10 @@ package tensorflow.contrib.nn.python.ops.fwd_gradients;
 		    Accepted values are constants defined in the class `AggregationMethod`.
 		  stop_gradients: Optional. A `Tensor` or list of tensors not to differentiate
 		    through.
+		  unconnected_gradients: Optional. Specifies the gradient value returned when
+		    the given input tensors are unconnected. Accepted values are constants
+		    defined in the class `tf.UnconnectedGradients` and the default value is
+		    `none`.
 		
 		Returns:
 		  A list of `sum(dy/dx)` for each x in `xs`.
@@ -111,6 +132,6 @@ package tensorflow.contrib.nn.python.ops.fwd_gradients;
 		  ValueError: if the arguments are invalid.
 		  RuntimeError: if called in Eager mode.
 	**/
-	static public function gradients(ys:Dynamic, xs:Dynamic, ?grad_ys:Dynamic, ?name:Dynamic, ?colocate_gradients_with_ops:Dynamic, ?gate_gradients:Dynamic, ?aggregation_method:Dynamic, ?stop_gradients:Dynamic):Dynamic;
+	static public function gradients(ys:Dynamic, xs:Dynamic, ?grad_ys:Dynamic, ?name:Dynamic, ?colocate_gradients_with_ops:Dynamic, ?gate_gradients:Dynamic, ?aggregation_method:Dynamic, ?stop_gradients:Dynamic, ?unconnected_gradients:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

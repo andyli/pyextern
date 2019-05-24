@@ -118,6 +118,7 @@ package torch.distributions.categorical;
 		    sample_shape (torch.Size): the size of the sample to be drawn.
 	**/
 	public function _extended_shape(?sample_shape:Dynamic):Dynamic;
+	public function _get_checked_instance(cls:Dynamic, ?_instance:Dynamic):Dynamic;
 	public function _new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _validate_args : Dynamic;
 	/**
@@ -161,17 +162,44 @@ package torch.distributions.categorical;
 		(where `event_shape = ()` for univariate distributions).
 		
 		Note that this enumerates over all batched tensors in lock-step
-		`[[0, 0], [1, 1], ...]`. To iterate over the full Cartesian product
-		use `itertools.product(m.enumerate_support())`.
+		`[[0, 0], [1, 1], ...]`. With `expand=False`, enumeration happens
+		along dim 0, but with the remaining batch dimensions being
+		singleton dimensions, `[[0], [1], ..`.
+		
+		To iterate over the full Cartesian product use
+		`itertools.product(m.enumerate_support())`.
+		
+		Args:
+		    expand (bool): whether to expand the support over the
+		        batch dims to match the distribution's `batch_shape`.
 		
 		Returns:
 		    Tensor iterating over dimension 0.
 	**/
-	public function enumerate_support():Dynamic;
+	public function enumerate_support(?expand:Dynamic):Dynamic;
 	/**
 		Returns the shape of a single sample (without batching).
 	**/
 	public var event_shape : Dynamic;
+	/**
+		Returns a new distribution instance (or populates an existing instance
+		provided by a derived class) with batch dimensions expanded to
+		`batch_shape`. This method calls :class:`~torch.Tensor.expand` on
+		the distribution's parameters. As such, this does not allocate new
+		memory for the expanded distribution instance. Additionally,
+		this does not repeat any args checking or parameter broadcasting in
+		`__init__.py`, when an instance is first created.
+		
+		Args:
+		    batch_shape (torch.Size): the desired expanded size.
+		    _instance: new instance provided by subclasses that
+		        need to override `.expand`.
+		
+		Returns:
+		    New distribution instance with batch dimensions expanded to
+		    `batch_size`.
+	**/
+	public function expand(batch_shape:Dynamic, ?_instance:Dynamic):Dynamic;
 	static public var has_enumerate_support : Dynamic;
 	static public var has_rsample : Dynamic;
 	/**

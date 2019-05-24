@@ -73,25 +73,6 @@ package tensorflow.python.ops.gen_dataset_ops;
 	**/
 	static public function batch_dataset_v2_eager_fallback(input_dataset:Dynamic, batch_size:Dynamic, drop_remainder:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Records the bytes size of each element of `input_dataset` in a StatsAggregator.
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		  tag: A `Tensor` of type `string`.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function bytes_produced_stats_dataset(input_dataset:Dynamic, tag:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function bytes_produced_stats_dataset
-	**/
-	static public function bytes_produced_stats_dataset_eager_fallback(input_dataset:Dynamic, tag:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
 		Creates a dataset that caches elements from `input_dataset`.
 		
 		A CacheDataset will iterate over the input_dataset, and store tensors. If the
@@ -175,54 +156,6 @@ package tensorflow.python.ops.gen_dataset_ops;
 	**/
 	static public function dataset_to_single_element_eager_fallback(dataset:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Writes the given dataset to the given file using the TFRecord format.
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		    A variant tensor representing the dataset to write.
-		  filename: A `Tensor` of type `string`.
-		    A scalar string tensor representing the filename to use.
-		  compression_type: A `Tensor` of type `string`.
-		    A scalar string tensor containing either (i) the empty string (no
-		    compression), (ii) "ZLIB", or (iii) "GZIP".
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  The created Operation.
-	**/
-	static public function dataset_to_tf_record(input_dataset:Dynamic, filename:Dynamic, compression_type:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function dataset_to_tf_record
-	**/
-	static public function dataset_to_tf_record_eager_fallback(input_dataset:Dynamic, filename:Dynamic, compression_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		Creates a dataset that batches input elements into a SparseTensor.
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		    A handle to an input dataset. Must have a single component.
-		  batch_size: A `Tensor` of type `int64`.
-		    A scalar representing the number of elements to accumulate in a
-		    batch.
-		  row_shape: A `Tensor` of type `int64`.
-		    A vector representing the dense shape of each row in the produced
-		    SparseTensor. The shape may be partially specified, using `-1` to indicate
-		    that a particular dimension should use the maximum size of all batch elements.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function dense_to_sparse_batch_dataset(input_dataset:Dynamic, batch_size:Dynamic, row_shape:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function dense_to_sparse_batch_dataset
-	**/
-	static public function dense_to_sparse_batch_dataset_eager_fallback(input_dataset:Dynamic, batch_size:Dynamic, row_shape:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
 		Decorator for marking endpoints deprecated.
 		
 		This decorator does not print deprecation messages.
@@ -259,23 +192,6 @@ package tensorflow.python.ops.gen_dataset_ops;
 		This is for function deserialize_iterator
 	**/
 	static public function deserialize_iterator_eager_fallback(resource_handle:Dynamic, serialized:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		TODO: add doc.
-		
-		Args:
-		  queue: A `Tensor` of type `variant`.
-		  components: A list of `Tensor` objects.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  The created Operation.
-	**/
-	static public function enqueue_in_queue_dataset(queue:Dynamic, components:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function enqueue_in_queue_dataset
-	**/
-	static public function enqueue_in_queue_dataset_eager_fallback(queue:Dynamic, components:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates a dataset containing elements of first component of `input_dataset` having true in the last component.
 		
@@ -352,6 +268,27 @@ package tensorflow.python.ops.gen_dataset_ops;
 	**/
 	static public function fixed_length_record_dataset_eager_fallback(filenames:Dynamic, header_bytes:Dynamic, record_bytes:Dynamic, footer_bytes:Dynamic, buffer_size:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
+		TODO: add doc.
+		
+		Args:
+		  filenames: A `Tensor` of type `string`.
+		  header_bytes: A `Tensor` of type `int64`.
+		  record_bytes: A `Tensor` of type `int64`.
+		  footer_bytes: A `Tensor` of type `int64`.
+		  buffer_size: A `Tensor` of type `int64`.
+		  compression_type: A `Tensor` of type `string`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `variant`.
+	**/
+	static public function fixed_length_record_dataset_v2(filenames:Dynamic, header_bytes:Dynamic, record_bytes:Dynamic, footer_bytes:Dynamic, buffer_size:Dynamic, compression_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function fixed_length_record_dataset_v2
+	**/
+	static public function fixed_length_record_dataset_v2_eager_fallback(filenames:Dynamic, header_bytes:Dynamic, record_bytes:Dynamic, footer_bytes:Dynamic, buffer_size:Dynamic, compression_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Creates a dataset that applies `f` to the outputs of `input_dataset`.
 		
 		Unlike MapDataset, the `f` in FlatMapDataset is expected to return a
@@ -401,78 +338,6 @@ package tensorflow.python.ops.gen_dataset_ops;
 		This is for function generator_dataset
 	**/
 	static public function generator_dataset_eager_fallback(init_func_other_args:Dynamic, next_func_other_args:Dynamic, finalize_func_other_args:Dynamic, init_func:Dynamic, next_func:Dynamic, finalize_func:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		Creates a dataset that computes a group-by on `input_dataset`.
-		
-		Creates a dataset that computes a group-by on `input_dataset`.
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		    A variant tensor representing the input dataset.
-		  key_func_other_arguments: A list of `Tensor` objects.
-		    A list of tensors, typically values that were captured when
-		    building a closure for `key_func`.
-		  init_func_other_arguments: A list of `Tensor` objects.
-		    A list of tensors, typically values that were captured when
-		    building a closure for `init_func`.
-		  reduce_func_other_arguments: A list of `Tensor` objects.
-		    A list of tensors, typically values that were captured when
-		    building a closure for `reduce_func`.
-		  finalize_func_other_arguments: A list of `Tensor` objects.
-		    A list of tensors, typically values that were captured when
-		    building a closure for `finalize_func`.
-		  key_func: A function decorated with @Defun.
-		    A function mapping an element of `input_dataset`, concatenated
-		    with `key_func_other_arguments` to a scalar value of type DT_INT64.
-		  init_func: A function decorated with @Defun.
-		    A function mapping a key of type DT_INT64, concatenated with
-		    `init_func_other_arguments` to the initial reducer state.
-		  reduce_func: A function decorated with @Defun.
-		    A function mapping the current reducer state and an element of `input_dataset`,
-		    concatenated with `reduce_func_other_arguments` to a new reducer state.
-		  finalize_func: A function decorated with @Defun.
-		    A function mapping the final reducer state to an output element.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function group_by_reducer_dataset(input_dataset:Dynamic, key_func_other_arguments:Dynamic, init_func_other_arguments:Dynamic, reduce_func_other_arguments:Dynamic, finalize_func_other_arguments:Dynamic, key_func:Dynamic, init_func:Dynamic, reduce_func:Dynamic, finalize_func:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function group_by_reducer_dataset
-	**/
-	static public function group_by_reducer_dataset_eager_fallback(input_dataset:Dynamic, key_func_other_arguments:Dynamic, init_func_other_arguments:Dynamic, reduce_func_other_arguments:Dynamic, finalize_func_other_arguments:Dynamic, key_func:Dynamic, init_func:Dynamic, reduce_func:Dynamic, finalize_func:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		Creates a dataset that computes a windowed group-by on `input_dataset`.
-		
-		// TODO(mrry): Support non-int64 keys.
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		  key_func_other_arguments: A list of `Tensor` objects.
-		  reduce_func_other_arguments: A list of `Tensor` objects.
-		  window_size_func_other_arguments: A list of `Tensor` objects.
-		  key_func: A function decorated with @Defun.
-		    A function mapping an element of `input_dataset`, concatenated
-		    with `key_func_other_arguments` to a scalar value of type DT_INT64.
-		  reduce_func: A function decorated with @Defun.
-		  window_size_func: A function decorated with @Defun.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function group_by_window_dataset(input_dataset:Dynamic, key_func_other_arguments:Dynamic, reduce_func_other_arguments:Dynamic, window_size_func_other_arguments:Dynamic, key_func:Dynamic, reduce_func:Dynamic, window_size_func:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function group_by_window_dataset
-	**/
-	static public function group_by_window_dataset_eager_fallback(input_dataset:Dynamic, key_func_other_arguments:Dynamic, reduce_func_other_arguments:Dynamic, window_size_func_other_arguments:Dynamic, key_func:Dynamic, reduce_func:Dynamic, window_size_func:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates a dataset that applies `f` to the outputs of `input_dataset`.
 		
@@ -660,25 +525,6 @@ package tensorflow.python.ops.gen_dataset_ops;
 	**/
 	static public function iterator_v2_eager_fallback(shared_name:Dynamic, container:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Records the latency of producing `input_dataset` elements in a StatsAggregator.
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		  tag: A `Tensor` of type `string`.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function latency_stats_dataset(input_dataset:Dynamic, tag:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function latency_stats_dataset
-	**/
-	static public function latency_stats_dataset_eager_fallback(input_dataset:Dynamic, tag:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
 		Makes a new iterator from the given `dataset` and stores it in `iterator`.
 		
 		This operation may be executed multiple times. Each execution will reset the
@@ -699,87 +545,6 @@ package tensorflow.python.ops.gen_dataset_ops;
 	**/
 	static public function make_iterator_eager_fallback(dataset:Dynamic, iterator:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Creates a dataset that fuses mapping with batching.
-		
-		Creates a dataset that applies `f` to the outputs of `input_dataset` and then
-		batches `batch_size` of them.
-		
-		Unlike a "MapDataset", which applies `f` sequentially, this dataset invokes up
-		to `batch_size * num_parallel_batches` copies of `f` in parallel.
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		    A variant tensor representing the input dataset.
-		  other_arguments: A list of `Tensor` objects.
-		    A list of tensors, typically values that were captured when building a closure
-		    for `f`.
-		  batch_size: A `Tensor` of type `int64`.
-		    A scalar representing the number of elements to accumulate in a
-		    batch. It determines the number of concurrent invocations of `f` that process
-		    elements from `input_dataset` in parallel.
-		  num_parallel_batches: A `Tensor` of type `int64`.
-		    A scalar representing the number of batches to create in parallel. Processing
-		    multiple batches in parallel benefits workloads prone to stragglers.
-		  drop_remainder: A `Tensor` of type `bool`.
-		    A scalar representing whether the last batch should be dropped in case its size
-		    is smaller than desired.
-		  f: A function decorated with @Defun.
-		    A function to apply to the outputs of `input_dataset`.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function map_and_batch_dataset(input_dataset:Dynamic, other_arguments:Dynamic, batch_size:Dynamic, num_parallel_batches:Dynamic, drop_remainder:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function map_and_batch_dataset
-	**/
-	static public function map_and_batch_dataset_eager_fallback(input_dataset:Dynamic, other_arguments:Dynamic, batch_size:Dynamic, num_parallel_batches:Dynamic, drop_remainder:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		Creates a dataset that fuses mapping with batching.
-		
-		Creates a dataset that applies `f` to the outputs of `input_dataset` and then
-		batches `batch_size` of them.
-		
-		Unlike a "MapDataset", which applies `f` sequentially, this dataset invokes up
-		to `batch_size * num_parallel_batches` copies of `f` in parallel.
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		    A variant tensor representing the input dataset.
-		  other_arguments: A list of `Tensor` objects.
-		    A list of tensors, typically values that were captured when building a closure
-		    for `f`.
-		  batch_size: A `Tensor` of type `int64`.
-		    A scalar representing the number of elements to accumulate in a
-		    batch. It determines the number of concurrent invocations of `f` that process
-		    elements from `input_dataset` in parallel.
-		  num_parallel_calls: A `Tensor` of type `int64`.
-		    A scalar representing the maximum number of parallel invocations of the `map_fn`
-		    function. Applying the `map_fn` on consecutive input elements in parallel has
-		    the potential to improve input pipeline throughput.
-		  drop_remainder: A `Tensor` of type `bool`.
-		    A scalar representing whether the last batch should be dropped in case its size
-		    is smaller than desired.
-		  f: A function decorated with @Defun.
-		    A function to apply to the outputs of `input_dataset`.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function map_and_batch_dataset_v2(input_dataset:Dynamic, other_arguments:Dynamic, batch_size:Dynamic, num_parallel_calls:Dynamic, drop_remainder:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function map_and_batch_dataset_v2
-	**/
-	static public function map_and_batch_dataset_v2_eager_fallback(input_dataset:Dynamic, other_arguments:Dynamic, batch_size:Dynamic, num_parallel_calls:Dynamic, drop_remainder:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
 		Creates a dataset that applies `f` to the outputs of `input_dataset`.
 		
 		Args:
@@ -789,24 +554,28 @@ package tensorflow.python.ops.gen_dataset_ops;
 		  output_types: A list of `tf.DTypes` that has length `>= 1`.
 		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
 		  use_inter_op_parallelism: An optional `bool`. Defaults to `True`.
+		  preserve_cardinality: An optional `bool`. Defaults to `False`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `variant`.
 	**/
-	static public function map_dataset(input_dataset:Dynamic, other_arguments:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?use_inter_op_parallelism:Dynamic, ?name:Dynamic):Dynamic;
+	static public function map_dataset(input_dataset:Dynamic, other_arguments:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?use_inter_op_parallelism:Dynamic, ?preserve_cardinality:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function map_dataset
 	**/
-	static public function map_dataset_eager_fallback(input_dataset:Dynamic, other_arguments:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?use_inter_op_parallelism:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function map_dataset_eager_fallback(input_dataset:Dynamic, other_arguments:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?use_inter_op_parallelism:Dynamic, ?preserve_cardinality:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Maps a function on the list of tensors unpacked from inputs on dimension 0.
+		Maps a function on the list of tensors unpacked from arguments on dimension 0.
 		
 		Args:
 		  arguments: A list of `Tensor` objects.
-		        A list of tensors whose types are Targuments, corresponding to the inputs the
-		        function should be mapped over.
+		        A list of tensors whose types are `Targuments`, corresponding to the inputs
+		        the function should be mapped over.
+		  captured_inputs: A list of `Tensor` objects.
+		        A list of tensors whose types are `Tcaptured`, corresponding to the captured
+		        inputs of the defun.
 		  output_types: A list of `tf.DTypes` that has length `>= 1`.
 		    A list of types.
 		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
@@ -817,12 +586,12 @@ package tensorflow.python.ops.gen_dataset_ops;
 		Returns:
 		  A list of `Tensor` objects of type `output_types`.
 	**/
-	static public function map_defun(arguments:Dynamic, output_types:Dynamic, output_shapes:Dynamic, f:Dynamic, ?name:Dynamic):Dynamic;
+	static public function map_defun(arguments:Dynamic, captured_inputs:Dynamic, output_types:Dynamic, output_shapes:Dynamic, f:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function map_defun
 	**/
-	static public function map_defun_eager_fallback(arguments:Dynamic, output_types:Dynamic, output_shapes:Dynamic, f:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function map_defun_eager_fallback(arguments:Dynamic, captured_inputs:Dynamic, output_types:Dynamic, output_shapes:Dynamic, f:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Identity transformation that models performance.
 		
@@ -1144,42 +913,6 @@ package tensorflow.python.ops.gen_dataset_ops;
 	/**
 		Creates a dataset that applies `f` to the outputs of `input_dataset`.
 		
-		The resulting dataset is similar to the `InterleaveDataset`, with the exception
-		that if retrieving the next value from a dataset would cause the requester to
-		block, it will skip that input dataset. This dataset is especially useful
-		when loading data from a variable-latency datastores (e.g. HDFS, GCS), as it
-		allows the training step to proceed so long as some data is available.
-		
-		!! WARNING !! This dataset is not deterministic!
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		  other_arguments: A list of `Tensor` objects.
-		  cycle_length: A `Tensor` of type `int64`.
-		  block_length: A `Tensor` of type `int64`.
-		  sloppy: A `Tensor` of type `bool`.
-		  buffer_output_elements: A `Tensor` of type `int64`.
-		  prefetch_input_elements: A `Tensor` of type `int64`.
-		  f: A function decorated with @Defun.
-		    A function mapping elements of `input_dataset`, concatenated with
-		    `other_arguments`, to a Dataset variant that contains elements matching
-		    `output_types` and `output_shapes`.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function parallel_interleave_dataset(input_dataset:Dynamic, other_arguments:Dynamic, cycle_length:Dynamic, block_length:Dynamic, sloppy:Dynamic, buffer_output_elements:Dynamic, prefetch_input_elements:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function parallel_interleave_dataset
-	**/
-	static public function parallel_interleave_dataset_eager_fallback(input_dataset:Dynamic, other_arguments:Dynamic, cycle_length:Dynamic, block_length:Dynamic, sloppy:Dynamic, buffer_output_elements:Dynamic, prefetch_input_elements:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		Creates a dataset that applies `f` to the outputs of `input_dataset`.
-		
 		Args:
 		  input_dataset: A `Tensor` of type `variant`.
 		  other_arguments: A list of `Tensor` objects.
@@ -1192,17 +925,18 @@ package tensorflow.python.ops.gen_dataset_ops;
 		    `output_types` and `output_shapes`.
 		  output_types: A list of `tf.DTypes` that has length `>= 1`.
 		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
+		  sloppy: An optional `bool`. Defaults to `False`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `variant`.
 	**/
-	static public function parallel_interleave_dataset_v2(input_dataset:Dynamic, other_arguments:Dynamic, cycle_length:Dynamic, block_length:Dynamic, num_parallel_calls:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
+	static public function parallel_interleave_dataset_v2(input_dataset:Dynamic, other_arguments:Dynamic, cycle_length:Dynamic, block_length:Dynamic, num_parallel_calls:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?sloppy:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function parallel_interleave_dataset_v2
 	**/
-	static public function parallel_interleave_dataset_v2_eager_fallback(input_dataset:Dynamic, other_arguments:Dynamic, cycle_length:Dynamic, block_length:Dynamic, num_parallel_calls:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function parallel_interleave_dataset_v2_eager_fallback(input_dataset:Dynamic, other_arguments:Dynamic, cycle_length:Dynamic, block_length:Dynamic, num_parallel_calls:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?sloppy:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates a dataset that applies `f` to the outputs of `input_dataset`.
 		
@@ -1219,61 +953,19 @@ package tensorflow.python.ops.gen_dataset_ops;
 		  output_types: A list of `tf.DTypes` that has length `>= 1`.
 		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
 		  use_inter_op_parallelism: An optional `bool`. Defaults to `True`.
+		  sloppy: An optional `bool`. Defaults to `False`.
+		  preserve_cardinality: An optional `bool`. Defaults to `False`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `variant`.
 	**/
-	static public function parallel_map_dataset(input_dataset:Dynamic, other_arguments:Dynamic, num_parallel_calls:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?use_inter_op_parallelism:Dynamic, ?name:Dynamic):Dynamic;
+	static public function parallel_map_dataset(input_dataset:Dynamic, other_arguments:Dynamic, num_parallel_calls:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?use_inter_op_parallelism:Dynamic, ?sloppy:Dynamic, ?preserve_cardinality:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
 		This is for function parallel_map_dataset
 	**/
-	static public function parallel_map_dataset_eager_fallback(input_dataset:Dynamic, other_arguments:Dynamic, num_parallel_calls:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?use_inter_op_parallelism:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		Transforms `input_dataset` containing `Example` protos as vectors of DT_STRING into a dataset of `Tensor` or `SparseTensor` objects representing the parsed features.
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		  num_parallel_calls: A `Tensor` of type `int64`.
-		  dense_defaults: A list of `Tensor` objects with types from: `float32`, `int64`, `string`.
-		    A dict mapping string keys to `Tensor`s.
-		    The keys of the dict must match the dense_keys of the feature.
-		  sparse_keys: A list of `strings`.
-		    A list of string keys in the examples features.
-		    The results for these keys will be returned as `SparseTensor` objects.
-		  dense_keys: A list of `strings`.
-		    A list of Ndense string Tensors (scalars).
-		    The keys expected in the Examples features associated with dense values.
-		  sparse_types: A list of `tf.DTypes` from: `tf.float32, tf.int64, tf.string`.
-		    A list of `DTypes` of the same length as `sparse_keys`.
-		    Only `tf.float32` (`FloatList`), `tf.int64` (`Int64List`),
-		    and `tf.string` (`BytesList`) are supported.
-		  dense_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`).
-		    List of tuples with the same length as `dense_keys`.
-		    The shape of the data for each dense feature referenced by `dense_keys`.
-		    Required for any input tensors identified by `dense_keys`.  Must be
-		    either fully defined, or may contain an unknown first dimension.
-		    An unknown first dimension means the feature is treated as having
-		    a variable number of blocks, and the output shape along this dimension
-		    is considered unknown at graph build time.  Padding is applied for
-		    minibatch elements smaller than the maximum number of blocks for the
-		    given feature along this dimension.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		    The type list for the return values.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		    The list of shapes being produced.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function parse_example_dataset(input_dataset:Dynamic, num_parallel_calls:Dynamic, dense_defaults:Dynamic, sparse_keys:Dynamic, dense_keys:Dynamic, sparse_types:Dynamic, dense_shapes:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function parse_example_dataset
-	**/
-	static public function parse_example_dataset_eager_fallback(input_dataset:Dynamic, num_parallel_calls:Dynamic, dense_defaults:Dynamic, sparse_keys:Dynamic, dense_keys:Dynamic, sparse_types:Dynamic, dense_shapes:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function parallel_map_dataset_eager_fallback(input_dataset:Dynamic, other_arguments:Dynamic, num_parallel_calls:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?use_inter_op_parallelism:Dynamic, ?sloppy:Dynamic, ?preserve_cardinality:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates a dataset that asynchronously prefetches elements from `input_dataset`.
 		
@@ -1295,49 +987,6 @@ package tensorflow.python.ops.gen_dataset_ops;
 		This is for function prefetch_dataset
 	**/
 	static public function prefetch_dataset_eager_fallback(input_dataset:Dynamic, buffer_size:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		TODO: add doc.
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		  batch_size: A `Tensor` of type `int64`.
-		  padded_shapes: A list of at least 1 `Tensor` objects with type `int64`.
-		  padding_values: A list of `Tensor` objects.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function prepend_from_queue_and_padded_batch_dataset(input_dataset:Dynamic, batch_size:Dynamic, padded_shapes:Dynamic, padding_values:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function prepend_from_queue_and_padded_batch_dataset
-	**/
-	static public function prepend_from_queue_and_padded_batch_dataset_eager_fallback(input_dataset:Dynamic, batch_size:Dynamic, padded_shapes:Dynamic, padding_values:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		Creates a Dataset that returns pseudorandom numbers.
-		
-		Args:
-		  seed: A `Tensor` of type `int64`.
-		    A scalar seed for the random number generator. If either seed or
-		    seed2 is set to be non-zero, the random number generator is seeded
-		    by the given seed.  Otherwise, a random seed is used.
-		  seed2: A `Tensor` of type `int64`.
-		    A second scalar seed to avoid seed collision.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function random_dataset(seed:Dynamic, seed2:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function random_dataset
-	**/
-	static public function random_dataset_eager_fallback(seed:Dynamic, seed2:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates a dataset with a range of values. Corresponds to python's xrange.
 		
@@ -1411,27 +1060,6 @@ package tensorflow.python.ops.gen_dataset_ops;
 	**/
 	static public function repeat_dataset_eager_fallback(input_dataset:Dynamic, count:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Creates a dataset successively reduces `f` over the elements of `input_dataset`.
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		  initial_state: A list of `Tensor` objects.
-		  other_arguments: A list of `Tensor` objects.
-		  f: A function decorated with @Defun.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function scan_dataset(input_dataset:Dynamic, initial_state:Dynamic, other_arguments:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function scan_dataset
-	**/
-	static public function scan_dataset_eager_fallback(input_dataset:Dynamic, initial_state:Dynamic, other_arguments:Dynamic, f:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
 		Converts the given `resource_handle` representing an iterator to a variant tensor.
 		
 		Args:
@@ -1448,25 +1076,6 @@ package tensorflow.python.ops.gen_dataset_ops;
 		This is for function serialize_iterator
 	**/
 	static public function serialize_iterator_eager_fallback(resource_handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		TODO: add doc.
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		  stats_aggregator: A `Tensor` of type `resource`.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function set_stats_aggregator_dataset(input_dataset:Dynamic, stats_aggregator:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function set_stats_aggregator_dataset
-	**/
-	static public function set_stats_aggregator_dataset_eager_fallback(input_dataset:Dynamic, stats_aggregator:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates a dataset that shuffles and repeats elements from `input_dataset`
 		
@@ -1535,25 +1144,6 @@ package tensorflow.python.ops.gen_dataset_ops;
 	**/
 	static public function shuffle_dataset_eager_fallback(input_dataset:Dynamic, buffer_size:Dynamic, seed:Dynamic, seed2:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?reshuffle_each_iteration:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		A placeholder for input pipeline graph optimizations.
-		
-		A placeholder for input pipeline graph optimizations.
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		    A variant tensor representing the input dataset.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function sink_dataset(input_dataset:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function sink_dataset
-	**/
-	static public function sink_dataset_eager_fallback(input_dataset:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
 		Creates a dataset that skips `count` elements from the `input_dataset`.
 		
 		Args:
@@ -1575,33 +1165,6 @@ package tensorflow.python.ops.gen_dataset_ops;
 	**/
 	static public function skip_dataset_eager_fallback(input_dataset:Dynamic, count:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Creates a dataset that passes a sliding window over `input_dataset`.
-		
-		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		  window_size: A `Tensor` of type `int64`.
-		    A scalar representing the number of elements in the
-		    sliding window.
-		  window_shift: A `Tensor` of type `int64`.
-		    A scalar representing the steps moving the sliding window
-		    forward in one iteration. It must be positive.
-		  window_stride: A `Tensor` of type `int64`.
-		    A scalar representing the stride of the input elements of the sliding window.
-		    It must be positive.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function slide_dataset(input_dataset:Dynamic, window_size:Dynamic, window_shift:Dynamic, window_stride:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function slide_dataset
-	**/
-	static public function slide_dataset_eager_fallback(input_dataset:Dynamic, window_size:Dynamic, window_shift:Dynamic, window_stride:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
 		Creates a dataset that splits a SparseTensor into elements row-wise.
 		
 		Args:
@@ -1619,61 +1182,6 @@ package tensorflow.python.ops.gen_dataset_ops;
 		This is for function sparse_tensor_slice_dataset
 	**/
 	static public function sparse_tensor_slice_dataset_eager_fallback(indices:Dynamic, values:Dynamic, dense_shape:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		Creates a dataset that executes a SQL query and emits rows of the result set.
-		
-		Args:
-		  driver_name: A `Tensor` of type `string`.
-		    The database type. Currently, the only supported type is 'sqlite'.
-		  data_source_name: A `Tensor` of type `string`.
-		    A connection string to connect to the database.
-		  query: A `Tensor` of type `string`. A SQL query to execute.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `variant`.
-	**/
-	static public function sql_dataset(driver_name:Dynamic, data_source_name:Dynamic, query:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function sql_dataset
-	**/
-	static public function sql_dataset_eager_fallback(driver_name:Dynamic, data_source_name:Dynamic, query:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		Creates a statistics manager resource.
-		
-		Args:
-		  container: An optional `string`. Defaults to `""`.
-		  shared_name: An optional `string`. Defaults to `""`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `resource`.
-	**/
-	static public function stats_aggregator_handle(?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function stats_aggregator_handle
-	**/
-	static public function stats_aggregator_handle_eager_fallback(?container:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
-	/**
-		Produces a summary of any statistics recorded by the given statistics manager.
-		
-		Args:
-		  iterator: A `Tensor` of type `resource`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `string`.
-	**/
-	static public function stats_aggregator_summary(iterator:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		This is the slowpath function for Eager mode.
-		This is for function stats_aggregator_summary
-	**/
-	static public function stats_aggregator_summary_eager_fallback(iterator:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates a dataset that contains `count` elements from the `input_dataset`.
 		
@@ -1779,23 +1287,21 @@ package tensorflow.python.ops.gen_dataset_ops;
 	**/
 	static public function tf_record_dataset_eager_fallback(filenames:Dynamic, compression_type:Dynamic, buffer_size:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		A dataset that splits the elements of its input into multiple elements.
+		TODO: add doc.
 		
 		Args:
-		  input_dataset: A `Tensor` of type `variant`.
-		  output_types: A list of `tf.DTypes` that has length `>= 1`.
-		  output_shapes: A list of shapes (each a `tf.TensorShape` or list of `ints`) that has length `>= 1`.
+		  input_handle: A `Tensor` of type `variant`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `variant`.
 	**/
-	static public function unbatch_dataset(input_dataset:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic):Dynamic;
+	static public function unwrap_dataset_variant(input_handle:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		This is the slowpath function for Eager mode.
-		This is for function unbatch_dataset
+		This is for function unwrap_dataset_variant
 	**/
-	static public function unbatch_dataset_eager_fallback(input_dataset:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function unwrap_dataset_variant_eager_fallback(input_handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		A dataset that creates window datasets from the input dataset.
 		
@@ -1825,6 +1331,22 @@ package tensorflow.python.ops.gen_dataset_ops;
 		This is for function window_dataset
 	**/
 	static public function window_dataset_eager_fallback(input_dataset:Dynamic, size:Dynamic, shift:Dynamic, stride:Dynamic, drop_remainder:Dynamic, output_types:Dynamic, output_shapes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  input_handle: A `Tensor` of type `variant`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `variant`.
+	**/
+	static public function wrap_dataset_variant(input_handle:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function wrap_dataset_variant
+	**/
+	static public function wrap_dataset_variant_eager_fallback(input_handle:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates a dataset that zips together `input_datasets`.
 		

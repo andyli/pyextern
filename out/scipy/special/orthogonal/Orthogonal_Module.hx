@@ -250,7 +250,7 @@ package scipy.special.orthogonal;
 		References
 		----------
 		.. [parabolic-asymptotics]
-		   http://dlmf.nist.gov/12.10#vii
+		   https://dlmf.nist.gov/12.10#vii
 	**/
 	static public function _pbcf(n:Dynamic, theta:Dynamic):Dynamic;
 	static public var _polyfuns : Dynamic;
@@ -349,7 +349,7 @@ package scipy.special.orthogonal;
 		References
 		----------
 		.. [1] Cephes Mathematical Functions Library,
-		       http://www.netlib.org/cephes/index.html
+		       http://www.netlib.org/cephes/
 		.. [2] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
 		       of a Complex Argument and Nonnegative Order",
 		       http://netlib.org/amos/
@@ -381,11 +381,10 @@ package scipy.special.orthogonal;
 		Values are generated within the half-open interval ``[start, stop)``
 		(in other words, the interval including `start` but excluding `stop`).
 		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
+		`range` function, but returns an ndarray rather than a list.
 		
 		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
+		be consistent.  It is better to use `numpy.linspace` for these cases.
 		
 		Parameters
 		----------
@@ -550,11 +549,11 @@ package scipy.special.orthogonal;
 		
 		References
 		----------
-		.. [1] "Lecture Notes on the Status of  IEEE 754", William Kahan,
-		       http://www.cs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF
+		.. [1] "Lecture Notes on the Status of IEEE 754", William Kahan,
+		       https://people.eecs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF
 		.. [2] "How Futile are Mindless Assessments of
 		       Roundoff in Floating-Point Computation?", William Kahan,
-		       http://www.cs.berkeley.edu/~wkahan/Mindless.pdf
+		       https://people.eecs.berkeley.edu/~wkahan/Mindless.pdf
 		
 		Examples
 		--------
@@ -833,7 +832,7 @@ package scipy.special.orthogonal;
 		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		ValueError: operands could not be broadcast together with shapes (3,3) (2,2)
 	**/
 	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
@@ -1481,7 +1480,7 @@ package scipy.special.orthogonal;
 		References
 		----------
 		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
+		       https://en.wikipedia.org/wiki/Exponential_function
 		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
 		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
 		       http://www.math.sfu.ca/~cbm/aands/page_69.htm

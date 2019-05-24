@@ -1,3 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core.numeric;
-typedef TooHardError = numpy.core._internal.TooHardError;
+typedef TooHardError = numpy.TooHardError;

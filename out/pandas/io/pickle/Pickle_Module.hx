@@ -2,7 +2,6 @@
 package pandas.io.pickle;
 @:pythonImport("pandas.io.pickle") extern class Pickle_Module {
 	static public var PY3 : Dynamic;
-	static public var _NS_DTYPE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -21,8 +20,10 @@ package pandas.io.pickle;
 		mode : str
 		    mode to open path_or_buf with
 		encoding : str or None
-		compression : str or None
-		    Supported compression protocols are gzip, bz2, zip, and xz
+		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default None
+		    If 'infer' and `filepath_or_buffer` is path-like, then detect
+		    compression from the following extensions: '.gz', '.bz2', '.zip',
+		    or '.xz' (otherwise no compression).
 		memory_map : boolean, default False
 		    See parsers._parser_params for more information.
 		is_text : boolean, default True
@@ -37,29 +38,6 @@ package pandas.io.pickle;
 		    A list of file-like object that were opened in this function.
 	**/
 	static public function _get_handle(path_or_buf:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?memory_map:Dynamic, ?is_text:Dynamic):Dynamic;
-	/**
-		Get the compression method for filepath_or_buffer. If compression='infer',
-		the inferred compression method is returned. Otherwise, the input
-		compression method is returned unchanged, unless it's invalid, in which
-		case an error is raised.
-		
-		Parameters
-		----------
-		filepath_or_buf :
-		    a path (str) or buffer
-		compression : str or None
-		    the compression method including None for no compression and 'infer'
-		
-		Returns
-		-------
-		string or None :
-		    compression method
-		
-		Raises
-		------
-		ValueError on invalid compression specified
-	**/
-	static public function _infer_compression(filepath_or_buffer:Dynamic, compression:Dynamic):Dynamic;
 	static public function _pickle_array(arr:Dynamic):Dynamic;
 	/**
 		Attempt to convert a path-like object to a string.
@@ -86,33 +64,6 @@ package pandas.io.pickle;
 	static public function _stringify_path(filepath_or_buffer:Dynamic):Dynamic;
 	static public function _unpickle_array(bytes:Dynamic):Dynamic;
 	/**
-		Check whether an array-like or dtype is of the datetime64 dtype.
-		
-		Parameters
-		----------
-		arr_or_dtype : array-like
-		    The array-like or dtype to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array-like or dtype is of
-		          the datetime64 dtype.
-		
-		Examples
-		--------
-		>>> is_datetime64_dtype(object)
-		False
-		>>> is_datetime64_dtype(np.datetime64)
-		True
-		>>> is_datetime64_dtype(np.array([], dtype=int))
-		False
-		>>> is_datetime64_dtype(np.array([], dtype=np.datetime64))
-		True
-		>>> is_datetime64_dtype([1, 2, 3])
-		False
-	**/
-	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
-	/**
 		Read an array from an NPY file.
 		
 		Parameters
@@ -121,7 +72,11 @@ package pandas.io.pickle;
 		    If this is not a real file object, then this may take extra memory
 		    and time.
 		allow_pickle : bool, optional
-		    Whether to allow reading pickled data. Default: True
+		    Whether to allow writing pickled data. Default: False
+		
+		    .. versionchanged:: 1.16.3
+		        Made default False in response to CVE-2019-6446.
+		
 		pickle_kwargs : dict
 		    Additional keyword arguments to pass to pickle.load. These are only
 		    useful when loading object arrays saved on Python 2 when using
@@ -161,7 +116,7 @@ package pandas.io.pickle;
 		
 		Returns
 		-------
-		unpickled : type of object stored in file
+		unpickled : same type as object stored in file
 		
 		See Also
 		--------

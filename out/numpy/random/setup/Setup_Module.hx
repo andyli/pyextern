@@ -10,10 +10,6 @@ package numpy.random.setup;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function configuration(?parent_package:Dynamic, ?top_path:Dynamic):Dynamic;
-	/**
-		Returns the directory component of a pathname
-	**/
-	static public function dirname(p:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Return the version of MSVC that was used to build Python.
@@ -38,9 +34,4 @@ package numpy.random.setup;
 	**/
 	static public function newer(source:Dynamic, target:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	/**
-		Split a pathname.  Returns tuple "(head, tail)" where "tail" is
-		everything after the final slash.  Either part may be empty.
-	**/
-	static public function split(p:Dynamic):Dynamic;
 }

@@ -34,10 +34,11 @@ package tensorflow.python.keras.utils.np_utils;
 		    y: class vector to be converted into a matrix
 		        (integers from 0 to num_classes).
 		    num_classes: total number of classes.
+		    dtype: The data type expected by the input. Default: `'float32'`.
 		
 		Returns:
 		    A binary matrix representation of the input. The classes axis is placed
 		    last.
 	**/
-	static public function to_categorical(y:Dynamic, ?num_classes:Dynamic):Dynamic;
+	static public function to_categorical(y:Dynamic, ?num_classes:Dynamic, ?dtype:Dynamic):Dynamic;
 }

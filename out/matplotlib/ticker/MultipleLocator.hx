@@ -120,6 +120,10 @@ package matplotlib.ticker;
 	static public var axis : Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Modify the endpoints of a range as needed to avoid singularities.
+	**/
+	public function nonsingular(v0:Dynamic, v1:Dynamic):Dynamic;
+	/**
 		Pan numticks (can be positive or negative)
 	**/
 	public function pan(numsteps:Dynamic):Dynamic;

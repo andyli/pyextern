@@ -19,6 +19,22 @@ package tensorflow.python.ops.custom_gradient;
 	static public function _graph_mode_decorator(f:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
+		Copies HandleData for variant and resource type tensors if available.
+		
+		The CppShapeInferenceResult::HandleData proto contains information about the
+		shapes and types of the element tensors of resource/variant type tensors.
+		We need to copy this across function boundaries, i.e., when capturing a
+		placeholder or when returning a function tensor as output. If we don't do this
+		the element tensors will have unknown shapes, e.g., if a TensorList variant
+		tensor is captured as a placeholder, elements popped from that list would have
+		unknown shape.
+		
+		Args:
+		  source_t: The tensor to copy HandleData from.
+		  target_t: The tensor to copy HandleData to.
+	**/
+	static public function copy_handle_data(source_t:Dynamic, target_t:Dynamic):Dynamic;
+	/**
 		Decorator to define a function with a custom gradient.
 		
 		This decorator allows fine grained control over the gradients of a sequence
@@ -74,7 +90,15 @@ package tensorflow.python.ops.custom_gradient;
 		       a list of `Tensor`s - the derivatives of `Tensor`s in `y` with respect
 		       to the `Tensor`s in `x`.  `grad_ys` is a `Tensor` or sequence of
 		       `Tensor`s the same size as `y` holding the initial value gradients for
-		       each `Tensor` in `y`. If `f` uses `Variable`s (that are not part of the
+		       each `Tensor` in `y`. In a pure mathematical sense, a vector-argument
+		       vector-valued function `f`'s derivatives should be its Jacobian matrix
+		       `J`. Here we are expressing the Jacobian `J` as a function `grad_fn`
+		       which defines how `J` will transform a vector `grad_ys` when
+		       left-multiplied with it (`grad_ys * J`). This functional representation
+		       of a matrix is convenient to use for chain-rule calculation
+		       (in e.g. the back-propagation algorithm).
+		
+		       If `f` uses `Variable`s (that are not part of the
 		       inputs), i.e. through `get_variable`, then `grad_fn` should have
 		       signature `g(*grad_ys, variables=None)`, where `variables` is a list of
 		       the `Variable`s, and return a 2-tuple `(grad_xs, grad_vars)`, where

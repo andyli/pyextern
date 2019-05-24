@@ -114,10 +114,16 @@ package matplotlib.backends.backend_pgf;
 	static public function _cleanup_remaining_instances():Dynamic;
 	public function _expect(s:Dynamic):Dynamic;
 	public function _expect_prompt():Dynamic;
+	/**
+		Return the previous LatexManager if the header and tex system did not
+		change, or a new instance otherwise.
+	**/
+	static public function _get_cached_or_new():Dynamic;
+	static public function _get_cached_or_new_impl(header:Dynamic):Dynamic;
 	public function _stdin_writeln(s:Dynamic):Dynamic;
 	static public var _unclean_instances : Dynamic;
 	/**
-		Get the width, total height and descent for a text typesetted by the
+		Get the width, total height and descent for a text typeset by the
 		current LaTeX environment.
 	**/
 	public function get_width_height_descent(text:Dynamic, prop:Dynamic):Dynamic;

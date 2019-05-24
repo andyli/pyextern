@@ -23,10 +23,12 @@ package pandas.core.dtypes.dtypes;
 	/**
 		Check whether 'other' is equal to self.
 		
-		By default, 'other' is considered equal if
+		By default, 'other' is considered equal if either
 		
 		* it's a string matching 'self.name'.
-		* it's an instance of this type.
+		* it's an instance of this type and all of the
+		  the attributes in ``self._metadata`` are equal between
+		  `self` and `other`.
 		
 		Parameters
 		----------
@@ -138,9 +140,40 @@ package pandas.core.dtypes.dtypes;
 	**/
 	public var __weakref__ : Dynamic;
 	static public var _cache : Dynamic;
+	/**
+		Whether this dtype should be considered boolean.
+		
+		By default, ExtensionDtypes are assumed to be non-numeric.
+		Setting this to True will affect the behavior of several places,
+		e.g.
+		
+		* is_bool
+		* boolean indexing
+		
+		Returns
+		-------
+		bool
+	**/
+	public var _is_boolean : Dynamic;
+	/**
+		Whether columns with this dtype should be considered numeric.
+		
+		By default ExtensionDtypes are assumed to be non-numeric.
+		They'll be excluded from operations that exclude non-numeric
+		columns, like (groupby) reductions, plotting, etc.
+	**/
+	public var _is_numeric : Dynamic;
 	static public var _match : Dynamic;
 	static public var _metadata : Dynamic;
 	static public var base : Dynamic;
+	/**
+		Return the array type associated with this dtype
+		
+		Returns
+		-------
+		type
+	**/
+	static public function construct_array_type():Dynamic;
 	/**
 		attempt to construct this type from a string, raise a TypeError
 		if its not possible
@@ -173,7 +206,12 @@ package pandas.core.dtypes.dtypes;
 	static public var str : Dynamic;
 	static public var subdtype : Dynamic;
 	/**
-		the type of IntervalDtype, this metaclass determines subclass ability
+		The scalar type for the array, e.g. ``int``
+		
+		It's expected ``ExtensionArray[item]`` returns an instance
+		of ``ExtensionDtype.type`` for scalar ``item``, assuming
+		that value is valid (not NA). NA values do not need to be
+		instances of `type`.
 	**/
-	public function type(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var type : Dynamic;
 }

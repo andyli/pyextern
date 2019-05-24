@@ -108,15 +108,17 @@ package pandas._libs.index;
 	public function _call_map_locations(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _call_monotonic(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function clear_mapping(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function get_backfill_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function get_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		return an indexer suitable for takng from a non unique index
 		return the labels in the same order ast the target
 		and a missing indexer into the targets (which correspond
-		to the -1 indicies in the results 
+		to the -1 indices in the results 
 	**/
 	public function get_indexer_non_unique(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function get_loc(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function get_pad_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		arr : 1-dimensional ndarray
 	**/

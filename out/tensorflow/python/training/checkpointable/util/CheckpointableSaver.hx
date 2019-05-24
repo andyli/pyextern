@@ -122,6 +122,7 @@ package tensorflow.python.training.checkpointable.util;
 		Wraps _serialize_object_graph to include the object graph proto.
 	**/
 	public function _gather_saveables(?object_graph_tensor:Dynamic, ?saveable_object_cache:Dynamic):Dynamic;
+	public var _root_checkpointable : Dynamic;
 	/**
 		Create or retrieve save ops.
 		
@@ -131,22 +132,23 @@ package tensorflow.python.training.checkpointable.util;
 		unnecessarily re-creating save ops.
 		
 		Args:
+		  file_prefix: The prefix for saved checkpoint files.
 		  object_graph_tensor: A `Tensor` to which the current object graph will be
 		    fed.
 		  saveable_object_cache: A dictionary; if specified, used to cache
 		    `SaveableObject`s.
 		
 		Returns:
-		  A two-element tuple with a `tf.train.Saver` and a feed_dict of `Tensor`s
-		  to feed when running save ops. The feed dict contains the current object
-		  graph and any Python state to be saved in the checkpoint.
+		  A two-element tuple with a filename tensor and a feed_dict of tensors to
+		  feed when running it (if graph building). The feed dict contains the
+		  current object graph and any Python state to be saved in the
+		  checkpoint. When executing eagerly only the first argument is meaningful.
 	**/
-	public function _prepare_save(?object_graph_tensor:Dynamic, ?saveable_object_cache:Dynamic):Dynamic;
-	public var _root_checkpointable : Dynamic;
+	public function _save_cached_when_graph_building(file_prefix:Dynamic, ?object_graph_tensor:Dynamic, ?saveable_object_cache:Dynamic):Dynamic;
 	/**
 		Creates a `tf.train.Saver` with the current object graph frozen.
 	**/
-	public function freeze():Dynamic;
+	public function freeze(?object_map:Dynamic, ?to_graph:Dynamic):Dynamic;
 	/**
 		Restore a training checkpoint.
 		

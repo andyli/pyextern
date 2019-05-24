@@ -40,7 +40,7 @@ package tensorflow.contrib.learn.python.learn.metric_spec;
 	/**
 		Constructor. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.estimator.EstimatorSpec.eval_metric_ops.
 		
@@ -71,7 +71,7 @@ package tensorflow.contrib.learn.python.learn.metric_spec;
 	/**
 		Constructor. (deprecated)
 		
-		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Warning: THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
 		Instructions for updating:
 		Use tf.estimator.EstimatorSpec.eval_metric_ops.
 		

@@ -133,7 +133,7 @@ package theano.sparse.opt;
 		               (scrabble, 'x'))
 		    
 		
-		This instance does: Elemwise{sub,no_inplace}(z, Elemwise{mul,no_inplace}(alpha subject to <function <lambda> at 0x13db25598>, SparseDot(x, y))) -> Usmm{no_inplace}(Elemwise{neg,no_inplace}(alpha), x, y, z)
+		This instance does: Elemwise{sub,no_inplace}(z, Elemwise{mul,no_inplace}(alpha subject to <function <lambda> at 0x7f2876602510>, SparseDot(x, y))) -> Usmm{no_inplace}(Elemwise{neg,no_inplace}(alpha), x, y, z)
 	**/
 	static public var local_usmm : Dynamic;
 	static public var local_usmm_csc_dense_inplace : Dynamic;

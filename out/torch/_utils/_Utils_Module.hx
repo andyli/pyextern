@@ -57,6 +57,7 @@ package torch._utils;
 	static public function _flatten_sparse_tensors(tensors:Dynamic):Dynamic;
 	static public function _get_async_or_non_blocking(function_name:Dynamic, non_blocking:Dynamic, kwargs:Dynamic):Dynamic;
 	static public function _import_dotted_name(name:Dynamic):Dynamic;
+	static public function _rebuild_parameter(data:Dynamic, requires_grad:Dynamic, backward_hooks:Dynamic):Dynamic;
 	static public function _rebuild_tensor(storage:Dynamic, storage_offset:Dynamic, size:Dynamic, stride:Dynamic):Dynamic;
 	static public function _rebuild_tensor_v2(storage:Dynamic, storage_offset:Dynamic, size:Dynamic, stride:Dynamic, requires_grad:Dynamic, backward_hooks:Dynamic):Dynamic;
 	/**
@@ -135,4 +136,5 @@ package torch._utils;
 		    flat.
 	**/
 	static public function _unflatten_sparse_tensors(flat:Dynamic, tensors:Dynamic):Dynamic;
+	static public function annotate(ret:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -189,44 +189,37 @@ package numpy.lib.arraypad;
 		arbitrarily shaped ndarray.
 	**/
 	static public function _arange_ndarray(arr:Dynamic, shape:Dynamic, axis:Dynamic, ?reverse:Dynamic):numpy.Ndarray;
-	static public function _do_append(arr:Dynamic, pad_chunk:Dynamic, axis:Dynamic):Dynamic;
-	static public function _do_prepend(arr:Dynamic, pad_chunk:Dynamic, axis:Dynamic):Dynamic;
 	/**
-		Private function which does some checks and normalizes the possibly
-		much simpler representations of 'pad_width', 'stat_length',
-		'constant_values', 'end_values'.
+		Broadcast `x` to an array with the shape (`ndim`, 2).
+		
+		A helper function for `pad` that prepares and validates arguments like
+		`pad_width` for iteration in pairs.
 		
 		Parameters
 		----------
-		narray : ndarray
-		    Input ndarray
-		shape : {sequence, array_like, float, int}, optional
-		    The width of padding (pad_width), the number of elements on the
-		    edge of the narray used for statistics (stat_length), the constant
-		    value(s) to use when filling padded regions (constant_values), or the
-		    endpoint target(s) for linear ramps (end_values).
-		    ((before_1, after_1), ... (before_N, after_N)) unique number of
-		    elements for each axis where `N` is rank of `narray`.
-		    ((before, after),) yields same before and after constants for each
-		    axis.
-		    (constant,) or val is a shortcut for before = after = constant for
-		    all axes.
-		cast_to_int : bool, optional
-		    Controls if values in ``shape`` will be rounded and cast to int
-		    before being returned.
+		x : {None, scalar, array-like}
+		    The object to broadcast to the shape (`ndim`, 2).
+		ndim : int
+		    Number of pairs the broadcasted `x` will have.
+		as_index : bool, optional
+		    If `x` is not None, try to round each element of `x` to an integer
+		    (dtype `np.intp`) and ensure every element is positive.
 		
 		Returns
 		-------
-		normalized_shape : tuple of tuples
-		    val                               => ((val, val), (val, val), ...)
-		    [[val1, val2], [val3, val4], ...] => ((val1, val2), (val3, val4), ...)
-		    ((val1, val2), (val3, val4), ...) => no change
-		    [[val1, val2], ]                  => ((val1, val2), (val1, val2), ...)
-		    ((val1, val2), )                  => ((val1, val2), (val1, val2), ...)
-		    [[val ,     ], ]                  => ((val, val), (val, val), ...)
-		    ((val ,     ), )                  => ((val, val), (val, val), ...)
+		pairs : nested iterables, shape (`ndim`, 2)
+		    The broadcasted version of `x`.
+		
+		Raises
+		------
+		ValueError
+		    If `as_index` is True and `x` contains negative elements.
+		    Or if `x` is not broadcastable to the shape (`ndim`, 2).
 	**/
-	static public function _normalize_shape(ndarray:Dynamic, shape:Dynamic, ?cast_to_int:Dynamic):Dynamic;
+	static public function _as_pairs(x:Dynamic, ndim:Dynamic, ?as_index:Dynamic):Dynamic;
+	static public function _do_append(arr:Dynamic, pad_chunk:Dynamic, axis:Dynamic):Dynamic;
+	static public function _do_prepend(arr:Dynamic, pad_chunk:Dynamic, axis:Dynamic):Dynamic;
+	static public function _pad_dispatcher(array:Dynamic, pad_width:Dynamic, mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Pad `axis` of `arr` by reflection.
 		
@@ -491,37 +484,39 @@ package numpy.lib.arraypad;
 		Construct a slice tuple to take the last n elements along axis 
 	**/
 	static public function _slice_last(shape:Dynamic, n:Dynamic, axis:Dynamic):Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
-		Private function which does some checks and reformats pad_width and
-		stat_length using _normalize_shape.
+		Decorator for adding dispatch with the __array_function__ protocol.
+		
+		See NEP-18 for example usage.
 		
 		Parameters
 		----------
-		narray : ndarray
-		    Input ndarray
-		number_elements : {sequence, int}, optional
-		    The width of padding (pad_width) or the number of elements on the edge
-		    of the narray used for statistics (stat_length).
-		    ((before_1, after_1), ... (before_N, after_N)) unique number of
-		    elements for each axis.
-		    ((before, after),) yields same before and after constants for each
-		    axis.
-		    (constant,) or int is a shortcut for before = after = constant for all
-		    axes.
+		dispatcher : callable
+		    Function that when called like ``dispatcher(*args, **kwargs)`` with
+		    arguments from the NumPy function call returns an iterable of
+		    array-like arguments to check for ``__array_function__``.
+		module : str, optional
+		    __module__ attribute to set on new function, e.g., ``module='numpy'``.
+		    By default, module is copied from the decorated function.
+		verify : bool, optional
+		    If True, verify the that the signature of the dispatcher and decorated
+		    function signatures match exactly: all required and optional arguments
+		    should appear in order with the same names, but the default values for
+		    all optional arguments should be ``None``. Only disable verification
+		    if the dispatcher's signature needs to deviate for some particular
+		    reason, e.g., because the function has a signature like
+		    ``func(*args, **kwargs)``.
+		docs_from_dispatcher : bool, optional
+		    If True, copy docs from the dispatcher function onto the dispatched
+		    function, rather than from the implementation. This is useful for
+		    functions defined in C, which otherwise don't have docstrings.
 		
 		Returns
 		-------
-		_validate_lengths : tuple of tuples
-		    int                               => ((int, int), (int, int), ...)
-		    [[int1, int2], [int3, int4], ...] => ((int1, int2), (int3, int4), ...)
-		    ((int1, int2), (int3, int4), ...) => no change
-		    [[int1, int2], ]                  => ((int1, int2), (int1, int2), ...)
-		    ((int1, int2), )                  => ((int1, int2), (int1, int2), ...)
-		    [[int ,     ], ]                  => ((int, int), (int, int), ...)
-		    ((int ,     ), )                  => ((int, int), (int, int), ...)
+		Function suitable for decorating the implementation of a NumPy function.
 	**/
-	static public function _validate_lengths(narray:Dynamic, number_elements:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
+	static public function array_function_dispatch(dispatcher:Dynamic, ?module:Dynamic, ?verify:Dynamic, ?docs_from_dispatcher:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Pads an array.

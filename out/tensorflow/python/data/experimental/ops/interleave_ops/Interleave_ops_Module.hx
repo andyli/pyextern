@@ -46,6 +46,78 @@ package tensorflow.python.data.experimental.ops.interleave_ops;
 		    type.
 	**/
 	static public function choose_from_datasets(datasets:Dynamic, choice_dataset:Dynamic):Dynamic;
+	/**
+		Creates a dataset that deterministically chooses elements from `datasets`.
+		
+		For example, given the following datasets:
+		
+		```python
+		datasets = [tf.data.Dataset.from_tensors("foo").repeat(),
+		            tf.data.Dataset.from_tensors("bar").repeat(),
+		            tf.data.Dataset.from_tensors("baz").repeat()]
+		
+		# Define a dataset containing `[0, 1, 2, 0, 1, 2, 0, 1, 2]`.
+		choice_dataset = tf.data.Dataset.range(3).repeat(3)
+		
+		result = tf.data.experimental.choose_from_datasets(datasets, choice_dataset)
+		```
+		
+		The elements of `result` will be:
+		
+		```
+		"foo", "bar", "baz", "foo", "bar", "baz", "foo", "bar", "baz"
+		```
+		
+		Args:
+		  datasets: A list of `tf.data.Dataset` objects with compatible structure.
+		  choice_dataset: A `tf.data.Dataset` of scalar `tf.int64` tensors between
+		    `0` and `len(datasets) - 1`.
+		
+		Returns:
+		  A dataset that interleaves elements from `datasets` according to the values
+		  of `choice_dataset`.
+		
+		Raises:
+		  TypeError: If the `datasets` or `choice_dataset` arguments have the wrong
+		    type.
+	**/
+	static public function choose_from_datasets_v1(datasets:Dynamic, choice_dataset:Dynamic):Dynamic;
+	/**
+		Creates a dataset that deterministically chooses elements from `datasets`.
+		
+		For example, given the following datasets:
+		
+		```python
+		datasets = [tf.data.Dataset.from_tensors("foo").repeat(),
+		            tf.data.Dataset.from_tensors("bar").repeat(),
+		            tf.data.Dataset.from_tensors("baz").repeat()]
+		
+		# Define a dataset containing `[0, 1, 2, 0, 1, 2, 0, 1, 2]`.
+		choice_dataset = tf.data.Dataset.range(3).repeat(3)
+		
+		result = tf.data.experimental.choose_from_datasets(datasets, choice_dataset)
+		```
+		
+		The elements of `result` will be:
+		
+		```
+		"foo", "bar", "baz", "foo", "bar", "baz", "foo", "bar", "baz"
+		```
+		
+		Args:
+		  datasets: A list of `tf.data.Dataset` objects with compatible structure.
+		  choice_dataset: A `tf.data.Dataset` of scalar `tf.int64` tensors between
+		    `0` and `len(datasets) - 1`.
+		
+		Returns:
+		  A dataset that interleaves elements from `datasets` according to the values
+		  of `choice_dataset`.
+		
+		Raises:
+		  TypeError: If the `datasets` or `choice_dataset` arguments have the wrong
+		    type.
+	**/
+	static public function choose_from_datasets_v2(datasets:Dynamic, choice_dataset:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		A parallel version of the `Dataset.interleave()` transformation.
@@ -117,5 +189,53 @@ package tensorflow.python.data.experimental.ops.interleave_ops;
 		    length of the `datasets` element.
 	**/
 	static public function sample_from_datasets(datasets:Dynamic, ?weights:Dynamic, ?seed:Dynamic):Dynamic;
+	/**
+		Samples elements at random from the datasets in `datasets`.
+		
+		Args:
+		  datasets: A list of `tf.data.Dataset` objects with compatible structure.
+		  weights: (Optional.) A list of `len(datasets)` floating-point values where
+		    `weights[i]` represents the probability with which an element should be
+		    sampled from `datasets[i]`, or a `tf.data.Dataset` object where each
+		    element is such a list. Defaults to a uniform distribution across
+		    `datasets`.
+		  seed: (Optional.) A `tf.int64` scalar `tf.Tensor`, representing the
+		    random seed that will be used to create the distribution. See
+		    `tf.set_random_seed` for behavior.
+		
+		Returns:
+		  A dataset that interleaves elements from `datasets` at random, according to
+		  `weights` if provided, otherwise with uniform probability.
+		
+		Raises:
+		  TypeError: If the `datasets` or `weights` arguments have the wrong type.
+		  ValueError: If the `weights` argument is specified and does not match the
+		    length of the `datasets` element.
+	**/
+	static public function sample_from_datasets_v1(datasets:Dynamic, ?weights:Dynamic, ?seed:Dynamic):Dynamic;
+	/**
+		Samples elements at random from the datasets in `datasets`.
+		
+		Args:
+		  datasets: A list of `tf.data.Dataset` objects with compatible structure.
+		  weights: (Optional.) A list of `len(datasets)` floating-point values where
+		    `weights[i]` represents the probability with which an element should be
+		    sampled from `datasets[i]`, or a `tf.data.Dataset` object where each
+		    element is such a list. Defaults to a uniform distribution across
+		    `datasets`.
+		  seed: (Optional.) A `tf.int64` scalar `tf.Tensor`, representing the
+		    random seed that will be used to create the distribution. See
+		    `tf.set_random_seed` for behavior.
+		
+		Returns:
+		  A dataset that interleaves elements from `datasets` at random, according to
+		  `weights` if provided, otherwise with uniform probability.
+		
+		Raises:
+		  TypeError: If the `datasets` or `weights` arguments have the wrong type.
+		  ValueError: If the `weights` argument is specified and does not match the
+		    length of the `datasets` element.
+	**/
+	static public function sample_from_datasets_v2(datasets:Dynamic, ?weights:Dynamic, ?seed:Dynamic):Dynamic;
 	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

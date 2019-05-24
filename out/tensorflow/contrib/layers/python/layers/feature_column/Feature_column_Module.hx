@@ -51,7 +51,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	/**
 		Creates a `_RealValuedVarLenColumn` for variable-length numeric data. (experimental)
 		
-		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
+		Warning: THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
 		
 		Note, this is not integrated with any of the DNNEstimators, except the RNN
 		ones DynamicRNNEstimator and the StateSavingRNNEstimator.

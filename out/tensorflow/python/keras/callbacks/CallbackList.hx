@@ -109,22 +109,21 @@ package tensorflow.python.keras.callbacks;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Helper function for all batch_{begin | end} methods.
+	**/
+	public function _call_batch_hook(mode:Dynamic, hook:Dynamic, batch:Dynamic, ?logs:Dynamic):Dynamic;
+	/**
+		Helper function for on_{train|test|predict}_begin methods.
+	**/
+	public function _call_begin_hook(mode:Dynamic):Dynamic;
+	/**
+		Helper function for on_{train|test|predict}_end methods.
+	**/
+	public function _call_end_hook(mode:Dynamic):Dynamic;
+	public function _reset_batch_timing():Dynamic;
 	public function append(callback:Dynamic):Dynamic;
-	/**
-		Called right before processing a batch.
-		
-		Arguments:
-		    batch: integer, index of batch within the current epoch.
-		    logs: dictionary of logs.
-	**/
 	public function on_batch_begin(batch:Dynamic, ?logs:Dynamic):Dynamic;
-	/**
-		Called at the end of a batch.
-		
-		Arguments:
-		    batch: integer, index of batch within the current epoch.
-		    logs: dictionary of logs.
-	**/
 	public function on_batch_end(batch:Dynamic, ?logs:Dynamic):Dynamic;
 	/**
 		Called at the start of an epoch.
@@ -132,16 +131,34 @@ package tensorflow.python.keras.callbacks;
 		Arguments:
 		    epoch: integer, index of epoch.
 		    logs: dictionary of logs.
+		    mode: One of 'train'/'test'/'predict'
 	**/
-	public function on_epoch_begin(epoch:Dynamic, ?logs:Dynamic):Dynamic;
+	public function on_epoch_begin(epoch:Dynamic, ?logs:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		Called at the end of an epoch.
 		
 		Arguments:
 		    epoch: integer, index of epoch.
 		    logs: dictionary of logs.
+		    mode: One of 'train'/'test'/'predict'
 	**/
-	public function on_epoch_end(epoch:Dynamic, ?logs:Dynamic):Dynamic;
+	public function on_epoch_end(epoch:Dynamic, ?logs:Dynamic, ?mode:Dynamic):Dynamic;
+	/**
+		Called at the beginning of a training batch in `fit` methods.
+		
+		Arguments:
+		    batch: integer, index of batch within the current epoch.
+		    logs: dictionary of logs.
+	**/
+	public function on_train_batch_begin(batch:Dynamic, ?logs:Dynamic):Dynamic;
+	/**
+		Called at the end of a training batch in `fit` methods.
+		
+		Arguments:
+		    batch: integer, index of batch within the current epoch.
+		    logs: dictionary of logs.
+	**/
+	public function on_train_batch_end(batch:Dynamic, ?logs:Dynamic):Dynamic;
 	/**
 		Called at the beginning of training.
 		

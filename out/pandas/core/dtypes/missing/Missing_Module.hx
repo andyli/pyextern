@@ -12,7 +12,6 @@ package pandas.core.dtypes.missing;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		infer the fill value for the nan/NaT from the provided
 		scalar/ndarray/list-like if we are a NaT, return the correct dtyped
@@ -100,6 +99,7 @@ package pandas.core.dtypes.missing;
 		False
 	**/
 	static public function array_equivalent(left:Dynamic, right:Dynamic, ?strict_nan:Dynamic):Bool;
+	static public function ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var iNaT : Dynamic;
 	/**
 		Check whether the provided array or dtype is of a boolean dtype.
@@ -112,6 +112,11 @@ package pandas.core.dtypes.missing;
 		Returns
 		-------
 		boolean : Whether or not the array or dtype is of a boolean dtype.
+		
+		Notes
+		-----
+		An ExtensionArray is considered boolean when the ``_is_boolean``
+		attribute is set to True.
 		
 		Examples
 		--------
@@ -128,6 +133,10 @@ package pandas.core.dtypes.missing;
 		>>> is_bool_dtype(pd.Series([1, 2]))
 		False
 		>>> is_bool_dtype(np.array([True, False]))
+		True
+		>>> is_bool_dtype(pd.Categorical([True, False]))
+		True
+		>>> is_bool_dtype(pd.SparseArray([True, False]))
 		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -326,13 +335,18 @@ package pandas.core.dtypes.missing;
 	/**
 		Check if an object is a pandas extension array type.
 		
+		See the :ref:`Use Guide <extending.extension-types>` for more.
+		
 		Parameters
 		----------
 		arr_or_dtype : object
+		    For array-like input, the ``.dtype`` attribute will
+		    be extracted.
 		
 		Returns
 		-------
 		bool
+		    Whether the `arr_or_dtype` is an extension array type.
 		
 		Notes
 		-----
@@ -340,13 +354,33 @@ package pandas.core.dtypes.missing;
 		array interface. In pandas, this includes:
 		
 		* Categorical
+		* Sparse
+		* Interval
+		* Period
+		* DatetimeArray
+		* TimedeltaArray
 		
 		Third-party libraries may implement arrays or types satisfying
 		this interface as well.
+		
+		Examples
+		--------
+		>>> from pandas.api.types import is_extension_array_dtype
+		>>> arr = pd.Categorical(['a', 'b'])
+		>>> is_extension_array_dtype(arr)
+		True
+		>>> is_extension_array_dtype(arr.dtype)
+		True
+		
+		>>> arr = np.array(['a', 'b'])
+		>>> is_extension_array_dtype(arr.dtype)
+		False
 	**/
 	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a float dtype.
+		
+		This function is internal and should not be exposed in the public API.
 		
 		Parameters
 		----------
@@ -373,11 +407,15 @@ package pandas.core.dtypes.missing;
 		True
 	**/
 	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of an integer dtype.
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
+		
+		.. versionchanged:: 0.24.0
+		
+		   The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		   as integer by this function.
 		
 		Parameters
 		----------
@@ -399,6 +437,12 @@ package pandas.core.dtypes.missing;
 		False
 		>>> is_integer_dtype(np.uint64)
 		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
+		True
 		>>> is_integer_dtype(np.datetime64)
 		False
 		>>> is_integer_dtype(np.timedelta64)
@@ -414,35 +458,6 @@ package pandas.core.dtypes.missing;
 	**/
 	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Check whether an array-like or dtype is of the Interval dtype.
-		
-		Parameters
-		----------
-		arr_or_dtype : array-like
-		    The array-like or dtype to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array-like or dtype is
-		          of the Interval dtype.
-		
-		Examples
-		--------
-		>>> is_interval_dtype(object)
-		False
-		>>> is_interval_dtype(IntervalDtype())
-		True
-		>>> is_interval_dtype([1, 2, 3])
-		False
-		>>>
-		>>> interval = pd.Interval(1, 2, closed="right")
-		>>> is_interval_dtype(interval)
-		False
-		>>> is_interval_dtype(pd.IntervalIndex([interval]))
-		True
-	**/
-	static public function is_interval_dtype(arr_or_dtype:Dynamic):Dynamic;
-	/**
 		Check if the object is list-like.
 		
 		Objects that are considered list-like are for example Python
@@ -452,7 +467,11 @@ package pandas.core.dtypes.missing;
 		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : The object to check
+		allow_sets : boolean, default True
+		    If this parameter is False, sets will not be considered list-like
+		
+		    .. versionadded:: 0.24.0
 		
 		Returns
 		-------
@@ -471,13 +490,12 @@ package pandas.core.dtypes.missing;
 		False
 		>>> is_list_like(1)
 		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2)))
+		False
 	**/
-	static public function is_list_like(obj:Dynamic):Bool;
-	/**
-		test whether the object is a null datelike, e.g. Nat
-		but guard against passing a non-scalar 
-	**/
-	static public function is_null_datelike_scalar(other:Dynamic):Dynamic;
+	static public function is_list_like(obj:Dynamic, ?allow_sets:Dynamic):Bool;
 	/**
 		Check whether an array-like or dtype is of the object dtype.
 		
@@ -533,17 +551,49 @@ package pandas.core.dtypes.missing;
 	/**
 		Return True if given value is scalar.
 		
-		This includes:
-		- numpy array scalar (e.g. np.int64)
-		- Python builtin numerics
-		- Python builtin byte arrays and strings
-		- None
-		- instances of datetime.datetime
-		- instances of datetime.timedelta
-		- Period
-		- instances of decimal.Decimal
-		- Interval
-		- DateOffset
+		Parameters
+		----------
+		val : object
+		    This includes:
+		
+		    - numpy array scalar (e.g. np.int64)
+		    - Python builtin numerics
+		    - Python builtin byte arrays and strings
+		    - None
+		    - datetime.datetime
+		    - datetime.timedelta
+		    - Period
+		    - decimal.Decimal
+		    - Interval
+		    - DateOffset
+		    - Fraction
+		    - Number
+		
+		Returns
+		-------
+		bool
+		    Return True if given object is scalar, False otherwise
+		
+		Examples
+		--------
+		>>> dt = pd.datetime.datetime(2018, 10, 3)
+		>>> pd.is_scalar(dt)
+		True
+		
+		>>> pd.api.types.is_scalar([2, 3])
+		False
+		
+		>>> pd.api.types.is_scalar({0: 1, 2: 3})
+		False
+		
+		>>> pd.api.types.is_scalar((0, 2))
+		False
+		
+		pandas supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> pd.api.types.is_scalar(Fraction(3, 5))
+		True
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -630,7 +680,7 @@ package pandas.core.dtypes.missing;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -648,8 +698,8 @@ package pandas.core.dtypes.missing;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -705,7 +755,7 @@ package pandas.core.dtypes.missing;
 	/**
 		Detect missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
 		in object arrays, ``NaT`` in datetimelike).
 		
@@ -723,8 +773,8 @@ package pandas.core.dtypes.missing;
 		
 		See Also
 		--------
-		notna : boolean inverse of pandas.isna.
-		Series.isna : Detetct missing values in a Series.
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
 		DataFrame.isna : Detect missing values in a DataFrame.
 		Index.isna : Detect missing values in an Index.
 		
@@ -788,6 +838,19 @@ package pandas.core.dtypes.missing;
 		Returns
 		-------
 		np.dtype or a pandas dtype
+		
+		Examples
+		--------
+		>>> na_value_for_dtype(np.dtype('int64'))
+		0
+		>>> na_value_for_dtype(np.dtype('int64'), compat=False)
+		nan
+		>>> na_value_for_dtype(np.dtype('float64'))
+		nan
+		>>> na_value_for_dtype(np.dtype('bool'))
+		False
+		>>> na_value_for_dtype(np.dtype('datetime64[ns]'))
+		NaT
 	**/
 	static public function na_value_for_dtype(dtype:Dynamic, ?compat:Dynamic):Dynamic;
 	/**
@@ -826,7 +889,7 @@ package pandas.core.dtypes.missing;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -844,8 +907,8 @@ package pandas.core.dtypes.missing;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -900,7 +963,7 @@ package pandas.core.dtypes.missing;
 	/**
 		Detect non-missing values for an array-like object.
 		
-		This function takes a scalar or array-like object and indictates
+		This function takes a scalar or array-like object and indicates
 		whether values are valid (not missing, which is ``NaN`` in numeric
 		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
@@ -918,8 +981,8 @@ package pandas.core.dtypes.missing;
 		
 		See Also
 		--------
-		isna : boolean inverse of pandas.notna.
-		Series.notna : Detetct valid values in a Series.
+		isna : Boolean inverse of pandas.notna.
+		Series.notna : Detect valid values in a Series.
 		DataFrame.notna : Detect valid values in a DataFrame.
 		Index.notna : Detect valid values in an Index.
 		
@@ -981,6 +1044,10 @@ package pandas.core.dtypes.missing;
 		Returns
 		-------
 		np.dtype or a pandas dtype
+		
+		Raises
+		------
+		TypeError if not a dtype
 	**/
 	static public function pandas_dtype(dtype:Dynamic):Dynamic;
 	/**

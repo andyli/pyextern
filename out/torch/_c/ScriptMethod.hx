@@ -2,7 +2,7 @@
 package torch._c;
 @:pythonImport("torch._C", "ScriptMethod") extern class ScriptMethod {
 	/**
-		__call__(self: torch._C.ScriptMethod, *args) -> object
+		__call__(*args, **kwargs) -> object
 	**/
 	public function __call__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -108,15 +108,23 @@ package torch._c;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		debug_disable_autodiff_subgraph_inlining(self: torch._C.ScriptMethod) -> None
+	**/
+	public function debug_disable_autodiff_subgraph_inlining(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var graph : Dynamic;
 	/**
-		graph_for(self: torch._C.ScriptMethod, *args) -> torch._C.Graph
+		graph_for(*args, **kwargs) -> torch._C.Graph
 	**/
 	public function graph_for(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		params(self: torch._C.ScriptMethod) -> List[at::Tensor]
 	**/
 	public function params(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		pretty_print_schema(self: torch._C.ScriptMethod) -> str
+	**/
+	public function pretty_print_schema(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		propagate_and_assign_input_and_output_shapes(self: torch._C.ScriptMethod, arg0: List[at::Tensor], arg1: List[at::Tensor], arg2: bool, arg3: bool) -> torch._C.Graph
 	**/
@@ -125,4 +133,12 @@ package torch._c;
 		propagate_shapes(self: torch._C.ScriptMethod, arg0: List[at::Tensor], arg1: bool) -> torch._C.Graph
 	**/
 	public function propagate_shapes(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		python_print(self: torch._C.ScriptMethod) -> Tuple[str, List[at::Tensor]]
+	**/
+	public function python_print(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		schema(self: torch._C.ScriptMethod) -> torch._C.FunctionSchema
+	**/
+	public function schema(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

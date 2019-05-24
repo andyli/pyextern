@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.autograph.pyct.static_analysis.live_values;
 @:pythonImport("tensorflow.python.autograph.pyct.static_analysis.live_values") extern class Live_values_Module {
-	static public var _SPECIAL_SYMBOLS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

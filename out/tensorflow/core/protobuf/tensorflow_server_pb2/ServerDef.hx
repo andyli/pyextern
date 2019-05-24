@@ -5,7 +5,6 @@ package tensorflow.core.protobuf.tensorflow_server_pb2;
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var CLUSTER_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -22,7 +21,6 @@ package tensorflow.core.protobuf.tensorflow_server_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var DEFAULT_SESSION_CONFIG_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
 	/**
 		Discards the unknown fields.
@@ -52,7 +50,6 @@ package tensorflow.core.protobuf.tensorflow_server_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var JOB_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -65,7 +62,6 @@ package tensorflow.core.protobuf.tensorflow_server_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var PROTOCOL_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
@@ -86,7 +82,10 @@ package tensorflow.core.protobuf.tensorflow_server_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var TASK_INDEX_FIELD_NUMBER : Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -254,4 +253,24 @@ package tensorflow.core.protobuf.tensorflow_server_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.ServerDef.cluster
+	**/
+	public var cluster : Dynamic;
+	/**
+		Field tensorflow.ServerDef.default_session_config
+	**/
+	public var default_session_config : Dynamic;
+	/**
+		Field tensorflow.ServerDef.job_name
+	**/
+	public var job_name : Dynamic;
+	/**
+		Field tensorflow.ServerDef.protocol
+	**/
+	public var protocol : Dynamic;
+	/**
+		Field tensorflow.ServerDef.task_index
+	**/
+	public var task_index : Dynamic;
 }

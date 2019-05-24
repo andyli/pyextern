@@ -14,17 +14,26 @@ package matplotlib.docstring;
 	**/
 	static public function copy(source:Dynamic):Dynamic;
 	/**
-		A decorator that will copy the docstring from the source and
+		[*Deprecated*] A decorator that will copy the docstring from the source and
 		then dedent it
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function copy_dedent(source:Dynamic):Dynamic;
 	/**
-		Dedent a docstring (if present)
+		[*Deprecated*] Dedent a docstring (if present)
+		
+		Notes
+		-----
+		.. deprecated:: 3.1
+		   
 	**/
 	static public function dedent(func:Dynamic):Dynamic;
 	/**
-		A special case of the interpd that first performs a dedent on
-		the incoming docstring
+		Dedent *func*'s docstring, then interpolate it with ``interpd``.
 	**/
 	static public function dedent_interpd(func:Dynamic):Dynamic;
 	static public function interpd(func:Dynamic):Dynamic;

@@ -15,9 +15,6 @@ package pandas.tseries.offsets;
 	**/
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
-	/**
-		Return self==value.
-	**/
 	public function __eq__(other:Dynamic):Dynamic;
 	/**
 		default object formatter
@@ -39,9 +36,6 @@ package pandas.tseries.offsets;
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
-	/**
-		Return hash(self).
-	**/
 	public function __hash__():Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
@@ -69,9 +63,6 @@ package pandas.tseries.offsets;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(other:Dynamic):Dynamic;
-	/**
-		Return self!=value.
-	**/
 	public function __ne__(other:Dynamic):Dynamic;
 	public function __neg__():Dynamic;
 	/**
@@ -90,9 +81,6 @@ package pandas.tseries.offsets;
 	public function __repr__():Dynamic;
 	public function __rmul__(other:Dynamic):Dynamic;
 	public function __rsub__(other:Dynamic):Dynamic;
-	/**
-		Implement setattr(self, name, value).
-	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
 		Reconstruct an instance from a pickled state
@@ -124,14 +112,13 @@ package pandas.tseries.offsets;
 	static public var _adjust_dst : Dynamic;
 	static public var _anchor : Dynamic;
 	static public var _attributes : Dynamic;
-	static public var _cacheable : Dynamic;
 	static public var _day_opt : Dynamic;
 	static public function _from_name(?suffix:Dynamic):Dynamic;
 	/**
 		Return business hours in a day by seconds.
 	**/
-	public function _get_business_hours_by_sec():Dynamic;
-	public function _get_daytime_flag():Dynamic;
+	public var _get_business_hours_by_sec : Dynamic;
+	public var _get_daytime_flag : Dynamic;
 	public function _get_offset_day(other:Dynamic):Dynamic;
 	/**
 		If n is positive, return tomorrow's business day opening time.
@@ -141,13 +128,16 @@ package pandas.tseries.offsets;
 		Otherwise, closing time may not if business hour extends over midnight.
 	**/
 	public function _next_opening_time(other:Dynamic):Dynamic;
-	static public var _normalize_cache : Dynamic;
 	public function _offset_str():Dynamic;
 	/**
-		Slight speedups using calculated values
+		Slight speedups using calculated values.
 	**/
 	public function _onOffset(dt:Dynamic, businesshours:Dynamic):Dynamic;
-	public function _params():Dynamic;
+	/**
+		Returns a tuple containing all of the attributes needed to evaluate
+		equality between two DateOffset objects.
+	**/
+	public var _params : Dynamic;
 	static public var _prefix : Dynamic;
 	/**
 		If n is positive, return yesterday's business day opening time.
@@ -155,7 +145,6 @@ package pandas.tseries.offsets;
 	**/
 	public function _prev_opening_time(other:Dynamic):Dynamic;
 	public function _repr_attrs():Dynamic;
-	public function _should_cache():Dynamic;
 	static public var _typ : Dynamic;
 	static public var _use_relativedelta : Dynamic;
 	/**
@@ -179,7 +168,7 @@ package pandas.tseries.offsets;
 	/**
 		Vectorized apply of DateOffset to DatetimeIndex,
 		raises NotImplentedError for offsets without a
-		vectorized implementation
+		vectorized implementation.
 		
 		Parameters
 		----------
@@ -190,6 +179,11 @@ package pandas.tseries.offsets;
 		y : DatetimeIndex
 	**/
 	public function apply_index(other:Dynamic):pandas.DatetimeIndex;
+	/**
+		Returns a copy of the calling offset object with n=1 and all other
+		attributes equal.
+	**/
+	public var base : Dynamic;
 	public function copy():Dynamic;
 	public var freqstr : Dynamic;
 	public function isAnchored():Dynamic;
@@ -197,21 +191,21 @@ package pandas.tseries.offsets;
 	public var name : Dynamic;
 	public var nanos : Dynamic;
 	/**
-		used for moving to next businessday
+		Used for moving to next business day.
 	**/
 	public var next_bday : Dynamic;
 	static public var normalize : Dynamic;
 	/**
-		Alias for self._offset
+		Alias for self._offset.
 	**/
 	public var offset : Dynamic;
 	public function onOffset(dt:Dynamic):Dynamic;
 	/**
-		Roll provided date backward to next offset only if not on offset
+		Roll provided date backward to next offset only if not on offset.
 	**/
 	public function rollback(dt:Dynamic):Dynamic;
 	/**
-		Roll provided date forward to next offset only if not on offset
+		Roll provided date forward to next offset only if not on offset.
 	**/
 	public function rollforward(dt:Dynamic):Dynamic;
 	public var rule_code : Dynamic;

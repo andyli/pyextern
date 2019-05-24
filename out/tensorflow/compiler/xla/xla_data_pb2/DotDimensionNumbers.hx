@@ -50,8 +50,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var LHS_BATCH_DIMENSIONS_FIELD_NUMBER : Dynamic;
-	static public var LHS_CONTRACTING_DIMENSIONS_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
@@ -68,8 +66,6 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var RHS_BATCH_DIMENSIONS_FIELD_NUMBER : Dynamic;
-	static public var RHS_CONTRACTING_DIMENSIONS_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
@@ -86,6 +82,10 @@ package tensorflow.compiler.xla.xla_data_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -251,4 +251,20 @@ package tensorflow.compiler.xla.xla_data_pb2;
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	/**
+		Field xla.DotDimensionNumbers.lhs_batch_dimensions
+	**/
+	public var lhs_batch_dimensions : Dynamic;
+	/**
+		Field xla.DotDimensionNumbers.lhs_contracting_dimensions
+	**/
+	public var lhs_contracting_dimensions : Dynamic;
+	/**
+		Field xla.DotDimensionNumbers.rhs_batch_dimensions
+	**/
+	public var rhs_batch_dimensions : Dynamic;
+	/**
+		Field xla.DotDimensionNumbers.rhs_contracting_dimensions
+	**/
+	public var rhs_contracting_dimensions : Dynamic;
 }

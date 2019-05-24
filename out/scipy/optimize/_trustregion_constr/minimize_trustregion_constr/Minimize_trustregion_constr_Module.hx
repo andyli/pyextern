@@ -134,7 +134,7 @@ package scipy.optimize._trustregion_constr.minimize_trustregion_constr;
 		    Gradient of the objective function at the solution.
 		lagrangian_grad : ndarray, shape (n,)
 		    Gradient of the Lagrangian function at the solution.
-		niter : int
+		nit : int
 		    Total number of iterations.
 		nfev : integer
 		    Number of the objective function evaluations.
@@ -145,7 +145,7 @@ package scipy.optimize._trustregion_constr.minimize_trustregion_constr;
 		cg_niter : int
 		    Total number of the conjugate gradient method iterations.
 		method : {'equality_constrained_sqp', 'tr_interior_point'}
-		    Optimization method used.    
+		    Optimization method used.
 		constr : list of ndarray
 		    List of constraint values at the solution.
 		jac : list of {ndarray, sparse matrix}
@@ -192,6 +192,11 @@ package scipy.optimize._trustregion_constr.minimize_trustregion_constr;
 		        * 2 : Reached the trust-region boundary.
 		        * 3 : Negative curvature detected.
 		        * 4 : Tolerance was satisfied.
+		
+		References
+		----------
+		.. [1] Conn, A. R., Gould, N. I., & Toint, P. L.
+		       Trust region methods. 2000. Siam. pp. 19.
 	**/
 	static public function _minimize_trustregion_constr(fun:Dynamic, x0:Dynamic, args:Dynamic, grad:Dynamic, hess:Dynamic, hessp:Dynamic, bounds:Dynamic, constraints:Dynamic, ?xtol:Dynamic, ?gtol:Dynamic, ?barrier_tol:Dynamic, ?sparse_jacobian:Dynamic, ?callback:Dynamic, ?maxiter:Dynamic, ?verbose:Dynamic, ?finite_diff_rel_step:Dynamic, ?initial_constr_penalty:Dynamic, ?initial_tr_radius:Dynamic, ?initial_barrier_parameter:Dynamic, ?initial_barrier_tolerance:Dynamic, ?factorization_method:Dynamic, ?disp:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;

@@ -55,6 +55,11 @@ package tensorflow.python.training.momentum;
 		    This implementation always computes gradients at the value of the
 		    variable(s) passed to the optimizer. Using Nesterov Momentum makes the
 		    variable(s) track the values called `theta_t + mu*v_t` in the paper.
+		    This implementation is an approximation of the original formula, valid 
+		    for high values of momentum. It will compute the "adjusted gradient" 
+		    in NAG by assuming that the new gradient will be estimated by the 
+		    current average gradient plus the product of momentum and the change 
+		    in the average gradient.
 		
 		@compatibility(eager)
 		When eager execution is enabled, `learning_rate` and `momentum` can each be
@@ -80,6 +85,11 @@ package tensorflow.python.training.momentum;
 		    This implementation always computes gradients at the value of the
 		    variable(s) passed to the optimizer. Using Nesterov Momentum makes the
 		    variable(s) track the values called `theta_t + mu*v_t` in the paper.
+		    This implementation is an approximation of the original formula, valid 
+		    for high values of momentum. It will compute the "adjusted gradient" 
+		    in NAG by assuming that the new gradient will be estimated by the 
+		    current average gradient plus the product of momentum and the change 
+		    in the average gradient.
 		
 		@compatibility(eager)
 		When eager execution is enabled, `learning_rate` and `momentum` can each be
@@ -299,16 +309,16 @@ package tensorflow.python.training.momentum;
 	**/
 	public var _deferred_dependencies : Dynamic;
 	/**
-		A version of `apply_gradients` for cross-tower context.
+		A version of `apply_gradients` for cross-replica context.
 		
 		This is a version of `apply_gradients()` for when you are using a
-		`DistributionStrategy` and are in a cross-tower context. If in a
-		tower context, use `apply_gradients()` as normal.
+		`DistributionStrategy` and are in a cross-replica context. If in a
+		replica context, use `apply_gradients()` as normal.
 		
 		Args:
 		  distribution: A `DistributionStrategy` object.
 		  grads_and_vars: List of (gradient, variable) pairs as returned by
-		    `compute_gradients()`, and then aggregated across towers.
+		    `compute_gradients()`, and then aggregated across replicas.
 		  global_step: Optional (mirrored) `Variable` to increment by one
 		    after the variables have been updated.
 		  name: Optional name for the returned operation.  Default to the
@@ -316,8 +326,8 @@ package tensorflow.python.training.momentum;
 		
 		Returns:
 		  An `Operation` that applies the specified gradients across all
-		  towers. If `global_step` was not None, that operation also
-		  increments `global_step`.
+		  replicas. If `global_step` was not None, that operation also
+		  increments `global_step`
 	**/
 	public function _distributed_apply(distribution:Dynamic, grads_and_vars:Dynamic, ?global_step:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -534,6 +544,7 @@ package tensorflow.python.training.momentum;
 		Restore a newly created slot variable's value.
 	**/
 	public function _restore_slot_variable(slot_name:Dynamic, variable:Dynamic, slot_variable:Dynamic):Dynamic;
+	static public function _scale_loss(loss_value:Dynamic):Dynamic;
 	/**
 		Restore this object, and either queue its dependencies or defer them.
 	**/

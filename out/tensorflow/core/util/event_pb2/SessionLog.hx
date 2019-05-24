@@ -6,7 +6,6 @@ package tensorflow.core.util.event_pb2;
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var CHECKPOINT : Dynamic;
-	static public var CHECKPOINT_PATH_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -56,7 +55,6 @@ package tensorflow.core.util.event_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var MSG_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -74,7 +72,6 @@ package tensorflow.core.util.event_pb2;
 	**/
 	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var START : Dynamic;
-	static public var STATUS_FIELD_NUMBER : Dynamic;
 	static public var STATUS_UNSPECIFIED : Dynamic;
 	static public var STOP : Dynamic;
 	/**
@@ -90,6 +87,10 @@ package tensorflow.core.util.event_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse unknown field set
+	**/
+	public function UnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -257,4 +258,16 @@ package tensorflow.core.util.event_pb2;
 	static public var _extensions_by_number : Dynamic;
 	static public var _tf_api_names : Dynamic;
 	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Field tensorflow.SessionLog.checkpoint_path
+	**/
+	public var checkpoint_path : Dynamic;
+	/**
+		Field tensorflow.SessionLog.msg
+	**/
+	public var msg : Dynamic;
+	/**
+		Field tensorflow.SessionLog.status
+	**/
+	public var status : Dynamic;
 }

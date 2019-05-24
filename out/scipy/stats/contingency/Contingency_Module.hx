@@ -90,9 +90,10 @@ package scipy.stats.contingency;
 		
 		References
 		----------
-		.. [1] "Contingency table", http://en.wikipedia.org/wiki/Contingency_table
+		.. [1] "Contingency table",
+		       https://en.wikipedia.org/wiki/Contingency_table
 		.. [2] "Pearson's chi-squared test",
-		       http://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test
+		       https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test
 		.. [3] Cressie, N. and Read, T. R. C., "Multinomial Goodness-of-Fit
 		       Tests", J. Royal Stat. Soc. Series B, Vol. 46, No. 3 (1984),
 		       pp. 440-464.
@@ -167,7 +168,7 @@ package scipy.stats.contingency;
 		Examples
 		--------
 		>>> observed = np.array([[10, 10, 20],[20, 20, 20]])
-		>>> from scipy.stats import expected_freq
+		>>> from scipy.stats.contingency import expected_freq
 		>>> expected_freq(observed)
 		array([[ 12.,  12.,  16.],
 		       [ 18.,  18.,  24.]])
@@ -195,6 +196,7 @@ package scipy.stats.contingency;
 		>>> a
 		array([[ 0,  1,  2,  3,  4,  5],
 		       [ 6,  7,  8,  9, 10, 11]])
+		>>> from scipy.stats.contingency import margins
 		>>> m0, m1 = margins(a)
 		>>> m0
 		array([[15],
@@ -299,9 +301,10 @@ package scipy.stats.contingency;
 		References
 		----------
 		.. [1] Lowry, Richard.  "Concepts and Applications of Inferential
-		       Statistics". Chapter 8. http://faculty.vassar.edu/lowry/ch8pt1.html
-		.. [2] "Chi-squared test", http://en.wikipedia.org/wiki/Chi-squared_test
-		.. [3] "G-test", http://en.wikipedia.org/wiki/G-test
+		       Statistics". Chapter 8.
+		       https://web.archive.org/web/20171015035606/http://faculty.vassar.edu/lowry/ch8pt1.html
+		.. [2] "Chi-squared test", https://en.wikipedia.org/wiki/Chi-squared_test
+		.. [3] "G-test", https://en.wikipedia.org/wiki/G-test
 		.. [4] Sokal, R. R. and Rohlf, F. J. "Biometry: the principles and
 		       practice of statistics in biological research", New York: Freeman
 		       (1981)
