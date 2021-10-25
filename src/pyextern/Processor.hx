@@ -33,7 +33,7 @@ class Processor {
 	static var rstParser = new docutils.parsers.rst.Parser();
 	static var docDefaults = {
 		var p = new docutils.frontend.OptionParser([docutils.parsers.rst.Parser]);
-		var v = p.get_default_values();
+		var v: {report_level: Int} = p.get_default_values();
 		v.report_level = 5; //do not print parsing error
 		v;
 	}
