@@ -31,14 +31,14 @@ class Processor {
 	}
 
 	static var rstParser = new docutils.parsers.rst.Parser();
-	static var docDefaults = {
+	static function docDefaults() {
 		var p = new docutils.frontend.OptionParser([docutils.parsers.rst.Parser]);
 		var v = p.get_default_values();
 		v.report_level = 5; //do not print parsing error
-		v;
+		return v;
 	}
 	public function parseRst(doc:String):Null<Xml> {
-		var document = docutils.utils.Utils.new_document("", docDefaults);
+		var document = docutils.utils.Utils.new_document("", docDefaults());
 		return try {
 			rstParser.parse(doc, document);
 			Xml.parse(document.asdom().toxml());
