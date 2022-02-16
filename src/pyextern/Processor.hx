@@ -174,8 +174,8 @@ class Processor {
 			return;
 		}
 		for (mem in members) {
-			var memName = mem._1;
-			var memObj = mem._2;
+			final memName = mem._1;
+			final memObj = mem._2;
 			if (Inspect.ismodule(memObj)) {
 				function isSubmodule(m:String) {
 					return m.startsWith(moduleName + ".");

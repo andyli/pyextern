@@ -238,24 +238,36 @@ class Main {
 	static function main():Void {
 		switch (args()) {
 			case [moduleNames, outPath]:
-				var main = new Main();
-				var moduleNames = moduleNames.split(",").map(StringTools.trim);
+				final main = new Main();
+				final wantedModuleNames = moduleNames.split(",").map(StringTools.trim);
 				main.filterModules = function(modname:String):Bool {
-					return modname != null && moduleNames.exists(function(moduleName){
-						return
-							modname == moduleName ||
-							modname.startsWith(moduleName + ".") &&
-							(modname.toLowerCase().indexOf("test") == -1) &&
+					return
+							modname != null
+						&&
+							// only process modules specified by `moduleNames`
+							wantedModuleNames.exists(wanted -> (modname == wanted || modname.startsWith(wanted + ".")))
+						&&
+							// skip modules that starts with _
+							// it's a python convention to use _ prefix for private/internal stuff
+							(if (!["pandas"].exists(mod -> modname.startsWith(mod))) {
+								!modname.split(".").exists(p -> p.startsWith("_"));
+							} else {
+								true;
+							})
+						&&
+							// skip tests
+							(modname.toLowerCase().indexOf("test") == -1)
+						&&
+							// skip modules that are known to error when imported
 							![
 								"numpy.distutils",
 								"numpy.f2py.__main__",
 								"tensorflow.tools.pip_package",
 								"PyQt5.uic.pyuic",
 							].exists(function(skip) return modname == skip || modname.startsWith(skip + "."));
-					});
 				}
 				for (pkg in (list(pkgutil.Pkgutil.walk_packages(null, "", function(x) return null)):Array<Tuple<Dynamic>>)) {
-					var modname:String = pkg[1];
+					final modname:String = pkg[1];
 					if (main.filterModules(modname)) {
 						main.processModule(modname, modname);
 					}

@@ -48,7 +48,11 @@ RUN apt-get update \
         software-properties-common \
         direnv \
         tzdata \
-        libsm6 \ # required by pyplot
+        libgl1-mesa-glx \ # required by PyQt5.QtGui
+        libxtst6 \        # required by PyQt5.QtWebEngine
+        libxss1 \         # required by PyQt5.QtWebEngine
+        libpci3 \         # required by PyQt5.QtWebEngine
+        libsm6 \          # required by pyplot
         # install docker engine for using `WITH DOCKER`
         docker-ce \
     #
@@ -80,12 +84,12 @@ RUN curl -fsSL "https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux
     && bash miniconda.sh -b -u -p /miniconda \
     && rm miniconda.sh
 ENV PATH="/miniconda/bin:$PATH"
-RUN conda config --set always_yes yes --set changeps1 no
+RUN conda config --system --set always_yes yes --set changeps1 no
 RUN conda update -q conda
 RUN conda install psutil
-RUN conda config --add channels anaconda
-RUN conda config --add channels conda-forge
-RUN conda config --add channels pytorch
+RUN conda config --system --add channels anaconda
+RUN conda config --system --add channels conda-forge
+RUN conda config --system --add channels pytorch
 
 USER root
 
@@ -124,6 +128,17 @@ devcontainer:
     # Config bash
     RUN echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
 
+    # Config conda
+    RUN conda init bash
+    COPY (+conda-env/coredep  --NAME=coredep  --REQUIREMENTS_FILE=requirements.txt)          /miniconda/envs/coredep
+    COPY (+conda-env/pyqt     --NAME=pyqt     --REQUIREMENTS_FILE=requirements-pyqt.txt)     /miniconda/envs/pyqt
+    COPY (+conda-env/pytorch  --NAME=pytorch  --REQUIREMENTS_FILE=requirements-pytorch.txt)  /miniconda/envs/pytorch
+    COPY (+conda-env/selenium --NAME=selenium --REQUIREMENTS_FILE=requirements-selenium.txt) /miniconda/envs/selenium
+    COPY (+conda-env/science  --NAME=science  --REQUIREMENTS_FILE=requirements-science.txt)  /miniconda/envs/science
+
+    COPY +haxelib/.haxelib .haxelib
+    VOLUME /workspace/.haxelib
+
     USER root
 
     ARG GIT_SHA
@@ -151,18 +166,23 @@ pyextern:
     RUN haxe build.hxml
     SAVE ARTIFACT Main.py
 
-gen-coredep:
-    COPY (+gen-externs/out --REQUIREMENTS_FILE=requirements.txt --GENLIBS=docutils,pkgutil,inspect,importlib) coredep
-    SAVE ARTIFACT --keep-ts coredep AS LOCAL coredep
+conda-env:
+    USER $USERNAME
+    ARG --required NAME
+    ARG --required REQUIREMENTS_FILE
+    ARG PYTHON_VERSION=3.8
+    COPY "$REQUIREMENTS_FILE" .
+    RUN conda create --name "$NAME" python="$PYTHON_VERSION" --file "$REQUIREMENTS_FILE" --copy --quiet
+    SAVE ARTIFACT /miniconda/envs/$NAME
+    SAVE IMAGE --cache-hint
 
 gen-externs:
+    ARG --required NAME
     ARG --required REQUIREMENTS_FILE
-    COPY "$REQUIREMENTS_FILE" .
-    RUN conda create -q --name pyextern python=3.8 --file "$REQUIREMENTS_FILE"
-    SAVE IMAGE --cache-hint
+    COPY (+conda-env/$NAME --NAME="$NAME" --REQUIREMENTS_FILE="$REQUIREMENTS_FILE") "/miniconda/envs/$NAME"
     COPY +pyextern/Main.py .
     ARG --required GENLIBS
-    RUN conda run -n pyextern python Main.py "$GENLIBS" out
+    RUN conda run -n "$NAME" python Main.py "$GENLIBS" out
     SAVE ARTIFACT --keep-ts out
     SAVE IMAGE --cache-hint
     COPY src src
@@ -170,6 +190,22 @@ gen-externs:
     COPY test.hxml .
     RUN haxe test.hxml
 
-gen-qt:
-    COPY (+gen-externs/out --REQUIREMENTS_FILE=requirements-qt.txt --GENLIBS=PyQt5,PyQt5.QtGui,PyQt5.QtWebKit) out
-    SAVE ARTIFACT --keep-ts out AS LOCAL out/qt
+gen-coredep:
+    COPY (+gen-externs/out --NAME=coredep --REQUIREMENTS_FILE=requirements.txt --GENLIBS=docutils,pkgutil,inspect,importlib) coredep
+    SAVE ARTIFACT --keep-ts coredep AS LOCAL coredep
+
+gen-pyqt:
+    COPY (+gen-externs/out --NAME=pyqt --REQUIREMENTS_FILE=requirements-pyqt.txt --GENLIBS=PyQt5,PyQt5.QtGui) out
+    SAVE ARTIFACT --keep-ts out AS LOCAL out/pyqt
+
+gen-pytorch:
+    COPY (+gen-externs/out --NAME=pytorch --REQUIREMENTS_FILE=requirements-pytorch.txt --GENLIBS=torch) out
+    SAVE ARTIFACT --keep-ts out AS LOCAL out/pytorch
+
+gen-selenium:
+    COPY (+gen-externs/out --NAME=selenium --REQUIREMENTS_FILE=requirements-selenium.txt --GENLIBS=selenium) out
+    SAVE ARTIFACT --keep-ts out AS LOCAL out/selenium
+
+gen-science:
+    COPY (+gen-externs/out --NAME=science --REQUIREMENTS_FILE=requirements-science.txt --GENLIBS=textwrap,numpy,scipy,pandas,matplotlib,seaborn,tensorflow) out
+    SAVE ARTIFACT --keep-ts out AS LOCAL out/science

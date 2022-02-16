@@ -1,0 +1,857 @@
+/* This file is generated, do not edit! */
+package pandas.core.construction;
+@:pythonImport("pandas.core.construction") extern class Construction_Module {
+	static public function Any(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function AnyArrayLike(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function ArrayLike(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function Dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function DtypeObj(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function Sequence(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var TYPE_CHECKING : Dynamic;
+	static public var __builtins__ : Dynamic;
+	static public var __cached__ : Dynamic;
+	static public var __doc__ : Dynamic;
+	static public var __file__ : Dynamic;
+	static public var __loader__ : Dynamic;
+	static public var __name__ : Dynamic;
+	static public var __package__ : Dynamic;
+	static public var __spec__ : Dynamic;
+	/**
+		If we have a length-1 array and an index describing how long we expect
+		the result to be, repeat the array.
+	**/
+	static public function _maybe_repeat(arr:Dynamic, index:Dynamic):Dynamic;
+	/**
+		Ensure we have a 1-dimensional result array.
+	**/
+	static public function _sanitize_ndim(result:Dynamic, data:Dynamic, dtype:Dynamic, index:Dynamic, ?allow_2d:Dynamic):Dynamic;
+	/**
+		Ensure we have a dtype that is supported by pandas.
+	**/
+	static public function _sanitize_str_dtypes(result:Dynamic, data:Dynamic, dtype:Dynamic, copy:Dynamic):Dynamic;
+	/**
+		Convert input to numpy ndarray and optionally cast to a given dtype.
+		
+		Parameters
+		----------
+		arr : ndarray or list
+		    Excludes: ExtensionArray, Series, Index.
+		dtype : np.dtype, ExtensionDtype or None
+		copy : bool
+		    If False, don't copy the data if not needed.
+		raise_cast_failure : bool
+		    If True, and if a dtype is specified, raise errors during casting.
+		    Otherwise an object array is returned.
+		
+		Returns
+		-------
+		np.ndarray or ExtensionArray
+	**/
+	static public function _try_cast(arr:Dynamic, dtype:Dynamic, copy:Dynamic, raise_cast_failure:Dynamic):Dynamic;
+	static public var annotations : Dynamic;
+	/**
+		Create an array.
+		
+		Parameters
+		----------
+		data : Sequence of objects
+		    The scalars inside `data` should be instances of the
+		    scalar type for `dtype`. It's expected that `data`
+		    represents a 1-dimensional array of data.
+		
+		    When `data` is an Index or Series, the underlying array
+		    will be extracted from `data`.
+		
+		dtype : str, np.dtype, or ExtensionDtype, optional
+		    The dtype to use for the array. This may be a NumPy
+		    dtype or an extension type registered with pandas using
+		    :meth:`pandas.api.extensions.register_extension_dtype`.
+		
+		    If not specified, there are two possibilities:
+		
+		    1. When `data` is a :class:`Series`, :class:`Index`, or
+		       :class:`ExtensionArray`, the `dtype` will be taken
+		       from the data.
+		    2. Otherwise, pandas will attempt to infer the `dtype`
+		       from the data.
+		
+		    Note that when `data` is a NumPy array, ``data.dtype`` is
+		    *not* used for inferring the array type. This is because
+		    NumPy cannot represent all the types of data that can be
+		    held in extension arrays.
+		
+		    Currently, pandas will infer an extension dtype for sequences of
+		
+		    ============================== =======================================
+		    Scalar Type                    Array Type
+		    ============================== =======================================
+		    :class:`pandas.Interval`       :class:`pandas.arrays.IntervalArray`
+		    :class:`pandas.Period`         :class:`pandas.arrays.PeriodArray`
+		    :class:`datetime.datetime`     :class:`pandas.arrays.DatetimeArray`
+		    :class:`datetime.timedelta`    :class:`pandas.arrays.TimedeltaArray`
+		    :class:`int`                   :class:`pandas.arrays.IntegerArray`
+		    :class:`float`                 :class:`pandas.arrays.FloatingArray`
+		    :class:`str`                   :class:`pandas.arrays.StringArray` or
+		                                   :class:`pandas.arrays.ArrowStringArray`
+		    :class:`bool`                  :class:`pandas.arrays.BooleanArray`
+		    ============================== =======================================
+		
+		    The ExtensionArray created when the scalar type is :class:`str` is determined by
+		    ``pd.options.mode.string_storage`` if the dtype is not explicitly given.
+		
+		    For all other cases, NumPy's usual inference rules will be used.
+		
+		    .. versionchanged:: 1.0.0
+		
+		       Pandas infers nullable-integer dtype for integer data,
+		       string dtype for string data, and nullable-boolean dtype
+		       for boolean data.
+		
+		    .. versionchanged:: 1.2.0
+		
+		        Pandas now also infers nullable-floating dtype for float-like
+		        input data
+		
+		copy : bool, default True
+		    Whether to copy the data, even if not necessary. Depending
+		    on the type of `data`, creating the new array may require
+		    copying data, even if ``copy=False``.
+		
+		Returns
+		-------
+		ExtensionArray
+		    The newly created array.
+		
+		Raises
+		------
+		ValueError
+		    When `data` is not 1-dimensional.
+		
+		See Also
+		--------
+		numpy.array : Construct a NumPy array.
+		Series : Construct a pandas Series.
+		Index : Construct a pandas Index.
+		arrays.PandasArray : ExtensionArray wrapping a NumPy array.
+		Series.array : Extract the array stored within a Series.
+		
+		Notes
+		-----
+		Omitting the `dtype` argument means pandas will attempt to infer the
+		best array type from the values in the data. As new array types are
+		added by pandas and 3rd party libraries, the "best" array type may
+		change. We recommend specifying `dtype` to ensure that
+		
+		1. the correct array type for the data is returned
+		2. the returned array type doesn't change as new extension types
+		   are added by pandas and third-party libraries
+		
+		Additionally, if the underlying memory representation of the returned
+		array matters, we recommend specifying the `dtype` as a concrete object
+		rather than a string alias or allowing it to be inferred. For example,
+		a future version of pandas or a 3rd-party library may include a
+		dedicated ExtensionArray for string data. In this event, the following
+		would no longer return a :class:`arrays.PandasArray` backed by a NumPy
+		array.
+		
+		>>> pd.array(['a', 'b'], dtype=str)
+		<PandasArray>
+		['a', 'b']
+		Length: 2, dtype: str32
+		
+		This would instead return the new ExtensionArray dedicated for string
+		data. If you really need the new array to be backed by a  NumPy array,
+		specify that in the dtype.
+		
+		>>> pd.array(['a', 'b'], dtype=np.dtype("<U1"))
+		<PandasArray>
+		['a', 'b']
+		Length: 2, dtype: str32
+		
+		Finally, Pandas has arrays that mostly overlap with NumPy
+		
+		  * :class:`arrays.DatetimeArray`
+		  * :class:`arrays.TimedeltaArray`
+		
+		When data with a ``datetime64[ns]`` or ``timedelta64[ns]`` dtype is
+		passed, pandas will always return a ``DatetimeArray`` or ``TimedeltaArray``
+		rather than a ``PandasArray``. This is for symmetry with the case of
+		timezone-aware data, which NumPy does not natively support.
+		
+		>>> pd.array(['2015', '2016'], dtype='datetime64[ns]')
+		<DatetimeArray>
+		['2015-01-01 00:00:00', '2016-01-01 00:00:00']
+		Length: 2, dtype: datetime64[ns]
+		
+		>>> pd.array(["1H", "2H"], dtype='timedelta64[ns]')
+		<TimedeltaArray>
+		['0 days 01:00:00', '0 days 02:00:00']
+		Length: 2, dtype: timedelta64[ns]
+		
+		Examples
+		--------
+		If a dtype is not specified, pandas will infer the best dtype from the values.
+		See the description of `dtype` for the types pandas infers for.
+		
+		>>> pd.array([1, 2])
+		<IntegerArray>
+		[1, 2]
+		Length: 2, dtype: Int64
+		
+		>>> pd.array([1, 2, np.nan])
+		<IntegerArray>
+		[1, 2, <NA>]
+		Length: 3, dtype: Int64
+		
+		>>> pd.array([1.1, 2.2])
+		<FloatingArray>
+		[1.1, 2.2]
+		Length: 2, dtype: Float64
+		
+		>>> pd.array(["a", None, "c"])
+		<StringArray>
+		['a', <NA>, 'c']
+		Length: 3, dtype: string
+		
+		>>> with pd.option_context("string_storage", "pyarrow"):
+		...     arr = pd.array(["a", None, "c"])
+		...
+		>>> arr
+		<ArrowStringArray>
+		['a', <NA>, 'c']
+		Length: 3, dtype: string
+		
+		>>> pd.array([pd.Period('2000', freq="D"), pd.Period("2000", freq="D")])
+		<PeriodArray>
+		['2000-01-01', '2000-01-01']
+		Length: 2, dtype: period[D]
+		
+		You can use the string alias for `dtype`
+		
+		>>> pd.array(['a', 'b', 'a'], dtype='category')
+		['a', 'b', 'a']
+		Categories (2, object): ['a', 'b']
+		
+		Or specify the actual dtype
+		
+		>>> pd.array(['a', 'b', 'a'],
+		...          dtype=pd.CategoricalDtype(['a', 'b', 'c'], ordered=True))
+		['a', 'b', 'a']
+		Categories (3, object): ['a' < 'b' < 'c']
+		
+		If pandas does not infer a dedicated extension type a
+		:class:`arrays.PandasArray` is returned.
+		
+		>>> pd.array([1 + 1j, 3 + 2j])
+		<PandasArray>
+		[(1+1j), (3+2j)]
+		Length: 2, dtype: complex128
+		
+		As mentioned in the "Notes" section, new extension types may be added
+		in the future (by pandas or 3rd party libraries), causing the return
+		value to no longer be a :class:`arrays.PandasArray`. Specify the `dtype`
+		as a NumPy dtype if you need to ensure there's no future change in
+		behavior.
+		
+		>>> pd.array([1, 2], dtype=np.dtype("int32"))
+		<PandasArray>
+		[1, 2]
+		Length: 2, dtype: int32
+		
+		`data` must be 1-dimensional. A ValueError is raised when the input
+		has the wrong dimensionality.
+		
+		>>> pd.array(1)
+		Traceback (most recent call last):
+		  ...
+		ValueError: Cannot pass scalar '1' to 'pandas.array'.
+	**/
+	static public function array(data:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		Cast a value to a type.
+		
+		This returns the value unchanged.  To the type checker this
+		signals that the return value has the designated type, but at
+		runtime we intentionally don't check anything (we want this
+		to be as fast as possible).
+	**/
+	@:native("cast")
+	static public function _cast(typ:Dynamic, val:Dynamic):Dynamic;
+	/**
+		create a np.ndarray / pandas type of specified shape and dtype
+		filled with values
+		
+		Parameters
+		----------
+		value : scalar value
+		length : int
+		dtype : pandas_dtype or np.dtype
+		
+		Returns
+		-------
+		np.ndarray / pandas type of length, filled with value
+	**/
+	static public function construct_1d_arraylike_from_scalar(value:Dynamic, length:Dynamic, dtype:Dynamic):Dynamic;
+	/**
+		Transform any list-like object in a 1-dimensional numpy array of object
+		dtype.
+		
+		Parameters
+		----------
+		values : any iterable which has a len()
+		
+		Raises
+		------
+		TypeError
+		    * If `values` does not have a len()
+		
+		Returns
+		-------
+		1-dimensional numpy array of dtype object
+	**/
+	static public function construct_1d_object_array_from_listlike(values:Dynamic):Dynamic;
+	/**
+		Helper to pass an explicit dtype when instantiating an empty Series.
+		
+		This silences a DeprecationWarning described in GitHub-17261.
+		
+		Parameters
+		----------
+		data : Mirrored from Series.__init__
+		index : Mirrored from Series.__init__
+		dtype : Mirrored from Series.__init__
+		name : Mirrored from Series.__init__
+		copy : Mirrored from Series.__init__
+		fastpath : Mirrored from Series.__init__
+		dtype_if_empty : str, numpy.dtype, or ExtensionDtype
+		    This dtype will be passed explicitly if an empty Series will
+		    be instantiated.
+		
+		Returns
+		-------
+		Series
+	**/
+	static public function create_series_with_explicit_dtype(?data:Dynamic, ?index:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?copy:Dynamic, ?fastpath:Dynamic, ?dtype_if_empty:Dynamic):Dynamic;
+	/**
+		Wrap datetime64 and timedelta64 ndarrays in DatetimeArray/TimedeltaArray.
+	**/
+	static public function ensure_wrapped_if_datetimelike(arr:Dynamic):Dynamic;
+	/**
+		Extract the ndarray or ExtensionArray from a Series or Index.
+		
+		For all other types, `obj` is just returned as is.
+		
+		Parameters
+		----------
+		obj : object
+		    For Series / Index, the underlying ExtensionArray is unboxed.
+		
+		extract_numpy : bool, default False
+		    Whether to extract the ndarray from a PandasArray.
+		
+		extract_range : bool, default False
+		    If we have a RangeIndex, return range._values if True
+		    (which is a materialized integer ndarray), otherwise return unchanged.
+		
+		Returns
+		-------
+		arr : object
+		
+		Examples
+		--------
+		>>> extract_array(pd.Series(['a', 'b', 'c'], dtype='category'))
+		['a', 'b', 'c']
+		Categories (3, object): ['a', 'b', 'c']
+		
+		Other objects like lists, arrays, and DataFrames are just passed through.
+		
+		>>> extract_array([1, 2, 3])
+		[1, 2, 3]
+		
+		For an ndarray-backed Series / Index the ndarray is returned.
+		
+		>>> extract_array(pd.Series([1, 2, 3]))
+		array([1, 2, 3])
+		
+		To extract all the way down to the ndarray, pass ``extract_numpy=True``.
+		
+		>>> extract_array(pd.Series([1, 2, 3]), extract_numpy=True)
+		array([1, 2, 3])
+	**/
+	static public function extract_array(obj:Dynamic, ?extract_numpy:Dynamic, ?extract_range:Dynamic):Dynamic;
+	/**
+		Find the first place in the stack that is not inside pandas
+		(tests notwithstanding).
+	**/
+	static public function find_stack_level():Dynamic;
+	/**
+		Check whether the provided array or dtype is of the datetime64[ns] dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like or dtype
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		bool
+		    Whether or not the array or dtype is of the datetime64[ns] dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64_ns_dtype(str)
+		False
+		>>> is_datetime64_ns_dtype(int)
+		False
+		>>> is_datetime64_ns_dtype(np.datetime64)  # no unit
+		False
+		>>> is_datetime64_ns_dtype(DatetimeTZDtype("ns", "US/Eastern"))
+		True
+		>>> is_datetime64_ns_dtype(np.array(['a', 'b']))
+		False
+		>>> is_datetime64_ns_dtype(np.array([1, 2]))
+		False
+		>>> is_datetime64_ns_dtype(np.array([], dtype="datetime64"))  # no unit
+		False
+		>>> is_datetime64_ns_dtype(np.array([], dtype="datetime64[ps]"))  # wrong unit
+		False
+		>>> is_datetime64_ns_dtype(pd.DatetimeIndex([1, 2, 3], dtype="datetime64[ns]"))
+		True
+	**/
+	static public function is_datetime64_ns_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Utility to check if a Series is instantiated with empty data,
+		which does not contain dtype information.
+		
+		Parameters
+		----------
+		data : array-like, Iterable, dict, or scalar value
+		    Contains data stored in Series.
+		
+		Returns
+		-------
+		bool
+	**/
+	static public function is_empty_data(data:Dynamic):Dynamic;
+	/**
+		Check if an object is a pandas extension array type.
+		
+		See the :ref:`Use Guide <extending.extension-types>` for more.
+		
+		Parameters
+		----------
+		arr_or_dtype : object
+		    For array-like input, the ``.dtype`` attribute will
+		    be extracted.
+		
+		Returns
+		-------
+		bool
+		    Whether the `arr_or_dtype` is an extension array type.
+		
+		Notes
+		-----
+		This checks whether an object implements the pandas extension
+		array interface. In pandas, this includes:
+		
+		* Categorical
+		* Sparse
+		* Interval
+		* Period
+		* DatetimeArray
+		* TimedeltaArray
+		
+		Third-party libraries may implement arrays or types satisfying
+		this interface as well.
+		
+		Examples
+		--------
+		>>> from pandas.api.types import is_extension_array_dtype
+		>>> arr = pd.Categorical(['a', 'b'])
+		>>> is_extension_array_dtype(arr)
+		True
+		>>> is_extension_array_dtype(arr.dtype)
+		True
+		
+		>>> arr = np.array(['a', 'b'])
+		>>> is_extension_array_dtype(arr.dtype)
+		False
+	**/
+	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether the provided array or dtype is of a float dtype.
+		
+		This function is internal and should not be exposed in the public API.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like or dtype
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean
+		    Whether or not the array or dtype is of a float dtype.
+		
+		Examples
+		--------
+		>>> is_float_dtype(str)
+		False
+		>>> is_float_dtype(int)
+		False
+		>>> is_float_dtype(float)
+		True
+		>>> is_float_dtype(np.array(['a', 'b']))
+		False
+		>>> is_float_dtype(pd.Series([1, 2]))
+		False
+		>>> is_float_dtype(pd.Index([1, 2.]))
+		True
+	**/
+	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether the provided array or dtype is of an integer dtype.
+		
+		Unlike in `is_any_int_dtype`, timedelta64 instances will return False.
+		
+		The nullable Integer dtypes (e.g. pandas.Int64Dtype) are also considered
+		as integer by this function.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like or dtype
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean
+		    Whether or not the array or dtype is of an integer dtype and
+		    not an instance of timedelta64.
+		
+		Examples
+		--------
+		>>> is_integer_dtype(str)
+		False
+		>>> is_integer_dtype(int)
+		True
+		>>> is_integer_dtype(float)
+		False
+		>>> is_integer_dtype(np.uint64)
+		True
+		>>> is_integer_dtype('int8')
+		True
+		>>> is_integer_dtype('Int8')
+		True
+		>>> is_integer_dtype(pd.Int8Dtype)
+		True
+		>>> is_integer_dtype(np.datetime64)
+		False
+		>>> is_integer_dtype(np.timedelta64)
+		False
+		>>> is_integer_dtype(np.array(['a', 'b']))
+		False
+		>>> is_integer_dtype(pd.Series([1, 2]))
+		True
+		>>> is_integer_dtype(np.array([], dtype=np.timedelta64))
+		False
+		>>> is_integer_dtype(pd.Index([1, 2.]))  # float
+		False
+	**/
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check if the object is list-like.
+		
+		Objects that are considered list-like are for example Python
+		lists, tuples, sets, NumPy arrays, and Pandas Series.
+		
+		Strings and datetime objects, however, are not considered list-like.
+		
+		Parameters
+		----------
+		obj : object
+		    Object to check.
+		allow_sets : bool, default True
+		    If this parameter is False, sets will not be considered list-like.
+		
+		Returns
+		-------
+		bool
+		    Whether `obj` has list-like properties.
+		
+		Examples
+		--------
+		>>> import datetime
+		>>> is_list_like([1, 2, 3])
+		True
+		>>> is_list_like({1, 2, 3})
+		True
+		>>> is_list_like(datetime.datetime(2017, 1, 1))
+		False
+		>>> is_list_like("foo")
+		False
+		>>> is_list_like(1)
+		False
+		>>> is_list_like(np.array([2]))
+		True
+		>>> is_list_like(np.array(2))
+		False
+	**/
+	static public function is_list_like(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check whether an array-like or dtype is of the object dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like or dtype
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean
+		    Whether or not the array-like or dtype is of the object dtype.
+		
+		Examples
+		--------
+		>>> is_object_dtype(object)
+		True
+		>>> is_object_dtype(int)
+		False
+		>>> is_object_dtype(np.array([], dtype=object))
+		True
+		>>> is_object_dtype(np.array([], dtype=int))
+		False
+		>>> is_object_dtype([1, 2, 3])
+		False
+	**/
+	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether the provided array or dtype is of the timedelta64[ns] dtype.
+		
+		This is a very specific dtype, so generic ones like `np.timedelta64`
+		will return False if passed into this function.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like or dtype
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean
+		    Whether or not the array or dtype is of the timedelta64[ns] dtype.
+		
+		Examples
+		--------
+		>>> is_timedelta64_ns_dtype(np.dtype('m8[ns]'))
+		True
+		>>> is_timedelta64_ns_dtype(np.dtype('m8[ps]'))  # Wrong frequency
+		False
+		>>> is_timedelta64_ns_dtype(np.array([1, 2], dtype='m8[ns]'))
+		True
+		>>> is_timedelta64_ns_dtype(np.array([1, 2], dtype=np.timedelta64))
+		False
+	**/
+	static public function is_timedelta64_ns_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indicates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
+		
+		Parameters
+		----------
+		obj : scalar or array-like
+		    Object to check for null or missing values.
+		
+		Returns
+		-------
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
+		
+		See Also
+		--------
+		notna : Boolean inverse of pandas.isna.
+		Series.isna : Detect missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(pd.NA)
+		True
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
+	**/
+	static public function isna(obj:Dynamic):Dynamic;
+	/**
+		try to cast the array/value to a datetimelike dtype, converting float
+		nan to iNaT
+		
+		We allow a list *only* when dtype is not None.
+	**/
+	static public function maybe_cast_to_datetime(value:Dynamic, dtype:Dynamic):Dynamic;
+	/**
+		Takes any dtype and returns the casted version, raising for when data is
+		incompatible with integer/unsigned integer dtypes.
+		
+		Parameters
+		----------
+		arr : np.ndarray or list
+		    The array to cast.
+		dtype : np.dtype
+		    The integer dtype to cast the array to.
+		copy: bool, default False
+		    Whether to make a copy of the array before returning.
+		
+		Returns
+		-------
+		ndarray
+		    Array of integer or unsigned integer dtype.
+		
+		Raises
+		------
+		OverflowError : the dtype is incompatible with the data
+		ValueError : loss of precision has occurred during casting
+		
+		Examples
+		--------
+		If you try to coerce negative values to unsigned integers, it raises:
+		
+		>>> pd.Series([-1], dtype="uint64")
+		Traceback (most recent call last):
+		    ...
+		OverflowError: Trying to coerce negative values to unsigned integers
+		
+		Also, if you try to coerce float values to integers, it raises:
+		
+		>>> pd.Series([1, 2, 3.5], dtype="int64")
+		Traceback (most recent call last):
+		    ...
+		ValueError: Trying to coerce float values to integers
+	**/
+	static public function maybe_cast_to_integer_array(arr:Dynamic, dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		try to do platform conversion, allow ndarray or list here
+	**/
+	static public function maybe_convert_platform(values:Dynamic):Dynamic;
+	/**
+		we might have a array (or single object) that is datetime like,
+		and no dtype is passed don't change the value unless we find a
+		datetime/timedelta set
+		
+		this is pretty strict in that a datetime/timedelta is REQUIRED
+		in addition to possible nulls/string likes
+		
+		Parameters
+		----------
+		value : np.ndarray[object]
+		
+		Returns
+		-------
+		np.ndarray, DatetimeArray, TimedeltaArray, PeriodArray, or IntervalArray
+	**/
+	static public function maybe_infer_to_datetimelike(value:Dynamic):Dynamic;
+	/**
+		Provide explicit type promotion and coercion.
+		
+		Parameters
+		----------
+		values : np.ndarray
+		    The array that we may want to upcast.
+		fill_value : what we want to fill with
+		copy : bool, default True
+		    If True always make a copy even if no upcast is required.
+		
+		Returns
+		-------
+		values: np.ndarray
+		    the original array, possibly upcast
+		fill_value:
+		    the fill value, possibly upcast
+	**/
+	static public function maybe_upcast(values:Dynamic, ?fill_value:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		Cast a range object to ndarray.
+	**/
+	static public function range_to_ndarray(rng:Dynamic):Dynamic;
+	static public var registry : Dynamic;
+	/**
+		Sanitize input data to an ndarray or ExtensionArray, copy if specified,
+		coerce to the dtype if specified.
+		
+		Parameters
+		----------
+		data : Any
+		index : Index or None, default None
+		dtype : np.dtype, ExtensionDtype, or None, default None
+		copy : bool, default False
+		raise_cast_failure : bool, default True
+		allow_2d : bool, default False
+		    If False, raise if we have a 2D Arraylike.
+		
+		Returns
+		-------
+		np.ndarray or ExtensionArray
+		
+		Notes
+		-----
+		raise_cast_failure=False is only intended to be True when called from the
+		DataFrame constructor, as the dtype keyword there may be interpreted as only
+		applying to a subset of columns, see GH#24435.
+	**/
+	static public function sanitize_array(data:Dynamic, index:Dynamic, ?dtype:Dynamic, ?copy:Dynamic, ?raise_cast_failure:Dynamic, ?allow_2d:Dynamic):Dynamic;
+	/**
+		Convert numpy MaskedArray to ensure mask is softened.
+	**/
+	static public function sanitize_masked_array(data:Dynamic):Dynamic;
+	/**
+		Safely convert non-nanosecond datetime64 or timedelta64 values to nanosecond.
+	**/
+	static public function sanitize_to_nanoseconds(values:Dynamic, ?copy:Dynamic):Dynamic;
+}

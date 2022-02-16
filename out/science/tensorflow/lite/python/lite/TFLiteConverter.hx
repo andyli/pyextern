@@ -1,0 +1,355 @@
+/* This file is generated, do not edit! */
+package tensorflow.lite.python.lite;
+@:pythonImport("tensorflow.lite.python.lite", "TFLiteConverter") extern class TFLiteConverter {
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Implement delattr(self, name).
+	**/
+	public function __delattr__(name:Dynamic):Dynamic;
+	static public var __dict__ : Dynamic;
+	/**
+		Default dir() implementation.
+	**/
+	public function __dir__():Dynamic;
+	static public var __doc__ : Dynamic;
+	/**
+		Return self==value.
+	**/
+	public function __eq__(value:Dynamic):Dynamic;
+	/**
+		Default object formatter.
+	**/
+	public function __format__(format_spec:Dynamic):Dynamic;
+	/**
+		Return self>=value.
+	**/
+	public function __ge__(value:Dynamic):Dynamic;
+	/**
+		Return getattr(self, name).
+	**/
+	public function __getattribute__(name:Dynamic):Dynamic;
+	/**
+		Return self>value.
+	**/
+	public function __gt__(value:Dynamic):Dynamic;
+	/**
+		Return hash(self).
+	**/
+	public function __hash__():Dynamic;
+	/**
+		Constructor for TFLiteConverter.
+		
+		Args:
+		  graph_def: Frozen TensorFlow GraphDef.
+		  input_tensors: List of input tensors. Type and shape are computed using
+		    `foo.shape` and `foo.dtype`.
+		  output_tensors: List of output tensors (only .name is used from this).
+		  input_arrays_with_shape: Tuple of strings representing input tensor names
+		    and list of integers representing input shapes
+		    (e.g., [("foo" : [1, 16, 16, 3])]). Use only when graph cannot be loaded
+		      into TensorFlow and when `input_tensors` and `output_tensors` are
+		      None. (default None)
+		  output_arrays: List of output tensors to freeze graph with. Use only when
+		    graph cannot be loaded into TensorFlow and when `input_tensors` and
+		    `output_tensors` are None. (default None)
+		  experimental_debug_info_func: An experimental function to retrieve the
+		    graph debug info for a set of nodes from the `graph_def`.
+		
+		Raises:
+		  ValueError: Invalid arguments.
+	**/
+	@:native("__init__")
+	public function ___init__(graph_def:Dynamic, input_tensors:Dynamic, output_tensors:Dynamic, ?input_arrays_with_shape:Dynamic, ?output_arrays:Dynamic, ?experimental_debug_info_func:Dynamic):Dynamic;
+	/**
+		Constructor for TFLiteConverter.
+		
+		Args:
+		  graph_def: Frozen TensorFlow GraphDef.
+		  input_tensors: List of input tensors. Type and shape are computed using
+		    `foo.shape` and `foo.dtype`.
+		  output_tensors: List of output tensors (only .name is used from this).
+		  input_arrays_with_shape: Tuple of strings representing input tensor names
+		    and list of integers representing input shapes
+		    (e.g., [("foo" : [1, 16, 16, 3])]). Use only when graph cannot be loaded
+		      into TensorFlow and when `input_tensors` and `output_tensors` are
+		      None. (default None)
+		  output_arrays: List of output tensors to freeze graph with. Use only when
+		    graph cannot be loaded into TensorFlow and when `input_tensors` and
+		    `output_tensors` are None. (default None)
+		  experimental_debug_info_func: An experimental function to retrieve the
+		    graph debug info for a set of nodes from the `graph_def`.
+		
+		Raises:
+		  ValueError: Invalid arguments.
+	**/
+	public function new(graph_def:Dynamic, input_tensors:Dynamic, output_tensors:Dynamic, ?input_arrays_with_shape:Dynamic, ?output_arrays:Dynamic, ?experimental_debug_info_func:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return self<=value.
+	**/
+	public function __le__(value:Dynamic):Dynamic;
+	/**
+		Return self<value.
+	**/
+	public function __lt__(value:Dynamic):Dynamic;
+	static public var __module__ : Dynamic;
+	/**
+		Return self!=value.
+	**/
+	public function __ne__(value:Dynamic):Dynamic;
+	/**
+		Create and return a new object.  See help(type) for accurate signature.
+	**/
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Helper for pickle.
+	**/
+	public function __reduce__():Dynamic;
+	/**
+		Helper for pickle.
+	**/
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
+	/**
+		Return repr(self).
+	**/
+	public function __repr__():Dynamic;
+	/**
+		Implement setattr(self, name, value).
+	**/
+	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Size of object in memory, in bytes.
+	**/
+	public function __sizeof__():Dynamic;
+	/**
+		Return str(self).
+	**/
+	public function __str__():Dynamic;
+	/**
+		Abstract classes can override this to customize issubclass().
+		
+		This is invoked early on by abc.ABCMeta.__subclasscheck__().
+		It should return True, False or NotImplemented.  If it returns
+		NotImplemented, the normal algorithm is used.  Otherwise, it
+		overrides the normal algorithm (and the outcome is cached).
+	**/
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		list of weak references to the object (if defined)
+	**/
+	public var __weakref__ : Dynamic;
+	public function _contains_function_with_implements_attr(saved_model_proto:Dynamic):Dynamic;
+	/**
+		Wraps around convert function to export metrics.
+		
+		Args:
+		  convert_func: The convert function to wrap.
+		  *args: Positional arguments of the convert function.
+		  **kwargs: The keyword arguments of the convert function.
+		
+		Returns:
+		  The decorator to wrap the convert function.
+	**/
+	public function _convert_and_export_metrics(convert_func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Returns the base converter args.
+		
+		Returns:
+		  {key str: val}
+	**/
+	public function _get_base_converter_args():Dynamic;
+	/**
+		Creates a tf.compat.v1.ConfigProto for configuring Grappler.
+		
+		Args:
+		  optimizers: List of strings that represents the list of optimizers.
+		
+		Returns:
+		  tf.ConfigProto.
+	**/
+	public function _grappler_config(?optimizers:Dynamic):Dynamic;
+	/**
+		Checks if the input and output tensors have been initialized.
+		
+		Returns:
+		  Bool.
+	**/
+	public function _has_valid_tensors():Dynamic;
+	public function _increase_conversion_attempt_metric():Dynamic;
+	public function _increase_conversion_success_metric():Dynamic;
+	public function _is_unknown_shapes_allowed():Dynamic;
+	/**
+		Run a Grappler pass to optimize the TensorFlow graph.
+		
+		Args:
+		  graph_def: Frozen GraphDef to be optimized.
+		  input_tensors: List of input tensors.
+		  output_tensors: List of output tensors.
+		  quant_mode: the quantization mode.
+		
+		Returns:
+		  The optimized TensorFlow graph.
+	**/
+	public function _optimize_tf_model(graph_def:Dynamic, input_tensors:Dynamic, output_tensors:Dynamic, quant_mode:Dynamic):Dynamic;
+	/**
+		Apply optimizations on a TFLite model.
+	**/
+	public function _optimize_tflite_model(model:Dynamic, quant_mode:Dynamic, ?quant_io:Dynamic):Dynamic;
+	/**
+		Parses SavedModel arguments from the given Keras/RNN SavedModel.
+		
+		Args:
+		  always_enable_saved_model_import: Bool. When the value is true, it enables
+		    MLIR saved model import path regardless of checking the conditions.
+	**/
+	public function _parse_saved_model_args(?always_enable_saved_model_import:Dynamic):Dynamic;
+	/**
+		Quantize the model.
+	**/
+	public function _quantize(result:Dynamic, input_type:Dynamic, output_type:Dynamic, activations_type:Dynamic, allow_float:Dynamic):Dynamic;
+	/**
+		Set conversion parameter metrics.
+	**/
+	public function _save_conversion_params_metric():Dynamic;
+	/**
+		Sets the first dimension of the input tensor to `batch_size`.
+		
+		Args:
+		  batch_size: Batch size for the model. Replaces the first dimension of an
+		    input size array if undefined. (default 1)
+		
+		Raises:
+		  ValueError: input_tensor is not defined.
+	**/
+	public function _set_batch_size(batch_size:Dynamic):Dynamic;
+	public function _set_conversion_latency_metric(value:Dynamic):Dynamic;
+	public function _sparsify_model():Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
+	public function _validate_experimental_new_quantizer_flag():Dynamic;
+	/**
+		Validate input parameters.
+		
+		Args:
+		  input_tensors: List of input tensors.
+		  quantized_input_stats: Map of input tensor names to a tuple of floats
+		    representing the mean and standard deviation of the training data.
+		
+		Raises:
+		  ValueError:
+		    Input shape is not specified.
+		    Quantization input stats is required but not provided.
+	**/
+	public function _validate_inputs(input_tensors:Dynamic, quantized_input_stats:Dynamic):Dynamic;
+	/**
+		Ensure the `quantized_input_stats` flag is provided if required.
+	**/
+	public function _validate_quantized_input_stats(converter_kwargs:Dynamic, quant_mode:Dynamic):Dynamic;
+	/**
+		Converts a TensorFlow GraphDef based on instance variables.
+		
+		Returns:
+		  The converted data in serialized format. Either a TFLite Flatbuffer or a
+		  Graphviz graph depending on value in `output_format`.
+		
+		Raises:
+		  ValueError:
+		    Input shape is not specified.
+		    None value for dimension in input_tensor.
+	**/
+	public function convert():Dynamic;
+	/**
+		Creates a TFLiteConverter class from a file containing a frozen GraphDef.
+		
+		Args:
+		  graph_def_file: Full filepath of file containing frozen GraphDef.
+		  input_arrays: List of input tensors to freeze graph with.
+		  output_arrays: List of output tensors to freeze graph with.
+		  input_shapes: Dict of strings representing input tensor names to list of
+		    integers representing input shapes (e.g., {"foo" : [1, 16, 16, 3]}).
+		    Automatically determined when input shapes is None (e.g., {"foo" :
+		      None}). (default None)
+		
+		Returns:
+		  TFLiteConverter class.
+		
+		Raises:
+		  IOError:
+		    File not found.
+		    Unable to parse input file.
+		  ValueError:
+		    The graph is not frozen.
+		    input_arrays or output_arrays contains an invalid tensor name.
+		    input_shapes is not correctly defined when required
+	**/
+	static public function from_frozen_graph(graph_def_file:Dynamic, input_arrays:Dynamic, output_arrays:Dynamic, ?input_shapes:Dynamic):Dynamic;
+	/**
+		Creates a TFLiteConverter class from a tf.keras model file.
+		
+		Args:
+		  model_file: Full filepath of HDF5 file containing the tf.keras model.
+		  input_arrays: List of input tensors to freeze graph with. Uses input
+		    arrays from SignatureDef when none are provided. (default None)
+		  input_shapes: Dict of strings representing input tensor names to list of
+		    integers representing input shapes (e.g., {"foo" : [1, 16, 16, 3]}).
+		    Automatically determined when input shapes is None (e.g., {"foo" :
+		      None}). (default None)
+		  output_arrays: List of output tensors to freeze graph with. Uses output
+		    arrays from SignatureDef when none are provided. (default None)
+		  custom_objects: Dict mapping names (strings) to custom classes or
+		    functions to be considered during model deserialization. (default None)
+		
+		Returns:
+		  TFLiteConverter class.
+	**/
+	static public function from_keras_model_file(model_file:Dynamic, ?input_arrays:Dynamic, ?input_shapes:Dynamic, ?output_arrays:Dynamic, ?custom_objects:Dynamic):Dynamic;
+	/**
+		Creates a TFLiteConverter class from a SavedModel.
+		
+		Args:
+		  saved_model_dir: SavedModel directory to convert.
+		  input_arrays: List of input tensors to freeze graph with. Uses input
+		    arrays from SignatureDef when none are provided. (default None)
+		  input_shapes: Dict of strings representing input tensor names to list of
+		    integers representing input shapes (e.g., {"foo" : [1, 16, 16, 3]}).
+		    Automatically determined when input shapes is None (e.g., {"foo" :
+		      None}). (default None)
+		  output_arrays: List of output tensors to freeze graph with. Uses output
+		    arrays from SignatureDef when none are provided. (default None)
+		  tag_set: Set of tags identifying the MetaGraphDef within the SavedModel to
+		    analyze. All tags in the tag set must be present. (default
+		    {tf.saved_model.SERVING})
+		  signature_key: Key identifying SignatureDef containing inputs and outputs.
+		    (default tf.saved_model.DEFAULT_SERVING_SIGNATURE_DEF_KEY)
+		
+		Returns:
+		  TFLiteConverter class.
+	**/
+	static public function from_saved_model(saved_model_dir:Dynamic, ?input_arrays:Dynamic, ?input_shapes:Dynamic, ?output_arrays:Dynamic, ?tag_set:Dynamic, ?signature_key:Dynamic):Dynamic;
+	/**
+		Creates a TFLiteConverter class from a TensorFlow Session.
+		
+		Args:
+		  sess: TensorFlow Session.
+		  input_tensors: List of input tensors. Type and shape are computed using
+		    `foo.shape` and `foo.dtype`.
+		  output_tensors: List of output tensors (only .name is used from this).
+		
+		Returns:
+		  TFLiteConverter class.
+	**/
+	static public function from_session(sess:Dynamic, input_tensors:Dynamic, output_tensors:Dynamic):Dynamic;
+	/**
+		Returns a list of the names of the input tensors.
+		
+		Returns:
+		  List of strings.
+	**/
+	public function get_input_arrays():Dynamic;
+}

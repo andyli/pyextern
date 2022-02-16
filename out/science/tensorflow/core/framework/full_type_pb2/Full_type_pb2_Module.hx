@@ -1,0 +1,45 @@
+/* This file is generated, do not edit! */
+package tensorflow.core.framework.full_type_pb2;
+@:pythonImport("tensorflow.core.framework.full_type_pb2") extern class Full_type_pb2_Module {
+	static public var DESCRIPTOR : Dynamic;
+	static public var FullTypeId : Dynamic;
+	static public var TFT_ANY : Dynamic;
+	static public var TFT_ARRAY : Dynamic;
+	static public var TFT_BFLOAT16 : Dynamic;
+	static public var TFT_BOOL : Dynamic;
+	static public var TFT_CALLABLE : Dynamic;
+	static public var TFT_COMPLEX128 : Dynamic;
+	static public var TFT_COMPLEX64 : Dynamic;
+	static public var TFT_DATASET : Dynamic;
+	static public var TFT_DOUBLE : Dynamic;
+	static public var TFT_FLOAT : Dynamic;
+	static public var TFT_HALF : Dynamic;
+	static public var TFT_INT16 : Dynamic;
+	static public var TFT_INT32 : Dynamic;
+	static public var TFT_INT64 : Dynamic;
+	static public var TFT_INT8 : Dynamic;
+	static public var TFT_LITERAL : Dynamic;
+	static public var TFT_MUTEX_LOCK : Dynamic;
+	static public var TFT_NAMED : Dynamic;
+	static public var TFT_OPTIONAL : Dynamic;
+	static public var TFT_PRODUCT : Dynamic;
+	static public var TFT_STRING : Dynamic;
+	static public var TFT_TENSOR : Dynamic;
+	static public var TFT_UINT16 : Dynamic;
+	static public var TFT_UINT32 : Dynamic;
+	static public var TFT_UINT64 : Dynamic;
+	static public var TFT_UINT8 : Dynamic;
+	static public var TFT_UNSET : Dynamic;
+	static public var TFT_VAR : Dynamic;
+	static public var _FULLTYPEDEF : Dynamic;
+	static public var _FULLTYPEID : Dynamic;
+	static public var __builtins__ : Dynamic;
+	static public var __cached__ : Dynamic;
+	static public var __doc__ : Dynamic;
+	static public var __file__ : Dynamic;
+	static public var __loader__ : Dynamic;
+	static public var __name__ : Dynamic;
+	static public var __package__ : Dynamic;
+	static public var __spec__ : Dynamic;
+	static public var _sym_db : Dynamic;
+}

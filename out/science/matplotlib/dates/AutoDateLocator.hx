@@ -1,0 +1,251 @@
+/* This file is generated, do not edit! */
+package matplotlib.dates;
+@:pythonImport("matplotlib.dates", "AutoDateLocator") extern class AutoDateLocator {
+	static public var MAXTICKS : Dynamic;
+	/**
+		Return the locations of the ticks.
+	**/
+	public function __call__():Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Implement delattr(self, name).
+	**/
+	public function __delattr__(name:Dynamic):Dynamic;
+	static public var __dict__ : Dynamic;
+	/**
+		Default dir() implementation.
+	**/
+	public function __dir__():Dynamic;
+	static public var __doc__ : Dynamic;
+	/**
+		Return self==value.
+	**/
+	public function __eq__(value:Dynamic):Dynamic;
+	/**
+		Default object formatter.
+	**/
+	public function __format__(format_spec:Dynamic):Dynamic;
+	/**
+		Return self>=value.
+	**/
+	public function __ge__(value:Dynamic):Dynamic;
+	/**
+		Return getattr(self, name).
+	**/
+	public function __getattribute__(name:Dynamic):Dynamic;
+	/**
+		Return self>value.
+	**/
+	public function __gt__(value:Dynamic):Dynamic;
+	/**
+		Return hash(self).
+	**/
+	public function __hash__():Dynamic;
+	/**
+		Parameters
+		----------
+		tz : `datetime.tzinfo`
+		    Ticks timezone.
+		minticks : int
+		    The minimum number of ticks desired; controls whether ticks occur
+		    yearly, monthly, etc.
+		maxticks : int
+		    The maximum number of ticks desired; controls the interval between
+		    ticks (ticking every other, every 3, etc.).  For fine-grained
+		    control, this can be a dictionary mapping individual rrule
+		    frequency constants (YEARLY, MONTHLY, etc.) to their own maximum
+		    number of ticks.  This can be used to keep the number of ticks
+		    appropriate to the format chosen in `AutoDateFormatter`. Any
+		    frequency not specified in this dictionary is given a default
+		    value.
+		interval_multiples : bool, default: True
+		    Whether ticks should be chosen to be multiple of the interval,
+		    locking them to 'nicer' locations.  For example, this will force
+		    the ticks to be at hours 0, 6, 12, 18 when hourly ticking is done
+		    at 6 hour intervals.
+	**/
+	@:native("__init__")
+	public function ___init__(?tz:Dynamic, ?minticks:Dynamic, ?maxticks:Dynamic, ?interval_multiples:Dynamic):Dynamic;
+	/**
+		Parameters
+		----------
+		tz : `datetime.tzinfo`
+		    Ticks timezone.
+		minticks : int
+		    The minimum number of ticks desired; controls whether ticks occur
+		    yearly, monthly, etc.
+		maxticks : int
+		    The maximum number of ticks desired; controls the interval between
+		    ticks (ticking every other, every 3, etc.).  For fine-grained
+		    control, this can be a dictionary mapping individual rrule
+		    frequency constants (YEARLY, MONTHLY, etc.) to their own maximum
+		    number of ticks.  This can be used to keep the number of ticks
+		    appropriate to the format chosen in `AutoDateFormatter`. Any
+		    frequency not specified in this dictionary is given a default
+		    value.
+		interval_multiples : bool, default: True
+		    Whether ticks should be chosen to be multiple of the interval,
+		    locking them to 'nicer' locations.  For example, this will force
+		    the ticks to be at hours 0, 6, 12, 18 when hourly ticking is done
+		    at 6 hour intervals.
+	**/
+	public function new(?tz:Dynamic, ?minticks:Dynamic, ?maxticks:Dynamic, ?interval_multiples:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return self<=value.
+	**/
+	public function __le__(value:Dynamic):Dynamic;
+	/**
+		Return self<value.
+	**/
+	public function __lt__(value:Dynamic):Dynamic;
+	static public var __module__ : Dynamic;
+	/**
+		Return self!=value.
+	**/
+	public function __ne__(value:Dynamic):Dynamic;
+	/**
+		Create and return a new object.  See help(type) for accurate signature.
+	**/
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Helper for pickle.
+	**/
+	public function __reduce__():Dynamic;
+	/**
+		Helper for pickle.
+	**/
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
+	/**
+		Return repr(self).
+	**/
+	public function __repr__():Dynamic;
+	/**
+		Implement setattr(self, name, value).
+	**/
+	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Size of object in memory, in bytes.
+	**/
+	public function __sizeof__():Dynamic;
+	/**
+		Return str(self).
+	**/
+	public function __str__():Dynamic;
+	/**
+		Abstract classes can override this to customize issubclass().
+		
+		This is invoked early on by abc.ABCMeta.__subclasscheck__().
+		It should return True, False or NotImplemented.  If it returns
+		NotImplemented, the normal algorithm is used.  Otherwise, it
+		overrides the normal algorithm (and the outcome is cached).
+	**/
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		list of weak references to the object (if defined)
+	**/
+	public var __weakref__ : Dynamic;
+	/**
+		Return the number of units for each tick.
+	**/
+	public function _get_interval():Dynamic;
+	/**
+		Return how many days a unit of the locator is; used for
+		intelligent autoscaling.
+	**/
+	public function _get_unit():Dynamic;
+	static public var axis : Dynamic;
+	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Convert axis data interval to datetime objects.
+	**/
+	public function datalim_to_dt():Dynamic;
+	/**
+		Pick the best locator based on a distance.
+	**/
+	public function get_locator(dmin:Dynamic, dmax:Dynamic):Dynamic;
+	static public var hms0d : Dynamic;
+	/**
+		Given the proposed upper and lower extent, adjust the range
+		if it is too close to being singular (i.e. a range of ~0).
+	**/
+	public function nonsingular(vmin:Dynamic, vmax:Dynamic):Dynamic;
+	/**
+		Log at WARNING level if *locs* is longer than `Locator.MAXTICKS`.
+		
+		This is intended to be called immediately before returning *locs* from
+		``__call__`` to inform users in case their Locator returns a huge
+		number of ticks, causing Matplotlib to run out of memory.
+		
+		The "strange" name of this method dates back to when it would raise an
+		exception instead of emitting a log.
+	**/
+	public function raise_if_exceeds(locs:Dynamic):Dynamic;
+	public function set_axis(axis:Dynamic):Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.5
+		   \ 
+	**/
+	public function set_bounds(vmin:Dynamic, vmax:Dynamic):Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.5
+		   \ 
+	**/
+	public function set_data_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
+	/**
+		Do nothing, and raise a warning. Any locator class not supporting the
+		set_params() function will call this.
+	**/
+	public function set_params(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Set time zone info.
+	**/
+	public function set_tzinfo(tz:Dynamic):Dynamic;
+	/**
+		[*Deprecated*] 
+		
+		Notes
+		-----
+		.. deprecated:: 3.5
+		   \ 
+	**/
+	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
+	/**
+		Return the values of the located ticks given **vmin** and **vmax**.
+		
+		.. note::
+		    To get tick locations with the vmin and vmax values defined
+		    automatically for the associated :attr:`axis` simply call
+		    the Locator instance::
+		
+		        >>> print(type(loc))
+		        <type 'Locator'>
+		        >>> print(loc())
+		        [1, 2, 3, 4]
+	**/
+	public function tick_values(vmin:Dynamic, vmax:Dynamic):Dynamic;
+	/**
+		Select a scale for the range from vmin to vmax.
+		
+		Subclasses should override this method to change locator behaviour.
+	**/
+	public function view_limits(vmin:Dynamic, vmax:Dynamic):Dynamic;
+	/**
+		Convert the view interval to datetime objects.
+	**/
+	public function viewlim_to_dt():Dynamic;
+}

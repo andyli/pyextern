@@ -1,0 +1,147 @@
+/* This file is generated, do not edit! */
+package matplotlib.scale;
+@:pythonImport("matplotlib.scale", "LogitScale") extern class LogitScale {
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Implement delattr(self, name).
+	**/
+	public function __delattr__(name:Dynamic):Dynamic;
+	static public var __dict__ : Dynamic;
+	/**
+		Default dir() implementation.
+	**/
+	public function __dir__():Dynamic;
+	static public var __doc__ : Dynamic;
+	/**
+		Return self==value.
+	**/
+	public function __eq__(value:Dynamic):Dynamic;
+	/**
+		Default object formatter.
+	**/
+	public function __format__(format_spec:Dynamic):Dynamic;
+	/**
+		Return self>=value.
+	**/
+	public function __ge__(value:Dynamic):Dynamic;
+	/**
+		Return getattr(self, name).
+	**/
+	public function __getattribute__(name:Dynamic):Dynamic;
+	/**
+		Return self>value.
+	**/
+	public function __gt__(value:Dynamic):Dynamic;
+	/**
+		Return hash(self).
+	**/
+	public function __hash__():Dynamic;
+	/**
+		Parameters
+		----------
+		axis : `matplotlib.axis.Axis`
+		    Currently unused.
+		nonpositive : {'mask', 'clip'}
+		    Determines the behavior for values beyond the open interval ]0, 1[.
+		    They can either be masked as invalid, or clipped to a number very
+		    close to 0 or 1.
+		use_overline : bool, default: False
+		    Indicate the usage of survival notation (\overline{x}) in place of
+		    standard notation (1-x) for probability close to one.
+		one_half : str, default: r"\frac{1}{2}"
+		    The string used for ticks formatter to represent 1/2.
+	**/
+	@:native("__init__")
+	public function ___init__(axis:Dynamic, ?nonpositive:Dynamic, ?one_half:Dynamic, ?use_overline:Dynamic):Dynamic;
+	/**
+		Parameters
+		----------
+		axis : `matplotlib.axis.Axis`
+		    Currently unused.
+		nonpositive : {'mask', 'clip'}
+		    Determines the behavior for values beyond the open interval ]0, 1[.
+		    They can either be masked as invalid, or clipped to a number very
+		    close to 0 or 1.
+		use_overline : bool, default: False
+		    Indicate the usage of survival notation (\overline{x}) in place of
+		    standard notation (1-x) for probability close to one.
+		one_half : str, default: r"\frac{1}{2}"
+		    The string used for ticks formatter to represent 1/2.
+	**/
+	public function new(axis:Dynamic, ?nonpositive:Dynamic, ?one_half:Dynamic, ?use_overline:Dynamic):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return self<=value.
+	**/
+	public function __le__(value:Dynamic):Dynamic;
+	/**
+		Return self<value.
+	**/
+	public function __lt__(value:Dynamic):Dynamic;
+	static public var __module__ : Dynamic;
+	/**
+		Return self!=value.
+	**/
+	public function __ne__(value:Dynamic):Dynamic;
+	/**
+		Create and return a new object.  See help(type) for accurate signature.
+	**/
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Helper for pickle.
+	**/
+	public function __reduce__():Dynamic;
+	/**
+		Helper for pickle.
+	**/
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
+	/**
+		Return repr(self).
+	**/
+	public function __repr__():Dynamic;
+	/**
+		Implement setattr(self, name, value).
+	**/
+	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Size of object in memory, in bytes.
+	**/
+	public function __sizeof__():Dynamic;
+	/**
+		Return str(self).
+	**/
+	public function __str__():Dynamic;
+	/**
+		Abstract classes can override this to customize issubclass().
+		
+		This is invoked early on by abc.ABCMeta.__subclasscheck__().
+		It should return True, False or NotImplemented.  If it returns
+		NotImplemented, the normal algorithm is used.  Otherwise, it
+		overrides the normal algorithm (and the outcome is cached).
+	**/
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		list of weak references to the object (if defined)
+	**/
+	public var __weakref__ : Dynamic;
+	/**
+		Return the `.LogitTransform` associated with this scale.
+	**/
+	public function get_transform():Dynamic;
+	/**
+		Limit the domain to values between 0 and 1 (excluded).
+	**/
+	public function limit_range_for_scale(vmin:Dynamic, vmax:Dynamic, minpos:Dynamic):Dynamic;
+	static public var name : Dynamic;
+	/**
+		Set the locators and formatters of *axis* to instances suitable for
+		this scale.
+	**/
+	public function set_default_locators_and_formatters(axis:Dynamic):Dynamic;
+}

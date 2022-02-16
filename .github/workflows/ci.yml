@@ -32,3 +32,11 @@ jobs:
           EARTHLY_PUSH: ${{ env.PUSH }}
       - name: Generate externs of core dependencies
         run: earthly +gen-coredep
+      - name: Generate externs of PyQt5
+        run: earthly +gen-pyqt
+      - name: Generate externs of pytorch
+        run: earthly +gen-pytorch
+      - name: Generate externs of selenium
+        run: earthly +gen-selenium
+      - name: Generate externs of science libs
+        run: earthly +gen-science
