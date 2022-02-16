@@ -1,0 +1,15 @@
+{
+	"name": "pyextern",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "workspace",
+	"workspaceFolder": "/workspace",
+	"remoteEnv": {
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+	},
+	"settings": {},
+	"extensions": [
+		"ms-azuretools.vscode-docker",
+		"nadako.vshaxe",
+	],
+	"remoteUser": "vscode"
+}

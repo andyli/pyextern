@@ -11,6 +11,13 @@ package docutils.writers.latex2e;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _du_sty : Dynamic;
+	static public function _read_block(fp:Dynamic):Dynamic;
+	static public var block_name : Dynamic;
+	static public var definitions : Dynamic;
+	static public var division : Dynamic;
+	static public var fp : Dynamic;
+	static public var line : Dynamic;
 	/**
 		Return the right math environment to display `code`.
 		
@@ -22,4 +29,9 @@ package docutils.writers.latex2e;
 		to suppress numbering.
 	**/
 	static public function pick_math_environment(code:Dynamic, ?numbered:Dynamic):Dynamic;
+	/**
+		OS-specific conversion from a relative URL of the 'file' scheme
+		to a file system path; not recommended for general use.
+	**/
+	static public function url2pathname(pathname:Dynamic):Dynamic;
 }

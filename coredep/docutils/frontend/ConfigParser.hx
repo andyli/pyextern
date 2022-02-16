@@ -25,7 +25,7 @@ package docutils.frontend;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __contains__(key:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -34,19 +34,18 @@ package docutils.frontend;
 	public function __delitem__(key:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(other:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -97,13 +96,13 @@ package docutils.frontend;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -115,10 +114,9 @@ package docutils.frontend;
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	public function __setitem__(key:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	static public var __slots__ : Dynamic;
 	/**
 		Return str(self).
@@ -137,10 +135,7 @@ package docutils.frontend;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public var _abc_cache : Dynamic;
-	static public var _abc_negative_cache : Dynamic;
-	static public var _abc_negative_cache_version : Dynamic;
-	static public var _abc_registry : Dynamic;
+	static public var _abc_impl : Dynamic;
 	/**
 		Return a boolean value translating from other types if necessary.
 		        
@@ -168,6 +163,11 @@ package docutils.frontend;
 		section names.
 	**/
 	public function _read(fp:Dynamic, fpname:Dynamic):Dynamic;
+	/**
+		Read the defaults passed in the initializer.
+		Note: values can be non-string.
+	**/
+	public function _read_defaults(defaults:Dynamic):Dynamic;
 	/**
 		Create a sequence of lookups with 'vars' taking priority over
 		the 'section' which takes priority over the DEFAULTSECT.
@@ -282,13 +282,13 @@ package docutils.frontend;
 	**/
 	public function popitem():Dynamic;
 	/**
-		Read and parse a filename or a list of filenames.
+		Read and parse a filename or an iterable of filenames.
 		
 		Files that cannot be opened are silently ignored; this is
-		designed so that you can specify a list of potential
+		designed so that you can specify an iterable of potential
 		configuration file locations (e.g. current directory, user's
 		home directory, systemwide directory), and all existing
-		configuration files in the list will be read.  A single
+		configuration files in the iterable will be read.  A single
 		filename may also be given.
 		
 		Return list of successfully read files.
@@ -351,7 +351,7 @@ package docutils.frontend;
 		If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
 		In either case, this is followed by: for k, v in F.items(): D[k] = v
 	**/
-	static public function update(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function update(?other:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call the validator function and implement overrides on all applicable
 		settings.

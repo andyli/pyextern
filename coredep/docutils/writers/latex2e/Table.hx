@@ -8,19 +8,18 @@ package docutils.writers.latex2e;
 	public function __delattr__(name:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -71,13 +70,13 @@ package docutils.writers.latex2e;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -87,10 +86,9 @@ package docutils.writers.latex2e;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -116,15 +114,7 @@ package docutils.writers.latex2e;
 	public function get_closing():Dynamic;
 	/**
 		Return column specification for longtable.
-		
-		Assumes reST line length being 80 characters.
-		Table width is hairy.
-		
-		=== ===
-		ABC DEF
-		=== ===
-		
-		usually gets to narrow, therefore we add 1 (fiddlefactor).
+		        
 	**/
 	public function get_colspecs(node:Dynamic):Dynamic;
 	/**
@@ -137,7 +127,7 @@ package docutils.writers.latex2e;
 		Return sum of columnwidths for multicell.
 	**/
 	public function get_multicolumn_width(start:Dynamic, len_:Dynamic):Dynamic;
-	public function get_opening():Dynamic;
+	public function get_opening(?width:Dynamic):Dynamic;
 	public function get_rowspan(cell:Dynamic):Dynamic;
 	public function get_vertical_bar():Dynamic;
 	public function is_open():Dynamic;
@@ -146,7 +136,7 @@ package docutils.writers.latex2e;
 	public function open():Dynamic;
 	public function set(attr:Dynamic, value:Dynamic):Dynamic;
 	public function set_rowspan(cell:Dynamic, value:Dynamic):Dynamic;
-	public function set_table_style(table_style:Dynamic, classes:Dynamic):Dynamic;
+	public function set_table_style(node:Dynamic, settings:Dynamic):Dynamic;
 	public function visit_colspec(node:Dynamic):Dynamic;
 	public function visit_entry():Dynamic;
 	public function visit_row():Dynamic;

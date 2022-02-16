@@ -13,19 +13,18 @@ package docutils.statemachine;
 	public function __delitem__(i:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(other:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -79,13 +78,13 @@ package docutils.statemachine;
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __radd__(other:Dynamic):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -97,10 +96,9 @@ package docutils.statemachine;
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	public function __setitem__(i:Dynamic, item:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -142,7 +140,7 @@ package docutils.statemachine;
 		  - `first_indent`: The indent of the first line, if known.
 		
 		:Return:
-		  - a StringList of indented lines with mininum indent removed;
+		  - a StringList of indented lines with minimum indent removed;
 		  - the amount of the indent;
 		  - a boolean: did the indented block finish with a blank line or EOF?
 	**/

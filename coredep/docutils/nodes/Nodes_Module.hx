@@ -23,7 +23,7 @@ package docutils.nodes;
 	static public function _nop(self:Dynamic, node:Dynamic):Dynamic;
 	static public function dupname(node:Dynamic, name:Dynamic):Dynamic;
 	/**
-		Failsave conversion of `unicode` to `str`.
+		Failsafe conversion of `unicode` to `str`.
 	**/
 	static public function ensure_str(s:Dynamic):Dynamic;
 	/**
@@ -66,6 +66,7 @@ package docutils.nodes;
 	**/
 	static public function make_id(string:Dynamic):Dynamic;
 	static public var node_class_names : Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		Quote attributes for pseudo-xml
 	**/
@@ -74,6 +75,11 @@ package docutils.nodes;
 		Escape string values that are elements of a list, for serialization.
 	**/
 	static public function serial_escape(value:Dynamic):Dynamic;
+	/**
+		Return a string with nulls removed or restored to backslashes.
+		Backslash-escaped spaces are also removed.
+	**/
+	static public function unescape(text:Dynamic, ?restore_backslashes:Dynamic, ?respect_whitespace:Dynamic):Dynamic;
 	/**
 		Return a whitespace-normalized name.
 	**/

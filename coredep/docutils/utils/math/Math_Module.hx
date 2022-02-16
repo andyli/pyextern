@@ -21,4 +21,8 @@ package docutils.utils.math;
 		to suppress numbering.
 	**/
 	static public function pick_math_environment(code:Dynamic, ?numbered:Dynamic):Dynamic;
+	/**
+		Return string (LaTeX math) `code` with environments stripped out.
+	**/
+	static public function toplevel_code(code:Dynamic):Dynamic;
 }

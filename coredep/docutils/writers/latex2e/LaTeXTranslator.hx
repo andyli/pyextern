@@ -8,19 +8,18 @@ package docutils.writers.latex2e;
 	public function __delattr__(name:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -71,13 +70,13 @@ package docutils.writers.latex2e;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -87,10 +86,9 @@ package docutils.writers.latex2e;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -124,7 +122,7 @@ package docutils.writers.latex2e;
 	public function depart_abbreviation(node:Dynamic):Dynamic;
 	public function depart_acronym(node:Dynamic):Dynamic;
 	public function depart_address(node:Dynamic):Dynamic;
-	public function depart_admonition(?node:Dynamic):Dynamic;
+	public function depart_admonition(node:Dynamic):Dynamic;
 	public function depart_attribution(node:Dynamic):Dynamic;
 	public function depart_author(node:Dynamic):Dynamic;
 	public function depart_authors(node:Dynamic):Dynamic;
@@ -154,7 +152,6 @@ package docutils.writers.latex2e;
 	public function depart_entry(node:Dynamic):Dynamic;
 	public function depart_enumerated_list(node:Dynamic):Dynamic;
 	public function depart_field(node:Dynamic):Dynamic;
-	public function depart_field_argument(node:Dynamic):Dynamic;
 	public function depart_field_body(node:Dynamic):Dynamic;
 	public function depart_field_list(node:Dynamic):Dynamic;
 	public function depart_field_name(node:Dynamic):Dynamic;
@@ -166,7 +163,6 @@ package docutils.writers.latex2e;
 	public function depart_header(node:Dynamic):Dynamic;
 	public function depart_image(node:Dynamic):Dynamic;
 	public function depart_inline(node:Dynamic):Dynamic;
-	public function depart_interpreted(node:Dynamic):Dynamic;
 	public function depart_label(node:Dynamic):Dynamic;
 	public function depart_legend(node:Dynamic):Dynamic;
 	public function depart_line(node:Dynamic):Dynamic;
@@ -176,6 +172,7 @@ package docutils.writers.latex2e;
 	public function depart_literal_block(node:Dynamic):Dynamic;
 	public function depart_math(node:Dynamic):Dynamic;
 	public function depart_math_block(node:Dynamic):Dynamic;
+	public function depart_meta(node:Dynamic):Dynamic;
 	public function depart_option(node:Dynamic):Dynamic;
 	public function depart_option_argument(node:Dynamic):Dynamic;
 	public function depart_option_group(node:Dynamic):Dynamic;
@@ -247,8 +244,10 @@ package docutils.writers.latex2e;
 		Return list of label definitions for all ids of `node`
 		
 		If `set_anchor` is True, an anchor is set with \phantomsection.
+		If `protect` is True, the \label cmd is made robust.
+		If `newline` is True, a newline is added if there are labels.
 	**/
-	public function ids_to_labels(node:Dynamic, ?set_anchor:Dynamic):Dynamic;
+	public function ids_to_labels(node:Dynamic, ?set_anchor:Dynamic, ?protect:Dynamic, ?newline:Dynamic):Dynamic;
 	public function insert_additional_table_colum_delimiters():Dynamic;
 	public function insert_align_declaration(node:Dynamic, ?_default:Dynamic):Dynamic;
 	static public var insert_newline : Dynamic;
@@ -262,15 +261,10 @@ package docutils.writers.latex2e;
 		Check whether a node can be typeset verbatim
 	**/
 	public function is_plaintext(node:Dynamic):Dynamic;
-	static public var is_toc_list : Dynamic;
 	static public var is_xetex : Dynamic;
 	public function label_delim(node:Dynamic, bracket:Dynamic, superscript:Dynamic):Dynamic;
 	public function language_label(docutil_label:Dynamic):Dynamic;
 	static public var literal : Dynamic;
-	/**
-		Generate a local table of contents with LaTeX package minitoc
-	**/
-	public function minitoc(node:Dynamic, title:Dynamic, depth:Dynamic):Dynamic;
 	static public var optional : Dynamic;
 	public function pop_output_collector():Dynamic;
 	public function push_output_collector(new_out:Dynamic):Dynamic;
@@ -285,6 +279,15 @@ package docutils.writers.latex2e;
 		Return code to reference or embed stylesheet file `path`
 	**/
 	public function stylesheet_call(path:Dynamic):Dynamic;
+	/**
+		Return LaTeX code required between term or field name and content.
+		
+		In a LaTeX "description" environment (used for definition
+		lists and non-docinfo field lists), a ``\leavevmode``
+		between an item's label and content ensures the correct
+		placement of certain block constructs.
+	**/
+	public function term_postfix(node:Dynamic):Dynamic;
 	public function thead_depth():Dynamic;
 	/**
 		Translate docutils encoding name into LaTeX's.
@@ -293,7 +296,7 @@ package docutils.writers.latex2e;
 	**/
 	public function to_latex_encoding(docutils_encoding:Dynamic):Dynamic;
 	/**
-		Convert `length_str` with rst lenght to LaTeX length
+		Convert `length_str` with rst length to LaTeX length
 		        
 	**/
 	public function to_latex_length(length_str:Dynamic, ?pxunit:Dynamic):Dynamic;
@@ -330,6 +333,12 @@ package docutils.writers.latex2e;
 	public function visit_compound(node:Dynamic):Dynamic;
 	public function visit_contact(node:Dynamic):Dynamic;
 	public function visit_container(node:Dynamic):Dynamic;
+	/**
+		Write the table of contents.
+		
+		Called from visit_topic() for "contents" topics.
+	**/
+	public function visit_contents(node:Dynamic):Dynamic;
 	public function visit_copyright(node:Dynamic):Dynamic;
 	public function visit_date(node:Dynamic):Dynamic;
 	public function visit_decoration(node:Dynamic):Dynamic;
@@ -345,7 +354,6 @@ package docutils.writers.latex2e;
 	public function visit_entry(node:Dynamic):Dynamic;
 	public function visit_enumerated_list(node:Dynamic):Dynamic;
 	public function visit_field(node:Dynamic):Dynamic;
-	public function visit_field_argument(node:Dynamic):Dynamic;
 	public function visit_field_body(node:Dynamic):Dynamic;
 	public function visit_field_list(node:Dynamic):Dynamic;
 	public function visit_field_name(node:Dynamic):Dynamic;
@@ -357,7 +365,6 @@ package docutils.writers.latex2e;
 	public function visit_header(node:Dynamic):Dynamic;
 	public function visit_image(node:Dynamic):Dynamic;
 	public function visit_inline(node:Dynamic):Dynamic;
-	public function visit_interpreted(node:Dynamic):Dynamic;
 	/**
 		footnote or citation label: in brackets or as superscript
 	**/
@@ -369,6 +376,8 @@ package docutils.writers.latex2e;
 	public function visit_literal(node:Dynamic):Dynamic;
 	/**
 		Render a literal block.
+		
+		Corresponding rST elements: literal block, parsed-literal, code.
 	**/
 	public function visit_literal_block(node:Dynamic):Dynamic;
 	/**
@@ -376,9 +385,10 @@ package docutils.writers.latex2e;
 	**/
 	public function visit_math(node:Dynamic, ?math_env:Dynamic):Dynamic;
 	public function visit_math_block(node:Dynamic):Dynamic;
+	public function visit_meta(node:Dynamic):Dynamic;
 	public function visit_option(node:Dynamic):Dynamic;
 	/**
-		Append the delimiter betweeen an option and its argument to body.
+		Append the delimiter between an option and its argument to body.
 	**/
 	public function visit_option_argument(node:Dynamic):Dynamic;
 	public function visit_option_group(node:Dynamic):Dynamic;

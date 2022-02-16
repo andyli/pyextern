@@ -14,6 +14,7 @@ package docutils.core;
 	static public var __version_details__ : Dynamic;
 	static public var default_description : Dynamic;
 	static public var default_usage : Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		Set up & run a `Publisher` for command-line-based file I/O (input and
 		output file paths taken automatically from the command line).  Return the

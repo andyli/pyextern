@@ -3,7 +3,7 @@ package docutils.writers.latex2e;
 @:pythonImport("docutils.writers.latex2e", "SortableDict") extern class SortableDict {
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		True if D has a key k, else False.
+		True if the dictionary has the specified key, else False.
 	**/
 	public function __contains__(key:Dynamic):Dynamic;
 	/**
@@ -16,19 +16,18 @@ package docutils.writers.latex2e;
 	public function __delitem__(key:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -88,17 +87,21 @@ package docutils.writers.latex2e;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
 	public function __repr__():Dynamic;
+	/**
+		Return a reverse iterator over the dict keys.
+	**/
+	public function __reversed__():Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
@@ -137,13 +140,13 @@ package docutils.writers.latex2e;
 	**/
 	public function copy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Returns a new dict with keys from iterable and values equal to value.
+		Create a new dictionary with keys from iterable and values set to value.
 	**/
 	static public function fromkeys(iterable:Dynamic, ?value:Dynamic):Dynamic;
 	/**
-		D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
+		Return the value for key if key is in the dictionary, else default.
 	**/
-	public function get(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function get(key:Dynamic, ?_default:Dynamic):Dynamic;
 	/**
 		D.items() -> a set-like object providing a view on D's items
 	**/
@@ -158,14 +161,18 @@ package docutils.writers.latex2e;
 	**/
 	public function pop(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		D.popitem() -> (k, v), remove and return some (key, value) pair as a
-		2-tuple; but raise KeyError if D is empty.
+		Remove and return a (key, value) pair as a 2-tuple.
+		
+		Pairs are returned in LIFO (last-in, first-out) order.
+		Raises KeyError if the dict is empty.
 	**/
-	public function popitem(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function popitem():Dynamic;
 	/**
-		D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d if k not in D
+		Insert key with a value of default if key is not in the dictionary.
+		
+		Return the value for key if key is in the dictionary, else default.
 	**/
-	public function setdefault(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function setdefault(key:Dynamic, ?_default:Dynamic):Dynamic;
 	/**
 		Return sorted list of keys
 	**/

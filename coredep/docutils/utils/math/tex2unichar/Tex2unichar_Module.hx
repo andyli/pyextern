@@ -18,6 +18,7 @@ package docutils.utils.math.tex2unichar;
 	static public var mathopen : Dynamic;
 	static public var mathord : Dynamic;
 	static public var mathover : Dynamic;
+	static public var mathpunct : Dynamic;
 	static public var mathradical : Dynamic;
 	static public var mathrel : Dynamic;
 	static public var mathunder : Dynamic;

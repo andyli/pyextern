@@ -42,7 +42,7 @@ package docutils.parsers.rst.directives;
 	**/
 	static public function directive(directive_name:Dynamic, language_module:Dynamic, document:Dynamic):Dynamic;
 	/**
-		Verfies the encoding argument by lookup.
+		Verifies the encoding argument by lookup.
 		(Directive option conversion function.)
 		
 		Raises ValueError for unknown encodings.
@@ -64,12 +64,22 @@ package docutils.parsers.rst.directives;
 		Check for a positive argument of one of the units and return a
 		normalized string of the form "<value><unit>" (without space in
 		between).
+		(Directive option conversion function.)
 		
 		To be called from directive option conversion functions.
 	**/
 	static public function get_measure(argument:Dynamic, units:Dynamic):Dynamic;
 	/**
+		Import a module.
+		
+		The 'package' argument is required when performing a relative import. It
+		specifies the package to use as the anchor point from which to resolve the
+		relative import to an absolute import.
+	**/
+	static public function import_module(name:Dynamic, ?_package:Dynamic):Dynamic;
+	/**
 		Return normalized string of a length or percentage unit.
+		(Directive option conversion function.)
 		
 		Add <default> if there is no unit. Raise ValueError if the argument is not
 		a positive measure of one of the valid CSS units (or without unit).
@@ -92,6 +102,13 @@ package docutils.parsers.rst.directives;
 	**/
 	static public function nonnegative_int(argument:Dynamic):Dynamic;
 	/**
+		Return a docutils parser whose name matches the argument.
+		(Directive option conversion function.)
+		
+		Return `None`, if the argument evaluates to `False`.
+	**/
+	static public function parser_name(argument:Dynamic):Dynamic;
+	/**
 		Return the path argument unwrapped (with newlines removed).
 		(Directive option conversion function.)
 		
@@ -100,6 +117,7 @@ package docutils.parsers.rst.directives;
 	static public function path(argument:Dynamic):Dynamic;
 	/**
 		Check for an integer percentage value with optional percent sign.
+		(Directive option conversion function.)
 	**/
 	static public function percentage(argument:Dynamic):Dynamic;
 	/**
@@ -155,6 +173,10 @@ package docutils.parsers.rst.directives;
 	**/
 	static public function unescape(text:Dynamic, ?restore_backslashes:Dynamic, ?respect_whitespace:Dynamic):Dynamic;
 	/**
+		Return a Unicode string of one character with ordinal i; 0 <= i <= 0x10ffff.
+	**/
+	static public function unichr(i:Dynamic):Dynamic;
+	/**
 		Convert a Unicode character code to a Unicode character.
 		(Directive option conversion function.)
 		
@@ -174,6 +196,8 @@ package docutils.parsers.rst.directives;
 	**/
 	static public function uri(argument:Dynamic):Dynamic;
 	/**
+		Directive option conversion function.
+		
 		The argument can be any of `values` or `argument_type`.
 	**/
 	static public function value_or(values:Dynamic, other:Dynamic):Dynamic;

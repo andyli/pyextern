@@ -15,19 +15,18 @@ package inspect;
 	**/
 	public function __delattr__(name:Dynamic):Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -86,7 +85,7 @@ package inspect;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -98,19 +97,19 @@ package inspect;
 	**/
 	static public function __new__(_cls:Dynamic, args:Dynamic, varargs:Dynamic, keywords:Dynamic, defaults:Dynamic):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return a nicely formatted representation string
 	**/
 	public function __repr__():Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**
@@ -118,10 +117,9 @@ package inspect;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	static public var __slots__ : Dynamic;
 	/**
 		Return str(self).
@@ -137,36 +135,38 @@ package inspect;
 	**/
 	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return a new OrderedDict which maps field names to their values.
+		Return a new dict which maps field names to their values.
 	**/
 	public function _asdict():Dynamic;
+	static public var _field_defaults : Dynamic;
 	static public var _fields : Dynamic;
+	static public var _fields_defaults : Dynamic;
 	/**
 		Make a new ArgSpec object from a sequence or iterable
 	**/
-	static public function _make(iterable:Dynamic, ?_new:Dynamic, ?len:Dynamic):Dynamic;
+	static public function _make(iterable:Dynamic):Dynamic;
 	/**
 		Return a new ArgSpec object replacing specified fields with new values
 	**/
-	static public function _replace(_self:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	static public var _source : Dynamic;
+	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Alias for field number 0
 	**/
 	public var args : Dynamic;
 	/**
-		T.count(value) -> integer -- return number of occurrences of value
+		Return number of occurrences of value.
 	**/
-	public function count(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function count(value:Dynamic):Dynamic;
 	/**
 		Alias for field number 3
 	**/
 	public var defaults : Dynamic;
 	/**
-		T.index(value, [start, [stop]]) -> integer -- return first index of value.
+		Return first index of value.
+		
 		Raises ValueError if the value is not present.
 	**/
-	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function index(value:Dynamic, ?start:Dynamic, ?stop:Dynamic):Dynamic;
 	/**
 		Alias for field number 2
 	**/

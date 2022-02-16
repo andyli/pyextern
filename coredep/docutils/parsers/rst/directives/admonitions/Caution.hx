@@ -8,19 +8,18 @@ package docutils.parsers.rst.directives.admonitions;
 	public function __delattr__(name:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -71,13 +70,13 @@ package docutils.parsers.rst.directives.admonitions;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -87,10 +86,9 @@ package docutils.parsers.rst.directives.admonitions;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -140,22 +138,34 @@ package docutils.parsers.rst.directives.admonitions;
 	/**
 		`Element` is the superclass to all specific elements.
 		
-		Elements contain attributes and child nodes.  Elements emulate
-		dictionaries for attributes, indexing by attribute name (a string).  To
-		set the attribute 'att' to 'value', do::
+		Elements contain attributes and child nodes.
+		They can be described as a cross between a list and a dictionary.
+		
+		Elements emulate dictionaries for external [#]_ attributes, indexing by
+		attribute name (a string). To set the attribute 'att' to 'value', do::
 		
 		    element['att'] = 'value'
 		
-		There are two special attributes: 'ids' and 'names'.  Both are
-		lists of unique identifiers, and names serve as human interfaces
-		to IDs.  Names are case- and whitespace-normalized (see the
-		fully_normalize_name() function), and IDs conform to the regular
-		expression ``[a-z](-?[a-z0-9]+)*`` (see the make_id() function).
+		.. [#] External attributes correspond to the XML element attributes.
+		   From its `Node` superclass, Element also inherits "internal"
+		   class attributes that are accessed using the standard syntax, e.g.
+		   ``element.parent``.
 		
-		Elements also emulate lists for child nodes (element nodes and/or text
+		There are two special attributes: 'ids' and 'names'.  Both are
+		lists of unique identifiers: 'ids' conform to the regular expression
+		``[a-z](-?[a-z0-9]+)*`` (see the make_id() function for rationale and
+		details). 'names' serve as user-friendly interfaces to IDs; they are
+		case- and whitespace-normalized (see the fully_normalize_name() function).
+		
+		Elements emulate lists for child nodes (element nodes and/or text
 		nodes), indexing by integer.  To get the first child node, use::
 		
 		    element[0]
+		
+		to iterate over the child nodes (without descending), use::
+		
+		    for child in element:
+		        ...
 		
 		Elements may be constructed using the ``+=`` operator.  To add one new
 		child node to element, do::

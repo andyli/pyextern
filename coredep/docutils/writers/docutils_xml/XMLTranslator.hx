@@ -8,19 +8,18 @@ package docutils.writers.docutils_xml;
 	public function __delattr__(name:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -71,13 +70,13 @@ package docutils.writers.docutils_xml;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -87,10 +86,9 @@ package docutils.writers.docutils_xml;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -175,6 +173,7 @@ package docutils.writers.docutils_xml;
 	public function depart_literal_block(node:Dynamic):Dynamic;
 	public function depart_math(node:Dynamic):Dynamic;
 	public function depart_math_block(node:Dynamic):Dynamic;
+	public function depart_meta(node:Dynamic):Dynamic;
 	public function depart_note(node:Dynamic):Dynamic;
 	public function depart_option(node:Dynamic):Dynamic;
 	public function depart_option_argument(node:Dynamic):Dynamic;
@@ -301,6 +300,7 @@ package docutils.writers.docutils_xml;
 	public function visit_literal_block(node:Dynamic):Dynamic;
 	public function visit_math(node:Dynamic):Dynamic;
 	public function visit_math_block(node:Dynamic):Dynamic;
+	public function visit_meta(node:Dynamic):Dynamic;
 	public function visit_note(node:Dynamic):Dynamic;
 	public function visit_option(node:Dynamic):Dynamic;
 	public function visit_option_argument(node:Dynamic):Dynamic;

@@ -8,19 +8,18 @@ package docutils.writers.s5_html;
 	public function __delattr__(name:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -71,13 +70,13 @@ package docutils.writers.s5_html;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -87,10 +86,9 @@ package docutils.writers.s5_html;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -222,10 +220,6 @@ package docutils.writers.s5_html;
 	public function depart_table(node:Dynamic):Dynamic;
 	public function depart_target(node:Dynamic):Dynamic;
 	public function depart_tbody(node:Dynamic):Dynamic;
-	/**
-		Leave the end tag to `self.visit_definition()`, in case there's a
-		classifier.
-	**/
 	public function depart_term(node:Dynamic):Dynamic;
 	public function depart_tgroup(node:Dynamic):Dynamic;
 	public function depart_thead(node:Dynamic):Dynamic;
@@ -275,6 +269,7 @@ package docutils.writers.s5_html;
 	static public var optional : Dynamic;
 	static public var required_theme_files : Dynamic;
 	static public var s5_stylesheet_template : Dynamic;
+	public function section_title_tags(node:Dynamic):Dynamic;
 	/**
 		Set class `class_` on the visible child no. index of `node`.
 		Do nothing if node has fewer children than `index`.
@@ -295,7 +290,7 @@ package docutils.writers.s5_html;
 	/**
 		Return code to reference or embed stylesheet file `path`
 	**/
-	public function stylesheet_call(path:Dynamic):Dynamic;
+	public function stylesheet_call(path:Dynamic, ?adjust_path:Dynamic):Dynamic;
 	static public var stylesheet_link : Dynamic;
 	public function unimplemented_visit(node:Dynamic):Dynamic;
 	/**
@@ -405,9 +400,6 @@ package docutils.writers.s5_html;
 	public function visit_term(node:Dynamic):Dynamic;
 	public function visit_tgroup(node:Dynamic):Dynamic;
 	public function visit_thead(node:Dynamic):Dynamic;
-	/**
-		Only 6 section levels are supported by HTML.
-	**/
 	public function visit_title(node:Dynamic):Dynamic;
 	public function visit_title_reference(node:Dynamic):Dynamic;
 	public function visit_topic(node:Dynamic):Dynamic;

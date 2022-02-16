@@ -22,6 +22,10 @@ package docutils.frontend;
 		(See the html4strict writer for an example.)
 	**/
 	static public function filter_settings_spec(settings_spec:Dynamic, ?exclude:python.VarArgs<Dynamic>, ?replace:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Return a unicode string representing the current working directory.
+	**/
+	static public function getcwd():Dynamic;
 	static public var locale_encoding : Dynamic;
 	static public function make_one_path_absolute(base_path:Dynamic, path:Dynamic):Dynamic;
 	/**

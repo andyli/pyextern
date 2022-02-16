@@ -22,6 +22,7 @@ package inspect;
 	static public var TPFLAGS_IS_ABSTRACT : Dynamic;
 	static public var _KEYWORD_ONLY : Dynamic;
 	static public var _NonUserDefinedCallables : Dynamic;
+	static public var _PARAM_NAME_MAPPING : Dynamic;
 	static public var _POSITIONAL_ONLY : Dynamic;
 	static public var _POSITIONAL_OR_KEYWORD : Dynamic;
 	static public var _VAR_KEYWORD : Dynamic;
@@ -41,13 +42,11 @@ package inspect;
 	static public function _findclass(func:Dynamic):Dynamic;
 	static public function _finddoc(obj:Dynamic):Dynamic;
 	/**
-		Get information about the arguments accepted by a code object.
-		
-		Four things are returned: (args, varargs, kwonlyargs, varkw), where
-		'args' and 'kwonlyargs' are lists of argument names, and 'varargs'
-		and 'varkw' are the names of the * and ** arguments or None.
+		Return true if ``f`` is a function (or a method or functools.partial
+		wrapper wrapping a function) whose code object has the given ``flag``
+		set in its flags.
 	**/
-	static public function _getfullargs(co:Dynamic):Dynamic;
+	static public function _has_code_flag(f:Dynamic, flag:Dynamic):Dynamic;
 	static public function _is_type(obj:Dynamic):Dynamic;
 	/**
 		Logic for inspecting an object given at command line 
@@ -74,7 +73,7 @@ package inspect;
 	/**
 		Private helper: constructs Signature for the given python function.
 	**/
-	static public function _signature_from_function(cls:Dynamic, func:Dynamic):Dynamic;
+	static public function _signature_from_function(cls:Dynamic, func:Dynamic, ?skip_bound_arg:Dynamic):Dynamic;
 	/**
 		Private helper to parse content of '__text_signature__'
 		and return a Signature based on it.
@@ -183,6 +182,9 @@ package inspect;
 		are the corresponding optional formatting functions that are called to
 		turn names and values into strings.  The last argument is an optional
 		function to format the sequence of arguments.
+		
+		Deprecated since Python 3.5: use the `signature` function and `Signature`
+		objects.
 	**/
 	static public function formatargspec(args:Dynamic, ?varargs:Dynamic, ?varkw:Dynamic, ?defaults:Dynamic, ?kwonlyargs:Dynamic, ?kwonlydefaults:Dynamic, ?annotations:Dynamic, ?formatarg:Dynamic, ?formatvarargs:Dynamic, ?formatvarkw:Dynamic, ?formatvalue:Dynamic, ?formatreturns:Dynamic, ?formatannotation:Dynamic):Dynamic;
 	/**
@@ -227,6 +229,8 @@ package inspect;
 		Alternatively, use getfullargspec() for an API with a similar namedtuple
 		based interface, but full support for annotations and keyword-only
 		parameters.
+		
+		Deprecated since Python 3.5, use `inspect.getfullargspec()`.
 	**/
 	static public function getargspec(func:Dynamic):Dynamic;
 	/**
@@ -261,7 +265,7 @@ package inspect;
 		names of the * and ** arguments, if any), and values the respective bound
 		values from 'positional' and 'named'.
 	**/
-	static public function getcallargs(?func_and_positional:python.VarArgs<Dynamic>, ?named:python.KwArgs<Dynamic>):Dynamic;
+	static public function getcallargs(func:Dynamic, ?positional:python.VarArgs<Dynamic>, ?named:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Arrange the given list of classes into a hierarchy of nested lists.
 		
@@ -436,7 +440,7 @@ package inspect;
 		Asynchronous generator functions are defined with "async def"
 		syntax and have "yield" expressions in their body.
 	**/
-	static public function isasyncgenfunction(object:Dynamic):Dynamic;
+	static public function isasyncgenfunction(obj:Dynamic):Dynamic;
 	/**
 		Return true if object can be passed to an ``await`` expression.
 	**/
@@ -462,18 +466,25 @@ package inspect;
 		Return true if the object is a code object.
 		
 		Code objects provide these attributes:
-		    co_argcount     number of arguments (not including * or ** args)
-		    co_code         string of raw compiled bytecode
-		    co_consts       tuple of constants used in the bytecode
-		    co_filename     name of file in which this code object was created
-		    co_firstlineno  number of first line in Python source code
-		    co_flags        bitmap: 1=optimized | 2=newlocals | 4=*arg | 8=**arg
-		    co_lnotab       encoded mapping of line numbers to bytecode indices
-		    co_name         name with which this code object was defined
-		    co_names        tuple of names of local variables
-		    co_nlocals      number of local variables
-		    co_stacksize    virtual machine stack space required
-		    co_varnames     tuple of names of arguments and local variables
+		    co_argcount         number of arguments (not including *, ** args
+		                        or keyword only arguments)
+		    co_code             string of raw compiled bytecode
+		    co_cellvars         tuple of names of cell variables
+		    co_consts           tuple of constants used in the bytecode
+		    co_filename         name of file in which this code object was created
+		    co_firstlineno      number of first line in Python source code
+		    co_flags            bitmap: 1=optimized | 2=newlocals | 4=*arg | 8=**arg
+		                        | 16=nested | 32=generator | 64=nofree | 128=coroutine
+		                        | 256=iterable_coroutine | 512=async_generator
+		    co_freevars         tuple of names of free variables
+		    co_posonlyargcount  number of positional only arguments
+		    co_kwonlyargcount   number of keyword only arguments (not including ** arg)
+		    co_lnotab           encoded mapping of line numbers to bytecode indices
+		    co_name             name with which this code object was defined
+		    co_names            tuple of names of local variables
+		    co_nlocals          number of local variables
+		    co_stacksize        virtual machine stack space required
+		    co_varnames         tuple of names of arguments and local variables
 	**/
 	static public function iscode(object:Dynamic):Dynamic;
 	/**
@@ -485,11 +496,11 @@ package inspect;
 		
 		Coroutine functions are defined with "async def" syntax.
 	**/
-	static public function iscoroutinefunction(object:Dynamic):Dynamic;
+	static public function iscoroutinefunction(obj:Dynamic):Dynamic;
 	/**
 		Return true if the object is a data descriptor.
 		
-		Data descriptors have both a __get__ and a __set__ attribute.  Examples are
+		Data descriptors have a __set__ or a __delete__ attribute.  Examples are
 		properties (defined in Python) and getsets and members (defined in C).
 		Typically, data descriptors will also have __name__ and __doc__ attributes
 		(properties, getsets, and members have both of these attributes), but this
@@ -546,7 +557,7 @@ package inspect;
 		Generator function objects provide the same attributes as functions.
 		See help(isfunction) for a list of attributes.
 	**/
-	static public function isgeneratorfunction(object:Dynamic):Dynamic;
+	static public function isgeneratorfunction(obj:Dynamic):Dynamic;
 	/**
 		Return true if the object is a getset descriptor.
 		
@@ -635,7 +646,7 @@ package inspect;
 		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
 		Point(x=100, y=22)
 	**/
-	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?rename:Dynamic, ?defaults:Dynamic, ?module:Dynamic):Dynamic;
 	/**
 		Get a signature object for the passed callable.
 	**/

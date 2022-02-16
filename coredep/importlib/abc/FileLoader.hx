@@ -15,26 +15,25 @@ package importlib.abc;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
 	public function __delattr__(name:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(other:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -87,13 +86,13 @@ package importlib.abc;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -103,10 +102,9 @@ package importlib.abc;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -124,10 +122,8 @@ package importlib.abc;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public var _abc_cache : Dynamic;
-	static public var _abc_negative_cache : Dynamic;
-	static public var _abc_negative_cache_version : Dynamic;
-	static public var _abc_registry : Dynamic;
+	static public var _abc_impl : Dynamic;
+	public function contents():Dynamic;
 	/**
 		Return a module to initialize and into which to load.
 		
@@ -155,6 +151,7 @@ package importlib.abc;
 		Return the path to the source file as found by the finder.
 	**/
 	public function get_filename(?name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_resource_reader(?name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Abstract method which should return the source code for the
 		module.  The fullname is a str.  Returns a str.
@@ -169,6 +166,7 @@ package importlib.abc;
 		Raises ImportError if the module cannot be found.
 	**/
 	public function is_package(fullname:Dynamic):Dynamic;
+	public function is_resource(name:Dynamic):Dynamic;
 	/**
 		Load a module from a file.
 		
@@ -184,6 +182,8 @@ package importlib.abc;
 		This method is deprecated.
 	**/
 	public function module_repr(module:Dynamic):Dynamic;
+	public function open_resource(resource:Dynamic):Dynamic;
+	public function resource_path(resource:Dynamic):Dynamic;
 	/**
 		Compile 'data' into a code object.
 		

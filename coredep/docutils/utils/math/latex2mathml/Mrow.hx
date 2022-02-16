@@ -8,19 +8,18 @@ package docutils.utils.math.latex2mathml;
 	public function __delattr__(name:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -29,6 +28,7 @@ package docutils.utils.math.latex2mathml;
 		Return getattr(self, name).
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
+	public function __getitem__(key:Dynamic):Dynamic;
 	/**
 		Return self>value.
 	**/
@@ -38,18 +38,32 @@ package docutils.utils.math.latex2mathml;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		math([children]) -> MathML element
+		Set up node with `children` and `attributes`.
 		
-		children can be one child or a list of children.
+		        Attributes are downcased: Use CLASS to set "class" value.
+		        >>> math(mn(3), CLASS='test')
+		        math(mn(3), class='test')
+		        >>> math(CLASS='test').toprettyxml()
+		        '<math class="test">
+		</math>'
+		
+		        
 	**/
 	@:native("__init__")
-	public function ___init__(?children:Dynamic, ?_inline:Dynamic):Dynamic;
+	public function ___init__(?children:python.VarArgs<Dynamic>, ?attributes:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		math([children]) -> MathML element
+		Set up node with `children` and `attributes`.
 		
-		children can be one child or a list of children.
+		        Attributes are downcased: Use CLASS to set "class" value.
+		        >>> math(mn(3), CLASS='test')
+		        math(mn(3), class='test')
+		        >>> math(CLASS='test').toprettyxml()
+		        '<math class="test">
+		</math>'
+		
+		        
 	**/
-	public function new(?children:Dynamic, ?_inline:Dynamic):Void;
+	public function new(?children:python.VarArgs<Dynamic>, ?attributes:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -61,6 +75,7 @@ package docutils.utils.math.latex2mathml;
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
+	public function __len__():Dynamic;
 	/**
 		Return self<value.
 	**/
@@ -75,13 +90,13 @@ package docutils.utils.math.latex2mathml;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -90,11 +105,11 @@ package docutils.utils.math.latex2mathml;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setitem__(key:Dynamic, item:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -112,35 +127,37 @@ package docutils.utils.math.latex2mathml;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _boolstrings : Dynamic;
+	static public var _level : Dynamic;
+	public function _xml(?level:Dynamic):Dynamic;
+	public function _xml_body(?level:Dynamic):Dynamic;
 	/**
-		append(child) -> element
+		Append child and return self or first non-full parent.
 		
-		Appends child and returns self if self is not full or first
-		non-full parent.
+		If self is full, go up the tree and return first non-full node or
+		`None`.
 	**/
 	public function append(child:Dynamic):Dynamic;
 	/**
-		close() -> parent
+		Close element and return first non-full parent or None.
 		
-		Close element and return first non-full element.
+		Remove <mrow>, if it is single child and the parent infers an mrow
+		or if it has only one child element.
 	**/
 	public function close():Dynamic;
+	public function extend(children:Dynamic):Dynamic;
 	/**
-		delete_child() -> child
-		
-		Delete last child and return it.
-	**/
-	public function delete_child():Dynamic;
-	/**
-		Room for more children?
+		Return boolean indicating whether children may be appended.
 	**/
 	public function full():Dynamic;
+	public function get(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var html_tagname : Dynamic;
 	static public var nchildren : Dynamic;
+	static public var parent : Dynamic;
 	/**
-		xml() -> xml-string
+		Return XML representation of self as string.
 	**/
-	public function xml():Dynamic;
-	public function xml_body():Dynamic;
-	public function xml_end():Dynamic;
-	public function xml_start():Dynamic;
+	public function toprettyxml():Dynamic;
+	static public var xml_entities : Dynamic;
+	public function xml_starttag():Dynamic;
 }

@@ -1,6 +1,4 @@
 # pyextern
-[![TravisCI Build Status](https://travis-ci.org/andyli/pyextern.svg?branch=master)](https://travis-ci.org/andyli/pyextern) 
-[![Requirements Status](https://requires.io/github/andyli/pyextern/requirements.svg?branch=master)](https://requires.io/github/andyli/pyextern/requirements/?branch=master)
 
 Extern generator for the Haxe Python target.
 This repository also includes a set of generated externs.

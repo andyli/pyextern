@@ -21,6 +21,11 @@ package docutils.parsers.rst.directives.images;
 	**/
 	static public function set_classes(options:Dynamic):Dynamic;
 	/**
+		OS-specific conversion from a relative URL of the 'file' scheme
+		to a file system path; not recommended for general use.
+	**/
+	static public function url2pathname(pathname:Dynamic):Dynamic;
+	/**
 		Return a whitespace-normalized name.
 	**/
 	static public function whitespace_normalize_name(name:Dynamic):Dynamic;

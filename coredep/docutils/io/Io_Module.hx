@@ -10,7 +10,6 @@ package docutils.io;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function b(s:Dynamic):Dynamic;
 	/**
 		Test, whether the encoding of `stream` matches `encoding`.
 		
@@ -23,4 +22,5 @@ package docutils.io;
 	**/
 	static public function check_encoding(stream:Dynamic, encoding:Dynamic):Dynamic;
 	static public var locale_encoding : Dynamic;
+	static public var print_function : Dynamic;
 }

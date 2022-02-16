@@ -8,19 +8,18 @@ package docutils.io;
 	public function __delattr__(name:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -48,10 +47,10 @@ package docutils.io;
 		      `sys.stdin` is the source).
 		    - `mode`: how the file is to be opened (see standard function
 		      `open`). The default 'rU' provides universal newline support
-		      for text files.
+		      for text files with Python 2.x.
 	**/
 	@:native("__init__")
-	public function ___init__(?source:Dynamic, ?source_path:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic, ?autoclose:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(?source:Dynamic, ?source_path:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic, ?autoclose:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		:Parameters:
 		    - `source`: either a file-like object (which is read directly), or
@@ -63,9 +62,9 @@ package docutils.io;
 		      `sys.stdin` is the source).
 		    - `mode`: how the file is to be opened (see standard function
 		      `open`). The default 'rU' provides universal newline support
-		      for text files.
+		      for text files with Python 2.x.
 	**/
-	public function new(?source:Dynamic, ?source_path:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic, ?autoclose:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(?source:Dynamic, ?source_path:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic, ?autoclose:Dynamic, ?mode:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -91,13 +90,13 @@ package docutils.io;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -107,10 +106,9 @@ package docutils.io;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/

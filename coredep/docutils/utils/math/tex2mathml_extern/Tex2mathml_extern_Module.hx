@@ -22,6 +22,7 @@ package docutils.utils.math.tex2mathml_extern;
 		.. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
 	**/
 	static public function latexml(math_code:Dynamic, ?reporter:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		Convert LaTeX math code to MathML with TtM_
 		

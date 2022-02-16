@@ -16,4 +16,12 @@ package docutils.writers;
 		Return the Writer class from the `writer_name` module.
 	**/
 	static public function get_writer_class(writer_name:Dynamic):Dynamic;
+	/**
+		Import a module.
+		
+		The 'package' argument is required when performing a relative import. It
+		specifies the package to use as the anchor point from which to resolve the
+		relative import to an absolute import.
+	**/
+	static public function import_module(name:Dynamic, ?_package:Dynamic):Dynamic;
 }

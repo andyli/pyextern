@@ -11,7 +11,6 @@ package docutils.writers.s5_html;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function b(s:Dynamic):Dynamic;
 	static public function find_theme(name:Dynamic):Dynamic;
 	static public var themes_dir_path : Dynamic;
 }

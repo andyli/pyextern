@@ -3,7 +3,7 @@ package importlib._bootstrap;
 @:pythonImport("importlib._bootstrap") extern class _Bootstrap_Module {
 	static public var _ERR_MSG : Dynamic;
 	static public var _ERR_MSG_PREFIX : Dynamic;
-	static public var _POPULATE : Dynamic;
+	static public var _NEEDS_LOADING : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
@@ -21,7 +21,6 @@ package importlib._bootstrap;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
 	static public var _blocking_on : Dynamic;
 	static public function _builtin_from_name(name:Dynamic):Dynamic;
 	/**
@@ -45,7 +44,7 @@ package importlib._bootstrap;
 	**/
 	static public function _exec(spec:Dynamic, module:Dynamic):Dynamic;
 	/**
-		Find and load the module, and release the import lock.
+		Find and load the module.
 	**/
 	static public function _find_and_load(name:Dynamic, import_:Dynamic):Dynamic;
 	static public function _find_and_load_unlocked(name:Dynamic, import_:Dynamic):Dynamic;
@@ -66,7 +65,8 @@ package importlib._bootstrap;
 	/**
 		Get or create the module lock for a given module name.
 		
-		Should only be called with the import lock taken.
+		Acquire/release internally the global import lock to protect
+		_module_locks.
 	**/
 	static public function _get_module_lock(name:Dynamic):Dynamic;
 	/**
@@ -76,12 +76,16 @@ package importlib._bootstrap;
 		import. It is required to decouple the function from assuming importlib's
 		import implementation is desired.
 	**/
-	static public function _handle_fromlist(module:Dynamic, fromlist:Dynamic, import_:Dynamic):Dynamic;
+	static public function _handle_fromlist(module:Dynamic, fromlist:Dynamic, import_:Dynamic, ?recursive:Dynamic):Dynamic;
 	static public function _init_module_attrs(spec:Dynamic, module:Dynamic, ?_override:Dynamic):Dynamic;
 	/**
-		Install importlib as the implementation of import.
+		Install importers for builtin and frozen modules
 	**/
 	static public function _install(sys_module:Dynamic, _imp_module:Dynamic):Dynamic;
+	/**
+		Install importers that require external filesystem access
+	**/
+	static public function _install_external_importers():Dynamic;
 	/**
 		Return a new module object, loaded by the spec's loader.
 		
@@ -100,12 +104,10 @@ package importlib._bootstrap;
 	static public function _load_module_shim(self:Dynamic, fullname:Dynamic):Dynamic;
 	static public function _load_unlocked(spec:Dynamic):Dynamic;
 	/**
-		Release the global import lock, and acquires then release the
-		module lock for a given module name.
+		Acquires then releases the module lock for a given module name.
+		
 		This is used to ensure a module is completely initialized, in the
 		event it is being imported by another thread.
-		
-		Should only be called with the import lock taken.
 	**/
 	static public function _lock_unlock_module(name:Dynamic):Dynamic;
 	static public var _module_locks : Dynamic;

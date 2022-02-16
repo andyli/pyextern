@@ -78,6 +78,7 @@ package docutils.utils.smartquotes;
 	**/
 	static public function educate_tokens(text_tokens:Dynamic, ?attr:Dynamic, ?language:Dynamic):Dynamic;
 	static public var options : Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		Parameter:  String (unicode or bytes).
 		Returns:    The `text`, with after processing the following backslash

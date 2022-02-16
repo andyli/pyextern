@@ -8,19 +8,18 @@ package docutils.utils.math.math2html;
 	public function __delattr__(name:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -38,12 +37,12 @@ package docutils.utils.math.math2html;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		The config parameter is a map containing three lists: allowed, copied and extracted.
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
 	public function ___init__(config:Dynamic):Dynamic;
 	/**
-		The config parameter is a map containing three lists: allowed, copied and extracted.
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(config:Dynamic):Void;
 	/**
@@ -71,13 +70,13 @@ package docutils.utils.math.math2html;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -87,10 +86,9 @@ package docutils.utils.math.math2html;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -109,11 +107,11 @@ package docutils.utils.math.math2html;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Extract a group of selected containers from elyxer.a container.
+		Extract a group of selected containers from a container.
 	**/
 	public function extract(container:Dynamic):Dynamic;
 	/**
-		Add allowed containers, clone cloned containers and add the clone.
+		Add allowed containers.
 	**/
 	public function process(container:Dynamic, list:Dynamic):Dynamic;
 	/**

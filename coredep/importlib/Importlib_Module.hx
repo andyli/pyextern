@@ -24,13 +24,13 @@ package importlib;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Convert 4 bytes in little-endian to an integer.
-	**/
-	static public function _r_long(int_bytes:Dynamic):Dynamic;
-	/**
 		Convert a 32-bit integer to little-endian.
 	**/
-	static public function _w_long(x:Dynamic):Dynamic;
+	static public function _pack_uint32(x:Dynamic):Dynamic;
+	/**
+		Convert 4 bytes in little-endian to an integer.
+	**/
+	static public function _unpack_uint32(data:Dynamic):Dynamic;
 	/**
 		Return the loader for the specified module.
 		

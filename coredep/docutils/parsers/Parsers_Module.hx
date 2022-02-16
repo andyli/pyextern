@@ -16,4 +16,12 @@ package docutils.parsers;
 		Return the Parser class from the `parser_name` module.
 	**/
 	static public function get_parser_class(parser_name:Dynamic):Dynamic;
+	/**
+		Import a module.
+		
+		The 'package' argument is required when performing a relative import. It
+		specifies the package to use as the anchor point from which to resolve the
+		relative import to an absolute import.
+	**/
+	static public function import_module(name:Dynamic, ?_package:Dynamic):Dynamic;
 }

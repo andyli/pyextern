@@ -14,6 +14,9 @@ package docutils.parsers.rst.roles;
 	static public var _role_registry : Dynamic;
 	static public var _roles : Dynamic;
 	static public function code_role(role:Dynamic, rawtext:Dynamic, text:Dynamic, lineno:Dynamic, inliner:Dynamic, ?options:Dynamic, ?content:Dynamic):Dynamic;
+	/**
+		Base for custom roles if no other base role is specified.
+	**/
 	static public function generic_custom_role(role:Dynamic, rawtext:Dynamic, text:Dynamic, lineno:Dynamic, inliner:Dynamic, ?options:Dynamic, ?content:Dynamic):Dynamic;
 	static public function math_role(role:Dynamic, rawtext:Dynamic, text:Dynamic, lineno:Dynamic, inliner:Dynamic, ?options:Dynamic, ?content:Dynamic):Dynamic;
 	static public function pep_reference_role(role:Dynamic, rawtext:Dynamic, text:Dynamic, lineno:Dynamic, inliner:Dynamic, ?options:Dynamic, ?content:Dynamic):Dynamic;
@@ -41,9 +44,11 @@ package docutils.parsers.rst.roles;
 	static public function rfc_reference_role(role:Dynamic, rawtext:Dynamic, text:Dynamic, lineno:Dynamic, inliner:Dynamic, ?options:Dynamic, ?content:Dynamic):Dynamic;
 	/**
 		Locate and return a role function from its language-dependent name, along
-		with a list of system messages.  If the role is not found in the current
-		language, check English.  Return a 2-tuple: role function (``None`` if the
-		named role cannot be found) and a list of system messages.
+		with a list of system messages.
+		
+		If the role is not found in the current language, check English. Return a
+		2-tuple: role function (``None`` if the named role cannot be found) and a
+		list of system messages.
 	**/
 	static public function role(role_name:Dynamic, language_module:Dynamic, lineno:Dynamic, reporter:Dynamic):Dynamic;
 	/**
@@ -56,5 +61,5 @@ package docutils.parsers.rst.roles;
 		disabled.
 	**/
 	static public function set_implicit_options(role_fn:Dynamic):Dynamic;
-	static public function unimplemented_role(role:Dynamic, rawtext:Dynamic, text:Dynamic, lineno:Dynamic, inliner:Dynamic, ?attributes:Dynamic):Dynamic;
+	static public function unimplemented_role(role:Dynamic, rawtext:Dynamic, text:Dynamic, lineno:Dynamic, inliner:Dynamic, ?options:Dynamic, ?content:Dynamic):Dynamic;
 }

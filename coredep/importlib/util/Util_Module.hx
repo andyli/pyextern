@@ -2,6 +2,7 @@
 package importlib.util;
 @:pythonImport("importlib.util") extern class Util_Module {
 	static public var MAGIC_NUMBER : Dynamic;
+	static public var _RAW_MAGIC_NUMBER : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -150,6 +151,10 @@ package importlib.util;
 		sys.implementation.cache_tag is None then NotImplementedError is raised.
 	**/
 	static public function source_from_cache(path:Dynamic):Dynamic;
+	/**
+		Return the hash of *source_bytes* as used in hash-based pyc files.
+	**/
+	static public function source_hash(source_bytes:Dynamic):Dynamic;
 	/**
 		Return a module spec based on a file location.
 		

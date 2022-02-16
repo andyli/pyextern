@@ -7,12 +7,11 @@ package docutils.nodes;
 		than a simple container.  Its boolean "truth" does not depend on
 		having one or more subnodes in the doctree.
 		
-		Use `len()` to check node length.  Use `None` to represent a boolean
-		false value.
+		Use `len()` to check node length.
 	**/
 	public function __bool__():Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __contains__(attr:Dynamic):Dynamic;
+	public function __contains__(key:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -20,19 +19,18 @@ package docutils.nodes;
 	public function __delitem__(key:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -90,13 +88,13 @@ package docutils.nodes;
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __radd__(other:Dynamic):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -107,10 +105,9 @@ package docutils.nodes;
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	public function __setitem__(key:Dynamic, item:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	public function __str__():Dynamic;
 	/**
 		Abstract classes can override this to customize issubclass().
@@ -126,15 +123,16 @@ package docutils.nodes;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	/**
-		Specialized traverse() that doesn't check for a condition.
-	**/
-	public function _all_traverse():Dynamic;
+	static public var _document : Dynamic;
 	public function _dom_node(domroot:Dynamic):Dynamic;
 	/**
-		Specialized traverse() that only supports instance checks.
+		Return iterator that only supports instance checks.
 	**/
-	public function _fast_traverse(cls:Dynamic):Dynamic;
+	public function _fast_findall(cls:Dynamic):Dynamic;
+	/**
+		Return iterator that doesn't check for a condition.
+	**/
+	public function _superfast_findall():Dynamic;
 	public function add_backref(refid:Dynamic):Dynamic;
 	public function append(item:Dynamic):Dynamic;
 	/**
@@ -149,6 +147,9 @@ package docutils.nodes;
 		Return a DOM **fragment** representation of this Node.
 	**/
 	public function asdom(?dom:Dynamic):Dynamic;
+	/**
+		Return a string representation of this Node.
+	**/
 	public function astext():Dynamic;
 	public function attlist():Dynamic;
 	static public var basic_attributes : Dynamic;
@@ -184,7 +185,7 @@ package docutils.nodes;
 	**/
 	public function copy_attr_concatenate(attr:Dynamic, value:Dynamic, replace:Dynamic):Dynamic;
 	/**
-		If replace is True or selfpattr] is None, replace self[attr] with
+		If replace is True or self[attr] is None, replace self[attr] with
 		value.  Otherwise, do nothing.
 	**/
 	public function copy_attr_consistent(attr:Dynamic, value:Dynamic, replace:Dynamic):Dynamic;
@@ -201,10 +202,52 @@ package docutils.nodes;
 	**/
 	public function deepcopy():Dynamic;
 	public function delattr(attr:Dynamic):Dynamic;
-	static public var document : Dynamic;
+	/**
+		Return the `document` node at the root of the tree containing this Node.
+	**/
+	public var document : Dynamic;
 	public function emptytag():Dynamic;
 	public function endtag():Dynamic;
 	public function extend(item:Dynamic):Dynamic;
+	/**
+		Return an iterator yielding nodes following `self`:
+		
+		* self (if `include_self` is true)
+		* all descendants in tree traversal order (if `descend` is true)
+		* the following siblings (if `siblings` is true) and their
+		  descendants (if also `descend` is true)
+		* the following siblings of the parent (if `ascend` is true) and
+		  their descendants (if also `descend` is true), and so on.
+		
+		If `condition` is not None, the iterator yields only nodes
+		for which ``condition(node)`` is true.  If `condition` is a
+		node class ``cls``, it is equivalent to a function consisting
+		of ``return isinstance(node, cls)``.
+		
+		If `ascend` is true, assume `siblings` to be true as well.
+		
+		If the tree structure is modified during iteration, the result
+		is undefined.
+		
+		For example, given the following tree::
+		
+		    <paragraph>
+		        <emphasis>      <--- emphasis.traverse() and
+		            <strong>    <--- strong.traverse() are called.
+		                Foo
+		            Bar
+		        <reference name="Baz" refid="baz">
+		            Baz
+		
+		Then tuple(emphasis.traverse()) equals ::
+		
+		    (<emphasis>, <strong>, <#text: Foo>, <#text: Bar>)
+		
+		and list(strong.traverse(ascend=True) equals ::
+		
+		    [<strong>, <#text: Foo>, <#text: Bar>, <reference>, <#text: Baz>]
+	**/
+	public function findall(?condition:Dynamic, ?include_self:Dynamic, ?descend:Dynamic, ?siblings:Dynamic, ?ascend:Dynamic):Dynamic;
 	/**
 		Return the index of the first child whose class exactly matches.
 		
@@ -256,11 +299,11 @@ package docutils.nodes;
 	static public var list_attributes : Dynamic;
 	static public var local_attributes : Dynamic;
 	/**
-		Return the first node in the iterable returned by traverse(),
+		Return the first node in the iterator returned by findall(),
 		or None if the iterable is empty.
 		
-		Parameter list is the same as of traverse.  Note that
-		include_self defaults to 0, though.
+		Parameter list is the same as of traverse.  Note that `include_self`
+		defaults to False, though.
 	**/
 	public function next_node(?condition:Dynamic, ?include_self:Dynamic, ?descend:Dynamic, ?siblings:Dynamic, ?ascend:Dynamic):Dynamic;
 	public function non_default_attributes():Dynamic;
@@ -277,6 +320,10 @@ package docutils.nodes;
 	**/
 	public function pformat(?indent:Dynamic, ?level:Dynamic):Dynamic;
 	public function pop(?i:Dynamic):Dynamic;
+	/**
+		Return preceding sibling node or ``None``.
+	**/
+	public function previous_sibling():Dynamic;
 	public function remove(item:Dynamic):Dynamic;
 	/**
 		Replace one child `Node` with another child or children.
@@ -303,39 +350,9 @@ package docutils.nodes;
 	public function starttag(?quoteattr:Dynamic):Dynamic;
 	static public var tagname : Dynamic;
 	/**
-		Return an iterable containing
+		Return list of nodes following `self`.
 		
-		* self (if include_self is true)
-		* all descendants in tree traversal order (if descend is true)
-		* all siblings (if siblings is true) and their descendants (if
-		  also descend is true)
-		* the siblings of the parent (if ascend is true) and their
-		  descendants (if also descend is true), and so on
-		
-		If `condition` is not None, the iterable contains only nodes
-		for which ``condition(node)`` is true.  If `condition` is a
-		node class ``cls``, it is equivalent to a function consisting
-		of ``return isinstance(node, cls)``.
-		
-		If ascend is true, assume siblings to be true as well.
-		
-		For example, given the following tree::
-		
-		    <paragraph>
-		        <emphasis>      <--- emphasis.traverse() and
-		            <strong>    <--- strong.traverse() are called.
-		                Foo
-		            Bar
-		        <reference name="Baz" refid="baz">
-		            Baz
-		
-		Then list(emphasis.traverse()) equals ::
-		
-		    [<emphasis>, <strong>, <#text: Foo>, <#text: Bar>]
-		
-		and list(strong.traverse(ascend=True)) equals ::
-		
-		    [<strong>, <#text: Foo>, <#text: Bar>, <reference>, <#text: Baz>]
+		For looping, Node.findall() is faster and more memory efficient.
 	**/
 	public function traverse(?condition:Dynamic, ?include_self:Dynamic, ?descend:Dynamic, ?siblings:Dynamic, ?ascend:Dynamic):Dynamic;
 	/**

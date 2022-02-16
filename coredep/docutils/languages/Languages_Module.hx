@@ -11,14 +11,15 @@ package docutils.languages;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _languages : Dynamic;
-	/**
-		Return module with language localizations.
-		
-		`language_code` is a "BCP 47" language tag.
-		If there is no matching module, warn and fall back to English.
-	**/
 	static public function get_language(language_code:Dynamic, ?reporter:Dynamic):Dynamic;
+	/**
+		Import a module.
+		
+		The 'package' argument is required when performing a relative import. It
+		specifies the package to use as the anchor point from which to resolve the
+		relative import to an absolute import.
+	**/
+	static public function import_module(name:Dynamic, ?_package:Dynamic):Dynamic;
 	/**
 		Return a list of normalized combinations for a `BCP 47` language tag.
 		

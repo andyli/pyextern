@@ -145,7 +145,7 @@ package pkgutil;
 		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
 		Point(x=100, y=22)
 	**/
-	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?rename:Dynamic, ?defaults:Dynamic, ?module:Dynamic):Dynamic;
 	static public function read_code(stream:Dynamic):Dynamic;
 	/**
 		Single-dispatch generic function decorator.

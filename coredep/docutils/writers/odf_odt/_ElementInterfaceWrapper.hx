@@ -14,19 +14,18 @@ package docutils.writers.odf_odt;
 	public function __delitem__(key:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -86,13 +85,13 @@ package docutils.writers.odf_odt;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -107,8 +106,7 @@ package docutils.writers.odf_odt;
 	public function __setitem__(key:Dynamic, value:Dynamic):Dynamic;
 	public function __setstate__(state:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
 	public function __sizeof__():Dynamic;
 	/**
@@ -136,11 +134,7 @@ package docutils.writers.odf_odt;
 	public function findtext(path:Dynamic, ?_default:Dynamic, ?namespaces:Dynamic):Dynamic;
 	public function get(key:Dynamic, ?_default:Dynamic):Dynamic;
 	public function getchildren():Dynamic;
-	/**
-		iter($self, /, tag=None)
-		--
-	**/
-	public function getiterator(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function getiterator(?tag:Dynamic):Dynamic;
 	public function getparent():Dynamic;
 	public function insert(index:Dynamic, subelement:Dynamic):Dynamic;
 	public function items():Dynamic;

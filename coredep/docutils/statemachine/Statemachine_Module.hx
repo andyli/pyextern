@@ -21,6 +21,11 @@ package docutils.statemachine;
 	**/
 	static public function _exception_data():Dynamic;
 	/**
+		Returns the east asian width assigned to the character chr as string.
+	**/
+	static public function east_asian_width(chr:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
+	/**
 		Return a list of one-line strings with tabs expanded, no newlines, and
 		trailing whitespace stripped.
 		
@@ -32,6 +37,8 @@ package docutils.statemachine;
 		- `astring`: a multi-line string.
 		- `tab_width`: the number of columns between tab stops.
 		- `convert_whitespace`: convert form feeds and vertical tabs to spaces?
+		- `whitespace`: pattern object with the to-be-converted
+		  whitespace characters (default [\v\f]).
 	**/
 	static public function string2lines(astring:Dynamic, ?tab_width:Dynamic, ?convert_whitespace:Dynamic, ?whitespace:Dynamic):Dynamic;
 }

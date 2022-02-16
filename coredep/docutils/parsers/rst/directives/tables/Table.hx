@@ -8,19 +8,18 @@ package docutils.parsers.rst.directives.tables;
 	public function __delattr__(name:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -71,13 +70,13 @@ package docutils.parsers.rst.directives.tables;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -87,10 +86,9 @@ package docutils.parsers.rst.directives.tables;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -137,7 +135,7 @@ package docutils.parsers.rst.directives.tables;
 	public function error(message:Dynamic):Dynamic;
 	public function extend_short_rows_with_empty_cells(columns:Dynamic, parts:Dynamic):Dynamic;
 	static public var final_argument_whitespace : Dynamic;
-	public function get_column_widths(max_cols:Dynamic):Dynamic;
+	public function get_column_widths(n_cols:Dynamic):Dynamic;
 	static public var has_content : Dynamic;
 	public function info(message:Dynamic):Dynamic;
 	public function make_title():Dynamic;
@@ -146,6 +144,7 @@ package docutils.parsers.rst.directives.tables;
 	public function process_header_option():Dynamic;
 	static public var required_arguments : Dynamic;
 	public function run():Dynamic;
+	public function set_table_width(table_node:Dynamic):Dynamic;
 	public function severe(message:Dynamic):Dynamic;
 	public function warning(message:Dynamic):Dynamic;
 	public var widths : Dynamic;

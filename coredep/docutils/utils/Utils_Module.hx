@@ -48,7 +48,7 @@ package docutils.utils;
 	/**
 		Ensure `path` is Unicode. Return `nodes.reprunicode` object.
 		
-		Decode file/path string in a failsave manner if not already done.
+		Decode file/path string in a failsafe manner if not already done.
 	**/
 	static public function decode_path(path:Dynamic):Dynamic;
 	static public var east_asian_widths : Dynamic;
@@ -148,7 +148,7 @@ package docutils.utils;
 		        Runtime settings.  If none are provided, a default core set will
 		        be used.  If you will use the document object with any Docutils
 		        components, you must provide their default settings as well.  For
-		        example, if parsing, at least provide the parser settings,
+		        example, if parsing rST, at least provide the rst-parser settings,
 		        obtainable as follows::
 		
 		            settings = docutils.frontend.OptionParser(
@@ -198,12 +198,11 @@ package docutils.utils;
 	static public function unescape(text:Dynamic, ?restore_backslashes:Dynamic, ?respect_whitespace:Dynamic):Dynamic;
 	static public function uniq(L:Dynamic):Dynamic;
 	/**
-		Return n-length tuples, in sorted order, no repeated elements
-	**/
-	static public function unique_combinations(items:Dynamic, n:Dynamic):Dynamic;
-	/**
-		Given a `version_info` tuple (default is docutils.__version_info__),
-		build & return a version identifier string.
+		Return a version identifier string built from `version_info`, a
+		`docutils.VersionInfo` namedtuple instance or compatible tuple. If
+		`version_info` is not provided, by default return a version identifier
+		string based on `docutils.__version_info__` (i.e. the current Docutils
+		version).
 	**/
 	static public function version_identifier(?version_info:Dynamic):Dynamic;
 }

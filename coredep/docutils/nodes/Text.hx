@@ -10,8 +10,7 @@ package docutils.nodes;
 		than a simple container.  Its boolean "truth" does not depend on
 		having one or more subnodes in the doctree.
 		
-		Use `len()` to check node length.  Use `None` to represent a boolean
-		false value.
+		Use `len()` to check node length.
 	**/
 	public function __bool__():Dynamic;
 	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -25,21 +24,18 @@ package docutils.nodes;
 	public function __delattr__(name:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		S.__format__(format_spec) -> str
-		
-		Return a formatted version of S as described by format_spec.
+		Return a formatted version of the string as described by format_spec.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -62,12 +58,12 @@ package docutils.nodes;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		The `rawsource` argument is ignored and deprecated.
 	**/
 	@:native("__init__")
 	public function ___init__(data:Dynamic, ?rawsource:Dynamic):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		The `rawsource` argument is ignored and deprecated.
 	**/
 	public function new(data:Dynamic, ?rawsource:Dynamic):Void;
 	/**
@@ -99,7 +95,7 @@ package docutils.nodes;
 	public function __mod__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
-		Return self*value.n
+		Return self*value.
 	**/
 	public function __mul__(value:Dynamic):Dynamic;
 	/**
@@ -107,17 +103,17 @@ package docutils.nodes;
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
 	/**
-		Prevent the rawsource argument from propagating to str.
+		Assert that `data` is not an array of bytes.
 	**/
 	static public function __new__(cls:Dynamic, data:Dynamic, ?rawsource:Dynamic):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -127,7 +123,7 @@ package docutils.nodes;
 	**/
 	public function __rmod__(value:Dynamic):Dynamic;
 	/**
-		Return self*value.
+		Return value*self.
 	**/
 	public function __rmul__(value:Dynamic):Dynamic;
 	/**
@@ -135,9 +131,9 @@ package docutils.nodes;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		S.__sizeof__() -> size of S in memory, in bytes
+		Return the size of the string in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -155,40 +151,41 @@ package docutils.nodes;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	/**
-		Specialized traverse() that doesn't check for a condition.
-	**/
-	public function _all_traverse():Dynamic;
+	static public var _document : Dynamic;
 	public function _dom_node(domroot:Dynamic):Dynamic;
 	/**
-		Specialized traverse() that only supports instance checks.
+		Return iterator that only supports instance checks.
 	**/
-	public function _fast_traverse(cls:Dynamic):Dynamic;
+	public function _fast_findall(cls:Dynamic):Dynamic;
+	/**
+		Return iterator that doesn't check for a condition.
+	**/
+	public function _superfast_findall():Dynamic;
 	/**
 		Return a DOM **fragment** representation of this Node.
 	**/
 	public function asdom(?dom:Dynamic):Dynamic;
+	/**
+		Return a string representation of this Node.
+	**/
 	public function astext():Dynamic;
 	/**
-		S.capitalize() -> str
+		Return a capitalized version of the string.
 		
-		Return a capitalized version of S, i.e. make the first character
-		have upper case and the rest lower case.
+		More specifically, make the first character have upper case and the rest lower
+		case.
 	**/
-	public function capitalize(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function capitalize():Dynamic;
 	/**
-		S.casefold() -> str
-		
-		Return a version of S suitable for caseless comparisons.
+		Return a version of the string suitable for caseless comparisons.
 	**/
-	public function casefold(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function casefold():Dynamic;
 	/**
-		S.center(width[, fillchar]) -> str
+		Return a centered string of length width.
 		
-		Return S centered in a string of length width. Padding is
-		done using the specified fill character (default is a space)
+		Padding is done using the specified fill character (default is a space).
 	**/
-	public function center(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function center(width:Dynamic, ?fillchar:Dynamic):Dynamic;
 	static public var children : Dynamic;
 	/**
 		Return a copy of self.
@@ -206,18 +203,23 @@ package docutils.nodes;
 		Return a deep copy of self (also copying children).
 	**/
 	public function deepcopy():Dynamic;
-	static public var document : Dynamic;
 	/**
-		S.encode(encoding='utf-8', errors='strict') -> bytes
-		
-		Encode S using the codec registered for encoding. Default encoding
-		is 'utf-8'. errors may be given to set a different error
-		handling scheme. Default is 'strict' meaning that encoding errors raise
-		a UnicodeEncodeError. Other possible values are 'ignore', 'replace' and
-		'xmlcharrefreplace' as well as any other name registered with
-		codecs.register_error that can handle UnicodeEncodeErrors.
+		Return the `document` node at the root of the tree containing this Node.
 	**/
-	public function encode(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var document : Dynamic;
+	/**
+		Encode the string using the codec registered for encoding.
+		
+		encoding
+		  The encoding in which to encode the string.
+		errors
+		  The error handling scheme to use for encoding errors.
+		  The default is 'strict' meaning that encoding errors raise a
+		  UnicodeEncodeError.  Other possible values are 'ignore', 'replace' and
+		  'xmlcharrefreplace' as well as any other name registered with
+		  codecs.register_error that can handle UnicodeEncodeErrors.
+	**/
+	public function encode(?encoding:Dynamic, ?errors:Dynamic):Dynamic;
 	/**
 		S.endswith(suffix[, start[, end]]) -> bool
 		
@@ -228,12 +230,11 @@ package docutils.nodes;
 	**/
 	public function endswith(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		S.expandtabs(tabsize=8) -> str
+		Return a copy where all tab characters are expanded using spaces.
 		
-		Return a copy of S where all tab characters are expanded using spaces.
 		If tabsize is not given, a tab size of 8 characters is assumed.
 	**/
-	public function expandtabs(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function expandtabs(?tabsize:Dynamic):Dynamic;
 	/**
 		S.find(sub[, start[, end]]) -> int
 		
@@ -244,6 +245,45 @@ package docutils.nodes;
 		Return -1 on failure.
 	**/
 	public function find(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return an iterator yielding nodes following `self`:
+		
+		* self (if `include_self` is true)
+		* all descendants in tree traversal order (if `descend` is true)
+		* the following siblings (if `siblings` is true) and their
+		  descendants (if also `descend` is true)
+		* the following siblings of the parent (if `ascend` is true) and
+		  their descendants (if also `descend` is true), and so on.
+		
+		If `condition` is not None, the iterator yields only nodes
+		for which ``condition(node)`` is true.  If `condition` is a
+		node class ``cls``, it is equivalent to a function consisting
+		of ``return isinstance(node, cls)``.
+		
+		If `ascend` is true, assume `siblings` to be true as well.
+		
+		If the tree structure is modified during iteration, the result
+		is undefined.
+		
+		For example, given the following tree::
+		
+		    <paragraph>
+		        <emphasis>      <--- emphasis.traverse() and
+		            <strong>    <--- strong.traverse() are called.
+		                Foo
+		            Bar
+		        <reference name="Baz" refid="baz">
+		            Baz
+		
+		Then tuple(emphasis.traverse()) equals ::
+		
+		    (<emphasis>, <strong>, <#text: Foo>, <#text: Bar>)
+		
+		and list(strong.traverse(ascend=True) equals ::
+		
+		    [<strong>, <#text: Foo>, <#text: Bar>, <reference>, <#text: Baz>]
+	**/
+	public function findall(?condition:Dynamic, ?include_self:Dynamic, ?descend:Dynamic, ?siblings:Dynamic, ?ascend:Dynamic):Dynamic;
 	/**
 		S.format(*args, **kwargs) -> str
 		
@@ -261,116 +301,120 @@ package docutils.nodes;
 	/**
 		S.index(sub[, start[, end]]) -> int
 		
-		Like S.find() but raise ValueError when the substring is not found.
+		Return the lowest index in S where substring sub is found,
+		such that sub is contained within S[start:end].  Optional
+		arguments start and end are interpreted as in slice notation.
+		
+		Raises ValueError when the substring is not found.
 	**/
 	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		S.isalnum() -> bool
+		Return True if the string is an alpha-numeric string, False otherwise.
 		
-		Return True if all characters in S are alphanumeric
-		and there is at least one character in S, False otherwise.
+		A string is alpha-numeric if all characters in the string are alpha-numeric and
+		there is at least one character in the string.
 	**/
-	public function isalnum(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function isalnum():Dynamic;
 	/**
-		S.isalpha() -> bool
+		Return True if the string is an alphabetic string, False otherwise.
 		
-		Return True if all characters in S are alphabetic
-		and there is at least one character in S, False otherwise.
+		A string is alphabetic if all characters in the string are alphabetic and there
+		is at least one character in the string.
 	**/
-	public function isalpha(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function isalpha():Dynamic;
 	/**
-		S.isdecimal() -> bool
+		Return True if all characters in the string are ASCII, False otherwise.
 		
-		Return True if there are only decimal characters in S,
-		False otherwise.
+		ASCII characters have code points in the range U+0000-U+007F.
+		Empty string is ASCII too.
 	**/
-	public function isdecimal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function isascii():Dynamic;
 	/**
-		S.isdigit() -> bool
+		Return True if the string is a decimal string, False otherwise.
 		
-		Return True if all characters in S are digits
-		and there is at least one character in S, False otherwise.
+		A string is a decimal string if all characters in the string are decimal and
+		there is at least one character in the string.
 	**/
-	public function isdigit(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function isdecimal():Dynamic;
 	/**
-		S.isidentifier() -> bool
+		Return True if the string is a digit string, False otherwise.
 		
-		Return True if S is a valid identifier according
-		to the language definition.
-		
-		Use keyword.iskeyword() to test for reserved identifiers
-		such as "def" and "class".
+		A string is a digit string if all characters in the string are digits and there
+		is at least one character in the string.
 	**/
-	public function isidentifier(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function isdigit():Dynamic;
 	/**
-		S.islower() -> bool
+		Return True if the string is a valid Python identifier, False otherwise.
 		
-		Return True if all cased characters in S are lowercase and there is
-		at least one cased character in S, False otherwise.
+		Call keyword.iskeyword(s) to test whether string s is a reserved identifier,
+		such as "def" or "class".
 	**/
-	public function islower(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function isidentifier():Dynamic;
 	/**
-		S.isnumeric() -> bool
+		Return True if the string is a lowercase string, False otherwise.
 		
-		Return True if there are only numeric characters in S,
-		False otherwise.
+		A string is lowercase if all cased characters in the string are lowercase and
+		there is at least one cased character in the string.
 	**/
-	public function isnumeric(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function islower():Dynamic;
 	/**
-		S.isprintable() -> bool
+		Return True if the string is a numeric string, False otherwise.
 		
-		Return True if all characters in S are considered
-		printable in repr() or S is empty, False otherwise.
+		A string is numeric if all characters in the string are numeric and there is at
+		least one character in the string.
 	**/
-	public function isprintable(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function isnumeric():Dynamic;
 	/**
-		S.isspace() -> bool
+		Return True if the string is printable, False otherwise.
 		
-		Return True if all characters in S are whitespace
-		and there is at least one character in S, False otherwise.
+		A string is printable if all of its characters are considered printable in
+		repr() or if it is empty.
 	**/
-	public function isspace(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function isprintable():Dynamic;
 	/**
-		S.istitle() -> bool
+		Return True if the string is a whitespace string, False otherwise.
 		
-		Return True if S is a titlecased string and there is at least one
-		character in S, i.e. upper- and titlecase characters may only
+		A string is whitespace if all characters in the string are whitespace and there
+		is at least one character in the string.
+	**/
+	public function isspace():Dynamic;
+	/**
+		Return True if the string is a title-cased string, False otherwise.
+		
+		In a title-cased string, upper- and title-case characters may only
 		follow uncased characters and lowercase characters only cased ones.
-		Return False otherwise.
 	**/
-	public function istitle(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function istitle():Dynamic;
 	/**
-		S.isupper() -> bool
+		Return True if the string is an uppercase string, False otherwise.
 		
-		Return True if all cased characters in S are uppercase and there is
-		at least one cased character in S, False otherwise.
+		A string is uppercase if all cased characters in the string are uppercase and
+		there is at least one cased character in the string.
 	**/
-	public function isupper(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function isupper():Dynamic;
 	/**
-		S.join(iterable) -> str
+		Concatenate any number of strings.
 		
-		Return a string which is the concatenation of the strings in the
-		iterable.  The separator between elements is S.
+		The string whose method is called is inserted in between each given string.
+		The result is returned as a new string.
+		
+		Example: '.'.join(['ab', 'pq', 'rs']) -> 'ab.pq.rs'
 	**/
-	public function join(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function join(iterable:Dynamic):Dynamic;
 	static public var line : Dynamic;
 	/**
-		S.ljust(width[, fillchar]) -> str
+		Return a left-justified string of length width.
 		
-		Return S left-justified in a Unicode string of length width. Padding is
-		done using the specified fill character (default is a space).
+		Padding is done using the specified fill character (default is a space).
 	**/
-	public function ljust(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function ljust(width:Dynamic, ?fillchar:Dynamic):Dynamic;
 	/**
-		S.lower() -> str
-		
-		Return a copy of the string S converted to lowercase.
+		Return a copy of the string converted to lowercase.
 	**/
-	public function lower(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function lower():Dynamic;
 	/**
-		S.lstrip([chars]) -> str
+		Return a copy of the string with leading whitespace removed.
 		
-		Return a copy of the string S with leading whitespace removed.
 		If chars is given and not None, remove characters in chars instead.
 	**/
 	public function lstrip(?chars:Dynamic):Dynamic;
@@ -385,24 +429,27 @@ package docutils.nodes;
 		character at the same position in y. If there is a third argument, it
 		must be a string, whose characters will be mapped to None in the result.
 	**/
-	static public function maketrans(x:Dynamic, ?y:Dynamic, ?z:Dynamic):Dynamic;
+	public function maketrans(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the first node in the iterable returned by traverse(),
+		Return the first node in the iterator returned by findall(),
 		or None if the iterable is empty.
 		
-		Parameter list is the same as of traverse.  Note that
-		include_self defaults to 0, though.
+		Parameter list is the same as of traverse.  Note that `include_self`
+		defaults to False, though.
 	**/
 	public function next_node(?condition:Dynamic, ?include_self:Dynamic, ?descend:Dynamic, ?siblings:Dynamic, ?ascend:Dynamic):Dynamic;
 	static public var parent : Dynamic;
 	/**
-		S.partition(sep) -> (head, sep, tail)
+		Partition the string into three parts using the given separator.
 		
-		Search for the separator sep in S, and return the part before it,
-		the separator itself, and the part after it.  If the separator is not
-		found, return S and two empty strings.
+		This will search for the separator in the string.  If the separator is found,
+		returns a 3-tuple containing the part before the separator, the separator
+		itself, and the part after it.
+		
+		If the separator is not found, returns a 3-tuple containing the original string
+		and two empty strings.
 	**/
-	public function partition(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function partition(sep:Dynamic):Dynamic;
 	/**
 		Return an indented pseudo-XML representation, for test purposes.
 		
@@ -410,13 +457,20 @@ package docutils.nodes;
 	**/
 	public function pformat(?indent:Dynamic, ?level:Dynamic):Dynamic;
 	/**
-		S.replace(old, new[, count]) -> str
-		
-		Return a copy of S with all occurrences of substring
-		old replaced by new.  If the optional argument count is
-		given, only the first count occurrences are replaced.
+		Return preceding sibling node or ``None``.
 	**/
-	public function replace(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function previous_sibling():Dynamic;
+	/**
+		Return a copy with all occurrences of substring old replaced by new.
+		
+		  count
+		    Maximum number of occurrences to replace.
+		    -1 (the default value) means replace all occurrences.
+		
+		If the optional argument count is given, only the first count occurrences are
+		replaced.
+	**/
+	public function replace(old:Dynamic, _new:Dynamic, ?count:Dynamic):Dynamic;
 	/**
 		S.rfind(sub[, start[, end]]) -> int
 		
@@ -430,38 +484,47 @@ package docutils.nodes;
 	/**
 		S.rindex(sub[, start[, end]]) -> int
 		
-		Like S.rfind() but raise ValueError when the substring is not found.
+		Return the highest index in S where substring sub is found,
+		such that sub is contained within S[start:end].  Optional
+		arguments start and end are interpreted as in slice notation.
+		
+		Raises ValueError when the substring is not found.
 	**/
 	public function rindex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		S.rjust(width[, fillchar]) -> str
+		Return a right-justified string of length width.
 		
-		Return S right-justified in a string of length width. Padding is
-		done using the specified fill character (default is a space).
+		Padding is done using the specified fill character (default is a space).
 	**/
-	public function rjust(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function rjust(width:Dynamic, ?fillchar:Dynamic):Dynamic;
 	/**
-		S.rpartition(sep) -> (head, sep, tail)
+		Partition the string into three parts using the given separator.
 		
-		Search for the separator sep in S, starting at the end of S, and return
-		the part before it, the separator itself, and the part after it.  If the
-		separator is not found, return two empty strings and S.
+		This will search for the separator in the string, starting at the end. If
+		the separator is found, returns a 3-tuple containing the part before the
+		separator, the separator itself, and the part after it.
+		
+		If the separator is not found, returns a 3-tuple containing two empty strings
+		and the original string.
 	**/
-	public function rpartition(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function rpartition(sep:Dynamic):Dynamic;
 	/**
-		S.rsplit(sep=None, maxsplit=-1) -> list of strings
+		Return a list of the words in the string, using sep as the delimiter string.
 		
-		Return a list of the words in S, using sep as the
-		delimiter string, starting at the end of the string and
-		working to the front.  If maxsplit is given, at most maxsplit
-		splits are done. If sep is not specified, any whitespace string
-		is a separator.
+		  sep
+		    The delimiter according which to split the string.
+		    None (the default value) means split according to any whitespace,
+		    and discard empty strings from the result.
+		  maxsplit
+		    Maximum number of splits to do.
+		    -1 (the default value) means no limit.
+		
+		Splits are done starting at the end of the string and working to the front.
 	**/
-	public function rsplit(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function rsplit(?sep:Dynamic, ?maxsplit:Dynamic):Dynamic;
 	/**
-		S.rstrip([chars]) -> str
+		Return a copy of the string with trailing whitespace removed.
 		
-		Return a copy of the string S with trailing whitespace removed.
 		If chars is given and not None, remove characters in chars instead.
 	**/
 	public function rstrip(?chars:Dynamic):Dynamic;
@@ -469,23 +532,24 @@ package docutils.nodes;
 	public function shortrepr(?maxlen:Dynamic):Dynamic;
 	static public var source : Dynamic;
 	/**
-		S.split(sep=None, maxsplit=-1) -> list of strings
+		Return a list of the words in the string, using sep as the delimiter string.
 		
-		Return a list of the words in S, using sep as the
-		delimiter string.  If maxsplit is given, at most maxsplit
-		splits are done. If sep is not specified or is None, any
-		whitespace string is a separator and empty strings are
-		removed from the result.
+		sep
+		  The delimiter according which to split the string.
+		  None (the default value) means split according to any whitespace,
+		  and discard empty strings from the result.
+		maxsplit
+		  Maximum number of splits to do.
+		  -1 (the default value) means no limit.
 	**/
-	public function split(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function split(?sep:Dynamic, ?maxsplit:Dynamic):Dynamic;
 	/**
-		S.splitlines([keepends]) -> list of strings
+		Return a list of the lines in the string, breaking at line boundaries.
 		
-		Return a list of the lines in S, breaking at line boundaries.
-		Line breaks are not included in the resulting list unless keepends
-		is given and true.
+		Line breaks are not included in the resulting list unless keepends is given and
+		true.
 	**/
-	public function splitlines(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function splitlines(?keepends:Dynamic):Dynamic;
 	/**
 		S.startswith(prefix[, start[, end]]) -> bool
 		
@@ -496,81 +560,45 @@ package docutils.nodes;
 	**/
 	public function startswith(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		S.strip([chars]) -> str
+		Return a copy of the string with leading and trailing whitespace removed.
 		
-		Return a copy of the string S with leading and trailing
-		whitespace removed.
 		If chars is given and not None, remove characters in chars instead.
 	**/
-	public function strip(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function strip(?chars:Dynamic):Dynamic;
 	/**
-		S.swapcase() -> str
-		
-		Return a copy of S with uppercase characters converted to lowercase
-		and vice versa.
+		Convert uppercase characters to lowercase and lowercase characters to uppercase.
 	**/
-	public function swapcase(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function swapcase():Dynamic;
 	static public var tagname : Dynamic;
 	/**
-		S.title() -> str
+		Return a version of the string where each word is titlecased.
 		
-		Return a titlecased version of S, i.e. words start with title case
-		characters, all remaining cased characters have lower case.
+		More specifically, words start with uppercased characters and all remaining
+		cased characters have lower case.
 	**/
-	public function title(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function title():Dynamic;
 	/**
-		S.translate(table) -> str
+		Replace each character in the string using the given translation table.
 		
-		Return a copy of the string S in which each character has been mapped
-		through the given translation table. The table must implement
-		lookup/indexing via __getitem__, for instance a dictionary or list,
-		mapping Unicode ordinals to Unicode ordinals, strings, or None. If
-		this operation raises LookupError, the character is left untouched.
-		Characters mapped to None are deleted.
+		  table
+		    Translation table, which must be a mapping of Unicode ordinals to
+		    Unicode ordinals, strings, or None.
+		
+		The table must implement lookup/indexing via __getitem__, for instance a
+		dictionary or list.  If this operation raises LookupError, the character is
+		left untouched.  Characters mapped to None are deleted.
 	**/
-	public function translate(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function translate(table:Dynamic):Dynamic;
 	/**
-		Return an iterable containing
+		Return list of nodes following `self`.
 		
-		* self (if include_self is true)
-		* all descendants in tree traversal order (if descend is true)
-		* all siblings (if siblings is true) and their descendants (if
-		  also descend is true)
-		* the siblings of the parent (if ascend is true) and their
-		  descendants (if also descend is true), and so on
-		
-		If `condition` is not None, the iterable contains only nodes
-		for which ``condition(node)`` is true.  If `condition` is a
-		node class ``cls``, it is equivalent to a function consisting
-		of ``return isinstance(node, cls)``.
-		
-		If ascend is true, assume siblings to be true as well.
-		
-		For example, given the following tree::
-		
-		    <paragraph>
-		        <emphasis>      <--- emphasis.traverse() and
-		            <strong>    <--- strong.traverse() are called.
-		                Foo
-		            Bar
-		        <reference name="Baz" refid="baz">
-		            Baz
-		
-		Then list(emphasis.traverse()) equals ::
-		
-		    [<emphasis>, <strong>, <#text: Foo>, <#text: Bar>]
-		
-		and list(strong.traverse(ascend=True)) equals ::
-		
-		    [<strong>, <#text: Foo>, <#text: Bar>, <reference>, <#text: Baz>]
+		For looping, Node.findall() is faster and more memory efficient.
 	**/
 	public function traverse(?condition:Dynamic, ?include_self:Dynamic, ?descend:Dynamic, ?siblings:Dynamic, ?ascend:Dynamic):Dynamic;
 	/**
-		S.upper() -> str
-		
-		Return a copy of S converted to uppercase.
+		Return a copy of the string converted to uppercase.
 	**/
-	public function upper(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function upper():Dynamic;
 	/**
 		Traverse a tree of `Node` objects, calling the
 		`dispatch_visit()` method of `visitor` when entering each
@@ -607,10 +635,9 @@ package docutils.nodes;
 	**/
 	public function walkabout(visitor:Dynamic):Dynamic;
 	/**
-		S.zfill(width) -> str
+		Pad a numeric string with zeros on the left, to fill a field of the given width.
 		
-		Pad a numeric string S with zeros on the left, to fill a field
-		of the specified width. The string S is never truncated.
+		The string is never truncated.
 	**/
-	public function zfill(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function zfill(width:Dynamic):Dynamic;
 }

@@ -10,6 +10,7 @@ package importlib._bootstrap_external;
 	static public var _CASE_INSENSITIVE_PLATFORMS : Dynamic;
 	static public var _CASE_INSENSITIVE_PLATFORMS_BYTES_KEY : Dynamic;
 	static public var _CASE_INSENSITIVE_PLATFORMS_STR_KEY : Dynamic;
+	static public var _MS_WINDOWS : Dynamic;
 	static public var _OPT : Dynamic;
 	static public var _POPULATE : Dynamic;
 	static public var _PYCACHE : Dynamic;
@@ -20,7 +21,6 @@ package importlib._bootstrap_external;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
 	/**
 		Calculate the mode permissions for a bytecode file.
 	**/
@@ -34,12 +34,31 @@ package importlib._bootstrap_external;
 	**/
 	static public function _check_name(method:Dynamic):Dynamic;
 	/**
-		Compile a code object into bytecode for writing out to a byte-compiled
-		file.
+		Perform basic validity checking of a pyc header and return the flags field,
+		which determines how the pyc should be further validated against the source.
+		
+		*data* is the contents of the pyc file. (Only the first 16 bytes are
+		required, though.)
+		
+		*name* is the name of the module being imported. It is used for logging.
+		
+		*exc_details* is a dictionary passed to ImportError if it raised for
+		improved debugging.
+		
+		ImportError is raised when the magic number is incorrect or when the flags
+		field is invalid. EOFError is raised when the data is found to be truncated.
 	**/
-	static public function _code_to_bytecode(code:Dynamic, ?mtime:Dynamic, ?source_size:Dynamic):Dynamic;
+	static public function _classify_pyc(data:Dynamic, name:Dynamic, exc_details:Dynamic):Dynamic;
 	/**
-		Compile bytecode as returned by _validate_bytecode_header().
+		Produce the data for a hash-based pyc.
+	**/
+	static public function _code_to_hash_pyc(code:Dynamic, source_hash:Dynamic, ?checked:Dynamic):Dynamic;
+	/**
+		Produce the data for a timestamp-based pyc.
+	**/
+	static public function _code_to_timestamp_pyc(code:Dynamic, ?mtime:Dynamic, ?source_size:Dynamic):Dynamic;
+	/**
+		Compile bytecode as found in a pyc.
 	**/
 	static public function _compile_bytecode(data:Dynamic, ?name:Dynamic, ?bytecode_path:Dynamic, ?source_path:Dynamic):Dynamic;
 	/**
@@ -70,9 +89,17 @@ package importlib._bootstrap_external;
 	static public function _install(_bootstrap_module:Dynamic):Dynamic;
 	static public function _make_relax_case():Dynamic;
 	/**
+		Convert a 32-bit integer to little-endian.
+	**/
+	static public function _pack_uint32(x:Dynamic):Dynamic;
+	/**
 		Test whether the path is the specified mode type.
 	**/
 	static public function _path_is_mode_type(path:Dynamic, mode:Dynamic):Dynamic;
+	/**
+		Replacement for os.path.isabs.
+	**/
+	static public function _path_isabs(path:Dynamic):Dynamic;
 	/**
 		Replacement for os.path.isdir.
 	**/
@@ -96,10 +123,7 @@ package importlib._bootstrap_external;
 		(e.g. cache stat results).
 	**/
 	static public function _path_stat(path:Dynamic):Dynamic;
-	/**
-		Convert 4 bytes in little-endian to an integer.
-	**/
-	static public function _r_long(int_bytes:Dynamic):Dynamic;
+	static public var _pathseps_with_colon : Dynamic;
 	/**
 		True if filenames must be checked case-insensitively.
 	**/
@@ -112,20 +136,48 @@ package importlib._bootstrap_external;
 	**/
 	static public function _setup(_bootstrap_module:Dynamic):Dynamic;
 	/**
-		Validate the header of the passed-in bytecode against source_stats (if
-		given) and returning the bytecode that can be compiled by compile().
-		
-		All other arguments are used to enhance error reporting.
-		
-		ImportError is raised when the magic number is incorrect or the bytecode is
-		found to be stale. EOFError is raised when the data is found to be
-		truncated.
+		Convert 2 bytes in little-endian to an integer.
 	**/
-	static public function _validate_bytecode_header(data:Dynamic, ?source_stats:Dynamic, ?name:Dynamic, ?path:Dynamic):Dynamic;
+	static public function _unpack_uint16(data:Dynamic):Dynamic;
 	/**
-		Convert a 32-bit integer to little-endian.
+		Convert 4 bytes in little-endian to an integer.
 	**/
-	static public function _w_long(x:Dynamic):Dynamic;
+	static public function _unpack_uint32(data:Dynamic):Dynamic;
+	/**
+		Validate a hash-based pyc by checking the real source hash against the one in
+		the pyc header.
+		
+		*data* is the contents of the pyc file. (Only the first 16 bytes are
+		required.)
+		
+		*source_hash* is the importlib.util.source_hash() of the source file.
+		
+		*name* is the name of the module being imported. It is used for logging.
+		
+		*exc_details* is a dictionary passed to ImportError if it raised for
+		improved debugging.
+		
+		An ImportError is raised if the bytecode is stale.
+	**/
+	static public function _validate_hash_pyc(data:Dynamic, source_hash:Dynamic, name:Dynamic, exc_details:Dynamic):Dynamic;
+	/**
+		Validate a pyc against the source last-modified time.
+		
+		*data* is the contents of the pyc file. (Only the first 16 bytes are
+		required.)
+		
+		*source_mtime* is the last modified timestamp of the source file.
+		
+		*source_size* is None or the size of the source file in bytes.
+		
+		*name* is the name of the module being imported. It is used for logging.
+		
+		*exc_details* is a dictionary passed to ImportError if it raised for
+		improved debugging.
+		
+		An ImportError is raised if the bytecode is stale.
+	**/
+	static public function _validate_timestamp_pyc(data:Dynamic, source_mtime:Dynamic, source_size:Dynamic, name:Dynamic, exc_details:Dynamic):Dynamic;
 	/**
 		Best-effort function to write data to a path atomically.
 		Be prepared to handle a FileExistsError if concurrent writing of the
@@ -157,6 +209,7 @@ package importlib._bootstrap_external;
 	**/
 	static public function decode_source(source_bytes:Dynamic):Dynamic;
 	static public var path_sep : Dynamic;
+	static public var path_sep_tuple : Dynamic;
 	static public var path_separators : Dynamic;
 	/**
 		Given the path to a .pyc. file, return the path to its .py file.

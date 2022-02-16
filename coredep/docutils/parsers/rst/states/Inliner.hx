@@ -8,19 +8,18 @@ package docutils.parsers.rst.states;
 	public function __delattr__(name:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
-		__dir__() -> list
-		default dir() implementation
+		Default dir() implementation.
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
-		default object formatter
+		Default object formatter.
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(format_spec:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -71,13 +70,13 @@ package docutils.parsers.rst.states;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
-		helper for pickle
+		Helper for pickle.
 	**/
-	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce_ex__(protocol:Dynamic):Dynamic;
 	/**
 		Return repr(self).
 	**/
@@ -87,10 +86,9 @@ package docutils.parsers.rst.states;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Size of object in memory, in bytes.
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -148,10 +146,13 @@ package docutils.parsers.rst.states;
 		check it for validity.  If not found or invalid, generate a warning
 		and ignore the start-string.  Implicit inline markup (e.g. standalone
 		URIs) is found last.
+		
+		:text: source string
+		:lineno: absolute line number (cf. statemachine.get_source_and_line())
 	**/
 	public function parse(text:Dynamic, lineno:Dynamic, memo:Dynamic, parent:Dynamic):Dynamic;
 	public function pep_reference(match:Dynamic, lineno:Dynamic):Dynamic;
-	public function phrase_ref(before:Dynamic, after:Dynamic, rawsource:Dynamic, escaped:Dynamic, text:Dynamic):Dynamic;
+	public function phrase_ref(before:Dynamic, after:Dynamic, rawsource:Dynamic, escaped:Dynamic, ?text:Dynamic):Dynamic;
 	public function problematic(text:Dynamic, rawsource:Dynamic, message:Dynamic):Dynamic;
 	/**
 		Test if inline markup start-string is 'quoted'.
