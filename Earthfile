@@ -209,3 +209,11 @@ gen-selenium:
 gen-science:
     COPY (+gen-externs/out --NAME=science --REQUIREMENTS_FILE=requirements-science.txt --GENLIBS=textwrap,numpy,scipy,pandas,matplotlib,seaborn,tensorflow) out
     SAVE ARTIFACT --keep-ts out AS LOCAL out/science
+
+gen-pyarrow:
+    COPY (+gen-externs/out --NAME=pyarrow --REQUIREMENTS_FILE=requirements-pyarrow.txt --GENLIBS=pyarrow) out
+    SAVE ARTIFACT --keep-ts out AS LOCAL out/pyarrow
+
+gen-paho-mqtt:
+    COPY (+gen-externs/out --NAME=paho-mqtt --REQUIREMENTS_FILE=requirements-paho-mqtt.txt --GENLIBS=paho) out
+    SAVE ARTIFACT --keep-ts out AS LOCAL out/paho-mqtt
