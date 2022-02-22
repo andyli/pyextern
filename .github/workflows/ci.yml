@@ -40,3 +40,7 @@ jobs:
         run: earthly +gen-selenium
       - name: Generate externs of science libs
         run: earthly +gen-science
+      - name: Generate externs of paho-mqtt
+        run: earthly +gen-paho-mqtt
+      - name: Generate externs of pyarrow
+        run: earthly +gen-pyarrow
