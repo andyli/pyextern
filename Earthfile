@@ -130,11 +130,13 @@ devcontainer:
 
     # Config conda
     RUN conda init bash
-    COPY (+conda-env/coredep  --NAME=coredep  --REQUIREMENTS_FILE=requirements.txt)          /miniconda/envs/coredep
-    COPY (+conda-env/pyqt     --NAME=pyqt     --REQUIREMENTS_FILE=requirements-pyqt.txt)     /miniconda/envs/pyqt
-    COPY (+conda-env/pytorch  --NAME=pytorch  --REQUIREMENTS_FILE=requirements-pytorch.txt)  /miniconda/envs/pytorch
-    COPY (+conda-env/selenium --NAME=selenium --REQUIREMENTS_FILE=requirements-selenium.txt) /miniconda/envs/selenium
-    COPY (+conda-env/science  --NAME=science  --REQUIREMENTS_FILE=requirements-science.txt)  /miniconda/envs/science
+    COPY (+conda-env/coredep   --NAME=coredep   --REQUIREMENTS_FILE=requirements.txt)           /miniconda/envs/coredep
+    COPY (+conda-env/pyqt      --NAME=pyqt      --REQUIREMENTS_FILE=requirements-pyqt.txt)      /miniconda/envs/pyqt
+    COPY (+conda-env/pytorch   --NAME=pytorch   --REQUIREMENTS_FILE=requirements-pytorch.txt)   /miniconda/envs/pytorch
+    COPY (+conda-env/selenium  --NAME=selenium  --REQUIREMENTS_FILE=requirements-selenium.txt)  /miniconda/envs/selenium
+    COPY (+conda-env/science   --NAME=science   --REQUIREMENTS_FILE=requirements-science.txt)   /miniconda/envs/science
+    COPY (+conda-env/pyarrow   --NAME=pyarrow   --REQUIREMENTS_FILE=requirements-pyarrow.txt)   /miniconda/envs/pyarrow
+    COPY (+conda-env/paho-mqtt --NAME=paho-mqtt --REQUIREMENTS_FILE=requirements-paho-mqtt.txt) /miniconda/envs/paho-mqtt
 
     COPY +haxelib/.haxelib .haxelib
     VOLUME /workspace/.haxelib
@@ -219,3 +221,11 @@ gen-pyarrow:
 gen-paho-mqtt:
     COPY (+gen-externs/out --NAME=paho-mqtt --REQUIREMENTS_FILE=requirements-paho-mqtt.txt --GENLIBS=paho) out
     SAVE ARTIFACT --keep-ts out AS LOCAL out/paho-mqtt
+
+test:
+    FROM +devcontainer
+    COPY src src
+    COPY test test
+    COPY test.hxml .
+    RUN haxe test.hxml
+    RUN python Test.py

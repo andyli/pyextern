@@ -44,3 +44,5 @@ jobs:
         run: earthly +gen-paho-mqtt
       - name: Generate externs of pyarrow
         run: earthly +gen-pyarrow
+      - name: Test
+        run: earthly +test
