@@ -1,26 +1,27 @@
 import haxe.macro.*;
 
 class Test {
-    static var packages(default, never) =
-        switch(Sys.getEnv("GENLIBS")) {
+    #if macro
+    static function importPackages() {
+        final packages = switch(Sys.getEnv("GENLIBS")) {
             case null:
-                "docutils,pkgutil,inspect,importlib,textwrap,numpy,scipy,pandas,matplotlib,seaborn,tensorflow,torch,theano,keras".split(",");
+                throw "env var GENLIBS not defined";
             case libs:
                 [for (p in libs.split(",")) p.split(".").map(pyextern.Utils.lowerCaseFirstLetter).join(".")];
         };
-    macro static function importPackages() {
+        final classPath = switch(Sys.getEnv("CLASSPATH")) {
+            case null:
+                throw "env var CLASSPATH not defined";
+            case v:
+                v;
+        };
+        Compiler.addClassPath(classPath);
         for (p in packages) {
-            Sys.println('Trying to include $p...');
-            #if (haxe_ver >= 3.3)
-                Compiler.include(p, true, null, null, true);
-            #else
-                Compiler.include(p, true);
-            #end
+            Sys.print('Trying to include $p... ');
+            Compiler.include(p, true, null, null, true);
+            Sys.println('ok');
         }
-        return macro {};
     }
-
-    static function main():Void {
-        importPackages();
-    }
+    #end
+    static function main():Void {}
 }

@@ -182,8 +182,9 @@ gen-externs:
     COPY (+conda-env/$NAME --NAME="$NAME" --REQUIREMENTS_FILE="$REQUIREMENTS_FILE") "/miniconda/envs/$NAME"
     COPY +pyextern/Main.py .
     ARG --required GENLIBS
-    RUN conda run -n "$NAME" python Main.py "$GENLIBS" out
-    SAVE ARTIFACT --keep-ts out
+    ARG CLASSPATH=out
+    RUN conda run -n "$NAME" python Main.py "$GENLIBS" "$CLASSPATH"
+    SAVE ARTIFACT --keep-ts "$CLASSPATH"
     SAVE IMAGE --cache-hint
     COPY src src
     COPY test test

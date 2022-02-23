@@ -1,6 +1,6 @@
--cp src
--cp out
--cp test
--main Test
--python Test.py
+--class-path src
+--class-path test
+--main Test
+--python Test.py
+--macro Test.importPackages()
 --no-output
