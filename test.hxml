@@ -1,6 +1,5 @@
 --class-path src
 --class-path test
+--library utest
 --main Test
 --python Test.py
---macro Test.importPackages()
---no-output

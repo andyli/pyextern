@@ -110,9 +110,9 @@ earthly:
     SAVE ARTIFACT /usr/local/bin/earthly
 
 haxelib:
-    COPY build.hxml .
+    COPY *.hxml .
     RUN haxelib newrepo
-    RUN haxelib install build.hxml --always
+    RUN haxelib install all --always
     SAVE ARTIFACT .haxelib
 
 devcontainer:
@@ -177,6 +177,7 @@ conda-env:
     SAVE IMAGE --cache-hint
 
 gen-externs:
+    FROM +devcontainer
     ARG --required NAME
     ARG --required REQUIREMENTS_FILE
     COPY (+conda-env/$NAME --NAME="$NAME" --REQUIREMENTS_FILE="$REQUIREMENTS_FILE") "/miniconda/envs/$NAME"
@@ -189,7 +190,7 @@ gen-externs:
     COPY src src
     COPY test test
     COPY test.hxml .
-    RUN haxe test.hxml
+    RUN haxe test.hxml --macro 'TestImportPackage.test()'
 
 gen-coredep:
     COPY (+gen-externs/out --NAME=coredep --REQUIREMENTS_FILE=requirements.txt --GENLIBS=docutils,pkgutil,inspect,importlib) coredep
