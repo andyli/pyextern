@@ -5,7 +5,7 @@ import haxe.macro.Expr;
 class KwCall {
 	@:noUsing
 	macro static public function kw(exprs:Array<Expr>):Expr {
-		var objd = {
+		final objd = {
 			expr: EObjectDecl([for(e in exprs) switch (e) {
 				case macro $i{k} => $v:
 					{
@@ -21,8 +21,8 @@ class KwCall {
 	}
 
 	macro static public function call(func:ExprOf<haxe.Constraints.Function>, args:Array<Expr>):Expr {
-		var realArgs:Array<Expr> = [];
-		var buildKwArgs:Array<Expr> = [macro var kwArgs = new python.Dict<String,Dynamic>()];
+		final realArgs:Array<Expr> = [];
+		final buildKwArgs:Array<Expr> = [macro final kwArgs = new python.Dict<String,Dynamic>()];
 		var kwAppeared = false;
 		for (e in args) switch (e) {
 			case macro $i{k} => $v:
@@ -38,7 +38,10 @@ class KwCall {
 		realArgs.push(macro ($b{buildKwArgs}:python.KwArgs<Dynamic>));
 		switch (Context.typeof(func)) {
 			case TFun(args, ret):
-				return macro ($func:haxe.Constraints.Function)($a{realArgs});
+				return macro {
+					final func:haxe.Constraints.Function = $func;
+					func($a{realArgs});
+				}
 			case _:
 				Context.error("should be a TFun", func.pos);
 		}

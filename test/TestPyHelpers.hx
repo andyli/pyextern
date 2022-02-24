@@ -22,6 +22,18 @@ class MyClass {
 }
 
 class TestPyHelpers extends utest.Test {
+    public function testConstructorSimple() {
+        final o = (MyClass.new).call(123, 456);
+        Assert.equals(123, o.a);
+        Assert.equals(456, o.b);
+    }
+
+    public function testConstructorSupplyAll() {
+        final o = (MyClass.new).call(a => 123, b => 456);
+        Assert.equals(123, o.a);
+        Assert.equals(456, o.b);
+    }
+
     public function testInstanceMethodSimple() {
         final o = new MyClass(123, 456);
         o.set.call(1, 2);
